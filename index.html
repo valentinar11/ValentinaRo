@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eTendering - Create New Tender - 7 Tabs Complete</title>
+    <style>
+        :root {
+            --color-primary: #00A1E4;
+            --color-primary-dark: #00629B;
+            --color-primary-darker: #004D7A;
+            --color-primary-light: #E6F4FF;
+            --color-success: #10B981;
+            --color-warning: #F59E0B;
+            --color-danger: #EF4444;
+            --color-info: #3B82F6;
+            --bg-secondary: #F5F7FA;
+            --text-primary: #374151;
+            --text-secondary: #6B7280;
+            --border-light: #E5E7EB;
+            --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-family); background: var(--bg-secondary); color: var(--text-primary); }
+        .app-layout { display: flex; height: 100vh; }
+        .sidebar { width: 260px; background: var(--color-primary); color: white; overflow-y: auto; }
+        .sidebar-header { padding: 20px; background: rgba(0,0,0,0.1); border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .company-name { font-size: 18px; font-weight: 600; }
+        .nav-item { padding: 12px 20px; display: flex; align-items: center; gap: 12px; cursor: pointer; transition: background 0.2s; }
+        .nav-item:hover { background: rgba(255,255,255,0.1); }
+        .nav-item.active { background: rgba(255,255,255,0.15); border-left: 4px solid white; }
+        .main-content { flex: 1; display: flex; flex-direction: column; }
+        .header { height: 60px; background: white; border-bottom: 1px solid var(--border-light); display: flex; align-items: center; padding: 0 24px; justify-content: space-between; }
+        .page-title { font-size: 20px; font-weight: 600; color: var(--color-primary-dark); }
+        .tender-type { padding: 6px 12px; background: var(--color-primary-light); color: var(--color-primary-dark); border-radius: 20px; font-size: 13px; font-weight: 500; }
+        .header-actions { display: flex; gap: 12px; }
+        .btn { padding: 8px 16px; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; border: none; transition: all 0.2s; }
+        .btn-ghost { background: transparent; color: var(--text-secondary); border: 1px solid var(--border-light); }
+        .btn-primary { background: var(--color-primary-dark); color: white; }
+        .btn-primary:hover { background: var(--color-primary-darker); }
+        .progress-container { background: white; padding: 16px 24px; border-bottom: 1px solid var(--border-light); }
+        .progress-steps { display: flex; justify-content: space-between; max-width: 1000px; margin: 0 auto; gap: 8px; }
+        .progress-step { display: flex; flex-direction: column; align-items: center; position: relative; flex: 1; cursor: pointer; }
+        .progress-step::before { content: ''; position: absolute; top: 15px; left: -50%; right: 50%; height: 2px; background: var(--border-light); z-index: 0; }
+        .progress-step:first-child::before { display: none; }
+        .progress-step.completed::before { background: var(--color-success); }
+        .step-icon { width: 30px; height: 30px; border-radius: 50%; background: white; border: 2px solid var(--border-light); display: flex; align-items: center; justify-content: center; z-index: 1; font-size: 12px; margin-bottom: 8px; }
+        .progress-step.active .step-icon { background: var(--color-primary); border-color: var(--color-primary); color: white; }
+        .progress-step.completed .step-icon { background: var(--color-success); border-color: var(--color-success); color: white; }
+        .step-label { font-size: 11px; text-align: center; color: var(--text-secondary); }
+        .progress-step.active .step-label { color: var(--color-primary); font-weight: 600; }
+        .content-wrapper { flex: 1; overflow-y: auto; padding: 24px; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .form-section { background: white; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .form-section.collapsed .section-body { display: none; }
+        .section-header { padding: 16px 20px; border-bottom: 1px solid var(--border-light); display: flex; justify-content: space-between; align-items: center; }
+        .collapsible-header { cursor: pointer; }
+        .section-title { font-size: 16px; font-weight: 600; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
+        .section-icon { font-size: 18px; }
+        .collapse-icon { font-size: 12px; margin-left: 8px; color: var(--text-secondary); transition: transform 0.2s; }
+        .form-section.collapsed .collapse-icon { transform: rotate(-90deg); }
+        .section-badge { background: var(--color-warning); color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+        .status-indicator { padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 500; }
+        .status-complete { background: #D1FAE5; color: #065F46; }
+        .status-incomplete { background: #FEF3C7; color: #92400E; }
+        .section-body { padding: 20px; }
+        .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group.full-width { grid-column: 1 / -1; }
+        .form-label { font-size: 14px; font-weight: 500; color: var(--text-primary); margin-bottom: 8px; }
+        .required { color: var(--color-danger); }
+        .form-input, .form-select, .form-textarea { padding: 10px 12px; border: 1px solid var(--border-light); border-radius: 6px; font-size: 14px; font-family: var(--font-family); transition: border-color 0.2s; }
+        .form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: var(--color-primary); }
+        .form-textarea { min-height: 100px; resize: vertical; }
+        .info-alert { padding: 12px 16px; background: #EFF6FF; border-left: 4px solid var(--color-info); border-radius: 4px; margin-bottom: 20px; }
+        .info-alert-text { font-size: 14px; color: #1E40AF; }
+        .warning-alert { padding: 12px 16px; background: #FEF3C7; border-left: 4px solid var(--color-warning); border-radius: 4px; margin-bottom: 20px; }
+        .warning-alert-text { font-size: 14px; color: #92400E; }
+        .conditional-field { margin-left: 24px; padding-left: 16px; border-left: 2px solid #E5E7EB; }
+        .help-text { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+        .static-text { font-size: 13px; color: var(--text-secondary); line-height: 1.6; background: #F9FAFB; padding: 12px; border-radius: 4px; margin-top: 8px; }
+        .action-footer { background: white; border-top: 1px solid var(--border-light); padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
+        .footer-info { font-size: 13px; color: var(--text-secondary); }
+        .footer-actions { display: flex; gap: 12px; }
+        .smart-suggestion { font-size: 12px; color: var(--color-primary); margin-top: 4px; }
+        .add-button { padding: 8px 16px; background: transparent; color: var(--color-primary); border: 1px dashed var(--color-primary); border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500; margin-top: 12px; }
+        .add-button:hover { background: var(--color-primary-light); }
+    </style>
+</head>
+<body>
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="company-name">UNOPS eTendering</div>
+            </div>
+            <nav>
+                <div class="nav-item active">📝 Create Tender</div>
+                <div class="nav-item">📊 Dashboard</div>
+                <div class="nav-item">📋 My Tenders</div>
+                <div class="nav-item">👥 Suppliers</div>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="header">
+                <div style="display: flex; align-items: center; gap: 24px;">
+                    <h1 class="page-title">Create New Tender</h1>
+                    <span class="tender-type">Draft</span>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-ghost">Save as Template</button>
+                    <button class="btn btn-ghost">Preview</button>
+                    <button class="btn btn-primary">Publish</button>
+                </div>
+            </header>
+
+            <div class="progress-container">
+                <div class="progress-steps">
+                    <div class="progress-step active" data-tab="1">
+                        <div class="step-icon">1</div>
+                        <div class="step-label">Event Setup</div>
+                    </div>
+                    <div class="progress-step" data-tab="2">
+                        <div class="step-icon">2</div>
+                        <div class="step-label">Timings & Process</div>
+                    </div>
+                    <div class="progress-step" data-tab="3">
+                        <div class="step-icon">3</div>
+                        <div class="step-label">Scope & Specs</div>
+                    </div>
+                    <div class="progress-step" data-tab="4">
+                        <div class="step-icon">4</div>
+                        <div class="step-label">Bidder Submission</div>
+                    </div>
+                    <div class="progress-step" data-tab="5">
+                        <div class="step-icon">5</div>
+                        <div class="step-label">Evaluation & Pricing</div>
+                    </div>
+                    <div class="progress-step" data-tab="6">
+                        <div class="step-icon">6</div>
+                        <div class="step-label">Suppliers</div>
+                    </div>
+                    <div class="progress-step" data-tab="7">
+                        <div class="step-icon">7</div>
+                        <div class="step-label">Review & Publish</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-wrapper" id="contentWrapper">
+                <!-- Tabs will be loaded dynamically -->
+            </div>
+
+            <footer class="action-footer">
+                <div class="footer-info">Auto-saved 2 minutes ago</div>
+                <div class="footer-actions">
+                    <button class="btn btn-ghost" id="prevBtn" style="display:none;">Previous</button>
+                    <button class="btn btn-primary" id="nextBtn">Save & Continue</button>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        let currentTab = 1;
+        const totalTabs = 7;
+
+        // Tab templates
+        const tabTemplates = {
+            1: `
+                <div class="form-section">
+                    <div class="section-header collapsible-header">
+                        <h2 class="section-title"><span class="section-icon">📋</span> General Information <span class="collapse-icon">▼</span></h2>
+                        <span class="status-indicator status-incomplete">Incomplete</span>
+                    </div>
+                    <div class="section-body">
+                        <div class="form-grid">
+                            <div class="form-group full-width">
+                                <label class="form-label">Title <span class="required">*</span></label>
+                                <input type="text" class="form-input" placeholder="Enter tender title">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Reference <span class="required">*</span></label>
+                                <input type="text" class="form-input" placeholder="Auto-generated">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Organizational Unit <span class="required">*</span></label>
+                                <select class="form-select"><option>Select...</option></select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Sourcing or Solicitation? <span class="required">*</span></label>
+                                <select class="form-select" id="sourcingSolicitation">
+                                    <option>Select...</option>
+                                    <option value="sourcing">Sourcing</option>
+                                    <option value="solicitation">Solicitation</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Type of Requirement <span class="required">*</span></label>
+                                <select class="form-select"><option>Goods</option><option>Services</option><option>Works</option></select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Modality of Bid Receipt <span class="required">*</span></label>
+                                <select class="form-select" id="bidReceipt">
+                                    <option>Online</option>
+                                    <option value="email">By email</option>
+                                    <option value="physical">Physical envelope</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-header collapsible-header">
+                        <h2 class="section-title"><span class="section-icon">🏗️</span> Project Details <span class="collapse-icon">▼</span></h2>
+                    </div>
+                    <div class="section-body">
+                        <div class="info-alert"><div class="info-alert-text">ℹ️ Information populated from requisition</div></div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Work Package (GLA) <span class="required">*</span></label>
+                                <input type="text" class="form-input" placeholder="Search WBS">
+                                <div class="smart-suggestion">💡 Recently used: WP-2025-001</div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Donor/Funding Source</label>
+                                <input type="text" class="form-input" placeholder="Search funding source">
+                            </div>
+                            <div class="form-group full-width">
+                                <label class="form-label">Project Name <span class="required">*</span></label>
+                                <input type="text" class="form-input">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Beneficiary Country(ies)</label>
+                                <select class="form-select" multiple><option>Afghanistan</option><option>Bangladesh</option></select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Implementation End Date</label>
+                                <input type="date" class="form-input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-header collapsible-header">
+                        <h2 class="section-title"><span class="section-icon">📦</span> Requisition Details <span class="collapse-icon">▼</span></h2>
+                        <span class="section-badge">NEW</span>
+                    </div>
+                    <div class="section-body">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Requisition ID <span class="required">*</span></label>
+                                <input type="text" class="form-input">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Currency <span class="required">*</span></label>
+                                <select class="form-select"><option>USD</option><option>EUR</option></select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Quantity</label>
+                                <input type="number" class="form-input">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Amount/Expected Value (USD)</label>
+                                <input type="number" class="form-input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-header collapsible-header">
+                        <h2 class="section-title"><span class="section-icon">⚠️</span> Special Requirements <span class="collapse-icon">▼</span></h2>
+                        <span class="section-badge">NEW</span>
+                    </div>
+                    <div class="section-body">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Emergency Procurement (EPP)?</label>
+                                <select class="form-select" id="eppSelect"><option value="no">No</option><option value="yes">Yes</option></select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Medicine/Medical Equipment?</label>
+                                <select class="form-select"><option value="no">No</option><option value="yes">Yes</option></select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Is this a Lease?</label>
+                                <select class="form-select"><option value="no">No</option><option value="yes">Yes</option></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-header collapsible-header">
+                        <h2 class="section-title"><span class="section-icon">🌐</span> UN Collaboration <span class="collapse-icon">▼</span></h2>
+                    </div>
+                    <div class="section-body">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">UN Collaboration?</label>
+                                <select class="form-select" id="unCollaboration"><option value="no">No</option><option value="yes">Yes</option></select>
+                            </div>
+                            <div class="form-group full-width">
+                                <label class="form-label">Linked Process</label>
+                                <select class="form-select">
+                                    <option>None</option>
+                                    <option>Direct contracting</option>
+                                    <option>LTA/BPA</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+            2: `
+                <div class="form-section">
+                    <div class="section-header collapsible-header">
+                        <h2 class="section-title"><span class="section-icon">📅</span> Timeline & Deadlines <span class="collapse-icon">▼</span></h2>
+                    </div>
+                    <div class="section-body">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Deadline (Submission) <span class="required">*</span></label>
+                                <input type="datetime-local" class="form-input">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Deadline for Clarifications</label>
+                                <input type="datetime-local" class="form-input">
+                            </div>
+                            <div class="form-group full-width">
+                                <label class="form-label">Justification for Waiving Minimum Tender Period</label>
+                                <textarea class="form-textarea"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Expected Contract Award Date</label>
+                                <input type="date" class="form-input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-header collapsible-header">
+                        <h2 class="section-title"><span class="section-icon">🤝</span> Pre-Bid Meeting & Site Visit <span class="collapse-icon">▼</span></h2>
+                        <span class="section-badge">NEW</span>
+                    </div>
+                    <div class="section-body">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Pre-Bid Meeting(s)</label>
+                                <select class="form-select" id="preBidMeeting">
+                                    <option value="none">None</option>
+                                    <option value="one">1 meeting</option>
+                                    <option value="two">2 meetings</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Site Visit or Inspection</label>
+                                <select class="form-select"><option>Not Applicable</option><option>Applicable</option></select>
+                            </div>
+                            <div class="form-group full-width">
+                                <label class="form-label">Supplier Capacity Building Initiatives</label>
+                                <textarea class="form-textarea"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-header collapsible-header">
+                        <h2 class="section-title"><span class="section-icon">👥</span> Roles & Responsibilities <span class="collapse-icon">▼</span></h2>
+                    </div>
+                    <div class="section-body">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Alternate Authors</label>
+                                <input type="text" class="form-input" placeholder="Search users">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Collaborators</label>
+                                <input type="text" class="form-input" placeholder="Search users">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Procurement Reviewer</label>
+                                <input type="text" class="form-input" placeholder="Search user">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Procurement Authority</label>
+                                <input type="text" class="form-input" placeholder="Search user">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Technical Matter Expert(s)</label>
+                                <input type="text" class="form-input" placeholder="Search users">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">DRiVE Collaborator</label>
+                                <input type="text" class="form-input" placeholder="Search user">
+                            </div>
+                            <div class="form-group full-width">
+                                <label class="form-label">Evaluation Team</label>
+                                <input type="text" class="form-input" placeholder="Add team members">
+                                <div class="help-text">Define Procurement Official, Chair, team members and observers</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-header collapsible-header">
+                        <h2 class="section-title"><span class="section-icon">📭</span> Bid Opening <span class="collapse-icon">▼</span></h2>
+                    </div>
+                    <div class="section-body">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Public Bid/Proposal Opening</label>
+                                <select class="form-select"><option value="no">No</option><option value="yes">Yes</option></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+            3: `
+                <div class="form-section">
+                    <div class="section-header collapsible-header">
+                        <h2 class="section-title"><span class="section-icon">🎯</span> Scope & Objectives <span class="collapse-icon">▼</span></h2>
+                        <span class="status-indicator status-incomplete">Enhanced</span>
+                    </div>
+                    <div class="section-body">
+                        <div class="info-alert"><div class="info-alert-text">ℹ️ This section included in Particulars document</div></div>
+                        <div class="form-grid">
+                            <div class="form-group full-width">
+                                <label class="form-label">Scope and Objectives <span class="required">*</span></label>
+                                <textarea class="form-textarea" style="min-height: 150px;"></textarea>
+                            </div>
+                            <div class="form-group full-width">
+                                <label class="form-label">Description <span class="required">*</span></label>
+                                <textarea class="form-textarea"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-header collapsible-header">
+                        <h2 class="section-title"><span class="section-icon">📝</span> Specific Requirements <span class="collapse-icon">▼</span></h2>
+                        <span class="status-indicator status-incomplete">Enhanced</span>
+                    </div>
+                    <div class="section-body">
+                        <div class="form-grid">
+                            <div class="form-group full-width">
+                                <label class="form-label">Specific Requirements & Conditions</label>
+                                <textarea class="form-textarea" style="min-height: 150px;"></textarea>
+                            </div>
+                            <div class="form-group full-width">
+                                <label class="form-label">Instructions</label>
+                                <textarea class="form-textarea"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-header collapsible-header">
+                        <h2 class="section-title"><span class="section-icon">✓</span> Eligibility & Qualifications <span class="collapse-icon">▼</span></h2>
+                        <span class="section-badge">NEW</span>
+                    </div>
+                    <div class="section-body">
+                        <div class="form-grid">
+                            <div class="form-group full-width">
+                                <label class="form-label">Bidder Eligibility</label>
+                                <textarea class="form-textarea"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Women-Owned Businesses</label>
+                                <select class="form-select"><option>Standard</option><option>Include WOB criteria</option></select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Youth-Owned Business</label>
+                                <select class="form-select"><option>Standard</option><option>Include youth criteria</option></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-header collapsible-header">
+                        <h2 class="section-title"><span class="section-icon">🌍</span> Language & Interpretation <span class="collapse-icon">▼</span></h2>
+                    </div>
+                    <div class="section-body">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Languages <span class="required">*</span></label>
+                                <select class="form-select" multiple><option>English</option><option>French</option><option>Spanish</option></select>
+                            </div>
+                            <div class="form-group full-width">
+                                <label class="form-label">Interpretation of RFP/ITB</label>
+                                <textarea class="form-textarea"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-header collapsible-header">
+                        <h2 class="section-title"><span class="section-icon">🌱</span> DRiVE Sustainability <span class="collapse-icon">▼</span></h2>
+                        <span class="section-badge">NEW</span>
+                    </div>
+                    <div class="section-body">
+                        <div class="info-alert"><div class="info-alert-text">ℹ️ DRiVE assesses environmental and social risks</div></div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Include DRiVE Questionnaire?</label>
+                                <select class="form-select" id="driveQuestionnaire">
+                                    <option value="no">No</option>
+                                    <option value="core">Core DRiVE</option>
+                                    <option value="addon">Core + Add-on</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">DRiVE Risk Flag</label>
+                                <select class="form-select"><option>None</option><option>Low</option><option>Medium</option><option>High</option></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+            4: `
+                <div class="form-section">
+                    <div class="section-header collapsible-header">
+                        <h2 class="section-title"><span class="section-icon">📋</span> Submission Requirements <span class="collapse-icon">▼</span></h2>
+                    </div>
+                    <div class="section-body">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Bid Validity Period (days) <span class="required">*</span></label>
+                                <input type="number" class="form-input" placeholder="e.g., 90">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Currency(ies) <span class="required">*</span></label>
+                                <select class="form-select" multiple><option>USD</option><option>EUR</option><option>Local</option></select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Duties and Taxes</label>
+                                <select class="form-select"><option>Included</option><option>Excluded</option><option>Other</option></select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Alternative Offers</label>
+                                <select class="form-select"><option>Not Accepted</option><option>Accepted</option></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-header collapsible-header">
+                        <h2 class="section-title"><span class="section-icon">🔒</span> Securities & Guarantees <span class="collapse-icon">▼</span></h2>
+                    </div>
+                    <div class="section-body">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Bid/Proposal Security</label>
+                                <select class="form-select" id="bidSecurity"><option value="not-required">Not Required</option><option value="required">Required</option></select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Performance Security</label>
+                                <select class="form-select" id="performanceSecurity"><option value="not-required">Not Required</option><option value="required">Required</option></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-header collapsible-header">
+                        <h2 class="section-title"><span class="section-icon">💰</span> Advance Payment <span class="collapse-icon">▼</span></h2>
+                        <span class="section-badge">NEW</span>
+                    </div>
+                    <div class="section-body">
+                        <div class="warning-alert"><div class="warning-alert-text">⚠️ Cannot change after tender closes</div></div>
+                        <div class="static-text">Advance payments require justification per UNOPS FRR 122.20</div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Advance Payment Allowed?</label>
+                                <select class="form-select" id="advancePayment"><option value="no">No</option><option value="yes">Yes</option></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-header collapsible-header">
+                        <h2 class="section-title"><span class="section-icon">⚖️</span> Liquidated/Delay Damages <span class="collapse-icon">▼</span></h2>
+                    </div>
+                    <div class="section-body">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Liquidated or Delay Damages</label>
+                                <select class="form-select"><option>Not Applicable</option><option>Applicable</option></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-header collapsible-header">
+                        <h2 class="section-title"><span class="section-icon">📄</span> Contract Information <span class="collapse-icon">▼</span></h2>
+                    </div>
+                    <div class="section-body">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Contract Type <span class="required">*</span></label>
+                                <select class="form-select"><option>Fixed Price</option><option>Time & Materials</option><option>Cost Reimbursable</option></select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">General Conditions <span class="required">*</span></label>
+                                <select class="form-select"><option>UNOPS Standard</option><option>Custom</option></select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Payment Terms <span class="required">*</span></label>
+                                <select class="form-select"><option>Net 30</option><option>Net 45</option><option>Net 60</option><option>Other</option></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+            5: `
+                <div class="form-section">
+                    <div class="section-header collapsible-header">
+                        <h2 class="section-title"><span class="section-icon">📊</span> Evaluation Method <span class="collapse-icon">▼</span></h2>
+                    </div>
+                    <div class="section-body">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Evaluation Method <span class="required">*</span></label>
+                                <select class="form-select" id="evaluationMethod">
+                                    <option>Lowest price</option>
+                                    <option value="cumulative">Cumulative analysis</option>
+                                    <option>Two-stage</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group full-width">
+                                <label class="form-label">Evaluation of Submissions</label>
+                                <textarea class="form-textarea"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-header collapsible-header">
+                        <h2 class="section-title"><span class="section-icon">✅</span> Evaluation Criteria <span class="collapse-icon">▼</span></h2>
+                    </div>
+                    <div class="section-body">
+                        <div class="info-alert"><div class="info-alert-text">ℹ️ Define criteria for bid evaluation</div></div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Category</label>
+                                <select class="form-select"><option>Technical</option><option>Financial</option><option>Compliance</option></select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Criterion Type</label>
+                                <select class="form-select"><option>Pass/Fail</option><option>Numeric</option></select>
+                            </div>
+                            <div class="form-group full-width">
+                                <label class="form-label">Description</label>
+                                <textarea class="form-textarea"></textarea>
+                            </div>
+                        </div>
+                        <button class="add-button">+ Add Another Criterion</button>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-header collapsible-header">
+                        <h2 class="section-title"><span class="section-icon">🏛️</span> Sustainable Procurement Framework <span class="collapse-icon">▼</span></h2>
+                        <span class="section-badge">NEW</span>
+                    </div>
+                    <div class="section-body">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Category 3 SP?</label>
+                                <select class="form-select"><option value="no">No</option><option value="yes">Yes</option></select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Category Part 2?</label>
+                                <select class="form-select"><option value="no">No</option><option value="yes">Yes</option></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-header collapsible-header">
+                        <h2 class="section-title"><span class="section-icon">👨‍🏫</span> TME Panel <span class="collapse-icon">▼</span></h2>
+                    </div>
+                    <div class="section-body">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Bypass TME</label>
+                                <select class="form-select"><option value="no">No - TME required</option><option value="yes">Yes - Bypass</option></select>
+                            </div>
+                            <div class="form-group full-width">
+                                <label class="form-label">TME Panel Members</label>
+                                <input type="text" class="form-input" placeholder="Search and add members">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+            6: `
+                <div class="form-section">
+                    <div class="section-header collapsible-header">
+                        <h2 class="section-title"><span class="section-icon">🏢</span> Vendor Competition Type <span class="collapse-icon">▼</span></h2>
+                    </div>
+                    <div class="section-body">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Competition Type <span class="required">*</span></label>
+                                <select class="form-select" id="competitionType">
+                                    <option value="open">Open Competition</option>
+                                    <option value="limited">Limited Competition</option>
+                                    <option value="direct">Direct Contracting</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section" id="limitedCompetitionSection" style="display:none;">
+                    <div class="section-header collapsible-header">
+                        <h2 class="section-title"><span class="section-icon">📋</span> Limited Competition Details <span class="collapse-icon">▼</span></h2>
+                    </div>
+                    <div class="section-body">
+                        <div class="form-grid">
+                            <div class="form-group full-width">
+                                <label class="form-label">Justification <span class="required">*</span></label>
+                                <textarea class="form-textarea"></textarea>
+                            </div>
+                            <div class="form-group full-width">
+                                <label class="form-label">Market Research & Outreach</label>
+                                <textarea class="form-textarea"></textarea>
+                            </div>
+                            <div class="form-group full-width">
+                                <label class="form-label">How to Achieve Effective Competition</label>
+                                <textarea class="form-textarea"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Import Shortlist</label>
+                                <button class="btn btn-ghost">Import Existing</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section" id="directContractingSection" style="display:none;">
+                    <div class="section-header collapsible-header">
+                        <h2 class="section-title"><span class="section-icon">🎯</span> Direct Contracting Details <span class="collapse-icon">▼</span></h2>
+                    </div>
+                    <div class="section-body">
+                        <div class="warning-alert"><div class="warning-alert-text">⚠️ Requires justification under FRR 118.05(a)</div></div>
+                        <div class="form-grid">
+                            <div class="form-group full-width">
+                                <label class="form-label">Reason for Direct Contracting <span class="required">*</span></label>
+                                <select class="form-select">
+                                    <option>Select...</option>
+                                    <option>Only one source</option>
+                                    <option>Emergency</option>
+                                    <option>Additional purchases</option>
+                                    <option>UN agency procurement</option>
+                                </select>
+                            </div>
+                            <div class="form-group full-width">
+                                <label class="form-label">Justification <span class="required">*</span></label>
+                                <textarea class="form-textarea" style="min-height: 150px;"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Add UNGM Vendor</label>
+                                <input type="text" class="form-input" placeholder="Search vendor">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+            7: `
+                <div class="form-section">
+                    <div class="section-header">
+                        <h2 class="section-title"><span class="section-icon">🗺️</span> Tender Outline & Structure</h2>
+                    </div>
+                    <div class="section-body">
+                        <div class="info-alert"><div class="info-alert-text">ℹ️ Visual diagram showing all tender components</div></div>
+                        <div style="padding: 40px; text-align: center; background: #F9FAFB; border-radius: 8px; margin-top: 20px;">
+                            <div style="font-size: 48px; margin-bottom: 16px;">📋</div>
+                            <div style="font-size: 16px; color: #6B7280;">Interactive tender outline displayed here</div>
+                            <div style="font-size: 14px; color: #6B7280; margin-top: 8px;">Instructions, Requirements, Forms, Contract</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-header collapsible-header">
+                        <h2 class="section-title"><span class="section-icon">✓</span> Proofreading & Validation <span class="collapse-icon">▼</span></h2>
+                    </div>
+                    <div class="section-body">
+                        <div class="info-alert"><div class="info-alert-text">ℹ️ Review all fields before publishing</div></div>
+                        <div class="form-grid">
+                            <div class="form-group full-width">
+                                <label class="form-label">Place of Performance/Delivery</label>
+                                <input type="text" class="form-input">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Completion Date</label>
+                                <input type="date" class="form-input">
+                            </div>
+                            <div class="form-group full-width">
+                                <div style="padding: 20px; background: #F9FAFB; border-radius: 6px;">
+                                    <h3 style="font-size: 14px; font-weight: 600; margin-bottom: 12px;">Validation Checklist</h3>
+                                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                                        <label style="display: flex; align-items: center; gap: 8px;">
+                                            <input type="checkbox"> All required fields completed
+                                        </label>
+                                        <label style="display: flex; align-items: center; gap: 8px;">
+                                            <input type="checkbox"> Timeline verified
+                                        </label>
+                                        <label style="display: flex; align-items: center; gap: 8px;">
+                                            <input type="checkbox"> Evaluation criteria defined
+                                        </label>
+                                        <label style="display: flex; align-items: center; gap: 8px;">
+                                            <input type="checkbox"> Supplier requirements clear
+                                        </label>
+                                        <label style="display: flex; align-items: center; gap: 8px;">
+                                            <input type="checkbox"> Approvals obtained
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-header collapsible-header">
+                        <h2 class="section-title"><span class="section-icon">⚡</span> Workflow & Approvals <span class="collapse-icon">▼</span></h2>
+                    </div>
+                    <div class="section-body">
+                        <div style="padding: 20px; background: #F9FAFB; border-radius: 6px;">
+                            <h3 style="font-size: 14px; font-weight: 600; margin-bottom: 16px;">Approval Status</h3>
+                            <div style="display: flex; flex-direction: column; gap: 12px;">
+                                <div style="display: flex; justify-content: space-between; padding: 12px; background: white; border-radius: 4px;">
+                                    <div><div style="font-weight: 500;">Procurement Reviewer</div><div style="font-size: 12px; color: #6B7280;">John Smith</div></div>
+                                    <span style="padding: 4px 12px; background: #FEF3C7; color: #92400E; border-radius: 12px; font-size: 12px;">Pending</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; padding: 12px; background: white; border-radius: 4px;">
+                                    <div><div style="font-weight: 500;">Procurement Authority</div><div style="font-size: 12px; color: #6B7280;">Jane Doe</div></div>
+                                    <span style="padding: 4px 12px; background: #E5E7EB; color: #6B7280; border-radius: 12px; font-size: 12px;">Not Started</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-header">
+                        <h2 class="section-title"><span class="section-icon">🚀</span> Ready to Publish</h2>
+                    </div>
+                    <div class="section-body">
+                        <div class="warning-alert"><div class="warning-alert-text">⚠️ Ensure all fields complete and approvals obtained</div></div>
+                        <div style="display: flex; gap: 12px; margin-top: 20px; justify-content: center;">
+                            <button class="btn btn-ghost">Save as Draft</button>
+                            <button class="btn btn-ghost">Preview Package</button>
+                            <button class="btn btn-primary" style="padding: 12px 32px;">Publish Tender</button>
+                        </div>
+                    </div>
+                </div>
+            `
+        };
+
+        function showTab(tabNumber) {
+            const contentWrapper = document.getElementById('contentWrapper');
+            contentWrapper.innerHTML = '<div id="tab' + tabNumber + '" class="tab-content active">' + tabTemplates[tabNumber] + '</div>';
+            
+            // Update progress steps
+            document.querySelectorAll('.progress-step').forEach((step, index) => {
+                step.classList.remove('active', 'completed');
+                const stepNumber = index + 1;
+                if (stepNumber === tabNumber) step.classList.add('active');
+                else if (stepNumber < tabNumber) step.classList.add('completed');
+            });
+            
+            currentTab = tabNumber;
+            document.getElementById('prevBtn').style.display = currentTab === 1 ? 'none' : 'inline-block';
+            document.getElementById('nextBtn').textContent = currentTab === totalTabs ? 'Publish Tender' : 'Save & Continue';
+            contentWrapper.scrollTop = 0;
+            
+            // Re-attach event listeners
+            attachEventListeners();
+        }
+
+        function attachEventListeners() {
+            // Collapsible sections
+            document.querySelectorAll('.collapsible-header').forEach(header => {
+                header.addEventListener('click', function() {
+                    this.parentElement.classList.toggle('collapsed');
+                });
+            });
+
+            // Competition Type
+            const competitionType = document.getElementById('competitionType');
+            if (competitionType) {
+                competitionType.addEventListener('change', function() {
+                    document.getElementById('limitedCompetitionSection').style.display = this.value === 'limited' ? 'block' : 'none';
+                    document.getElementById('directContractingSection').style.display = this.value === 'direct' ? 'block' : 'none';
+                });
+            }
+        }
+
+        // Progress step clicks
+        document.querySelectorAll('.progress-step').forEach((step, index) => {
+            step.addEventListener('click', () => showTab(index + 1));
+        });
+
+        // Navigation buttons
+        document.getElementById('nextBtn').addEventListener('click', function() {
+            if (currentTab < totalTabs) showTab(currentTab + 1);
+            else alert('Publishing tender...');
+        });
+
+        document.getElementById('prevBtn').addEventListener('click', function() {
+            if (currentTab > 1) showTab(currentTab - 1);
+        });
+
+        // Initialize
+        showTab(1);
+    </script>
+</body>
+</html>
