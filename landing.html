@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNOPS eTendering Platform - Mockups</title>
+    <style>
+        :root {
+            --color-primary: #00A1E4;
+            --color-primary-dark: #00629B;
+            --color-primary-darker: #004D7A;
+            --color-primary-light: #E6F4FF;
+            --color-success: #10B981;
+            --bg-secondary: #F5F7FA;
+            --text-primary: #374151;
+            --text-secondary: #6B7280;
+            --border-light: #E5E7EB;
+            --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-family);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: var(--text-primary);
+        }
+        
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 40px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .logo {
+            font-size: 48px;
+        }
+        
+        .logo-text h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--color-primary-dark);
+            margin-bottom: 4px;
+        }
+        
+        .logo-text p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .badge {
+            padding: 6px 16px;
+            background: var(--color-primary-light);
+            color: var(--color-primary-dark);
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+        
+        .intro-section {
+            text-align: center;
+            margin-bottom: 60px;
+            color: white;
+        }
+        
+        .intro-section h2 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .intro-section p {
+            font-size: 18px;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-icon {
+            font-size: 56px;
+            margin-bottom: 20px;
+            display: block;
+        }
+        
+        .card-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+        
+        .card-description {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .card-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        
+        .card-tag {
+            padding: 4px 10px;
+            background: var(--bg-secondary);
+            border-radius: 6px;
+            font-weight: 500;
+        }
+        
+        .card-tag.primary {
+            background: var(--color-primary-light);
+            color: var(--color-primary-dark);
+        }
+        
+        .card-tag.success {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+        
+        /* Footer */
+        .footer {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 30px 40px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 16px;
+        }
+        
+        .footer-link {
+            color: var(--color-primary-dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .footer-link:hover {
+            color: var(--color-primary);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+            
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .intro-section h2 {
+                font-size: 32px;
+            }
+            
+            .main-content {
+                padding: 40px 20px;
+            }
+        }
+        
+        /* Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .card {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+        
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.2s; }
+        .card:nth-child(3) { animation-delay: 0.3s; }
+        .card:nth-child(4) { animation-delay: 0.4s; }
+        .card:nth-child(5) { animation-delay: 0.5s; }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo">🏛️</div>
+                <div class="logo-text">
+                    <h1>UNOPS eTendering</h1>
+                    <p>Digital Procurement Platform</p>
+                </div>
+            </div>
+            <div class="badge">Interactive Mockups</div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="intro-section">
+            <h2>Welcome to the eTendering Platform</h2>
+            <p>Explore our interactive mockups showcasing the complete procurement digitalization journey</p>
+        </div>
+
+        <!-- Cards Grid -->
+        <div class="cards-grid">
+            <!-- Tender Authoring -->
+            <a href="index.html" class="card">
+                <span class="card-icon">📝</span>
+                <h3 class="card-title">Tender Authoring</h3>
+                <p class="card-description">
+                    Complete tender creation interface with 7 guided steps for procurement officers to create and publish tenders.
+                </p>
+                <div class="card-meta">
+                    <span class="card-tag primary">For Authors</span>
+                    <span class="card-tag">7 Tabs</span>
+                    <span>•</span>
+                    <span>Main UI</span>
+                </div>
+            </a>
+
+            <!-- Template Builder -->
+            <a href="template-builder.html" class="card">
+                <span class="card-icon">🏗️</span>
+                <h3 class="card-title">Template Builder</h3>
+                <p class="card-description">
+                    Drag-and-drop template configuration tool for admins to create reusable tender templates with custom sections and fields.
+                </p>
+                <div class="card-meta">
+                    <span class="card-tag success">For Admins</span>
+                    <span class="card-tag">Canvas</span>
+                    <span>•</span>
+                    <span>Config</span>
+                </div>
+            </a>
+
+            <!-- Criteria Library -->
+            <a href="criteria-library.html" class="card">
+                <span class="card-icon">📚</span>
+                <h3 class="card-title">Criteria Library</h3>
+                <p class="card-description">
+                    Comprehensive evaluation criteria management system with version control, approval workflows, and UNSPSC mapping.
+                </p>
+                <div class="card-meta">
+                    <span class="card-tag success">For Admins</span>
+                    <span class="card-tag">Library</span>
+                    <span>•</span>
+                    <span>137 Items</span>
+                </div>
+            </a>
+
+            <!-- Complete Mockup -->
+            <a href="etendering-complete-mockup.html" class="card">
+                <span class="card-icon">🎯</span>
+                <h3 class="card-title">Complete Mockup</h3>
+                <p class="card-description">
+                    Full tender authoring experience with all fields organized across functional tabs for end-to-end procurement.
+                </p>
+                <div class="card-meta">
+                    <span class="card-tag primary">For Authors</span>
+                    <span class="card-tag">Complete</span>
+                    <span>•</span>
+                    <span>All Fields</span>
+                </div>
+            </a>
+
+            <!-- Architecture -->
+            <a href="etendering_architecture.html" class="card">
+                <span class="card-icon">🏛️</span>
+                <h3 class="card-title">System Architecture</h3>
+                <p class="card-description">
+                    Visual representation of the eTendering system architecture showing integrations, data flows, and component relationships.
+                </p>
+                <div class="card-meta">
+                    <span class="card-tag">Technical</span>
+                    <span class="card-tag">Architecture</span>
+                    <span>•</span>
+                    <span>Diagrams</span>
+                </div>
+            </a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="https://www.unops.org" class="footer-link" target="_blank">UNOPS.org</a>
+            <a href="https://github.com/valentinar11/ValentinaRo" class="footer-link" target="_blank">GitHub Repository</a>
+            <a href="README.md" class="footer-link">Documentation</a>
+        </div>
+        <p>© 2024 UNOPS - Process Innovation and Digitalisation | Procurement Digital Journey</p>
+    </footer>
+
+    <script>
+        // Add smooth scroll behavior
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Track card clicks
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                console.log('Navigating to:', this.getAttribute('href'));
+            });
+        });
+    </script>
+</body>
+</html>
