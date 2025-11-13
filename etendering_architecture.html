@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eTendering System - Component Architecture</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #718096;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+        
+        .architecture {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .layer {
+            background: #f7fafc;
+            border-radius: 8px;
+            padding: 25px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .layer-title {
+            font-size: 1.3em;
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .layer-number {
+            background: #667eea;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .components-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .component {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .component:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.2);
+            border-color: #667eea;
+        }
+        
+        .component-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+        
+        .component-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+        }
+        
+        .icon-template { background: #fef3c7; }
+        .icon-form { background: #dbeafe; }
+        .icon-spec { background: #dcfce7; }
+        .icon-criteria { background: #fce7f3; }
+        .icon-doc { background: #e0e7ff; }
+        .icon-admin { background: #fef3c7; }
+        .icon-author { background: #e0f2fe; }
+        
+        .component-title {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #2d3748;
+        }
+        
+        .component-desc {
+            color: #4a5568;
+            font-size: 0.9em;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .features {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .features li {
+            padding: 6px 0;
+            color: #718096;
+            font-size: 0.85em;
+            display: flex;
+            align-items: start;
+            gap: 8px;
+        }
+        
+        .features li:before {
+            content: "→";
+            color: #667eea;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        
+        .dependencies {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px dashed #e2e8f0;
+        }
+        
+        .dep-title {
+            font-size: 0.85em;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+        
+        .dep-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        
+        .dep-tag {
+            background: #eef2ff;
+            color: #5a67d8;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: 500;
+        }
+        
+        .workflow-section {
+            background: #fef3c7;
+            padding: 25px;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+        
+        .workflow-title {
+            font-size: 1.3em;
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .workflow-steps {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            overflow-x: auto;
+            padding: 10px 0;
+        }
+        
+        .workflow-step {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            min-width: 200px;
+            text-align: center;
+            border: 2px solid #fbbf24;
+            position: relative;
+        }
+        
+        .workflow-step:not(:last-child):after {
+            content: "→";
+            position: absolute;
+            right: -25px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #fbbf24;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        
+        .step-number {
+            background: #fbbf24;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        
+        .step-title {
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 0.95em;
+        }
+        
+        .legend {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            margin-top: 30px;
+            padding: 20px;
+            background: #f0f4ff;
+            border-radius: 8px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9em;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+        
+        .priority-high { background: #fee2e2; color: #991b1b; }
+        .priority-medium { background: #fef3c7; color: #92400e; }
+        
+        .wave-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.7em;
+            font-weight: 600;
+        }
+        
+        .wave-1 {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .wave-roadmap {
+            background: #fce7f3;
+            color: #9f1239;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏢 eTendering System Architecture</h1>
+        <p class="subtitle">UNOPS Procurement Digital Journey - Component Structure & Dependencies</p>
+        
+        <!-- Layer 1: Core Libraries -->
+        <div class="architecture">
+            <div class="layer">
+                <div class="layer-title">
+                    <span class="layer-number">1</span>
+                    Core Content Libraries (Foundation Layer)
+                </div>
+                <div class="components-grid">
+                    <div class="component">
+                        <span class="wave-indicator wave-1">Wave 1</span>
+                        <div class="component-header">
+                            <div class="component-icon icon-template">📋</div>
+                            <div class="component-title">Template Library</div>
+                        </div>
+                        <div class="component-desc">
+                            Corporate tender templates configured by Admin with pre-defined structure, sections, fields, and conditional logic.
+                        </div>
+                        <ul class="features">
+                            <li>Template Builder Interface (drag-and-drop canvas)</li>
+                            <li>Draft/Published status control</li>
+                            <li>Template structure & sections</li>
+                            <li>Field configuration with data mapping</li>
+                            <li>Conditional logic for visibility</li>
+                            <li>Template versioning</li>
+                        </ul>
+                        <div class="dependencies">
+                            <div class="dep-title">Contains/Uses:</div>
+                            <div class="dep-list">
+                                <span class="dep-tag">Forms</span>
+                                <span class="dep-tag">Documents</span>
+                                <span class="dep-tag">Checklists</span>
+                                <span class="dep-tag">DRiVE Questionnaires</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="component">
+                        <span class="wave-indicator wave-1">Wave 1</span>
+                        <div class="component-header">
+                            <div class="component-icon icon-form">📝</div>
+                            <div class="component-title">Form Library</div>
+                        </div>
+                        <div class="component-desc">
+                            Centralized repository of standard and custom forms that can be included in templates or added by authors.
+                        </div>
+                        <ul class="features">
+                            <li>Standard forms (e.g., Bank Guarantee)</li>
+                            <li>Custom forms created by authors</li>
+                            <li>Form Builder tool</li>
+                            <li>Version control for forms</li>
+                            <li>Editability guardrails (locked/editable)</li>
+                            <li>Auto-inclusion based on conditions</li>
+                        </ul>
+                        <div class="dependencies">
+                            <div class="dep-title">Used By:</div>
+                            <div class="dep-list">
+                                <span class="dep-tag">Templates</span>
+                                <span class="dep-tag">Tender Authors</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="component">
+                        <span class="wave-indicator wave-1">Wave 1</span>
+                        <div class="component-header">
+                            <div class="component-icon icon-spec">🔧</div>
+                            <div class="component-title">Specifications Library</div>
+                        </div>
+                        <div class="component-desc">
+                            Repository of requirements, specifications, and Terms of Reference (TORs) with attributes structured for UN Web Buy Plus integration.
+                        </div>
+                        <ul class="features">
+                            <li>Schedule of Requirements templates</li>
+                            <li>Technical specifications with attributes</li>
+                            <li>TORs (Terms of Reference)</li>
+                            <li>AI-suggested relevant specs based on UNSPSC</li>
+                            <li>Historical successful specifications</li>
+                            <li>Fully editable when imported</li>
+                        </ul>
+                        <div class="dependencies">
+                            <div class="dep-title">Integrates With:</div>
+                            <div class="dep-list">
+                                <span class="dep-tag">UNSPSC Codes</span>
+                                <span class="dep-tag">UN Web Buy Plus</span>
+                                <span class="dep-tag">Product Catalog</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="component">
+                        <span class="wave-indicator wave-1">Wave 1</span>
+                        <div class="component-header">
+                            <div class="component-icon icon-criteria">⭐</div>
+                            <div class="component-title">Evaluation Criteria Library</div>
+                        </div>
+                        <div class="component-desc">
+                            Classified repository of evaluation criteria that can be suggested or imported based on tender context and requirements.
+                        </div>
+                        <ul class="features">
+                            <li>General criteria</li>
+                            <li>UNSPSC-linked criteria</li>
+                            <li>Policy-mandated criteria</li>
+                            <li>SP-linked criteria (Sustainable Procurement)</li>
+                            <li>AI-suggested based on tender details</li>
+                            <li>Historical successful criteria</li>
+                            <li>Criteria classification for governance</li>
+                        </ul>
+                        <div class="dependencies">
+                            <div class="dep-title">Linked To:</div>
+                            <div class="dep-list">
+                                <span class="dep-tag">UNSPSC Codes</span>
+                                <span class="dep-tag">SP Framework</span>
+                                <span class="dep-tag">Policy Rules</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="component">
+                        <span class="wave-indicator wave-1">Wave 1</span>
+                        <div class="component-header">
+                            <div class="component-icon icon-doc">📄</div>
+                            <div class="component-title">Documents Library</div>
+                        </div>
+                        <div class="component-desc">
+                            Standard procurement documents that form the baseline tender documentation package.
+                        </div>
+                        <ul class="features">
+                            <li>Instructions to Bidders</li>
+                            <li>General Conditions of Contract</li>
+                            <li>Special Conditions of Contract</li>
+                            <li>Checklists</li>
+                            <li>Standard annexes</li>
+                            <li>Version-controlled documents</li>
+                        </ul>
+                        <div class="dependencies">
+                            <div class="dep-title">Inherited By:</div>
+                            <div class="dep-list">
+                                <span class="dep-tag">Templates</span>
+                                <span class="dep-tag">Tender Events</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Layer 2: Configuration & Admin Tools -->
+            <div class="layer">
+                <div class="layer-title">
+                    <span class="layer-number">2</span>
+                    Admin Configuration Layer
+                </div>
+                <div class="components-grid">
+                    <div class="component">
+                        <span class="wave-indicator wave-1">Wave 1</span>
+                        <div class="component-header">
+                            <div class="component-icon icon-admin">⚙️</div>
+                            <div class="component-title">Template Configuration Engine</div>
+                        </div>
+                        <div class="component-desc">
+                            Admin tools for creating, configuring, and managing tender templates with full control over structure and business rules.
+                        </div>
+                        <ul class="features">
+                            <li>Visual template builder (canvas/drag-and-drop)</li>
+                            <li>Section & sub-section definition</li>
+                            <li>Field configuration & data mapping</li>
+                            <li>Editability guardrails (Mandatory/Optional/Locked)</li>
+                            <li>Conditional logic engine</li>
+                            <li>Template publication workflow</li>
+                        </ul>
+                        <div class="dependencies">
+                            <div class="dep-title">Manages:</div>
+                            <div class="dep-list">
+                                <span class="dep-tag">Templates</span>
+                                <span class="dep-tag">Forms</span>
+                                <span class="dep-tag">Documents</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="component">
+                        <span class="wave-indicator wave-1">Wave 1</span>
+                        <div class="component-header">
+                            <div class="component-icon icon-admin">🔐</div>
+                            <div class="component-title">Policy & Rules Engine</div>
+                        </div>
+                        <div class="component-desc">
+                            Configurable business rules for policy compliance, deviations, and approval workflows.
+                        </div>
+                        <ul class="features">
+                            <li>Policy deviation detection & flagging</li>
+                            <li>Configurable business rules</li>
+                            <li>Approval workflow configuration</li>
+                            <li>Mandatory justification triggers</li>
+                            <li>SP Framework compliance rules</li>
+                            <li>UNSPSC conditionality rules</li>
+                        </ul>
+                        <div class="dependencies">
+                            <div class="dep-title">Enforces On:</div>
+                            <div class="dep-list">
+                                <span class="dep-tag">Templates</span>
+                                <span class="dep-tag">Tender Events</span>
+                                <span class="dep-tag">SP Criteria</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="component">
+                        <span class="wave-indicator wave-1">Wave 1</span>
+                        <div class="component-header">
+                            <div class="component-icon icon-admin">🌱</div>
+                            <div class="component-title">Sustainable Procurement (SP) Manager</div>
+                        </div>
+                        <div class="component-desc">
+                            Configuration and management of SP criteria, no-buy lists, and sustainability indicators mapped to UNSPSC codes.
+                        </div>
+                        <ul class="features">
+                            <li>SP criteria library management</li>
+                            <li>UNSPSC to SP 'No-Buy' list mapping</li>
+                            <li>Three pillars framework (Economic/Environmental/Social)</li>
+                            <li>DRiVE questionnaire integration</li>
+                            <li>SP criteria auto-suggestion rules</li>
+                            <li>Sustainable tender identification (UNGM)</li>
+                        </ul>
+                        <div class="dependencies">
+                            <div class="dep-title">Links To:</div>
+                            <div class="dep-list">
+                                <span class="dep-tag">Criteria Library</span>
+                                <span class="dep-tag">UNSPSC</span>
+                                <span class="dep-tag">DRiVE Module</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Layer 3: Tender Authoring -->
+            <div class="layer">
+                <div class="layer-title">
+                    <span class="layer-number">3</span>
+                    Tender Authoring Layer
+                </div>
+                <div class="components-grid">
+                    <div class="component">
+                        <span class="wave-indicator wave-1">Wave 1</span>
+                        <div class="component-header">
+                            <div class="component-icon icon-author">🎯</div>
+                            <div class="component-title">Tender Event Initiation</div>
+                        </div>
+                        <div class="component-desc">
+                            Multiple methods for creating new procurement events with intelligent template and content suggestions.
+                        </div>
+                        <ul class="features">
+                            <li>Guided Wizard (recommends template)</li>
+                            <li>Template Library selection</li>
+                            <li>Duplicate existing tender (with change analysis)</li>
+                            <li>AI document ingestion (DOCX/PDF)</li>
+                            <li>Similar Process Look-up</li>
+                            <li>Template inheritance (auto-load forms/docs)</li>
+                        </ul>
+                        <div class="dependencies">
+                            <div class="dep-title">Consumes From:</div>
+                            <div class="dep-list">
+                                <span class="dep-tag">Template Library</span>
+                                <span class="dep-tag">Form Library</span>
+                                <span class="dep-tag">Documents Library</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="component">
+                        <span class="wave-indicator wave-1">Wave 1</span>
+                        <div class="component-header">
+                            <div class="component-icon icon-author">✍️</div>
+                            <div class="component-title">Content Authoring Workspace</div>
+                        </div>
+                        <div class="component-desc">
+                            Collaborative environment for creating, editing, and managing tender content with real-time editing and AI assistance.
+                        </div>
+                        <ul class="features">
+                            <li>Concurrent/real-time editing</li>
+                            <li>AI drafting & summary generation</li>
+                            <li>Requirements & specs creation/import</li>
+                            <li>Lots management (multiple/high volume)</li>
+                            <li>Form Builder access</li>
+                            <li>Collaborative whiteboard/workspace</li>
+                            <li>Comment & tagging (@mentions)</li>
+                        </ul>
+                        <div class="dependencies">
+                            <div class="dep-title">Accesses:</div>
+                            <div class="dep-list">
+                                <span class="dep-tag">Spec Library</span>
+                                <span class="dep-tag">Form Library</span>
+                                <span class="dep-tag">Criteria Library</span>
+                                <span class="dep-tag">AI Engine</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="component">
+                        <span class="wave-indicator wave-1">Wave 1</span>
+                        <div class="component-header">
+                            <div class="component-icon icon-author">👥</div>
+                            <div class="component-title">Team & Supplier Management</div>
+                        </div>
+                        <div class="component-desc">
+                            Define roles, manage team collaboration, and invite suppliers with intelligent suggestions and access control.
+                        </div>
+                        <ul class="features">
+                            <li>Role definition (PR, TME, Evaluation Panel)</li>
+                            <li>Auto-suggest colleagues by region/expertise</li>
+                            <li>Collaborator role (read-only + comment)</li>
+                            <li>External evaluator email insertion</li>
+                            <li>Supplier invitation & search</li>
+                            <li>UNGM bidder auto-suggest (UNSPSC-based)</li>
+                            <li>Supplier information preview/scorecard</li>
+                        </ul>
+                        <div class="dependencies">
+                            <div class="dep-title">Integrates With:</div>
+                            <div class="dep-list">
+                                <span class="dep-tag">UNGM</span>
+                                <span class="dep-tag">Supplier Portal</span>
+                                <span class="dep-tag">User Directory</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="component">
+                        <span class="wave-indicator wave-1">Wave 1</span>
+                        <div class="component-header">
+                            <div class="component-icon icon-author">🤖</div>
+                            <div class="component-title">AI Assistant Suite</div>
+                        </div>
+                        <div class="component-desc">
+                            AI-powered tools for drafting, proofreading, and quality improvement throughout the authoring process.
+                        </div>
+                        <ul class="features">
+                            <li>AI drafting for tender sections</li>
+                            <li>Executive summary generation</li>
+                            <li>AI proofreading & compliance check</li>
+                            <li>Content integrity validation</li>
+                            <li>Good practices repository link</li>
+                            <li>Intelligent content suggestions</li>
+                        </ul>
+                        <div class="dependencies">
+                            <div class="dep-title">Analyzes:</div>
+                            <div class="dep-list">
+                                <span class="dep-tag">Tender Content</span>
+                                <span class="dep-tag">Policy Rules</span>
+                                <span class="dep-tag">Best Practices</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Layer 4: Integration & External Systems -->
+            <div class="layer">
+                <div class="layer-title">
+                    <span class="layer-number">4</span>
+                    Integration & External Systems Layer
+                </div>
+                <div class="components-grid">
+                    <div class="component">
+                        <span class="wave-indicator wave-1">Wave 1</span>
+                        <div class="component-header">
+                            <div class="component-icon icon-doc">🔗</div>
+                            <div class="component-title">System Integrations Hub</div>
+                        </div>
+                        <div class="component-desc">
+                            Connection points to external UNOPS systems and UN platforms for data exchange and process continuity.
+                        </div>
+                        <ul class="features">
+                            <li>oU ERP integration (contract lookup)</li>
+                            <li>UN Web Buy Plus (catalog/LTA)</li>
+                            <li>UNGM (supplier data, tender posting)</li>
+                            <li>DRiVE Sustainability Module</li>
+                            <li>Contract Management Integration</li>
+                            <li>RDAT integration</li>
+                            <li>Supplier Portal</li>
+                        </ul>
+                        <div class="dependencies">
+                            <div class="dep-title">Exchanges Data With:</div>
+                            <div class="dep-list">
+                                <span class="dep-tag">All Libraries</span>
+                                <span class="dep-tag">Tender Events</span>
+                                <span class="dep-tag">External Platforms</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="component">
+                        <span class="wave-indicator wave-1">Wave 1</span>
+                        <div class="component-header">
+                            <div class="component-icon icon-doc">📦</div>
+                            <div class="component-title">Procurement Lifecycle Tracker</div>
+                        </div>
+                        <div class="component-desc">
+                            Creates and maintains audit trail linking related procurement events across the full lifecycle.
+                        </div>
+                        <ul class="features">
+                            <li>Event linking (Requisition → RFI → RFP → LTA)</li>
+                            <li>Proactive linkage (new from existing)</li>
+                            <li>Retroactive linkage (manual association)</li>
+                            <li>Complete audit trail</li>
+                            <li>Document archive with role-based access</li>
+                            <li>System failure recovery</li>
+                        </ul>
+                        <div class="dependencies">
+                            <div class="dep-title">Tracks:</div>
+                            <div class="dep-list">
+                                <span class="dep-tag">All Tender Events</span>
+                                <span class="dep-tag">Documents</span>
+                                <span class="dep-tag">Workflow Steps</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="component">
+                        <span class="wave-indicator wave-1">Wave 1</span>
+                        <div class="component-header">
+                            <div class="component-icon icon-doc">📢</div>
+                            <div class="component-title">Tender Publication Engine</div>
+                        </div>
+                        <div class="component-desc">
+                            Handles tender posting to UNGM with automatic document generation and competition-type-based visibility.
+                        </div>
+                        <ul class="features">
+                            <li>Auto-post to UNGM based on competition type</li>
+                            <li>Open competition: public posting</li>
+                            <li>Limited competition: invitation-only</li>
+                            <li>Document format handling (PDF/Word)</li>
+                            <li>Sustainable tender marking</li>
+                            <li>TME sign-off enforcement</li>
+                        </ul>
+                        <div class="dependencies">
+                            <div class="dep-title">Publishes To:</div>
+                            <div class="dep-list">
+                                <span class="dep-tag">UNGM</span>
+                                <span class="dep-tag">Supplier Portal</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Workflow Section -->
+        <div class="workflow-section">
+            <div class="workflow-title">🔄 Typical Tender Creation Workflow</div>
+            <div class="workflow-steps">
+                <div class="workflow-step">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Admin Configures Template</div>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Template Published to Library</div>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Author Initiates Event from Template</div>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">4</div>
+                    <div class="step-title">Inherit Forms, Docs, Specs</div>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">5</div>
+                    <div class="step-title">Customize with Libraries</div>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">6</div>
+                    <div class="step-title">AI Proofreading & Review</div>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">7</div>
+                    <div class="step-title">TME Sign-off & Publish</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Legend -->
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color wave-1"></div>
+                <span><strong>Wave 1:</strong> First implementation phase</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color wave-roadmap"></div>
+                <span><strong>Roadmap:</strong> Future enhancements</span>
+            </div>
+            <div class="legend-item">
+                <span><strong>→</strong> Direct dependency/usage</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
