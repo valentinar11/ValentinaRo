@@ -1,0 +1,1571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNOPS - Tender Template Builder</title>
+    <style>
+        :root {
+            --color-primary: #00A1E4;
+            --color-primary-dark: #00629B;
+            --color-primary-darker: #004D7A;
+            --color-primary-light: #E6F4FF;
+            --color-success: #10B981;
+            --color-warning: #F59E0B;
+            --color-danger: #EF4444;
+            --color-info: #3B82F6;
+            --bg-secondary: #F5F7FA;
+            --text-primary: #374151;
+            --text-secondary: #6B7280;
+            --border-light: #E5E7EB;
+            --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-family); background: var(--bg-secondary); color: var(--text-primary); overflow: hidden; }
+        
+        /* Layout */
+        .builder-layout { display: flex; height: 100vh; }
+        
+        /* Top Header */
+        .builder-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: white;
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            z-index: 100;
+        }
+        .header-left { display: flex; align-items: center; gap: 24px; }
+        .logo { font-size: 18px; font-weight: 600; color: var(--color-primary-dark); }
+        .nav-links { display: flex; gap: 8px; }
+        .nav-link {
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .nav-link:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        .nav-link.active {
+            background: var(--color-primary-light);
+            color: var(--color-primary-dark);
+        }
+        .template-name {
+            padding: 6px 12px;
+            border: 1px solid var(--border-light);
+            border-radius: 6px;
+            font-size: 14px;
+            min-width: 300px;
+        }
+        .header-actions { display: flex; gap: 12px; }
+        
+        /* Sidebar - Components Palette */
+        .components-sidebar {
+            position: fixed;
+            left: 0;
+            top: 60px;
+            bottom: 0;
+            width: 280px;
+            background: white;
+            border-right: 1px solid var(--border-light);
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        .sidebar-section {
+            margin-bottom: 24px;
+        }
+        .sidebar-title {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+        
+        .component-item {
+            padding: 12px;
+            background: var(--bg-secondary);
+            border: 2px dashed var(--border-light);
+            border-radius: 6px;
+            margin-bottom: 8px;
+            cursor: move;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .component-item:hover {
+            border-color: var(--color-primary);
+            background: var(--color-primary-light);
+        }
+        .component-icon {
+            font-size: 20px;
+        }
+        .component-info {
+            flex: 1;
+        }
+        .component-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        .component-desc {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+        
+        /* Canvas Area */
+        .canvas-container {
+            margin-left: 280px;
+            margin-right: 320px;
+            margin-top: 60px;
+            height: calc(100vh - 60px);
+            overflow-y: auto;
+            padding: 24px;
+        }
+        
+        .canvas {
+            background: white;
+            border-radius: 8px;
+            min-height: calc(100vh - 120px);
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .canvas-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+            border: 3px dashed var(--border-light);
+            border-radius: 8px;
+            color: var(--text-secondary);
+        }
+        .canvas-empty-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+        
+        /* Dropped Sections */
+        .dropped-section {
+            background: white;
+            border: 2px solid var(--border-light);
+            border-radius: 8px;
+            margin-bottom: 16px;
+            position: relative;
+            transition: all 0.2s;
+        }
+        .dropped-section:hover {
+            border-color: var(--color-primary);
+            box-shadow: 0 4px 12px rgba(0,161,228,0.1);
+        }
+        .dropped-section.dragover {
+            border-color: var(--color-success);
+            background: #F0FDF4;
+        }
+        
+        .section-header {
+            padding: 16px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: move;
+        }
+        .section-title-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+        .section-icon {
+            font-size: 20px;
+        }
+        .section-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        .section-controls {
+            display: flex;
+            gap: 8px;
+        }
+        .icon-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+        .icon-btn:hover {
+            background: var(--color-primary-light);
+            color: var(--color-primary);
+        }
+        
+        .section-body {
+            padding: 16px;
+        }
+        .section-body.collapsed {
+            display: none;
+        }
+        
+        .field-item {
+            padding: 12px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: 6px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: move;
+        }
+        .field-item:hover {
+            border-color: var(--color-primary);
+        }
+        .field-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+        .field-label {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .field-badges {
+            display: flex;
+            gap: 4px;
+        }
+        .field-badge {
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .badge-required {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+        .badge-conditional {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+        .badge-readonly {
+            background: #E5E7EB;
+            color: #4B5563;
+        }
+        .badge-mapped {
+            background: #DBEAFE;
+            color: #1E40AF;
+        }
+        
+        <!-- Properties Panel -->
+        .properties-panel {
+            position: fixed;
+            right: 0;
+            top: 60px;
+            bottom: 0;
+            width: 320px;
+            background: white;
+            border-left: 1px solid var(--border-light);
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        .panel-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .template-properties-link {
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
+            padding: 12px 16px;
+            margin: -20px -20px 20px -20px;
+            border-bottom: 2px solid var(--border-light);
+        }
+        .template-properties-btn {
+            width: 100%;
+            padding: 10px 16px;
+            background: var(--color-primary-light);
+            color: var(--color-primary-dark);
+            border: 2px solid var(--color-primary);
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+        .template-properties-btn:hover {
+            background: var(--color-primary);
+            color: white;
+        }
+        
+        .property-group {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-light);
+        }
+        .property-group:last-child {
+            border-bottom: none;
+        }
+        .property-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            display: block;
+        }
+        .property-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border-light);
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: var(--font-family);
+        }
+        .property-select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border-light);
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+        }
+        .property-textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border-light);
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: var(--font-family);
+            min-height: 80px;
+            resize: vertical;
+        }
+        .property-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .property-help {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+        
+        /* Buttons */
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-light);
+        }
+        .btn-ghost:hover {
+            background: var(--bg-secondary);
+        }
+        .btn-primary {
+            background: var(--color-primary-dark);
+            color: white;
+        }
+        .btn-primary:hover {
+            background: var(--color-primary-darker);
+        }
+        .btn-success {
+            background: var(--color-success);
+            color: white;
+        }
+        .btn-danger {
+            background: var(--color-danger);
+            color: white;
+        }
+        
+        /* Tabs in Properties */
+        .property-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 16px;
+            border-bottom: 2px solid var(--border-light);
+        }
+        .property-tab {
+            padding: 8px 16px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+        }
+        .property-tab.active {
+            color: var(--color-primary);
+            border-bottom-color: var(--color-primary);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Alert boxes */
+        .alert {
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            font-size: 13px;
+        }
+        .alert-info {
+            background: #EFF6FF;
+            color: #1E40AF;
+            border-left: 4px solid var(--color-info);
+        }
+        .alert-warning {
+            background: #FEF3C7;
+            color: #92400E;
+            border-left: 4px solid var(--color-warning);
+        }
+        
+        /* Drop zone indicator */
+        .drop-zone {
+            min-height: 100px;
+            border: 2px dashed var(--border-light);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            margin: 8px 0;
+            transition: all 0.2s;
+        }
+        .drop-zone.active {
+            border-color: var(--color-success);
+            background: #F0FDF4;
+            color: var(--color-success);
+        }
+        
+        /* Status badge in header */
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .status-draft {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+        .status-published {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+        
+        /* Conditional logic builder */
+        .condition-builder {
+            background: var(--bg-secondary);
+            border-radius: 6px;
+            padding: 12px;
+            margin-top: 8px;
+        }
+        .condition-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .condition-row select {
+            flex: 1;
+            padding: 6px 8px;
+            border: 1px solid var(--border-light);
+            border-radius: 4px;
+            font-size: 13px;
+        }
+        
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #CBD5E1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94A3B8;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="builder-header">
+        <div class="header-left">
+            <div class="logo">🏗️ UNOPS Template Builder</div>
+            <div class="nav-links">
+                <a href="template-builder.html" class="nav-link active">Template Builder</a>
+                <a href="criteria-library.html" class="nav-link">Criteria Library</a>
+            </div>
+            <input type="text" class="template-name" placeholder="Enter template name..." value="Standard ITB Template">
+            <span class="status-badge status-draft">Draft</span>
+        </div>
+        <div class="header-actions">
+            <button class="btn btn-ghost" onclick="previewTemplate()">👁️ Preview</button>
+            <button class="btn btn-ghost" onclick="saveTemplate()">💾 Save Draft</button>
+            <button class="btn btn-success" onclick="publishTemplate()">✓ Publish</button>
+        </div>
+    </header>
+
+    <div class="builder-layout">
+        <!-- Left Sidebar - Components Palette -->
+        <aside class="components-sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-title">📋 Sections</div>
+                <div class="component-item" draggable="true" data-type="section" data-section-type="general">
+                    <div class="component-icon">📋</div>
+                    <div class="component-info">
+                        <div class="component-title">General Information</div>
+                        <div class="component-desc">Basic tender details</div>
+                    </div>
+                </div>
+                
+                <div class="component-item" draggable="true" data-type="section" data-section-type="project">
+                    <div class="component-icon">🏗️</div>
+                    <div class="component-info">
+                        <div class="component-title">Project Details</div>
+                        <div class="component-desc">Project & funding info</div>
+                    </div>
+                </div>
+                
+                <div class="component-item" draggable="true" data-type="section" data-section-type="requisition">
+                    <div class="component-icon">📦</div>
+                    <div class="component-info">
+                        <div class="component-title">Requisition Details</div>
+                        <div class="component-desc">Requisition & items</div>
+                    </div>
+                </div>
+                
+                <div class="component-item" draggable="true" data-type="section" data-section-type="timeline">
+                    <div class="component-icon">📅</div>
+                    <div class="component-info">
+                        <div class="component-title">Timeline & Deadlines</div>
+                        <div class="component-desc">Key dates & milestones</div>
+                    </div>
+                </div>
+                
+                <div class="component-item" draggable="true" data-type="section" data-section-type="scope">
+                    <div class="component-icon">🎯</div>
+                    <div class="component-info">
+                        <div class="component-title">Scope & Requirements</div>
+                        <div class="component-desc">Technical specifications</div>
+                    </div>
+                </div>
+                
+                <div class="component-item" draggable="true" data-type="section" data-section-type="evaluation">
+                    <div class="component-icon">📊</div>
+                    <div class="component-info">
+                        <div class="component-title">Evaluation Criteria</div>
+                        <div class="component-desc">Assessment criteria</div>
+                    </div>
+                </div>
+                
+                <div class="component-item" draggable="true" data-type="section" data-section-type="submission">
+                    <div class="component-icon">📝</div>
+                    <div class="component-info">
+                        <div class="component-title">Submission Requirements</div>
+                        <div class="component-desc">Bidder requirements</div>
+                    </div>
+                </div>
+                
+                <div class="component-item" draggable="true" data-type="section" data-section-type="drive">
+                    <div class="component-icon">🌱</div>
+                    <div class="component-info">
+                        <div class="component-title">DRiVE Module</div>
+                        <div class="component-desc">Sustainability assessment</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sidebar-section">
+                <div class="sidebar-title">📄 Forms & Documents</div>
+                <div class="component-item" draggable="true" data-type="form">
+                    <div class="component-icon">📄</div>
+                    <div class="component-info">
+                        <div class="component-title">Bank Guarantee Form</div>
+                        <div class="component-desc">Standard format</div>
+                    </div>
+                </div>
+                
+                <div class="component-item" draggable="true" data-type="form">
+                    <div class="component-icon">📄</div>
+                    <div class="component-info">
+                        <div class="component-title">Bid Security Form</div>
+                        <div class="component-desc">Security requirements</div>
+                    </div>
+                </div>
+                
+                <div class="component-item" draggable="true" data-type="form">
+                    <div class="component-icon">📄</div>
+                    <div class="component-info">
+                        <div class="component-title">Technical Proposal Form</div>
+                        <div class="component-desc">Supplier submission</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sidebar-section">
+                <div class="sidebar-title">🔧 Special Components</div>
+                <div class="component-item" draggable="true" data-type="workflow">
+                    <div class="component-icon">⚡</div>
+                    <div class="component-info">
+                        <div class="component-title">Approval Workflow</div>
+                        <div class="component-desc">Review & approval</div>
+                    </div>
+                </div>
+                
+                <div class="component-item" draggable="true" data-type="policy">
+                    <div class="component-icon">⚠️</div>
+                    <div class="component-info">
+                        <div class="component-title">Policy Deviation Rules</div>
+                        <div class="component-desc">Compliance checks</div>
+                    </div>
+                </div>
+                
+                <div class="component-item" draggable="true" data-type="sp-rules">
+                    <div class="component-icon">🏛️</div>
+                    <div class="component-info">
+                        <div class="component-title">SP Framework Rules</div>
+                        <div class="component-desc">Sustainable procurement</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Canvas Area -->
+        <div class="canvas-container">
+            <div class="canvas" id="canvas">
+                <div class="canvas-empty">
+                    <div class="canvas-empty-icon">🎨</div>
+                    <h3>Start Building Your Template</h3>
+                    <p>Drag and drop sections from the left sidebar to begin</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel - Properties -->
+        <aside class="properties-panel">
+            <!-- Template Properties Quick Access -->
+            <div class="template-properties-link">
+                <button class="template-properties-btn" onclick="openTemplateProperties()">
+                    ⚙️ Template-Level Properties
+                </button>
+            </div>
+            
+            <div class="panel-title">
+                <span>⚙️</span>
+                <span>Section Properties</span>
+            </div>
+            
+            <div class="alert alert-info" id="no-selection">
+                Select a section or field to view and edit its properties
+            </div>
+            
+            <div id="properties-content" style="display: none;">
+                <!-- Properties tabs -->
+                <div class="property-tabs">
+                    <button class="property-tab active" onclick="switchPropertyTab('general')">General</button>
+                    <button class="property-tab" onclick="switchPropertyTab('fields')">Fields</button>
+                    <button class="property-tab" onclick="switchPropertyTab('logic')">Logic</button>
+                    <button class="property-tab" onclick="switchPropertyTab('mapping')">Mapping</button>
+                </div>
+                
+                <!-- General Tab -->
+                <div id="tab-general" class="tab-content active">
+                    <div class="property-group">
+                        <label class="property-label">Section Name</label>
+                        <input type="text" class="property-input" id="prop-section-name" placeholder="Enter section name">
+                    </div>
+                    
+                    <div class="property-group">
+                        <label class="property-label">Description</label>
+                        <textarea class="property-textarea" id="prop-description" placeholder="Section description for authors"></textarea>
+                    </div>
+                    
+                    <div class="property-group">
+                        <label class="property-label">Visibility</label>
+                        <label class="property-checkbox">
+                            <input type="checkbox" id="prop-mandatory" checked>
+                            <span>Mandatory Section</span>
+                        </label>
+                        <label class="property-checkbox">
+                            <input type="checkbox" id="prop-collapsible" checked>
+                            <span>Collapsible</span>
+                        </label>
+                        <div class="property-help">Control section display behavior</div>
+                    </div>
+                    
+                    <div class="property-group">
+                        <label class="property-label">Section Order</label>
+                        <input type="number" class="property-input" id="prop-order" value="1" min="1">
+                        <div class="property-help">Position in the template structure</div>
+                    </div>
+                </div>
+                
+                <!-- Fields Tab -->
+                <div id="tab-fields" class="tab-content">
+                    <div class="alert alert-info">
+                        Configure which fields appear in this section
+                    </div>
+                    
+                    <div class="property-group">
+                        <label class="property-label">Available Fields</label>
+                        <button class="btn btn-ghost" style="width: 100%; margin-bottom: 8px;" onclick="addField()">+ Add Field</button>
+                        
+                        <div id="fields-list">
+                            <!-- Fields will be added here dynamically -->
+                        </div>
+                    </div>
+                    
+                    <div class="property-group">
+                        <label class="property-label">Field Configuration</label>
+                        <select class="property-select" id="field-editability">
+                            <option value="required">Required (Mandatory)</option>
+                            <option value="optional">Optional</option>
+                            <option value="readonly">Read-Only (Locked)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="property-group">
+                        <label class="property-label">Default Value</label>
+                        <input type="text" class="property-input" placeholder="Set default value">
+                        <div class="property-help">Pre-populate field with default value</div>
+                    </div>
+                </div>
+                
+                <!-- Logic Tab -->
+                <div id="tab-logic" class="tab-content">
+                    <div class="alert alert-warning">
+                        Define conditional logic for section visibility
+                    </div>
+                    
+                    <div class="property-group">
+                        <label class="property-label">Conditional Display</label>
+                        <label class="property-checkbox">
+                            <input type="checkbox" id="enable-conditions">
+                            <span>Enable conditional logic</span>
+                        </label>
+                    </div>
+                    
+                    <div class="condition-builder">
+                        <div class="property-label" style="margin-bottom: 8px;">Show this section when:</div>
+                        <div class="condition-row">
+                            <select>
+                                <option>Procurement Value</option>
+                                <option>Procurement Type</option>
+                                <option>UNSPSC Code</option>
+                                <option>Country</option>
+                            </select>
+                            <select>
+                                <option>is greater than</option>
+                                <option>is less than</option>
+                                <option>equals</option>
+                                <option>contains</option>
+                            </select>
+                            <input type="text" class="property-input" style="flex: 1;" placeholder="Value">
+                        </div>
+                        <button class="btn btn-ghost" style="font-size: 12px; padding: 4px 8px;">+ Add Condition</button>
+                    </div>
+                    
+                    <div class="property-group">
+                        <label class="property-label">Auto-Include Forms</label>
+                        <select class="property-select" multiple>
+                            <option>Bank Guarantee (if security required)</option>
+                            <option>Bid Security Form (if bid security > 0)</option>
+                            <option>EPP Justification (if EPP = Yes)</option>
+                        </select>
+                        <div class="property-help">Automatically include forms based on selections</div>
+                    </div>
+                </div>
+                
+                <!-- Mapping Tab -->
+                <div id="tab-mapping" class="tab-content">
+                    <div class="alert alert-info">
+                        Map fields to system data points and external systems
+                    </div>
+                    
+                    <div class="property-group">
+                        <label class="property-label">Data Source</label>
+                        <select class="property-select">
+                            <option value="">Manual entry</option>
+                            <option value="requisition">Requisition System</option>
+                            <option value="erp">oU ERP</option>
+                            <option value="ungm">UNGM</option>
+                            <option value="drive">DRiVE Module</option>
+                            <option value="agora">UN Web Buy Plus (Agora)</option>
+                        </select>
+                        <div class="property-help">Link to external system data</div>
+                    </div>
+                    
+                    <div class="property-group">
+                        <label class="property-label">Field Mapping</label>
+                        <input type="text" class="property-input" placeholder="e.g., requisition.lineItem.productCode">
+                        <div class="property-help">Specify the exact data field path</div>
+                    </div>
+                    
+                    <div class="property-group">
+                        <label class="property-label">UNSPSC Mapping</label>
+                        <input type="text" class="property-input" placeholder="Enter UNSPSC code">
+                        <label class="property-checkbox">
+                            <input type="checkbox">
+                            <span>Check against SP 'No-Buy' List</span>
+                        </label>
+                        <div class="property-help">Validate against sustainable procurement rules</div>
+                    </div>
+                    
+                    <div class="property-group">
+                        <label class="property-label">Validation Rules</label>
+                        <textarea class="property-textarea" placeholder="Define validation logic"></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- DRiVE Configuration -->
+            <div id="drive-config" style="display: none;">
+                <div class="property-group">
+                    <label class="property-label">Core DRiVE Questionnaire</label>
+                    <label class="property-checkbox">
+                        <input type="checkbox" checked>
+                        <span>Include standard Core DRiVE</span>
+                    </label>
+                </div>
+                
+                <div class="property-group">
+                    <label class="property-label">Add-on Questionnaires</label>
+                    <label class="property-checkbox">
+                        <input type="checkbox">
+                        <span>Auto-suggest based on UNSPSC</span>
+                    </label>
+                    <label class="property-checkbox">
+                        <input type="checkbox">
+                        <span>Auto-suggest based on Donor</span>
+                    </label>
+                    <label class="property-checkbox">
+                        <input type="checkbox">
+                        <span>Allow manual addition by author</span>
+                    </label>
+                </div>
+                
+                <div class="property-group">
+                    <label class="property-label">Available Add-ons</label>
+                    <select class="property-select" multiple>
+                        <option>World Bank Safeguards</option>
+                        <option>EU Green Deal Compliance</option>
+                        <option>Climate Risk Assessment</option>
+                        <option>Social Impact Assessment</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Workflow Configuration -->
+            <div id="workflow-config" style="display: none;">
+                <div class="property-group">
+                    <label class="property-label">Approval Workflow</label>
+                    <select class="property-select">
+                        <option>Standard Review Process</option>
+                        <option>Expedited Review (< $50K)</option>
+                        <option>High-Value Review (> $1M)</option>
+                        <option>Custom Workflow</option>
+                    </select>
+                </div>
+                
+                <div class="property-group">
+                    <label class="property-label">Required Approvers</label>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <label class="property-checkbox">
+                            <input type="checkbox" checked>
+                            <span>Procurement Reviewer</span>
+                        </label>
+                        <label class="property-checkbox">
+                            <input type="checkbox" checked>
+                            <span>Procurement Authority</span>
+                        </label>
+                        <label class="property-checkbox">
+                            <input type="checkbox">
+                            <span>Technical Matter Expert</span>
+                        </label>
+                        <label class="property-checkbox">
+                            <input type="checkbox">
+                            <span>Legal Review</span>
+                        </label>
+                        <label class="property-checkbox">
+                            <input type="checkbox">
+                            <span>CFO (for advance payments > $500K)</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Policy Deviation Rules -->
+            <div id="policy-config" style="display: none;">
+                <div class="alert alert-warning">
+                    Configure policy compliance checks and deviation management
+                </div>
+                
+                <div class="property-group">
+                    <label class="property-label">Policy Check Rules</label>
+                    <label class="property-checkbox">
+                        <input type="checkbox" checked>
+                        <span>Flag if minimum tender period not met</span>
+                    </label>
+                    <label class="property-checkbox">
+                        <input type="checkbox" checked>
+                        <span>Validate UNSPSC code conditionality</span>
+                    </label>
+                    <label class="property-checkbox">
+                        <input type="checkbox" checked>
+                        <span>Require justification for deviations</span>
+                    </label>
+                </div>
+                
+                <div class="property-group">
+                    <label class="property-label">Deviation Approval Workflow</label>
+                    <select class="property-select">
+                        <option>Standard deviation approval</option>
+                        <option>Escalated approval required</option>
+                        <option>CFO approval required</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- SP Rules Configuration -->
+            <div id="sp-config" style="display: none;">
+                <div class="alert alert-info">
+                    Configure Sustainable Procurement Framework rules
+                </div>
+                
+                <div class="property-group">
+                    <label class="property-label">SP Framework Application</label>
+                    <label class="property-checkbox">
+                        <input type="checkbox" checked>
+                        <span>Verify mandatory SP criteria</span>
+                    </label>
+                    <label class="property-checkbox">
+                        <input type="checkbox" checked>
+                        <span>Check based on solicitation type</span>
+                    </label>
+                    <label class="property-checkbox">
+                        <input type="checkbox" checked>
+                        <span>Check based on procurement value</span>
+                    </label>
+                    <label class="property-checkbox">
+                        <input type="checkbox" checked>
+                        <span>Validate against UNSPSC mapping</span>
+                    </label>
+                </div>
+                
+                <div class="property-group">
+                    <label class="property-label">Category Mapping</label>
+                    <textarea class="property-textarea" placeholder="Define UNSPSC to SP category mappings"></textarea>
+                    <div class="property-help">Map UNSPSC codes to Part 2 and Part 3 classifications</div>
+                </div>
+                
+                <div class="property-group">
+                    <label class="property-label">No-Buy List Integration</label>
+                    <label class="property-checkbox">
+                        <input type="checkbox" checked>
+                        <span>Check against SP 'No-Buy' list</span>
+                    </label>
+                    <label class="property-checkbox">
+                        <input type="checkbox">
+                        <span>Allow overrides with justification</span>
+                    </label>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        let selectedElement = null;
+        let draggedElement = null;
+        
+        // Drag and drop handlers
+        document.querySelectorAll('.component-item').forEach(item => {
+            item.addEventListener('dragstart', (e) => {
+                draggedElement = e.target;
+                e.dataTransfer.effectAllowed = 'copy';
+                e.dataTransfer.setData('text/html', e.target.innerHTML);
+                e.dataTransfer.setData('section-type', e.target.dataset.sectionType || 'custom');
+                e.dataTransfer.setData('component-type', e.target.dataset.type);
+            });
+        });
+        
+        const canvas = document.getElementById('canvas');
+        
+        canvas.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'copy';
+        });
+        
+        canvas.addEventListener('drop', (e) => {
+            e.preventDefault();
+            const sectionType = e.dataTransfer.getData('section-type');
+            const componentType = e.dataTransfer.getData('component-type');
+            
+            if (canvas.querySelector('.canvas-empty')) {
+                canvas.innerHTML = '';
+            }
+            
+            if (componentType === 'section') {
+                addSectionToCanvas(sectionType);
+            } else if (componentType === 'form') {
+                addFormToCanvas();
+            } else if (componentType === 'workflow') {
+                addWorkflowToCanvas();
+            } else if (componentType === 'policy') {
+                addPolicyToCanvas();
+            } else if (componentType === 'sp-rules') {
+                addSPRulesToCanvas();
+            }
+        });
+        
+        function addSectionToCanvas(type) {
+            const sectionData = {
+                'general': { icon: '📋', name: 'General Information', fields: ['Title', 'Reference', 'Type of Requirement'] },
+                'project': { icon: '🏗️', name: 'Project Details', fields: ['Work Package', 'Funding Source', 'Project Name'] },
+                'requisition': { icon: '📦', name: 'Requisition Details', fields: ['Requisition ID', 'Currency', 'Amount'] },
+                'timeline': { icon: '📅', name: 'Timeline & Deadlines', fields: ['Submission Deadline', 'Award Date'] },
+                'scope': { icon: '🎯', name: 'Scope & Requirements', fields: ['Scope Description', 'Requirements'] },
+                'evaluation': { icon: '📊', name: 'Evaluation Criteria', fields: ['Evaluation Method', 'Criteria'] },
+                'submission': { icon: '📝', name: 'Submission Requirements', fields: ['Bid Validity', 'Currency'] },
+                'drive': { icon: '🌱', name: 'DRiVE Sustainability Module', fields: ['Core Questionnaire', 'Add-ons'] }
+            };
+            
+            const data = sectionData[type] || { icon: '📋', name: 'Custom Section', fields: [] };
+            
+            const section = document.createElement('div');
+            section.className = 'dropped-section';
+            section.innerHTML = `
+                <div class="section-header">
+                    <div class="section-title-area">
+                        <span class="section-icon">${data.icon}</span>
+                        <span class="section-name">${data.name}</span>
+                    </div>
+                    <div class="section-controls">
+                        <button class="icon-btn" onclick="toggleSection(this)" title="Collapse">▼</button>
+                        <button class="icon-btn" onclick="moveUp(this)" title="Move Up">▲</button>
+                        <button class="icon-btn" onclick="moveDown(this)" title="Move Down">▼</button>
+                        <button class="icon-btn" onclick="deleteSection(this)" title="Delete">🗑️</button>
+                    </div>
+                </div>
+                <div class="section-body">
+                    ${data.fields.map(field => `
+                        <div class="field-item">
+                            <div class="field-info">
+                                <span class="field-label">${field}</span>
+                                <div class="field-badges">
+                                    <span class="field-badge badge-required">Required</span>
+                                    <span class="field-badge badge-mapped">Mapped</span>
+                                </div>
+                            </div>
+                            <div class="section-controls">
+                                <button class="icon-btn" onclick="editField(this)">✏️</button>
+                                <button class="icon-btn" onclick="deleteField(this)">🗑️</button>
+                            </div>
+                        </div>
+                    `).join('')}
+                    <div class="drop-zone">Drop fields here or click + to add</div>
+                </div>
+            `;
+            
+            canvas.appendChild(section);
+            
+            // Add click handler for selection
+            section.addEventListener('click', (e) => {
+                if (!e.target.closest('.icon-btn')) {
+                    selectElement(section, 'section');
+                }
+            });
+        }
+        
+        function addFormToCanvas() {
+            const form = document.createElement('div');
+            form.className = 'dropped-section';
+            form.innerHTML = `
+                <div class="section-header">
+                    <div class="section-title-area">
+                        <span class="section-icon">📄</span>
+                        <span class="section-name">Bank Guarantee Form</span>
+                    </div>
+                    <div class="section-controls">
+                        <button class="icon-btn" onclick="deleteSection(this)">🗑️</button>
+                    </div>
+                </div>
+                <div class="section-body">
+                    <div class="alert alert-info">
+                        Standard bank guarantee template will be auto-included when security is required
+                    </div>
+                </div>
+            `;
+            canvas.appendChild(form);
+        }
+        
+        function addWorkflowToCanvas() {
+            const workflow = document.createElement('div');
+            workflow.className = 'dropped-section';
+            workflow.innerHTML = `
+                <div class="section-header">
+                    <div class="section-title-area">
+                        <span class="section-icon">⚡</span>
+                        <span class="section-name">Approval Workflow Configuration</span>
+                    </div>
+                    <div class="section-controls">
+                        <button class="icon-btn" onclick="deleteSection(this)">🗑️</button>
+                    </div>
+                </div>
+                <div class="section-body">
+                    <div class="alert alert-info">
+                        Configure review and approval workflow based on tender value and type
+                    </div>
+                </div>
+            `;
+            canvas.appendChild(workflow);
+            workflow.addEventListener('click', (e) => {
+                if (!e.target.closest('.icon-btn')) {
+                    selectElement(workflow, 'workflow');
+                }
+            });
+        }
+        
+        function addPolicyToCanvas() {
+            const policy = document.createElement('div');
+            policy.className = 'dropped-section';
+            policy.innerHTML = `
+                <div class="section-header">
+                    <div class="section-title-area">
+                        <span class="section-icon">⚠️</span>
+                        <span class="section-name">Policy Deviation Rules</span>
+                    </div>
+                    <div class="section-controls">
+                        <button class="icon-btn" onclick="deleteSection(this)">🗑️</button>
+                    </div>
+                </div>
+                <div class="section-body">
+                    <div class="alert alert-warning">
+                        Proactively identify and manage policy deviations with mandatory justifications
+                    </div>
+                </div>
+            `;
+            canvas.appendChild(policy);
+            policy.addEventListener('click', (e) => {
+                if (!e.target.closest('.icon-btn')) {
+                    selectElement(policy, 'policy');
+                }
+            });
+        }
+        
+        function addSPRulesToCanvas() {
+            const spRules = document.createElement('div');
+            spRules.className = 'dropped-section';
+            spRules.innerHTML = `
+                <div class="section-header">
+                    <div class="section-title-area">
+                        <span class="section-icon">🏛️</span>
+                        <span class="section-name">Sustainable Procurement Framework</span>
+                    </div>
+                    <div class="section-controls">
+                        <button class="icon-btn" onclick="deleteSection(this)">🗑️</button>
+                    </div>
+                </div>
+                <div class="section-body">
+                    <div class="alert alert-info">
+                        Verify compliance with mandatory SP criteria based on UNSPSC mapping
+                    </div>
+                </div>
+            `;
+            canvas.appendChild(spRules);
+            spRules.addEventListener('click', (e) => {
+                if (!e.target.closest('.icon-btn')) {
+                    selectElement(spRules, 'sp-rules');
+                }
+            });
+        }
+        
+        function selectElement(element, type) {
+            // Remove previous selection
+            document.querySelectorAll('.dropped-section').forEach(el => {
+                el.style.borderColor = 'var(--border-light)';
+            });
+            
+            // Highlight selected
+            element.style.borderColor = 'var(--color-primary)';
+            selectedElement = element;
+            
+            // Show properties panel
+            document.getElementById('no-selection').style.display = 'none';
+            document.getElementById('properties-content').style.display = 'block';
+            
+            // Hide all config panels
+            document.getElementById('drive-config').style.display = 'none';
+            document.getElementById('workflow-config').style.display = 'none';
+            document.getElementById('policy-config').style.display = 'none';
+            document.getElementById('sp-config').style.display = 'none';
+            
+            // Show relevant config based on type
+            if (type === 'workflow') {
+                document.getElementById('workflow-config').style.display = 'block';
+            } else if (type === 'policy') {
+                document.getElementById('policy-config').style.display = 'block';
+            } else if (type === 'sp-rules') {
+                document.getElementById('sp-config').style.display = 'block';
+            } else if (element.querySelector('.section-name').textContent.includes('DRiVE')) {
+                document.getElementById('drive-config').style.display = 'block';
+            }
+            
+            // Populate section name
+            const sectionName = element.querySelector('.section-name').textContent;
+            document.getElementById('prop-section-name').value = sectionName;
+        }
+        
+        function switchPropertyTab(tabName) {
+            document.querySelectorAll('.property-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById('tab-' + tabName).classList.add('active');
+        }
+        
+        function toggleSection(btn) {
+            const section = btn.closest('.dropped-section');
+            const body = section.querySelector('.section-body');
+            body.classList.toggle('collapsed');
+            btn.textContent = body.classList.contains('collapsed') ? '▶' : '▼';
+        }
+        
+        function moveUp(btn) {
+            const section = btn.closest('.dropped-section');
+            const prev = section.previousElementSibling;
+            if (prev) {
+                section.parentNode.insertBefore(section, prev);
+            }
+        }
+        
+        function moveDown(btn) {
+            const section = btn.closest('.dropped-section');
+            const next = section.nextElementSibling;
+            if (next) {
+                section.parentNode.insertBefore(next, section);
+            }
+        }
+        
+        function deleteSection(btn) {
+            if (confirm('Delete this section?')) {
+                const section = btn.closest('.dropped-section');
+                section.remove();
+                
+                if (!canvas.querySelector('.dropped-section')) {
+                    canvas.innerHTML = `
+                        <div class="canvas-empty">
+                            <div class="canvas-empty-icon">🎨</div>
+                            <h3>Start Building Your Template</h3>
+                            <p>Drag and drop sections from the left sidebar to begin</p>
+                        </div>
+                    `;
+                }
+            }
+        }
+        
+        function deleteField(btn) {
+            if (confirm('Delete this field?')) {
+                btn.closest('.field-item').remove();
+            }
+        }
+        
+        function editField(btn) {
+            alert('Field editor would open here');
+        }
+        
+        function addField() {
+            alert('Field library would open here');
+        }
+        
+        function previewTemplate() {
+            alert('Preview mode would show how the template looks to tender authors');
+        }
+        
+        function saveTemplate() {
+            alert('Template saved as draft');
+        }
+        
+        function publishTemplate() {
+            if (confirm('Publish this template? It will become available for tender authors.')) {
+                document.querySelector('.status-badge').textContent = 'Published';
+                document.querySelector('.status-badge').className = 'status-badge status-published';
+                alert('Template published successfully!');
+            }
+        }
+        
+        // Template Properties Functions
+        function openTemplateProperties() {
+            document.getElementById('templatePropertiesModal').style.display = 'flex';
+        }
+        
+        function closeTemplateProperties() {
+            document.getElementById('templatePropertiesModal').style.display = 'none';
+        }
+        
+        function saveTemplateProperties() {
+            const eventType = document.getElementById('event-type').value;
+            const eventSubtype = document.getElementById('event-subtype').value;
+            const requirementType = document.getElementById('requirement-type').value;
+            const templateName = document.getElementById('template-name-prop').value;
+            
+            if (!eventType || !requirementType) {
+                alert('Please fill in all required fields (Event Type and Requirement Type)');
+                return;
+            }
+            
+            // Update template name in header
+            document.querySelector('.template-name').value = templateName;
+            
+            alert('Template properties saved successfully!\n\nEvent Type: ' + eventType + 
+                  (eventSubtype ? '\nMethod: ' + eventSubtype : '') + 
+                  '\nRequirement Type: ' + requirementType);
+            closeTemplateProperties();
+        }
+        
+        function updateEventSubtype() {
+            const eventType = document.getElementById('event-type').value;
+            const subtypeGroup = document.getElementById('event-subtype-group');
+            const subtypeSelect = document.getElementById('event-subtype');
+            const subtypeLabel = document.getElementById('subtype-label');
+            const subtypeHelp = document.getElementById('subtype-help');
+            
+            if (!eventType) {
+                subtypeGroup.style.display = 'none';
+                return;
+            }
+            
+            subtypeGroup.style.display = 'flex';
+            subtypeSelect.innerHTML = '<option value="">Select method...</option>';
+            
+            if (eventType === 'solicitation') {
+                subtypeLabel.textContent = 'Solicitation Method';
+                subtypeHelp.textContent = 'Select the specific solicitation method for this template';
+                subtypeSelect.innerHTML += `
+                    <option value="itb">ITB - Invitation to Bid</option>
+                    <option value="rfq">RFQ - Request for Quotation</option>
+                    <option value="rfp">RFP - Request for Proposal</option>
+                `;
+            } else if (eventType === 'sourcing') {
+                subtypeLabel.textContent = 'Sourcing Method';
+                subtypeHelp.textContent = 'Select the specific sourcing method for this template';
+                subtypeSelect.innerHTML += `
+                    <option value="pq">PQ - Pre-Qualification</option>
+                    <option value="eoi">EOI - Expression of Interest</option>
+                    <option value="rfi">RFI - Request for Information</option>
+                `;
+            }
+        }
+        
+        // Close modal on outside click
+        document.getElementById('templatePropertiesModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeTemplateProperties();
+            }
+        });
+    </script>
+    
+    <!-- Template Properties Modal -->
+    <div style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center;" id="templatePropertiesModal">
+        <div style="background: white; border-radius: 8px; width: 90%; max-width: 800px; max-height: 90vh; overflow-y: auto;">
+            <div style="padding: 20px 24px; border-bottom: 1px solid var(--border-light); display: flex; justify-content: space-between; align-items: center;">
+                <h2 style="font-size: 20px; font-weight: 600;">Template-Level Properties</h2>
+                <button onclick="closeTemplateProperties()" style="width: 32px; height: 32px; border: none; background: transparent; border-radius: 4px; cursor: pointer; font-size: 20px;">×</button>
+            </div>
+            <div style="padding: 24px;">
+                <div class="alert alert-info">
+                    Configure template-wide settings that will apply to all tenders created from this template
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 20px;">
+                    <!-- Template Name -->
+                    <div style="grid-column: 1 / -1; display: flex; flex-direction: column;">
+                        <label style="font-size: 14px; font-weight: 500; margin-bottom: 8px;">Template Name <span style="color: var(--color-danger);">*</span></label>
+                        <input type="text" id="template-name-prop" style="padding: 10px 12px; border: 1px solid var(--border-light); border-radius: 6px; font-size: 14px;" value="Standard ITB Template">
+                    </div>
+                    
+                    <!-- Event Type -->
+                    <div style="grid-column: 1 / -1; display: flex; flex-direction: column;">
+                        <label style="font-size: 14px; font-weight: 500; margin-bottom: 8px;">Event Type <span style="color: var(--color-danger);">*</span></label>
+                        <select id="event-type" style="padding: 10px 12px; border: 1px solid var(--border-light); border-radius: 6px; font-size: 14px;" onchange="updateEventSubtype()">
+                            <option value="">Select event type...</option>
+                            <option value="solicitation">Solicitation</option>
+                            <option value="sourcing">Sourcing</option>
+                        </select>
+                        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">Define whether this is a solicitation or sourcing event</div>
+                    </div>
+                    
+                    <!-- Event Subtype (Conditional) -->
+                    <div id="event-subtype-group" style="grid-column: 1 / -1; display: none; flex-direction: column;">
+                        <label style="font-size: 14px; font-weight: 500; margin-bottom: 8px;">
+                            <span id="subtype-label">Event Method</span> <span style="color: var(--color-danger);">*</span>
+                        </label>
+                        <select id="event-subtype" style="padding: 10px 12px; border: 1px solid var(--border-light); border-radius: 6px; font-size: 14px;">
+                            <option value="">Select method...</option>
+                        </select>
+                        <div id="subtype-help" style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;"></div>
+                    </div>
+                    
+                    <!-- Requirement Type -->
+                    <div style="grid-column: 1 / -1; display: flex; flex-direction: column;">
+                        <label style="font-size: 14px; font-weight: 500; margin-bottom: 8px;">Type of Requirement <span style="color: var(--color-danger);">*</span></label>
+                        <select id="requirement-type" style="padding: 10px 12px; border: 1px solid var(--border-light); border-radius: 6px; font-size: 14px;">
+                            <option value="">Select requirement type...</option>
+                            <option value="goods">Goods</option>
+                            <option value="services">Services</option>
+                            <option value="works">Works</option>
+                        </select>
+                        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">This affects which sections and requirements are applicable</div>
+                    </div>
+                    
+                    <!-- Template Scope -->
+                    <div style="grid-column: 1 / -1; display: flex; flex-direction: column;">
+                        <label style="font-size: 14px; font-weight: 500; margin-bottom: 8px;">Template Scope</label>
+                        <select style="padding: 10px 12px; border: 1px solid var(--border-light); border-radius: 6px; font-size: 14px;">
+                            <option>All Organizational Units</option>
+                            <option>Specific Organizational Unit</option>
+                            <option>Regional Offices Only</option>
+                            <option>Headquarters Only</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Value Threshold -->
+                    <div style="display: flex; flex-direction: column;">
+                        <label style="font-size: 14px; font-weight: 500; margin-bottom: 8px;">Minimum Value Threshold (USD)</label>
+                        <input type="number" style="padding: 10px 12px; border: 1px solid var(--border-light); border-radius: 6px; font-size: 14px;" placeholder="0" min="0" step="1000">
+                        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">Minimum procurement value for this template</div>
+                    </div>
+                    
+                    <div style="display: flex; flex-direction: column;">
+                        <label style="font-size: 14px; font-weight: 500; margin-bottom: 8px;">Maximum Value Threshold (USD)</label>
+                        <input type="number" style="padding: 10px 12px; border: 1px solid var(--border-light); border-radius: 6px; font-size: 14px;" placeholder="Unlimited">
+                        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">Maximum procurement value for this template</div>
+                    </div>
+                    
+                    <!-- Default Settings -->
+                    <div style="grid-column: 1 / -1; display: flex; flex-direction: column;">
+                        <label style="font-size: 14px; font-weight: 500; margin-bottom: 8px;">Default Tender Period (Days)</label>
+                        <input type="number" style="padding: 10px 12px; border: 1px solid var(--border-light); border-radius: 6px; font-size: 14px;" value="21" min="1">
+                        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">Default minimum tender period for tenders using this template</div>
+                    </div>
+                    
+                    <!-- Conditional Logic -->
+                    <div style="grid-column: 1 / -1; display: flex; flex-direction: column;">
+                        <label style="font-size: 14px; font-weight: 500; margin-bottom: 12px;">Template Applicability Rules</label>
+                        <div style="background: var(--bg-secondary); padding: 16px; border-radius: 6px;">
+                            <div style="display: flex; flex-direction: column; gap: 8px;">
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="checkbox" checked>
+                                    <span style="font-size: 14px;">Auto-suggest this template based on event type</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="checkbox" checked>
+                                    <span style="font-size: 14px;">Auto-suggest based on requirement type</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="checkbox">
+                                    <span style="font-size: 14px;">Restrict to specific UNSPSC categories</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="checkbox">
+                                    <span style="font-size: 14px;">Require specific donor compliance</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Language Support -->
+                    <div style="grid-column: 1 / -1; display: flex; flex-direction: column;">
+                        <label style="font-size: 14px; font-weight: 500; margin-bottom: 8px;">Supported Languages</label>
+                        <select multiple style="padding: 10px 12px; border: 1px solid var(--border-light); border-radius: 6px; font-size: 14px; min-height: 100px;">
+                            <option selected>English</option>
+                            <option>French</option>
+                            <option>Spanish</option>
+                            <option>Arabic</option>
+                            <option>Portuguese</option>
+                            <option>Russian</option>
+                        </select>
+                        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">Languages available for tenders created from this template</div>
+                    </div>
+                    
+                    <!-- Description -->
+                    <div style="grid-column: 1 / -1; display: flex; flex-direction: column;">
+                        <label style="font-size: 14px; font-weight: 500; margin-bottom: 8px;">Template Description</label>
+                        <textarea style="padding: 10px 12px; border: 1px solid var(--border-light); border-radius: 6px; font-size: 14px; min-height: 80px; resize: vertical; font-family: var(--font-family);" placeholder="Describe when this template should be used and what it includes...">Standard template for Invitation to Bid (ITB) for goods procurement. Includes all mandatory sections for competitive bidding with full evaluation criteria.</textarea>
+                    </div>
+                    
+                    <!-- Metadata -->
+                    <div style="display: flex; flex-direction: column;">
+                        <label style="font-size: 14px; font-weight: 500; margin-bottom: 8px;">Template Version</label>
+                        <input type="text" style="padding: 10px 12px; border: 1px solid var(--border-light); border-radius: 6px; font-size: 14px;" value="1.0" readonly>
+                    </div>
+                    
+                    <div style="display: flex; flex-direction: column;">
+                        <label style="font-size: 14px; font-weight: 500; margin-bottom: 8px;">Last Modified</label>
+                        <input type="text" style="padding: 10px 12px; border: 1px solid var(--border-light); border-radius: 6px; font-size: 14px; background: var(--bg-secondary);" value="Nov 13, 2024" readonly>
+                    </div>
+                </div>
+            </div>
+            <div style="padding: 16px 24px; border-top: 1px solid var(--border-light); display: flex; justify-content: flex-end; gap: 12px;">
+                <button class="btn btn-ghost" onclick="closeTemplateProperties()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveTemplateProperties()">Save Template Properties</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
