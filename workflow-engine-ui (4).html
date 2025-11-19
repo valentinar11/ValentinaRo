@@ -1,0 +1,2327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProcureFlow - Unified Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f7fa;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .header {
+            background: white;
+            height: 60px;
+            border-bottom: 1px solid #e1e8ed;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a73e8;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .nav {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: #5f6368;
+            font-size: 13px;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.2s;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .nav a:hover, .nav a.active {
+            background: #f1f3f4;
+            color: #1a73e8;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: #5f6368;
+            border: 1px solid #e1e8ed;
+        }
+
+        .btn-ghost:hover {
+            background: #f8f9fa;
+        }
+
+        .btn-primary {
+            background: #1a73e8;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1557b0;
+        }
+
+        .btn-success {
+            background: #10B981;
+            color: white;
+        }
+
+        .btn-sm {
+            padding: 4px 8px;
+            font-size: 12px;
+        }
+
+        /* Main Container */
+        .main-container {
+            display: flex;
+            height: calc(100vh - 60px);
+            margin-top: 60px;
+        }
+
+        /* All Views */
+        .flows-view, .library-view, .tender-doc-builder-view, .fields-library-view, .criteria-library-view, .rules-engine-view {
+            display: none;
+            width: 100%;
+        }
+
+        .flows-view.active, .library-view.active, .tender-doc-builder-view.active, .fields-library-view.active, .criteria-library-view.active, .rules-engine-view.active {
+            display: flex;
+        }
+
+        /* Templates Gallery */
+        .flows-view {
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        .templates-header {
+            margin-bottom: 24px;
+        }
+
+        .templates-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #202124;
+            margin-bottom: 8px;
+        }
+
+        .templates-subtitle {
+            font-size: 14px;
+            color: #5f6368;
+        }
+
+        .templates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .template-card {
+            background: white;
+            border: 1px solid #e1e8ed;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .template-card:hover {
+            border-color: #1a73e8;
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .template-icon-large {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin-bottom: 16px;
+        }
+
+        .template-icon-large.drive { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .template-icon-large.agora { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .template-icon-large.universal { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+
+        .template-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #202124;
+            margin-bottom: 8px;
+        }
+
+        .template-description {
+            font-size: 13px;
+            color: #5f6368;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .template-stats {
+            display: flex;
+            gap: 16px;
+            font-size: 12px;
+            color: #5f6368;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #e1e8ed;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 320px;
+            background: white;
+            border-right: 1px solid #e1e8ed;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #202124;
+        }
+
+        .export-btn {
+            background: #1a73e8;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .category {
+            margin-bottom: 20px;
+        }
+
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-bottom: 8px;
+        }
+
+        .category-title {
+            font-weight: 600;
+            font-size: 14px;
+            color: #202124;
+        }
+
+        .chevron {
+            transition: transform 0.2s;
+        }
+
+        .category.collapsed .chevron {
+            transform: rotate(-90deg);
+        }
+
+        .category.collapsed .step-list {
+            display: none;
+        }
+
+        .step-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .step-item, .component-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: white;
+            border: 1px solid #e1e8ed;
+            border-radius: 6px;
+            cursor: grab;
+            transition: all 0.2s;
+        }
+
+        .step-item:hover, .component-item:hover {
+            border-color: #1a73e8;
+            box-shadow: 0 2px 8px rgba(26, 115, 232, 0.1);
+        }
+
+        .step-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .step-icon.drive { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .step-icon.agora { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .step-icon.universal { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+
+        .step-info, .component-info {
+            flex: 1;
+        }
+
+        .step-name, .component-title {
+            font-size: 13px;
+            font-weight: 500;
+            color: #202124;
+            margin-bottom: 4px;
+        }
+
+        .component-desc {
+            font-size: 11px;
+            color: #5f6368;
+        }
+
+        .step-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .badge-adhoc { background: #fef3c7; color: #92400e; }
+        .badge-parallel { background: #dbeafe; color: #1e40af; }
+        .badge-conditional { background: #fce7f3; color: #9f1239; }
+        .badge-regular { background: #dcfce7; color: #166534; }
+        .badge-mandated { background: #fee2e2; color: #991b1b; }
+        .badge-discretionary { background: #dbeafe; color: #1e40af; }
+
+        /* Canvas Area */
+        .canvas-container {
+            flex: 1;
+            padding: 24px;
+            overflow: auto;
+        }
+
+        .canvas-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .canvas-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #202124;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 8px;
+        }
+
+        .view-btn {
+            background: white;
+            border: 1px solid #e1e8ed;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .view-btn:hover {
+            border-color: #1a73e8;
+        }
+
+        .view-btn.active {
+            background: #1a73e8;
+            color: white;
+            border-color: #1a73e8;
+        }
+
+        .canvas {
+            background: white;
+            border: 2px dashed #e1e8ed;
+            border-radius: 12px;
+            min-height: calc(100vh - 200px);
+            padding: 40px;
+        }
+
+        .canvas-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+            text-align: center;
+            color: #9aa0a6;
+        }
+
+        .canvas-empty-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+            opacity: 0.3;
+        }
+
+        .dropped-step {
+            background: white;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .dropped-step:hover {
+            border-color: #1a73e8;
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.15);
+        }
+
+        .step-number {
+            width: 32px;
+            height: 32px;
+            background: #1a73e8;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .dropped-step-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dropped-step-info {
+            flex: 1;
+        }
+
+        .dropped-step-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: #202124;
+            margin-bottom: 6px;
+        }
+
+        .dropped-step-meta {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .delete-btn {
+            background: #fee;
+            color: #c00;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .dropped-step:hover .delete-btn {
+            opacity: 1;
+        }
+
+        .connector {
+            position: absolute;
+            left: 50%;
+            bottom: -24px;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 24px;
+            background: #1a73e8;
+        }
+
+        .connector::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 8px solid #1a73e8;
+        }
+
+        .canvas.drag-over {
+            border-color: #1a73e8;
+            background: #f8fbff;
+        }
+
+        /* Flowchart View */
+        .flowchart-canvas {
+            display: none;
+            position: relative;
+            min-height: 600px;
+        }
+
+        .flowchart-canvas.active {
+            display: block;
+        }
+
+        .flow-step {
+            position: absolute;
+            background: white;
+            border: 2px solid #e1e8ed;
+            border-radius: 12px;
+            padding: 16px;
+            min-width: 180px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .flow-step:hover {
+            border-color: #1a73e8;
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.15);
+            z-index: 10;
+        }
+
+        .flow-step.parallel {
+            border-color: #4facfe;
+            border-style: dashed;
+        }
+
+        .flow-step.adhoc {
+            border-color: #f5576c;
+            border-style: dotted;
+        }
+
+        .flow-step-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .flow-step-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .flow-step-name {
+            font-weight: 600;
+            font-size: 13px;
+            color: #202124;
+        }
+
+        .flow-step-type {
+            font-size: 11px;
+            color: #5f6368;
+            margin-top: 4px;
+        }
+
+        .flow-line {
+            position: absolute;
+            background: #1a73e8;
+            z-index: 1;
+        }
+
+        .flow-line.horizontal { height: 2px; }
+        .flow-line.vertical { width: 2px; }
+
+        .flow-arrow {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 8px solid #1a73e8;
+            z-index: 2;
+        }
+
+        /* Template Builder Section */
+        .dropped-section {
+            background: white;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            transition: all 0.2s;
+        }
+
+        .dropped-section:hover {
+            border-color: #1a73e8;
+            box-shadow: 0 4px 12px rgba(0,161,228,0.1);
+        }
+
+        .dropped-section.mandated {
+            border-left: 4px solid #ef4444;
+        }
+
+        .section-header {
+            padding: 16px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e1e8ed;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: move;
+        }
+
+        .section-title-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-icon {
+            font-size: 20px;
+        }
+
+        .section-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #202124;
+        }
+
+        .section-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .icon-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+
+        .icon-btn:hover {
+            background: #e3f2fd;
+            color: #1a73e8;
+        }
+
+        .section-body {
+            padding: 16px;
+        }
+
+        .section-body.collapsed {
+            display: none;
+        }
+
+        .field-item {
+            padding: 12px;
+            background: #f8f9fa;
+            border: 1px solid #e1e8ed;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .field-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .field-label {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .field-badges {
+            display: flex;
+            gap: 4px;
+        }
+
+        .field-badge {
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-required {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .badge-mapped {
+            background: #DBEAFE;
+            color: #1E40AF;
+        }
+
+        .alert {
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            font-size: 13px;
+        }
+
+        .alert-info {
+            background: #EFF6FF;
+            color: #1E40AF;
+            border-left: 4px solid #3B82F6;
+        }
+
+        .alert-warning {
+            background: #FEF3C7;
+            color: #92400e;
+            border-left: 4px solid #F59E0B;
+        }
+
+        .alert-success {
+            background: #D1FAE5;
+            color: #065F46;
+            border-left: 4px solid #10B981;
+        }
+
+        /* Fields Library View */
+        .library-content {
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        .library-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 24px;
+            border-bottom: 2px solid #e1e8ed;
+        }
+
+        .library-tab {
+            padding: 12px 24px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: #5f6368;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+        }
+
+        .library-tab.active {
+            color: #1a73e8;
+            border-bottom-color: #1a73e8;
+        }
+
+        .entity-card {
+            background: white;
+            border: 1px solid #e1e8ed;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .entity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .entity-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #202124;
+        }
+
+        .field-list {
+            display: grid;
+            gap: 8px;
+        }
+
+        .field-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr auto;
+            gap: 12px;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            align-items: center;
+        }
+
+        .field-row:hover {
+            background: #f1f3f4;
+        }
+
+        .field-row-header {
+            font-weight: 600;
+            font-size: 12px;
+            color: #5f6368;
+            text-transform: uppercase;
+        }
+
+        /* Rules Engine View */
+        .rule-builder {
+            background: white;
+            border: 1px solid #e1e8ed;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .rule-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #e1e8ed;
+        }
+
+        .rule-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #202124;
+        }
+
+        .rule-section {
+            margin-bottom: 20px;
+        }
+
+        .rule-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #5f6368;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .condition-row {
+            display: grid;
+            grid-template-columns: 200px 150px 200px auto;
+            gap: 12px;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+
+        .rule-select, .rule-input {
+            padding: 8px 12px;
+            border: 1px solid #e1e8ed;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .action-row {
+            display: flex;
+            gap: 12px;
+            padding: 12px;
+            background: #f0f7ff;
+            border-radius: 6px;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .rule-visualization {
+            background: white;
+            border: 1px solid #e1e8ed;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 24px;
+        }
+
+        .rule-viz-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .rule-flow {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        .rule-if {
+            background: #fef3c7;
+            color: #92400e;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .rule-then {
+            background: #d1fae5;
+            color: #065f46;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .rule-condition {
+            background: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            border: 1px solid #e1e8ed;
+        }
+
+        .rule-action {
+            background: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            border: 1px solid #e1e8ed;
+        }
+
+        /* Config Panel */
+        .config-panel {
+            position: fixed;
+            right: -400px;
+            top: 60px;
+            width: 400px;
+            height: calc(100vh - 60px);
+            background: white;
+            border-left: 1px solid #e1e8ed;
+            transition: right 0.3s;
+            overflow-y: auto;
+            padding: 24px;
+            box-shadow: -4px 0 12px rgba(0,0,0,0.1);
+            z-index: 50;
+        }
+
+        .config-panel.open {
+            right: 0;
+        }
+
+        .config-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .config-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #202124;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #5f6368;
+            padding: 4px;
+        }
+
+        .config-section {
+            margin-bottom: 24px;
+        }
+
+        .config-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #5f6368;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .config-input, .config-select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e1e8ed;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .config-description {
+            font-size: 12px;
+            color: #5f6368;
+            margin-top: 6px;
+        }
+
+        .property-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .property-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 16px;
+            border-bottom: 2px solid #e1e8ed;
+        }
+
+        .property-tab {
+            padding: 8px 16px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            color: #5f6368;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+        }
+
+        .property-tab.active {
+            color: #1a73e8;
+            border-bottom-color: #1a73e8;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .property-textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #e1e8ed;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th {
+            text-align: left;
+            padding: 12px;
+            background: #f8f9fa;
+            font-size: 12px;
+            font-weight: 600;
+            color: #5f6368;
+            border-bottom: 1px solid #e1e8ed;
+        }
+
+        table td {
+            padding: 12px;
+            border-bottom: 1px solid #f1f3f4;
+            font-size: 13px;
+        }
+
+        .status-active {
+            background: #d1fae5;
+            color: #065f46;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .status-inactive {
+            background: #f3f4f6;
+            color: #6b7280;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <div class="logo-icon">P</div>
+            <span>ProcureFlow</span>
+        </div>
+        <nav class="nav">
+            <a class="active" onclick="showView(event, 'workflows')">Steps Library</a>
+            <a onclick="showView(event, 'flows')">Flows</a>
+            <a onclick="showView(event, 'tender-doc-builder')">Tender Doc Builder</a>
+            <a onclick="showView(event, 'fields-library')">Fields Library</a>
+            <a onclick="showView(event, 'criteria-library')">Criteria</a>
+            <a onclick="showView(event, 'rules-engine')">Rules Engine</a>
+        </nav>
+        <div class="header-actions">
+            <button class="btn btn-ghost btn-sm">💾 Save</button>
+            <button class="btn btn-success btn-sm">✓ Publish</button>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <!-- Workflow Flows View -->
+        <div id="flowsView" class="flows-view">
+            <div style="width: 100%; padding: 24px; overflow-y: auto;">
+                <div class="templates-header">
+                    <h1 class="templates-title">Process Flow Templates</h1>
+                    <p class="templates-subtitle">Start with a pre-configured process flow template</p>
+                </div>
+                
+                <div class="templates-grid">
+                    <div class="template-card" onclick="loadWorkflowTemplate('drive-onboarding')">
+                        <div class="template-icon-large drive">🎯</div>
+                        <div class="template-name">DRiVE Supplier Onboarding</div>
+                        <div class="template-description">Complete supplier verification workflow including desktop review, risk assessment, and conditional on-site inspection.</div>
+                        <div class="template-stats">
+                            <div>📊 8 Steps</div>
+                            <div>⏱️ 14-21 days</div>
+                            <div>🔧 DRiVE</div>
+                        </div>
+                    </div>
+
+                    <div class="template-card" onclick="loadWorkflowTemplate('standard-tender')">
+                        <div class="template-icon-large agora">📋</div>
+                        <div class="template-name">Standard Tender Process</div>
+                        <div class="template-description">End-to-end tender workflow with authoring, multi-level approval, publication, clarifications, and evaluation.</div>
+                        <div class="template-stats">
+                            <div>📊 12 Steps</div>
+                            <div>⏱️ 30-45 days</div>
+                            <div>🔧 AGORA</div>
+                        </div>
+                    </div>
+
+                    <div class="template-card" onclick="loadWorkflowTemplate('rfq-process')">
+                        <div class="template-icon-large agora">⚡</div>
+                        <div class="template-name">RFQ Quick Process</div>
+                        <div class="template-description">Simplified request for quotation with basic approval and evaluation for low-value procurements.</div>
+                        <div class="template-stats">
+                            <div>📊 6 Steps</div>
+                            <div>⏱️ 7-14 days</div>
+                            <div>🔧 AGORA</div>
+                        </div>
+                    </div>
+
+                    <div class="template-card" onclick="loadWorkflowTemplate('desktop-review')">
+                        <div class="template-icon-large drive">📄</div>
+                        <div class="template-name">DRiVE Desktop Review Only</div>
+                        <div class="template-description">Streamlined desktop review process for low-risk supplier verification without site visits.</div>
+                        <div class="template-stats">
+                            <div>📊 5 Steps</div>
+                            <div>⏱️ 5-7 days</div>
+                            <div>🔧 DRiVE</div>
+                        </div>
+                    </div>
+
+                    <div class="template-card" onclick="loadWorkflowTemplate('restricted-tender')">
+                        <div class="template-icon-large agora">🔒</div>
+                        <div class="template-name">Restricted Competition</div>
+                        <div class="template-description">Tender process for pre-qualified suppliers with invitation-only participation and negotiation phase.</div>
+                        <div class="template-stats">
+                            <div>📊 10 Steps</div>
+                            <div>⏱️ 21-35 days</div>
+                            <div>🔧 AGORA</div>
+                        </div>
+                    </div>
+
+                    <div class="template-card" onclick="loadWorkflowTemplate('blank')">
+                        <div class="template-icon-large universal">➕</div>
+                        <div class="template-name">Blank Workflow</div>
+                        <div class="template-description">Start from scratch and build your custom workflow with any combination of steps.</div>
+                        <div class="template-stats">
+                            <div>📊 0 Steps</div>
+                            <div>⏱️ Custom</div>
+                            <div>🔧 Any</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Workflow Builder View -->
+        <div id="libraryView" class="library-view active">
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <h2 class="sidebar-title">Step Library</h2>
+                    <button class="export-btn">📤 Export</button>
+                </div>
+
+                <div class="category">
+                    <div class="category-header" onclick="toggleCategory(this)">
+                        <span class="category-title">DRiVE Steps</span>
+                        <span class="chevron">▼</span>
+                    </div>
+                    <div class="step-list">
+                        <div class="step-item" draggable="true" ondragstart="dragWorkflowStep(event)" data-step='{"name":"Supplier Onboarding","type":"Ad-Hoc","category":"drive","activityType":"USER_TASK"}'>
+                            <div class="step-icon drive">👤</div>
+                            <div class="step-info">
+                                <div class="step-name">Supplier Onboarding</div>
+                                <span class="step-badge badge-adhoc">Ad-Hoc</span>
+                            </div>
+                        </div>
+                        <div class="step-item" draggable="true" ondragstart="dragWorkflowStep(event)" data-step='{"name":"Risk Assessment","type":"Parallel","category":"drive","activityType":"SYSTEM_CHECK"}'>
+                            <div class="step-icon drive">🛡️</div>
+                            <div class="step-info">
+                                <div class="step-name">Risk Assessment</div>
+                                <span class="step-badge badge-parallel">Parallel</span>
+                            </div>
+                        </div>
+                        <div class="step-item" draggable="true" ondragstart="dragWorkflowStep(event)" data-step='{"name":"Compliance Check","type":"Conditional","category":"drive","activityType":"SYSTEM_CHECK"}'>
+                            <div class="step-icon drive">✓</div>
+                            <div class="step-info">
+                                <div class="step-name">Compliance Check</div>
+                                <span class="step-badge badge-conditional">Conditional</span>
+                            </div>
+                        </div>
+                        <div class="step-item" draggable="true" ondragstart="dragWorkflowStep(event)" data-step='{"name":"Desktop Review","type":"Regular","category":"drive","activityType":"USER_TASK"}'>
+                            <div class="step-icon drive">📋</div>
+                            <div class="step-info">
+                                <div class="step-name">Desktop Review</div>
+                                <span class="step-badge badge-regular">Regular</span>
+                            </div>
+                        </div>
+                        <div class="step-item" draggable="true" ondragstart="dragWorkflowStep(event)" data-step='{"name":"On-Site Inspection","type":"Conditional","category":"drive","activityType":"USER_TASK"}'>
+                            <div class="step-icon drive">🔍</div>
+                            <div class="step-info">
+                                <div class="step-name">On-Site Inspection</div>
+                                <span class="step-badge badge-conditional">Conditional</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="category">
+                    <div class="category-header" onclick="toggleCategory(this)">
+                        <span class="category-title">AGORA Steps</span>
+                        <span class="chevron">▼</span>
+                    </div>
+                    <div class="step-list">
+                        <div class="step-item" draggable="true" ondragstart="dragWorkflowStep(event)" data-step='{"name":"Tender Creation","type":"Regular","category":"agora","activityType":"USER_TASK"}'>
+                            <div class="step-icon agora">📄</div>
+                            <div class="step-info">
+                                <div class="step-name">Tender Creation</div>
+                                <span class="step-badge badge-regular">Regular</span>
+                            </div>
+                        </div>
+                        <div class="step-item" draggable="true" ondragstart="dragWorkflowStep(event)" data-step='{"name":"Approval Step","type":"Regular","category":"agora","activityType":"USER_TASK"}'>
+                            <div class="step-icon agora">✅</div>
+                            <div class="step-info">
+                                <div class="step-name">Approval Step</div>
+                                <span class="step-badge badge-regular">Regular</span>
+                            </div>
+                        </div>
+                        <div class="step-item" draggable="true" ondragstart="dragWorkflowStep(event)" data-step='{"name":"Publication","type":"Regular","category":"agora","activityType":"DATA_TRANSFORM"}'>
+                            <div class="step-icon agora">📢</div>
+                            <div class="step-info">
+                                <div class="step-name">Publication</div>
+                                <span class="step-badge badge-regular">Regular</span>
+                            </div>
+                        </div>
+                        <div class="step-item" draggable="true" ondragstart="dragWorkflowStep(event)" data-step='{"name":"Amendment Step","type":"Ad-Hoc","category":"agora","activityType":"SUB_FLOW_TRIGGER"}'>
+                            <div class="step-icon agora">📝</div>
+                            <div class="step-info">
+                                <div class="step-name">Amendment Step</div>
+                                <span class="step-badge badge-adhoc">Ad-Hoc</span>
+                            </div>
+                        </div>
+                        <div class="step-item" draggable="true" ondragstart="dragWorkflowStep(event)" data-step='{"name":"Bid Evaluation","type":"Regular","category":"agora","activityType":"USER_TASK"}'>
+                            <div class="step-icon agora">📊</div>
+                            <div class="step-info">
+                                <div class="step-name">Bid Evaluation</div>
+                                <span class="step-badge badge-regular">Regular</span>
+                            </div>
+                        </div>
+                        <div class="step-item" draggable="true" ondragstart="dragWorkflowStep(event)" data-step='{"name":"Contract Negotiation","type":"Conditional","category":"agora","activityType":"USER_TASK"}'>
+                            <div class="step-icon agora">🤝</div>
+                            <div class="step-info">
+                                <div class="step-name">Contract Negotiation</div>
+                                <span class="step-badge badge-conditional">Conditional</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="category">
+                    <div class="category-header" onclick="toggleCategory(this)">
+                        <span class="category-title">Universal Steps</span>
+                        <span class="chevron">▼</span>
+                    </div>
+                    <div class="step-list">
+                        <div class="step-item" draggable="true" ondragstart="dragWorkflowStep(event)" data-step='{"name":"Clarification Step","type":"Parallel","category":"universal","activityType":"USER_TASK"}'>
+                            <div class="step-icon universal">❓</div>
+                            <div class="step-info">
+                                <div class="step-name">Clarification Step</div>
+                                <span class="step-badge badge-parallel">Parallel</span>
+                            </div>
+                        </div>
+                        <div class="step-item" draggable="true" ondragstart="dragWorkflowStep(event)" data-step='{"name":"Wait Step","type":"Regular","category":"universal","activityType":"WAIT_STATE"}'>
+                            <div class="step-icon universal">⏱️</div>
+                            <div class="step-info">
+                                <div class="step-name">Wait Step</div>
+                                <span class="step-badge badge-regular">Regular</span>
+                            </div>
+                        </div>
+                        <div class="step-item" draggable="true" ondragstart="dragWorkflowStep(event)" data-step='{"name":"Notification Step","type":"Ad-Hoc","category":"universal","activityType":"NOTIFY_TASK"}'>
+                            <div class="step-icon universal">📧</div>
+                            <div class="step-info">
+                                <div class="step-name">Notification Step</div>
+                                <span class="step-badge badge-adhoc">Ad-Hoc</span>
+                            </div>
+                        </div>
+                        <div class="step-item" draggable="true" ondragstart="dragWorkflowStep(event)" data-step='{"name":"Approval Routing","type":"Regular","category":"universal","activityType":"USER_TASK"}'>
+                            <div class="step-icon universal">🔄</div>
+                            <div class="step-info">
+                                <div class="step-name">Approval Routing</div>
+                                <span class="step-badge badge-regular">Regular</span>
+                            </div>
+                        </div>
+                        <div class="step-item" draggable="true" ondragstart="dragWorkflowStep(event)" data-step='{"name":"Data Transform","type":"Regular","category":"universal","activityType":"DATA_TRANSFORM"}'>
+                            <div class="step-icon universal">⚙️</div>
+                            <div class="step-info">
+                                <div class="step-name">Data Transform</div>
+                                <span class="step-badge badge-regular">Regular</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="canvas-container">
+                <div class="canvas-header">
+                    <h2 class="canvas-title">Process Canvas</h2>
+                    <div class="view-toggle">
+                        <button class="view-btn active" onclick="toggleCanvasView(event, 'list')">📋 List</button>
+                        <button class="view-btn" onclick="toggleCanvasView(event, 'flowchart')">🔄 Flow</button>
+                    </div>
+                </div>
+                
+                <div id="listCanvas" class="canvas" ondrop="dropWorkflowStep(event)" ondragover="allowDrop(event)">
+                    <div class="canvas-empty">
+                        <div class="canvas-empty-icon">⊕</div>
+                        <div>Process Canvas</div>
+                        <p style="font-size: 13px; margin-top: 8px;">Drag steps from the library</p>
+                    </div>
+                </div>
+                
+                <div id="flowchartCanvas" class="canvas flowchart-canvas"></div>
+            </div>
+        </div>
+
+        <!-- Tender Document Builder View -->
+        <div id="tenderDocBuilderView" class="tender-doc-builder-view">
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <h2 class="sidebar-title">Blocks Library</h2>
+                </div>
+
+                <div class="category">
+                    <div class="category-header">
+                        <span class="category-title">📋 Content Blocks</span>
+                    </div>
+                    <div class="step-list">
+                        <div class="component-item" draggable="true" ondragstart="dragBlock(event)" data-block='{"type":"general","icon":"📋","name":"General Information"}'>
+                            <span class="component-icon">📋</span>
+                            <div class="component-info">
+                                <div class="component-title">General Information</div>
+                                <div class="component-desc">Basic tender details</div>
+                            </div>
+                        </div>
+                        <div class="component-item" draggable="true" ondragstart="dragBlock(event)" data-block='{"type":"project","icon":"🗂️","name":"Project Details"}'>
+                            <span class="component-icon">🗂️</span>
+                            <div class="component-info">
+                                <div class="component-title">Project Details</div>
+                                <div class="component-desc">Project & funding info</div>
+                            </div>
+                        </div>
+                        <div class="component-item" draggable="true" ondragstart="dragBlock(event)" data-block='{"type":"requisition","icon":"📦","name":"Requisition Details"}'>
+                            <span class="component-icon">📦</span>
+                            <div class="component-info">
+                                <div class="component-title">Requisition Details</div>
+                                <div class="component-desc">Requisition & items</div>
+                            </div>
+                        </div>
+                        <div class="component-item" draggable="true" ondragstart="dragBlock(event)" data-block='{"type":"timeline","icon":"📅","name":"Timeline & Deadlines"}'>
+                            <span class="component-icon">📅</span>
+                            <div class="component-info">
+                                <div class="component-title">Timeline & Deadlines</div>
+                                <div class="component-desc">Key dates & milestones</div>
+                            </div>
+                        </div>
+                        <div class="component-item" draggable="true" ondragstart="dragBlock(event)" data-block='{"type":"scope","icon":"🎯","name":"Scope & Requirements"}'>
+                            <span class="component-icon">🎯</span>
+                            <div class="component-info">
+                                <div class="component-title">Scope & Requirements</div>
+                                <div class="component-desc">Technical specifications</div>
+                            </div>
+                        </div>
+                        <div class="component-item" draggable="true" ondragstart="dragBlock(event)" data-block='{"type":"evaluation","icon":"📊","name":"Evaluation Criteria"}'>
+                            <span class="component-icon">📊</span>
+                            <div class="component-info">
+                                <div class="component-title">Evaluation Criteria</div>
+                                <div class="component-desc">Assessment criteria</div>
+                            </div>
+                        </div>
+                        <div class="component-item" draggable="true" ondragstart="dragBlock(event)" data-block='{"type":"submission","icon":"📝","name":"Submission Requirements"}'>
+                            <span class="component-icon">📝</span>
+                            <div class="component-info">
+                                <div class="component-title">Submission Requirements</div>
+                                <div class="component-desc">Bidder requirements</div>
+                            </div>
+                        </div>
+                        <div class="component-item" draggable="true" ondragstart="dragBlock(event)" data-block='{"type":"drive","icon":"🌱","name":"DRiVE Module"}'>
+                            <span class="component-icon">🌱</span>
+                            <div class="component-info">
+                                <div class="component-title">DRiVE Module</div>
+                                <div class="component-desc">Sustainability assessment</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="category">
+                    <div class="category-header">
+                        <span class="category-title">📄 Forms & Documents</span>
+                    </div>
+                    <div class="step-list">
+                        <div class="component-item" draggable="true" ondragstart="dragBlock(event)" data-block='{"type":"form","icon":"📄","name":"Bank Guarantee Form"}'>
+                            <span class="component-icon">📄</span>
+                            <div class="component-info">
+                                <div class="component-title">Bank Guarantee</div>
+                                <div class="component-desc">Standard format</div>
+                            </div>
+                        </div>
+                        <div class="component-item" draggable="true" ondragstart="dragBlock(event)" data-block='{"type":"form","icon":"📄","name":"Bid Security Form"}'>
+                            <span class="component-icon">📄</span>
+                            <div class="component-info">
+                                <div class="component-title">Bid Security Form</div>
+                                <div class="component-desc">Security requirements</div>
+                            </div>
+                        </div>
+                        <div class="component-item" draggable="true" ondragstart="dragBlock(event)" data-block='{"type":"form","icon":"📄","name":"Technical Proposal Form"}'>
+                            <span class="component-icon">📄</span>
+                            <div class="component-info">
+                                <div class="component-title">Technical Proposal</div>
+                                <div class="component-desc">Supplier submission</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="category">
+                    <div class="category-header">
+                        <span class="category-title">🔧 Special Components</span>
+                    </div>
+                    <div class="step-list">
+                        <div class="component-item" draggable="true" ondragstart="dragBlock(event)" data-block='{"type":"workflow","icon":"⚡","name":"Approval Workflow"}'>
+                            <span class="component-icon">⚡</span>
+                            <div class="component-info">
+                                <div class="component-title">Approval Workflow</div>
+                                <div class="component-desc">Review & approval</div>
+                            </div>
+                        </div>
+                        <div class="component-item" draggable="true" ondragstart="dragBlock(event)" data-block='{"type":"policy","icon":"⚠️","name":"Policy Deviation Rules"}'>
+                            <span class="component-icon">⚠️</span>
+                            <div class="component-info">
+                                <div class="component-title">Policy Deviation Rules</div>
+                                <div class="component-desc">Compliance checks</div>
+                            </div>
+                        </div>
+                        <div class="component-item" draggable="true" ondragstart="dragBlock(event)" data-block='{"type":"sp-rules","icon":"🛡️","name":"SP Framework Rules"}'>
+                            <span class="component-icon">🛡️</span>
+                            <div class="component-info">
+                                <div class="component-title">SP Framework Rules</div>
+                                <div class="component-desc">Sustainable procurement</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="canvas-container">
+                <div class="canvas-header">
+                    <h2 class="canvas-title">Tender Document Template Canvas</h2>
+                    <button class="btn btn-primary btn-sm" onclick="showRuleVisualization()">⚡ Apply Rules</button>
+                </div>
+                
+                <div id="ruleAlert" style="display: none;" class="alert alert-success">
+                    <strong>✓ Policy Rules Applied</strong><br>
+                    2 mandatory blocks added based on procurement method and value
+                </div>
+
+                <div id="templateCanvas" class="canvas" ondrop="dropBlock(event)" ondragover="allowDrop(event)">
+                    <div class="canvas-empty">
+                        <div class="canvas-empty-icon">🎨</div>
+                        <div>Start Building Your Tender Document Template</div>
+                        <p style="font-size: 13px; margin-top: 8px;">Drag blocks from the left to compose your template</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fields Library View -->
+        <div id="fieldsLibraryView" class="fields-library-view">
+            <div class="library-content">
+                <div class="templates-header">
+                    <h1 class="templates-title">Fields Library</h1>
+                    <p class="templates-subtitle">Manage all field definitions across the system</p>
+                </div>
+
+                <div class="library-tabs">
+                    <button class="library-tab active" onclick="switchLibraryTab('core-fields')">Core Fields</button>
+                    <button class="library-tab" onclick="switchLibraryTab('custom-entities')">Custom Entities</button>
+                    <button class="library-tab" onclick="switchLibraryTab('custom-fields')">Custom Fields</button>
+                </div>
+
+                <div id="coreFieldsTab" class="tab-content active">
+                    <div style="display: flex; justify-content: flex-end; margin-bottom: 16px;">
+                        <button class="btn btn-primary" onclick="alert('Add new field')">+ Add Field</button>
+                    </div>
+
+                    <div class="entity-card">
+                        <div class="entity-header">
+                            <div class="entity-name">📋 Tender Entity</div>
+                            <button class="btn btn-ghost btn-sm">Edit</button>
+                        </div>
+                        <div class="field-list">
+                            <div class="field-row field-row-header">
+                                <div>Field Name</div>
+                                <div>Data Type</div>
+                                <div>Validation</div>
+                                <div>Status</div>
+                                <div>Actions</div>
+                            </div>
+                            <div class="field-row">
+                                <div><strong>TenderTitle</strong></div>
+                                <div>TEXT</div>
+                                <div>Mandatory</div>
+                                <div><span class="status-active">Active</span></div>
+                                <div><button class="btn btn-ghost btn-sm">⚙️</button></div>
+                            </div>
+                            <div class="field-row">
+                                <div><strong>ProcurementMethod</strong></div>
+                                <div>LOV</div>
+                                <div>Mandatory</div>
+                                <div><span class="status-active">Active</span></div>
+                                <div><button class="btn btn-ghost btn-sm">⚙️</button></div>
+                            </div>
+                            <div class="field-row">
+                                <div><strong>EstimatedValue</strong></div>
+                                <div>NUMERIC</div>
+                                <div>Min: 0</div>
+                                <div><span class="status-active">Active</span></div>
+                                <div><button class="btn btn-ghost btn-sm">⚙️</button></div>
+                            </div>
+                            <div class="field-row">
+                                <div><strong>SubmissionDeadline</strong></div>
+                                <div>DATE</div>
+                                <div>Mandatory</div>
+                                <div><span class="status-active">Active</span></div>
+                                <div><button class="btn btn-ghost btn-sm">⚙️</button></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="entity-card">
+                        <div class="entity-header">
+                            <div class="entity-name">👤 Vendor Entity</div>
+                            <button class="btn btn-ghost btn-sm">Edit</button>
+                        </div>
+                        <div class="field-list">
+                            <div class="field-row field-row-header">
+                                <div>Field Name</div>
+                                <div>Data Type</div>
+                                <div>Validation</div>
+                                <div>Status</div>
+                                <div>Actions</div>
+                            </div>
+                            <div class="field-row">
+                                <div><strong>VendorName</strong></div>
+                                <div>TEXT</div>
+                                <div>Mandatory</div>
+                                <div><span class="status-active">Active</span></div>
+                                <div><button class="btn btn-ghost btn-sm">⚙️</button></div>
+                            </div>
+                            <div class="field-row">
+                                <div><strong>RegistrationNumber</strong></div>
+                                <div>TEXT</div>
+                                <div>Mandatory</div>
+                                <div><span class="status-active">Active</span></div>
+                                <div><button class="btn btn-ghost btn-sm">⚙️</button></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="entity-card">
+                        <div class="entity-header">
+                            <div class="entity-name">💰 Pricing Entity</div>
+                            <button class="btn btn-ghost btn-sm">Edit</button>
+                        </div>
+                        <div class="field-list">
+                            <div class="field-row field-row-header">
+                                <div>Field Name</div>
+                                <div>Data Type</div>
+                                <div>Validation</div>
+                                <div>Status</div>
+                                <div>Actions</div>
+                            </div>
+                            <div class="field-row">
+                                <div><strong>UnitPrice</strong></div>
+                                <div>NUMERIC</div>
+                                <div>Min: 0</div>
+                                <div><span class="status-active">Active</span></div>
+                                <div><button class="btn btn-ghost btn-sm">⚙️</button></div>
+                            </div>
+                            <div class="field-row">
+                                <div><strong>Currency</strong></div>
+                                <div>LOV</div>
+                                <div>Mandatory</div>
+                                <div><span class="status-active">Active</span></div>
+                                <div><button class="btn btn-ghost btn-sm">⚙️</button></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="customEntitiesTab" class="tab-content">
+                    <div class="alert alert-info">
+                        Create custom entities to organize fields for unique business needs
+                    </div>
+                    <button class="btn btn-primary">+ Create Custom Entity</button>
+                </div>
+
+                <div id="customFieldsTab" class="tab-content">
+                    <div class="alert alert-warning">
+                        Unstructured custom fields for unique, one-off requirements
+                    </div>
+                    <button class="btn btn-primary">+ Add Custom Field</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Criteria Library View -->
+        <div id="criteriaLibraryView" class="criteria-library-view">
+            <div class="library-content">
+                <div class="templates-header">
+                    <h1 class="templates-title">Criteria Library</h1>
+                    <p class="templates-subtitle">Define criteria that drive system logic and decisions</p>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; margin-bottom: 16px;">
+                    <button class="btn btn-primary" onclick="alert('Add new criterion')">+ Add Criterion</button>
+                </div>
+
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Criterion ID</th>
+                                <th>Criterion Name</th>
+                                <th>Source Field</th>
+                                <th>Associated Logic</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>CRIT_PROCUREMENT_METHOD</code></td>
+                                <td>Procurement Method Check</td>
+                                <td>ProcurementMethod</td>
+                                <td>LOV_SELECTION</td>
+                                <td><span class="status-active">Active</span></td>
+                                <td><button class="btn btn-ghost btn-sm">⚙️ Edit</button></td>
+                            </tr>
+                            <tr>
+                                <td><code>CRIT_ESTIMATED_VALUE</code></td>
+                                <td>Estimated Value Threshold</td>
+                                <td>EstimatedValue</td>
+                                <td>NUMERIC_THRESHOLD</td>
+                                <td><span class="status-active">Active</span></td>
+                                <td><button class="btn btn-ghost btn-sm">⚙️ Edit</button></td>
+                            </tr>
+                            <tr>
+                                <td><code>CRIT_BID_SECURITY</code></td>
+                                <td>Bid Security Required</td>
+                                <td>BidSecurityRequired</td>
+                                <td>BOOLEAN_YES_NO_CHECK</td>
+                                <td><span class="status-active">Active</span></td>
+                                <td><button class="btn btn-ghost btn-sm">⚙️ Edit</button></td>
+                            </tr>
+                            <tr>
+                                <td><code>CRIT_REQUIREMENT_TYPE</code></td>
+                                <td>Requirement Category</td>
+                                <td>RequirementType</td>
+                                <td>LOV_SELECTION</td>
+                                <td><span class="status-active">Active</span></td>
+                                <td><button class="btn btn-ghost btn-sm">⚙️ Edit</button></td>
+                            </tr>
+                            <tr>
+                                <td><code>CRIT_SUSTAINABILITY</code></td>
+                                <td>Sustainability Assessment</td>
+                                <td>SustainabilityRequired</td>
+                                <td>BOOLEAN_YES_NO_CHECK</td>
+                                <td><span class="status-active">Active</span></td>
+                                <td><button class="btn btn-ghost btn-sm">⚙️ Edit</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="entity-card" style="margin-top: 24px;">
+                    <div class="entity-header">
+                        <div class="entity-name">ℹ️ Associated Logic Types</div>
+                    </div>
+                    <div style="padding: 16px;">
+                        <div style="margin-bottom: 12px;">
+                            <strong>BOOLEAN_YES_NO_CHECK:</strong> Simple true/false validation
+                        </div>
+                        <div style="margin-bottom: 12px;">
+                            <strong>NUMERIC_THRESHOLD:</strong> Compare numeric values (>, <, =, >=, <=)
+                        </div>
+                        <div style="margin-bottom: 12px;">
+                            <strong>LOV_SELECTION:</strong> Match against list of values
+                        </div>
+                        <div>
+                            <strong>DATE_COMPARISON:</strong> Compare dates and time periods
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rules Engine View -->
+        <div id="rulesEngineView" class="rules-engine-view">
+            <div class="library-content">
+                <div class="templates-header">
+                    <h1 class="templates-title">Policy & Rules Engine</h1>
+                    <p class="templates-subtitle">Define policy-driven rules for automatic template assembly</p>
+                </div>
+
+                <div class="rule-builder">
+                    <div class="rule-header">
+                        <div class="rule-title">Rule #1: RFP High-Value Tender</div>
+                        <div>
+                            <button class="btn btn-ghost btn-sm">💾 Save</button>
+                            <button class="btn btn-ghost btn-sm">🗑️ Delete</button>
+                        </div>
+                    </div>
+
+                    <div class="rule-section">
+                        <label class="rule-label">IF (Conditions)</label>
+                        <div class="condition-row">
+                            <select class="rule-select">
+                                <option>ProcurementMethod</option>
+                                <option>EstimatedValue</option>
+                                <option>RequirementType</option>
+                                <option>Country</option>
+                            </select>
+                            <select class="rule-select">
+                                <option>equals</option>
+                                <option>greater than</option>
+                                <option>less than</option>
+                                <option>contains</option>
+                            </select>
+                            <input type="text" class="rule-input" value="RFP" placeholder="Value">
+                            <button class="btn btn-ghost btn-sm">🗑️</button>
+                        </div>
+                        <div class="condition-row">
+                            <select class="rule-select">
+                                <option>EstimatedValue</option>
+                                <option>ProcurementMethod</option>
+                            </select>
+                            <select class="rule-select">
+                                <option selected>greater than</option>
+                                <option>equals</option>
+                            </select>
+                            <input type="text" class="rule-input" value="100000" placeholder="Value">
+                            <button class="btn btn-ghost btn-sm">🗑️</button>
+                        </div>
+                        <button class="btn btn-ghost btn-sm">+ Add Condition (AND)</button>
+                    </div>
+
+                    <div class="rule-section">
+                        <label class="rule-label">THEN (Actions)</label>
+                        <div class="action-row">
+                            <span style="font-weight: 600;">MANDATE Block:</span>
+                            <select class="rule-select" style="flex: 1;">
+                                <option>Evaluation Criteria</option>
+                                <option>General Information</option>
+                                <option>Scope & Requirements</option>
+                            </select>
+                            <button class="btn btn-ghost btn-sm">🗑️</button>
+                        </div>
+                        <div class="action-row">
+                            <span style="font-weight: 600;">MANDATE Block:</span>
+                            <select class="rule-select" style="flex: 1;">
+                                <option>Bank Guarantee Form</option>
+                            </select>
+                            <button class="btn btn-ghost btn-sm">🗑️</button>
+                        </div>
+                        <button class="btn btn-ghost btn-sm">+ Add Action</button>
+                    </div>
+                </div>
+
+                <div class="rule-builder">
+                    <div class="rule-header">
+                        <div class="rule-title">Rule #2: Sustainability Module</div>
+                        <div>
+                            <button class="btn btn-ghost btn-sm">💾 Save</button>
+                            <button class="btn btn-ghost btn-sm">🗑️ Delete</button>
+                        </div>
+                    </div>
+
+                    <div class="rule-section">
+                        <label class="rule-label">IF (Conditions)</label>
+                        <div class="condition-row">
+                            <select class="rule-select">
+                                <option>SustainabilityRequired</option>
+                            </select>
+                            <select class="rule-select">
+                                <option>equals</option>
+                            </select>
+                            <input type="text" class="rule-input" value="Yes" placeholder="Value">
+                            <button class="btn btn-ghost btn-sm">🗑️</button>
+                        </div>
+                    </div>
+
+                    <div class="rule-section">
+                        <label class="rule-label">THEN (Actions)</label>
+                        <div class="action-row">
+                            <span style="font-weight: 600;">MANDATE Block:</span>
+                            <select class="rule-select" style="flex: 1;">
+                                <option>DRiVE Sustainability Module</option>
+                            </select>
+                            <button class="btn btn-ghost btn-sm">🗑️</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 24px;">
+                    <button class="btn btn-primary">+ Create New Rule</button>
+                </div>
+
+                <div class="rule-visualization">
+                    <div class="rule-viz-title">📊 Rule Visualization</div>
+                    <div class="alert alert-info">
+                        When these rules are applied, the system will automatically mandate blocks based on the procurement parameters
+                    </div>
+
+                    <div class="rule-flow">
+                        <div class="rule-if">IF</div>
+                        <div class="rule-condition">ProcurementMethod = "RFP"</div>
+                        <div style="font-weight: 600;">AND</div>
+                        <div class="rule-condition">EstimatedValue > $100,000</div>
+                        <div class="rule-then">THEN</div>
+                        <div class="rule-action">MANDATE: Evaluation Criteria</div>
+                        <div class="rule-action">MANDATE: Bank Guarantee</div>
+                    </div>
+
+                    <div class="rule-flow">
+                        <div class="rule-if">IF</div>
+                        <div class="rule-condition">SustainabilityRequired = "Yes"</div>
+                        <div class="rule-then">THEN</div>
+                        <div class="rule-action">MANDATE: DRiVE Module</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="config-panel" id="configPanel">
+        <div class="config-header">
+            <h3 class="config-title">Properties</h3>
+            <button class="close-btn" onclick="closeConfig()">×</button>
+        </div>
+        
+        <div class="property-tabs">
+            <button class="property-tab active" onclick="switchTab('general')">General</button>
+            <button class="property-tab" onclick="switchTab('fields')">Fields</button>
+            <button class="property-tab" onclick="switchTab('logic')">Logic</button>
+        </div>
+
+        <div id="tab-general" class="tab-content active">
+            <div class="config-section">
+                <label class="config-label">Name</label>
+                <input type="text" class="config-input" id="propName" placeholder="Enter name">
+            </div>
+
+            <div class="config-section">
+                <label class="config-label">Type</label>
+                <select class="config-select" id="propType">
+                    <option value="USER_TASK">User Task</option>
+                    <option value="SYSTEM_CHECK">System Check</option>
+                    <option value="WAIT_STATE">Wait State</option>
+                </select>
+            </div>
+
+            <div class="config-section">
+                <label class="config-label">Description</label>
+                <textarea class="property-textarea" id="propDescription"></textarea>
+            </div>
+        </div>
+
+        <div id="tab-fields" class="tab-content">
+            <div class="alert alert-info">
+                Configure fields for this component
+            </div>
+            <button class="btn btn-ghost" style="width: 100%;">+ Add Field</button>
+        </div>
+
+        <div id="tab-logic" class="tab-content">
+            <div class="alert alert-info">
+                Define conditional logic
+            </div>
+            <div class="config-section">
+                <label class="config-label">Condition</label>
+                <input type="text" class="config-input" placeholder="e.g., $.value > 100">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let droppedSteps = [];
+        let droppedBlocks = [];
+        let selectedElement = null;
+        let currentView = 'workflows';
+        let currentCanvasView = 'list';
+        let currentLibraryTab = 'core-fields';
+
+        const workflowTemplates = {
+            'drive-onboarding': [
+                {name: "Select Suppliers", type: "Regular", category: "drive", activityType: "USER_TASK"},
+                {name: "Desktop Review", type: "Regular", category: "drive", activityType: "USER_TASK"},
+                {name: "Risk Assessment", type: "Parallel", category: "drive", activityType: "SYSTEM_CHECK"},
+                {name: "Compliance Check", type: "Conditional", category: "drive", activityType: "SYSTEM_CHECK"},
+                {name: "On-Site Inspection", type: "Conditional", category: "drive", activityType: "USER_TASK"},
+                {name: "Wait Step", type: "Regular", category: "universal", activityType: "WAIT_STATE"},
+                {name: "Finalize Assessment", type: "Regular", category: "drive", activityType: "USER_TASK"},
+                {name: "Notification Step", type: "Ad-Hoc", category: "universal", activityType: "NOTIFY_TASK"}
+            ],
+            'standard-tender': [
+                {name: "Tender Creation", type: "Regular", category: "agora", activityType: "USER_TASK"},
+                {name: "Approval Step", type: "Regular", category: "agora", activityType: "USER_TASK"},
+                {name: "Publication", type: "Regular", category: "agora", activityType: "DATA_TRANSFORM"},
+                {name: "Clarification Step", type: "Parallel", category: "universal", activityType: "USER_TASK"},
+                {name: "Amendment Step", type: "Ad-Hoc", category: "agora", activityType: "SUB_FLOW_TRIGGER"},
+                {name: "Wait Step", type: "Regular", category: "universal", activityType: "WAIT_STATE"},
+                {name: "Bid Evaluation", type: "Regular", category: "agora", activityType: "USER_TASK"},
+                {name: "Contract Negotiation", type: "Conditional", category: "agora", activityType: "USER_TASK"},
+                {name: "Award Decision", type: "Regular", category: "agora", activityType: "USER_TASK"},
+                {name: "Notification Step", type: "Ad-Hoc", category: "universal", activityType: "NOTIFY_TASK"}
+            ],
+            'rfq-process': [
+                {name: "Tender Creation", type: "Regular", category: "agora", activityType: "USER_TASK"},
+                {name: "Approval Step", type: "Regular", category: "agora", activityType: "USER_TASK"},
+                {name: "Publication", type: "Regular", category: "agora", activityType: "DATA_TRANSFORM"},
+                {name: "Bid Evaluation", type: "Regular", category: "agora", activityType: "USER_TASK"},
+                {name: "Award Decision", type: "Regular", category: "agora", activityType: "USER_TASK"},
+                {name: "Notification Step", type: "Ad-Hoc", category: "universal", activityType: "NOTIFY_TASK"}
+            ],
+            'desktop-review': [
+                {name: "Select Suppliers", type: "Regular", category: "drive", activityType: "USER_TASK"},
+                {name: "Desktop Review", type: "Regular", category: "drive", activityType: "USER_TASK"},
+                {name: "Risk Assessment", type: "Parallel", category: "drive", activityType: "SYSTEM_CHECK"},
+                {name: "Finalize Assessment", type: "Regular", category: "drive", activityType: "USER_TASK"},
+                {name: "Notification Step", type: "Ad-Hoc", category: "universal", activityType: "NOTIFY_TASK"}
+            ],
+            'restricted-tender': [
+                {name: "Tender Creation", type: "Regular", category: "agora", activityType: "USER_TASK"},
+                {name: "Approval Step", type: "Regular", category: "agora", activityType: "USER_TASK"},
+                {name: "Publication", type: "Regular", category: "agora", activityType: "DATA_TRANSFORM"},
+                {name: "Clarification Step", type: "Parallel", category: "universal", activityType: "USER_TASK"},
+                {name: "Bid Evaluation", type: "Regular", category: "agora", activityType: "USER_TASK"},
+                {name: "Contract Negotiation", type: "Regular", category: "agora", activityType: "USER_TASK"},
+                {name: "Award Decision", type: "Regular", category: "agora", activityType: "USER_TASK"},
+                {name: "Notification Step", type: "Ad-Hoc", category: "universal", activityType: "NOTIFY_TASK"}
+            ],
+            'blank': []
+        };
+
+        const blockFields = {
+            'general': ['Title', 'Reference', 'Type of Requirement'],
+            'project': ['Work Package', 'Funding Source', 'Project Name'],
+            'requisition': ['Requisition ID', 'Currency', 'Amount'],
+            'timeline': ['Submission Deadline', 'Award Date', 'Clarification Deadline'],
+            'scope': ['Scope Description', 'Technical Requirements', 'Deliverables'],
+            'evaluation': ['Evaluation Method', 'Criteria', 'Scoring Weights'],
+            'submission': ['Bid Validity', 'Currency', 'Submission Format'],
+            'drive': ['Core Questionnaire', 'Add-ons', 'Sustainability Criteria'],
+            'form': ['Form Type', 'Required Fields'],
+            'workflow': ['Approval Flow', 'Required Approvers'],
+            'policy': ['Policy Rules', 'Deviation Management'],
+            'sp-rules': ['SP Framework', 'Category Mapping']
+        };
+
+        function showView(evt, view) {
+            const navLinks = document.querySelectorAll('.nav a');
+            navLinks.forEach(link => link.classList.remove('active'));
+            evt.target.classList.add('active');
+
+            document.getElementById('flowsView').classList.remove('active');
+            document.getElementById('libraryView').classList.remove('active');
+            document.getElementById('tenderDocBuilderView').classList.remove('active');
+            document.getElementById('fieldsLibraryView').classList.remove('active');
+            document.getElementById('criteriaLibraryView').classList.remove('active');
+            document.getElementById('rulesEngineView').classList.remove('active');
+
+            if (view === 'flows') {
+                document.getElementById('flowsView').classList.add('active');
+            } else if (view === 'tender-doc-builder') {
+                document.getElementById('tenderDocBuilderView').classList.add('active');
+            } else if (view === 'fields-library') {
+                document.getElementById('fieldsLibraryView').classList.add('active');
+            } else if (view === 'criteria-library') {
+                document.getElementById('criteriaLibraryView').classList.add('active');
+            } else if (view === 'rules-engine') {
+                document.getElementById('rulesEngineView').classList.add('active');
+            } else {
+                document.getElementById('libraryView').classList.add('active');
+            }
+            currentView = view;
+        }
+
+        function loadWorkflowTemplate(templateId) {
+            droppedSteps = [...workflowTemplates[templateId]];
+            document.getElementById('flowsView').classList.remove('active');
+            document.getElementById('libraryView').classList.add('active');
+            const navLinks = document.querySelectorAll('.nav a');
+            navLinks.forEach(link => link.classList.remove('active'));
+            navLinks[0].classList.add('active');
+            currentView = 'workflows';
+            renderWorkflowCanvas();
+        }
+
+        function toggleCategory(header) {
+            header.parentElement.classList.toggle('collapsed');
+        }
+
+        function toggleCanvasView(evt, view) {
+            const buttons = document.querySelectorAll('.view-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            evt.target.classList.add('active');
+            currentCanvasView = view;
+            
+            if (view === 'list') {
+                document.getElementById('listCanvas').style.display = 'block';
+                document.getElementById('flowchartCanvas').classList.remove('active');
+            } else {
+                document.getElementById('listCanvas').style.display = 'none';
+                document.getElementById('flowchartCanvas').classList.add('active');
+                renderFlowchart();
+            }
+        }
+
+        function switchLibraryTab(tab) {
+            const tabs = document.querySelectorAll('.library-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+
+            document.getElementById('coreFieldsTab').classList.remove('active');
+            document.getElementById('customEntitiesTab').classList.remove('active');
+            document.getElementById('customFieldsTab').classList.remove('active');
+
+            if (tab === 'core-fields') {
+                document.getElementById('coreFieldsTab').classList.add('active');
+            } else if (tab === 'custom-entities') {
+                document.getElementById('customEntitiesTab').classList.add('active');
+            } else if (tab === 'custom-fields') {
+                document.getElementById('customFieldsTab').classList.add('active');
+            }
+        }
+
+        // Workflow drag and drop
+        function dragWorkflowStep(e) {
+            e.dataTransfer.setData("step", e.target.getAttribute('data-step'));
+        }
+
+        function allowDrop(e) {
+            e.preventDefault();
+        }
+
+        function dropWorkflowStep(e) {
+            e.preventDefault();
+            const stepData = JSON.parse(e.dataTransfer.getData("step"));
+            droppedSteps.push(stepData);
+            renderWorkflowCanvas();
+        }
+
+        function renderWorkflowCanvas() {
+            const canvas = document.getElementById('listCanvas');
+            if (droppedSteps.length === 0) {
+                canvas.innerHTML = `
+                    <div class="canvas-empty">
+                        <div class="canvas-empty-icon">⊕</div>
+                        <div>Process Canvas</div>
+                        <p style="font-size: 13px; margin-top: 8px;">Drag steps from the library</p>
+                    </div>`;
+                return;
+            }
+
+            const icons = {'drive': '👤', 'agora': '📄', 'universal': '⚙️'};
+            canvas.innerHTML = droppedSteps.map((step, i) => {
+                const badgeClass = `badge-${step.type.toLowerCase().replace(/-/g, '')}`;
+                return `
+                    <div class="dropped-step" onclick="selectWorkflowStep(${i})">
+                        <div class="step-number">${i + 1}</div>
+                        <div class="dropped-step-icon ${step.category}">${icons[step.category]}</div>
+                        <div class="dropped-step-info">
+                            <div class="dropped-step-name">${step.name}</div>
+                            <div class="dropped-step-meta">
+                                <span class="step-badge ${badgeClass}">${step.type}</span>
+                                <span class="step-badge badge-regular">${step.activityType}</span>
+                            </div>
+                        </div>
+                        <button class="delete-btn" onclick="deleteWorkflowStep(event, ${i})">Delete</button>
+                        ${i < droppedSteps.length - 1 ? '<div class="connector"></div>' : ''}
+                    </div>`;
+            }).join('');
+        }
+
+        function renderFlowchart() {
+            const canvas = document.getElementById('flowchartCanvas');
+            if (droppedSteps.length === 0) {
+                canvas.innerHTML = `<div class="canvas-empty"><div class="canvas-empty-icon">🔄</div><div>Flow Visualization</div></div>`;
+                return;
+            }
+
+            const icons = {'drive': '👤', 'agora': '📄', 'universal': '⚙️'};
+            let html = '';
+            let yPos = 40;
+            let xBase = 150;
+            let previousStep = null;
+
+            droppedSteps.forEach((step, i) => {
+                const isParallel = step.type === 'Parallel';
+                let xPos = isParallel ? xBase + 350 : xBase;
+
+                if (previousStep) {
+                    if (isParallel) {
+                        html += `<div class="flow-line horizontal" style="top: ${previousStep.y + 40}px; left: ${xBase + 180}px; width: 150px;"></div>`;
+                        html += `<div class="flow-line vertical" style="top: ${previousStep.y + 40}px; left: ${xPos}px; height: ${yPos - previousStep.y - 40}px;"></div>`;
+                    } else if (previousStep.isParallel) {
+                        html += `<div class="flow-line vertical" style="top: ${previousStep.y + 80}px; left: ${xBase + 350}px; height: ${yPos - previousStep.y - 80}px;"></div>`;
+                        html += `<div class="flow-line horizontal" style="top: ${yPos}px; left: ${xBase}px; width: 350px;"></div>`;
+                    } else {
+                        html += `<div class="flow-line vertical" style="top: ${previousStep.y + 80}px; left: ${xPos + 90}px; height: ${yPos - previousStep.y - 80}px;"></div>`;
+                        html += `<div class="flow-arrow" style="top: ${yPos - 4}px; left: ${xPos + 84}px;"></div>`;
+                    }
+                }
+
+                const stepClass = isParallel ? 'parallel' : '';
+                html += `
+                    <div class="flow-step ${stepClass}" style="top: ${yPos}px; left: ${xPos}px;">
+                        <div class="flow-step-header">
+                            <div class="flow-step-icon ${step.category}">${icons[step.category]}</div>
+                            <div>
+                                <div class="flow-step-name">${step.name}</div>
+                                <div class="flow-step-type">${step.type}</div>
+                            </div>
+                        </div>
+                    </div>`;
+
+                previousStep = {y: yPos, isParallel};
+                if (!isParallel) yPos += 120;
+            });
+
+            canvas.innerHTML = html;
+        }
+
+        function selectWorkflowStep(index) {
+            selectedElement = {type: 'workflow-step', index};
+            document.getElementById('propName').value = droppedSteps[index].name;
+            document.getElementById('propType').value = droppedSteps[index].activityType;
+            document.getElementById('configPanel').classList.add('open');
+        }
+
+        function deleteWorkflowStep(event, index) {
+            event.stopPropagation();
+            droppedSteps.splice(index, 1);
+            renderWorkflowCanvas();
+        }
+
+        // Template Builder drag and drop
+        function dragBlock(e) {
+            e.dataTransfer.setData("block", e.target.getAttribute('data-block'));
+        }
+
+        function dropBlock(e) {
+            e.preventDefault();
+            const blockData = JSON.parse(e.dataTransfer.getData("block"));
+            droppedBlocks.push(blockData);
+            renderTemplateCanvas();
+        }
+
+        function renderTemplateCanvas() {
+            const canvas = document.getElementById('templateCanvas');
+            if (droppedBlocks.length === 0) {
+                canvas.innerHTML = `
+                    <div class="canvas-empty">
+                        <div class="canvas-empty-icon">🎨</div>
+                        <div>Start Building Your Template</div>
+                        <p style="font-size: 13px; margin-top: 8px;">Drag blocks from the left</p>
+                    </div>`;
+                return;
+            }
+
+            canvas.innerHTML = droppedBlocks.map((block, i) => {
+                const fields = blockFields[block.type] || [];
+                const isMandated = block.mandated ? 'mandated' : '';
+                return `
+                    <div class="dropped-section ${isMandated}" onclick="selectBlock(${i})">
+                        <div class="section-header">
+                            <div class="section-title-area">
+                                <span class="section-icon">${block.icon}</span>
+                                <span class="section-name">${block.name}</span>
+                                ${block.mandated ? '<span class="step-badge badge-mandated">Policy Mandated</span>' : '<span class="step-badge badge-discretionary">Discretionary</span>'}
+                            </div>
+                            <div class="section-controls">
+                                <button class="icon-btn" onclick="deleteBlock(event, ${i})">🗑️</button>
+                            </div>
+                        </div>
+                        <div class="section-body">
+                            ${fields.map(field => `
+                                <div class="field-item">
+                                    <div class="field-info">
+                                        <span class="field-label">${field}</span>
+                                        <div class="field-badges">
+                                            <span class="field-badge badge-required">Required</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>`;
+            }).join('');
+        }
+
+        function selectBlock(index) {
+            selectedElement = {type: 'block', index};
+            document.getElementById('propName').value = droppedBlocks[index].name;
+            document.getElementById('configPanel').classList.add('open');
+        }
+
+        function deleteBlock(event, index) {
+            event.stopPropagation();
+            if (droppedBlocks[index].mandated) {
+                if (!confirm('This block is mandated by policy. Are you sure you want to remove it?')) {
+                    return;
+                }
+            }
+            droppedBlocks.splice(index, 1);
+            renderTemplateCanvas();
+        }
+
+        function showRuleVisualization() {
+            // Simulate applying policy rules
+            document.getElementById('ruleAlert').style.display = 'block';
+            
+            // Add mandated blocks
+            droppedBlocks.push({
+                type: 'evaluation',
+                icon: '📊',
+                name: 'Evaluation Criteria',
+                mandated: true
+            });
+            droppedBlocks.push({
+                type: 'general',
+                icon: '📋',
+                name: 'Bank Guarantee Form',
+                mandated: true
+            });
+            
+            renderTemplateCanvas();
+
+            setTimeout(() => {
+                document.getElementById('ruleAlert').style.display = 'none';
+            }, 5000);
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.property-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('tab-' + tabName).classList.add('active');
+        }
+
+        function closeConfig() {
+            document.getElementById('configPanel').classList.remove('open');
+        }
+
+        renderWorkflowCanvas();
+    </script>
+</body>
+</html>
