@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UNOPS PDJ · Event Setup Wizard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        /* Primary Colors - UNOPS Design System */
+        --primary-400: #00669a;
+        --primary-500: #005783;
+        --primary-600: #00476c;
+        --primary-50: #bfd9e6;
+        --primary-100: #99c2d7;
+        --primary-700: #003855;
+
+        /* Surface Colors - Cold Neutral Palette */
+        --surface-0: #ffffff;
+        --surface-50: #f5f8fb;
+        --surface-100: #ebf1f8;
+        --surface-200: #dde8f2;
+        --surface-300: #cfdfec;
+        --surface-600: #95a7ba;
+        --surface-800: #596170;
+        --surface-900: #3b3e4a;
+
+        /* Semantic Colors */
+        --success-500: #4c9f38;
+        --success-50: #d2e7cd;
+        --info-400: #0092d1;
+        --info-50: #bfe4f4;
+        --warning-500: #e85c0e;
+        --warning-50: #f9d6c3;
+        --danger-500: #da291c;
+        --danger-50: #f6cac6;
+
+        /* Text Colors */
+        --text-primary: var(--surface-900);
+        --text-secondary: var(--surface-800);
+        --text-muted: var(--surface-600);
+
+        /* Spacing (8px base unit) */
+        --spacing-xs: 4px;
+        --spacing-sm: 8px;
+        --spacing-md: 16px;
+        --spacing-lg: 24px;
+        --spacing-xl: 32px;
+        --spacing-2xl: 48px;
+
+        /* Border Radius */
+        --radius-sm: 4px;
+        --radius-md: 6px;
+        --radius-lg: 8px;
+
+        /* Shadows */
+        --shadow-card: 0 2px 4px rgba(0, 0, 0, 0.2), 0 4px 5px rgba(0, 0, 0, 0.14),
+          0 1px 10px rgba(0, 0, 0, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: 'Noto Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background: var(--surface-50);
+        color: var(--text-primary);
+        line-height: 1.5;
+        min-height: 100vh;
+      }
+
+      /* Top Bar */
+      .top-bar {
+        background: var(--surface-0);
+        border-bottom: 1px solid var(--surface-200);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: var(--spacing-md) var(--spacing-xl);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .top-bar__brand {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-lg);
+      }
+
+      .logo {
+        font-weight: 700;
+        font-size: 18px;
+        letter-spacing: 0.12em;
+        color: var(--primary-400);
+      }
+
+      .top-bar__title {
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      /* Buttons */
+      .btn {
+        border-radius: var(--radius-sm);
+        border: 1px solid transparent;
+        padding: 10px 20px;
+        font-size: 14px;
+        font-weight: 500;
+        font-family: inherit;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        height: 40px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .btn-ghost {
+        background: transparent;
+        border-color: var(--surface-200);
+        color: var(--text-secondary);
+      }
+
+      .btn-ghost:hover {
+        background: var(--primary-50);
+        border-color: var(--primary-500);
+        color: var(--primary-400);
+      }
+
+      .btn-primary {
+        background: var(--primary-400);
+        color: #fff;
+        border-color: var(--primary-400);
+      }
+
+      .btn-primary:hover {
+        background: var(--primary-500);
+        border-color: var(--primary-500);
+      }
+
+      .btn-primary:disabled {
+        background: var(--surface-300);
+        border-color: var(--surface-300);
+        color: var(--text-muted);
+        cursor: not-allowed;
+      }
+
+      /* Workspace Layout */
+      .workspace {
+        display: flex;
+        min-height: calc(100vh - 73px);
+      }
+
+      /* Left Rail Navigation */
+      .rail {
+        width: 64px;
+        background: var(--primary-600);
+        color: #b7cee1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--spacing-lg);
+        padding: var(--spacing-lg) 0;
+        transition: width 0.2s ease;
+      }
+
+      .rail:hover {
+        width: 250px;
+      }
+
+      .rail button {
+        width: 44px;
+        height: 44px;
+        border-radius: var(--radius-sm);
+        border: none;
+        background: transparent;
+        color: inherit;
+        font-size: 20px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .rail:hover button {
+        width: 100%;
+        padding: 0 var(--spacing-md);
+        justify-content: flex-start;
+        gap: var(--spacing-md);
+      }
+
+      .rail button .rail-label {
+        display: none;
+        font-size: 14px;
+        font-weight: 500;
+        white-space: nowrap;
+      }
+
+      .rail:hover button .rail-label {
+        display: block;
+      }
+
+      .rail button.active {
+        background: rgba(255, 255, 255, 0.15);
+        color: #fff;
+      }
+
+      .rail button:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      /* Main Content */
+      .main-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      /* Wizard Container */
+      .wizard-container {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        max-width: 900px;
+        margin: 0 auto;
+        width: 100%;
+        padding: var(--spacing-xl);
+      }
+
+      /* Wizard Steps Indicator */
+      .wizard-steps {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: var(--spacing-2xl);
+        position: relative;
+      }
+
+      .wizard-steps::before {
+        content: '';
+        position: absolute;
+        top: 15px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--surface-200);
+        z-index: 0;
+      }
+
+      .wizard-step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        z-index: 1;
+        flex: 1;
+      }
+
+      .wizard-step::before {
+        content: '';
+        position: absolute;
+        top: 15px;
+        left: 50%;
+        right: -50%;
+        height: 2px;
+        background: var(--surface-200);
+        z-index: -1;
+      }
+
+      .wizard-step:first-child::before {
+        left: 50%;
+      }
+
+      .wizard-step:last-child::before {
+        display: none;
+      }
+
+      .wizard-step.completed::before {
+        background: var(--success-500);
+      }
+
+      .step-circle {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: var(--surface-0);
+        border: 2px solid var(--surface-200);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text-muted);
+        margin-bottom: var(--spacing-sm);
+        transition: all 0.2s ease;
+      }
+
+      .wizard-step.active .step-circle {
+        background: var(--primary-400);
+        border-color: var(--primary-400);
+        color: white;
+      }
+
+      .wizard-step.completed .step-circle {
+        background: var(--success-500);
+        border-color: var(--success-500);
+        color: white;
+      }
+
+      .wizard-step.completed .step-circle::after {
+        content: '✓';
+      }
+
+      .step-label {
+        font-size: 12px;
+        color: var(--text-secondary);
+        text-align: center;
+        font-weight: 500;
+      }
+
+      .wizard-step.active .step-label {
+        color: var(--primary-400);
+        font-weight: 600;
+      }
+
+      /* Wizard Content */
+      .wizard-content {
+        background: var(--surface-0);
+        border-radius: var(--radius-lg);
+        padding: var(--spacing-2xl);
+        box-shadow: var(--shadow-card);
+        border: 1px solid var(--surface-200);
+        min-height: 500px;
+      }
+
+      .wizard-step-content {
+        display: none;
+      }
+
+      .wizard-step-content.active {
+        display: block;
+      }
+
+      .step-title {
+        font-size: 24px;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: var(--spacing-sm);
+      }
+
+      .step-description {
+        font-size: 14px;
+        color: var(--text-secondary);
+        margin-bottom: var(--spacing-xl);
+      }
+
+      /* Form Styles */
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-lg);
+        margin-bottom: var(--spacing-xl);
+      }
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-sm);
+      }
+
+      .form-group.full-width {
+        grid-column: 1 / -1;
+      }
+
+      .form-label {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .required {
+        color: var(--danger-500);
+      }
+
+      .form-input,
+      .form-select,
+      .form-textarea {
+        padding: 12px 16px;
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-sm);
+        font-size: 14px;
+        font-family: inherit;
+        background: var(--surface-0);
+        color: var(--text-primary);
+        transition: all 0.2s ease;
+        width: 100%;
+      }
+
+      .form-input:focus,
+      .form-select:focus,
+      .form-textarea:focus {
+        outline: none;
+        border-color: var(--primary-400);
+        box-shadow: 0 0 0 2px var(--primary-50);
+      }
+
+      .form-textarea {
+        resize: vertical;
+        min-height: 120px;
+      }
+
+      .help-text {
+        font-size: 12px;
+        color: var(--text-muted);
+        margin-top: var(--spacing-xs);
+      }
+
+      /* Template Suggestions */
+      .template-suggestions {
+        margin-top: var(--spacing-xl);
+      }
+
+      .suggestions-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: var(--spacing-lg);
+      }
+
+      .suggestions-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+      }
+
+      .suggestions-badge {
+        padding: 4px 10px;
+        background: var(--info-50);
+        color: var(--info-400);
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 600;
+      }
+
+      .template-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: var(--spacing-lg);
+        margin-bottom: var(--spacing-lg);
+      }
+
+      .template-card {
+        border: 2px solid var(--surface-200);
+        border-radius: var(--radius-md);
+        padding: var(--spacing-lg);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        background: var(--surface-0);
+      }
+
+      .template-card:hover {
+        border-color: var(--primary-400);
+        box-shadow: var(--shadow-card);
+        transform: translateY(-2px);
+      }
+
+      .template-card.selected {
+        border-color: var(--primary-400);
+        background: var(--primary-50);
+        box-shadow: 0 0 0 3px var(--primary-50);
+      }
+
+      .template-card.recommended {
+        border-color: var(--success-500);
+        position: relative;
+      }
+
+      .template-card.recommended::before {
+        content: '⭐ Recommended';
+        position: absolute;
+        top: -12px;
+        left: var(--spacing-md);
+        background: var(--success-500);
+        color: white;
+        padding: 4px 12px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 600;
+      }
+
+      .template-card-header {
+        display: flex;
+        align-items: flex-start;
+        gap: var(--spacing-md);
+        margin-bottom: var(--spacing-md);
+      }
+
+      .template-icon {
+        font-size: 32px;
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--primary-50);
+        border-radius: var(--radius-sm);
+        flex-shrink: 0;
+      }
+
+      .template-info {
+        flex: 1;
+      }
+
+      .template-name {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: var(--spacing-xs);
+      }
+
+      .template-type {
+        font-size: 12px;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .template-description {
+        font-size: 13px;
+        color: var(--text-secondary);
+        line-height: 1.5;
+        margin-top: var(--spacing-sm);
+      }
+
+      .template-meta {
+        display: flex;
+        gap: var(--spacing-md);
+        margin-top: var(--spacing-md);
+        padding-top: var(--spacing-md);
+        border-top: 1px solid var(--surface-200);
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+
+      .template-meta-item {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+      }
+
+      /* View All Templates Link */
+      .view-all-link {
+        text-align: center;
+        margin-top: var(--spacing-lg);
+      }
+
+      .view-all-link a {
+        color: var(--primary-400);
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+      }
+
+      .view-all-link a:hover {
+        text-decoration: underline;
+      }
+
+      /* Info Alert */
+      .info-alert {
+        padding: var(--spacing-md);
+        background: var(--info-50);
+        border-left: 4px solid var(--info-400);
+        border-radius: var(--radius-sm);
+        margin-bottom: var(--spacing-lg);
+      }
+
+      .info-alert-text {
+        font-size: 14px;
+        color: var(--info-400);
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+      }
+
+      /* Action Footer */
+      .action-footer {
+        background: var(--surface-0);
+        border-top: 1px solid var(--surface-200);
+        padding: var(--spacing-md) var(--spacing-xl);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .footer-actions {
+        display: flex;
+        gap: var(--spacing-md);
+      }
+
+      /* Hidden */
+      .hidden {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <!-- Top Bar -->
+      <div class="top-bar">
+        <div class="top-bar__brand">
+          <div class="logo">UNOPS</div>
+          <div class="top-bar__title">Procurement Portal | Create New Tender</div>
+        </div>
+        <div>
+          <button class="btn btn-ghost" onclick="window.location.href='template-library.html'">Cancel</button>
+        </div>
+      </div>
+
+      <!-- Workspace -->
+      <div class="workspace">
+        <!-- Left Rail Navigation -->
+        <nav class="rail" aria-label="Primary navigation">
+          <button class="active" title="Event Setup">
+            <span>🚀</span>
+            <span class="rail-label">Event Setup</span>
+          </button>
+          <button title="Templates" onclick="window.location.href='template-library.html'">
+            <span>📚</span>
+            <span class="rail-label">Templates</span>
+          </button>
+          <button title="Dashboard">
+            <span>📊</span>
+            <span class="rail-label">Dashboard</span>
+          </button>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+          <div class="wizard-container">
+            <!-- Wizard Steps Indicator -->
+            <div class="wizard-steps">
+              <div class="wizard-step active" data-step="1">
+                <div class="step-circle">1</div>
+                <div class="step-label">Procurement Details</div>
+              </div>
+              <div class="wizard-step" data-step="2">
+                <div class="step-circle">2</div>
+                <div class="step-label">Template Selection</div>
+              </div>
+              <div class="wizard-step" data-step="3">
+                <div class="step-circle">3</div>
+                <div class="step-label">Review & Initiate</div>
+              </div>
+            </div>
+
+            <!-- Wizard Content -->
+            <div class="wizard-content">
+              <!-- Step 1: Procurement Details -->
+              <div class="wizard-step-content active" id="step-1">
+                <h2 class="step-title">What are you procuring?</h2>
+                <p class="step-description">Tell us about your procurement needs to find the best template</p>
+
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label class="form-label">Type of Requirement <span class="required">*</span></label>
+                    <select class="form-select" id="requirement-type" required>
+                      <option value="">Select...</option>
+                      <option value="goods">Goods</option>
+                      <option value="services">Services</option>
+                      <option value="works">Works</option>
+                      <option value="goods-services">Goods & Services</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Sourcing or Solicitation? <span class="required">*</span></label>
+                    <select class="form-select" id="sourcing-type" required>
+                      <option value="">Select...</option>
+                      <option value="sourcing">Sourcing</option>
+                      <option value="solicitation">Solicitation</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Solicitation Method <span class="required">*</span></label>
+                    <select class="form-select" id="method" required>
+                      <option value="">Select...</option>
+                      <option value="itb">ITB - Invitation to Bid</option>
+                      <option value="rfp">RFP - Request for Proposal</option>
+                      <option value="rfq">RFQ - Request for Quotation</option>
+                      <option value="eoi">EOI - Expression of Interest</option>
+                      <option value="direct">Direct Contracting</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Estimated Value (USD) <span class="required">*</span></label>
+                    <input type="number" class="form-input" id="estimated-value" placeholder="0.00" required />
+                    <span class="help-text">Approximate contract value</span>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Project Type</label>
+                    <select class="form-select" id="project-type">
+                      <option value="">Select...</option>
+                      <option value="infrastructure">Infrastructure</option>
+                      <option value="health">Health</option>
+                      <option value="education">Education</option>
+                      <option value="emergency">Emergency</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Beneficiary Country(ies)</label>
+                    <select class="form-select" id="country" multiple>
+                      <option value="afghanistan">Afghanistan</option>
+                      <option value="bangladesh">Bangladesh</option>
+                      <option value="cambodia">Cambodia</option>
+                      <option value="ethiopia">Ethiopia</option>
+                      <option value="haiti">Haiti</option>
+                    </select>
+                    <span class="help-text">Select one or more countries</span>
+                  </div>
+
+                  <div class="form-group full-width">
+                    <label class="form-label">Brief Description</label>
+                    <textarea class="form-textarea" id="description" placeholder="Brief description of the procurement objective..."></textarea>
+                    <span class="help-text">This helps us suggest the most relevant template</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Step 2: Template Selection -->
+              <div class="wizard-step-content" id="step-2">
+                <h2 class="step-title">Select a Template</h2>
+                <p class="step-description">Based on your answers, we've found the best matching templates</p>
+
+                <div class="info-alert">
+                  <div class="info-alert-text">
+                    💡 We recommend the template below based on your procurement type and method
+                  </div>
+                </div>
+
+                <div class="template-suggestions">
+                  <div class="suggestions-header">
+                    <div class="suggestions-title">
+                      Suggested Templates
+                      <span class="suggestions-badge" id="suggestion-count">3 matches</span>
+                    </div>
+                  </div>
+
+                  <div class="template-cards" id="template-cards">
+                    <!-- Template cards will be dynamically generated -->
+                  </div>
+
+                  <div class="view-all-link">
+                    <a href="template-library.html">
+                      View All Templates
+                      <span>→</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Step 3: Review & Initiate -->
+              <div class="wizard-step-content" id="step-3">
+                <h2 class="step-title">Review & Initiate Tender</h2>
+                <p class="step-description">Review your selections and initiate the tender authoring process</p>
+
+                <div class="form-grid">
+                  <div class="form-group full-width">
+                    <label class="form-label">Tender Title <span class="required">*</span></label>
+                    <input type="text" class="form-input" id="tender-title" placeholder="Enter tender title" required />
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Reference Number</label>
+                    <input type="text" class="form-input" id="reference" value="Auto-generated" readonly style="background: var(--surface-50);" />
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Selected Template</label>
+                    <input type="text" class="form-input" id="selected-template-display" readonly style="background: var(--surface-50);" />
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Type of Requirement</label>
+                    <input type="text" class="form-input" id="review-requirement-type" readonly style="background: var(--surface-50);" />
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Solicitation Method</label>
+                    <input type="text" class="form-input" id="review-method" readonly style="background: var(--surface-50);" />
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Estimated Value</label>
+                    <input type="text" class="form-input" id="review-value" readonly style="background: var(--surface-50);" />
+                  </div>
+                </div>
+
+                <div class="info-alert">
+                  <div class="info-alert-text">
+                    ℹ️ Once initiated, you'll proceed to the authoring workspace where you can customize the template and complete all tender details
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Footer -->
+          <footer class="action-footer">
+            <div></div>
+            <div class="footer-actions">
+              <button class="btn btn-ghost" id="prev-btn" style="display: none;">Previous</button>
+              <button class="btn btn-primary" id="next-btn">Next</button>
+            </div>
+          </footer>
+        </main>
+      </div>
+    </div>
+
+    <script>
+      let currentStep = 1;
+      const totalSteps = 3;
+      let selectedTemplate = null;
+      let wizardData = {};
+
+      // Available templates
+      const availableTemplates = [
+        {
+          id: 'itb-goods-standard',
+          name: 'ITB - Goods (Standard)',
+          type: 'ITB',
+          icon: '📦',
+          description: 'Standard Invitation to Bid template for goods procurement. Includes all standard forms and requirements.',
+          category: 'Goods',
+          method: 'ITB',
+          matchScore: 95,
+        },
+        {
+          id: 'itb-services-standard',
+          name: 'ITB - Services (Standard)',
+          type: 'ITB',
+          icon: '🔧',
+          description: 'Standard Invitation to Bid template for services procurement with service-specific requirements.',
+          category: 'Services',
+          method: 'ITB',
+          matchScore: 90,
+        },
+        {
+          id: 'rfp-goods-services',
+          name: 'RFP - Goods & Services',
+          type: 'RFP',
+          icon: '📋',
+          description: 'Request for Proposal template suitable for complex procurements involving both goods and services.',
+          category: 'Goods & Services',
+          method: 'RFP',
+          matchScore: 85,
+        },
+        {
+          id: 'rfq-goods-standard',
+          name: 'RFQ - Goods (Standard)',
+          type: 'RFQ',
+          icon: '💰',
+          description: 'Request for Quotation template for simple goods procurement with streamlined requirements.',
+          category: 'Goods',
+          method: 'RFQ',
+          matchScore: 80,
+        },
+        {
+          id: 'itb-works-standard',
+          name: 'ITB - Works (Standard)',
+          type: 'ITB',
+          icon: '🏗️',
+          description: 'Standard Invitation to Bid template for works/construction projects with works-specific clauses.',
+          category: 'Works',
+          method: 'ITB',
+          matchScore: 75,
+        },
+      ];
+
+      // Initialize
+      function init() {
+        updateStepDisplay();
+        setupEventListeners();
+      }
+
+      // Setup event listeners
+      function setupEventListeners() {
+        // Next button
+        document.getElementById('next-btn').addEventListener('click', () => {
+          if (validateCurrentStep()) {
+            if (currentStep < totalSteps) {
+              goToStep(currentStep + 1);
+            } else {
+              initiateTender();
+            }
+          }
+        });
+
+        // Previous button
+        document.getElementById('prev-btn').addEventListener('click', () => {
+          if (currentStep > 1) {
+            goToStep(currentStep - 1);
+          }
+        });
+
+        // Step 1 inputs - trigger template suggestions
+        document.getElementById('requirement-type')?.addEventListener('change', collectWizardData);
+        document.getElementById('sourcing-type')?.addEventListener('change', collectWizardData);
+        document.getElementById('method')?.addEventListener('change', collectWizardData);
+        document.getElementById('estimated-value')?.addEventListener('input', collectWizardData);
+      }
+
+      // Collect wizard data
+      function collectWizardData() {
+        wizardData = {
+          requirementType: document.getElementById('requirement-type')?.value || '',
+          sourcingType: document.getElementById('sourcing-type')?.value || '',
+          method: document.getElementById('method')?.value || '',
+          estimatedValue: document.getElementById('estimated-value')?.value || '',
+          projectType: document.getElementById('project-type')?.value || '',
+          country: Array.from(document.getElementById('country')?.selectedOptions || []).map(opt => opt.value),
+          description: document.getElementById('description')?.value || '',
+        };
+      }
+
+      // Validate current step
+      function validateCurrentStep() {
+        if (currentStep === 1) {
+          const requirementType = document.getElementById('requirement-type')?.value;
+          const sourcingType = document.getElementById('sourcing-type')?.value;
+          const method = document.getElementById('method')?.value;
+          const estimatedValue = document.getElementById('estimated-value')?.value;
+
+          if (!requirementType || !sourcingType || !method || !estimatedValue) {
+            alert('Please fill in all required fields');
+            return false;
+          }
+          collectWizardData();
+          return true;
+        } else if (currentStep === 2) {
+          if (!selectedTemplate) {
+            alert('Please select a template to continue');
+            return false;
+          }
+          return true;
+        } else if (currentStep === 3) {
+          const title = document.getElementById('tender-title')?.value;
+          if (!title) {
+            alert('Please enter a tender title');
+            return false;
+          }
+          return true;
+        }
+        return true;
+      }
+
+      // Go to step
+      function goToStep(step) {
+        currentStep = step;
+
+        if (step === 2) {
+          collectWizardData();
+          suggestTemplates();
+        } else if (step === 3) {
+          populateReviewStep();
+        }
+
+        updateStepDisplay();
+      }
+
+      // Suggest templates based on wizard data
+      function suggestTemplates() {
+        const cardsContainer = document.getElementById('template-cards');
+        cardsContainer.innerHTML = '';
+
+        // Filter and score templates
+        const suggestedTemplates = availableTemplates
+          .map((template) => {
+            let score = 0;
+
+            // Match requirement type
+            if (wizardData.requirementType === 'goods' && template.category === 'Goods') score += 30;
+            if (wizardData.requirementType === 'services' && template.category === 'Services') score += 30;
+            if (wizardData.requirementType === 'works' && template.category === 'Works') score += 30;
+            if (wizardData.requirementType === 'goods-services' && template.category === 'Goods & Services') score += 30;
+
+            // Match method
+            const methodMap = {
+              itb: 'ITB',
+              rfp: 'RFP',
+              rfq: 'RFQ',
+            };
+            if (methodMap[wizardData.method] === template.method) score += 40;
+
+            // Value-based suggestions (higher value = more complex templates)
+            const value = parseFloat(wizardData.estimatedValue) || 0;
+            if (value > 100000 && template.method === 'RFP') score += 20;
+            if (value < 50000 && template.method === 'RFQ') score += 20;
+
+            return { ...template, calculatedScore: score };
+          })
+          .filter((t) => t.calculatedScore > 0)
+          .sort((a, b) => b.calculatedScore - a.calculatedScore)
+          .slice(0, 3);
+
+        // Update suggestion count
+        document.getElementById('suggestion-count').textContent = `${suggestedTemplates.length} matches`;
+
+        // Render template cards
+        suggestedTemplates.forEach((template, index) => {
+          const card = document.createElement('div');
+          card.className = `template-card ${index === 0 ? 'recommended' : ''}`;
+          if (index === 0) {
+            selectedTemplate = template;
+            card.classList.add('selected');
+          }
+          card.innerHTML = `
+            <div class="template-card-header">
+              <div class="template-icon">${template.icon}</div>
+              <div class="template-info">
+                <div class="template-name">${template.name}</div>
+                <div class="template-type">${template.type} · ${template.category}</div>
+              </div>
+            </div>
+            <div class="template-description">${template.description}</div>
+            <div class="template-meta">
+              <div class="template-meta-item">
+                <span>📊</span>
+                <span>Match: ${template.calculatedScore}%</span>
+              </div>
+            </div>
+          `;
+
+          card.addEventListener('click', () => {
+            document.querySelectorAll('.template-card').forEach((c) => c.classList.remove('selected'));
+            card.classList.add('selected');
+            selectedTemplate = template;
+          });
+
+          cardsContainer.appendChild(card);
+        });
+      }
+
+      // Populate review step
+      function populateReviewStep() {
+        const methodMap = {
+          itb: 'ITB - Invitation to Bid',
+          rfp: 'RFP - Request for Proposal',
+          rfq: 'RFQ - Request for Quotation',
+          eoi: 'EOI - Expression of Interest',
+          direct: 'Direct Contracting',
+        };
+
+        const requirementMap = {
+          goods: 'Goods',
+          services: 'Services',
+          works: 'Works',
+          'goods-services': 'Goods & Services',
+        };
+
+        document.getElementById('selected-template-display').value = selectedTemplate?.name || '';
+        document.getElementById('review-requirement-type').value = requirementMap[wizardData.requirementType] || '';
+        document.getElementById('review-method').value = methodMap[wizardData.method] || '';
+        document.getElementById('review-value').value = wizardData.estimatedValue
+          ? `$${parseFloat(wizardData.estimatedValue).toLocaleString()}`
+          : '';
+      }
+
+      // Update step display
+      function updateStepDisplay() {
+        // Update step indicators
+        document.querySelectorAll('.wizard-step').forEach((step, index) => {
+          const stepNum = index + 1;
+          step.classList.remove('active', 'completed');
+          if (stepNum < currentStep) {
+            step.classList.add('completed');
+          } else if (stepNum === currentStep) {
+            step.classList.add('active');
+          }
+        });
+
+        // Update step content
+        document.querySelectorAll('.wizard-step-content').forEach((content, index) => {
+          const stepNum = index + 1;
+          content.classList.remove('active');
+          if (stepNum === currentStep) {
+            content.classList.add('active');
+          }
+        });
+
+        // Update buttons
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+
+        prevBtn.style.display = currentStep > 1 ? 'inline-flex' : 'none';
+        nextBtn.textContent = currentStep === totalSteps ? 'Initiate Tender' : 'Next';
+        nextBtn.disabled = false;
+      }
+
+      // Initiate tender
+      function initiateTender() {
+        const title = document.getElementById('tender-title')?.value;
+        if (!title) {
+          alert('Please enter a tender title');
+          return;
+        }
+
+        // Show loading state
+        const nextBtn = document.getElementById('next-btn');
+        const originalText = nextBtn.textContent;
+        nextBtn.disabled = true;
+        nextBtn.textContent = 'Initiating...';
+
+        // Store wizard data in sessionStorage for authoring page
+        sessionStorage.setItem('tenderWizardData', JSON.stringify({
+          ...wizardData,
+          title,
+          template: selectedTemplate,
+        }));
+
+        // Small delay for UX, then navigate
+        setTimeout(() => {
+          window.location.href = 'tender-authoring.html';
+        }, 300);
+      }
+
+      // Initialize on load
+      init();
+    </script>
+  </body>
+</html>
+

@@ -7,62 +7,105 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <style>
       :root {
-        /* Primary Colors - UNOPS Design System */
-        --primary-400: #00669a;
-        --primary-500: #005783;
-        --primary-600: #00476c;
-        --primary-50: #bfd9e6;
-        --primary-100: #99c2d7;
-        --primary-700: #003855;
+        /* Primary Colors - UNOPS Blue (Enhanced) */
+        --primary-50: #e6f4fb;
+        --primary-100: #cce9f7;
+        --primary-200: #99d3ef;
+        --primary-300: #66bce7;
+        --primary-400: #33a6df;
+        --primary-500: #0091d7;
+        --primary-600: #0074ac;
+        --primary-700: #005781;
+        --primary-800: #003a56;
+        --primary-900: #001d2b;
 
-        /* Surface Colors - Cold Neutral Palette */
+        /* Neutral - Sophisticated Gray */
+        --neutral-50: #fafafa;
+        --neutral-100: #f5f5f5;
+        --neutral-200: #e5e5e5;
+        --neutral-300: #d4d4d4;
+        --neutral-400: #a3a3a3;
+        --neutral-500: #737373;
+        --neutral-600: #525252;
+        --neutral-700: #404040;
+        --neutral-800: #262626;
+        --neutral-900: #171717;
+
+        /* Surface Colors (Alias for compatibility) */
         --surface-0: #ffffff;
-        --surface-50: #f5f8fb;
-        --surface-100: #ebf1f8;
-        --surface-200: #dde8f2;
-        --surface-300: #cfdfec;
-        --surface-600: #95a7ba;
-        --surface-800: #596170;
-        --surface-900: #3b3e4a;
+        --surface-50: var(--neutral-50);
+        --surface-100: var(--neutral-100);
+        --surface-200: var(--neutral-200);
+        --surface-300: var(--neutral-300);
+        --surface-600: var(--neutral-600);
+        --surface-800: var(--neutral-800);
+        --surface-900: var(--neutral-900);
 
-        /* Semantic Colors */
-        --success-500: #4c9f38;
-        --success-50: #d2e7cd;
-        --info-400: #0092d1;
-        --info-50: #bfe4f4;
-        --warning-500: #e85c0e;
-        --warning-50: #f9d6c3;
-        --danger-500: #da291c;
-        --danger-50: #f6cac6;
+        /* Semantic Colors - Modern Palette */
+        --success-50: #f0fdf4;
+        --success-100: #dcfce7;
+        --success-500: #22c55e;
+        --success-600: #16a34a;
+        --success-700: #15803d;
+        
+        --info-50: #eff6ff;
+        --info-100: #dbeafe;
+        --info-400: #60a5fa;
+        --info-500: #3b82f6;
+        --info-600: #2563eb;
+        
+        --warning-50: #fffbeb;
+        --warning-100: #fef3c7;
+        --warning-500: #f59e0b;
+        --warning-600: #d97706;
+        
+        --danger-50: #fef2f2;
+        --danger-100: #fee2e2;
+        --danger-500: #ef4444;
+        --danger-600: #dc2626;
 
         /* Text Colors */
-        --text-primary: var(--surface-900);
-        --text-secondary: var(--surface-800);
-        --text-muted: var(--surface-600);
+        --text-primary: var(--neutral-900);
+        --text-secondary: var(--neutral-700);
+        --text-muted: var(--neutral-500);
 
-        /* Spacing (8px base unit) */
+        /* Spacing Scale */
         --spacing-xs: 4px;
         --spacing-sm: 8px;
         --spacing-md: 16px;
         --spacing-lg: 24px;
         --spacing-xl: 32px;
         --spacing-2xl: 48px;
+        --spacing-3xl: 64px;
 
         /* Border Radius */
-        --radius-sm: 4px;
-        --radius-md: 6px;
-        --radius-lg: 8px;
+        --radius-sm: 6px;
+        --radius-md: 8px;
+        --radius-lg: 12px;
+        --radius-xl: 16px;
 
-        /* Shadows */
-        --shadow-card: 0 2px 4px rgba(0, 0, 0, 0.2), 0 4px 5px rgba(0, 0, 0, 0.14),
-          0 1px 10px rgba(0, 0, 0, 0.12);
-        --shadow-modal: 0 11px 15px rgba(0, 0, 0, 0.2), 0 24px 38px rgba(0, 0, 0, 0.14),
-          0 9px 46px rgba(0, 0, 0, 0.12);
+        /* Enhanced Shadow System */
+        --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+        
+        /* Legacy aliases for backwards compatibility */
+        --shadow-card: var(--shadow-md);
+        --shadow-modal: var(--shadow-2xl);
+
+        /* Transitions */
+        --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+        --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+        --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
       }
 
       * {
@@ -72,17 +115,19 @@
       }
 
       body {
-        font-family: 'Noto Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-        background: var(--surface-50);
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+        background: var(--neutral-50);
         color: var(--text-primary);
-        line-height: 1.5;
+        line-height: 1.6;
         min-height: 100vh;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
       }
 
-      /* Top Bar */
+      /* Top Bar - Modern Header */
       .top-bar {
         background: var(--surface-0);
-        border-bottom: 1px solid var(--surface-200);
+        border-bottom: 1px solid var(--neutral-200);
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -90,6 +135,9 @@
         position: sticky;
         top: 0;
         z-index: 100;
+        box-shadow: var(--shadow-xs);
+        backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.95);
       }
 
       .top-bar__brand {
@@ -153,14 +201,45 @@
       }
 
       .btn-primary {
-        background: var(--primary-400);
+        background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-600) 100%);
         color: #fff;
-        border-color: var(--primary-400);
+        border: none;
+        padding: 10px 20px;
+        border-radius: var(--radius-md);
+        font-weight: 500;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all var(--transition-base);
+        box-shadow: 0 2px 4px rgba(0, 145, 215, 0.2);
       }
 
       .btn-primary:hover {
-        background: var(--primary-500);
-        border-color: var(--primary-500);
+        background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-700) 100%);
+        box-shadow: 0 4px 8px rgba(0, 145, 215, 0.3);
+        transform: translateY(-1px);
+      }
+
+      .btn-primary:active {
+        transform: translateY(0);
+        box-shadow: 0 1px 2px rgba(0, 145, 215, 0.2);
+      }
+
+      .btn-secondary {
+        background: var(--surface-0);
+        color: var(--primary-600);
+        padding: 10px 20px;
+        border-radius: var(--radius-md);
+        border: 1.5px solid var(--neutral-200);
+        font-weight: 500;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all var(--transition-base);
+      }
+
+      .btn-secondary:hover {
+        background: var(--primary-50);
+        border-color: var(--primary-300);
+        transform: translateY(-1px);
       }
 
       /* Workspace Layout */
@@ -169,21 +248,23 @@
         min-height: calc(100vh - 73px);
       }
 
-      /* Left Rail Navigation */
+      /* Left Rail Navigation - Modern Sidebar */
       .rail {
         width: 64px;
-        background: var(--primary-600);
-        color: #b7cee1;
+        background: linear-gradient(180deg, var(--primary-700) 0%, var(--primary-800) 100%);
+        color: rgba(255, 255, 255, 0.7);
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: var(--spacing-lg);
         padding: var(--spacing-lg) 0;
-        transition: width 0.2s ease;
+        transition: all var(--transition-base);
+        box-shadow: var(--shadow-lg);
       }
 
       .rail:hover {
         width: 250px;
+        box-shadow: var(--shadow-xl);
       }
 
       .rail button {
@@ -238,26 +319,31 @@
         overflow: hidden;
       }
 
-      /* Panel Styles */
+      /* Panel Styles - Modern Cards */
       .panel {
         background: var(--surface-0);
-        border: 1px solid var(--surface-200);
-        border-radius: var(--radius-sm);
+        border: 1px solid var(--neutral-200);
+        border-radius: var(--radius-lg);
         display: flex;
         flex-direction: column;
         overflow: hidden;
-        box-shadow: var(--shadow-card);
+        box-shadow: var(--shadow-sm);
+        transition: all var(--transition-base);
+      }
+
+      .panel:hover {
+        box-shadow: var(--shadow-md);
       }
 
       .panel__header {
-        padding: var(--spacing-md) var(--spacing-lg);
-        border-bottom: 1px solid var(--surface-200);
-        font-size: 13px;
+        padding: var(--spacing-lg) var(--spacing-lg);
+        border-bottom: 1px solid var(--neutral-100);
+        font-size: 12px;
         font-weight: 600;
         color: var(--text-secondary);
         text-transform: uppercase;
-        letter-spacing: 0.08em;
-        background: var(--surface-50);
+        letter-spacing: 0.1em;
+        background: linear-gradient(to bottom, var(--neutral-50) 0%, var(--surface-0) 100%);
       }
 
       .panel__body {
@@ -276,20 +362,25 @@
 
       .search-bar input {
         width: 100%;
-        border-radius: var(--radius-sm);
-        border: 1px solid var(--surface-200);
-        padding: 8px 12px 8px 36px;
+        border-radius: var(--radius-md);
+        border: 1.5px solid var(--neutral-200);
+        padding: 10px 12px 10px 38px;
         font-family: inherit;
         font-size: 14px;
         background: var(--surface-0);
         color: var(--text-primary);
-        transition: all 0.2s ease;
+        transition: all var(--transition-base);
+      }
+
+      .search-bar input:hover {
+        border-color: var(--neutral-300);
       }
 
       .search-bar input:focus {
         outline: none;
         border-color: var(--primary-400);
-        box-shadow: 0 0 0 2px var(--primary-50);
+        box-shadow: 0 0 0 3px rgba(0, 145, 215, 0.1);
+        background: var(--surface-0);
       }
 
       .search-bar::before {
@@ -333,19 +424,21 @@
       }
 
       .component-block {
-        border: 1px dashed var(--surface-300);
-        border-radius: var(--radius-sm);
+        border: 1.5px dashed var(--neutral-200);
+        border-radius: var(--radius-md);
         padding: var(--spacing-md);
-        margin-bottom: var(--spacing-md);
+        margin-bottom: var(--spacing-sm);
         cursor: grab;
-        transition: all 0.2s ease;
-        background: var(--surface-50);
+        transition: all var(--transition-base);
+        background: var(--surface-0);
       }
 
       .component-block:hover {
         border-color: var(--primary-400);
+        border-style: solid;
         background: var(--primary-50);
-        transform: translateY(-1px);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-sm);
       }
 
       .component-block:active {
@@ -501,36 +594,39 @@
         color: var(--text-muted);
       }
 
-      /* Dropped Sections */
+      /* Dropped Sections - Modern Block Cards */
       .dropped-section {
         background: var(--surface-0);
-        border: 1px solid var(--surface-200);
-        border-radius: var(--radius-sm);
-        margin-bottom: var(--spacing-md);
+        border: 1px solid var(--neutral-200);
+        border-radius: var(--radius-lg);
+        margin-bottom: var(--spacing-lg);
         overflow: hidden;
-        transition: all 0.2s ease;
+        transition: all var(--transition-base);
+        box-shadow: var(--shadow-xs);
       }
 
       .dropped-section:hover {
-        border-color: var(--primary-400);
-        box-shadow: var(--shadow-card);
+        border-color: var(--primary-300);
+        box-shadow: var(--shadow-md);
+        transform: translateY(-1px);
       }
 
       .dropped-section.selected {
-        border-color: var(--primary-400);
+        border-color: var(--primary-500);
         border-width: 2px;
-        box-shadow: 0 0 0 2px var(--primary-50);
+        box-shadow: 0 0 0 3px rgba(0, 145, 215, 0.1);
       }
 
       .dropped-section.dragover {
         border-color: var(--success-500);
         background: var(--success-50);
+        box-shadow: var(--shadow-lg);
       }
 
       .section-header {
-        padding: var(--spacing-md) var(--spacing-lg);
-        background: var(--surface-50);
-        border-bottom: 1px solid var(--surface-200);
+        padding: var(--spacing-lg) var(--spacing-lg);
+        background: linear-gradient(to bottom, var(--neutral-50) 0%, var(--surface-0) 100%);
+        border-bottom: 1px solid var(--neutral-100);
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -569,22 +665,28 @@
       .icon-btn {
         width: 32px;
         height: 32px;
-        border: 1px solid var(--surface-200);
+        border: 1px solid var(--neutral-200);
         background: var(--surface-0);
-        border-radius: var(--radius-sm);
+        border-radius: var(--radius-md);
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 14px;
         color: var(--text-secondary);
-        transition: all 0.2s ease;
+        transition: all var(--transition-base);
       }
 
       .icon-btn:hover {
         background: var(--primary-50);
         border-color: var(--primary-400);
-        color: var(--primary-400);
+        color: var(--primary-500);
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-xs);
+      }
+
+      .icon-btn:active {
+        transform: translateY(0);
       }
 
       .section-body {
@@ -595,28 +697,29 @@
         display: none;
       }
 
-      /* Collapsible Subsection */
+      /* Collapsible Subsection - Modern Nested Cards */
       .subsection {
-        border: 1px solid var(--surface-200);
-        border-radius: var(--radius-sm);
+        border: 1px solid var(--neutral-200);
+        border-radius: var(--radius-md);
         margin-bottom: var(--spacing-md);
         overflow: hidden;
-        background: var(--surface-50);
+        background: var(--surface-0);
+        transition: all var(--transition-base);
       }
 
       .subsection-header {
-        padding: var(--spacing-sm) var(--spacing-md);
-        background: var(--surface-100);
-        border-bottom: 1px solid var(--surface-200);
+        padding: var(--spacing-md) var(--spacing-md);
+        background: var(--neutral-50);
+        border-bottom: 1px solid var(--neutral-100);
         display: flex;
         align-items: center;
         justify-content: space-between;
         cursor: pointer;
-        transition: all 0.2s ease;
+        transition: all var(--transition-base);
       }
 
       .subsection-header:hover {
-        background: var(--surface-200);
+        background: var(--neutral-100);
       }
 
       .subsection-title {
@@ -692,32 +795,37 @@
       }
 
       .field-badge {
-        padding: 2px 8px;
-        border-radius: 999px;
+        padding: 4px 10px;
+        border-radius: 12px;
         font-size: 11px;
-        font-weight: 600;
+        font-weight: 500;
         text-transform: uppercase;
-        letter-spacing: 0.08em;
+        letter-spacing: 0.05em;
+        transition: all var(--transition-fast);
       }
 
       .badge-required {
         background: var(--danger-50);
-        color: var(--danger-500);
+        color: var(--danger-600);
+        border: 1px solid var(--danger-100);
       }
 
       .badge-conditional {
         background: var(--warning-50);
-        color: var(--warning-500);
+        color: var(--warning-600);
+        border: 1px solid var(--warning-100);
       }
 
       .badge-readonly {
-        background: var(--surface-100);
-        color: var(--text-muted);
+        background: var(--neutral-100);
+        color: var(--neutral-600);
+        border: 1px solid var(--neutral-200);
       }
 
       .badge-mapped {
         background: var(--info-50);
-        color: var(--info-400);
+        color: var(--info-600);
+        border: 1px solid var(--info-100);
       }
 
       /* Drop Zone */
@@ -910,6 +1018,70 @@
         background: var(--surface-600);
       }
 
+      /* Requisition Lines & Lots Preview Styles */
+      .preview-container {
+        font-size: 14px;
+      }
+      
+      .preview-container .btn {
+        border-radius: var(--radius-sm);
+        border: 1px solid transparent;
+        padding: 10px 20px;
+        font-size: 14px;
+        font-weight: 500;
+        font-family: inherit;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        height: 40px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .preview-container .btn-primary {
+        background: var(--primary-400);
+        color: #fff;
+        border-color: var(--primary-400);
+      }
+      
+      .preview-container .btn-primary:hover {
+        background: var(--primary-500);
+        border-color: var(--primary-500);
+      }
+      
+      .preview-container .btn-ghost {
+        background: transparent;
+        border-color: var(--surface-200);
+        color: var(--text-secondary);
+      }
+      
+      .preview-container .btn-ghost:hover {
+        background: var(--primary-50);
+        border-color: var(--primary-500);
+        color: var(--primary-400);
+      }
+      
+      .preview-container .icon-btn {
+        width: 32px;
+        height: 32px;
+        border: 1px solid var(--surface-200);
+        background: var(--surface-0);
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        color: var(--text-secondary);
+        transition: all 0.2s ease;
+      }
+      
+      .preview-container .icon-btn:hover {
+        background: var(--primary-50);
+        border-color: var(--primary-400);
+        color: var(--primary-400);
+      }
+
       /* Responsive */
       @media (max-width: 1280px) {
         .columns {
@@ -971,42 +1143,6 @@
               <!-- Blocks Section -->
               <div class="component-group scrollable">
                 <p class="group-label">Blocks</p>
-                <div class="component-block" draggable="true" data-type="section" data-section-type="scope" data-block-id="block-scope">
-                  <div class="component-block-content">
-                    <span class="component-block-icon">🎯</span>
-                    <div>
-                      <strong>Scope &amp; Requirements</strong>
-                      <span>Requisition &amp; items - Specifications</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="component-block" draggable="true" data-type="section" data-section-type="timeline" data-block-id="block-timeline">
-                  <div class="component-block-content">
-                    <span class="component-block-icon">📅</span>
-                    <div>
-                      <strong>Timeline &amp; Deadlines</strong>
-                      <span>Key dates and Milestones</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="component-block" draggable="true" data-type="section" data-section-type="evaluation" data-block-id="block-evaluation">
-                  <div class="component-block-content">
-                    <span class="component-block-icon">📊</span>
-                    <div>
-                      <strong>Evaluation Criteria</strong>
-                      <span>Requisition and items</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="component-block" draggable="true" data-type="section" data-section-type="submission" data-block-id="block-submission">
-                  <div class="component-block-content">
-                    <span class="component-block-icon">📝</span>
-                    <div>
-                      <strong>Submission Requirements</strong>
-                      <span>Bidder requirements</span>
-                    </div>
-                  </div>
-                </div>
                 <div class="component-block" draggable="true" data-type="section" data-section-type="general" data-block-id="block-general">
                   <div class="component-block-content">
                     <span class="component-block-icon">📋</span>
@@ -1020,26 +1156,62 @@
                   <div class="component-block-content">
                     <span class="component-block-icon">🏗️</span>
                     <div>
-                      <strong>Project Details</strong>
+                      <strong>Project &amp; Tender Details</strong>
                       <span>Work package, funding source, project name</span>
                     </div>
                   </div>
                 </div>
-                <div class="component-block" draggable="true" data-type="section" data-section-type="requisition" data-block-id="block-requisition">
-                  <div class="component-block-content">
-                    <span class="component-block-icon">📦</span>
-                    <div>
-                      <strong>Requisition Details</strong>
-                      <span>Requisition ID, line items, product codes</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="component-block" draggable="true" data-type="section" data-section-type="custom" data-block-id="block-custom">
+                <div class="component-block" draggable="true" data-type="section" data-section-type="requisition-lots" data-block-id="block-requisition-lots">
                   <div class="component-block-content">
                     <span class="component-block-icon">📋</span>
                     <div>
-                      <strong>New Block</strong>
-                      <span>Add Custom Block</span>
+                      <strong>Requisition &amp; Lots</strong>
+                      <span>Manage requisition lines and create lots</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="component-block" draggable="true" data-type="section" data-section-type="scope" data-block-id="block-scope">
+                  <div class="component-block-content">
+                    <span class="component-block-icon">🎯</span>
+                    <div>
+                      <strong>Scope &amp; Requirements</strong>
+                      <span>Product requirements and specifications</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="component-block" draggable="true" data-type="section" data-section-type="timeline" data-block-id="block-timeline">
+                  <div class="component-block-content">
+                    <span class="component-block-icon">📅</span>
+                    <div>
+                      <strong>Timeline &amp; Deadlines</strong>
+                      <span>Key dates and milestones</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="component-block" draggable="true" data-type="section" data-section-type="submission" data-block-id="block-submission">
+                  <div class="component-block-content">
+                    <span class="component-block-icon">📝</span>
+                    <div>
+                      <strong>Submission Requirements</strong>
+                      <span>Supplier response structure</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="component-block" draggable="true" data-type="section" data-section-type="evaluation" data-block-id="block-evaluation">
+                  <div class="component-block-content">
+                    <span class="component-block-icon">📊</span>
+                    <div>
+                      <strong>Evaluation</strong>
+                      <span>Evaluation method and criteria</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="component-block" draggable="true" data-type="section" data-section-type="team" data-block-id="block-team">
+                  <div class="component-block-content">
+                    <span class="component-block-icon">👥</span>
+                    <div>
+                      <strong>Team</strong>
+                      <span>Team members and roles</span>
                     </div>
                   </div>
                 </div>
@@ -1221,7 +1393,49 @@
                     <label for="block-mandatory">This block is mandatory</label>
                   </div>
                 </div>
-                <div class="form-group">
+                
+                <!-- Requisition Lines & Lots specific configuration -->
+                <div id="requisition-lots-config" class="hidden">
+                  <div class="form-group-subheading" style="margin-top: var(--spacing-lg); padding-top: var(--spacing-lg); border-top: 1px solid var(--surface-200);">
+                    Requisition Lines & Lots Configuration
+                  </div>
+                  <div class="form-group">
+                    <div class="checkbox-item">
+                      <input type="checkbox" id="config-display-requisition-lines" checked />
+                      <label for="config-display-requisition-lines">Display Requisition Lines</label>
+                    </div>
+                    <span class="help-text">Show requisition lines from ERP as reference</span>
+                  </div>
+                  <div class="form-group">
+                    <div class="checkbox-item">
+                      <input type="checkbox" id="config-enable-lot-creation" checked />
+                      <label for="config-enable-lot-creation">Enable Lot Creation</label>
+                    </div>
+                    <span class="help-text">Allow tender authors to create and manage lots</span>
+                  </div>
+                  <div class="form-group">
+                    <label for="config-lot-assignment-rules">Lot Assignment Rules</label>
+                    <select id="config-lot-assignment-rules" class="select">
+                      <option value="flexible">Flexible (can add any UNSPSC code)</option>
+                      <option value="strict">Strict (only from requisition lines)</option>
+                    </select>
+                    <span class="help-text">Control how products can be assigned to lots</span>
+                  </div>
+                  <div class="form-group">
+                    <label for="config-data-source">Requisition Line Data Source</label>
+                    <select id="config-data-source" class="select">
+                      <option value="erp" selected>ERP · oU</option>
+                      <option value="pdj">PDJ · Requisition</option>
+                      <option value="manual">Manual Entry</option>
+                    </select>
+                    <span class="help-text">Source of requisition line data</span>
+                  </div>
+                  <div class="form-group">
+                    <button type="button" class="btn btn-ghost" onclick="applyRequisitionLotsConfig()" style="width: 100%; padding: 10px;">Apply Configuration to Preview</button>
+                  </div>
+                </div>
+                
+                <div class="form-group" id="general-block-config">
                   <div class="form-group-subheading">This block applies to</div>
                   <div class="checkbox-list">
                     <div class="checkbox-item">
@@ -1318,6 +1532,418 @@
       let blocks = [];
       let activeBlockIndex = 0;
 
+      // Requisition Lines & Lots state (for template preview)
+      let previewRequisitionLines = {};
+      let previewLots = {};
+      let blockConfigurations = {}; // Store configuration per block
+      
+      // ===== TEMPLATE CONFIGURATION DATA STRUCTURE =====
+      
+      let templateConfig = {
+        templateId: generateId(),
+        templateName: 'Untitled Template',
+        version: '1.0',
+        createdDate: new Date().toISOString(),
+        modifiedDate: new Date().toISOString(),
+        blocks: []
+      };
+      
+      // Helper function to generate unique IDs
+      function generateId() {
+        return 'id-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+      }
+      
+      // Field type definitions
+      const fieldTypes = {
+        text: { icon: '📝', label: 'Text Input' },
+        textarea: { icon: '📄', label: 'Textarea' },
+        dropdown: { icon: '▼', label: 'Dropdown' },
+        checkbox: { icon: '☑️', label: 'Checkbox' },
+        checkboxGroup: { icon: '☑️', label: 'Checkbox Group' },
+        radio: { icon: '🔘', label: 'Radio Buttons' },
+        date: { icon: '📅', label: 'Date' },
+        datetime: { icon: '🕐', label: 'Date & Time' },
+        number: { icon: '🔢', label: 'Number' },
+        search: { icon: '🔍', label: 'Search Field' },
+        file: { icon: '📎', label: 'File Upload' },
+        richText: { icon: '✒️', label: 'Rich Text Editor' }
+      };
+      
+      // Helper function to create field configuration
+      function createFieldConfig(fieldId, label, type, required = false, options = {}) {
+        return {
+          fieldId: fieldId,
+          fieldLabel: label,
+          fieldType: type,
+          required: required,
+          enabled: true,
+          defaultValue: options.defaultValue || '',
+          placeholder: options.placeholder || '',
+          helpText: options.helpText || '',
+          options: options.options || [],
+          allowMultiple: options.allowMultiple || false,
+          dataSource: options.dataSource || null,
+          acceptedTypes: options.acceptedTypes || [],
+          maxSize: options.maxSize || null,
+          rows: options.rows || 3,
+          readonly: options.readonly || false,
+          validation: options.validation || {},
+          conditionalVisibility: options.conditionalVisibility || null,
+          triggersConditionalFields: options.triggersConditionalFields || [],
+          position: 0
+        };
+      }
+      
+      // Initialize General Information Block
+      function initializeGeneralInfoBlock() {
+        const blockConfig = {
+          blockId: 'general-info-' + generateId(),
+          blockType: 'general-info',
+          blockName: 'General Information',
+          blockIcon: '📋',
+          enabled: true,
+          position: templateConfig.blocks.length,
+          sections: [
+            {
+              sectionId: 'basic-info',
+              sectionName: 'Basic Information',
+              enabled: true,
+              fields: [
+                createFieldConfig('title', 'Title', 'text', true, {
+                  placeholder: 'Enter tender title',
+                  helpText: 'Provide a clear, descriptive title for the tender',
+                  validation: { minLength: 10, maxLength: 200 }
+                }),
+                createFieldConfig('reference', 'Reference', 'text', false, {
+                  placeholder: 'Auto-generated',
+                  helpText: 'Unique tender reference number',
+                  readonly: true
+                }),
+                createFieldConfig('sourcingOrSolicitation', 'Sourcing or Solicitation', 'dropdown', true, {
+                  options: ['Sourcing', 'Solicitation'],
+                  triggersConditionalFields: ['sourcingMethod', 'processType', 'solicitationMethod']
+                }),
+                createFieldConfig('sourcingMethod', 'Sourcing Method', 'dropdown', false, {
+                  options: ['RFI', 'EOI', 'PQ', 'Ad-hoc shortlist'],
+                  conditionalVisibility: {
+                    logic: 'AND',
+                    rules: [{ field: 'sourcingOrSolicitation', operator: 'equals', value: 'Sourcing' }]
+                  }
+                }),
+                createFieldConfig('typeOfRequirement', 'Type of Requirement', 'dropdown', true, {
+                  options: ['Goods', 'Services', 'Works', 'Goods & Services']
+                }),
+                createFieldConfig('description', 'Description', 'textarea', true, {
+                  placeholder: 'Provide a detailed description',
+                  rows: 4
+                }),
+                createFieldConfig('modalityOfBidReceipt', 'Modality of Bid Receipt', 'dropdown', true, {
+                  options: ['Online Only', 'Email Submission', 'Physical Submission'],
+                  triggersConditionalFields: ['waiverForBidReceipt']
+                }),
+                createFieldConfig('waiverForBidReceipt', 'Waiver for Bid Receipt Modality', 'text', false, {
+                  placeholder: 'Provide waiver justification link',
+                  conditionalVisibility: {
+                    logic: 'OR',
+                    rules: [
+                      { field: 'modalityOfBidReceipt', operator: 'equals', value: 'Email Submission' },
+                      { field: 'modalityOfBidReceipt', operator: 'equals', value: 'Physical Submission' }
+                    ]
+                  }
+                }),
+                createFieldConfig('epp', 'EPP', 'dropdown', false, {
+                  options: ['Yes', 'No'],
+                  triggersConditionalFields: ['eppAuthorizationLink', 'eppEndDate', 'eppScope']
+                }),
+                createFieldConfig('eppAuthorizationLink', 'EPP Authorization (Jira Link)', 'text', false, {
+                  placeholder: 'Enter Jira link',
+                  conditionalVisibility: {
+                    logic: 'AND',
+                    rules: [{ field: 'epp', operator: 'equals', value: 'Yes' }]
+                  }
+                }),
+                createFieldConfig('eppEndDate', 'EPP Authorization End Date', 'date', false, {
+                  conditionalVisibility: {
+                    logic: 'AND',
+                    rules: [{ field: 'epp', operator: 'equals', value: 'Yes' }]
+                  }
+                }),
+                createFieldConfig('eppScope', 'Scope of EPP Approval', 'dropdown', false, {
+                  options: ['Project', 'Org Unit', 'Specific procurement process', 'Other'],
+                  conditionalVisibility: {
+                    logic: 'AND',
+                    rules: [{ field: 'epp', operator: 'equals', value: 'Yes' }]
+                  }
+                }),
+                createFieldConfig('medicineMedicalEquipment', 'Medicine / Medical Equipment', 'dropdown', false, {
+                  options: ['Yes', 'No'],
+                  triggersConditionalFields: ['policyExceptionLink']
+                }),
+                createFieldConfig('policyExceptionLink', 'Policy Exception Link (Annex 2 Jira)', 'text', false, {
+                  placeholder: 'Enter Jira link',
+                  conditionalVisibility: {
+                    logic: 'AND',
+                    rules: [{ field: 'medicineMedicalEquipment', operator: 'equals', value: 'Yes' }]
+                  }
+                }),
+                createFieldConfig('processType', 'Process Type', 'checkboxGroup', false, {
+                  options: [
+                    'Standard solicitation',
+                    'Solicit offers against LTA/BPA',
+                    'Secondary bidding against LTA/BPA',
+                    'Direct contracting / Sole sourcing',
+                    'Contract Amendment'
+                  ],
+                  conditionalVisibility: {
+                    logic: 'AND',
+                    rules: [{ field: 'sourcingOrSolicitation', operator: 'equals', value: 'Solicitation' }]
+                  }
+                }),
+                createFieldConfig('solicitationMethod', 'Solicitation Method', 'dropdown', false, {
+                  options: ['RFQ', 'ITB', 'RFP', 'e-reserve auctions'],
+                  conditionalVisibility: {
+                    logic: 'AND',
+                    rules: [{ field: 'sourcingOrSolicitation', operator: 'equals', value: 'Solicitation' }]
+                  }
+                }),
+                createFieldConfig('linkedProcess', 'Linked Process', 'search', false, {
+                  dataSource: 'Event ID',
+                  placeholder: 'Search for event...',
+                  conditionalVisibility: {
+                    logic: 'OR',
+                    rules: [
+                      { field: 'processType', operator: 'contains', value: 'Direct contracting / Sole sourcing' },
+                      { field: 'sourcingOrSolicitation', operator: 'isNotEmpty', value: null }
+                    ]
+                  }
+                }),
+                createFieldConfig('unCollaboration', 'UN Collaboration', 'dropdown', false, {
+                  options: ['Yes', 'No'],
+                  triggersConditionalFields: ['unCollaborationType', 'unAgencies']
+                }),
+                createFieldConfig('unCollaborationType', 'UN Collaboration Type', 'dropdown', false, {
+                  options: [
+                    'Joint tendering process with other UN organizations',
+                    'Secondary bidding using other UN agency\'s LTA',
+                    'Re-use of solicitation results of another UN agency'
+                  ],
+                  conditionalVisibility: {
+                    logic: 'AND',
+                    rules: [{ field: 'unCollaboration', operator: 'equals', value: 'Yes' }]
+                  }
+                }),
+                createFieldConfig('unAgencies', 'UN Agencies', 'dropdown', false, {
+                  allowMultiple: true,
+                  options: ['UNDP', 'UNHCR', 'UNICEF', 'WFP', 'WHO', 'UNESCO'],
+                  conditionalVisibility: {
+                    logic: 'AND',
+                    rules: [{ field: 'unCollaboration', operator: 'equals', value: 'Yes' }]
+                  }
+                }),
+                createFieldConfig('organizationalUnit', 'Organizational Unit', 'search', true, {
+                  dataSource: 'oneUNOPS',
+                  placeholder: 'Search for organizational unit...'
+                }),
+                createFieldConfig('isLease', 'Is this a Lease', 'dropdown', false, {
+                  options: ['Yes', 'No'],
+                  triggersConditionalFields: ['srmComplianceDoc']
+                }),
+                createFieldConfig('srmComplianceDoc', 'SRM Compliance Document', 'file', false, {
+                  acceptedTypes: ['.pdf', '.doc', '.docx'],
+                  maxSize: 10,
+                  conditionalVisibility: {
+                    logic: 'AND',
+                    rules: [{ field: 'isLease', operator: 'equals', value: 'Yes' }]
+                  }
+                })
+              ]
+            }
+          ]
+        };
+        
+        return blockConfig;
+      }
+
+      // Render block configuration view for admin
+      function renderBlockConfigView(blockConfig) {
+        return `
+          <div class="block-config-container" id="config-${blockConfig.blockId}">
+            <div style="background: var(--surface-0); border: 1px solid var(--surface-200); border-radius: var(--radius-md); padding: var(--spacing-lg); margin-bottom: var(--spacing-lg);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-lg);">
+                <div style="display: flex; align-items: center; gap: var(--spacing-md);">
+                  <span style="font-size: 32px;">${blockConfig.blockIcon}</span>
+                  <input type="text" value="${blockConfig.blockName}" 
+                         onchange="updateBlockName('${blockConfig.blockId}', this.value)" 
+                         style="padding: 8px 12px; border: 1px solid var(--surface-200); border-radius: var(--radius-sm); font-size: 18px; font-weight: 600;" />
+                </div>
+                <div style="display: flex; gap: var(--spacing-sm); align-items: center);">
+                  <label style="display: flex; align-items: center; gap: var(--spacing-sm); font-size: 14px;">
+                    <input type="checkbox" ${blockConfig.enabled ? 'checked' : ''} 
+                           onchange="toggleBlockEnabled('${blockConfig.blockId}', this.checked)" />
+                    <span>Block Enabled</span>
+                  </label>
+                  <button class="icon-btn" onclick="deleteConfigBlock('${blockConfig.blockId}')" title="Delete Block">🗑️</button>
+                </div>
+              </div>
+              
+              ${blockConfig.sections.map(section => renderSectionConfigView(blockConfig.blockId, section)).join('')}
+              
+              <button class="btn btn-ghost" onclick="addSection('${blockConfig.blockId}')" style="width: 100%; margin-top: var(--spacing-md);">
+                ➕ Add Section
+              </button>
+            </div>
+          </div>
+        `;
+      }
+      
+      // Render section configuration
+      function renderSectionConfigView(blockId, section) {
+        return `
+          <div style="border-top: 1px solid var(--surface-200); padding-top: var(--spacing-lg); margin-top: var(--spacing-lg);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-md);">
+              <input type="text" value="${section.sectionName}" 
+                     onchange="updateSectionName('${blockId}', '${section.sectionId}', this.value)" 
+                     style="padding: 6px 12px; border: 1px solid var(--surface-200); border-radius: var(--radius-sm); font-size: 16px; font-weight: 600;" />
+              <div style="display: flex; gap: var(--spacing-xs); align-items: center;">
+                <label style="display: flex; align-items: center; gap: var(--spacing-xs); font-size: 13px;">
+                  <input type="checkbox" ${section.enabled ? 'checked' : ''} 
+                         onchange="toggleSectionEnabled('${blockId}', '${section.sectionId}', this.checked)" />
+                  <span>Enabled</span>
+                </label>
+                <button class="icon-btn" onclick="deleteConfigSection('${blockId}', '${section.sectionId}')" style="font-size: 12px;">✖</button>
+              </div>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: var(--spacing-sm);">
+              ${section.fields.map(field => renderFieldConfigCard(blockId, section.sectionId, field)).join('')}
+            </div>
+            
+            <button class="btn btn-ghost btn-sm" onclick="addFieldToSection('${blockId}', '${section.sectionId}')" 
+                    style="width: 100%; margin-top: var(--spacing-sm); padding: 8px;">
+              ➕ Add Field
+            </button>
+          </div>
+        `;
+      }
+      
+      // Render individual field configuration card
+      function renderFieldConfigCard(blockId, sectionId, field) {
+        return `
+          <div style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-sm); padding: var(--spacing-md); transition: all 0.2s;"
+               onmouseover="this.style.borderColor='var(--primary-400)'" 
+               onmouseout="this.style.borderColor='var(--surface-200)'">
+            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--spacing-sm);">
+              <div style="display: flex; align-items: center; gap: var(--spacing-sm); flex: 1;">
+                <span style="font-size: 18px;">${fieldTypes[field.fieldType]?.icon || '📝'}</span>
+                <span style="font-weight: 600; font-size: 14px;">${field.fieldLabel}</span>
+                ${field.required ? '<span style="padding: 2px 6px; background: var(--danger-50); color: var(--danger-500); border-radius: 4px; font-size: 10px; font-weight: 600;">REQUIRED</span>' : ''}
+                ${field.conditionalVisibility ? '<span style="padding: 2px 6px; background: var(--warning-50); color: var(--warning-500); border-radius: 4px; font-size: 10px; font-weight: 600;">CONDITIONAL</span>' : ''}
+              </div>
+              <div style="display: flex; gap: var(--spacing-xs);">
+                <button class="icon-btn" onclick="editField('${blockId}', '${sectionId}', '${field.fieldId}')" title="Edit" style="font-size: 12px;">✏️</button>
+                <button class="icon-btn" onclick="duplicateField('${blockId}', '${sectionId}', '${field.fieldId}')" title="Duplicate" style="font-size: 12px;">📋</button>
+                <button class="icon-btn" onclick="deleteConfigField('${blockId}', '${sectionId}', '${field.fieldId}')" title="Delete" style="font-size: 12px;">🗑️</button>
+              </div>
+            </div>
+            
+            <div style="padding: var(--spacing-sm); background: var(--surface-0); border-radius: var(--radius-sm); opacity: 0.8; pointer-events: none;">
+              ${renderFieldPreview(field)}
+            </div>
+          </div>
+        `;
+      }
+      
+      // Render field preview (how it will look for tender author)
+      function renderFieldPreview(field) {
+        const requiredMark = field.required ? '<span style="color: var(--danger-500);">*</span>' : '';
+        
+        switch (field.fieldType) {
+          case 'text':
+            return `
+              <label style="font-size: 14px; font-weight: 600; display: block; margin-bottom: 4px;">${field.fieldLabel} ${requiredMark}</label>
+              <input type="text" placeholder="${field.placeholder}" disabled 
+                     style="width: 100%; padding: 8px 12px; border: 1px solid var(--surface-200); border-radius: var(--radius-sm); font-size: 14px;" />
+              ${field.helpText ? `<span style="font-size: 12px; color: var(--text-muted); display: block; margin-top: 4px;">${field.helpText}</span>` : ''}
+            `;
+          
+          case 'textarea':
+            return `
+              <label style="font-size: 14px; font-weight: 600; display: block; margin-bottom: 4px;">${field.fieldLabel} ${requiredMark}</label>
+              <textarea placeholder="${field.placeholder}" disabled rows="${field.rows}"
+                        style="width: 100%; padding: 8px 12px; border: 1px solid var(--surface-200); border-radius: var(--radius-sm); font-size: 14px; resize: vertical;"></textarea>
+              ${field.helpText ? `<span style="font-size: 12px; color: var(--text-muted); display: block; margin-top: 4px;">${field.helpText}</span>` : ''}
+            `;
+          
+          case 'dropdown':
+            return `
+              <label style="font-size: 14px; font-weight: 600; display: block; margin-bottom: 4px;">${field.fieldLabel} ${requiredMark}</label>
+              <select disabled ${field.allowMultiple ? 'multiple' : ''} 
+                      style="width: 100%; padding: 8px 12px; border: 1px solid var(--surface-200); border-radius: var(--radius-sm); font-size: 14px;">
+                <option value="">Select...</option>
+                ${field.options.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
+              </select>
+              ${field.helpText ? `<span style="font-size: 12px; color: var(--text-muted); display: block; margin-top: 4px;">${field.helpText}</span>` : ''}
+            `;
+          
+          case 'checkbox':
+            return `
+              <label style="display: flex; align-items: center; gap: 8px; font-size: 14px;">
+                <input type="checkbox" disabled style="width: 18px; height: 18px;" />
+                ${field.fieldLabel} ${requiredMark}
+              </label>
+              ${field.helpText ? `<span style="font-size: 12px; color: var(--text-muted); display: block; margin-top: 4px;">${field.helpText}</span>` : ''}
+            `;
+          
+          case 'checkboxGroup':
+            return `
+              <label style="font-size: 14px; font-weight: 600; display: block; margin-bottom: 8px;">${field.fieldLabel} ${requiredMark}</label>
+              <div style="display: flex; flex-direction: column; gap: 6px;">
+                ${field.options.map(opt => `
+                  <label style="display: flex; align-items: center; gap: 8px; font-size: 14px;">
+                    <input type="checkbox" disabled style="width: 18px; height: 18px;" />
+                    ${opt}
+                  </label>
+                `).join('')}
+              </div>
+              ${field.helpText ? `<span style="font-size: 12px; color: var(--text-muted); display: block; margin-top: 4px;">${field.helpText}</span>` : ''}
+            `;
+          
+          case 'date':
+            return `
+              <label style="font-size: 14px; font-weight: 600; display: block; margin-bottom: 4px;">${field.fieldLabel} ${requiredMark}</label>
+              <input type="date" disabled 
+                     style="width: 100%; padding: 8px 12px; border: 1px solid var(--surface-200); border-radius: var(--radius-sm); font-size: 14px;" />
+              ${field.helpText ? `<span style="font-size: 12px; color: var(--text-muted); display: block; margin-top: 4px;">${field.helpText}</span>` : ''}
+            `;
+          
+          case 'search':
+            return `
+              <label style="font-size: 14px; font-weight: 600; display: block; margin-bottom: 4px;">${field.fieldLabel} ${requiredMark}</label>
+              <div style="position: relative;">
+                <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 14px;">🔍</span>
+                <input type="text" placeholder="${field.placeholder}" disabled 
+                       style="width: 100%; padding: 8px 12px 8px 36px; border: 1px solid var(--surface-200); border-radius: var(--radius-sm); font-size: 14px;" />
+              </div>
+              ${field.helpText ? `<span style="font-size: 12px; color: var(--text-muted); display: block; margin-top: 4px;">${field.helpText}</span>` : ''}
+            `;
+          
+          case 'file':
+            return `
+              <label style="font-size: 14px; font-weight: 600; display: block; margin-bottom: 4px;">${field.fieldLabel} ${requiredMark}</label>
+              <button disabled style="padding: 8px 16px; border: 1px solid var(--surface-200); border-radius: var(--radius-sm); font-size: 14px; background: var(--surface-0); cursor: not-allowed;">
+                📎 Choose File
+              </button>
+              <span style="font-size: 12px; color: var(--text-muted); display: block; margin-top: 4px;">
+                Accepted: ${field.acceptedTypes.join(', ')} | Max: ${field.maxSize}MB
+              </span>
+              ${field.helpText ? `<span style="font-size: 12px; color: var(--text-muted); display: block; margin-top: 4px;">${field.helpText}</span>` : ''}
+            `;
+          
+          default:
+            return `<span style="color: var(--text-muted); font-size: 13px;">Field type: ${field.fieldType}</span>`;
+        }
+      }
+      
       // Search functionality
       function setupSearch(searchInputId, containerSelector) {
         const searchInput = document.getElementById(searchInputId);
@@ -1516,6 +2142,43 @@
       });
 
       function addSectionToCanvas(type) {
+        // Check if this is a configurable block type
+        if (type === 'general') {
+          const blockConfig = initializeGeneralInfoBlock();
+          templateConfig.blocks.push(blockConfig);
+          
+          // Create visual representation
+          const section = document.createElement('div');
+          section.className = 'dropped-section';
+          section.dataset.sectionType = type;
+          section.dataset.blockId = blockConfig.blockId;
+          
+          // Render admin configuration view
+          section.innerHTML = renderBlockConfigView(blockConfig);
+          
+          // Add block to blocks array
+          const blockIndex = blocks.length;
+          blocks.push({
+            name: blockConfig.blockName,
+            element: section,
+            type: type,
+            config: blockConfig
+          });
+          
+          // Add click handler for block selection
+          section.addEventListener('click', (e) => {
+            if (!e.target.closest('.icon-btn') && !e.target.closest('button') && !e.target.closest('input') && !e.target.closest('select')) {
+              selectBlock(section, type, blockIndex);
+            }
+          });
+          
+          activeBlockIndex = blockIndex;
+          updateBlockTabs();
+          updateCanvasView();
+          return;
+        }
+        
+        // Fallback to old system for other block types
         const sectionData = {
           scope: {
             icon: '🎯',
@@ -1526,12 +2189,12 @@
                 fields: ['Scope and objectives of sourcing or solicitation process'],
               },
               {
-                title: 'Specific requirements',
-                fields: ['Specific requirements, conditions and additional information'],
+                title: 'Product Requirements & Specifications',
+                fields: ['UNSPSC Requirements', 'Export/Upload Spreadsheet'],
               },
               {
-                title: 'Evaluation',
-                fields: ['Evaluation of submissions'],
+                title: 'Other requirements',
+                fields: ['Service Descriptions', 'Delivery Requirements', 'Specific Requirements'],
               },
             ],
           },
@@ -1547,7 +2210,7 @@
           },
           evaluation: {
             icon: '📊',
-            name: 'Evaluation Criteria',
+            name: 'Evaluation',
             subsections: [
               {
                 title: 'Evaluation Method',
@@ -1567,6 +2230,57 @@
                   'Languages of quotations/bids/proposals',
                 ],
               },
+              {
+                title: 'Bid Response Requirements',
+                subsections: [
+                  {
+                    label: 'A. Per Bid (answered one time for entire bid)',
+                    fields: [
+                      { name: "Bidder's Total Prices [Incoterm]", type: "Currency input", id: 'pb1' },
+                      { name: "Customs clearance costs", type: "Currency input", id: 'pb2' },
+                      { name: "Freight cost", type: "Currency input", id: 'pb3' },
+                      { name: "Total Price of Goods [Incoterm]", type: "Currency input (calculated)", id: 'pb4' },
+                      { name: "Total Price of Related Services", type: "Currency input", id: 'pb5' }
+                    ]
+                  },
+                  {
+                    label: 'B. Per UNSPSC (supplier answers for each UNSPSC item)',
+                    fields: [
+                      { name: "Unit price Incoterm", type: "Currency input", id: 'pu1' },
+                      { name: "Total price Incoterm", type: "Currency input (calculated)", id: 'pu2' },
+                      { name: "Country of Origin", type: "Country dropdown", id: 'pu3' },
+                      { name: "Delivery point(s)", type: "Text input", id: 'pu4' },
+                      { name: "Model", type: "Text input", id: 'pu5' },
+                      { name: "Manufacturer", type: "Text input", id: 'pu6' }
+                    ]
+                  },
+                  {
+                    label: 'C. Per Attribute (under each UNSPSC attribute)',
+                    fields: [
+                      { name: "Is quotation compliant?", type: "Yes/No radio", id: 'pa1' },
+                      { name: "Details of goods offered", type: "Text area", id: 'pa2' }
+                    ]
+                  },
+                  {
+                    label: 'D. Per Service Line',
+                    fields: [
+                      { name: "Is quotation compliant?", type: "Yes/No radio", id: 'ps1' },
+                      { name: "Details", type: "Text area", id: 'ps2' }
+                    ]
+                  },
+                  {
+                    label: 'E. Per Delivery Requirements',
+                    fields: [
+                      { name: "Is quotation compliant?", type: "Yes/No radio", id: 'pd1' },
+                      { name: "Details", type: "Text area", id: 'pd2' }
+                    ]
+                  }
+                ]
+              },
+              {
+                title: 'Supplier Form Preview',
+                fields: ['Preview of supplier submission form', 'Pre-filled with configured data'],
+              },
             ],
           },
           general: {
@@ -1581,7 +2295,7 @@
           },
           project: {
             icon: '🏗️',
-            name: 'Project Details',
+            name: 'Project & Tender Details',
             subsections: [
               {
                 title: 'Project Information',
@@ -1602,6 +2316,45 @@
                   'Quantity',
                   'Currency',
                   'Amount/expected value of contract (USD)',
+                ],
+              },
+            ],
+          },
+          'requisition-lots': {
+            icon: '📋',
+            name: 'Requisition & Lots',
+            subsections: [
+              {
+                title: 'Block Configuration',
+                fields: [
+                  'Display Requisition Lines',
+                  'Enable Lot Creation',
+                  'Lot Assignment Rules',
+                  'Default Lot Behavior',
+                  'Requisition Line Data Source',
+                ],
+              },
+              {
+                title: 'Preview: Tender Author View',
+                isPreviewSection: true,
+                fields: [],
+              },
+            ],
+          },
+          team: {
+            icon: '👥',
+            name: 'Team',
+            subsections: [
+              {
+                title: 'Team Members',
+                fields: [
+                  'Alternate authors (names)',
+                  'Additional roles – Procurement Reviewer',
+                  'Additional roles – Procurement Authority',
+                  'Additional roles – Technical Matter Expert',
+                  'Additional roles – Bid opening panel',
+                  'Additional roles – Evaluation team',
+                  'Additional roles – Collaborators',
                 ],
               },
             ],
@@ -1631,54 +2384,125 @@
         data.subsections.forEach((subsection) => {
           const subsectionEl = document.createElement('div');
           subsectionEl.className = 'subsection';
-          subsectionEl.innerHTML = `
-            <div class="subsection-header">
-              <div class="subsection-title">
-                <span class="subsection-toggle">▼</span>
-                ${subsection.title}
+          
+          // Special handling for preview section in Requisition Lines & Lots
+          if (subsection.isPreviewSection && type === 'requisition-lots') {
+            subsectionEl.innerHTML = `
+              <div class="subsection-header">
+                <div class="subsection-title">
+                  <span class="subsection-toggle">▼</span>
+                  ${subsection.title}
+                </div>
               </div>
-            </div>
-            <div class="subsection-body">
-              ${subsection.fields
-                .map(
-                  (field) => `
-                <div class="field-item" data-field-name="${field}" data-field-required="true">
-                  <div class="field-info">
-                    <span class="field-label">${field}</span>
-                    <div class="field-badges">
-                      <span class="field-badge badge-required">Required</span>
-                      <span class="field-badge badge-mapped">Mapped</span>
+              <div class="subsection-body" id="requisition-lots-preview-${section.dataset.blockId}">
+                <div style="padding: var(--spacing-md); background: var(--info-50); border: 1px solid var(--info-400); border-radius: var(--radius-sm); margin-bottom: var(--spacing-md);">
+                  <div style="font-size: 13px; color: var(--info-400); display: flex; align-items: center; gap: var(--spacing-sm);">
+                    <span>ℹ️</span>
+                    <span>This is a preview of what tender authors will see when using this template. Configure block settings above to customize the behavior.</span>
+                  </div>
+                </div>
+                ${renderRequisitionLotsPreview(section.dataset.blockId)}
+              </div>
+            `;
+          } else {
+            // Check if this subsection has nested subsections (like Bid Response Requirements)
+            if (subsection.subsections && Array.isArray(subsection.subsections)) {
+              subsectionEl.innerHTML = `
+                <div class="subsection-header">
+                  <div class="subsection-title">
+                    <span class="subsection-toggle">▼</span>
+                    ${subsection.title}
+                  </div>
+                </div>
+                <div class="subsection-body">
+                  ${subsection.subsections.map(nestedSection => `
+                    <div class="nested-subsection" style="margin-bottom: var(--spacing-lg); padding: var(--spacing-md); background: var(--surface-50); border-radius: var(--radius-sm); border: 1px solid var(--surface-200);">
+                      <h4 style="font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: var(--spacing-md);">
+                        ${nestedSection.label}
+                      </h4>
+                      ${nestedSection.fields.map(field => `
+                        <div class="field-item" data-field-id="${field.id}" data-field-name="${field.name}" data-field-type="${field.type}" data-field-required="true" style="margin-bottom: var(--spacing-sm);">
+                          <div class="field-info">
+                            <span class="field-label">${field.name}</span>
+                            <div class="field-badges">
+                              <span class="field-badge" style="background: var(--info-100); color: var(--info-600); padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 500;">${field.type}</span>
+                              <span class="field-badge badge-required">Required</span>
+                            </div>
+                          </div>
+                          <div class="field-actions" style="display: flex; gap: var(--spacing-xs);">
+                            <button class="icon-btn" onclick="editBidResponseField('${field.id}', '${nestedSection.label}')" title="Configure field">
+                              <span>⚙️</span>
+                            </button>
+                          </div>
+                        </div>
+                      `).join('')}
+                      <button class="btn-secondary" onclick="addCustomBidResponseField('${nestedSection.label}')" style="width: 100%; padding: var(--spacing-sm); margin-top: var(--spacing-sm); font-size: 13px;">
+                        + Add Custom Field
+                      </button>
+                    </div>
+                  `).join('')}
+                  <div style="padding: var(--spacing-md); background: var(--info-50); border: 1px solid var(--info-400); border-radius: var(--radius-sm); margin-top: var(--spacing-md);">
+                    <div style="font-size: 13px; color: var(--info-400); display: flex; align-items: center; gap: var(--spacing-sm);">
+                      <span>ℹ️</span>
+                      <span>Configure which fields are required, optional, or hidden. Tender authors will use these to define what suppliers must provide in their bids.</span>
                     </div>
                   </div>
                 </div>
-              `
-                )
-                .join('')}
-              <div class="drop-zone">Drop fields here</div>
-            </div>
-          `;
+              `;
+            } else {
+              // Standard subsection with simple fields array
+              subsectionEl.innerHTML = `
+                <div class="subsection-header">
+                  <div class="subsection-title">
+                    <span class="subsection-toggle">▼</span>
+                    ${subsection.title}
+                  </div>
+                </div>
+                <div class="subsection-body">
+                  ${subsection.fields
+                    .map(
+                      (field) => `
+                    <div class="field-item" data-field-name="${field}" data-field-required="true">
+                      <div class="field-info">
+                        <span class="field-label">${field}</span>
+                        <div class="field-badges">
+                          <span class="field-badge badge-required">Required</span>
+                          <span class="field-badge badge-mapped">Mapped</span>
+                        </div>
+                      </div>
+                    </div>
+                  `
+                    )
+                    .join('')}
+                  <div class="drop-zone">Drop fields here</div>
+                </div>
+              `;
+            }
+          }
 
           const header = subsectionEl.querySelector('.subsection-header');
           header.addEventListener('click', () => {
             subsectionEl.classList.toggle('collapsed');
           });
 
-          // Add field click handlers
-          subsectionEl.querySelectorAll('.field-item').forEach((fieldItem) => {
-            // Remove delete button if field is required
-            if (fieldItem.dataset.fieldRequired === 'true') {
-              const controls = fieldItem.querySelector('.section-controls');
-              if (controls) {
-                controls.remove();
+          // Add field click handlers (only for non-preview sections)
+          if (!subsection.isPreviewSection) {
+            subsectionEl.querySelectorAll('.field-item').forEach((fieldItem) => {
+              // Remove delete button if field is required
+              if (fieldItem.dataset.fieldRequired === 'true') {
+                const controls = fieldItem.querySelector('.section-controls');
+                if (controls) {
+                  controls.remove();
+                }
               }
-            }
 
-            fieldItem.addEventListener('click', (e) => {
-              if (!e.target.closest('.icon-btn')) {
-                selectField(fieldItem, fieldItem.dataset.fieldName);
-              }
+              fieldItem.addEventListener('click', (e) => {
+                if (!e.target.closest('.icon-btn')) {
+                  selectField(fieldItem, fieldItem.dataset.fieldName);
+                }
+              });
             });
-          });
+          }
 
           sectionBody.appendChild(subsectionEl);
         });
@@ -1880,6 +2704,26 @@
         // Populate block properties
         const sectionName = element.querySelector('.section-name')?.textContent || '';
         document.getElementById('block-name').value = sectionName;
+        
+        // Show/hide Requisition Lines & Lots specific configuration
+        const requisitionLotsConfig = document.getElementById('requisition-lots-config');
+        const generalBlockConfig = document.getElementById('general-block-config');
+        
+        if (type === 'requisition-lots') {
+          requisitionLotsConfig.classList.remove('hidden');
+          generalBlockConfig.classList.add('hidden');
+          
+          // Populate configuration values
+          const blockId = element.dataset.blockId;
+          const config = blockConfigurations[blockId] || {};
+          document.getElementById('config-display-requisition-lines').checked = config.displayRequisitionLines !== false;
+          document.getElementById('config-enable-lot-creation').checked = config.enableLotCreation !== false;
+          document.getElementById('config-lot-assignment-rules').value = config.lotAssignmentRules || 'flexible';
+          document.getElementById('config-data-source').value = config.dataSource || 'erp';
+        } else {
+          requisitionLotsConfig.classList.add('hidden');
+          generalBlockConfig.classList.remove('hidden');
+        }
       }
 
       function selectField(fieldElement, fieldName) {
@@ -1942,6 +2786,442 @@
         }
       }
 
+      // Edit field modal
+      window.editField = function(blockId, sectionId, fieldId) {
+        const blockConfig = templateConfig.blocks.find(b => b.blockId === blockId);
+        const section = blockConfig?.sections.find(s => s.sectionId === sectionId);
+        const field = section?.fields.find(f => f.fieldId === fieldId);
+        
+        if (!field) {
+          alert('Field not found');
+          return;
+        }
+        
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        modal.id = 'field-edit-modal';
+        modal.style.cssText = `
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0, 0, 0, 0.5);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 9999;
+        `;
+        
+        modal.innerHTML = `
+          <div style="background: var(--surface-0); border-radius: var(--radius-lg); box-shadow: var(--shadow-modal); max-width: 800px; width: 90%; max-height: 90vh; display: flex; flex-direction: column;">
+            <div style="padding: var(--spacing-lg); border-bottom: 1px solid var(--surface-200); display: flex; justify-content: space-between; align-items: center;">
+              <h3 style="margin: 0; font-size: 18px; font-weight: 600;">Configure Field</h3>
+              <button class="icon-btn" onclick="closeModal()" style="font-size: 16px;">✖</button>
+            </div>
+            
+            <div style="padding: var(--spacing-lg); overflow-y: auto; flex: 1;">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-lg);">
+                <!-- Basic Configuration -->
+                <div style="background: var(--surface-50); border-radius: var(--radius-md); padding: var(--spacing-md);">
+                  <h4 style="margin: 0 0 var(--spacing-md) 0; font-size: 16px;">Basic Configuration</h4>
+                  
+                  <div style="margin-bottom: var(--spacing-md);">
+                    <label style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 4px;">Field Label</label>
+                    <input type="text" id="edit-label" value="${field.fieldLabel}" class="input" style="width: 100%;" />
+                  </div>
+                  
+                  <div style="margin-bottom: var(--spacing-md);">
+                    <label style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 4px;">Field Type</label>
+                    <select id="edit-type" class="select" style="width: 100%;" onchange="updateFieldTypeOptions(this.value)">
+                      ${Object.entries(fieldTypes).map(([key, val]) => 
+                        `<option value="${key}" ${field.fieldType === key ? 'selected' : ''}>${val.icon} ${val.label}</option>`
+                      ).join('')}
+                    </select>
+                  </div>
+                  
+                  <div style="margin-bottom: var(--spacing-md);">
+                    <label style="display: flex; align-items: center; gap: 8px; font-size: 14px;">
+                      <input type="checkbox" id="edit-required" ${field.required ? 'checked' : ''} />
+                      Required Field
+                    </label>
+                  </div>
+                  
+                  <div style="margin-bottom: var(--spacing-md);">
+                    <label style="display: flex; align-items: center; gap: 8px; font-size: 14px;">
+                      <input type="checkbox" id="edit-enabled" ${field.enabled ? 'checked' : ''} />
+                      Field Enabled
+                    </label>
+                  </div>
+                </div>
+                
+                <!-- Field-Specific Configuration -->
+                <div style="background: var(--surface-50); border-radius: var(--radius-md); padding: var(--spacing-md);">
+                  <h4 style="margin: 0 0 var(--spacing-md) 0; font-size: 16px;">Field-Specific Settings</h4>
+                  
+                  <div id="field-specific-config">
+                    ${renderFieldSpecificConfig(field)}
+                  </div>
+                </div>
+                
+                <!-- Conditional Visibility -->
+                <div style="grid-column: 1 / -1; background: var(--surface-50); border-radius: var(--radius-md); padding: var(--spacing-md);">
+                  <h4 style="margin: 0 0 var(--spacing-md) 0; font-size: 16px;">Conditional Visibility</h4>
+                  <div id="conditional-config" style="margin-bottom: var(--spacing-md);">
+                    ${field.conditionalVisibility ? renderConditionalRulesSummary(field.conditionalVisibility) : '<p style="color: var(--text-muted); font-size: 14px;">No conditional rules set</p>'}
+                  </div>
+                  <button class="btn btn-ghost btn-sm" onclick="alert('Conditional rules builder will be implemented')">
+                    ${field.conditionalVisibility ? '✏️ Edit Rules' : '➕ Add Rules'}
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <div style="padding: var(--spacing-lg); border-top: 1px solid var(--surface-200); display: flex; justify-content: flex-end; gap: var(--spacing-sm);">
+              <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+              <button class="btn btn-primary" onclick="saveFieldConfig('${blockId}', '${sectionId}', '${fieldId}')">Save Changes</button>
+            </div>
+          </div>
+        `;
+        
+        document.body.appendChild(modal);
+      };
+      
+      // Render field-specific configuration options
+      function renderFieldSpecificConfig(field) {
+        let html = '';
+        
+        // Placeholder
+        if (['text', 'textarea', 'search'].includes(field.fieldType)) {
+          html += `
+            <div style="margin-bottom: var(--spacing-md);">
+              <label style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 4px;">Placeholder Text</label>
+              <input type="text" class="input" id="edit-placeholder" value="${field.placeholder}" style="width: 100%;" />
+            </div>
+          `;
+        }
+        
+        // Help Text
+        html += `
+          <div style="margin-bottom: var(--spacing-md);">
+            <label style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 4px;">Help Text</label>
+            <textarea class="textarea" id="edit-helptext" rows="2" style="width: 100%;">${field.helpText}</textarea>
+          </div>
+        `;
+        
+        // Default Value
+        if (!field.readonly) {
+          html += `
+            <div style="margin-bottom: var(--spacing-md);">
+              <label style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 4px;">Default Value</label>
+              <input type="text" class="input" id="edit-default" value="${field.defaultValue}" style="width: 100%;" />
+            </div>
+          `;
+        }
+        
+        // Options for dropdown/checkbox group
+        if (['dropdown', 'checkboxGroup', 'radio'].includes(field.fieldType)) {
+          html += `
+            <div style="margin-bottom: var(--spacing-md);">
+              <label style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 4px;">Options (one per line)</label>
+              <textarea class="textarea" id="edit-options" rows="5" style="width: 100%;">${field.options.join('\n')}</textarea>
+            </div>
+          `;
+          
+          if (field.fieldType === 'dropdown') {
+            html += `
+              <div style="margin-bottom: var(--spacing-md);">
+                <label style="display: flex; align-items: center; gap: 8px; font-size: 14px;">
+                  <input type="checkbox" id="edit-multiple" ${field.allowMultiple ? 'checked' : ''} />
+                  Allow Multiple Selection
+                </label>
+              </div>
+            `;
+          }
+        }
+        
+        // Data Source for search fields
+        if (field.fieldType === 'search') {
+          html += `
+            <div style="margin-bottom: var(--spacing-md);">
+              <label style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 4px;">Data Source</label>
+              <select class="select" id="edit-datasource" style="width: 100%;">
+                <option value="oneUNOPS" ${field.dataSource === 'oneUNOPS' ? 'selected' : ''}>oneUNOPS</option>
+                <option value="Event ID" ${field.dataSource === 'Event ID' ? 'selected' : ''}>Event ID</option>
+                <option value="RDAT" ${field.dataSource === 'RDAT' ? 'selected' : ''}>oneUNOPS RDAT</option>
+              </select>
+            </div>
+          `;
+        }
+        
+        // File upload specific
+        if (field.fieldType === 'file') {
+          html += `
+            <div style="margin-bottom: var(--spacing-md);">
+              <label style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 4px;">Accepted File Types</label>
+              <input type="text" class="input" id="edit-acceptedtypes" value="${field.acceptedTypes.join(', ')}" 
+                     placeholder=".pdf, .doc, .docx" style="width: 100%;" />
+            </div>
+            <div style="margin-bottom: var(--spacing-md);">
+              <label style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 4px;">Max File Size (MB)</label>
+              <input type="number" class="input" id="edit-maxsize" value="${field.maxSize || 10}" style="width: 100%;" />
+            </div>
+          `;
+        }
+        
+        // Textarea rows
+        if (field.fieldType === 'textarea') {
+          html += `
+            <div style="margin-bottom: var(--spacing-md);">
+              <label style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 4px;">Number of Rows</label>
+              <input type="number" class="input" id="edit-rows" value="${field.rows || 3}" min="2" max="20" style="width: 100%;" />
+            </div>
+          `;
+        }
+        
+        // Validation
+        if (['text', 'textarea'].includes(field.fieldType)) {
+          html += `
+            <div style="margin-bottom: var(--spacing-md);">
+              <label style="display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px;">Validation</label>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                <input type="number" class="input" id="edit-minlength" placeholder="Min length" 
+                       value="${field.validation?.minLength || ''}" />
+                <input type="number" class="input" id="edit-maxlength" placeholder="Max length" 
+                       value="${field.validation?.maxLength || ''}" />
+              </div>
+            </div>
+          `;
+        }
+        
+        return html;
+      }
+      
+      // Save field configuration
+      window.saveFieldConfig = function(blockId, sectionId, fieldId) {
+        const blockConfig = templateConfig.blocks.find(b => b.blockId === blockId);
+        const section = blockConfig?.sections.find(s => s.sectionId === sectionId);
+        const field = section?.fields.find(f => f.fieldId === fieldId);
+        
+        if (!field) return;
+        
+        // Update field properties from form
+        field.fieldLabel = document.getElementById('edit-label')?.value || field.fieldLabel;
+        field.fieldType = document.getElementById('edit-type')?.value || field.fieldType;
+        field.required = document.getElementById('edit-required')?.checked || false;
+        field.enabled = document.getElementById('edit-enabled')?.checked || false;
+        field.placeholder = document.getElementById('edit-placeholder')?.value || '';
+        field.helpText = document.getElementById('edit-helptext')?.value || '';
+        field.defaultValue = document.getElementById('edit-default')?.value || '';
+        
+        // Type-specific properties
+        if (['dropdown', 'checkboxGroup', 'radio'].includes(field.fieldType)) {
+          const optionsText = document.getElementById('edit-options')?.value || '';
+          field.options = optionsText.split('\n').filter(o => o.trim() !== '');
+          field.allowMultiple = document.getElementById('edit-multiple')?.checked || false;
+        }
+        
+        if (field.fieldType === 'search') {
+          field.dataSource = document.getElementById('edit-datasource')?.value || 'oneUNOPS';
+        }
+        
+        if (field.fieldType === 'file') {
+          const acceptedTypesText = document.getElementById('edit-acceptedtypes')?.value || '';
+          field.acceptedTypes = acceptedTypesText.split(',').map(t => t.trim()).filter(t => t !== '');
+          field.maxSize = parseInt(document.getElementById('edit-maxsize')?.value) || 10;
+        }
+        
+        if (field.fieldType === 'textarea') {
+          field.rows = parseInt(document.getElementById('edit-rows')?.value) || 3;
+        }
+        
+        // Validation
+        if (['text', 'textarea'].includes(field.fieldType)) {
+          field.validation = field.validation || {};
+          const minLength = document.getElementById('edit-minlength')?.value;
+          const maxLength = document.getElementById('edit-maxlength')?.value;
+          if (minLength) field.validation.minLength = parseInt(minLength);
+          if (maxLength) field.validation.maxLength = parseInt(maxLength);
+        }
+        
+        // Update template config modification date
+        templateConfig.modifiedDate = new Date().toISOString();
+        
+        // Re-render the block config view
+        updateCanvasView();
+        
+        // Close modal
+        closeModal();
+        
+        // Show success message
+        showNotification('Field configuration saved successfully', 'success');
+      };
+      
+      // Helper functions
+      window.closeModal = function() {
+        const modal = document.querySelector('.modal-overlay');
+        if (modal) modal.remove();
+      };
+      
+      function showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.textContent = message;
+        notification.style.cssText = `
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          padding: 12px 24px;
+          background: ${type === 'success' ? 'var(--success-500)' : 'var(--info-400)'};
+          color: white;
+          border-radius: var(--radius-md);
+          box-shadow: var(--shadow-card);
+          z-index: 10000;
+          font-size: 14px;
+        `;
+        document.body.appendChild(notification);
+        setTimeout(() => notification.remove(), 3000);
+      }
+      
+      function renderConditionalRulesSummary(rules) {
+        if (!rules || !rules.rules || rules.rules.length === 0) {
+          return '<p style="color: var(--text-muted); font-size: 14px;">No rules defined</p>';
+        }
+        
+        return `
+          <div style="padding: var(--spacing-sm); background: var(--surface-0); border-radius: var(--radius-sm); border: 1px solid var(--surface-200);">
+            <div style="display: inline-block; padding: 2px 8px; background: var(--primary-50); color: var(--primary-400); border-radius: 4px; font-size: 11px; font-weight: 600; margin-bottom: 8px;">${rules.logic}</div>
+            <ul style="margin: 0; padding-left: 20px; font-size: 14px;">
+              ${rules.rules.map(rule => `
+                <li style="margin-bottom: 4px;">
+                  <strong>${rule.field}</strong> ${rule.operator} ${rule.value !== null ? `"${rule.value}"` : ''}
+                </li>
+              `).join('')}
+            </ul>
+          </div>
+        `;
+      }
+      
+      // Config block management functions
+      window.updateBlockName = function(blockId, newName) {
+        const blockConfig = templateConfig.blocks.find(b => b.blockId === blockId);
+        if (blockConfig) {
+          blockConfig.blockName = newName;
+          const block = blocks.find(b => b.config?.blockId === blockId);
+          if (block) block.name = newName;
+          templateConfig.modifiedDate = new Date().toISOString();
+          updateBlockTabs();
+        }
+      };
+      
+      window.toggleBlockEnabled = function(blockId, enabled) {
+        const blockConfig = templateConfig.blocks.find(b => b.blockId === blockId);
+        if (blockConfig) {
+          blockConfig.enabled = enabled;
+          templateConfig.modifiedDate = new Date().toISOString();
+        }
+      };
+      
+      window.deleteConfigBlock = function(blockId) {
+        if (!confirm('Are you sure you want to delete this block and all its configuration?')) return;
+        
+        const index = templateConfig.blocks.findIndex(b => b.blockId === blockId);
+        if (index > -1) {
+          templateConfig.blocks.splice(index, 1);
+          
+          const blockIndex = blocks.findIndex(b => b.config?.blockId === blockId);
+          if (blockIndex > -1) {
+            blocks.splice(blockIndex, 1);
+            if (activeBlockIndex >= blocks.length) {
+              activeBlockIndex = Math.max(0, blocks.length - 1);
+            }
+          }
+          
+          templateConfig.modifiedDate = new Date().toISOString();
+          updateBlockTabs();
+          updateCanvasView();
+        }
+      };
+      
+      window.updateSectionName = function(blockId, sectionId, newName) {
+        const blockConfig = templateConfig.blocks.find(b => b.blockId === blockId);
+        const section = blockConfig?.sections.find(s => s.sectionId === sectionId);
+        if (section) {
+          section.sectionName = newName;
+          templateConfig.modifiedDate = new Date().toISOString();
+        }
+      };
+      
+      window.toggleSectionEnabled = function(blockId, sectionId, enabled) {
+        const blockConfig = templateConfig.blocks.find(b => b.blockId === blockId);
+        const section = blockConfig?.sections.find(s => s.sectionId === sectionId);
+        if (section) {
+          section.enabled = enabled;
+          templateConfig.modifiedDate = new Date().toISOString();
+        }
+      };
+      
+      window.deleteConfigSection = function(blockId, sectionId) {
+        if (!confirm('Are you sure you want to delete this section and all its fields?')) return;
+        
+        const blockConfig = templateConfig.blocks.find(b => b.blockId === blockId);
+        if (blockConfig) {
+          const index = blockConfig.sections.findIndex(s => s.sectionId === sectionId);
+          if (index > -1) {
+            blockConfig.sections.splice(index, 1);
+            templateConfig.modifiedDate = new Date().toISOString();
+            updateCanvasView();
+          }
+        }
+      };
+      
+      window.deleteConfigField = function(blockId, sectionId, fieldId) {
+        if (!confirm('Are you sure you want to delete this field?')) return;
+        
+        const blockConfig = templateConfig.blocks.find(b => b.blockId === blockId);
+        const section = blockConfig?.sections.find(s => s.sectionId === sectionId);
+        
+        if (section) {
+          const index = section.fields.findIndex(f => f.fieldId === fieldId);
+          if (index > -1) {
+            section.fields.splice(index, 1);
+            templateConfig.modifiedDate = new Date().toISOString();
+            updateCanvasView();
+          }
+        }
+      };
+      
+      window.duplicateField = function(blockId, sectionId, fieldId) {
+        const blockConfig = templateConfig.blocks.find(b => b.blockId === blockId);
+        const section = blockConfig?.sections.find(s => s.sectionId === sectionId);
+        const field = section?.fields.find(f => f.fieldId === fieldId);
+        
+        if (field && section) {
+          const duplicate = JSON.parse(JSON.stringify(field));
+          duplicate.fieldId = 'field-' + Date.now();
+          duplicate.fieldLabel += ' (Copy)';
+          section.fields.push(duplicate);
+          templateConfig.modifiedDate = new Date().toISOString();
+          updateCanvasView();
+          showNotification('Field duplicated successfully', 'success');
+        }
+      };
+      
+      window.addFieldToSection = function(blockId, sectionId) {
+        const fieldName = prompt('Enter field name:');
+        if (!fieldName) return;
+        
+        const blockConfig = templateConfig.blocks.find(b => b.blockId === blockId);
+        const section = blockConfig?.sections.find(s => s.sectionId === sectionId);
+        
+        if (section) {
+          const newField = createFieldConfig('field-' + Date.now(), fieldName, 'text', false, {});
+          section.fields.push(newField);
+          templateConfig.modifiedDate = new Date().toISOString();
+          updateCanvasView();
+          showNotification('Field added successfully', 'success');
+        }
+      };
+      
       function deleteSection(btn) {
         if (confirm('Delete this section?')) {
           const section = btn.closest('.dropped-section');
@@ -2003,6 +3283,358 @@
             componentProps.classList.add('hidden');
             selectedFieldElement = null;
           }
+        }
+      }
+
+      // ===== REQUISITION LINES & LOTS FUNCTIONS (Template Builder Context) =====
+      
+      // Initialize sample requisition lines for preview
+      function initializePreviewRequisitionLines(blockId) {
+        if (!previewRequisitionLines[blockId]) {
+          previewRequisitionLines[blockId] = [
+            {
+              id: 'REQ-LINE-001',
+              unspscCode: '43211503',
+              unspscDescription: 'Laptop computers',
+              description: 'Laptop computers for office use',
+              quantity: 50,
+              unitOfMeasure: 'Unit',
+              amount: 25000,
+              currency: 'USD',
+            },
+            {
+              id: 'REQ-LINE-002',
+              unspscCode: '43211602',
+              unspscDescription: 'Docking stations',
+              description: 'Docking stations for laptops',
+              quantity: 50,
+              unitOfMeasure: 'Unit',
+              amount: 10000,
+              currency: 'USD',
+            },
+            {
+              id: 'REQ-LINE-003',
+              unspscCode: '44101503',
+              unspscDescription: 'Laser printers',
+              description: 'Laser printers for office',
+              quantity: 5,
+              unitOfMeasure: 'Unit',
+              amount: 2500,
+              currency: 'USD',
+            },
+          ];
+        }
+        
+        if (!previewLots[blockId]) {
+          previewLots[blockId] = [];
+        }
+        
+        if (!blockConfigurations[blockId]) {
+          blockConfigurations[blockId] = {
+            displayRequisitionLines: true,
+            enableLotCreation: true,
+            lotAssignmentRules: 'flexible', // 'flexible' | 'strict'
+            dataSource: 'erp',
+          };
+        }
+      }
+      
+      function renderRequisitionLotsPreview(blockId) {
+        initializePreviewRequisitionLines(blockId);
+        
+        const requisitionLines = previewRequisitionLines[blockId] || [];
+        const lots = previewLots[blockId] || [];
+        const config = blockConfigurations[blockId] || {};
+        
+        return `
+          <div class="preview-container" style="border: 2px dashed var(--surface-300); border-radius: var(--radius-sm); padding: var(--spacing-lg); background: var(--surface-50);">
+            ${config.displayRequisitionLines ? `
+              <div class="requisition-section" style="margin-bottom: var(--spacing-2xl);">
+                <div class="section-subheader" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-lg);">
+                  <h3 style="font-size: 16px; font-weight: 600; color: var(--text-primary); margin: 0;">Requisition Lines (from ERP - Reference Only)</h3>
+                  <span style="padding: 4px 12px; background: var(--primary-50); color: var(--primary-400); border-radius: 12px; font-size: 12px; font-weight: 600;">${requisitionLines.length} lines</span>
+                </div>
+                <div style="overflow-x: auto; border: 1px solid var(--surface-200); border-radius: var(--radius-sm);">
+                  <table style="width: 100%; border-collapse: collapse; background: var(--surface-0);">
+                    <thead style="background: var(--surface-50); border-bottom: 2px solid var(--surface-200);">
+                      <tr>
+                        <th style="padding: var(--spacing-md); text-align: left; font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase;">ID</th>
+                        <th style="padding: var(--spacing-md); text-align: left; font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase;">UNSPSC Code</th>
+                        <th style="padding: var(--spacing-md); text-align: left; font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase;">Description</th>
+                        <th style="padding: var(--spacing-md); text-align: left; font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase;">Quantity</th>
+                        <th style="padding: var(--spacing-md); text-align: left; font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase;">Unit</th>
+                        <th style="padding: var(--spacing-md); text-align: left; font-size: 12px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase;">Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      ${requisitionLines.map(line => `
+                        <tr style="border-bottom: 1px solid var(--surface-200);">
+                          <td style="padding: var(--spacing-md); font-size: 14px;"><strong>${line.id}</strong></td>
+                          <td style="padding: var(--spacing-md); font-size: 14px;">
+                            <div style="font-weight: 600; color: var(--primary-400); font-family: 'Courier New', monospace;">${line.unspscCode}</div>
+                            <div style="font-size: 12px; color: var(--text-muted);">${line.unspscDescription}</div>
+                          </td>
+                          <td style="padding: var(--spacing-md); font-size: 14px;">${line.description}</td>
+                          <td style="padding: var(--spacing-md); font-size: 14px;">${line.quantity}</td>
+                          <td style="padding: var(--spacing-md); font-size: 14px;">${line.unitOfMeasure}</td>
+                          <td style="padding: var(--spacing-md); font-size: 14px;">${line.currency} ${line.amount.toLocaleString()}</td>
+                        </tr>
+                      `).join('')}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            ` : ''}
+            
+            ${config.enableLotCreation ? `
+              <div class="lots-section" style="margin-bottom: var(--spacing-2xl);">
+                <div class="section-subheader" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-lg);">
+                  <h3 style="font-size: 16px; font-weight: 600; color: var(--text-primary); margin: 0;">Lots</h3>
+                  <button class="btn btn-primary btn-sm" onclick="createPreviewLot('${blockId}')" style="padding: 6px 12px; font-size: 12px; height: auto;">+ Create Lot</button>
+                </div>
+                
+                ${lots.length === 0 ? `
+                  <div style="padding: var(--spacing-2xl); text-align: center; background: var(--surface-50); border-radius: var(--radius-sm); border: 1px dashed var(--surface-300);">
+                    <div style="font-size: 48px; margin-bottom: var(--spacing-md);">📦</div>
+                    <div style="font-size: 16px; font-weight: 600; color: var(--text-primary); margin-bottom: var(--spacing-xs);">No lots created yet</div>
+                    <div style="font-size: 14px; color: var(--text-muted); margin-bottom: var(--spacing-lg);">Create lots to organize products (UNSPSC codes), or proceed without lots.</div>
+                    <button class="btn btn-ghost" onclick="createPreviewLot('${blockId}')" style="padding: 8px 16px; font-size: 13px;">Create First Lot</button>
+                  </div>
+                ` : `
+                  <div style="display: flex; flex-direction: column; gap: var(--spacing-lg);">
+                    ${lots.map((lot, lotIndex) => `
+                      <div style="border: 1px solid var(--surface-200); border-radius: var(--radius-sm); background: var(--surface-0); overflow: hidden;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--spacing-md) var(--spacing-lg); background: var(--surface-50); border-bottom: 1px solid var(--surface-200);">
+                          <div style="display: flex; align-items: center; gap: var(--spacing-md); flex: 1;">
+                            <span style="padding: 4px 10px; background: var(--primary-400); color: white; border-radius: var(--radius-sm); font-size: 12px; font-weight: 600;">Lot ${lotIndex + 1}</span>
+                            <input type="text" value="${lot.name}" onchange="updatePreviewLotName('${blockId}', '${lot.id}', this.value)" placeholder="Enter lot name" style="flex: 1; padding: 6px 12px; border: 1px solid var(--surface-200); border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; background: var(--surface-0); min-width: 200px;" />
+                          </div>
+                          <div style="display: flex; gap: var(--spacing-xs);">
+                            <button class="icon-btn" onclick="deletePreviewLot('${blockId}', '${lot.id}')" title="Delete" style="color: var(--danger-500);">🗑️</button>
+                          </div>
+                        </div>
+                        <div style="padding: var(--spacing-lg);">
+                          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-md); font-size: 14px; font-weight: 600;">
+                            <span>Products (UNSPSC Codes) in this Lot (${lot.unspscCodes.length})</span>
+                            <button class="btn btn-ghost btn-sm" onclick="addProductsToPreviewLot('${blockId}', '${lot.id}')" style="padding: 4px 8px; font-size: 12px;">+ Add Products</button>
+                          </div>
+                          ${lot.unspscCodes.length === 0 ? `
+                            <div style="padding: var(--spacing-lg); text-align: center; color: var(--text-muted); font-size: 14px; background: var(--surface-50); border-radius: var(--radius-sm); border: 1px dashed var(--surface-300);">
+                              No products added. Click "Add Products" to add UNSPSC codes.
+                            </div>
+                          ` : `
+                            <div style="display: flex; flex-direction: column; gap: var(--spacing-sm);">
+                              ${lot.unspscCodes.map((unspsc, idx) => `
+                                <div style="display: flex; align-items: center; gap: var(--spacing-md); padding: var(--spacing-sm) var(--spacing-md); background: var(--surface-50); border-radius: var(--radius-sm); border: 1px solid var(--surface-200);">
+                                  <span style="font-family: 'Courier New', monospace; font-weight: 600; color: var(--primary-400); min-width: 100px;">${unspsc.code}</span>
+                                  <span style="flex: 1; font-size: 14px;">${unspsc.description || 'No description'}</span>
+                                  <button onclick="removeProductFromPreviewLot('${blockId}', '${lot.id}', ${idx})" title="Remove" style="width: 24px; height: 24px; border: none; background: transparent; cursor: pointer; color: var(--text-muted); font-size: 12px;">✖</button>
+                                </div>
+                              `).join('')}
+                            </div>
+                          `}
+                        </div>
+                      </div>
+                    `).join('')}
+                  </div>
+                `}
+              </div>
+            ` : ''}
+            
+            <div class="structure-summary" style="margin-bottom: var(--spacing-lg);">
+              <div class="section-subheader" style="margin-bottom: var(--spacing-lg);">
+                <h3 style="font-size: 16px; font-weight: 600; color: var(--text-primary); margin: 0;">Tender Structure Summary</h3>
+              </div>
+              <div style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-sm); padding: var(--spacing-lg);">
+                ${lots.length === 0 ? `
+                  <div style="display: flex; justify-content: space-between; padding: var(--spacing-sm) 0; border-bottom: 1px solid var(--surface-200);">
+                    <span style="font-size: 14px; color: var(--text-secondary);">Structure:</span>
+                    <span style="font-size: 14px; font-weight: 600;">No Lots (${requisitionLines.length} requisition lines from ERP)</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; padding: var(--spacing-sm) 0;">
+                    <span style="font-size: 14px; color: var(--text-secondary);">Total Value:</span>
+                    <span style="font-size: 14px; font-weight: 600;">${requisitionLines.reduce((sum, line) => sum + line.amount, 0).toLocaleString()} USD</span>
+                  </div>
+                ` : `
+                  <div style="display: flex; justify-content: space-between; padding: var(--spacing-sm) 0; border-bottom: 1px solid var(--surface-200);">
+                    <span style="font-size: 14px; color: var(--text-secondary);">Structure:</span>
+                    <span style="font-size: 14px; font-weight: 600;">${lots.length} Lot(s)</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; padding: var(--spacing-sm) 0; border-bottom: 1px solid var(--surface-200);">
+                    <span style="font-size: 14px; color: var(--text-secondary);">Requisition Lines (from ERP):</span>
+                    <span style="font-size: 14px; font-weight: 600;">${requisitionLines.length}</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; padding: var(--spacing-sm) 0; border-bottom: 1px solid var(--surface-200);">
+                    <span style="font-size: 14px; color: var(--text-secondary);">Total Products in Lots:</span>
+                    <span style="font-size: 14px; font-weight: 600;">${lots.reduce((sum, lot) => sum + lot.unspscCodes.length, 0)}</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; padding: var(--spacing-sm) 0;">
+                    <span style="font-size: 14px; color: var(--text-secondary);">Total Value (Requisition Lines):</span>
+                    <span style="font-size: 14px; font-weight: 600;">${requisitionLines.reduce((sum, line) => sum + line.amount, 0).toLocaleString()} USD</span>
+                  </div>
+                `}
+              </div>
+            </div>
+          </div>
+        `;
+      }
+      
+      // Global functions for preview interaction
+      window.createPreviewLot = function(blockId) {
+        const lotName = prompt('Enter lot name:');
+        if (!lotName) return;
+        
+        if (!previewLots[blockId]) {
+          previewLots[blockId] = [];
+        }
+        
+        const newLot = {
+          id: 'lot-' + Date.now(),
+          name: lotName,
+          unspscCodes: [],
+        };
+        
+        previewLots[blockId].push(newLot);
+        refreshRequisitionLotsPreview(blockId);
+      }
+      
+      window.updatePreviewLotName = function(blockId, lotId, newName) {
+        const lots = previewLots[blockId] || [];
+        const lot = lots.find(l => l.id === lotId);
+        if (lot) {
+          lot.name = newName;
+        }
+      }
+      
+      window.deletePreviewLot = function(blockId, lotId) {
+        if (!confirm('Are you sure you want to delete this lot?')) {
+          return;
+        }
+        
+        if (previewLots[blockId]) {
+          previewLots[blockId] = previewLots[blockId].filter(l => l.id !== lotId);
+          refreshRequisitionLotsPreview(blockId);
+        }
+      }
+      
+      window.addProductsToPreviewLot = function(blockId, lotId) {
+        const lots = previewLots[blockId] || [];
+        const lot = lots.find(l => l.id === lotId);
+        if (!lot) return;
+        
+        const requisitionLines = previewRequisitionLines[blockId] || [];
+        
+        let message = `Add products (UNSPSC codes) to "${lot.name}":\n\n`;
+        message += `Available from Requisition Lines:\n`;
+        requisitionLines.forEach((line, idx) => {
+          message += `${idx + 1}. ${line.unspscCode} - ${line.unspscDescription}\n`;
+        });
+        message += `\nOr enter new codes (format: CODE|DESCRIPTION)\n`;
+        message += `Enter selection (e.g., "1,2" or "43211503|Laptop computers"):`;
+        
+        const input = prompt(message);
+        if (!input) return;
+        
+        const parts = input.split(',').map(s => s.trim());
+        parts.forEach(part => {
+          const index = parseInt(part) - 1;
+          if (index >= 0 && index < requisitionLines.length) {
+            const item = requisitionLines[index];
+            if (!lot.unspscCodes.some(u => u.code === item.unspscCode)) {
+              lot.unspscCodes.push({ code: item.unspscCode, description: item.unspscDescription });
+            }
+          } else if (part.includes('|')) {
+            const [code, description] = part.split('|').map(s => s.trim());
+            if (code && !lot.unspscCodes.some(u => u.code === code)) {
+              lot.unspscCodes.push({ code, description: description || '' });
+            }
+          } else if (part.length >= 8) {
+            if (!lot.unspscCodes.some(u => u.code === part)) {
+              lot.unspscCodes.push({ code: part, description: '' });
+            }
+          }
+        });
+        
+        refreshRequisitionLotsPreview(blockId);
+      }
+      
+      window.removeProductFromPreviewLot = function(blockId, lotId, index) {
+        const lots = previewLots[blockId] || [];
+        const lot = lots.find(l => l.id === lotId);
+        if (lot && index >= 0 && index < lot.unspscCodes.length) {
+          lot.unspscCodes.splice(index, 1);
+          refreshRequisitionLotsPreview(blockId);
+        }
+      }
+      
+      function refreshRequisitionLotsPreview(blockId) {
+        const previewContainer = document.getElementById(`requisition-lots-preview-${blockId}`);
+        if (previewContainer) {
+          const infoAlert = previewContainer.querySelector('div[style*="background: var(--info-50)"]');
+          const newHTML = renderRequisitionLotsPreview(blockId);
+          const tempDiv = document.createElement('div');
+          tempDiv.innerHTML = newHTML;
+          const newPreviewContainer = tempDiv.querySelector('.preview-container');
+          
+          previewContainer.innerHTML = '';
+          if (infoAlert) {
+            previewContainer.appendChild(infoAlert);
+          }
+          if (newPreviewContainer) {
+            previewContainer.appendChild(newPreviewContainer);
+          }
+        }
+      }
+      
+      // Apply configuration changes to preview
+      window.applyRequisitionLotsConfig = function() {
+        if (!selectedElement || selectedBlockType !== 'requisition-lots') {
+          return;
+        }
+        
+        const blockId = selectedElement.dataset.blockId;
+        if (!blockId) return;
+        
+        // Update configuration
+        blockConfigurations[blockId] = {
+          displayRequisitionLines: document.getElementById('config-display-requisition-lines').checked,
+          enableLotCreation: document.getElementById('config-enable-lot-creation').checked,
+          lotAssignmentRules: document.getElementById('config-lot-assignment-rules').value,
+          dataSource: document.getElementById('config-data-source').value,
+        };
+        
+        // Refresh preview
+        refreshRequisitionLotsPreview(blockId);
+        
+        // Show success message
+        alert('Configuration applied successfully! Check the preview to see the changes.');
+      }
+      
+      // Bid Response Fields Configuration Functions
+      window.editBidResponseField = function(fieldId, sectionLabel) {
+        alert(`Edit Configuration for Field: ${fieldId}\n\nSection: ${sectionLabel}\n\nIn a full implementation, this would open a modal to configure:\n- Field label\n- Required/Optional status\n- Default value\n- Validation rules\n- Help text\n- Conditional visibility`);
+      }
+      
+      window.addCustomBidResponseField = function(sectionLabel) {
+        const fieldName = prompt(`Add a custom field to: ${sectionLabel}\n\nEnter field name:`);
+        if (!fieldName) return;
+        
+        const fieldType = prompt(`Select field type for "${fieldName}":\n\n1. Text input\n2. Text area\n3. Number input\n4. Dropdown\n5. Currency input\n6. Date\n7. Yes/No radio\n\nEnter number (1-7):`);
+        
+        const typeMap = {
+          '1': 'Text input',
+          '2': 'Text area',
+          '3': 'Number input',
+          '4': 'Dropdown',
+          '5': 'Currency input',
+          '6': 'Date',
+          '7': 'Yes/No radio'
+        };
+        
+        if (typeMap[fieldType]) {
+          alert(`Custom field added successfully!\n\nField: ${fieldName}\nType: ${typeMap[fieldType]}\nSection: ${sectionLabel}\n\nIn a full implementation, this field would be added to the template configuration and appear in the list above.`);
+        } else {
+          alert('Invalid field type selected. Please try again.');
         }
       }
     </script>

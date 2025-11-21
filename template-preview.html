@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNOPS PDJ · Template Preview</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    >
+    <style>
+      :root {
+        --primary-700: #1f4d7a;
+        --primary-500: #3381c3;
+        --accent-500: #00a1e4;
+        --surface-50: #f8fbff;
+        --surface-100: #f1f5fb;
+        --surface-200: #e3ebf6;
+        --text-900: #14223b;
+        --text-600: #2f3f5c;
+        --text-400: #63708c;
+        --border: #dce5f4;
+        --success: #15b79e;
+        --warning: #f97316;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: 'Inter', system-ui, sans-serif;
+        background: var(--surface-50);
+        color: var(--text-900);
+      }
+
+      header {
+        padding: 28px 40px 20px;
+        background: linear-gradient(120deg, rgba(31, 77, 122, 0.95), rgba(51, 129, 195, 0.85));
+        color: #fff;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+
+      .portal-title {
+        text-transform: uppercase;
+        letter-spacing: 0.3em;
+        font-size: 13px;
+        opacity: 0.75;
+      }
+
+      .tender-title {
+        font-size: 32px;
+        font-weight: 600;
+        margin: 8px 0 4px;
+      }
+
+      .tender-meta {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        font-size: 14px;
+        opacity: 0.9;
+      }
+
+      .status-pill {
+        padding: 6px 14px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.2);
+        font-weight: 600;
+      }
+
+      main {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 32px 28px 80px;
+        display: grid;
+        grid-template-columns: 1.4fr 0.8fr;
+        gap: 24px;
+      }
+
+      .card {
+        background: #fff;
+        border-radius: 24px;
+        border: 1px solid rgba(20, 34, 66, 0.08);
+        padding: 24px 28px;
+        box-shadow: 0 30px 80px rgba(15, 30, 65, 0.08);
+      }
+
+      .card + .card {
+        margin-top: 20px;
+      }
+
+      .card h2 {
+        margin: 0 0 12px;
+        font-size: 20px;
+      }
+
+      .card p {
+        margin: 0 0 10px;
+        color: var(--text-600);
+        line-height: 1.6;
+      }
+
+      .timeline {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 16px;
+        margin-top: 18px;
+      }
+
+      .timeline-step {
+        border-radius: 18px;
+        border: 1px solid rgba(20, 34, 66, 0.08);
+        padding: 14px;
+        background: var(--surface-100);
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .timeline-label {
+        font-size: 12px;
+        color: var(--text-400);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .timeline-date {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--text-600);
+      }
+
+      .section {
+        border-radius: 22px;
+        border: 1px solid rgba(20, 34, 66, 0.08);
+        padding: 20px 22px;
+        margin-top: 18px;
+        background: linear-gradient(180deg, #ffffff 0%, #f4f7fb 100%);
+      }
+
+      .section header {
+        background: none;
+        color: inherit;
+        padding: 0;
+        position: static;
+      }
+
+      .section-title {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 6px;
+      }
+
+      .section-subtitle {
+        font-size: 14px;
+        color: var(--text-400);
+        margin-bottom: 16px;
+      }
+
+      .field-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(20, 34, 66, 0.08);
+      }
+
+      .field-label {
+        font-weight: 600;
+        color: var(--text-600);
+      }
+
+      .field-value {
+        color: var(--text-400);
+      }
+
+      .rich-text {
+        background: #fff;
+        border-radius: 18px;
+        border: 1px solid rgba(20, 34, 66, 0.08);
+        padding: 18px;
+        line-height: 1.6;
+        color: var(--text-600);
+      }
+
+      .checklist {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 12px;
+      }
+
+      .check-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 14px;
+        border: 1px solid rgba(20, 34, 66, 0.08);
+        padding: 12px 14px;
+      }
+
+      .pill {
+        padding: 6px 14px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+        border: 1px solid rgba(20, 34, 66, 0.12);
+        color: var(--text-600);
+      }
+
+      .pill[data-variant="positive"] {
+        border-color: rgba(21, 183, 158, 0.28);
+        color: var(--success);
+        background: rgba(21, 183, 158, 0.12);
+      }
+
+      .pill[data-variant="warning"] {
+        border-color: rgba(249, 115, 22, 0.28);
+        color: var(--warning);
+        background: rgba(249, 115, 22, 0.16);
+      }
+
+      .attachments {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .attachment {
+        border-radius: 14px;
+        border: 1px solid rgba(20, 34, 66, 0.08);
+        padding: 12px 14px;
+        display: flex;
+        justify-content: space-between;
+        color: var(--text-600);
+      }
+
+      .meta-card {
+        margin-bottom: 18px;
+      }
+
+      .meta-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .meta-item {
+        border-radius: 16px;
+        border: 1px solid rgba(20, 34, 66, 0.08);
+        padding: 14px 16px;
+        background: var(--surface-100);
+      }
+
+      .meta-label {
+        font-size: 12px;
+        color: var(--text-400);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .meta-value {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--text-600);
+      }
+
+      @media (max-width: 1080px) {
+        main {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="portal-title">ETENDERING · AUTHOR PREVIEW</div>
+      <h1 class="tender-title">ITB · Rehabilitation of Community Infrastructure</h1>
+      <div class="tender-meta">
+        <span class="status-pill">Draft template preview</span>
+        <span>Method: ITB · Works</span>
+        <span>Threshold: 500K – 5M USD</span>
+        <span>DRiVE status: Required</span>
+      </div>
+    </header>
+
+    <main>
+      <section>
+        <article class="card">
+          <h2>Summary & eligibility</h2>
+          <p>Use this standardized template for competitive tenders involving construction or rehabilitation works funded by multi-lateral partners. All deadlines will sync to the event calendar once the template is deployed.</p>
+          <div class="timeline">
+            <div class="timeline-step">
+              <span class="timeline-label">Clarifications open</span>
+              <span class="timeline-date">29 Nov 2025</span>
+              <span class="pill">+10 days after publish</span>
+            </div>
+            <div class="timeline-step">
+              <span class="timeline-label">Clarifications deadline</span>
+              <span class="timeline-date">12 Dec 2025</span>
+              <span class="pill">Auto-calculated</span>
+            </div>
+            <div class="timeline-step">
+              <span class="timeline-label">Submission deadline</span>
+              <span class="timeline-date">20 Dec 2025</span>
+              <span class="pill" data-variant="warning">Min tender period enforced</span>
+            </div>
+            <div class="timeline-step">
+              <span class="timeline-label">Evaluation planned</span>
+              <span class="timeline-date">08 Jan 2026</span>
+              <span class="pill">Workflow synced</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="section">
+          <div class="section-title">General information</div>
+          <div class="section-subtitle">Auto-populated from requisition · Read only</div>
+          <div class="field-row">
+            <span class="field-label">Tender reference</span>
+            <span class="field-value">PDJ/LIM/2025/ITB-021</span>
+          </div>
+          <div class="field-row">
+            <span class="field-label">Project / Work package</span>
+            <span class="field-value">CP-302 · Urban Resilience</span>
+          </div>
+          <div class="field-row">
+            <span class="field-label">Country</span>
+            <span class="field-value">Peru</span>
+          </div>
+          <div class="field-row">
+            <span class="field-label">Estimated value</span>
+            <span class="field-value">USD 2,700,000</span>
+          </div>
+        </article>
+
+        <article class="section">
+          <div class="section-title">Scope & requirements</div>
+          <div class="section-subtitle">Authors can enrich this section · Template provides structure</div>
+          <div class="rich-text">
+            <p><strong>Objective:</strong> Provide rehabilitation of priority community infrastructure including water supply, small bridges and health posts across three municipalities.</p>
+            <p><strong>Key deliverables:</strong></p>
+            <ul>
+              <li>Detailed works schedule aligned with UNOPS PMM.</li>
+              <li>Construction methodology and quality assurance plan.</li>
+              <li>Environmental mitigation measures meeting DRiVE standards.</li>
+            </ul>
+            <p><strong>Site visit:</strong> Recommended. Contact focal point at least 72 hours before visit.</p>
+          </div>
+        </article>
+
+        <article class="section">
+          <div class="section-title">Submission package</div>
+          <div class="section-subtitle">Template auto-attaches required forms · Conditional logic applies</div>
+          <div class="checklist">
+            <div class="check-item">
+              <span>Form A · Letter of Bid</span>
+              <span class="pill" data-variant="positive">Required</span>
+            </div>
+            <div class="check-item">
+              <span>Form B · Bid Security</span>
+              <span class="pill" data-variant="positive">Required</span>
+            </div>
+            <div class="check-item">
+              <span>Form C · Technical Proposal</span>
+              <span class="pill">Auto attach</span>
+            </div>
+            <div class="check-item">
+              <span>Pricing schedule · Works (BoQ)</span>
+              <span class="pill" data-variant="positive">Excel template</span>
+            </div>
+            <div class="check-item">
+              <span>DRiVE · Core questionnaire</span>
+              <span class="pill" data-variant="positive">Mandatory</span>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <aside>
+        <article class="card meta-card">
+          <h2>Template guardrails</h2>
+          <div class="meta-grid">
+            <div class="meta-item">
+              <div class="meta-label">Method</div>
+              <div class="meta-value">ITB</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">Requirement type</div>
+              <div class="meta-value">Works</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">Threshold</div>
+              <div class="meta-value">500K – 5M</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">Donor</div>
+              <div class="meta-value">World Bank</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card meta-card">
+          <h2>Approval workflow</h2>
+          <p>Based on procurement context, the following approvals are routed automatically.</p>
+          <div class="checklist">
+            <div class="check-item">
+              <span>Procurement Reviewer</span>
+              <span class="pill" data-variant="positive">Completed</span>
+            </div>
+            <div class="check-item">
+              <span>Procurement Authority</span>
+              <span class="pill" data-variant="positive">In progress</span>
+            </div>
+            <div class="check-item">
+              <span>Technical SME</span>
+              <span class="pill">Pending</span>
+            </div>
+            <div class="check-item">
+              <span>Legal (contract terms)</span>
+              <span class="pill" data-variant="warning">Required for this template</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <h2>Attachments</h2>
+          <div class="attachments">
+            <div class="attachment">
+              <span>Annex 1 · Bill of Quantities.xlsx</span>
+              <span class="pill">Download</span>
+            </div>
+            <div class="attachment">
+              <span>Annex 2 · Drawings bundle.zip</span>
+              <span class="pill">Download</span>
+            </div>
+            <div class="attachment">
+              <span>Form B · Bid Security.docx</span>
+              <span class="pill">Download</span>
+            </div>
+          </div>
+          <p style="margin-top: 16px; font-size: 13px; color: var(--text-400);">
+            Attachments managed centrally. Updates in the library propagate to every active tender using this template.
+          </p>
+        </article>
+      </aside>
+    </main>
+  </body>
+</html>
+
