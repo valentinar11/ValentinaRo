@@ -713,6 +713,28 @@
         }
       }
 
+      @keyframes slideInRight {
+        from {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideOutRight {
+        from {
+          transform: translateX(0);
+          opacity: 1;
+        }
+        to {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+      }
+
       /* ===== EVALUATION CRITERIA ENHANCED STYLES ===== */
       .evaluation-criterion-card {
         background: var(--surface-0);
@@ -4665,9 +4687,9 @@
         // Update top actions
         const topActions = document.getElementById('top-actions');
         topActions.innerHTML = `
-          <button class="btn btn-ghost" onclick="toggleFormLibrary()" title="Toggle Form Library">📚 Form Library</button>
           <button class="btn btn-ghost">Preview</button>
           <button class="btn btn-ghost">💾 Save Draft</button>
+          <button class="btn btn-ghost" onclick="downloadTenderPackage()" title="Download all documents as ZIP">📦 Download Package</button>
           <button class="btn btn-primary">Submit for Review</button>
         `;
         
@@ -4714,6 +4736,68 @@
           toggleBtn.textContent = '✕';
           toggleBtn.title = 'Collapse';
         }
+      }
+
+      // ===== DOWNLOAD TENDER PACKAGE =====
+      function downloadTenderPackage() {
+        // Show loading state
+        const btn = event.currentTarget;
+        const originalText = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<span style="display: inline-flex; align-items: center; gap: 8px;"><span style="animation: spin 1s linear infinite; display: inline-block;">⏳</span> Preparing Package...</span>';
+        
+        // Simulate package preparation (in real implementation, this would:
+        // 1. Collect all tender documents
+        // 2. Generate PDFs from form data
+        // 3. Include uploaded files
+        // 4. Create a manifest/index
+        // 5. Zip everything together
+        // 6. Trigger download)
+        setTimeout(() => {
+          // Show success notification
+          const notification = document.createElement('div');
+          notification.style.cssText = `
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: var(--success-500);
+            color: white;
+            padding: 16px 24px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            z-index: 10000;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideInRight 0.3s ease;
+          `;
+          notification.innerHTML = `
+            <span style="font-size: 20px;">✅</span>
+            <div>
+              <div style="font-weight: 600; margin-bottom: 2px;">Tender Package Ready</div>
+              <div style="font-size: 13px; opacity: 0.9;">tender-package-${Date.now()}.zip</div>
+            </div>
+          `;
+          document.body.appendChild(notification);
+          
+          // In a real implementation, trigger the actual download here:
+          // const link = document.createElement('a');
+          // link.href = packageBlobUrl;
+          // link.download = `tender-package-${wizardData.tenderId || Date.now()}.zip`;
+          // link.click();
+          
+          // Remove notification after 4 seconds
+          setTimeout(() => {
+            notification.style.animation = 'slideOutRight 0.3s ease';
+            setTimeout(() => notification.remove(), 300);
+          }, 4000);
+          
+          // Reset button
+          btn.disabled = false;
+          btn.innerHTML = originalText;
+        }, 2000);
       }
 
       function setupFormLibrary() {
