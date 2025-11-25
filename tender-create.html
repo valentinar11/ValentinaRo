@@ -322,6 +322,825 @@
         display: flex;
       }
 
+      /* ===== TENDER INITIATION METHOD SELECTION ===== */
+      .initiation-container {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+        padding: var(--spacing-3xl) var(--spacing-xl);
+      }
+
+      .initiation-header {
+        text-align: center;
+        margin-bottom: var(--spacing-3xl);
+      }
+
+      .initiation-title {
+        font-size: 32px;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: var(--spacing-md);
+      }
+
+      .initiation-subtitle {
+        font-size: 16px;
+        color: var(--text-muted);
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .initiation-options {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: var(--spacing-xl);
+        margin-bottom: var(--spacing-2xl);
+      }
+
+      .initiation-card {
+        background: var(--surface-0);
+        border: 2px solid var(--neutral-200);
+        border-radius: var(--radius-lg);
+        padding: var(--spacing-2xl);
+        cursor: pointer;
+        transition: all var(--transition-base);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .initiation-card:hover {
+        border-color: var(--primary-400);
+        box-shadow: var(--shadow-lg);
+        transform: translateY(-2px);
+      }
+
+      .initiation-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary-400), var(--primary-600));
+        opacity: 0;
+        transition: opacity var(--transition-base);
+      }
+
+      .initiation-card:hover::before {
+        opacity: 1;
+      }
+
+      .initiation-card-icon {
+        font-size: 48px;
+        margin-bottom: var(--spacing-lg);
+      }
+
+      .initiation-card-title {
+        font-size: 20px;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: var(--spacing-sm);
+      }
+
+      .initiation-card-description {
+        font-size: 14px;
+        color: var(--text-muted);
+        line-height: 1.6;
+        margin-bottom: var(--spacing-lg);
+      }
+
+      .initiation-card-features {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 var(--spacing-lg) 0;
+        text-align: left;
+        width: 100%;
+      }
+
+      .initiation-card-features li {
+        font-size: 13px;
+        color: var(--text-secondary);
+        padding: var(--spacing-xs) 0;
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+      }
+
+      .initiation-card-features li::before {
+        content: '✓';
+        color: var(--success-600);
+        font-weight: 700;
+      }
+
+      .initiation-card-badge {
+        position: absolute;
+        top: var(--spacing-md);
+        right: var(--spacing-md);
+        background: var(--primary-50);
+        color: var(--primary-600);
+        font-size: 11px;
+        font-weight: 600;
+        padding: 4px 12px;
+        border-radius: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .initiation-card-action {
+        margin-top: auto;
+        width: 100%;
+      }
+
+      .initiation-card-action .btn {
+        width: 100%;
+      }
+
+      /* ===== TENDER SELECTION MODAL ===== */
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(4px);
+      }
+
+      .modal-content {
+        background: var(--surface-0);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-2xl);
+        max-width: 900px;
+        width: 90%;
+        max-height: 80vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .modal-header {
+        padding: var(--spacing-xl);
+        border-bottom: 1px solid var(--neutral-200);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .modal-title {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--text-primary);
+      }
+
+      .modal-subtitle {
+        font-size: 14px;
+        color: var(--text-muted);
+        margin-top: var(--spacing-xs);
+      }
+
+      .modal-close-btn {
+        width: 36px;
+        height: 36px;
+        border: none;
+        background: var(--neutral-100);
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        color: var(--text-secondary);
+        transition: all var(--transition-base);
+      }
+
+      .modal-close-btn:hover {
+        background: var(--danger-100);
+        color: var(--danger-600);
+      }
+
+      .modal-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: var(--spacing-xl);
+      }
+
+      .modal-search {
+        margin-bottom: var(--spacing-xl);
+      }
+
+      .modal-search input {
+        width: 100%;
+        padding: 12px 16px 12px 44px;
+        border: 1px solid var(--neutral-200);
+        border-radius: var(--radius-md);
+        font-size: 14px;
+        font-family: inherit;
+        transition: all var(--transition-base);
+      }
+
+      .modal-search input:focus {
+        outline: none;
+        border-color: var(--primary-400);
+        box-shadow: 0 0 0 3px var(--primary-50);
+      }
+
+      .modal-search::before {
+        content: '🔍';
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 16px;
+      }
+
+      .modal-search {
+        position: relative;
+      }
+
+      .existing-tenders-list {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-md);
+      }
+
+      .existing-tender-card {
+        background: var(--surface-0);
+        border: 2px solid var(--neutral-200);
+        border-radius: var(--radius-md);
+        padding: var(--spacing-lg);
+        cursor: pointer;
+        transition: all var(--transition-base);
+      }
+
+      .existing-tender-card:hover {
+        border-color: var(--primary-400);
+        box-shadow: var(--shadow-md);
+        transform: translateX(4px);
+      }
+
+      .existing-tender-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: var(--spacing-md);
+      }
+
+      .existing-tender-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: var(--spacing-xs);
+      }
+
+      .existing-tender-reference {
+        font-size: 13px;
+        color: var(--text-muted);
+        font-family: 'Courier New', monospace;
+      }
+
+      .existing-tender-details {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-sm);
+      }
+
+      .existing-tender-meta {
+        display: flex;
+        gap: var(--spacing-lg);
+        font-size: 13px;
+        color: var(--text-secondary);
+      }
+
+      .existing-tender-template {
+        font-size: 12px;
+        color: var(--primary-600);
+        background: var(--primary-50);
+        padding: 4px 12px;
+        border-radius: 12px;
+        display: inline-block;
+        width: fit-content;
+      }
+
+      .badge {
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .badge-success {
+        background: var(--success-100);
+        color: var(--success-700);
+      }
+
+      .badge-warning {
+        background: var(--warning-100);
+        color: var(--warning-600);
+      }
+
+      .badge-info {
+        background: var(--info-100);
+        color: var(--info-600);
+      }
+
+      /* Loading Overlay */
+      .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2000;
+      }
+
+      .loading-content {
+        background: var(--surface-0);
+        padding: var(--spacing-2xl);
+        border-radius: var(--radius-lg);
+        text-align: center;
+        box-shadow: var(--shadow-2xl);
+      }
+
+      .spinner {
+        width: 48px;
+        height: 48px;
+        border: 4px solid var(--neutral-200);
+        border-top-color: var(--primary-500);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto var(--spacing-lg);
+      }
+
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideOut {
+        from {
+          transform: translateX(0);
+          opacity: 1;
+        }
+        to {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+      }
+
+      /* ===== EVALUATION CRITERIA ENHANCED STYLES ===== */
+      .evaluation-criterion-card {
+        background: var(--surface-0);
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-md);
+        padding: var(--spacing-lg);
+        box-shadow: var(--shadow-sm);
+        transition: all var(--transition-base);
+      }
+
+      .evaluation-criterion-card:hover {
+        box-shadow: var(--shadow-md);
+        border-color: var(--primary-200);
+      }
+
+      .criterion-applies-to-section {
+        margin-top: var(--spacing-md);
+        padding: var(--spacing-md);
+        background: var(--surface-50);
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--surface-200);
+      }
+
+      .lot-selection-group,
+      .product-selection-group {
+        margin-bottom: var(--spacing-md);
+      }
+
+      .lot-selection-group:last-child,
+      .product-selection-group:last-child {
+        margin-bottom: 0;
+      }
+
+      .selection-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: var(--spacing-sm);
+        display: block;
+      }
+
+      .criterion-selection-summary {
+        margin-top: var(--spacing-md);
+        padding: var(--spacing-md);
+        background: var(--info-50);
+        border: 1px solid var(--info-200);
+        border-radius: var(--radius-sm);
+        color: var(--info-700);
+      }
+
+      .criterion-selection-summary strong {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+        margin-bottom: var(--spacing-xs);
+      }
+
+      .criterion-selection-item {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+        margin-top: var(--spacing-xs);
+        font-size: 13px;
+      }
+
+      .criterion-selection-item::before {
+        content: '✓';
+        color: var(--info-600);
+        font-weight: bold;
+      }
+
+      /* ===== PROCUREMENT LIFECYCLE TRACKER ===== */
+      .lifecycle-tracker-container {
+        background: var(--surface-0);
+        border: 1px solid var(--neutral-200);
+        border-radius: var(--radius-md);
+        padding: var(--spacing-lg);
+        margin-top: var(--spacing-md);
+      }
+
+      .lifecycle-tracker-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: var(--spacing-lg);
+      }
+
+      .lifecycle-tracker-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+      }
+
+      .lifecycle-tracker-actions {
+        display: flex;
+        gap: var(--spacing-sm);
+      }
+
+      .btn-icon {
+        padding: 8px 12px;
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+      }
+
+      .lifecycle-chain {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-md);
+        margin-bottom: var(--spacing-lg);
+        overflow-x: auto;
+        padding: var(--spacing-md) 0;
+      }
+
+      .lifecycle-node {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 140px;
+        position: relative;
+      }
+
+      .lifecycle-node-badge {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        background: var(--neutral-100);
+        border: 3px solid var(--neutral-300);
+        margin-bottom: var(--spacing-sm);
+        transition: all var(--transition-base);
+        cursor: pointer;
+      }
+
+      .lifecycle-node.current .lifecycle-node-badge {
+        background: var(--primary-50);
+        border-color: var(--primary-500);
+        box-shadow: 0 0 0 4px var(--primary-100);
+      }
+
+      .lifecycle-node.completed .lifecycle-node-badge {
+        background: var(--success-50);
+        border-color: var(--success-500);
+      }
+
+      .lifecycle-node.future .lifecycle-node-badge {
+        background: var(--surface-50);
+        border-color: var(--neutral-200);
+        opacity: 0.6;
+      }
+
+      .lifecycle-node-badge:hover {
+        transform: scale(1.05);
+      }
+
+      .lifecycle-node-label {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text-primary);
+        text-align: center;
+        margin-bottom: var(--spacing-xs);
+      }
+
+      .lifecycle-node-id {
+        font-size: 11px;
+        color: var(--text-muted);
+        font-family: 'Courier New', monospace;
+      }
+
+      .lifecycle-arrow {
+        font-size: 20px;
+        color: var(--neutral-300);
+        margin: 0 var(--spacing-xs);
+      }
+
+      .lifecycle-arrow.active {
+        color: var(--primary-400);
+      }
+
+      .linked-processes-list {
+        background: var(--surface-50);
+        border-radius: var(--radius-sm);
+        padding: var(--spacing-md);
+        margin-top: var(--spacing-md);
+      }
+
+      .linked-process-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: var(--spacing-md);
+        background: var(--surface-0);
+        border: 1px solid var(--neutral-200);
+        border-radius: var(--radius-sm);
+        margin-bottom: var(--spacing-sm);
+        transition: all var(--transition-base);
+      }
+
+      .linked-process-item:hover {
+        border-color: var(--primary-400);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .linked-process-item:last-child {
+        margin-bottom: 0;
+      }
+
+      .linked-process-info {
+        flex: 1;
+      }
+
+      .linked-process-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: var(--spacing-xs);
+      }
+
+      .linked-process-meta {
+        display: flex;
+        gap: var(--spacing-lg);
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+
+      .linked-process-actions {
+        display: flex;
+        gap: var(--spacing-sm);
+      }
+
+      .btn-link-action {
+        padding: 6px 12px;
+        font-size: 12px;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--neutral-200);
+        background: var(--surface-0);
+        color: var(--text-secondary);
+        cursor: pointer;
+        transition: all var(--transition-base);
+      }
+
+      .btn-link-action:hover {
+        background: var(--primary-50);
+        border-color: var(--primary-400);
+        color: var(--primary-600);
+      }
+
+      .btn-link-action.remove:hover {
+        background: var(--danger-50);
+        border-color: var(--danger-400);
+        color: var(--danger-600);
+      }
+
+      .lifecycle-relationship-type {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .relationship-predecessor {
+        background: var(--info-100);
+        color: var(--info-600);
+      }
+
+      .relationship-successor {
+        background: var(--success-100);
+        color: var(--success-600);
+      }
+
+      .relationship-related {
+        background: var(--warning-100);
+        color: var(--warning-600);
+      }
+
+      .lifecycle-empty-state {
+        text-align: center;
+        padding: var(--spacing-2xl);
+        color: var(--text-muted);
+      }
+
+      .lifecycle-empty-state-icon {
+        font-size: 48px;
+        margin-bottom: var(--spacing-md);
+        opacity: 0.5;
+      }
+
+      .lifecycle-search-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1001;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .lifecycle-search-content {
+        background: var(--surface-0);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-2xl);
+        max-width: 700px;
+        width: 90%;
+        max-height: 80vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .lifecycle-search-header {
+        padding: var(--spacing-xl);
+        border-bottom: 1px solid var(--neutral-200);
+      }
+
+      .lifecycle-search-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: var(--spacing-xl);
+      }
+
+      .lifecycle-search-input-wrapper {
+        position: relative;
+        margin-bottom: var(--spacing-lg);
+      }
+
+      .lifecycle-search-input {
+        width: 100%;
+        padding: 12px 16px 12px 44px;
+        border: 1px solid var(--neutral-200);
+        border-radius: var(--radius-md);
+        font-size: 14px;
+        font-family: inherit;
+      }
+
+      .lifecycle-search-input:focus {
+        outline: none;
+        border-color: var(--primary-400);
+        box-shadow: 0 0 0 3px var(--primary-50);
+      }
+
+      .lifecycle-search-icon {
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 16px;
+      }
+
+      .lifecycle-search-results {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-sm);
+      }
+
+      .lifecycle-search-result {
+        padding: var(--spacing-md);
+        border: 1px solid var(--neutral-200);
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        transition: all var(--transition-base);
+      }
+
+      .lifecycle-search-result:hover {
+        border-color: var(--primary-400);
+        background: var(--primary-50);
+      }
+
+      .lifecycle-search-result-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: var(--spacing-xs);
+      }
+
+      .lifecycle-search-result-meta {
+        font-size: 12px;
+        color: var(--text-muted);
+        display: flex;
+        gap: var(--spacing-md);
+      }
+
+      .lifecycle-audit-trail {
+        margin-top: var(--spacing-lg);
+        padding-top: var(--spacing-lg);
+        border-top: 1px solid var(--neutral-200);
+      }
+
+      .lifecycle-audit-trail-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-secondary);
+        margin-bottom: var(--spacing-md);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .lifecycle-audit-item {
+        display: flex;
+        gap: var(--spacing-md);
+        padding: var(--spacing-sm) 0;
+        font-size: 12px;
+        color: var(--text-secondary);
+      }
+
+      .lifecycle-audit-item::before {
+        content: '•';
+        color: var(--primary-400);
+        font-weight: bold;
+      }
+
+      .lifecycle-audit-timestamp {
+        color: var(--text-muted);
+        margin-left: auto;
+      }
+
       /* ===== EVENT SETUP WIZARD STYLES ===== */
       .wizard-container {
         flex: 1;
@@ -1053,6 +1872,14 @@
         font-size: 18px;
         font-weight: 600;
         margin: 16px 0 8px 0;
+        color: var(--text-primary);
+      }
+
+      .rich-text-editor h4 {
+        font-size: 16px;
+        font-weight: 600;
+        margin: 12px 0 6px 0;
+        color: var(--text-primary);
       }
 
       .rich-text-editor p {
@@ -1079,6 +1906,62 @@
 
       .rich-text-editor u {
         text-decoration: underline;
+      }
+
+      .rich-text-editor s,
+      .rich-text-editor strike {
+        text-decoration: line-through;
+      }
+
+      .rich-text-editor blockquote {
+        border-left: 4px solid var(--primary-400);
+        padding-left: 16px;
+        margin: 12px 0;
+        color: var(--text-secondary);
+        font-style: italic;
+      }
+
+      .rich-text-editor a {
+        color: var(--primary-500);
+        text-decoration: underline;
+      }
+
+      .rich-text-editor a:hover {
+        color: var(--primary-600);
+      }
+
+      .rich-text-editor hr {
+        border: none;
+        border-top: 2px solid var(--surface-200);
+        margin: 16px 0;
+      }
+
+      .toolbar-btn.active {
+        background: var(--primary-100);
+        border-color: var(--primary-400);
+        color: var(--primary-600);
+      }
+
+      .toolbar-group {
+        display: flex;
+        gap: 4px;
+        align-items: center;
+      }
+
+      .editor-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 12px;
+        background: var(--surface-50);
+        border-top: 1px solid var(--surface-200);
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+
+      .editor-word-count {
+        display: flex;
+        gap: 16px;
       }
 
       .help-text {
@@ -1980,8 +2863,81 @@
 
         <!-- Main Content -->
         <main class="main-content">
+          <!-- Tender Initiation Method Selection -->
+          <div class="view-section active" id="initiation-view">
+            <div class="initiation-container">
+              <div class="initiation-header">
+                <h1 class="initiation-title">Create New Tender</h1>
+                <p class="initiation-subtitle">Choose how you'd like to start creating your tender. Select the method that best suits your needs.</p>
+              </div>
+
+              <div class="initiation-options">
+                <!-- Option 1: Guided Wizard -->
+                <div class="initiation-card" onclick="startWithWizard()">
+                  <div class="initiation-card-badge">Recommended</div>
+                  <div class="initiation-card-icon">🧙‍♂️</div>
+                  <h3 class="initiation-card-title">Guided Wizard</h3>
+                  <p class="initiation-card-description">
+                    Answer a few questions and we'll help you find the perfect template for your procurement needs.
+                  </p>
+                  <ul class="initiation-card-features">
+                    <li>Smart template recommendations</li>
+                    <li>Step-by-step guidance</li>
+                    <li>Best for new tenders</li>
+                    <li>Personalized suggestions</li>
+                  </ul>
+                  <div class="initiation-card-action">
+                    <button class="btn btn-primary">Start with Wizard</button>
+                  </div>
+                </div>
+
+                <!-- Option 2: Template Library -->
+                <div class="initiation-card" onclick="startWithTemplate()">
+                  <div class="initiation-card-icon">📚</div>
+                  <h3 class="initiation-card-title">Pick from Templates</h3>
+                  <p class="initiation-card-description">
+                    Browse our complete template library and select a pre-configured tender template to start with.
+                  </p>
+                  <ul class="initiation-card-features">
+                    <li>View all available templates</li>
+                    <li>Compare template features</li>
+                    <li>Best for experienced users</li>
+                    <li>Direct template selection</li>
+                  </ul>
+                  <div class="initiation-card-action">
+                    <button class="btn btn-ghost">Browse Templates</button>
+                  </div>
+                </div>
+
+                <!-- Option 3: Clone Existing Tender -->
+                <div class="initiation-card" onclick="startWithClone()">
+                  <div class="initiation-card-icon">📋</div>
+                  <h3 class="initiation-card-title">Clone Existing Tender</h3>
+                  <p class="initiation-card-description">
+                    Start from a previously created tender. All blocks, fields, and configurations will be copied.
+                  </p>
+                  <ul class="initiation-card-features">
+                    <li>Reuse existing setup</li>
+                    <li>Maintain consistency</li>
+                    <li>Save time on configuration</li>
+                    <li>Perfect for similar tenders</li>
+                  </ul>
+                  <div class="initiation-card-action">
+                    <button class="btn btn-ghost">Select Tender to Clone</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="info-alert" style="max-width: 700px; margin: 0 auto;">
+                <div class="info-alert-text">
+                  💡 <strong>Not sure which to choose?</strong> We recommend starting with the Guided Wizard if you're creating a new type of tender or need help selecting the right template.
+                </div>
+              </div>
+            </div>
+          </div>
+
           <!-- Event Setup Wizard View -->
-          <div class="view-section active" id="wizard-view">
+          <div class="view-section" id="wizard-view">
             <div class="wizard-container">
               <!-- Wizard Steps Indicator -->
               <div class="wizard-steps">
@@ -2269,7 +3225,7 @@
 
     <script>
       // ===== GLOBAL STATE =====
-      let currentView = 'wizard'; // 'wizard' or 'authoring'
+      let currentView = 'initiation'; // 'initiation', 'wizard', or 'authoring'
       let wizardStep = 1;
       const totalWizardSteps = 3;
       let selectedTemplate = null;
@@ -2303,7 +3259,7 @@
                 { id: 'processType', label: 'Process Type', type: 'checkbox-group', required: false, options: ['Standard solicitation', 'Solicit offers against LTA/BPA', 'Secondary bidding against LTA/BPA', 'Direct contracting / Sole sourcing'], onchange: 'updateProcessType', conditionalVisibility: { field: 'sourcingOrSolicitation', value: 'Solicitation' } },
                 { id: 'contractAmendment', label: 'Contract Amendment', type: 'select', required: false, options: ['Select...', 'Yes', 'No'], conditionalVisibility: { field: 'processType', contains: 'Direct contracting / Sole sourcing' } },
                 { id: 'solicitationMethod', label: 'Solicitation Method', type: 'select', required: false, options: ['Select...', 'RFQ', 'ITB', 'RFP', 'e-reserve auctions'], conditionalVisibility: { field: 'sourcingOrSolicitation', value: 'Solicitation' } },
-                { id: 'linkedProcess', label: 'Linked Process', type: 'search', required: false, value: '', placeholder: 'Search by Event ID', conditionalVisibility: { complex: true } },
+                { id: 'procurementLifecycleTracker', label: 'Procurement Lifecycle & Related Processes', type: 'lifecycle-tracker', required: false, description: 'Link this process to related procurement events to maintain a complete audit trail' },
                 { id: 'unCollaboration', label: 'UN Collaboration', type: 'select', required: false, options: ['Select...', 'Yes', 'No'], onchange: 'updateUNCollaboration' },
                 { id: 'unCollaborationType', label: 'UN Collaboration Type', type: 'select', required: false, options: ['Select...', 'Joint tendering process with other UN organizations', 'Secondary bidding using other UN agency\'s LTA', 'Re-use of solicitation results of another UN agency'], conditionalVisibility: { field: 'unCollaboration', value: 'Yes' } },
                 { id: 'unAgencies', label: 'UN Agencies', type: 'select', required: false, multiple: true, options: ['UNDP', 'UNICEF', 'UNHCR', 'WFP', 'WHO', 'FAO', 'ILO', 'UNESCO', 'UNIDO'], conditionalVisibility: { field: 'unCollaboration', value: 'Yes' } },
@@ -2508,7 +3464,7 @@
       
       // Evaluation Criteria
       let evaluationCriteria = [
-        // Each criterion: { id, type, description, evaluationMethod, appliesTo: 'entire' | 'specific', unspscCodes: [] }
+        // Each criterion: { id, type, description, evaluationMethod, appliesTo: 'entire' | 'specific', lots: [], unspscCodes: [] }
       ];
       let evaluationCriteriaIdCounter = 1;
       
@@ -2694,6 +3650,698 @@
           matchScore: 75,
         },
       ];
+
+      // Mock data for procurement processes (for lifecycle linking)
+      const procurementProcesses = [
+        {
+          id: 'REQ-2024-001',
+          type: 'Requisition',
+          title: 'Medical Equipment Requisition',
+          status: 'Completed',
+          value: '$250,000',
+          created: '2024-11-15',
+          createdBy: 'Sarah Johnson',
+          category: 'Goods',
+          projectName: 'Health Facilities Upgrade Project'
+        },
+        {
+          id: 'RFI-2024-045',
+          type: 'RFI',
+          title: 'Request for Information - Medical Equipment Suppliers',
+          status: 'Completed',
+          value: 'N/A',
+          created: '2024-12-01',
+          createdBy: 'Michael Chen',
+          category: 'Goods',
+          projectName: 'Health Facilities Upgrade Project'
+        },
+        {
+          id: 'RFP-2025-001',
+          type: 'RFP',
+          title: 'Supply of Medical Equipment for Health Facilities',
+          status: 'Published',
+          value: '$250,000',
+          created: '2025-01-15',
+          createdBy: 'Sarah Johnson',
+          category: 'Goods',
+          projectName: 'Health Facilities Upgrade Project'
+        },
+        {
+          id: 'REQ-2024-082',
+          type: 'Requisition',
+          title: 'Construction Materials Requisition',
+          status: 'Completed',
+          value: '$1,200,000',
+          created: '2024-12-10',
+          createdBy: 'Ahmed Hassan',
+          category: 'Works',
+          projectName: 'School Infrastructure Development'
+        },
+        {
+          id: 'EOI-2024-028',
+          type: 'EOI',
+          title: 'Expression of Interest - Construction Companies',
+          status: 'Completed',
+          value: 'N/A',
+          created: '2024-12-20',
+          createdBy: 'Ahmed Hassan',
+          category: 'Works',
+          projectName: 'School Infrastructure Development'
+        },
+        {
+          id: 'ITB-2025-015',
+          type: 'ITB',
+          title: 'Construction of School Infrastructure in Rural Areas',
+          status: 'Published',
+          value: '$1,200,000',
+          created: '2025-01-22',
+          createdBy: 'Ahmed Hassan',
+          category: 'Works',
+          projectName: 'School Infrastructure Development'
+        },
+        {
+          id: 'RFQ-2024-156',
+          type: 'RFQ',
+          title: 'Office Supplies Quotation Request',
+          status: 'Closed',
+          value: '$45,000',
+          created: '2025-01-10',
+          createdBy: 'Lisa Anderson',
+          category: 'Goods',
+          projectName: 'Office Operations 2025'
+        },
+        {
+          id: 'LTA-2023-012',
+          type: 'LTA',
+          title: 'Long Term Agreement - IT Equipment Supply',
+          status: 'Active',
+          value: '$500,000',
+          created: '2023-06-15',
+          createdBy: 'David Kim',
+          category: 'Goods',
+          projectName: 'IT Infrastructure Modernization'
+        },
+        {
+          id: 'RFP-2024-089',
+          type: 'RFP',
+          title: 'Consultancy Services - Project Management',
+          status: 'Completed',
+          value: '$180,000',
+          created: '2024-09-05',
+          createdBy: 'Maria Garcia',
+          category: 'Services',
+          projectName: 'Multi-Country Development Initiative'
+        },
+      ];
+
+      // Global state for lifecycle tracker
+      let currentLifecycleLinks = [];
+      let currentProcessInfo = {
+        id: 'AUTO-GENERATED',
+        type: 'RFP',
+        title: 'New Tender Process',
+        status: 'Draft',
+        created: new Date().toISOString().split('T')[0],
+        createdBy: 'Current User'
+      };
+
+      // Mock data for existing tenders (for cloning feature)
+      const existingTenders = [
+        {
+          id: 'tender-001',
+          reference: 'UNOPS-2025-RFP-001',
+          title: 'Supply of Medical Equipment for Health Facilities',
+          type: 'RFP - Request for Proposal',
+          category: 'Goods',
+          value: '$250,000',
+          status: 'Published',
+          created: '15 Jan 2025',
+          template: 'RFP - Goods (Standard)',
+        },
+        {
+          id: 'tender-002',
+          reference: 'UNOPS-2025-ITB-015',
+          title: 'Construction of School Infrastructure in Rural Areas',
+          type: 'ITB - Invitation to Bid',
+          category: 'Works',
+          value: '$1,200,000',
+          status: 'Published',
+          created: '22 Jan 2025',
+          template: 'ITB - Works (Standard)',
+        },
+        {
+          id: 'tender-003',
+          reference: 'UNOPS-2025-RFQ-028',
+          title: 'Office Supplies and Equipment Procurement',
+          type: 'RFQ - Request for Quotation',
+          category: 'Goods',
+          value: '$45,000',
+          status: 'Closed',
+          created: '10 Jan 2025',
+          template: 'RFQ - Goods & Services',
+        },
+        {
+          id: 'tender-004',
+          reference: 'UNOPS-2025-RFP-007',
+          title: 'Consultancy Services for Project Management',
+          type: 'RFP - Request for Proposal',
+          category: 'Services',
+          value: '$180,000',
+          status: 'Draft',
+          created: '5 Feb 2025',
+          template: 'RFP - Services (Standard)',
+        },
+        {
+          id: 'tender-005',
+          reference: 'UNOPS-2025-ITB-022',
+          title: 'Road Rehabilitation Project - Phase 2',
+          type: 'ITB - Invitation to Bid',
+          category: 'Works',
+          value: '$3,500,000',
+          status: 'Published',
+          created: '28 Jan 2025',
+          template: 'ITB - Works (Standard)',
+        },
+        {
+          id: 'tender-006',
+          reference: 'UNOPS-2025-RFP-012',
+          title: 'IT Equipment and Software Licensing',
+          type: 'RFP - Request for Proposal',
+          category: 'Goods & Services',
+          value: '$320,000',
+          status: 'Published',
+          created: '18 Jan 2025',
+          template: 'RFP - Goods & Services',
+        },
+      ];
+
+      // ===== TENDER INITIATION FUNCTIONS =====
+      function startWithWizard() {
+        currentView = 'wizard';
+        document.getElementById('initiation-view').classList.remove('active');
+        document.getElementById('wizard-view').classList.add('active');
+        document.getElementById('page-breadcrumbs').textContent = 'Event Setup · Guided Wizard';
+        initWizard();
+      }
+
+      function startWithTemplate() {
+        // Navigate to template library page
+        window.location.href = 'template-library.html?action=create-tender';
+      }
+
+      function startWithClone() {
+        // Show tender selection modal
+        showTenderSelectionModal();
+      }
+
+      function showTenderSelectionModal() {
+        const modal = document.getElementById('tender-selection-modal');
+        modal.style.display = 'flex';
+        loadExistingTenders();
+      }
+
+      function closeTenderSelectionModal() {
+        const modal = document.getElementById('tender-selection-modal');
+        modal.style.display = 'none';
+      }
+
+      function loadExistingTenders() {
+        const tenderList = document.getElementById('existing-tenders-list');
+        tenderList.innerHTML = '';
+
+        existingTenders.forEach(tender => {
+          const tenderCard = document.createElement('div');
+          tenderCard.className = 'existing-tender-card';
+          tenderCard.onclick = () => selectTenderToClone(tender);
+          
+          const statusClass = tender.status === 'Published' ? 'success' : 
+                              tender.status === 'Draft' ? 'warning' : 'info';
+          
+          tenderCard.innerHTML = `
+            <div class="existing-tender-header">
+              <div>
+                <div class="existing-tender-title">${tender.title}</div>
+                <div class="existing-tender-reference">${tender.reference}</div>
+              </div>
+              <span class="badge badge-${statusClass}">${tender.status}</span>
+            </div>
+            <div class="existing-tender-details">
+              <div class="existing-tender-meta">
+                <span>📋 ${tender.type}</span>
+                <span>💰 ${tender.value}</span>
+                <span>📅 ${tender.created}</span>
+              </div>
+              <div class="existing-tender-template">${tender.template}</div>
+            </div>
+          `;
+          
+          tenderList.appendChild(tenderCard);
+        });
+      }
+
+      function selectTenderToClone(tender) {
+        if (confirm(`Clone tender "${tender.title}"?\n\nAll blocks, fields, and configurations will be copied. You can then modify as needed.`)) {
+          closeTenderSelectionModal();
+          cloneTender(tender);
+        }
+      }
+
+      function cloneTender(tender) {
+        // In real implementation, this would call an API to clone the tender
+        console.log('Cloning tender:', tender);
+        
+        // Show loading
+        const loadingMsg = document.createElement('div');
+        loadingMsg.className = 'loading-overlay';
+        loadingMsg.innerHTML = `
+          <div class="loading-content">
+            <div class="spinner"></div>
+            <div>Cloning tender...</div>
+          </div>
+        `;
+        document.body.appendChild(loadingMsg);
+        
+        // Simulate API call
+        setTimeout(() => {
+          // Remove loading
+          document.body.removeChild(loadingMsg);
+          
+          // Set wizard data from cloned tender
+          wizardData = {
+            title: `Copy of ${tender.title}`,
+            requirementType: 'goods', // Would come from tender data
+            method: tender.type.toLowerCase().split(' ')[0],
+            estimatedValue: tender.value.replace(/[^0-9]/g, ''),
+            template: tender.template,
+          };
+          
+          selectedTemplate = templates.find(t => t.name === tender.template) || templates[0];
+          
+          // Proactive linking: Automatically link the cloned tender as predecessor
+          const sourceProcess = procurementProcesses.find(p => p.id === tender.reference);
+          if (sourceProcess) {
+            currentLifecycleLinks.push({
+              process: sourceProcess,
+              relationshipType: 'predecessor',
+              linkedAt: new Date().toISOString(),
+              linkedBy: 'System',
+              linkType: 'automatic',
+              linkReason: 'Cloned from this process'
+            });
+          }
+          
+          // Go directly to authoring view
+          initiateTender();
+        }, 1500);
+      }
+
+      function filterExistingTenders(searchTerm) {
+        const filteredTenders = existingTenders.filter(tender => {
+          const lowerSearch = searchTerm.toLowerCase();
+          return tender.title.toLowerCase().includes(lowerSearch) ||
+                 tender.reference.toLowerCase().includes(lowerSearch) ||
+                 tender.type.toLowerCase().includes(lowerSearch);
+        });
+        
+        const tenderList = document.getElementById('existing-tenders-list');
+        tenderList.innerHTML = '';
+        
+        if (filteredTenders.length === 0) {
+          tenderList.innerHTML = `
+            <div style="text-align: center; padding: var(--spacing-2xl); color: var(--text-muted);">
+              <div style="font-size: 48px; margin-bottom: var(--spacing-md);">🔍</div>
+              <div style="font-size: 16px; font-weight: 600; margin-bottom: var(--spacing-xs);">No tenders found</div>
+              <div style="font-size: 14px;">Try adjusting your search terms</div>
+            </div>
+          `;
+          return;
+        }
+        
+        filteredTenders.forEach(tender => {
+          const tenderCard = document.createElement('div');
+          tenderCard.className = 'existing-tender-card';
+          tenderCard.onclick = () => selectTenderToClone(tender);
+          
+          const statusClass = tender.status === 'Published' ? 'success' : 
+                              tender.status === 'Draft' ? 'warning' : 'info';
+          
+          tenderCard.innerHTML = `
+            <div class="existing-tender-header">
+              <div>
+                <div class="existing-tender-title">${tender.title}</div>
+                <div class="existing-tender-reference">${tender.reference}</div>
+              </div>
+              <span class="badge badge-${statusClass}">${tender.status}</span>
+            </div>
+            <div class="existing-tender-details">
+              <div class="existing-tender-meta">
+                <span>📋 ${tender.type}</span>
+                <span>💰 ${tender.value}</span>
+                <span>📅 ${tender.created}</span>
+              </div>
+              <div class="existing-tender-template">${tender.template}</div>
+            </div>
+          `;
+          
+          tenderList.appendChild(tenderCard);
+        });
+      }
+
+      // ===== PROCUREMENT LIFECYCLE TRACKER FUNCTIONS =====
+      function renderLifecycleTracker(containerId) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        container.innerHTML = `
+          <div class="lifecycle-tracker-container">
+            <div class="lifecycle-tracker-header">
+              <div class="lifecycle-tracker-title">
+                🔗 Procurement Lifecycle & Related Processes
+              </div>
+              <div class="lifecycle-tracker-actions">
+                <button class="btn btn-ghost btn-icon" onclick="openLifecycleSearch()">
+                  <span>➕</span>
+                  <span>Link Process</span>
+                </button>
+                <button class="btn btn-ghost btn-icon" onclick="refreshLifecycleView()">
+                  <span>🔄</span>
+                  <span>Refresh</span>
+                </button>
+              </div>
+            </div>
+            
+            <div id="lifecycle-chain-container">
+              ${renderLifecycleChain()}
+            </div>
+            
+            <div id="linked-processes-container">
+              ${renderLinkedProcesses()}
+            </div>
+            
+            <div class="lifecycle-audit-trail">
+              <div class="lifecycle-audit-trail-title">Audit Trail</div>
+              <div id="lifecycle-audit-list">
+                ${renderAuditTrail()}
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      function renderLifecycleChain() {
+        if (currentLifecycleLinks.length === 0) {
+          return `
+            <div class="lifecycle-empty-state">
+              <div class="lifecycle-empty-state-icon">🔗</div>
+              <div style="font-size: 14px; font-weight: 600; margin-bottom: 4px;">No linked processes yet</div>
+              <div style="font-size: 13px;">Click "Link Process" to connect related procurement events</div>
+            </div>
+          `;
+        }
+
+        // Build lifecycle chain
+        const allProcesses = [
+          ...currentLifecycleLinks.filter(l => l.relationshipType === 'predecessor').map(l => l.process),
+          currentProcessInfo,
+          ...currentLifecycleLinks.filter(l => l.relationshipType === 'successor').map(l => l.process)
+        ];
+
+        const chainHtml = allProcesses.map((process, index) => {
+          const isCurrent = process.id === currentProcessInfo.id;
+          const isCompleted = process.status === 'Completed' || process.status === 'Closed';
+          const nodeClass = isCurrent ? 'current' : (isCompleted ? 'completed' : 'future');
+          
+          const icon = {
+            'Requisition': '📋',
+            'RFI': '❓',
+            'EOI': '✉️',
+            'RFQ': '💰',
+            'RFP': '📄',
+            'ITB': '🏗️',
+            'LTA': '📜',
+            'Contract': '📝'
+          }[process.type] || '📌';
+
+          const arrow = index < allProcesses.length - 1 ? 
+            `<div class="lifecycle-arrow ${index < allProcesses.indexOf(currentProcessInfo) ? 'active' : ''}">→</div>` : '';
+
+          return `
+            <div class="lifecycle-node ${nodeClass}" onclick="showProcessDetails('${process.id}')">
+              <div class="lifecycle-node-badge">${icon}</div>
+              <div class="lifecycle-node-label">${process.type}</div>
+              <div class="lifecycle-node-id">${process.id}</div>
+            </div>
+            ${arrow}
+          `;
+        }).join('');
+
+        return `<div class="lifecycle-chain">${chainHtml}</div>`;
+      }
+
+      function renderLinkedProcesses() {
+        if (currentLifecycleLinks.length === 0) {
+          return '';
+        }
+
+        const processesHtml = currentLifecycleLinks.map(link => {
+          const relationshipClass = `relationship-${link.relationshipType}`;
+          const relationshipLabel = {
+            'predecessor': 'Predecessor',
+            'successor': 'Successor',
+            'related': 'Related'
+          }[link.relationshipType] || 'Related';
+
+          return `
+            <div class="linked-process-item">
+              <div class="linked-process-info">
+                <div class="linked-process-title">
+                  ${link.process.title}
+                  <span class="lifecycle-relationship-type ${relationshipClass}">${relationshipLabel}</span>
+                </div>
+                <div class="linked-process-meta">
+                  <span>🆔 ${link.process.id}</span>
+                  <span>📋 ${link.process.type}</span>
+                  <span>📅 ${link.process.created}</span>
+                  <span>👤 ${link.process.createdBy}</span>
+                </div>
+              </div>
+              <div class="linked-process-actions">
+                <button class="btn-link-action" onclick="viewLinkedProcess('${link.process.id}')">View</button>
+                <button class="btn-link-action remove" onclick="removeLifecycleLink('${link.process.id}')">Remove</button>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        return `
+          <div class="linked-processes-list">
+            <div style="font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: var(--spacing-md); text-transform: uppercase; letter-spacing: 0.08em;">
+              Linked Processes (${currentLifecycleLinks.length})
+            </div>
+            ${processesHtml}
+          </div>
+        `;
+      }
+
+      function renderAuditTrail() {
+        const auditEvents = [
+          { action: 'Process created', user: 'Current User', timestamp: new Date().toISOString() },
+          ...currentLifecycleLinks.map(link => ({
+            action: `Linked to ${link.process.type} (${link.process.id}) as ${link.relationshipType}`,
+            user: 'Current User',
+            timestamp: link.linkedAt || new Date().toISOString()
+          }))
+        ];
+
+        if (auditEvents.length === 0) {
+          return '<div style="font-size: 13px; color: var(--text-muted);">No audit events yet</div>';
+        }
+
+        return auditEvents.map(event => {
+          const date = new Date(event.timestamp);
+          const timeStr = date.toLocaleString('en-US', { 
+            month: 'short', 
+            day: 'numeric', 
+            hour: '2-digit', 
+            minute: '2-digit' 
+          });
+          
+          return `
+            <div class="lifecycle-audit-item">
+              <span>${event.action}</span>
+              <span style="color: var(--text-muted); margin-left: auto;">by ${event.user}</span>
+              <span class="lifecycle-audit-timestamp">${timeStr}</span>
+            </div>
+          `;
+        }).join('');
+      }
+
+      function openLifecycleSearch() {
+        const modal = document.getElementById('lifecycle-search-modal');
+        modal.style.display = 'flex';
+        loadProcurementProcesses();
+      }
+
+      function closeLifecycleSearch() {
+        const modal = document.getElementById('lifecycle-search-modal');
+        modal.style.display = 'none';
+      }
+
+      function loadProcurementProcesses(searchTerm = '') {
+        const resultsContainer = document.getElementById('lifecycle-search-results');
+        
+        let filteredProcesses = procurementProcesses;
+        if (searchTerm) {
+          filteredProcesses = procurementProcesses.filter(process => {
+            const search = searchTerm.toLowerCase();
+            return process.id.toLowerCase().includes(search) ||
+                   process.title.toLowerCase().includes(search) ||
+                   process.type.toLowerCase().includes(search);
+          });
+        }
+
+        // Exclude already linked processes
+        const linkedIds = currentLifecycleLinks.map(l => l.process.id);
+        filteredProcesses = filteredProcesses.filter(p => !linkedIds.includes(p.id));
+
+        if (filteredProcesses.length === 0) {
+          resultsContainer.innerHTML = `
+            <div style="text-align: center; padding: var(--spacing-xl); color: var(--text-muted);">
+              <div style="font-size: 40px; margin-bottom: var(--spacing-md);">🔍</div>
+              <div>No processes found</div>
+            </div>
+          `;
+          return;
+        }
+
+        resultsContainer.innerHTML = filteredProcesses.map(process => {
+          const statusClass = process.status === 'Completed' ? 'success' : 
+                             process.status === 'Active' ? 'success' :
+                             process.status === 'Published' ? 'info' : 'warning';
+          
+          return `
+            <div class="lifecycle-search-result" onclick="selectProcessToLink('${process.id}')">
+              <div class="lifecycle-search-result-title">
+                ${process.title}
+                <span class="badge badge-${statusClass}" style="margin-left: 8px;">${process.status}</span>
+              </div>
+              <div class="lifecycle-search-result-meta">
+                <span>🆔 ${process.id}</span>
+                <span>📋 ${process.type}</span>
+                <span>💰 ${process.value}</span>
+                <span>📅 ${process.created}</span>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      function searchLifecycleProcesses(searchTerm) {
+        loadProcurementProcesses(searchTerm);
+      }
+
+      function selectProcessToLink(processId) {
+        const process = procurementProcesses.find(p => p.id === processId);
+        if (!process) return;
+
+        // Show relationship type selection
+        const relationshipType = prompt(
+          `Link "${process.title}" as:\n\n1. Predecessor (this process comes after)\n2. Successor (this process comes before)\n3. Related (parallel or associated process)\n\nEnter 1, 2, or 3:`,
+          '1'
+        );
+
+        let type = 'related';
+        if (relationshipType === '1') type = 'predecessor';
+        else if (relationshipType === '2') type = 'successor';
+        else if (relationshipType === '3') type = 'related';
+
+        // Add to lifecycle links
+        currentLifecycleLinks.push({
+          process: process,
+          relationshipType: type,
+          linkedAt: new Date().toISOString(),
+          linkedBy: 'Current User',
+          linkType: 'manual' // or 'automatic' for proactive linking
+        });
+
+        closeLifecycleSearch();
+        refreshLifecycleView();
+
+        // Show success message
+        showNotification(`Successfully linked ${process.type} (${process.id})`, 'success');
+      }
+
+      function removeLifecycleLink(processId) {
+        if (!confirm('Remove this linked process?')) return;
+
+        currentLifecycleLinks = currentLifecycleLinks.filter(link => link.process.id !== processId);
+        refreshLifecycleView();
+        showNotification('Link removed', 'info');
+      }
+
+      function refreshLifecycleView() {
+        const chainContainer = document.getElementById('lifecycle-chain-container');
+        const linkedContainer = document.getElementById('linked-processes-container');
+        const auditContainer = document.getElementById('lifecycle-audit-list');
+
+        if (chainContainer) chainContainer.innerHTML = renderLifecycleChain();
+        if (linkedContainer) linkedContainer.innerHTML = renderLinkedProcesses();
+        if (auditContainer) auditContainer.innerHTML = renderAuditTrail();
+      }
+
+      function showProcessDetails(processId) {
+        const process = procurementProcesses.find(p => p.id === processId) || 
+                       (processId === currentProcessInfo.id ? currentProcessInfo : null);
+        
+        if (!process) return;
+
+        alert(`Process Details:\n\nID: ${process.id}\nType: ${process.type}\nTitle: ${process.title}\nStatus: ${process.status}\nValue: ${process.value || 'N/A'}\nCreated: ${process.created}\nCreated By: ${process.createdBy}`);
+      }
+
+      function viewLinkedProcess(processId) {
+        showProcessDetails(processId);
+      }
+
+      function showNotification(message, type = 'info') {
+        // Simple notification - in real app, use proper toast/notification system
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+          position: fixed;
+          top: 80px;
+          right: 20px;
+          padding: 16px 24px;
+          background: var(--surface-0);
+          border: 1px solid var(--${type === 'success' ? 'success' : 'info'}-400);
+          border-left: 4px solid var(--${type === 'success' ? 'success' : 'info'}-500);
+          border-radius: 8px;
+          box-shadow: var(--shadow-lg);
+          z-index: 10000;
+          animation: slideIn 0.3s ease;
+        `;
+        notification.textContent = message;
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+          notification.style.animation = 'slideOut 0.3s ease';
+          setTimeout(() => document.body.removeChild(notification), 300);
+        }, 3000);
+      }
+
+      // Proactive linking when creating from existing process
+      function linkFromClonedTender(sourceTender) {
+        // When a tender is cloned, automatically link it as a successor
+        const sourceProcess = procurementProcesses.find(p => p.reference === sourceTender.reference);
+        if (sourceProcess) {
+          currentLifecycleLinks.push({
+            process: sourceProcess,
+            relationshipType: 'predecessor',
+            linkedAt: new Date().toISOString(),
+            linkedBy: 'System (Auto-linked on clone)',
+            linkType: 'automatic'
+          });
+          refreshLifecycleView();
+        }
+      }
 
       // ===== WIZARD FUNCTIONS =====
       function initWizard() {
@@ -2910,6 +4558,25 @@
         // Add title to wizard data
         wizardData.title = title;
         wizardData.template = selectedTemplate;
+
+        // Update current process info for lifecycle tracker
+        const methodMap = {
+          itb: 'ITB',
+          rfp: 'RFP',
+          rfq: 'RFQ',
+          eoi: 'EOI',
+          direct: 'Direct Contracting',
+        };
+        currentProcessInfo = {
+          id: `${methodMap[wizardData.method] || 'PROC'}-${new Date().getFullYear()}-${String(Math.floor(Math.random() * 1000)).padStart(3, '0')}`,
+          type: methodMap[wizardData.method] || 'RFP',
+          title: title,
+          status: 'Draft',
+          value: wizardData.estimatedValue ? `$${parseFloat(wizardData.estimatedValue).toLocaleString()}` : 'TBD',
+          created: new Date().toISOString().split('T')[0],
+          createdBy: 'Current User',
+          category: wizardData.requirementType || 'Goods',
+        };
 
         // Pre-populate template blocks with wizard data
         populateTemplateBlocks();
@@ -3657,15 +5324,37 @@
                                   <label class="form-label">Product/Service Description</label>
                                   <div class="rich-text-editor-container">
                                     <div class="rich-text-toolbar">
-                                      <button type="button" class="toolbar-btn" onclick="formatTextByCode('${unspsc.code}', 'bold')" title="Bold"><strong>B</strong></button>
-                                      <button type="button" class="toolbar-btn" onclick="formatTextByCode('${unspsc.code}', 'italic')" title="Italic"><em>I</em></button>
-                                      <button type="button" class="toolbar-btn" onclick="formatTextByCode('${unspsc.code}', 'underline')" title="Underline"><u>U</u></button>
+                                      <div class="toolbar-group">
+                                        <button type="button" class="toolbar-btn" onclick="formatTextByCode('${unspsc.code}', 'bold')" title="Bold (Ctrl+B)"><strong>B</strong></button>
+                                        <button type="button" class="toolbar-btn" onclick="formatTextByCode('${unspsc.code}', 'italic')" title="Italic (Ctrl+I)"><em>I</em></button>
+                                        <button type="button" class="toolbar-btn" onclick="formatTextByCode('${unspsc.code}', 'underline')" title="Underline (Ctrl+U)"><u>U</u></button>
+                                        <button type="button" class="toolbar-btn" onclick="formatTextByCode('${unspsc.code}', 'strikeThrough')" title="Strikethrough"><s>S</s></button>
+                                      </div>
                                       <span class="toolbar-divider"></span>
-                                      <button type="button" class="toolbar-btn" onclick="formatTextByCode('${unspsc.code}', 'insertUnorderedList')" title="Bullet List">• List</button>
-                                      <button type="button" class="toolbar-btn" onclick="formatTextByCode('${unspsc.code}', 'insertOrderedList')" title="Numbered List">1. List</button>
+                                      <div class="toolbar-group">
+                                        <button type="button" class="toolbar-btn" onclick="formatTextByCode('${unspsc.code}', 'formatBlock', 'h3')" title="Heading">H1</button>
+                                        <button type="button" class="toolbar-btn" onclick="formatTextByCode('${unspsc.code}', 'formatBlock', 'h4')" title="Subheading">H2</button>
+                                        <button type="button" class="toolbar-btn" onclick="formatTextByCode('${unspsc.code}', 'formatBlock', 'p')" title="Normal Text">¶</button>
+                                      </div>
                                       <span class="toolbar-divider"></span>
-                                      <button type="button" class="toolbar-btn" onclick="formatTextByCode('${unspsc.code}', 'formatBlock', 'h3')" title="Heading">H</button>
-                                      <button type="button" class="toolbar-btn" onclick="formatTextByCode('${unspsc.code}', 'formatBlock', 'p')" title="Paragraph">P</button>
+                                      <div class="toolbar-group">
+                                        <button type="button" class="toolbar-btn" onclick="formatTextByCode('${unspsc.code}', 'insertUnorderedList')" title="Bullet List">• List</button>
+                                        <button type="button" class="toolbar-btn" onclick="formatTextByCode('${unspsc.code}', 'insertOrderedList')" title="Numbered List">1. List</button>
+                                        <button type="button" class="toolbar-btn" onclick="formatTextByCode('${unspsc.code}', 'indent')" title="Increase Indent">→</button>
+                                        <button type="button" class="toolbar-btn" onclick="formatTextByCode('${unspsc.code}', 'outdent')" title="Decrease Indent">←</button>
+                                      </div>
+                                      <span class="toolbar-divider"></span>
+                                      <div class="toolbar-group">
+                                        <button type="button" class="toolbar-btn" onclick="formatTextByCode('${unspsc.code}', 'justifyLeft')" title="Align Left">⬅</button>
+                                        <button type="button" class="toolbar-btn" onclick="formatTextByCode('${unspsc.code}', 'justifyCenter')" title="Align Center">⬌</button>
+                                        <button type="button" class="toolbar-btn" onclick="formatTextByCode('${unspsc.code}', 'justifyRight')" title="Align Right">➡</button>
+                                      </div>
+                                      <span class="toolbar-divider"></span>
+                                      <div class="toolbar-group">
+                                        <button type="button" class="toolbar-btn" onclick="insertLinkByCode('${unspsc.code}')" title="Insert Link">🔗 Link</button>
+                                        <button type="button" class="toolbar-btn" onclick="formatTextByCode('${unspsc.code}', 'insertHorizontalRule')" title="Insert Line">—</button>
+                                        <button type="button" class="toolbar-btn" onclick="clearFormattingByCode('${unspsc.code}')" title="Clear Formatting">✖ Clear</button>
+                                      </div>
                                     </div>
                                     <div 
                                       id="rich-text-editor-${unspsc.code.replace(/[^a-zA-Z0-9]/g, '_')}"
@@ -3675,9 +5364,17 @@
                                       placeholder="Enter a detailed description of what you want to buy for this product/service. You can include specifications, requirements, quality standards, etc."
                                       oninput="updateRequirementDescriptionFromEditor('${unspsc.code}')"
                                       onblur="updateRequirementDescriptionFromEditor('${unspsc.code}')"
+                                      onkeydown="handleEditorKeydown(event, '${unspsc.code}')"
                                     >${req.description || ''}</div>
+                                    <div class="editor-footer">
+                                      <div class="editor-word-count">
+                                        <span id="word-count-${unspsc.code.replace(/[^a-zA-Z0-9]/g, '_')}">Words: 0</span>
+                                        <span id="char-count-${unspsc.code.replace(/[^a-zA-Z0-9]/g, '_')}">Characters: 0</span>
+                                      </div>
+                                      <span>💡 Use formatting tools above to structure your content</span>
+                                    </div>
                                   </div>
-                                  <span class="help-text">Use this field for detailed, formatted descriptions (ideal for services)</span>
+                                  <span class="help-text">Use this field for detailed, formatted descriptions (ideal for services). Supports rich text formatting, lists, links, and more.</span>
                                 </div>
                                 <div class="requirement-actions">
                                   <button class="btn btn-ghost btn-sm btn-danger" onclick="clearRequirements('${unspsc.code}')">Clear & Start Over</button>
@@ -3740,6 +5437,11 @@
         productRequirements[unspscCode].attributes = []; // Clear attributes
         
         renderCurrentBlock();
+        
+        // Initialize word count after DOM is updated
+        setTimeout(() => {
+          initializeEditorWordCount(unspscCode);
+        }, 100);
       }
       
       window.updateRequirementDescription = function(unspscCode, newDescription) {
@@ -3753,6 +5455,37 @@
         const editor = document.getElementById(`rich-text-editor-${sanitizedCode}`);
         if (editor && productRequirements[unspscCode]) {
           productRequirements[unspscCode].description = editor.innerHTML;
+          
+          // Update word and character count
+          const text = editor.innerText || editor.textContent || '';
+          const words = text.trim().split(/\s+/).filter(word => word.length > 0).length;
+          const chars = text.length;
+          
+          const wordCountEl = document.getElementById(`word-count-${sanitizedCode}`);
+          const charCountEl = document.getElementById(`char-count-${sanitizedCode}`);
+          
+          if (wordCountEl) wordCountEl.textContent = `Words: ${words}`;
+          if (charCountEl) charCountEl.textContent = `Characters: ${chars}`;
+        }
+      }
+
+      window.initializeEditorWordCount = function(unspscCode) {
+        const sanitizedCode = unspscCode.replace(/[^a-zA-Z0-9]/g, '_');
+        const editor = document.getElementById(`rich-text-editor-${sanitizedCode}`);
+        
+        if (editor) {
+          const text = editor.innerText || editor.textContent || '';
+          const words = text.trim().split(/\s+/).filter(word => word.length > 0).length;
+          const chars = text.length;
+          
+          const wordCountEl = document.getElementById(`word-count-${sanitizedCode}`);
+          const charCountEl = document.getElementById(`char-count-${sanitizedCode}`);
+          
+          if (wordCountEl) wordCountEl.textContent = `Words: ${words}`;
+          if (charCountEl) charCountEl.textContent = `Characters: ${chars}`;
+          
+          // Focus the editor to make it obvious it's ready
+          editor.focus();
         }
       }
       
@@ -3768,6 +5501,65 @@
       
       window.formatTextByCode = function(unspscCode, command, value = null) {
         formatText(unspscCode, command, value);
+      }
+
+      window.insertLinkByCode = function(unspscCode) {
+        try {
+          const url = prompt('Enter the URL:', 'https://');
+          if (url && url.trim() !== '' && url !== 'https://') {
+            formatText(unspscCode, 'createLink', url);
+          }
+        } catch (error) {
+          console.error('Error inserting link:', error);
+        }
+      }
+
+      window.clearFormattingByCode = function(unspscCode) {
+        try {
+          if (confirm('Remove all formatting from selected text?')) {
+            formatText(unspscCode, 'removeFormat');
+          }
+        } catch (error) {
+          console.error('Error clearing formatting:', error);
+        }
+      }
+
+      window.handleEditorKeydown = function(event, unspscCode) {
+        try {
+          // Handle keyboard shortcuts
+          if (event.ctrlKey || event.metaKey) {
+            switch(event.key.toLowerCase()) {
+              case 'b':
+                event.preventDefault();
+                formatText(unspscCode, 'bold');
+                break;
+              case 'i':
+                event.preventDefault();
+                formatText(unspscCode, 'italic');
+                break;
+              case 'u':
+                event.preventDefault();
+                formatText(unspscCode, 'underline');
+                break;
+              case 'k':
+                event.preventDefault();
+                insertLinkByCode(unspscCode);
+                break;
+            }
+          }
+          
+          // Tab for indent (prevent leaving editor)
+          if (event.key === 'Tab') {
+            event.preventDefault();
+            if (event.shiftKey) {
+              formatText(unspscCode, 'outdent');
+            } else {
+              formatText(unspscCode, 'indent');
+            }
+          }
+        } catch (error) {
+          console.error('Error handling keyboard shortcut:', error);
+        }
       }
       
       window.switchToAttributes = function(unspscCode) {
@@ -3896,6 +5688,7 @@
           description: '',
           evaluationMethod: 'Pass/Fail',
           appliesTo: 'entire',
+          lots: [],
           unspscCodes: []
         };
         evaluationCriteria.push(newCriterion);
@@ -3944,6 +5737,27 @@
         }
       }
       
+      window.updateEvaluationCriterionLots = function(criterionId, selectElement) {
+        const criterion = evaluationCriteria.find(c => c.id === criterionId);
+        if (criterion) {
+          const selectedOptions = Array.from(selectElement.selectedOptions);
+          criterion.lots = selectedOptions.map(opt => opt.value);
+          
+          // Auto-populate UNSPSC codes from selected lots
+          criterion.unspscCodes = [];
+          criterion.lots.forEach(lotId => {
+            const lot = lots.find(l => l.id === lotId);
+            if (lot) {
+              lot.unspscCodes.forEach(unspsc => {
+                if (!criterion.unspscCodes.includes(unspsc.code)) {
+                  criterion.unspscCodes.push(unspsc.code);
+                }
+              });
+            }
+          });
+        }
+      }
+
       window.updateEvaluationCriterionUnspscCodes = function(criterionId, selectElement) {
         const criterion = evaluationCriteria.find(c => c.id === criterionId);
         if (criterion) {
@@ -4841,34 +6655,89 @@
                                 onchange="updateEvaluationCriterionAppliesTo('${criterion.id}', this.value)"
                                 style="cursor: pointer;"
                               />
-                              <span>Specific UNSPSC Codes</span>
+                              <span>Specific Lot(s) or Product(s)</span>
                             </label>
                           </div>
                           
                           ${criterion.appliesTo === 'specific' ? `
                             <div style="margin-top: var(--spacing-md);">
-                              ${availableUnspscCodes.length === 0 ? `
+                              ${availableUnspscCodes.length === 0 && lots.length === 0 ? `
                                 <div style="padding: var(--spacing-md); background: var(--warning-50); border: 1px solid var(--warning-200); border-radius: var(--radius-sm); color: var(--warning-700);">
-                                  ⚠️ No UNSPSC codes available. Please add requisition lines or lots with products first.
+                                  ⚠️ No lots or products available. Please add requisition lines or create lots with products first.
                                 </div>
                               ` : `
-                                <select 
-                                  class="form-select" 
-                                  multiple 
-                                  size="5"
-                                  onchange="updateEvaluationCriterionUnspscCodes('${criterion.id}', this)"
-                                  style="width: 100%;"
-                                >
-                                  ${availableUnspscCodes.map(unspsc => `
-                                    <option 
-                                      value="${unspsc.code}" 
-                                      ${criterion.unspscCodes.includes(unspsc.code) ? 'selected' : ''}
+                                ${lots.length > 0 ? `
+                                  <div style="margin-bottom: var(--spacing-lg);">
+                                    <label class="form-label" style="font-size: 13px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.08em;">
+                                      Select by Lot
+                                    </label>
+                                    <select 
+                                      class="form-select" 
+                                      multiple 
+                                      size="4"
+                                      onchange="updateEvaluationCriterionLots('${criterion.id}', this)"
+                                      style="width: 100%;"
                                     >
-                                      ${unspsc.code} - ${unspsc.description}
-                                    </option>
-                                  `).join('')}
-                                </select>
-                                <span class="help-text">Hold Ctrl/Cmd to select multiple UNSPSC codes</span>
+                                      ${lots.map(lot => `
+                                        <option 
+                                          value="${lot.id}" 
+                                          ${criterion.lots.includes(lot.id) ? 'selected' : ''}
+                                        >
+                                          ${lot.name} (${lot.unspscCodes.length} products)
+                                        </option>
+                                      `).join('')}
+                                    </select>
+                                    <span class="help-text">Selecting a lot automatically includes all products in that lot. Hold Ctrl/Cmd to select multiple lots.</span>
+                                  </div>
+                                ` : ''}
+                                
+                                ${availableUnspscCodes.length > 0 ? `
+                                  <div>
+                                    <label class="form-label" style="font-size: 13px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.08em;">
+                                      ${lots.length > 0 ? 'Or Select Individual Products (UNSPSC Codes)' : 'Select Products (UNSPSC Codes)'}
+                                    </label>
+                                    <select 
+                                      class="form-select" 
+                                      multiple 
+                                      size="6"
+                                      onchange="updateEvaluationCriterionUnspscCodes('${criterion.id}', this)"
+                                      style="width: 100%;"
+                                    >
+                                      ${availableUnspscCodes.map(unspsc => {
+                                        // Find which lot(s) contain this UNSPSC code
+                                        const containingLots = lots.filter(lot => 
+                                          lot.unspscCodes.some(u => u.code === unspsc.code)
+                                        ).map(lot => lot.name);
+                                        
+                                        const lotInfo = containingLots.length > 0 
+                                          ? ` [In: ${containingLots.join(', ')}]` 
+                                          : ' [From requisition]';
+                                        
+                                        return `
+                                          <option 
+                                            value="${unspsc.code}" 
+                                            ${criterion.unspscCodes.includes(unspsc.code) ? 'selected' : ''}
+                                          >
+                                            ${unspsc.code} - ${unspsc.description}${lotInfo}
+                                          </option>
+                                        `;
+                                      }).join('')}
+                                    </select>
+                                    <span class="help-text">Hold Ctrl/Cmd to select multiple products. Products selected via lots above are automatically included.</span>
+                                  </div>
+                                ` : ''}
+                                
+                                ${criterion.lots.length > 0 || criterion.unspscCodes.length > 0 ? `
+                                  <div style="margin-top: var(--spacing-md); padding: var(--spacing-md); background: var(--info-50); border: 1px solid var(--info-200); border-radius: var(--radius-sm);">
+                                    <strong style="color: var(--info-700);">📊 Current Selection:</strong>
+                                    <div style="margin-top: var(--spacing-xs); color: var(--info-700);">
+                                      ${criterion.lots.length > 0 ? `
+                                        <div>✓ ${criterion.lots.length} lot(s) selected</div>
+                                      ` : ''}
+                                      <div>✓ ${criterion.unspscCodes.length} product(s) will be evaluated with this criterion</div>
+                                    </div>
+                                  </div>
+                                ` : ''}
                               `}
                             </div>
                           ` : ''}
@@ -5602,6 +7471,19 @@
                           ${field.help ? `<span class="help-text">${field.help}</span>` : ''}
                         </div>
                       `;
+                    } else if (field.type === 'lifecycle-tracker') {
+                      const trackerId = `lifecycle-tracker-${field.id}`;
+                      fieldHtml = `
+                        <div class="form-group full-width">
+                          <label class="form-label">
+                            ${field.label} ${field.required ? '<span class="required">*</span>' : ''}
+                          </label>
+                          ${field.description ? `<div class="help-text" style="margin-bottom: var(--spacing-md);">${field.description}</div>` : ''}
+                          <div id="${trackerId}"></div>
+                        </div>
+                      `;
+                      // Render lifecycle tracker after a short delay to ensure DOM is ready
+                      setTimeout(() => renderLifecycleTracker(trackerId), 100);
                     } else {
                       const inputType = field.type === 'number' ? 'number' : field.type === 'date' ? 'date' : field.type === 'datetime-local' ? 'datetime-local' : 'text';
                       fieldHtml = `
@@ -5697,8 +7579,62 @@
       }
 
       // Initialize
-      initWizard();
+      // Note: Don't initialize wizard immediately, let user choose initiation method
+      // initWizard();
     </script>
+
+    <!-- Tender Selection Modal for Cloning -->
+    <div class="modal-overlay" id="tender-selection-modal" onclick="if(event.target === this) closeTenderSelectionModal()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div>
+            <div class="modal-title">Select Tender to Clone</div>
+            <div class="modal-subtitle">Choose an existing tender to use as a starting point</div>
+          </div>
+          <button class="modal-close-btn" onclick="closeTenderSelectionModal()">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="modal-search">
+            <input type="search" placeholder="Search by tender title or reference number..." 
+                   oninput="filterExistingTenders(this.value)" />
+          </div>
+          <div class="existing-tenders-list" id="existing-tenders-list">
+            <!-- Tender cards will be dynamically populated -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lifecycle Process Search Modal -->
+    <div class="lifecycle-search-modal" id="lifecycle-search-modal" onclick="if(event.target === this) closeLifecycleSearch()">
+      <div class="lifecycle-search-content">
+        <div class="lifecycle-search-header">
+          <div>
+            <div style="font-size: 20px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px;">
+              Link Procurement Process
+            </div>
+            <div style="font-size: 14px; color: var(--text-muted);">
+              Search and select a process to link to this tender
+            </div>
+          </div>
+          <button class="modal-close-btn" onclick="closeLifecycleSearch()">✕</button>
+        </div>
+        <div class="lifecycle-search-body">
+          <div class="lifecycle-search-input-wrapper">
+            <span class="lifecycle-search-icon">🔍</span>
+            <input 
+              type="search" 
+              class="lifecycle-search-input" 
+              placeholder="Search by Process ID, title, or type..." 
+              oninput="searchLifecycleProcesses(this.value)"
+            />
+          </div>
+          <div class="lifecycle-search-results" id="lifecycle-search-results">
+            <!-- Results will be dynamically populated -->
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
 
