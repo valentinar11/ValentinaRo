@@ -1217,6 +1217,14 @@
                 </div>
               </div>
 
+              <!-- Add Custom Block Button -->
+              <div style="margin-top: var(--spacing-lg); padding-top: var(--spacing-lg); border-top: 1px solid var(--neutral-200);">
+                <button class="btn btn-ghost" onclick="createCustomBlock()" style="width: 100%; padding: var(--spacing-md); display: flex; align-items: center; justify-content: center; gap: var(--spacing-sm);">
+                  <span style="font-size: 18px;">➕</span>
+                  <span>Add New Custom Block</span>
+                </button>
+              </div>
+
               <!-- Forms & Documents Section -->
               <div class="component-group">
                 <p class="group-label">Forms &amp; Documents</p>
@@ -3635,6 +3643,210 @@
           alert(`Custom field added successfully!\n\nField: ${fieldName}\nType: ${typeMap[fieldType]}\nSection: ${sectionLabel}\n\nIn a full implementation, this field would be added to the template configuration and appear in the list above.`);
         } else {
           alert('Invalid field type selected. Please try again.');
+        }
+      }
+      
+      // ===== CUSTOM BLOCK CREATION =====
+      
+      window.createCustomBlock = function() {
+        // Modal HTML for custom block creation
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        modal.id = 'custom-block-modal';
+        modal.style.cssText = `
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0, 0, 0, 0.5);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 9999;
+        `;
+        
+        modal.innerHTML = `
+          <div style="background: var(--surface-0); border-radius: var(--radius-lg); box-shadow: var(--shadow-modal); max-width: 600px; width: 90%; display: flex; flex-direction: column;">
+            <div style="padding: var(--spacing-lg); border-bottom: 1px solid var(--surface-200); display: flex; justify-content: space-between; align-items: center;">
+              <h3 style="margin: 0; font-size: 18px; font-weight: 600;">Create New Custom Block</h3>
+              <button class="icon-btn" onclick="closeCustomBlockModal()" style="font-size: 16px;">✖</button>
+            </div>
+            
+            <div style="padding: var(--spacing-xl);">
+              <div style="margin-bottom: var(--spacing-lg);">
+                <label style="display: block; font-size: 14px; font-weight: 600; margin-bottom: var(--spacing-sm);">
+                  Block Name <span style="color: var(--danger-500);">*</span>
+                </label>
+                <input type="text" id="custom-block-name" class="input" placeholder="e.g., Quality Assurance, Delivery Terms, etc." style="width: 100%;" />
+              </div>
+              
+              <div style="margin-bottom: var(--spacing-lg);">
+                <label style="display: block; font-size: 14px; font-weight: 600; margin-bottom: var(--spacing-sm);">Block Icon</label>
+                <div style="display: grid; grid-template-columns: repeat(8, 1fr); gap: var(--spacing-sm);">
+                  ${['📋', '📄', '📝', '📊', '📈', '✅', '🔍', '⚙️', '🎯', '💼', '🏢', '📦', '🚚', '💰', '📅', '🔒'].map(icon => `
+                    <button type="button" class="icon-selector" data-icon="${icon}" onclick="selectCustomBlockIcon('${icon}')" 
+                            style="width: 48px; height: 48px; border: 2px solid var(--surface-200); border-radius: var(--radius-sm); 
+                                   background: var(--surface-0); font-size: 24px; cursor: pointer; transition: all 0.2s ease;"
+                            onmouseover="this.style.borderColor='var(--primary-400)'; this.style.background='var(--primary-50)';"
+                            onmouseout="if(!this.classList.contains('selected')) { this.style.borderColor='var(--surface-200)'; this.style.background='var(--surface-0)'; }">
+                      ${icon}
+                    </button>
+                  `).join('')}
+                </div>
+                <input type="hidden" id="custom-block-icon" value="📋" />
+              </div>
+              
+              <div style="margin-bottom: var(--spacing-lg);">
+                <label style="display: block; font-size: 14px; font-weight: 600; margin-bottom: var(--spacing-sm);">Description (for authors)</label>
+                <textarea id="custom-block-description" class="textarea" rows="3" placeholder="Brief description of what this block contains..." style="width: 100%;"></textarea>
+              </div>
+              
+              <div style="background: var(--info-50); border: 1px solid var(--info-400); border-radius: var(--radius-sm); padding: var(--spacing-md); margin-bottom: var(--spacing-lg);">
+                <div style="display: flex; align-items: start; gap: var(--spacing-sm);">
+                  <span style="font-size: 18px;">ℹ️</span>
+                  <span style="font-size: 13px; color: var(--text-primary);">
+                    After creating the block, you can add sections and fields to it by dragging forms and fields from the component panel.
+                  </span>
+                </div>
+              </div>
+            </div>
+            
+            <div style="padding: var(--spacing-lg); border-top: 1px solid var(--surface-200); display: flex; justify-content: flex-end; gap: var(--spacing-sm);">
+              <button class="btn btn-secondary" onclick="closeCustomBlockModal()">Cancel</button>
+              <button class="btn btn-primary" onclick="saveCustomBlock()">Create Block</button>
+            </div>
+          </div>
+        `;
+        
+        document.body.appendChild(modal);
+        
+        // Auto-select first icon
+        const firstIcon = modal.querySelector('.icon-selector');
+        if (firstIcon) {
+          firstIcon.classList.add('selected');
+          firstIcon.style.borderColor = 'var(--primary-400)';
+          firstIcon.style.background = 'var(--primary-50)';
+        }
+        
+        // Focus on name input
+        setTimeout(() => {
+          document.getElementById('custom-block-name').focus();
+        }, 100);
+      }
+      
+      window.selectCustomBlockIcon = function(icon) {
+        // Update hidden input
+        document.getElementById('custom-block-icon').value = icon;
+        
+        // Update visual selection
+        document.querySelectorAll('.icon-selector').forEach(btn => {
+          btn.classList.remove('selected');
+          btn.style.borderColor = 'var(--surface-200)';
+          btn.style.background = 'var(--surface-0)';
+        });
+        
+        const selectedBtn = document.querySelector(`.icon-selector[data-icon="${icon}"]`);
+        if (selectedBtn) {
+          selectedBtn.classList.add('selected');
+          selectedBtn.style.borderColor = 'var(--primary-400)';
+          selectedBtn.style.background = 'var(--primary-50)';
+        }
+      }
+      
+      window.closeCustomBlockModal = function() {
+        const modal = document.getElementById('custom-block-modal');
+        if (modal) modal.remove();
+      }
+      
+      window.saveCustomBlock = function() {
+        const name = document.getElementById('custom-block-name').value.trim();
+        const icon = document.getElementById('custom-block-icon').value;
+        const description = document.getElementById('custom-block-description').value.trim();
+        
+        if (!name) {
+          alert('Please enter a block name.');
+          document.getElementById('custom-block-name').focus();
+          return;
+        }
+        
+        // Create block configuration
+        const blockConfig = {
+          blockId: 'custom-block-' + generateId(),
+          blockType: 'custom',
+          blockName: name,
+          blockIcon: icon,
+          blockDescription: description,
+          enabled: true,
+          position: templateConfig.blocks.length,
+          sections: [
+            {
+              sectionId: 'section-' + generateId(),
+              sectionName: 'Main Section',
+              enabled: true,
+              fields: []
+            }
+          ]
+        };
+        
+        // Add to template config
+        templateConfig.blocks.push(blockConfig);
+        
+        // Create visual representation
+        const section = document.createElement('div');
+        section.className = 'dropped-section';
+        section.dataset.sectionType = 'custom';
+        section.dataset.blockId = blockConfig.blockId;
+        
+        // Render admin configuration view
+        section.innerHTML = renderBlockConfigView(blockConfig);
+        
+        // Add block to blocks array
+        const blockIndex = blocks.length;
+        blocks.push({
+          name: blockConfig.blockName,
+          element: section,
+          type: 'custom',
+          config: blockConfig
+        });
+        
+        // Add click handler for block selection
+        section.addEventListener('click', (e) => {
+          if (!e.target.closest('.icon-btn') && !e.target.closest('button') && !e.target.closest('input') && !e.target.closest('select')) {
+            selectBlock(section, 'custom', blockIndex);
+          }
+        });
+        
+        // Update UI
+        activeBlockIndex = blockIndex;
+        updateBlockTabs();
+        updateCanvasView();
+        
+        // Close modal
+        closeCustomBlockModal();
+        
+        // Show success message
+        showNotification(`Custom block "${name}" created successfully!`, 'success');
+      }
+      
+      window.addSection = function(blockId) {
+        const sectionName = prompt('Enter section name:');
+        if (!sectionName) return;
+        
+        const blockConfig = templateConfig.blocks.find(b => b.blockId === blockId);
+        
+        if (blockConfig) {
+          const newSection = {
+            sectionId: 'section-' + generateId(),
+            sectionName: sectionName,
+            enabled: true,
+            fields: []
+          };
+          
+          blockConfig.sections.push(newSection);
+          templateConfig.modifiedDate = new Date().toISOString();
+          updateCanvasView();
+          showNotification('Section added successfully', 'success');
         }
       }
     </script>
