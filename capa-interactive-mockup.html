@@ -1,0 +1,2341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNOPS - DRiVE CAPA Management</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/primeng@19/resources/themes/lara-light-blue/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/primeicons@7/primeicons.css">
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* UNOPS Colors from preset */
+            --unops-blue: #0092D1;
+            --unops-blue-400: #00669a;
+            --unops-blue-500: #007cb2;
+            --unops-blue-600: #006692;
+            --unops-n-cold-0: #ffffff;
+            --unops-n-cold-50: #F5F8FB;
+            --unops-n-cold-100: #EBF1F8;
+            --unops-n-cold-200: #DDE8F2;
+            --unops-n-cold-800: #596170;
+            --unops-n-cold-900: #3B3E4A;
+            --surface-0: #ffffff;
+            --surface-100: #F1F5F9;
+            --surface-600: #475569;
+            --surface-800: #1e293b;
+            --surface-900: #0f172a;
+            --text-color: #3B3E4A;
+            --text-muted: #596170;
+            --primary-color: #00669a;
+            --primary-hover: #0092D1;
+        }
+
+        body {
+            font-family: 'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--surface-100);
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
+
+        /* Layout Grid */
+        .app-container {
+            display: grid;
+            grid-template-areas:
+                "header header"
+                "sidebar main"
+                "footer footer";
+            grid-template-columns: 60px 1fr;
+            grid-template-rows: 60px 1fr 50px;
+            min-height: 100vh;
+            transition: grid-template-columns 0.2s ease;
+        }
+
+        .app-container:hover {
+            grid-template-columns: 240px 1fr;
+        }
+
+        /* Header */
+        .unops-header {
+            grid-area: header;
+            background: var(--surface-0);
+            border-bottom: 1px solid var(--unops-n-cold-200);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            z-index: 1000;
+        }
+
+        .header-left-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+        }
+
+        .logo-icon {
+            height: 32px;
+            width: auto;
+        }
+
+        .portal-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .header-right-section {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .header-btn {
+            background: transparent;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 50%;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: all 0.2s;
+        }
+
+        .header-btn:hover {
+            background: var(--surface-100);
+            color: var(--primary-color);
+        }
+
+        /* Side Menu */
+        .side-menu {
+            grid-area: sidebar;
+            background: linear-gradient(180deg, #00669a 0%, #004976 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+            transition: width 0.2s ease;
+            position: relative;
+        }
+
+        .menu-items {
+            list-style: none;
+            padding: 1rem 0;
+            margin: 0;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: white;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .menu-item.active {
+            background: var(--unops-blue);
+        }
+
+        .menu-item i {
+            font-size: 1.25rem;
+            min-width: 28px;
+            text-align: center;
+        }
+
+        .menu-label {
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .app-container:hover .menu-label {
+            opacity: 1;
+        }
+
+        .menu-logo {
+            background: white;
+            border-radius: 50%;
+            padding: 0.5rem;
+            margin: 1.5rem auto;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-user {
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--unops-blue);
+        }
+
+        .user-info {
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .app-container:hover .user-info {
+            opacity: 1;
+        }
+
+        /* Main Content */
+        .main-content {
+            grid-area: main;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        /* Footer */
+        .unops-footer {
+            grid-area: footer;
+            background: var(--surface-900);
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 0 2rem;
+            border-top: 1px solid var(--unops-n-cold-200);
+        }
+
+        /* CAPA Page Styles */
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 1.875rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .breadcrumb {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        /* Metrics Cards */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .metric-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .metric-label {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Filter Tabs */
+        .filter-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--unops-n-cold-200);
+        }
+
+        .filter-tab {
+            padding: 0.75rem 1.25rem;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .filter-tab:hover {
+            color: var(--primary-color);
+        }
+
+        .filter-tab.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        /* Data Table */
+        .data-table {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .table-toolbar {
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--unops-n-cold-200);
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--unops-n-cold-200);
+            border-radius: 4px;
+            background: white;
+        }
+
+        .search-box input {
+            border: none;
+            outline: none;
+            font-size: 0.875rem;
+            width: 300px;
+        }
+
+        .btn {
+            padding: 0.625rem 1rem;
+            border: none;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn-secondary {
+            background: var(--surface-100);
+            color: var(--text-color);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--unops-n-cold-200);
+            color: var(--text-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: var(--surface-0);
+        }
+
+        th {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-color);
+            border-bottom: 1px solid var(--unops-n-cold-200);
+        }
+
+        td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--unops-n-cold-100);
+        }
+
+        tbody tr:hover {
+            background: var(--surface-100);
+        }
+
+        .tag {
+            padding: 0.25rem 0.625rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .tag-pending {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        .tag-inprogress {
+            background: #DBEAFE;
+            color: #1E40AF;
+        }
+
+        .tag-completed {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+
+        /* Modal/Wizard */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 1200px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--unops-n-cold-200);
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        /* Stepper */
+        .stepper {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--surface-100);
+            color: var(--text-muted);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .step.active .step-number {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .step.completed .step-number {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .step-label {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .step.active .step-label {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .step-connector {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            width: 100%;
+            height: 2px;
+            background: var(--surface-100);
+            z-index: 1;
+        }
+
+        .step.completed .step-connector {
+            background: var(--primary-color);
+        }
+
+        .step:last-child .step-connector {
+            display: none;
+        }
+
+        /* Form */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .form-select,
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--unops-n-cold-200);
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .form-select:focus,
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(0, 102, 154, 0.1);
+        }
+
+        /* Multiselect Dropdown */
+        .multiselect-container {
+            position: relative;
+        }
+
+        .multiselect-trigger {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem;
+            border: 1px solid var(--unops-n-cold-200);
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+            min-height: 46px;
+        }
+
+        .multiselect-trigger:hover {
+            border-color: var(--text-muted);
+        }
+
+        .multiselect-placeholder {
+            color: var(--text-muted);
+        }
+
+        .multiselect-values {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.25rem;
+        }
+
+        .multiselect-chip {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .multiselect-chip-remove {
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .multiselect-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            margin-top: 0.25rem;
+            background: white;
+            border: 1px solid var(--unops-n-cold-200);
+            border-radius: 4px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-height: 250px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+
+        .multiselect-dropdown.open {
+            display: block;
+        }
+
+        .multiselect-option {
+            padding: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .multiselect-option:hover {
+            background: var(--surface-100);
+        }
+
+        .multiselect-checkbox {
+            width: 18px;
+            height: 18px;
+            border: 1px solid var(--unops-n-cold-200);
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .multiselect-option.selected .multiselect-checkbox {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .multiselect-checkbox::after {
+            content: '✓';
+            color: white;
+            font-size: 0.75rem;
+            display: none;
+        }
+
+        .multiselect-option.selected .multiselect-checkbox::after {
+            display: block;
+        }
+
+        /* Wizard Navigation */
+        .wizard-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--unops-n-cold-200);
+        }
+
+        .wizard-step {
+            display: none;
+        }
+
+        .wizard-step.active {
+            display: block;
+        }
+
+        /* Info Banner */
+        .info-banner {
+            background: #DBEAFE;
+            border: 1px solid #93C5FD;
+            border-radius: 4px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            gap: 0.75rem;
+            align-items: start;
+        }
+
+        .info-banner-icon {
+            font-size: 1.25rem;
+        }
+
+        /* Pick List */
+        .pick-list {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .pick-list-panel {
+            border: 1px solid var(--unops-n-cold-200);
+            border-radius: 4px;
+            background: white;
+            min-height: 300px;
+        }
+
+        .pick-list-header {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--unops-n-cold-200);
+            font-weight: 600;
+            background: var(--surface-100);
+        }
+
+        .pick-list-items {
+            padding: 0.5rem;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .pick-list-item {
+            padding: 0.75rem;
+            border: 1px solid var(--unops-n-cold-200);
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .pick-list-item:hover {
+            background: var(--surface-100);
+        }
+
+        .pick-list-item.selected {
+            background: #DBEAFE;
+            border-color: var(--primary-color);
+        }
+
+        .pick-list-item-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: var(--text-color);
+        }
+
+        .pick-list-item-question {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .pick-list-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        .pick-list-btn {
+            padding: 0.5rem;
+            border: 1px solid var(--unops-n-cold-200);
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1.25rem;
+        }
+
+        .pick-list-btn:hover {
+            background: var(--surface-100);
+        }
+
+        /* Question Card */
+        .question-card {
+            background: white;
+            border: 1px solid var(--unops-n-cold-200);
+            border-radius: 4px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .question-header {
+            margin-bottom: 1rem;
+        }
+
+        .question-title {
+            font-weight: 600;
+            font-size: 1.125rem;
+            color: var(--text-color);
+            margin-bottom: 0.25rem;
+        }
+
+        .question-text {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        .answer-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .answer-label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .answer-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .answer-chip {
+            background: var(--surface-100);
+            padding: 0.5rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            color: var(--text-color);
+        }
+
+        .empty-state {
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* CAPA View Page Styles */
+        .view-page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--unops-n-cold-200);
+        }
+
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .status-accepted {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+
+        .status-rejected {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .status-clarification {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        .status-pending {
+            background: #E0E7FF;
+            color: #3730A3;
+        }
+
+        .status-implemented {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+
+        .capa-question-item {
+            background: white;
+            border: 1px solid var(--unops-n-cold-200);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .capa-question-item.needs-review {
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .question-info {
+            margin-bottom: 1.5rem;
+        }
+
+        .info-row {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 1rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--unops-n-cold-100);
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .info-value {
+            color: var(--text-color);
+        }
+
+        .document-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: var(--surface-100);
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+        }
+
+        .document-icon {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            color: var(--primary-color);
+        }
+
+        .review-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--unops-n-cold-200);
+        }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="unops-header">
+            <div class="header-left-section">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="32" height="32" rx="4" fill="#00669a"/>
+                    <path d="M16 8L8 12V20L16 24L24 20V12L16 8Z" fill="white"/>
+                </svg>
+                <span class="portal-title">Procurement Portal</span>
+            </div>
+            <div class="header-right-section">
+                <button class="header-btn" title="Help & Support">
+                    <i class="fi fi-rr-interrogation" style="font-size: 16px;"></i>
+                </button>
+                <button class="header-btn" title="Notifications">
+                    <i class="fi fi-rr-bell" style="font-size: 16px;"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Side Menu -->
+        <nav class="side-menu">
+            <div>
+                <div class="menu-logo">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 4L4 10V22L16 28L28 22V10L16 4Z" fill="#00669a"/>
+                    </svg>
+                </div>
+                <ul class="menu-items">
+                    <a href="#" class="menu-item">
+                        <i class="pi pi-home"></i>
+                        <span class="menu-label">Dashboard</span>
+                    </a>
+                    <a href="#" class="menu-item">
+                        <i class="pi pi-file-edit"></i>
+                        <span class="menu-label">Forms</span>
+                    </a>
+                    <a href="#" class="menu-item active">
+                        <i class="pi pi-wrench"></i>
+                        <span class="menu-label">CAPA</span>
+                    </a>
+                    <a href="#" class="menu-item">
+                        <i class="pi pi-check-circle"></i>
+                        <span class="menu-label">Verification</span>
+                    </a>
+                    <a href="#" class="menu-item">
+                        <i class="pi pi-users"></i>
+                        <span class="menu-label">Suppliers</span>
+                    </a>
+                </ul>
+            </div>
+            <div class="menu-user">
+                <div class="user-avatar"></div>
+                <div class="user-info">
+                    <div style="font-size: 0.875rem; font-weight: 500;">Jane Doe</div>
+                    <div style="font-size: 0.75rem; opacity: 0.8;">jane.doe@unops.org</div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- CAPA List Page -->
+            <div id="capaListPage">
+                <!-- Header Section -->
+                <div class="page-header" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem;">
+                    <div>
+                        <h1 class="page-title" style="margin-bottom: 0.25rem;">CAPA Management</h1>
+                        <div class="breadcrumb">Manage and view CAPA processes in progress</div>
+                    </div>
+                    <button class="btn btn-primary" onclick="showWizard()">
+                        <i class="pi pi-plus"></i>
+                        Initiate CAPA
+                    </button>
+                </div>
+
+                <!-- Metrics -->
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-value">24</div>
+                        <div class="metric-label">Total CAPAs</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">8</div>
+                        <div class="metric-label">Pending</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">12</div>
+                        <div class="metric-label">In Progress</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">4</div>
+                        <div class="metric-label">Completed</div>
+                    </div>
+                </div>
+
+                <!-- Filter Tabs -->
+                <div class="filter-tabs">
+                    <button class="filter-tab active" onclick="filterByTab('all')">All (24)</button>
+                    <button class="filter-tab" onclick="filterByTab('pending')">Pending (8)</button>
+                    <button class="filter-tab" onclick="filterByTab('inprogress')">In Progress (12)</button>
+                    <button class="filter-tab" onclick="filterByTab('completed')">Completed (4)</button>
+                </div>
+
+                <!-- Search and Action Bar -->
+                <div class="action-bar" style="display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.5rem; align-items: center;">
+                    <!-- Search Input -->
+                    <div class="search-box" style="flex: 1; min-width: 200px;">
+                        <i class="pi pi-search" style="color: var(--text-muted);"></i>
+                        <input type="text" placeholder="Search CAPAs..." id="search-input" oninput="searchTable()">
+                    </div>
+
+                    <!-- Filter Dropdown -->
+                    <select class="form-select" style="width: 180px;">
+                        <option value="">Select Filter</option>
+                        <option value="supplier">By Supplier</option>
+                        <option value="status">By Status</option>
+                        <option value="initiator">By Initiator</option>
+                    </select>
+
+                    <!-- Clear Filters Button -->
+                    <button class="btn btn-outline" onclick="clearFilters()">
+                        <i class="pi pi-filter-slash"></i>
+                        Clear Filters
+                    </button>
+
+                    <!-- Export Button -->
+                    <button class="btn btn-primary" style="background: #0092D1;" onclick="exportData()">
+                        <i class="pi pi-download"></i>
+                        Export
+                    </button>
+
+                    <!-- Send Reminder Button -->
+                    <button class="btn btn-primary" style="background: #4c9f38;" onclick="sendReminder()">
+                        <i class="pi pi-send"></i>
+                        Send Reminder
+                    </button>
+
+                    <!-- Close Process Button -->
+                    <button class="btn btn-primary" style="background: #da291c;" onclick="closeProcess()">
+                        <i class="pi pi-times"></i>
+                        Close Process
+                    </button>
+                </div>
+
+                <!-- Data Table -->
+                <div class="data-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox"></th>
+                                <th>Supplier</th>
+                                <th>Status</th>
+                                <th>Start Date</th>
+                                <th>Deadline</th>
+                                <th>Initiated By</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="capa-table-body">
+                            <tr data-status="inprogress" data-supplier="acme corporation" data-initiator="john smith">
+                                <td><input type="checkbox"></td>
+                                <td>Acme Corporation</td>
+                                <td><span class="tag tag-inprogress">In Progress</span></td>
+                                <td>15 Nov 2024</td>
+                                <td>15 Dec 2024</td>
+                                <td>John Smith</td>
+                                <td>
+                                    <div style="display: flex; gap: 0.5rem;">
+                                        <button class="btn btn-outline" style="padding: 0.375rem 0.75rem;" title="View" onclick="viewCapaDetails(1)">
+                                            <i class="pi pi-eye"></i>
+                                        </button>
+                                        <button class="btn btn-outline" style="padding: 0.375rem 0.75rem;" title="Edit">
+                                            <i class="pi pi-pencil"></i>
+                                        </button>
+                                        <button class="btn btn-primary" style="padding: 0.375rem 0.75rem; background: #da291c;" title="Delete">
+                                            <i class="pi pi-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr data-status="pending" data-supplier="global tech solutions" data-initiator="sarah johnson">
+                                <td><input type="checkbox"></td>
+                                <td>Global Tech Solutions</td>
+                                <td><span class="tag tag-pending">Pending</span></td>
+                                <td>20 Nov 2024</td>
+                                <td>20 Dec 2024</td>
+                                <td>Sarah Johnson</td>
+                                <td>
+                                    <div style="display: flex; gap: 0.5rem;">
+                                        <button class="btn btn-outline" style="padding: 0.375rem 0.75rem;" title="View" onclick="viewCapaDetails(2)">
+                                            <i class="pi pi-eye"></i>
+                                        </button>
+                                        <button class="btn btn-outline" style="padding: 0.375rem 0.75rem;" title="Edit">
+                                            <i class="pi pi-pencil"></i>
+                                        </button>
+                                        <button class="btn btn-primary" style="padding: 0.375rem 0.75rem; background: #da291c;" title="Delete">
+                                            <i class="pi pi-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr data-status="completed" data-supplier="premium suppliers co" data-initiator="michael brown">
+                                <td><input type="checkbox"></td>
+                                <td>Premium Suppliers Co</td>
+                                <td><span class="tag tag-completed">Completed</span></td>
+                                <td>10 Nov 2024</td>
+                                <td>10 Dec 2024</td>
+                                <td>Michael Brown</td>
+                                <td>
+                                    <div style="display: flex; gap: 0.5rem;">
+                                        <button class="btn btn-outline" style="padding: 0.375rem 0.75rem;" title="View" onclick="viewCapaDetails(3)">
+                                            <i class="pi pi-eye"></i>
+                                        </button>
+                                        <button class="btn btn-outline" style="padding: 0.375rem 0.75rem;" title="Edit">
+                                            <i class="pi pi-pencil"></i>
+                                        </button>
+                                        <button class="btn btn-primary" style="padding: 0.375rem 0.75rem; background: #da291c;" title="Delete">
+                                            <i class="pi pi-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- CAPA View/Details Page -->
+            <div id="capaViewPage" class="hidden">
+                <div class="view-page-header">
+                    <div>
+                        <button class="btn btn-outline" onclick="backToList()" style="margin-bottom: 1rem;">
+                            <i class="pi pi-arrow-left"></i>
+                            Back to CAPA List
+                        </button>
+                        <h1 class="page-title" style="margin-bottom: 0.25rem;">CAPA Details</h1>
+                        <div class="breadcrumb">DRiVE / CAPA / <span id="view-supplier-name">View Details</span></div>
+                    </div>
+                    <div>
+                        <span class="status-badge" id="view-overall-status">In Progress</span>
+                    </div>
+                </div>
+
+                <!-- CAPA Overview Card -->
+                <div class="question-card" style="margin-bottom: 2rem;">
+                    <h3 style="margin-bottom: 1.5rem;">CAPA Overview</h3>
+                    <div class="info-row">
+                        <div class="info-label">Supplier:</div>
+                        <div class="info-value" id="view-supplier">-</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Initiated By:</div>
+                        <div class="info-value" id="view-initiator">-</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Start Date:</div>
+                        <div class="info-value" id="view-start-date">-</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Overall Deadline:</div>
+                        <div class="info-value" id="view-deadline">-</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Collaborators:</div>
+                        <div class="info-value" id="view-collaborators">-</div>
+                    </div>
+                </div>
+
+                <!-- Questions and Supplier Responses -->
+                <h3 style="margin-bottom: 1.5rem;">Questions & Supplier Responses</h3>
+                <div id="capa-questions-container">
+                    <!-- Questions will be dynamically loaded here -->
+                </div>
+            </div>
+
+            <!-- CAPA Wizard Modal -->
+            <div id="capaWizard" class="modal-overlay hidden">
+                <div class="modal">
+                    <div class="modal-header" style="display: flex; align-items: center; justify-content: space-between;">
+                        <h2 class="modal-title">Initiate CAPA Process</h2>
+                        <button class="btn" style="background: transparent; border: none; padding: 0.5rem; cursor: pointer; color: var(--text-muted); font-size: 1.5rem; line-height: 1;" onclick="closeModal()" title="Close">
+                            <i class="pi pi-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Stepper -->
+                        <div class="stepper">
+                            <div class="step active" id="step-1">
+                                <div class="step-number">1</div>
+                                <div class="step-label">Supplier & CAPA Setup</div>
+                                <div class="step-connector"></div>
+                            </div>
+                            <div class="step" id="step-2">
+                                <div class="step-number">2</div>
+                                <div class="step-label">Question Selection</div>
+                                <div class="step-connector"></div>
+                            </div>
+                            <div class="step" id="step-3">
+                                <div class="step-number">3</div>
+                                <div class="step-label">CAPA Parameters</div>
+                                <div class="step-connector"></div>
+                            </div>
+                            <div class="step" id="step-4">
+                                <div class="step-number">4</div>
+                                <div class="step-label">Review & Submit</div>
+                            </div>
+                        </div>
+
+                        <!-- Step 1: Supplier & CAPA Setup -->
+                        <div id="wizard-step-1" class="wizard-step active">
+                            <h3 style="margin-bottom: 1.5rem; font-size: 1.25rem;">Supplier & CAPA Setup</h3>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Supplier *</label>
+                                <select class="form-select" id="supplier-select">
+                                    <option value="">Select a supplier...</option>
+                                    <option value="1">Acme Corporation</option>
+                                    <option value="2">Global Tech Solutions</option>
+                                    <option value="3">Innovative Products Ltd</option>
+                                    <option value="4">Innovative Services Inc</option>
+                                    <option value="5">Premium Suppliers Co</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Collaborators</label>
+                                <div class="multiselect-container" id="collaborators-multiselect">
+                                    <div class="multiselect-trigger" onclick="toggleMultiselect('collaborators')">
+                                        <div class="multiselect-values" id="collaborators-values">
+                                            <span class="multiselect-placeholder">Select collaborators...</span>
+                                        </div>
+                                        <i class="pi pi-chevron-down"></i>
+                                    </div>
+                                    <div class="multiselect-dropdown" id="collaborators-dropdown">
+                                        <div class="multiselect-option" onclick="toggleOption('collaborators', 'John Smith', this)">
+                                            <div class="multiselect-checkbox"></div>
+                                            <span>John Smith</span>
+                                        </div>
+                                        <div class="multiselect-option" onclick="toggleOption('collaborators', 'Sarah Johnson', this)">
+                                            <div class="multiselect-checkbox"></div>
+                                            <span>Sarah Johnson</span>
+                                        </div>
+                                        <div class="multiselect-option" onclick="toggleOption('collaborators', 'Michael Brown', this)">
+                                            <div class="multiselect-checkbox"></div>
+                                            <span>Michael Brown</span>
+                                        </div>
+                                        <div class="multiselect-option" onclick="toggleOption('collaborators', 'Emily Davis', this)">
+                                            <div class="multiselect-checkbox"></div>
+                                            <span>Emily Davis</span>
+                                        </div>
+                                        <div class="multiselect-option" onclick="toggleOption('collaborators', 'David Wilson', this)">
+                                            <div class="multiselect-checkbox"></div>
+                                            <span>David Wilson</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="wizard-nav">
+                                <button class="btn btn-outline" onclick="showList()">Cancel</button>
+                                <button class="btn btn-primary" onclick="nextStep()">Next ➡️</button>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Question Selection -->
+                        <div id="wizard-step-2" class="wizard-step">
+                            <h3 style="text-align: center; margin-bottom: 1rem; font-size: 1.25rem;">Question Selection</h3>
+                            
+                            <div class="info-banner">
+                                <div class="info-banner-icon">ℹ️</div>
+                                <div>Only verified questions with no CAPA process initiated can be selected.</div>
+                            </div>
+
+                            <div class="pick-list">
+                                <div class="pick-list-panel">
+                                    <div class="pick-list-header">Questions</div>
+                                    <div class="pick-list-items" id="available-actions">
+                                        <div class="pick-list-item" onclick="toggleSelection(this)" data-action="1" data-type="one-choice">
+                                            <div class="pick-list-item-title">Q1: Type of Organization</div>
+                                            <div class="pick-list-item-question">Please select the option that best fits your main area of work/business</div>
+                                        </div>
+                                        <div class="pick-list-item" onclick="toggleSelection(this)" data-action="2" data-type="one-choice">
+                                            <div class="pick-list-item-title">Q2: Manufacturing</div>
+                                            <div class="pick-list-item-question">Does your organization do any manufacturing?</div>
+                                        </div>
+                                        <div class="pick-list-item" onclick="toggleSelection(this)" data-action="3" data-type="multiple-choice">
+                                            <div class="pick-list-item-title">Q3: Policy</div>
+                                            <div class="pick-list-item-question">Please select the policies you have in place (please select all the responses that fit)</div>
+                                        </div>
+                                        <div class="pick-list-item" onclick="toggleSelection(this)" data-action="4" data-type="multiple-choice">
+                                            <div class="pick-list-item-title">Q4: Policy Implementation</div>
+                                            <div class="pick-list-item-question">How are these policies implemented? (please select all the responses that fit)</div>
+                                        </div>
+                                        <div class="pick-list-item" onclick="toggleSelection(this)" data-action="5" data-type="multiple-choice">
+                                            <div class="pick-list-item-title">Q5: Code of Conduct</div>
+                                            <div class="pick-list-item-question">Are any of these policies included in your Code of Conduct? (please select all the responses that fit)</div>
+                                        </div>
+                                        <div class="pick-list-item" onclick="toggleSelection(this)" data-action="6" data-type="multiple-choice">
+                                            <div class="pick-list-item-title">Q6: Code of Conduct Implementation</div>
+                                            <div class="pick-list-item-question">How are the principles in the Code of Conduct implemented in the organization? (please select all the responses that fit)</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="pick-list-controls">
+                                    <button class="pick-list-btn" onclick="moveSelected('right')" title="Move selected to target">➡️</button>
+                                    <button class="pick-list-btn" onclick="moveAll('right')" title="Move all to target">⏩</button>
+                                    <button class="pick-list-btn" onclick="moveSelected('left')" title="Move selected back">⬅️</button>
+                                    <button class="pick-list-btn" onclick="moveAll('left')" title="Move all back">⏪</button>
+                                </div>
+
+                                <div class="pick-list-panel">
+                                    <div class="pick-list-header">Selected Questions</div>
+                                    <div class="pick-list-items" id="selected-actions">
+                                        <div class="empty-state">No questions selected</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="wizard-nav">
+                                <button class="btn btn-secondary" onclick="prevStep()">⬅️ Back</button>
+                                <button class="btn btn-primary" onclick="nextStep()">Next ➡️</button>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: CAPA Parameters -->
+                        <div id="wizard-step-3" class="wizard-step">
+                            <h3 style="text-align: center; margin-bottom: 2rem; font-size: 1.25rem;">CAPA Parameters</h3>
+                            
+                            <div id="capa-parameters-container">
+                                <div class="empty-state" id="no-questions-message">
+                                    Select questions in the previous step to configure CAPA parameters
+                                </div>
+                            </div>
+
+                            <div class="wizard-nav">
+                                <button class="btn btn-secondary" onclick="prevStep()">⬅️ Back</button>
+                                <button class="btn btn-primary" onclick="nextStep()">Next ➡️</button>
+                            </div>
+                        </div>
+
+                        <!-- Step 4: Review & Submit -->
+                        <div id="wizard-step-4" class="wizard-step">
+                            <h3 style="text-align: center; margin-bottom: 2rem; font-size: 1.25rem;">Review & Submit</h3>
+                            
+                            <div class="question-card">
+                                <h4 style="margin-bottom: 1rem;">CAPA Summary</h4>
+                                <div style="display: grid; gap: 0.75rem;">
+                                    <div>
+                                        <strong>Supplier:</strong>
+                                        <span id="summary-supplier">Not selected</span>
+                                    </div>
+                                    <div>
+                                        <strong>Collaborators:</strong>
+                                        <span id="summary-collaborators">-</span>
+                                    </div>
+                                    <div>
+                                        <strong>Selected Questions:</strong>
+                                        <span id="summary-questions">0</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="question-card">
+                                <h4 style="margin-bottom: 1rem;">Deadlines & Timeline</h4>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                                    <div class="form-group" style="margin-bottom: 0;">
+                                        <label class="form-label">CAPA Deadline *</label>
+                                        <input type="date" class="form-input" id="deadline-date" required>
+                                    </div>
+                                    <div class="form-group" style="margin-bottom: 0;">
+                                        <label class="form-label">First Reminder (Days Before Deadline)</label>
+                                        <input type="number" class="form-input" id="first-reminder" placeholder="e.g., 7" min="1">
+                                    </div>
+                                    <div class="form-group" style="margin-bottom: 0;">
+                                        <label class="form-label">Final Reminder (Days After Deadline)</label>
+                                        <input type="number" class="form-input" id="final-reminder" placeholder="e.g., 10" min="1">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="question-card">
+                                <h4 style="margin-bottom: 1rem;">Additional Notes</h4>
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label class="form-label">Comments (Optional)</label>
+                                    <textarea class="form-textarea" id="review-comments" placeholder="Add any additional notes or instructions for this CAPA process..." rows="4"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="wizard-nav">
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <button class="btn btn-secondary" onclick="prevStep()">⬅️ Back</button>
+                                    <button class="btn btn-outline" onclick="saveDraft()">💾 Save Draft</button>
+                                </div>
+                                <button class="btn btn-primary" onclick="submitCapa()">📤 Submit CAPA Request</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="unops-footer">
+            <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="32" height="32" rx="4" fill="white"/>
+                <path d="M16 8L8 12V20L16 24L24 20V12L16 8Z" fill="#00669a"/>
+            </svg>
+        </footer>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        const totalSteps = 4;
+        let selectedActionsData = [];
+        let currentCapaId = null;
+        const selectedValues = {
+            collaborators: [],
+            capaActions: {}
+        };
+
+        // Sample CAPA data with supplier responses
+        const capaDetailsData = {
+            1: {
+                id: 1,
+                supplier: "Acme Corporation",
+                initiator: "John Smith",
+                startDate: "15 Nov 2024",
+                deadline: "15 Dec 2024",
+                collaborators: ["Sarah Johnson", "Michael Brown"],
+                status: "inprogress",
+                questions: [
+                    {
+                        id: 3,
+                        title: "Q3: Policy",
+                        question: "Please select the policies you have in place (please select all the responses that fit)",
+                        supplierAnswer: ["Health and safety", "Quality management"],
+                        capaActions: ["Develop a policy on freedom of association", "Develop a policy on child labour"],
+                        supplierResponse: "accepted",
+                        supplierDeadline: "10 Dec 2024",
+                        supplierComments: "We will develop these policies by the deadline.",
+                        implementationStatus: null
+                    },
+                    {
+                        id: 4,
+                        title: "Q4: Policy Implementation",
+                        question: "How are these policies implemented? (please select all the responses that fit)",
+                        supplierAnswer: ["All policies are signed by Management"],
+                        capaActions: ["Set up regular training of employees in our policies"],
+                        supplierResponse: "clarification",
+                        supplierDeadline: null,
+                        supplierComments: "We need more details on the training requirements and format.",
+                        implementationStatus: null
+                    },
+                    {
+                        id: 5,
+                        title: "Q5: Code of Conduct",
+                        question: "Are any of these policies included in your Code of Conduct? (please select all the responses that fit)",
+                        supplierAnswer: ["Gift and hospitality"],
+                        capaActions: ["Add policies on conflict of interest to the Code of Conduct", "Add policies on anti-corruption to the Code of Conduct"],
+                        supplierResponse: "pending",
+                        supplierDeadline: null,
+                        supplierComments: null,
+                        implementationStatus: null
+                    },
+                    {
+                        id: 6,
+                        title: "Q6: Code of Conduct Implementation",
+                        question: "How are the principles in the Code of Conduct implemented in the organization? (please select all the responses that fit)",
+                        supplierAnswer: ["Our Code of Conduct is publicly available"],
+                        capaActions: ["Ensure that all employees are regularly trained in the code of conduct"],
+                        supplierResponse: "rejected",
+                        supplierDeadline: null,
+                        supplierComments: "We already have quarterly training sessions in place covering these topics.",
+                        implementationStatus: null
+                    },
+                    {
+                        id: 7,
+                        title: "Q3: Policy - Environmental Management",
+                        question: "Please select the policies you have in place (please select all the responses that fit)",
+                        supplierAnswer: ["Environmental management"],
+                        capaActions: ["Develop a policy on environmental management"],
+                        supplierResponse: "accepted",
+                        supplierDeadline: "01 Dec 2024",
+                        supplierComments: "Environmental policy has been developed and implemented company-wide.",
+                        implementationStatus: "implemented",
+                        documents: [
+                            { name: "Environmental_Policy_Acme_2024.pdf", size: "1.9 MB", uploadDate: "01 Dec 2024" },
+                            { name: "Policy_Implementation_Guide.pdf", size: "1.2 MB", uploadDate: "01 Dec 2024" },
+                            { name: "Employee_Training_Records.xlsx", size: "456 KB", uploadDate: "02 Dec 2024" }
+                        ],
+                        reviewStatus: null,
+                        reviewComments: null
+                    }
+                ]
+            },
+            2: {
+                id: 2,
+                supplier: "Global Tech Solutions",
+                initiator: "Sarah Johnson",
+                startDate: "20 Nov 2024",
+                deadline: "20 Dec 2024",
+                collaborators: ["John Smith"],
+                status: "pending",
+                questions: [
+                    {
+                        id: 5,
+                        title: "Q5: Code of Conduct",
+                        question: "Are any of these policies included in your Code of Conduct? (please select all the responses that fit)",
+                        supplierAnswer: ["Gift and hospitality"],
+                        capaActions: ["Add policies on conflict of interest to the Code of Conduct"],
+                        supplierResponse: "pending",
+                        supplierDeadline: null,
+                        supplierComments: null,
+                        implementationStatus: null
+                    }
+                ]
+            },
+            3: {
+                id: 3,
+                supplier: "Premium Suppliers Co",
+                initiator: "Michael Brown",
+                startDate: "10 Nov 2024",
+                deadline: "10 Dec 2024",
+                collaborators: ["Emily Davis", "David Wilson"],
+                status: "completed",
+                questions: [
+                    {
+                        id: 3,
+                        title: "Q3: Policy",
+                        question: "Please select the policies you have in place (please select all the responses that fit)",
+                        supplierAnswer: ["Environmental management"],
+                        capaActions: ["Develop a policy on environmental management"],
+                        supplierResponse: "accepted",
+                        supplierDeadline: "05 Dec 2024",
+                        supplierComments: "Policy has been developed and implemented.",
+                        implementationStatus: "implemented",
+                        documents: [
+                            { name: "Environmental_Policy_2024.pdf", size: "2.3 MB", uploadDate: "05 Dec 2024" },
+                            { name: "Policy_Implementation_Evidence.pdf", size: "1.8 MB", uploadDate: "05 Dec 2024" }
+                        ],
+                        reviewStatus: null,
+                        reviewComments: null
+                    },
+                    {
+                        id: 6,
+                        title: "Q6: Code of Conduct Implementation",
+                        question: "How are the principles in the Code of Conduct implemented in the organization? (please select all the responses that fit)",
+                        supplierAnswer: ["Our Code of Conduct is publicly available"],
+                        capaActions: ["Ensure that all employees are regularly trained in the code of conduct"],
+                        supplierResponse: "rejected",
+                        supplierDeadline: null,
+                        supplierComments: "We already have quarterly training sessions in place.",
+                        implementationStatus: null
+                    }
+                ]
+            }
+        };
+
+        // Question data with responses and CAPA options
+        const questionData = {
+            1: {
+                title: "Q1: Type of Organization",
+                question: "Please select the option that best fits your main area of work/business",
+                type: "one-choice",
+                supplierAnswer: "Manufacturer",
+                supplierAnswerMaturity: 0,
+                allResponses: [
+                    { id: 123, text: "Manufacturer", maturity: 0, capaOption: "N/A" },
+                    { id: 124, text: "Consultancy/financial service/insurance company", maturity: 0, capaOption: "N/A" },
+                    { id: 125, text: "NGO", maturity: 0, capaOption: "N/A" },
+                    { id: 126, text: "Importer/distributor/reseller/retailer", maturity: 0, capaOption: "N/A" },
+                    { id: 127, text: "Service provider", maturity: 0, capaOption: "N/A" },
+                    { id: 128, text: "Construction company", maturity: 0, capaOption: "N/A" },
+                    { id: 129, text: "Logistics", maturity: 0, capaOption: "N/A" },
+                    { id: 130, text: "Event management/catering", maturity: 0, capaOption: "N/A" }
+                ]
+            },
+            2: {
+                title: "Q2: Manufacturing",
+                question: "Does your organization do any manufacturing?",
+                type: "one-choice",
+                supplierAnswer: "We do some light assembly or repackaging of product",
+                supplierAnswerMaturity: 0,
+                allResponses: [
+                    { id: 131, text: "Yes, we do manufacturing", maturity: 0, capaOption: "N/A" },
+                    { id: 132, text: "We do some light assembly or repackaging of product", maturity: 0, capaOption: "N/A" },
+                    { id: 133, text: "It is outsourced to a third party", maturity: 0, capaOption: "N/A" },
+                    { id: 134, text: "No", maturity: 0, capaOption: "N/A" }
+                ]
+            },
+            3: {
+                title: "Q3: Policy",
+                question: "Please select the policies you have in place (please select all the responses that fit)",
+                type: "multiple-choice",
+                supplierAnswers: ["Health and safety", "Quality management"],
+                allResponses: [
+                    { id: 135, text: "Freedom of association", maturity: 0.5, maturityDesc: "Developing", capaOption: "Develop a policy on freedom of association" },
+                    { id: 136, text: "A policy covering labour standards", maturity: 0.5, maturityDesc: "Developing", capaOption: "Develop a policy covering labour standards" },
+                    { id: 137, text: "Forced labour", maturity: 0.5, maturityDesc: "Developing", capaOption: "Develop a policy on forced labour" },
+                    { id: 138, text: "Child labour", maturity: 0.5, maturityDesc: "Developing", capaOption: "Develop a policy on child labour" },
+                    { id: 139, text: "Anti-discrimination", maturity: 0.5, maturityDesc: "Developing", capaOption: "Develop a policy on anti-discrimination" },
+                    { id: 140, text: "Quality management", maturity: 0.5, maturityDesc: "Developing", capaOption: "Develop a policy on quality management" },
+                    { id: 141, text: "Environmental management", maturity: 0.5, maturityDesc: "Developing", capaOption: "Develop a policy on environmental management" },
+                    { id: 142, text: "Health and safety", maturity: 0.5, maturityDesc: "Developing", capaOption: "Develop a policy on health and safety" },
+                    { id: 143, text: "Conflict minerals", maturity: 0.5, maturityDesc: "Developing", capaOption: "Develop a policy on conflict minerals" },
+                    { id: 144, text: "Prevention of sexual harassment", maturity: 0.5, maturityDesc: "Developing", capaOption: "Develop a policy on the prevention of sexual harassment" },
+                    { id: 145, text: "None of these policies is in place", maturity: 0, maturityDesc: "Basic", capaOption: "Assess our organization's policies, to see what the gaps are" }
+                ]
+            },
+            4: {
+                title: "Q4: Policy Implementation",
+                question: "How are these policies implemented? (please select all the responses that fit)",
+                type: "multiple-choice",
+                supplierAnswers: ["All policies are signed by Management"],
+                allResponses: [
+                    { id: 146, text: "Employees are regularly trained in the policies", maturity: 1.5, maturityDesc: "Mature", capaOption: "Set up regular training of employees in our policies" },
+                    { id: 147, text: "New staff are trained in the policies as part of their onboarding", maturity: 1.5, maturityDesc: "Mature", capaOption: "Policy training will be included in the onboarding of new staff" },
+                    { id: 148, text: "All policies have a record of review, so changes are recorded", maturity: 1.5, maturityDesc: "Mature", capaOption: "Ensure that all policies have a record of review so that all changes are recorded properly" },
+                    { id: 149, text: "All policies are signed by Management", maturity: 0.5, maturityDesc: "Developing", capaOption: "Ensure all policies are signed by management or the board" },
+                    { id: 150, text: "All our policies are publicly available", maturity: 1.5, maturityDesc: "Mature", capaOption: "Make the organization's policies publicly available" },
+                    { id: 151, text: "All our policies have been in place for three years or more", maturity: 1.5, maturityDesc: "Mature", capaOption: "" },
+                    { id: 152, text: "We haven't implemented any of these actions", maturity: 0, maturityDesc: "Basic", capaOption: "" },
+                    { id: 153, text: "None of the mentioned policies is in place", maturity: 0, maturityDesc: "Basic", capaOption: "" }
+                ]
+            },
+            5: {
+                title: "Q5: Code of Conduct",
+                question: "Are any of these policies included in your Code of Conduct? (please select all the responses that fit)",
+                type: "multiple-choice",
+                supplierAnswers: ["Gift and hospitality"],
+                allResponses: [
+                    { id: 154, text: "Gift and hospitality", maturity: 0.5, maturityDesc: "Developing", capaOption: "Add policies on gifts and hospitality to the Code of Conduct" },
+                    { id: 155, text: "Conflict of interest", maturity: 0.5, maturityDesc: "Developing", capaOption: "Add policies on conflict of interest policy to the Code of Conduct" },
+                    { id: 156, text: "Anti-corruption", maturity: 0.5, maturityDesc: "Developing", capaOption: "Add policies on anti-corruption to the Code of Conduct" },
+                    { id: 157, text: "None of these areas is covered by the Code of Conduct", maturity: 0, maturityDesc: "Basic", capaOption: "" },
+                    { id: 158, text: "We don't have a Code of Conduct", maturity: 0, maturityDesc: "Basic", capaOption: "" }
+                ]
+            },
+            6: {
+                title: "Q6: Code of Conduct Implementation",
+                question: "How are the principles in the Code of Conduct implemented in the organization? (please select all the responses that fit)",
+                type: "multiple-choice",
+                supplierAnswers: ["Our Code of Conduct is publicly available"],
+                allResponses: [
+                    { id: 159, text: "Employees are regularly trained in the Code of Conduct", maturity: 1.5, maturityDesc: "Mature", capaOption: "Ensure that all employees are regularly trained in the code of conduct" },
+                    { id: 160, text: "New staff are trained in the Code of Conduct as part of their onboarding", maturity: 1.5, maturityDesc: "Mature", capaOption: "Include code of conduct training as part of the onboarding for all new employees" },
+                    { id: 161, text: "Management and other key staff receive specific training in the Code of Conduct", maturity: 1.5, maturityDesc: "Mature", capaOption: "Ensure that management and key employees receive specific training in the code of conduct" },
+                    { id: 162, text: "All employees have to sign the Code of Conduct", maturity: 1.5, maturityDesc: "Mature", capaOption: "Ensure that all employees sign the code of conduct" },
+                    { id: 163, text: "Our Code of Conduct is publicly available", maturity: 0.5, maturityDesc: "Developing", capaOption: "Make our code of conduct publicly available" },
+                    { id: 164, text: "We haven't implemented any of these actions", maturity: 0, maturityDesc: "Basic", capaOption: "" },
+                    { id: 165, text: "We don't have a Code of Conduct", maturity: 0, maturityDesc: "Basic", capaOption: "" }
+                ]
+            }
+        };
+
+        // Get available CAPA options based on question type and supplier's answer
+        function getAvailableCapaOptions(questionId) {
+            const q = questionData[questionId];
+            if (!q) return [];
+
+            if (q.type === "one-choice") {
+                const supplierMaturity = q.supplierAnswerMaturity;
+                return q.allResponses
+                    .filter(r => r.maturity >= supplierMaturity && r.capaOption && r.capaOption !== "N/A" && r.capaOption !== "")
+                    .map(r => r.capaOption);
+            } else {
+                return q.allResponses
+                    .filter(r => !q.supplierAnswers.includes(r.text) && r.capaOption && r.capaOption !== "")
+                    .map(r => r.capaOption);
+            }
+        }
+
+        // Multiselect Dropdown Functions
+        function toggleMultiselect(id) {
+            const dropdown = document.getElementById(`${id}-dropdown`);
+            dropdown.classList.toggle('open');
+            
+            // Close other dropdowns
+            document.querySelectorAll('.multiselect-dropdown').forEach(d => {
+                if (d.id !== `${id}-dropdown`) {
+                    d.classList.remove('open');
+                }
+            });
+        }
+
+        function toggleOption(multiselectId, value, element) {
+            element.classList.toggle('selected');
+            
+            if (element.classList.contains('selected')) {
+                if (!selectedValues[multiselectId].includes(value)) {
+                    selectedValues[multiselectId].push(value);
+                }
+            } else {
+                selectedValues[multiselectId] = selectedValues[multiselectId].filter(v => v !== value);
+            }
+            
+            updateMultiselectDisplay(multiselectId);
+        }
+
+        function removeChip(multiselectId, value, event) {
+            event.stopPropagation();
+            selectedValues[multiselectId] = selectedValues[multiselectId].filter(v => v !== value);
+            
+            // Uncheck the option
+            const dropdown = document.getElementById(`${multiselectId}-dropdown`);
+            const options = dropdown.querySelectorAll('.multiselect-option');
+            options.forEach(opt => {
+                if (opt.textContent.trim() === value) {
+                    opt.classList.remove('selected');
+                }
+            });
+            
+            updateMultiselectDisplay(multiselectId);
+        }
+
+        function updateMultiselectDisplay(multiselectId) {
+            const valuesContainer = document.getElementById(`${multiselectId}-values`);
+            const values = selectedValues[multiselectId];
+            
+            if (values.length === 0) {
+                valuesContainer.innerHTML = `<span class="multiselect-placeholder">Select ${multiselectId}...</span>`;
+            } else {
+                valuesContainer.innerHTML = values.map(v => 
+                    `<span class="multiselect-chip">${v}<span class="multiselect-chip-remove" onclick="removeChip('${multiselectId}', '${v}', event)">×</span></span>`
+                ).join('');
+            }
+            
+            updateSummary();
+        }
+
+        // Close multiselect when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.multiselect-container')) {
+                document.querySelectorAll('.multiselect-dropdown').forEach(d => {
+                    d.classList.remove('open');
+                });
+            }
+        });
+
+        // Wizard Navigation
+        function showWizard() {
+            document.getElementById('capaListPage').classList.add('hidden');
+            document.getElementById('capaWizard').classList.remove('hidden');
+            currentStep = 1;
+            updateStepDisplay();
+        }
+
+        function showList() {
+            document.getElementById('capaListPage').classList.remove('hidden');
+            document.getElementById('capaWizard').classList.add('hidden');
+        }
+
+        function nextStep() {
+            if (validateStep(currentStep)) {
+                if (currentStep < totalSteps) {
+                    document.getElementById(`wizard-step-${currentStep}`).classList.remove('active');
+                    currentStep++;
+                    document.getElementById(`wizard-step-${currentStep}`).classList.add('active');
+                    updateStepDisplay();
+                    updateSummary();
+                }
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                document.getElementById(`wizard-step-${currentStep}`).classList.remove('active');
+                currentStep--;
+                document.getElementById(`wizard-step-${currentStep}`).classList.add('active');
+                updateStepDisplay();
+            }
+        }
+
+        function validateStep(step) {
+            if (step === 1) {
+                const supplier = document.getElementById('supplier-select').value;
+                if (!supplier) {
+                    alert('Please select a supplier before proceeding.');
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function updateStepDisplay() {
+            for (let i = 1; i <= totalSteps; i++) {
+                const stepEl = document.getElementById(`step-${i}`);
+                stepEl.classList.remove('active', 'completed');
+                
+                if (i === currentStep) {
+                    stepEl.classList.add('active');
+                } else if (i < currentStep) {
+                    stepEl.classList.add('completed');
+                }
+            }
+        }
+
+        // Pick List Functions
+        function toggleSelection(element) {
+            element.classList.toggle('selected');
+        }
+
+        function moveSelected(direction) {
+            const sourceId = direction === 'right' ? 'available-actions' : 'selected-actions';
+            const targetId = direction === 'right' ? 'selected-actions' : 'available-actions';
+            
+            const source = document.getElementById(sourceId);
+            const target = document.getElementById(targetId);
+            const selected = source.querySelectorAll('.pick-list-item.selected');
+            
+            selected.forEach(item => {
+                item.classList.remove('selected');
+                target.appendChild(item);
+            });
+
+            updateSelectedActions();
+        }
+
+        function moveAll(direction) {
+            const sourceId = direction === 'right' ? 'available-actions' : 'selected-actions';
+            const targetId = direction === 'right' ? 'selected-actions' : 'available-actions';
+            
+            const source = document.getElementById(sourceId);
+            const target = document.getElementById(targetId);
+            const items = source.querySelectorAll('.pick-list-item');
+            
+            items.forEach(item => {
+                item.classList.remove('selected');
+                target.appendChild(item);
+            });
+
+            updateSelectedActions();
+        }
+
+        function updateSelectedActions() {
+            const selected = document.getElementById('selected-actions');
+            const items = selected.querySelectorAll('.pick-list-item');
+            
+            selectedActionsData = Array.from(items).map(item => ({
+                id: item.dataset.action,
+                title: item.querySelector('.pick-list-item-title').textContent,
+                question: item.querySelector('.pick-list-item-question').textContent,
+                type: item.dataset.type
+            }));
+
+            updateCapaParameters();
+            updateSummary();
+        }
+
+        function updateCapaParameters() {
+            const container = document.getElementById('capa-parameters-container');
+            const noQuestionsMsg = document.getElementById('no-questions-message');
+            
+            if (selectedActionsData.length === 0) {
+                if (!noQuestionsMsg) {
+                    const msg = document.createElement('div');
+                    msg.className = 'empty-state';
+                    msg.id = 'no-questions-message';
+                    msg.innerHTML = 'Select questions in the previous step to configure CAPA parameters';
+                    container.appendChild(msg);
+                } else {
+                    noQuestionsMsg.style.display = 'block';
+                }
+                const cards = container.querySelectorAll('.question-card');
+                cards.forEach(card => card.remove());
+                return;
+            }
+
+            if (noQuestionsMsg) {
+                noQuestionsMsg.style.display = 'none';
+            }
+            
+            const existingCards = container.querySelectorAll('.question-card');
+            existingCards.forEach(card => card.remove());
+
+            selectedActionsData.forEach(item => {
+                const questionId = parseInt(item.id);
+                const q = questionData[questionId];
+                if (!q) return;
+
+                const availableCapaOptions = getAvailableCapaOptions(questionId);
+
+                const card = document.createElement('div');
+                card.className = 'question-card';
+                
+                let supplierAnswerHtml = '';
+                if (q.type === "one-choice") {
+                    supplierAnswerHtml = `<span class="answer-chip">${q.supplierAnswer}</span>`;
+                } else {
+                    supplierAnswerHtml = q.supplierAnswers.map(ans => 
+                        `<span class="answer-chip">${ans}</span>`
+                    ).join('');
+                }
+
+                card.innerHTML = `
+                    <div class="question-header">
+                        <div>
+                            <div class="question-title">${q.title}</div>
+                            <div class="question-text">${q.question}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="question-content">
+                        <div class="answer-section">
+                            <div class="answer-label">Supplier's Answer:</div>
+                            <div class="answer-content">
+                                <div class="answer-options">
+                                    ${supplierAnswerHtml}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">CAPA Actions ${availableCapaOptions.length > 0 ? '' : '(No actions available)'}</label>
+                            <div class="multiselect-container" id="capa-${questionId}-multiselect">
+                                <div class="multiselect-trigger" onclick="toggleMultiselect('capa-${questionId}')">
+                                    <div class="multiselect-values" id="capa-${questionId}-values">
+                                        <span class="multiselect-placeholder">Select CAPA actions...</span>
+                                    </div>
+                                    <i class="pi pi-chevron-down"></i>
+                                </div>
+                                <div class="multiselect-dropdown" id="capa-${questionId}-dropdown">
+                                    ${availableCapaOptions.length === 0 
+                                        ? '<div style="padding: 1rem; text-align: center; color: var(--text-muted);">No CAPA actions available</div>'
+                                        : availableCapaOptions.map(option => `
+                                            <div class="multiselect-option" onclick="toggleCapaAction(${questionId}, '${option}', this)">
+                                                <div class="multiselect-checkbox"></div>
+                                                <span>${option}</span>
+                                            </div>
+                                        `).join('')
+                                    }
+                                </div>
+                            </div>
+                            <small style="color: var(--text-muted); font-size: 0.75rem; margin-top: 0.25rem; display: block;">
+                                ${q.type === "one-choice" 
+                                    ? "Available actions: same or higher maturity level" 
+                                    : "Available actions: responses not selected by supplier"}
+                            </small>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Additional Comments</label>
+                            <textarea class="form-textarea" placeholder="Add any additional comments or instructions for this CAPA..." rows="3"></textarea>
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+                
+                // Initialize the multiselect values
+                if (!selectedValues[`capa-${questionId}`]) {
+                    selectedValues[`capa-${questionId}`] = [];
+                }
+            });
+        }
+
+        function toggleCapaAction(questionId, value, element) {
+            const multiselectId = `capa-${questionId}`;
+            toggleOption(multiselectId, value, element);
+        }
+
+        function updateSummary() {
+            const supplierSelect = document.getElementById('supplier-select');
+            const supplierText = supplierSelect.options[supplierSelect.selectedIndex]?.text || 'Not selected';
+            
+            document.getElementById('summary-supplier').textContent = supplierText;
+            document.getElementById('summary-collaborators').textContent = 
+                selectedValues.collaborators.length > 0 ? selectedValues.collaborators.join(', ') : '-';
+            document.getElementById('summary-questions').textContent = selectedActionsData.length;
+        }
+
+        // Filter and Search Functions
+        function filterByTab(tab) {
+            const tabs = document.querySelectorAll('.filter-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const rows = document.querySelectorAll('#capa-table-body tr');
+            rows.forEach(row => {
+                if (tab === 'all') {
+                    row.style.display = '';
+                } else {
+                    const status = row.dataset.status;
+                    row.style.display = status === tab ? '' : 'none';
+                }
+            });
+        }
+
+        function searchTable() {
+            const searchValue = document.getElementById('search-input').value.toLowerCase();
+            const rows = document.querySelectorAll('#capa-table-body tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchValue) ? '' : 'none';
+            });
+        }
+
+        function clearFilters() {
+            document.getElementById('search-input').value = '';
+            const tabs = document.querySelectorAll('.filter-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            tabs[0].classList.add('active');
+            
+            const rows = document.querySelectorAll('#capa-table-body tr');
+            rows.forEach(row => row.style.display = '');
+        }
+
+        function exportData() {
+            alert('Exporting CAPA data to CSV...');
+            // In a real implementation, this would generate and download a CSV file
+        }
+
+        function sendReminder() {
+            alert('Sending reminder to selected suppliers...');
+            // In a real implementation, this would send reminder emails
+        }
+
+        function closeProcess() {
+            if (confirm('Are you sure you want to close the selected CAPA process(es)?')) {
+                alert('CAPA process(es) closed successfully.');
+            }
+        }
+
+        // Modal Functions
+        function closeModal() {
+            if (confirm('Are you sure you want to close? Any unsaved changes will be lost.')) {
+                showList();
+                resetForm();
+            }
+        }
+
+        function resetForm() {
+            currentStep = 1;
+            selectedActionsData = [];
+            selectedValues.collaborators = [];
+            for (let key in selectedValues) {
+                if (key.startsWith('capa-')) {
+                    delete selectedValues[key];
+                }
+            }
+            document.getElementById('supplier-select').value = '';
+            document.getElementById('search-input').value = '';
+        }
+
+        function saveDraft() {
+            const deadline = document.getElementById('deadline-date').value;
+            if (!deadline) {
+                alert('Please set a deadline before saving the draft.');
+                return;
+            }
+            alert('Draft saved successfully!');
+        }
+
+        function submitCapa() {
+            const deadline = document.getElementById('deadline-date').value;
+            if (!deadline) {
+                alert('Please set a deadline before submitting.');
+                return;
+            }
+            
+            if (selectedActionsData.length === 0) {
+                alert('Please select at least one question for the CAPA process.');
+                return;
+            }
+            
+            alert('CAPA request submitted successfully!');
+            showList();
+            resetForm();
+        }
+
+        // CAPA View Functions
+        function viewCapaDetails(capaId) {
+            currentCapaId = capaId;
+            const capaData = capaDetailsData[capaId];
+            
+            if (!capaData) {
+                alert('CAPA details not found.');
+                return;
+            }
+
+            // Hide list page, show view page
+            document.getElementById('capaListPage').classList.add('hidden');
+            document.getElementById('capaViewPage').classList.remove('hidden');
+
+            // Populate overview
+            document.getElementById('view-supplier-name').textContent = capaData.supplier;
+            document.getElementById('view-supplier').textContent = capaData.supplier;
+            document.getElementById('view-initiator').textContent = capaData.initiator;
+            document.getElementById('view-start-date').textContent = capaData.startDate;
+            document.getElementById('view-deadline').textContent = capaData.deadline;
+            document.getElementById('view-collaborators').textContent = capaData.collaborators.join(', ');
+            
+            const statusBadge = document.getElementById('view-overall-status');
+            statusBadge.textContent = capaData.status === 'inprogress' ? 'In Progress' : 
+                                      capaData.status === 'pending' ? 'Pending' : 'Completed';
+            statusBadge.className = 'status-badge status-' + (capaData.status === 'inprogress' ? 'pending' : capaData.status);
+
+            // Populate questions
+            const container = document.getElementById('capa-questions-container');
+            container.innerHTML = '';
+
+            capaData.questions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'capa-question-item';
+                if (q.implementationStatus === 'implemented' && !q.reviewStatus) {
+                    questionDiv.classList.add('needs-review');
+                }
+
+                let supplierResponseHtml = '';
+                if (q.supplierResponse === 'accepted') {
+                    supplierResponseHtml = `
+                        <div class="info-row">
+                            <div class="info-label">Supplier Response:</div>
+                            <div class="info-value">
+                                <span class="status-badge status-accepted">✓ Accepted</span>
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label">Supplier Deadline:</div>
+                            <div class="info-value">${q.supplierDeadline || '-'}</div>
+                        </div>
+                    `;
+                } else if (q.supplierResponse === 'rejected') {
+                    supplierResponseHtml = `
+                        <div class="info-row">
+                            <div class="info-label">Supplier Response:</div>
+                            <div class="info-value">
+                                <span class="status-badge status-rejected">✗ Rejected</span>
+                            </div>
+                        </div>
+                    `;
+                } else if (q.supplierResponse === 'clarification') {
+                    supplierResponseHtml = `
+                        <div class="info-row">
+                            <div class="info-label">Supplier Response:</div>
+                            <div class="info-value">
+                                <span class="status-badge status-clarification">? Clarification Requested</span>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    supplierResponseHtml = `
+                        <div class="info-row">
+                            <div class="info-label">Supplier Response:</div>
+                            <div class="info-value">
+                                <span class="status-badge status-pending">⏳ Awaiting Response</span>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                let documentsHtml = '';
+                if (q.implementationStatus === 'implemented' && q.documents) {
+                    documentsHtml = `
+                        <div class="info-row">
+                            <div class="info-label">Supporting Documents:</div>
+                            <div class="info-value">
+                                ${q.documents.map(doc => `
+                                    <div class="document-item">
+                                        <div class="document-icon">
+                                            <i class="pi pi-file-pdf"></i>
+                                        </div>
+                                        <div style="flex: 1;">
+                                            <div style="font-weight: 500;">${doc.name}</div>
+                                            <div style="font-size: 0.875rem; color: var(--text-muted);">
+                                                ${doc.size} • Uploaded: ${doc.uploadDate}
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-outline" style="padding: 0.5rem;" onclick="downloadDocument('${doc.name}')">
+                                            <i class="pi pi-download"></i>
+                                        </button>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                let reviewActionsHtml = '';
+                if (q.implementationStatus === 'implemented' && !q.reviewStatus) {
+                    reviewActionsHtml = `
+                        <div class="review-actions">
+                            <div style="flex: 1;">
+                                <label class="form-label">Review Comments</label>
+                                <textarea class="form-textarea" id="review-comments-${index}" placeholder="Add your review comments..." rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="action-grid">
+                            <button class="btn btn-primary" style="background: #4c9f38;" onclick="reviewImplementation(${capaId}, ${q.id}, 'accepted', ${index})">
+                                <i class="pi pi-check"></i>
+                                Accept Implementation
+                            </button>
+                            <button class="btn btn-primary" style="background: #da291c;" onclick="reviewImplementation(${capaId}, ${q.id}, 'rejected', ${index})">
+                                <i class="pi pi-times"></i>
+                                Reject Implementation
+                            </button>
+                            <button class="btn btn-primary" style="background: #eb7432;" onclick="reviewImplementation(${capaId}, ${q.id}, 'clarification', ${index})">
+                                <i class="pi pi-question-circle"></i>
+                                Request Clarification
+                            </button>
+                        </div>
+                    `;
+                } else if (q.reviewStatus) {
+                    reviewActionsHtml = `
+                        <div class="info-row">
+                            <div class="info-label">Review Status:</div>
+                            <div class="info-value">
+                                <span class="status-badge status-${q.reviewStatus}">${q.reviewStatus === 'accepted' ? '✓ Accepted' : q.reviewStatus === 'rejected' ? '✗ Rejected' : '? Clarification Requested'}</span>
+                            </div>
+                        </div>
+                        ${q.reviewComments ? `
+                        <div class="info-row">
+                            <div class="info-label">Review Comments:</div>
+                            <div class="info-value">${q.reviewComments}</div>
+                        </div>
+                        ` : ''}
+                    `;
+                }
+
+                questionDiv.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <div>
+                            <h4 style="margin-bottom: 0.25rem;">${q.title}</h4>
+                            <div style="color: var(--text-muted); font-size: 0.875rem;">${q.question}</div>
+                        </div>
+                        ${q.implementationStatus === 'implemented' ? '<span class="status-badge status-implemented">Implemented</span>' : ''}
+                    </div>
+
+                    <div class="question-info">
+                        <div class="info-row">
+                            <div class="info-label">Supplier's Original Answer:</div>
+                            <div class="info-value">
+                                ${q.supplierAnswer.map(ans => `<span class="answer-chip">${ans}</span>`).join(' ')}
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label">CAPA Actions Assigned:</div>
+                            <div class="info-value">
+                                ${q.capaActions.map(action => `<div style="margin-bottom: 0.25rem;">• ${action}</div>`).join('')}
+                            </div>
+                        </div>
+                        ${supplierResponseHtml}
+                        ${q.supplierComments ? `
+                        <div class="info-row">
+                            <div class="info-label">Supplier Comments:</div>
+                            <div class="info-value" style="font-style: italic;">"${q.supplierComments}"</div>
+                        </div>
+                        ` : ''}
+                        ${documentsHtml}
+                        ${reviewActionsHtml}
+                    </div>
+                `;
+
+                container.appendChild(questionDiv);
+            });
+        }
+
+        function backToList() {
+            document.getElementById('capaViewPage').classList.add('hidden');
+            document.getElementById('capaListPage').classList.remove('hidden');
+            currentCapaId = null;
+        }
+
+        function downloadDocument(filename) {
+            alert(`Downloading document: ${filename}`);
+            // In a real implementation, this would trigger a file download
+        }
+
+        function reviewImplementation(capaId, questionId, decision, questionIndex) {
+            const comments = document.getElementById(`review-comments-${questionIndex}`).value;
+            
+            if (!comments && decision !== 'accepted') {
+                alert('Please provide review comments for rejection or clarification request.');
+                return;
+            }
+
+            const decisionText = decision === 'accepted' ? 'accept' : 
+                               decision === 'rejected' ? 'reject' : 
+                               'request clarification for';
+            
+            if (confirm(`Are you sure you want to ${decisionText} this implementation?`)) {
+                // Update the data
+                const capa = capaDetailsData[capaId];
+                const question = capa.questions.find(q => q.id === questionId);
+                if (question) {
+                    question.reviewStatus = decision;
+                    question.reviewComments = comments;
+                }
+
+                alert(`Implementation ${decision === 'accepted' ? 'accepted' : decision === 'rejected' ? 'rejected' : 'clarification requested'} successfully!`);
+                
+                // Refresh the view
+                viewCapaDetails(capaId);
+            }
+        }
+    </script>
+</body>
+</html>

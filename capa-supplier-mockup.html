@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNOPS - Supplier Portal - CAPA Management</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/primeng@19/resources/themes/lara-light-blue/theme.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/primeicons@7/primeicons.css">
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* UNOPS Colors */
+            --unops-blue: #0092D1;
+            --unops-blue-400: #00669a;
+            --unops-blue-500: #007cb2;
+            --surface-0: #ffffff;
+            --surface-100: #F1F5F9;
+            --surface-600: #475569;
+            --surface-800: #1e293b;
+            --surface-900: #0f172a;
+            --text-color: #3B3E4A;
+            --text-muted: #596170;
+            --primary-color: #00669a;
+            --primary-hover: #0092D1;
+            --unops-n-cold-100: #EBF1F8;
+            --unops-n-cold-200: #DDE8F2;
+        }
+
+        body {
+            font-family: 'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--surface-100);
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
+
+        /* Layout Grid */
+        .app-container {
+            display: grid;
+            grid-template-areas:
+                "header header"
+                "sidebar main"
+                "footer footer";
+            grid-template-columns: 60px 1fr;
+            grid-template-rows: 60px 1fr 50px;
+            min-height: 100vh;
+            transition: grid-template-columns 0.2s ease;
+        }
+
+        .app-container:hover {
+            grid-template-columns: 240px 1fr;
+        }
+
+        /* Header */
+        .unops-header {
+            grid-area: header;
+            background: var(--surface-0);
+            border-bottom: 1px solid var(--unops-n-cold-200);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            z-index: 1000;
+        }
+
+        .header-left-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+        }
+
+        .logo-icon {
+            height: 32px;
+            width: auto;
+        }
+
+        .portal-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .header-right-section {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .header-btn {
+            background: transparent;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 50%;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: all 0.2s;
+        }
+
+        .header-btn:hover {
+            background: var(--surface-100);
+            color: var(--primary-color);
+        }
+
+        /* Side Menu */
+        .side-menu {
+            grid-area: sidebar;
+            background: linear-gradient(180deg, #00669a 0%, #004976 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+            transition: width 0.2s ease;
+        }
+
+        .menu-items {
+            list-style: none;
+            padding: 1rem 0;
+            margin: 0;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: white;
+            text-decoration: none;
+        }
+
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .menu-item.active {
+            background: var(--unops-blue);
+        }
+
+        .menu-item i {
+            font-size: 1.25rem;
+            min-width: 28px;
+            text-align: center;
+        }
+
+        .menu-label {
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .app-container:hover .menu-label {
+            opacity: 1;
+        }
+
+        .menu-logo {
+            background: white;
+            border-radius: 50%;
+            padding: 0.5rem;
+            margin: 1.5rem auto;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-user {
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--unops-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .user-info {
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .app-container:hover .user-info {
+            opacity: 1;
+        }
+
+        /* Main Content */
+        .main-content {
+            grid-area: main;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        /* Footer */
+        .unops-footer {
+            grid-area: footer;
+            background: var(--surface-900);
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 0 2rem;
+            border-top: 1px solid var(--unops-n-cold-200);
+        }
+
+        /* Page Styles */
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 1.875rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .breadcrumb {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        /* Metrics Cards */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .metric-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .metric-label {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+
+        /* CAPA Card */
+        .capa-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+
+        .capa-card-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--unops-n-cold-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .capa-card-body {
+            padding: 1.5rem;
+        }
+
+        .tag {
+            padding: 0.25rem 0.625rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .tag-pending {
+            background: #E0E7FF;
+            color: #3730A3;
+        }
+
+        .tag-accepted {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+
+        .tag-rejected {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .tag-clarification {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        .tag-implemented {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+
+        /* Question Item */
+        .question-item {
+            border: 1px solid var(--unops-n-cold-200);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            background: white;
+        }
+
+        .question-item.needs-action {
+            border-left: 4px solid #eb7432;
+        }
+
+        .question-header {
+            margin-bottom: 1rem;
+        }
+
+        .question-title {
+            font-weight: 600;
+            font-size: 1.125rem;
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .question-text {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        .info-row {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 1rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--unops-n-cold-100);
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .info-value {
+            color: var(--text-color);
+        }
+
+        .answer-chip {
+            background: var(--surface-100);
+            padding: 0.5rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            color: var(--text-color);
+            display: inline-block;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--unops-n-cold-200);
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(0, 102, 154, 0.1);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.625rem 1rem;
+            border: none;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn-success {
+            background: #4c9f38;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #418730;
+        }
+
+        .btn-danger {
+            background: #da291c;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #991d14;
+        }
+
+        .btn-warning {
+            background: #eb7432;
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #a2400a;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--unops-n-cold-200);
+            color: var(--text-color);
+        }
+
+        .btn-outline:hover {
+            background: var(--surface-100);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        /* Response Form */
+        .response-form {
+            background: var(--surface-100);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        /* File Upload */
+        .file-upload-area {
+            border: 2px dashed var(--unops-n-cold-200);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .file-upload-area:hover {
+            border-color: var(--primary-color);
+            background: var(--surface-100);
+        }
+
+        .uploaded-files {
+            margin-top: 1rem;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: white;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+            border: 1px solid var(--unops-n-cold-200);
+        }
+
+        .file-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--surface-100);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            color: var(--primary-color);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+        }
+
+        .alert-info {
+            background: #DBEAFE;
+            border: 1px solid #93C5FD;
+            color: #1E40AF;
+        }
+
+        .alert-warning {
+            background: #FEF3C7;
+            border: 1px solid #FCD34D;
+            color: #92400E;
+        }
+
+        .alert-success {
+            background: #D1FAE5;
+            border: 1px solid #6EE7B7;
+            color: #065F46;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="unops-header">
+            <div class="header-left-section">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="32" height="32" rx="4" fill="#00669a"/>
+                    <path d="M16 8L8 12V20L16 24L24 20V12L16 8Z" fill="white"/>
+                </svg>
+                <span class="portal-title">Supplier Portal</span>
+            </div>
+            <div class="header-right-section">
+                <button class="header-btn" title="Help & Support">
+                    <i class="fi fi-rr-interrogation" style="font-size: 16px;"></i>
+                </button>
+                <button class="header-btn" title="Notifications">
+                    <i class="fi fi-rr-bell" style="font-size: 16px;"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Side Menu -->
+        <nav class="side-menu">
+            <div>
+                <div class="menu-logo">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 4L4 10V22L16 28L28 22V10L16 4Z" fill="#00669a"/>
+                    </svg>
+                </div>
+                <ul class="menu-items">
+                    <a href="#" class="menu-item">
+                        <i class="pi pi-home"></i>
+                        <span class="menu-label">Dashboard</span>
+                    </a>
+                    <a href="#" class="menu-item active">
+                        <i class="pi pi-wrench"></i>
+                        <span class="menu-label">CAPA Requests</span>
+                    </a>
+                    <a href="#" class="menu-item">
+                        <i class="pi pi-file-edit"></i>
+                        <span class="menu-label">Questionnaires</span>
+                    </a>
+                    <a href="#" class="menu-item">
+                        <i class="pi pi-building"></i>
+                        <span class="menu-label">Company Profile</span>
+                    </a>
+                    <a href="#" class="menu-item">
+                        <i class="pi pi-inbox"></i>
+                        <span class="menu-label">Documents</span>
+                    </a>
+                </ul>
+            </div>
+            <div class="menu-user">
+                <div class="user-avatar">AC</div>
+                <div class="user-info">
+                    <div style="font-size: 0.875rem; font-weight: 500;">Acme Corp</div>
+                    <div style="font-size: 0.75rem; opacity: 0.8;">supplier@acme.com</div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- CAPA List View -->
+            <div id="capaListView">
+                <div class="page-header">
+                    <h1 class="page-title">CAPA Requests</h1>
+                    <div class="breadcrumb">View and respond to Corrective and Preventive Action requests</div>
+                </div>
+
+                <!-- Metrics -->
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-value">5</div>
+                        <div class="metric-label">Total CAPA Requests</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">3</div>
+                        <div class="metric-label">Pending Response</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">1</div>
+                        <div class="metric-label">In Progress</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">1</div>
+                        <div class="metric-label">Completed</div>
+                    </div>
+                </div>
+
+                <!-- CAPA Card -->
+                <div class="capa-card">
+                    <div class="capa-card-header">
+                        <div>
+                            <h3 style="margin-bottom: 0.5rem;">CAPA Request #CAPA-2024-001</h3>
+                            <div style="color: var(--text-muted); font-size: 0.875rem;">
+                                Initiated by: John Smith (UNOPS) • 15 Nov 2024
+                            </div>
+                        </div>
+                        <div>
+                            <span class="tag tag-pending">Action Required</span>
+                        </div>
+                    </div>
+                    <div class="capa-card-body">
+                        <div class="info-row">
+                            <div class="info-label">Deadline:</div>
+                            <div class="info-value">15 Dec 2024</div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label">Questions:</div>
+                            <div class="info-value">5 questions requiring action</div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label">Status:</div>
+                            <div class="info-value">
+                                <span class="tag tag-pending">2 Pending</span>
+                                <span class="tag tag-accepted">2 Accepted</span>
+                                <span class="tag tag-rejected">1 Rejected</span>
+                            </div>
+                        </div>
+                        <div style="margin-top: 1rem;">
+                            <button class="btn btn-primary" onclick="viewCapaDetails()">
+                                <i class="pi pi-eye"></i>
+                                View & Respond
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CAPA Details View -->
+            <div id="capaDetailsView" class="hidden">
+                <div style="margin-bottom: 2rem;">
+                    <button class="btn btn-outline" onclick="backToList()">
+                        <i class="pi pi-arrow-left"></i>
+                        Back to CAPA List
+                    </button>
+                </div>
+
+                <div class="page-header">
+                    <h1 class="page-title">CAPA Request #CAPA-2024-001</h1>
+                    <div class="breadcrumb">Respond to corrective and preventive actions</div>
+                </div>
+
+                <div class="alert alert-info">
+                    <strong>Action Required:</strong> Please review the questions below and provide your response for each CAPA action. You can accept (with deadline), reject, or request clarification.
+                </div>
+
+                <!-- Question 1 - Needs Response -->
+                <div class="question-item needs-action" id="question-1">
+                    <div class="question-header">
+                        <div style="display: flex; justify-content: space-between; align-items: start;">
+                            <div>
+                                <div class="question-title">Q3: Policy</div>
+                                <div class="question-text">Please select the policies you have in place (please select all the responses that fit)</div>
+                            </div>
+                            <span class="tag tag-pending" id="status-1">Pending Response</span>
+                        </div>
+                    </div>
+
+                    <div style="margin: 1.5rem 0;">
+                        <div class="info-row">
+                            <div class="info-label">Your Original Answer:</div>
+                            <div class="info-value">
+                                <span class="answer-chip">Health and safety</span>
+                                <span class="answer-chip">Quality management</span>
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label">Required CAPA Actions:</div>
+                            <div class="info-value">
+                                <div style="margin-bottom: 0.5rem;">• Develop a policy on freedom of association</div>
+                                <div>• Develop a policy on child labour</div>
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label">UNOPS Deadline:</div>
+                            <div class="info-value">15 Dec 2024</div>
+                        </div>
+                    </div>
+
+                    <div class="response-form" id="response-form-1">
+                        <h4 style="margin-bottom: 1rem;">Your Response</h4>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Action</label>
+                            <select class="form-select" id="action-1" onchange="handleActionChange(1)">
+                                <option value="">Select your response...</option>
+                                <option value="accept">Accept - I will implement these actions</option>
+                                <option value="reject">Reject - These actions are not applicable</option>
+                                <option value="clarification">Request Clarification</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group hidden" id="deadline-group-1">
+                            <label class="form-label">Implementation Deadline *</label>
+                            <input type="date" class="form-input" id="deadline-1">
+                            <small style="color: var(--text-muted); font-size: 0.875rem;">When will you complete these actions?</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Comments</label>
+                            <textarea class="form-textarea" id="comments-1" rows="3" placeholder="Add your comments..."></textarea>
+                        </div>
+
+                        <button class="btn btn-primary" onclick="submitResponse(1)">
+                            <i class="pi pi-check"></i>
+                            Submit Response
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Question 2 - Accepted, Need to Implement -->
+                <div class="question-item" id="question-2">
+                    <div class="question-header">
+                        <div style="display: flex; justify-content: space-between; align-items: start;">
+                            <div>
+                                <div class="question-title">Q3: Policy - Environmental Management</div>
+                                <div class="question-text">Please select the policies you have in place (please select all the responses that fit)</div>
+                            </div>
+                            <span class="tag tag-accepted" id="status-2">Accepted - In Progress</span>
+                        </div>
+                    </div>
+
+                    <div style="margin: 1.5rem 0;">
+                        <div class="info-row">
+                            <div class="info-label">Your Original Answer:</div>
+                            <div class="info-value">
+                                <span class="answer-chip">Environmental management</span>
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label">Required CAPA Actions:</div>
+                            <div class="info-value">
+                                • Develop a policy on environmental management
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label">Your Response:</div>
+                            <div class="info-value">
+                                <strong>Accepted</strong>
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label">Your Deadline:</div>
+                            <div class="info-value">01 Dec 2024</div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label">Your Comments:</div>
+                            <div class="info-value" style="font-style: italic;">
+                                "We will develop a comprehensive environmental policy covering all required aspects."
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="response-form">
+                        <h4 style="margin-bottom: 1rem;">Mark as Implemented</h4>
+                        <p style="margin-bottom: 1rem; color: var(--text-muted);">
+                            Once you have completed this CAPA action, upload supporting documentation and mark it as implemented.
+                        </p>
+
+                        <div class="form-group">
+                            <label class="form-label">Supporting Documents *</label>
+                            <div class="file-upload-area" onclick="document.getElementById('file-input-2').click()">
+                                <i class="pi pi-cloud-upload" style="font-size: 2rem; color: var(--primary-color); margin-bottom: 0.5rem;"></i>
+                                <div style="font-weight: 500; margin-bottom: 0.25rem;">Click to upload or drag and drop</div>
+                                <div style="font-size: 0.875rem; color: var(--text-muted);">PDF, DOC, XLSX (max 10MB)</div>
+                            </div>
+                            <input type="file" id="file-input-2" multiple style="display: none;" onchange="handleFileUpload(2)">
+                            
+                            <div class="uploaded-files" id="uploaded-files-2">
+                                <!-- Files will be listed here -->
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Implementation Comments</label>
+                            <textarea class="form-textarea" id="impl-comments-2" rows="3" placeholder="Describe what you have implemented..."></textarea>
+                        </div>
+
+                        <button class="btn btn-success" onclick="markImplemented(2)">
+                            <i class="pi pi-check-circle"></i>
+                            Mark as Implemented
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Question 3 - Clarification Requested -->
+                <div class="question-item" id="question-3">
+                    <div class="question-header">
+                        <div style="display: flex; justify-content: space-between; align-items: start;">
+                            <div>
+                                <div class="question-title">Q4: Policy Implementation</div>
+                                <div class="question-text">How are these policies implemented? (please select all the responses that fit)</div>
+                            </div>
+                            <span class="tag tag-clarification" id="status-3">Clarification Requested</span>
+                        </div>
+                    </div>
+
+                    <div style="margin: 1.5rem 0;">
+                        <div class="info-row">
+                            <div class="info-label">Your Original Answer:</div>
+                            <div class="info-value">
+                                <span class="answer-chip">All policies are signed by Management</span>
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label">Required CAPA Actions:</div>
+                            <div class="info-value">
+                                • Set up regular training of employees in our policies
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label">Your Response:</div>
+                            <div class="info-value">
+                                <strong>Clarification Requested</strong>
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label">Your Comments:</div>
+                            <div class="info-value" style="font-style: italic;">
+                                "We need more details on the training requirements and format."
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning">
+                        <strong>Awaiting UNOPS Response:</strong> Your clarification request has been sent to UNOPS. You will be notified when they provide additional information.
+                    </div>
+                </div>
+
+                <!-- Question 4 - Rejected -->
+                <div class="question-item" id="question-4">
+                    <div class="question-header">
+                        <div style="display: flex; justify-content: space-between; align-items: start;">
+                            <div>
+                                <div class="question-title">Q6: Code of Conduct Implementation</div>
+                                <div class="question-text">How are the principles in the Code of Conduct implemented in the organization?</div>
+                            </div>
+                            <span class="tag tag-rejected" id="status-4">Rejected</span>
+                        </div>
+                    </div>
+
+                    <div style="margin: 1.5rem 0;">
+                        <div class="info-row">
+                            <div class="info-label">Your Original Answer:</div>
+                            <div class="info-value">
+                                <span class="answer-chip">Our Code of Conduct is publicly available</span>
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label">Required CAPA Actions:</div>
+                            <div class="info-value">
+                                • Ensure that all employees are regularly trained in the code of conduct
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label">Your Response:</div>
+                            <div class="info-value">
+                                <strong>Rejected</strong>
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label">Your Comments:</div>
+                            <div class="info-value" style="font-style: italic;">
+                                "We already have quarterly training sessions in place covering these topics. We can provide evidence if needed."
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 5 - Pending -->
+                <div class="question-item needs-action" id="question-5">
+                    <div class="question-header">
+                        <div style="display: flex; justify-content: space-between; align-items: start;">
+                            <div>
+                                <div class="question-title">Q5: Code of Conduct</div>
+                                <div class="question-text">Are any of these policies included in your Code of Conduct?</div>
+                            </div>
+                            <span class="tag tag-pending" id="status-5">Pending Response</span>
+                        </div>
+                    </div>
+
+                    <div style="margin: 1.5rem 0;">
+                        <div class="info-row">
+                            <div class="info-label">Your Original Answer:</div>
+                            <div class="info-value">
+                                <span class="answer-chip">Gift and hospitality</span>
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label">Required CAPA Actions:</div>
+                            <div class="info-value">
+                                <div style="margin-bottom: 0.5rem;">• Add policies on conflict of interest to the Code of Conduct</div>
+                                <div>• Add policies on anti-corruption to the Code of Conduct</div>
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label">UNOPS Deadline:</div>
+                            <div class="info-value">15 Dec 2024</div>
+                        </div>
+                    </div>
+
+                    <div class="response-form" id="response-form-5">
+                        <h4 style="margin-bottom: 1rem;">Your Response</h4>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Action</label>
+                            <select class="form-select" id="action-5" onchange="handleActionChange(5)">
+                                <option value="">Select your response...</option>
+                                <option value="accept">Accept - I will implement these actions</option>
+                                <option value="reject">Reject - These actions are not applicable</option>
+                                <option value="clarification">Request Clarification</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group hidden" id="deadline-group-5">
+                            <label class="form-label">Implementation Deadline *</label>
+                            <input type="date" class="form-input" id="deadline-5">
+                            <small style="color: var(--text-muted); font-size: 0.875rem;">When will you complete these actions?</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Comments</label>
+                            <textarea class="form-textarea" id="comments-5" rows="3" placeholder="Add your comments..."></textarea>
+                        </div>
+
+                        <button class="btn btn-primary" onclick="submitResponse(5)">
+                            <i class="pi pi-check"></i>
+                            Submit Response
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="unops-footer">
+            <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="32" height="32" rx="4" fill="white"/>
+                <path d="M16 8L8 12V20L16 24L24 20V12L16 8Z" fill="#00669a"/>
+            </svg>
+        </footer>
+    </div>
+
+    <script>
+        const uploadedFiles = {
+            2: []
+        };
+
+        function viewCapaDetails() {
+            document.getElementById('capaListView').classList.add('hidden');
+            document.getElementById('capaDetailsView').classList.remove('hidden');
+        }
+
+        function backToList() {
+            document.getElementById('capaDetailsView').classList.add('hidden');
+            document.getElementById('capaListView').classList.remove('hidden');
+        }
+
+        function handleActionChange(questionId) {
+            const action = document.getElementById(`action-${questionId}`).value;
+            const deadlineGroup = document.getElementById(`deadline-group-${questionId}`);
+            
+            if (action === 'accept') {
+                deadlineGroup.classList.remove('hidden');
+            } else {
+                deadlineGroup.classList.add('hidden');
+            }
+        }
+
+        function submitResponse(questionId) {
+            const action = document.getElementById(`action-${questionId}`).value;
+            const comments = document.getElementById(`comments-${questionId}`).value;
+            
+            if (!action) {
+                alert('Please select an action (Accept, Reject, or Request Clarification).');
+                return;
+            }
+
+            if (action === 'accept') {
+                const deadline = document.getElementById(`deadline-${questionId}`).value;
+                if (!deadline) {
+                    alert('Please set an implementation deadline.');
+                    return;
+                }
+            }
+
+            if (!comments) {
+                if (confirm('Are you sure you want to submit without comments?')) {
+                    processResponse(questionId, action);
+                }
+            } else {
+                processResponse(questionId, action);
+            }
+        }
+
+        function processResponse(questionId, action) {
+            const statusBadge = document.getElementById(`status-${questionId}`);
+            const responseForm = document.getElementById(`response-form-${questionId}`);
+            const questionItem = document.getElementById(`question-${questionId}`);
+            
+            questionItem.classList.remove('needs-action');
+            responseForm.remove();
+
+            let statusText = '';
+            let statusClass = '';
+            
+            if (action === 'accept') {
+                statusText = 'Accepted - In Progress';
+                statusClass = 'tag-accepted';
+            } else if (action === 'reject') {
+                statusText = 'Rejected';
+                statusClass = 'tag-rejected';
+            } else if (action === 'clarification') {
+                statusText = 'Clarification Requested';
+                statusClass = 'tag-clarification';
+            }
+
+            statusBadge.textContent = statusText;
+            statusBadge.className = `tag ${statusClass}`;
+
+            const successAlert = document.createElement('div');
+            successAlert.className = 'alert alert-success';
+            successAlert.innerHTML = '<strong>Response Submitted!</strong> Your response has been sent to UNOPS successfully.';
+            questionItem.appendChild(successAlert);
+
+            alert('Response submitted successfully!');
+        }
+
+        function handleFileUpload(questionId) {
+            const fileInput = document.getElementById(`file-input-${questionId}`);
+            const filesContainer = document.getElementById(`uploaded-files-${questionId}`);
+            
+            const files = Array.from(fileInput.files);
+            
+            files.forEach(file => {
+                if (!uploadedFiles[questionId]) {
+                    uploadedFiles[questionId] = [];
+                }
+                
+                uploadedFiles[questionId].push({
+                    name: file.name,
+                    size: (file.size / 1024 / 1024).toFixed(2) + ' MB'
+                });
+
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.innerHTML = `
+                    <div class="file-icon">
+                        <i class="pi pi-file-pdf"></i>
+                    </div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 500;">${file.name}</div>
+                        <div style="font-size: 0.875rem; color: var(--text-muted);">
+                            ${(file.size / 1024 / 1024).toFixed(2)} MB
+                        </div>
+                    </div>
+                    <button class="btn btn-outline" style="padding: 0.5rem;" onclick="removeFile(${questionId}, '${file.name}', this.parentElement)">
+                        <i class="pi pi-times"></i>
+                    </button>
+                `;
+                
+                filesContainer.appendChild(fileItem);
+            });
+        }
+
+        function removeFile(questionId, fileName, element) {
+            uploadedFiles[questionId] = uploadedFiles[questionId].filter(f => f.name !== fileName);
+            element.remove();
+        }
+
+        function markImplemented(questionId) {
+            if (!uploadedFiles[questionId] || uploadedFiles[questionId].length === 0) {
+                alert('Please upload at least one supporting document.');
+                return;
+            }
+
+            const comments = document.getElementById(`impl-comments-${questionId}`).value;
+            if (!comments) {
+                alert('Please provide implementation comments.');
+                return;
+            }
+
+            if (confirm('Are you sure you want to mark this CAPA as implemented? UNOPS will review your submission.')) {
+                const statusBadge = document.getElementById(`status-${questionId}`);
+                statusBadge.textContent = 'Implemented - Awaiting Review';
+                statusBadge.className = 'tag tag-implemented';
+
+                const questionItem = document.getElementById(`question-${questionId}`);
+                const responseForm = questionItem.querySelector('.response-form');
+                
+                const successAlert = document.createElement('div');
+                successAlert.className = 'alert alert-success';
+                successAlert.innerHTML = `
+                    <strong>Marked as Implemented!</strong> Your implementation has been submitted to UNOPS for review.
+                    <div style="margin-top: 0.5rem; font-size: 0.875rem;">
+                        <strong>Documents uploaded:</strong> ${uploadedFiles[questionId].map(f => f.name).join(', ')}
+                    </div>
+                `;
+                
+                responseForm.innerHTML = '';
+                responseForm.appendChild(successAlert);
+
+                alert('Successfully marked as implemented! UNOPS will review your submission.');
+            }
+        }
+    </script>
+</body>
+</html>
+
