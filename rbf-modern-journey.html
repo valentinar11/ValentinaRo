@@ -1,0 +1,2068 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNOPS Bidding Portal - Modern Journey</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --unops-blue2-400: #00669a;
+            --unops-blue2-500: #005783;
+            --unops-blue2-600: #00476c;
+            --unops-blue-400: #0092d1;
+            --unops-blue-0: #F1F5F9;
+            --unops-ocean-400: #4ec3e0;
+            --unops-red-500: #da291c;
+            --unops-green-500: #4c9f38;
+            --unops-yellow-400: #f0ad4e;
+            --unops-n-cold-0: #ffffff;
+            --unops-n-cold-50: #F5F8FB;
+            --unops-n-cold-100: #EBF1F8;
+            --unops-n-cold-200: #DDE8F2;
+            --unops-n-cold-300: #CFDFEC;
+            --unops-n-cold-500: #8B95A5;
+            --unops-n-cold-600: #6B7280;
+            --unops-n-cold-900: #3B3E4A;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--unops-n-cold-50);
+            color: var(--unops-n-cold-900);
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--unops-blue2-400) 0%, var(--unops-blue2-600) 100%);
+            color: white;
+            padding: 24px 40px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title h1 {
+            font-size: 1.5em;
+            margin-bottom: 4px;
+        }
+
+        .header-meta {
+            font-size: 0.9em;
+            opacity: 0.95;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 6px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .view-toggle-btn {
+            padding: 10px 24px;
+            border: none;
+            background: transparent;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 13px;
+        }
+
+        .view-toggle-btn.active {
+            background: white;
+            color: var(--unops-blue2-600);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 32px 40px;
+        }
+
+        /* Author View */
+        .author-view {
+            display: none;
+        }
+
+        .author-view.active {
+            display: block;
+        }
+
+        .config-hero {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 32px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .config-hero h2 {
+            color: var(--unops-blue2-600);
+            font-size: 1.8em;
+            margin-bottom: 12px;
+        }
+
+        .config-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-top: 32px;
+        }
+
+        .config-card {
+            background: var(--unops-n-cold-50);
+            border: 2px solid var(--unops-n-cold-200);
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .config-card:hover {
+            border-color: var(--unops-blue-400);
+            box-shadow: 0 4px 16px rgba(0, 102, 154, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .config-card h3 {
+            color: var(--unops-blue2-600);
+            font-size: 1.2em;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .config-card-icon {
+            font-size: 1.8em;
+        }
+
+        .config-options {
+            margin-top: 20px;
+        }
+
+        .config-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 48px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.3s;
+            border-radius: 24px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: var(--unops-green-500);
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(24px);
+        }
+
+        /* Supplier View */
+        .supplier-view {
+            display: none;
+        }
+
+        .supplier-view.active {
+            display: block;
+        }
+
+        /* Progress Tracker */
+        .progress-tracker {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 32px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .progress-header h2 {
+            color: var(--unops-blue2-600);
+            font-size: 1.5em;
+        }
+
+        .progress-stats {
+            display: flex;
+            gap: 24px;
+            font-size: 0.95em;
+        }
+
+        .progress-stat {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .progress-stat-value {
+            font-weight: 700;
+            font-size: 1.3em;
+            color: var(--unops-blue2-600);
+        }
+
+        .progress-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+        }
+
+        .progress-step {
+            position: relative;
+            padding: 20px;
+            background: var(--unops-n-cold-50);
+            border-radius: 12px;
+            border: 2px solid var(--unops-n-cold-200);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .progress-step:hover {
+            border-color: var(--unops-blue-400);
+        }
+
+        .progress-step.completed {
+            background: linear-gradient(135deg, #e6f7ed 0%, #d4edda 100%);
+            border-color: var(--unops-green-500);
+        }
+
+        .progress-step.active {
+            background: linear-gradient(135deg, var(--unops-blue-0) 0%, #e1f0f7 100%);
+            border-color: var(--unops-blue-400);
+            border-width: 3px;
+        }
+
+        .progress-step.in-progress {
+            background: linear-gradient(135deg, #fff8e1 0%, #fff3cd 100%);
+            border-color: var(--unops-yellow-400);
+        }
+
+        .step-icon {
+            font-size: 2em;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .step-title {
+            font-weight: 600;
+            color: var(--unops-n-cold-900);
+            margin-bottom: 4px;
+        }
+
+        .step-status {
+            font-size: 0.85em;
+            color: var(--unops-n-cold-600);
+        }
+
+        .step-check {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 24px;
+            height: 24px;
+            background: var(--unops-green-500);
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+        }
+
+        .progress-step.completed .step-check {
+            display: flex;
+        }
+
+        /* Section Cards */
+        .section-card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            display: none;
+        }
+
+        .section-card.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 28px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--unops-n-cold-200);
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .section-title-icon {
+            font-size: 2.5em;
+        }
+
+        .section-title h3 {
+            color: var(--unops-blue2-600);
+            font-size: 1.6em;
+            margin-bottom: 6px;
+        }
+
+        .section-title p {
+            color: var(--unops-n-cold-600);
+            font-size: 0.95em;
+        }
+
+        .info-banner {
+            background: var(--unops-blue-0);
+            border-left: 4px solid var(--unops-blue-400);
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: start;
+            gap: 12px;
+        }
+
+        .info-banner-icon {
+            font-size: 1.5em;
+        }
+
+        /* Form Fields */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .form-field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-field.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--unops-n-cold-900);
+            margin-bottom: 8px;
+            font-size: 13.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .required {
+            color: var(--unops-red-500);
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            padding: 12px 16px;
+            border: 2px solid var(--unops-n-cold-300);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.2s;
+            background: white;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--unops-blue2-500);
+            box-shadow: 0 0 0 3px rgba(0, 118, 189, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-hint {
+            font-size: 0.85em;
+            color: var(--unops-n-cold-500);
+            margin-top: 6px;
+        }
+
+        .prefilled {
+            background: var(--unops-blue-0);
+            border-color: var(--unops-blue-400);
+            cursor: not-allowed;
+        }
+
+        /* Smart Tables */
+        .smart-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            margin: 24px 0;
+        }
+
+        .smart-table thead {
+            background: linear-gradient(135deg, var(--unops-blue2-600) 0%, var(--unops-blue2-700) 100%);
+        }
+
+        .smart-table th {
+            color: white;
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .smart-table td {
+            padding: 16px;
+            border-bottom: 1px solid var(--unops-n-cold-200);
+            background: white;
+        }
+
+        .smart-table tbody tr:hover td {
+            background: var(--unops-n-cold-50);
+        }
+
+        .smart-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .table-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 2px solid var(--unops-n-cold-300);
+            border-radius: 6px;
+            font-size: 13px;
+        }
+
+        .table-input:focus {
+            border-color: var(--unops-blue2-500);
+            outline: none;
+        }
+
+        .calculated-cell {
+            background: var(--unops-blue-0);
+            font-weight: 600;
+            color: var(--unops-blue2-600);
+        }
+
+        /* Action Buttons */
+        .action-bar {
+            display: flex;
+            gap: 16px;
+            justify-content: flex-end;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 2px solid var(--unops-n-cold-200);
+        }
+
+        .btn {
+            padding: 14px 32px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--unops-blue2-500) 0%, var(--unops-blue2-600) 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 118, 189, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 118, 189, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--unops-blue2-600);
+            border: 2px solid var(--unops-blue2-500);
+        }
+
+        .btn-secondary:hover {
+            background: var(--unops-blue-0);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--unops-green-500) 0%, #418730 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(76, 159, 56, 0.3);
+        }
+
+        /* Partner Cards */
+        .partner-cards {
+            display: grid;
+            gap: 20px;
+            margin: 24px 0;
+        }
+
+        .partner-card {
+            background: var(--unops-n-cold-50);
+            border: 2px solid var(--unops-n-cold-200);
+            border-radius: 12px;
+            padding: 24px;
+            position: relative;
+        }
+
+        .partner-card.lead {
+            background: linear-gradient(135deg, var(--unops-blue-0) 0%, #e1f0f7 100%);
+            border-color: var(--unops-blue-400);
+            border-width: 3px;
+        }
+
+        .partner-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: var(--unops-blue-400);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .add-item-btn {
+            width: 100%;
+            padding: 16px;
+            border: 2px dashed var(--unops-n-cold-300);
+            background: var(--unops-n-cold-50);
+            border-radius: 12px;
+            color: var(--unops-blue2-600);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .add-item-btn:hover {
+            border-color: var(--unops-blue-400);
+            background: var(--unops-blue-0);
+        }
+
+        /* Compliance Checklist */
+        .compliance-grid {
+            display: grid;
+            gap: 12px;
+            margin: 24px 0;
+        }
+
+        .compliance-item {
+            background: var(--unops-n-cold-50);
+            border: 2px solid var(--unops-n-cold-200);
+            border-radius: 12px;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 20px;
+            align-items: start;
+            transition: all 0.3s;
+        }
+
+        .compliance-item:hover {
+            border-color: var(--unops-blue-400);
+            background: white;
+        }
+
+        .compliance-number {
+            width: 32px;
+            height: 32px;
+            background: var(--unops-blue2-600);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9em;
+        }
+
+        .compliance-response {
+            display: flex;
+            gap: 12px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: white;
+            border: 2px solid var(--unops-n-cold-300);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .radio-option:hover {
+            border-color: var(--unops-blue-400);
+        }
+
+        .radio-option input:checked + label {
+            font-weight: 700;
+        }
+
+        /* Tender Info Hero */
+        .tender-hero {
+            background: linear-gradient(135deg, var(--unops-blue-400) 0%, var(--unops-blue2-400) 100%);
+            color: white;
+            padding: 32px;
+            border-radius: 16px;
+            margin-bottom: 32px;
+            box-shadow: 0 4px 20px rgba(0, 146, 209, 0.2);
+        }
+
+        .tender-hero h2 {
+            font-size: 1.8em;
+            margin-bottom: 8px;
+        }
+
+        .tender-meta {
+            display: flex;
+            gap: 32px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            font-size: 0.95em;
+        }
+
+        .tender-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .meta-icon {
+            font-size: 1.3em;
+        }
+
+        /* Sticky Bottom Bar */
+        .sticky-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 16px 40px;
+            box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.1);
+            z-index: 999;
+            display: none;
+        }
+
+        .sticky-bar.active {
+            display: block;
+        }
+
+        .sticky-bar-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sticky-progress {
+            flex: 1;
+            margin-right: 32px;
+        }
+
+        .sticky-progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--unops-n-cold-200);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .sticky-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--unops-blue-400) 0%, var(--unops-blue2-500) 100%);
+            transition: width 0.3s ease;
+        }
+
+        .sticky-progress-text {
+            font-size: 0.85em;
+            color: var(--unops-n-cold-600);
+            font-weight: 600;
+        }
+
+        .sticky-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .progress-steps {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sticky-bar-content {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .sticky-progress {
+                width: 100%;
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <div class="header-title">
+                <h1>Supply of Medical Equipment and Laboratory Supplies</h1>
+                <div class="header-meta">ITB/2025/60187 • Tashkent, Uzbekistan • Deadline: Dec 31, 2025</div>
+            </div>
+            <div class="view-toggle">
+                <button class="view-toggle-btn" onclick="switchView('author')">
+                    🛠️ Author
+                </button>
+                <button class="view-toggle-btn active" onclick="switchView('supplier')">
+                    👤 Supplier
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <!-- AUTHOR VIEW -->
+        <div class="author-view" id="authorView">
+            <div class="config-hero">
+                <h2>Configure Bid Requirements</h2>
+                <p style="color: var(--unops-n-cold-600); margin-top: 8px;">
+                    Set up what information suppliers need to provide. All configurations are automatically reflected in the supplier portal.
+                </p>
+            </div>
+
+            <div class="config-grid">
+                <!-- Company & Team -->
+                <div class="config-card">
+                    <h3>
+                        <span class="config-card-icon">🏢</span>
+                        Company & Team
+                    </h3>
+                    <p style="color: var(--unops-n-cold-600); font-size: 0.9em; margin-bottom: 16px;">
+                        Configure company information and partnership requirements
+                    </p>
+                    <div class="config-options">
+                        <div class="config-option">
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked disabled>
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <div>
+                                <div style="font-weight: 600;">Basic Company Info</div>
+                                <div style="font-size: 0.85em; color: var(--unops-n-cold-600);">Required for all bids</div>
+                            </div>
+                        </div>
+                        <div class="config-option">
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <div>
+                                <div style="font-weight: 600;">Joint Venture Support</div>
+                                <div style="font-size: 0.85em; color: var(--unops-n-cold-600);">Allow consortium bidding</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pricing -->
+                <div class="config-card">
+                    <h3>
+                        <span class="config-card-icon">💰</span>
+                        Pricing & Commercial
+                    </h3>
+                    <p style="color: var(--unops-n-cold-600); font-size: 0.9em; margin-bottom: 16px;">
+                        Configure pricing tables and commercial terms
+                    </p>
+                    <div class="config-options">
+                        <div class="config-option">
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <div>
+                                <div style="font-weight: 600;">Related Services Pricing</div>
+                                <div style="font-size: 0.85em; color: var(--unops-n-cold-600);">Installation, training, warranty</div>
+                            </div>
+                        </div>
+                        <div class="config-option">
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <div>
+                                <div style="font-weight: 600;">Delivery Information</div>
+                                <div style="font-size: 0.85em; color: var(--unops-n-cold-600);">Shipment details & logistics</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technical -->
+                <div class="config-card">
+                    <h3>
+                        <span class="config-card-icon">⚙️</span>
+                        Technical Compliance
+                    </h3>
+                    <p style="color: var(--unops-n-cold-600); font-size: 0.9em; margin-bottom: 16px;">
+                        Configure technical specification requirements
+                    </p>
+                    <div class="config-options">
+                        <div class="config-option">
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <div>
+                                <div style="font-weight: 600;">Online Form Entry</div>
+                                <div style="font-size: 0.85em; color: var(--unops-n-cold-600);">Web-based specification entry</div>
+                            </div>
+                        </div>
+                        <div class="config-option">
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <div>
+                                <div style="font-weight: 600;">Spreadsheet Upload</div>
+                                <div style="font-size: 0.85em; color: var(--unops-n-cold-600);">Allow Excel file uploads</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Qualifications -->
+                <div class="config-card">
+                    <h3>
+                        <span class="config-card-icon">🎓</span>
+                        Qualifications
+                    </h3>
+                    <p style="color: var(--unops-n-cold-600); font-size: 0.9em; margin-bottom: 16px;">
+                        Configure qualification requirements
+                    </p>
+                    <div class="config-options">
+                        <div class="config-option">
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <div>
+                                <div style="font-weight: 600;">Performance References</div>
+                                <div style="font-size: 0.85em; color: var(--unops-n-cold-600);">Past project references</div>
+                            </div>
+                        </div>
+                        <div class="config-option">
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <div>
+                                <div style="font-weight: 600;">Manufacturer Authorization</div>
+                                <div style="font-size: 0.85em; color: var(--unops-n-cold-600);">For non-manufacturers</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Compliance -->
+                <div class="config-card">
+                    <h3>
+                        <span class="config-card-icon">✓</span>
+                        Compliance & Declarations
+                    </h3>
+                    <p style="color: var(--unops-n-cold-600); font-size: 0.9em; margin-bottom: 16px;">
+                        Mandatory compliance declarations
+                    </p>
+                    <div class="config-options">
+                        <div class="config-option">
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked disabled>
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <div>
+                                <div style="font-weight: 600;">Self-Disclosure Form</div>
+                                <div style="font-size: 0.85em; color: var(--unops-n-cold-600);">Required for all bids</div>
+                            </div>
+                        </div>
+                        <div class="config-option">
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked disabled>
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <div>
+                                <div style="font-weight: 600;">Bid Submission Declaration</div>
+                                <div style="font-size: 0.85em; color: var(--unops-n-cold-600);">Required for all bids</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security -->
+                <div class="config-card">
+                    <h3>
+                        <span class="config-card-icon">🔒</span>
+                        Security & Guarantees
+                    </h3>
+                    <p style="color: var(--unops-n-cold-600); font-size: 0.9em; margin-bottom: 16px;">
+                        Configure security requirements
+                    </p>
+                    <div class="config-options">
+                        <div class="config-option">
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <div>
+                                <div style="font-weight: 600;">Bid Security</div>
+                                <div style="font-size: 0.85em; color: var(--unops-n-cold-600);">Bank guarantee required</div>
+                            </div>
+                        </div>
+                        <div class="config-option">
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <div>
+                                <div style="font-weight: 600;">Performance Security</div>
+                                <div style="font-size: 0.85em; color: var(--unops-n-cold-600);">Post-award guarantee</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-bar">
+                <button class="btn btn-secondary">💾 Save Configuration</button>
+                <button class="btn btn-primary" onclick="switchView('supplier')">👁️ Preview Supplier View</button>
+            </div>
+        </div>
+
+        <!-- SUPPLIER VIEW -->
+        <div class="supplier-view active" id="supplierView">
+            
+            <!-- Tender Hero -->
+            <div class="tender-hero">
+                <h2>Supply of Medical Equipment and Laboratory Supplies</h2>
+                <div style="opacity: 0.95; margin-top: 4px;">ITB/2025/60187</div>
+                <div class="tender-meta">
+                    <div class="tender-meta-item">
+                        <span class="meta-icon">📍</span>
+                        <span>Tashkent, Uzbekistan</span>
+                    </div>
+                    <div class="tender-meta-item">
+                        <span class="meta-icon">📦</span>
+                        <span>Goods Only</span>
+                    </div>
+                    <div class="tender-meta-item">
+                        <span class="meta-icon">⏱️</span>
+                        <span><strong>Deadline:</strong> Dec 31, 2025 23:59 UTC</span>
+                    </div>
+                    <div class="tender-meta-item">
+                        <span class="meta-icon">🎯</span>
+                        <span>Lowest evaluated bid</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress Tracker -->
+            <div class="progress-tracker">
+                <div class="progress-header">
+                    <h2>Your Bid Progress</h2>
+                    <div class="progress-stats">
+                        <div class="progress-stat">
+                            <span class="progress-stat-value" id="progressPercent">0%</span>
+                            <span>Complete</span>
+                        </div>
+                        <div class="progress-stat">
+                            <span class="progress-stat-value" id="progressSteps">0/5</span>
+                            <span>Steps</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="progress-steps">
+                    <div class="progress-step active" onclick="showSection('company')">
+                        <div class="step-check">✓</div>
+                        <span class="step-icon">🏢</span>
+                        <div class="step-title">Company & Team</div>
+                        <div class="step-status">Not started</div>
+                    </div>
+
+                    <div class="progress-step" onclick="showSection('pricing')">
+                        <div class="step-check">✓</div>
+                        <span class="step-icon">💰</span>
+                        <div class="step-title">Pricing & Commercial</div>
+                        <div class="step-status">Not started</div>
+                    </div>
+
+                    <div class="progress-step" onclick="showSection('technical')">
+                        <div class="step-check">✓</div>
+                        <span class="step-icon">⚙️</span>
+                        <div class="step-title">Technical Compliance</div>
+                        <div class="step-status">Not started</div>
+                    </div>
+
+                    <div class="progress-step" onclick="showSection('qualifications')">
+                        <div class="step-check">✓</div>
+                        <span class="step-icon">🎓</span>
+                        <div class="step-title">Qualifications</div>
+                        <div class="step-status">Not started</div>
+                    </div>
+
+                    <div class="progress-step" onclick="showSection('compliance')">
+                        <div class="step-check">✓</div>
+                        <span class="step-icon">✓</span>
+                        <div class="step-title">Compliance</div>
+                        <div class="step-status">Not started</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 1: Company & Team -->
+            <div class="section-card active" id="section-company">
+                <div class="section-header">
+                    <div class="section-title">
+                        <span class="section-title-icon">🏢</span>
+                        <div>
+                            <h3>Company & Team Information</h3>
+                            <p>Tell us about your organization and who will be delivering this project</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-banner">
+                    <span class="info-banner-icon">💡</span>
+                    <div>
+                        <strong>Single organization or consortium?</strong> If you're bidding as a joint venture, consortium, or partnership, you can add multiple partners below.
+                    </div>
+                </div>
+
+                <!-- Company Type -->
+                <div class="form-field">
+                    <label class="form-label">Bidding as <span class="required">*</span></label>
+                    <div style="display: flex; gap: 20px; margin-top: 12px;">
+                        <div class="radio-option">
+                            <input type="radio" name="bidType" id="single" value="single" checked onchange="toggleConsortium()">
+                            <label for="single" style="cursor: pointer;">Single Company</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" name="bidType" id="consortium" value="consortium" onchange="toggleConsortium()">
+                            <label for="consortium" style="cursor: pointer;">Joint Venture / Consortium</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Single Company Section -->
+                <div id="singleCompanySection" style="margin-top: 32px;">
+                    <h4 style="color: var(--unops-blue2-600); margin-bottom: 20px; font-size: 1.2em;">Company Details</h4>
+                    
+                    <div class="form-grid">
+                        <div class="form-field">
+                            <label class="form-label">Company Legal Name <span class="required">*</span></label>
+                            <input type="text" class="form-input" placeholder="Enter full legal name">
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">UNGM Vendor ID <span style="color: var(--unops-n-cold-500); font-weight: 400;">(if registered)</span></label>
+                            <div style="display: flex; gap: 12px;">
+                                <input type="text" class="form-input" placeholder="UNGM-XXXXXX" style="flex: 1;">
+                                <button class="btn btn-secondary" style="padding: 12px 20px;">🔍 Verify</button>
+                            </div>
+                        </div>
+
+                        <div class="form-field full-width">
+                            <label class="form-label">Full Business Address <span class="required">*</span></label>
+                            <textarea class="form-textarea" placeholder="Street address, City, State/Province, Postal Code, Country"></textarea>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">Primary Contact Email <span class="required">*</span></label>
+                            <input type="email" class="form-input" placeholder="contact@company.com">
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">Phone Number <span class="required">*</span></label>
+                            <input type="tel" class="form-input" placeholder="+X-XXX-XXX-XXXX">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Consortium Section -->
+                <div id="consortiumSection" style="display: none; margin-top: 32px;">
+                    <h4 style="color: var(--unops-blue2-600); margin-bottom: 20px; font-size: 1.2em;">Consortium / Joint Venture Details</h4>
+                    
+                    <div class="form-field" style="margin-bottom: 24px;">
+                        <label class="form-label">Consortium Name <span class="required">*</span></label>
+                        <input type="text" class="form-input" placeholder="Enter consortium or joint venture name">
+                        <div class="form-hint">The official name of your partnership</div>
+                    </div>
+
+                    <div class="info-banner" style="margin-bottom: 24px;">
+                        <span class="info-banner-icon">ℹ️</span>
+                        <div>
+                            Add all partners below. Each partner's share must total 100%. One partner must be designated as the Lead Partner with authority to bind the consortium.
+                        </div>
+                    </div>
+
+                    <div class="partner-cards" id="partnerCards">
+                        <!-- Partners will be added here dynamically -->
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px; padding: 16px; background: var(--unops-n-cold-50); border-radius: 8px;">
+                        <div>
+                            <strong>Total Share: <span id="totalShare" style="color: var(--unops-blue2-600); font-size: 1.2em;">0%</span></strong>
+                            <span id="shareStatus" style="margin-left: 12px; font-size: 0.9em;"></span>
+                        </div>
+                    </div>
+
+                    <button class="add-item-btn" onclick="addPartner()">
+                        <span style="font-size: 1.3em;">+</span> Add Partner
+                    </button>
+                </div>
+
+                <div class="action-bar">
+                    <button class="btn btn-secondary">💾 Save Draft</button>
+                    <button class="btn btn-primary" onclick="nextSection('pricing')">Continue to Pricing →</button>
+                </div>
+            </div>
+
+            <!-- SECTION 2: Pricing & Commercial -->
+            <div class="section-card" id="section-pricing">
+                <div class="section-header">
+                    <div class="section-title">
+                        <span class="section-title-icon">💰</span>
+                        <div>
+                            <h3>Pricing & Commercial Terms</h3>
+                            <p>Provide your pricing for all items and services</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-banner">
+                    <span class="info-banner-icon">💡</span>
+                    <div>
+                        <strong>Currencies allowed:</strong> USD, EUR • <strong>Incoterms:</strong> FCA, CPT, DPU • Total prices are calculated automatically
+                    </div>
+                </div>
+
+                <!-- Bid Summary (Auto-calculated) -->
+                <h4 style="color: var(--unops-blue2-600); margin: 24px 0 16px 0; font-size: 1.2em;">Bid Summary</h4>
+                <div style="background: var(--unops-blue-0); padding: 24px; border-radius: 12px; border: 2px solid var(--unops-blue-400);">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                        <div>
+                            <div style="font-size: 0.85em; color: var(--unops-n-cold-600); margin-bottom: 4px;">Total Bid Value (FCA)</div>
+                            <div style="font-size: 1.8em; font-weight: 700; color: var(--unops-blue2-600);">USD 0.00</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.85em; color: var(--unops-n-cold-600); margin-bottom: 4px;">Total Bid Value (CPT)</div>
+                            <div style="font-size: 1.8em; font-weight: 700; color: var(--unops-blue2-600);">USD 0.00</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.85em; color: var(--unops-n-cold-600); margin-bottom: 4px;">Total Bid Value (DPU)</div>
+                            <div style="font-size: 1.8em; font-weight: 700; color: var(--unops-blue2-600);">USD 0.00</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--unops-blue-400); font-size: 0.9em; color: var(--unops-n-cold-600);">
+                        💡 Calculated automatically from your pricing below
+                    </div>
+                </div>
+
+                <!-- Goods Pricing -->
+                <h4 style="color: var(--unops-blue2-600); margin: 32px 0 16px 0; font-size: 1.2em;">Goods Pricing</h4>
+                
+                <table class="smart-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 5%;">#</th>
+                            <th style="width: 30%;">Item Description</th>
+                            <th style="width: 8%;">Qty</th>
+                            <th style="width: 10%;">Currency</th>
+                            <th style="width: 12%;">Unit Price (FCA)</th>
+                            <th style="width: 12%;">Unit Price (CPT)</th>
+                            <th style="width: 12%;">Unit Price (DPU)</th>
+                            <th style="width: 11%;">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-weight: 600;">1</td>
+                            <td>
+                                <strong>Desktop computers</strong>
+                                <div style="font-size: 0.85em; color: var(--unops-n-cold-600);">UNSPSC: 43211500</div>
+                            </td>
+                            <td style="text-align: center; font-weight: 600;">50</td>
+                            <td>
+                                <select class="table-input">
+                                    <option>USD</option>
+                                    <option>EUR</option>
+                                </select>
+                            </td>
+                            <td><input type="number" class="table-input" placeholder="0.00" step="0.01"></td>
+                            <td><input type="number" class="table-input" placeholder="0.00" step="0.01"></td>
+                            <td><input type="number" class="table-input" placeholder="0.00" step="0.01"></td>
+                            <td class="calculated-cell">0.00</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 600;">2</td>
+                            <td>
+                                <strong>Laptop computers</strong>
+                                <div style="font-size: 0.85em; color: var(--unops-n-cold-600);">UNSPSC: 43211503</div>
+                            </td>
+                            <td style="text-align: center; font-weight: 600;">30</td>
+                            <td>
+                                <select class="table-input">
+                                    <option>USD</option>
+                                    <option>EUR</option>
+                                </select>
+                            </td>
+                            <td><input type="number" class="table-input" placeholder="0.00" step="0.01"></td>
+                            <td><input type="number" class="table-input" placeholder="0.00" step="0.01"></td>
+                            <td><input type="number" class="table-input" placeholder="0.00" step="0.01"></td>
+                            <td class="calculated-cell">0.00</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 600;">3</td>
+                            <td>
+                                <strong>Computer monitors</strong>
+                                <div style="font-size: 0.85em; color: var(--unops-n-cold-600);">UNSPSC: 43212104</div>
+                            </td>
+                            <td style="text-align: center; font-weight: 600;">80</td>
+                            <td>
+                                <select class="table-input">
+                                    <option>USD</option>
+                                    <option>EUR</option>
+                                </select>
+                            </td>
+                            <td><input type="number" class="table-input" placeholder="0.00" step="0.01"></td>
+                            <td><input type="number" class="table-input" placeholder="0.00" step="0.01"></td>
+                            <td><input type="number" class="table-input" placeholder="0.00" step="0.01"></td>
+                            <td class="calculated-cell">0.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Related Services -->
+                <h4 style="color: var(--unops-blue2-600); margin: 32px 0 16px 0; font-size: 1.2em;">Related Services</h4>
+                
+                <table class="smart-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 5%;">#</th>
+                            <th style="width: 40%;">Service Description</th>
+                            <th style="width: 20%;">Quantity</th>
+                            <th style="width: 20%;">Unit Price</th>
+                            <th style="width: 15%;">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-weight: 600;">1</td>
+                            <td>
+                                <strong>Installation and Configuration</strong>
+                                <div style="font-size: 0.85em; color: var(--unops-n-cold-600);">From requirements</div>
+                            </td>
+                            <td class="calculated-cell">1 service</td>
+                            <td><input type="number" class="table-input" placeholder="0.00" step="0.01"></td>
+                            <td class="calculated-cell">0.00</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 600;">2</td>
+                            <td>
+                                <strong>Training (3 days)</strong>
+                                <div style="font-size: 0.85em; color: var(--unops-n-cold-600);">From requirements</div>
+                            </td>
+                            <td class="calculated-cell">10 persons</td>
+                            <td><input type="number" class="table-input" placeholder="0.00" step="0.01"></td>
+                            <td class="calculated-cell">0.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="action-bar">
+                    <button class="btn btn-secondary" onclick="prevSection('company')">← Back</button>
+                    <button class="btn btn-secondary">💾 Save Draft</button>
+                    <button class="btn btn-primary" onclick="nextSection('technical')">Continue to Technical →</button>
+                </div>
+            </div>
+
+            <!-- SECTION 3: Technical Compliance -->
+            <div class="section-card" id="section-technical">
+                <div class="section-header">
+                    <div class="section-title">
+                        <span class="section-title-icon">⚙️</span>
+                        <div>
+                            <h3>Technical Compliance</h3>
+                            <p>Demonstrate how your products meet our technical specifications</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-banner">
+                    <span class="info-banner-icon">💡</span>
+                    <div>
+                        <strong>How it works:</strong> For each item, provide manufacturer details and confirm compliance with our specifications. Any deviations must be clearly explained.
+                    </div>
+                </div>
+
+                <!-- Item 1 -->
+                <div style="background: var(--unops-n-cold-50); padding: 28px; border-radius: 12px; margin-bottom: 24px; border: 2px solid var(--unops-n-cold-200);">
+                    <h4 style="color: var(--unops-blue2-600); margin-bottom: 20px; font-size: 1.2em;">
+                        Desktop Computers (UNSPSC: 43211500)
+                    </h4>
+
+                    <div class="form-grid">
+                        <div class="form-field">
+                            <label class="form-label">Model / Product Name <span class="required">*</span></label>
+                            <input type="text" class="form-input" placeholder="Enter full model name">
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">Country of Origin <span class="required">*</span></label>
+                            <input type="text" class="form-input" placeholder="Manufacturing country">
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">Manufacturer <span class="required">*</span></label>
+                            <div style="display: flex; gap: 12px;">
+                                <input type="text" class="form-input" placeholder="Manufacturer name" style="flex: 1;">
+                                <button class="btn btn-secondary" style="padding: 12px 20px;">🔍 Search</button>
+                            </div>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">Manufacturer UNGM ID <span style="color: var(--unops-n-cold-500); font-weight: 400;">(if available)</span></label>
+                            <input type="text" class="form-input" placeholder="UNGM-XXXXXX">
+                        </div>
+
+                        <div class="form-field full-width">
+                            <label class="form-label">Product Documentation URL</label>
+                            <input type="url" class="form-input" placeholder="https://manufacturer.com/product-specs">
+                            <div class="form-hint">Link to manufacturer's product page (English preferred)</div>
+                        </div>
+                    </div>
+
+                    <!-- Compliance Checklist -->
+                    <h5 style="margin: 24px 0 16px 0; color: var(--unops-n-cold-900); font-size: 1.1em;">Specification Compliance</h5>
+                    
+                    <div style="display: grid; gap: 12px;">
+                        <div style="background: white; padding: 16px; border-radius: 8px; border: 2px solid var(--unops-n-cold-200);">
+                            <div style="display: flex; justify-content: space-between; align-items: start;">
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600; margin-bottom: 8px;">PCR cabinet, tabletop</div>
+                                    <div style="font-size: 0.9em; color: var(--unops-n-cold-600);">Required specification</div>
+                                </div>
+                                <div style="display: flex; gap: 12px;">
+                                    <div class="radio-option">
+                                        <input type="radio" name="spec1" id="spec1-yes">
+                                        <label for="spec1-yes" style="cursor: pointer;">✓ Compliant</label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" name="spec1" id="spec1-no">
+                                        <label for="spec1-no" style="cursor: pointer;">✗ Not Compliant</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="margin-top: 12px;">
+                                <input type="text" class="form-input" placeholder="Describe your product's specifications">
+                            </div>
+                        </div>
+
+                        <div style="background: white; padding: 16px; border-radius: 8px; border: 2px solid var(--unops-n-cold-200);">
+                            <div style="display: flex; justify-content: space-between; align-items: start;">
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600; margin-bottom: 8px;">Tabletop PCR cabinet with UV lamp</div>
+                                    <div style="font-size: 0.9em; color: var(--unops-n-cold-600);">Required specification</div>
+                                </div>
+                                <div style="display: flex; gap: 12px;">
+                                    <div class="radio-option">
+                                        <input type="radio" name="spec2" id="spec2-yes">
+                                        <label for="spec2-yes" style="cursor: pointer;">✓ Compliant</label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" name="spec2" id="spec2-no">
+                                        <label for="spec2-no" style="cursor: pointer;">✗ Not Compliant</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="margin-top: 12px;">
+                                <input type="text" class="form-input" placeholder="Describe your product's specifications">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-field" style="margin-top: 24px;">
+                        <label class="form-label">Any Deviations from Requirements?</label>
+                        <textarea class="form-textarea" placeholder="List any deviations or alternative specifications offered" style="min-height: 80px;"></textarea>
+                        <div class="form-hint">If your product doesn't match all specifications exactly, explain the differences here</div>
+                    </div>
+                </div>
+
+                <div class="action-bar">
+                    <button class="btn btn-secondary" onclick="prevSection('pricing')">← Back</button>
+                    <button class="btn btn-secondary">💾 Save Draft</button>
+                    <button class="btn btn-primary" onclick="nextSection('qualifications')">Continue to Qualifications →</button>
+                </div>
+            </div>
+
+            <!-- SECTION 4: Qualifications -->
+            <div class="section-card" id="section-qualifications">
+                <div class="section-header">
+                    <div class="section-title">
+                        <span class="section-title-icon">🎓</span>
+                        <div>
+                            <h3>Qualifications & Experience</h3>
+                            <p>Demonstrate your capability to deliver this project</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-banner">
+                    <span class="info-banner-icon">💡</span>
+                    <div>
+                        <strong>Past Performance:</strong> Provide references from similar projects completed in the last 3 years. Include project details and client contact information.
+                    </div>
+                </div>
+
+                <h4 style="color: var(--unops-blue2-600); margin-bottom: 20px; font-size: 1.2em;">Project References</h4>
+
+                <table class="smart-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 20%;">Client Organization</th>
+                            <th style="width: 15%;">Contract Value</th>
+                            <th style="width: 20%;">Description & Quantity</th>
+                            <th style="width: 15%;">Completion Date</th>
+                            <th style="width: 15%;">Performance Rating</th>
+                            <th style="width: 15%;">Client Contact</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><textarea class="table-input" style="min-height: 60px;" placeholder="Organization name and address"></textarea></td>
+                            <td><input type="text" class="table-input" placeholder="USD 0.00"></td>
+                            <td><textarea class="table-input" style="min-height: 60px;" placeholder="Brief description"></textarea></td>
+                            <td><input type="date" class="table-input"></td>
+                            <td>
+                                <select class="table-input">
+                                    <option value="">Select</option>
+                                    <option>Excellent</option>
+                                    <option>Good</option>
+                                    <option>Satisfactory</option>
+                                </select>
+                            </td>
+                            <td><input type="text" class="table-input" placeholder="Name & email"></td>
+                        </tr>
+                        <tr>
+                            <td><textarea class="table-input" style="min-height: 60px;" placeholder="Organization name and address"></textarea></td>
+                            <td><input type="text" class="table-input" placeholder="USD 0.00"></td>
+                            <td><textarea class="table-input" style="min-height: 60px;" placeholder="Brief description"></textarea></td>
+                            <td><input type="date" class="table-input"></td>
+                            <td>
+                                <select class="table-input">
+                                    <option value="">Select</option>
+                                    <option>Excellent</option>
+                                    <option>Good</option>
+                                    <option>Satisfactory</option>
+                                </select>
+                            </td>
+                            <td><input type="text" class="table-input" placeholder="Name & email"></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <button class="add-item-btn" style="margin-top: 16px;">
+                    <span style="font-size: 1.3em;">+</span> Add Another Reference
+                </button>
+
+                <div class="action-bar">
+                    <button class="btn btn-secondary" onclick="prevSection('technical')">← Back</button>
+                    <button class="btn btn-secondary">💾 Save Draft</button>
+                    <button class="btn btn-primary" onclick="nextSection('compliance')">Continue to Compliance →</button>
+                </div>
+            </div>
+
+            <!-- SECTION 5: Compliance -->
+            <div class="section-card" id="section-compliance">
+                <div class="section-header">
+                    <div class="section-title">
+                        <span class="section-title-icon">✓</span>
+                        <div>
+                            <h3>Compliance & Declarations</h3>
+                            <p>Confirm your organization meets UNOPS requirements</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-banner">
+                    <span class="info-banner-icon">⚠️</span>
+                    <div>
+                        <strong>Important:</strong> Answer all questions truthfully. Any "Yes" answers require explanation. False statements may result in disqualification or sanctions.
+                    </div>
+                </div>
+
+                <h4 style="color: var(--unops-blue2-600); margin: 24px 0 16px 0; font-size: 1.2em;">Self-Disclosure Questions</h4>
+
+                <div class="compliance-grid">
+                    <div class="compliance-item">
+                        <div class="compliance-number">1</div>
+                        <div>
+                            <div style="font-weight: 600; margin-bottom: 8px;">Bankruptcy or Legal Proceedings</div>
+                            <div style="font-size: 0.9em; color: var(--unops-n-cold-600);">
+                                Has your organization declared bankruptcy, been involved in bankruptcy or receivership proceedings, or is there any judgment or pending legal action that could impair operations?
+                            </div>
+                        </div>
+                        <div class="compliance-response">
+                            <div class="radio-option">
+                                <input type="radio" name="q1" id="q1-no">
+                                <label for="q1-no" style="cursor: pointer;">No</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q1" id="q1-yes" onchange="toggleExplanation('q1-explain')">
+                                <label for="q1-yes" style="cursor: pointer;">Yes</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="q1-explain" style="display: none; margin: -12px 0 0 64px;">
+                        <textarea class="form-textarea" placeholder="Provide detailed explanation..." style="min-height: 80px;"></textarea>
+                    </div>
+
+                    <div class="compliance-item">
+                        <div class="compliance-number">2</div>
+                        <div>
+                            <div style="font-weight: 600; margin-bottom: 8px;">Tax and Social Security</div>
+                            <div style="font-size: 0.9em; color: var(--unops-n-cold-600);">
+                                Has your organization been found in breach of obligations relating to payment of taxes or social security contributions?
+                            </div>
+                        </div>
+                        <div class="compliance-response">
+                            <div class="radio-option">
+                                <input type="radio" name="q2" id="q2-no">
+                                <label for="q2-no" style="cursor: pointer;">No</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q2" id="q2-yes" onchange="toggleExplanation('q2-explain')">
+                                <label for="q2-yes" style="cursor: pointer;">Yes</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="q2-explain" style="display: none; margin: -12px 0 0 64px;">
+                        <textarea class="form-textarea" placeholder="Provide detailed explanation..." style="min-height: 80px;"></textarea>
+                    </div>
+
+                    <div class="compliance-item">
+                        <div class="compliance-number">3</div>
+                        <div>
+                            <div style="font-weight: 600; margin-bottom: 8px;">Proscribed Practices</div>
+                            <div style="font-size: 0.9em; color: var(--unops-n-cold-600);">
+                                Has your organization engaged in corrupt, fraudulent, coercive, collusive, unethical practices, or obstruction?
+                            </div>
+                        </div>
+                        <div class="compliance-response">
+                            <div class="radio-option">
+                                <input type="radio" name="q3" id="q3-no">
+                                <label for="q3-no" style="cursor: pointer;">No</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q3" id="q3-yes" onchange="toggleExplanation('q3-explain')">
+                                <label for="q3-yes" style="cursor: pointer;">Yes</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="q3-explain" style="display: none; margin: -12px 0 0 64px;">
+                        <textarea class="form-textarea" placeholder="Provide detailed explanation..." style="min-height: 80px;"></textarea>
+                    </div>
+
+                    <div class="compliance-item">
+                        <div class="compliance-number">4</div>
+                        <div>
+                            <div style="font-weight: 600; margin-bottom: 8px;">Conflict of Interest</div>
+                            <div style="font-size: 0.9em; color: var(--unops-n-cold-600);">
+                                Does your organization have any conflict of interest that may prevent entering into or performing an agreement with UNOPS?
+                            </div>
+                        </div>
+                        <div class="compliance-response">
+                            <div class="radio-option">
+                                <input type="radio" name="q4" id="q4-no">
+                                <label for="q4-no" style="cursor: pointer;">No</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q4" id="q4-yes" onchange="toggleExplanation('q4-explain')">
+                                <label for="q4-yes" style="cursor: pointer;">Yes</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="q4-explain" style="display: none; margin: -12px 0 0 64px;">
+                        <textarea class="form-textarea" placeholder="Provide detailed explanation..." style="min-height: 80px;"></textarea>
+                    </div>
+                </div>
+
+                <!-- Bid Submission Declaration -->
+                <h4 style="color: var(--unops-blue2-600); margin: 40px 0 20px 0; font-size: 1.2em;">Bid Submission Declaration</h4>
+                
+                <div style="background: var(--unops-n-cold-50); padding: 24px; border-radius: 12px; border: 2px solid var(--unops-n-cold-200); margin-bottom: 24px;">
+                    <div style="font-weight: 600; margin-bottom: 16px;">By submitting this bid, I declare that:</div>
+                    <div style="display: grid; gap: 12px;">
+                        <div style="display: flex; gap: 12px; align-items: start;">
+                            <span style="color: var(--unops-blue2-600); margin-top: 2px;">✓</span>
+                            <span style="font-size: 0.95em;">We have examined and have no reservations to the bidding documents</span>
+                        </div>
+                        <div style="display: flex; gap: 12px; align-items: start;">
+                            <span style="color: var(--unops-blue2-600); margin-top: 2px;">✓</span>
+                            <span style="font-size: 0.95em;">Our bid shall remain valid for <strong>90 days</strong> from submission deadline</span>
+                        </div>
+                        <div style="display: flex; gap: 12px; align-items: start;">
+                            <span style="color: var(--unops-blue2-600); margin-top: 2px;">✓</span>
+                            <span style="font-size: 0.95em;">We embrace the UN Supplier Code of Conduct and Global Compact principles</span>
+                        </div>
+                        <div style="display: flex; gap: 12px; align-items: start;">
+                            <span style="color: var(--unops-blue2-600); margin-top: 2px;">✓</span>
+                            <span style="font-size: 0.95em;">We have not offered and will not offer any improper inducements</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Signature Section -->
+                <h4 style="color: var(--unops-blue2-600); margin: 32px 0 20px 0; font-size: 1.2em;">Authorized Signature</h4>
+                
+                <div class="form-grid">
+                    <div class="form-field">
+                        <label class="form-label">Full Name <span class="required">*</span></label>
+                        <input type="text" class="form-input" placeholder="Name of authorized signatory">
+                    </div>
+
+                    <div class="form-field">
+                        <label class="form-label">Title/Position <span class="required">*</span></label>
+                        <input type="text" class="form-input" placeholder="e.g., CEO, Managing Director">
+                    </div>
+
+                    <div class="form-field">
+                        <label class="form-label">Email <span class="required">*</span></label>
+                        <input type="email" class="form-input" placeholder="signatory@company.com">
+                    </div>
+
+                    <div class="form-field">
+                        <label class="form-label">Date <span class="required">*</span></label>
+                        <input type="date" class="form-input">
+                    </div>
+
+                    <div class="form-field full-width">
+                        <label class="form-label">Digital Signature <span class="required">*</span></label>
+                        <div style="border: 2px dashed var(--unops-n-cold-300); padding: 40px; text-align: center; border-radius: 12px; background: var(--unops-n-cold-50); cursor: pointer;" onclick="document.getElementById('signatureFile').click()">
+                            <div style="font-size: 2.5em; margin-bottom: 12px;">✍️</div>
+                            <div style="font-weight: 600; margin-bottom: 8px;">Click to sign or upload signature</div>
+                            <div style="font-size: 0.85em; color: var(--unops-n-cold-600);">Accepted formats: PDF, PNG, JPG</div>
+                            <input type="file" id="signatureFile" accept=".pdf,.png,.jpg" style="display: none;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-bar">
+                    <button class="btn btn-secondary" onclick="prevSection('qualifications')">← Back</button>
+                    <button class="btn btn-secondary">💾 Save Draft</button>
+                    <button class="btn btn-success" onclick="submitBid()">📤 Submit Bid</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Sticky Bottom Bar -->
+    <div class="sticky-bar active" id="stickyBar">
+        <div class="sticky-bar-content">
+            <div class="sticky-progress">
+                <div class="sticky-progress-bar">
+                    <div class="sticky-progress-fill" id="stickyProgressFill" style="width: 0%;"></div>
+                </div>
+                <div class="sticky-progress-text" id="stickyProgressText">0% Complete • Step 1 of 5: Company & Team</div>
+            </div>
+            <div class="sticky-actions">
+                <button class="btn btn-secondary" onclick="saveDraft()">💾 Save Draft</button>
+                <button class="btn btn-primary" id="stickyNextBtn" onclick="nextFromSticky()">Continue →</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Current section tracking
+        let currentSection = 'company';
+        let completedSections = [];
+        let partnerCount = 0;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgress();
+        });
+
+        // View switching
+        function switchView(view) {
+            const authorView = document.getElementById('authorView');
+            const supplierView = document.getElementById('supplierView');
+            const stickyBar = document.getElementById('stickyBar');
+            const buttons = document.querySelectorAll('.view-toggle-btn');
+
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            if (view === 'author') {
+                authorView.classList.add('active');
+                supplierView.classList.remove('active');
+                stickyBar.classList.remove('active');
+                buttons[0].classList.add('active');
+            } else {
+                authorView.classList.remove('active');
+                supplierView.classList.add('active');
+                stickyBar.classList.add('active');
+                buttons[1].classList.add('active');
+            }
+        }
+
+        // Section navigation
+        function showSection(section) {
+            // Hide all sections
+            document.querySelectorAll('.section-card').forEach(card => {
+                card.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById('section-' + section).classList.add('active');
+            currentSection = section;
+
+            // Update progress steps
+            document.querySelectorAll('.progress-step').forEach(step => {
+                step.classList.remove('active');
+            });
+            document.querySelector(`.progress-step[onclick*="${section}"]`).classList.add('active');
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            updateProgress();
+        }
+
+        function nextSection(section) {
+            if (!completedSections.includes(currentSection)) {
+                completedSections.push(currentSection);
+            }
+            showSection(section);
+        }
+
+        function prevSection(section) {
+            showSection(section);
+        }
+
+        function nextFromSticky() {
+            const sections = ['company', 'pricing', 'technical', 'qualifications', 'compliance'];
+            const currentIndex = sections.indexOf(currentSection);
+            if (currentIndex < sections.length - 1) {
+                nextSection(sections[currentIndex + 1]);
+            }
+        }
+
+        // Progress tracking
+        function updateProgress() {
+            const total = 5;
+            const completed = completedSections.length;
+            const percentage = Math.round((completed / total) * 100);
+
+            // Update main progress
+            document.getElementById('progressPercent').textContent = percentage + '%';
+            document.getElementById('progressSteps').textContent = completed + '/' + total;
+
+            // Update sticky bar
+            document.getElementById('stickyProgressFill').style.width = percentage + '%';
+            
+            const sectionNames = {
+                'company': 'Company & Team',
+                'pricing': 'Pricing & Commercial',
+                'technical': 'Technical Compliance',
+                'qualifications': 'Qualifications',
+                'compliance': 'Compliance'
+            };
+            
+            const sections = ['company', 'pricing', 'technical', 'qualifications', 'compliance'];
+            const currentIndex = sections.indexOf(currentSection);
+            
+            document.getElementById('stickyProgressText').textContent = 
+                `${percentage}% Complete • Step ${currentIndex + 1} of ${total}: ${sectionNames[currentSection]}`;
+
+            // Update step status
+            document.querySelectorAll('.progress-step').forEach((step, index) => {
+                const section = sections[index];
+                const statusEl = step.querySelector('.step-status');
+                
+                if (completedSections.includes(section)) {
+                    step.classList.add('completed');
+                    step.classList.remove('in-progress', 'active');
+                    statusEl.textContent = 'Completed';
+                } else if (section === currentSection) {
+                    step.classList.add('active');
+                    step.classList.remove('completed', 'in-progress');
+                    statusEl.textContent = 'In progress';
+                } else {
+                    step.classList.remove('completed', 'active', 'in-progress');
+                    statusEl.textContent = 'Not started';
+                }
+            });
+        }
+
+        // Consortium/JV management
+        function toggleConsortium() {
+            const isSingle = document.getElementById('single').checked;
+            document.getElementById('singleCompanySection').style.display = isSingle ? 'block' : 'none';
+            document.getElementById('consortiumSection').style.display = isSingle ? 'none' : 'block';
+
+            if (!isSingle && partnerCount === 0) {
+                addPartner();
+            }
+        }
+
+        function addPartner() {
+            partnerCount++;
+            const isLead = partnerCount === 1;
+            
+            const partnerCard = document.createElement('div');
+            partnerCard.className = 'partner-card' + (isLead ? ' lead' : '');
+            partnerCard.id = 'partner-' + partnerCount;
+            
+            partnerCard.innerHTML = `
+                ${isLead ? '<div class="partner-badge">LEAD PARTNER</div>' : ''}
+                <h5 style="color: var(--unops-blue2-600); margin-bottom: 16px; font-size: 1.1em;">Partner ${partnerCount}</h5>
+                
+                <div class="form-grid">
+                    <div class="form-field">
+                        <label class="form-label">Company Name <span class="required">*</span></label>
+                        <input type="text" class="form-input" placeholder="Enter company name">
+                    </div>
+                    
+                    <div class="form-field">
+                        <label class="form-label">UNGM ID <span style="color: var(--unops-n-cold-500); font-weight: 400;">(if registered)</span></label>
+                        <input type="text" class="form-input" placeholder="UNGM-XXXXXX">
+                    </div>
+                    
+                    <div class="form-field full-width">
+                        <label class="form-label">Address <span class="required">*</span></label>
+                        <textarea class="form-textarea" placeholder="Complete address" style="min-height: 70px;"></textarea>
+                    </div>
+                    
+                    <div class="form-field">
+                        <label class="form-label">Email <span class="required">*</span></label>
+                        <input type="email" class="form-input" placeholder="contact@company.com">
+                    </div>
+                    
+                    <div class="form-field">
+                        <label class="form-label">Phone <span class="required">*</span></label>
+                        <input type="tel" class="form-input" placeholder="+X-XXX-XXX-XXXX">
+                    </div>
+                    
+                    <div class="form-field">
+                        <label class="form-label">Share of Responsibility (%) <span class="required">*</span></label>
+                        <input type="number" class="form-input partner-share" min="0" max="100" value="${isLead ? 100 : 0}" 
+                               placeholder="0" onchange="updateTotalShare()">
+                    </div>
+                    
+                    <div class="form-field full-width">
+                        <label class="form-label">Scope of Work</label>
+                        <textarea class="form-textarea" placeholder="Describe what this partner will deliver" style="min-height: 70px;"></textarea>
+                    </div>
+                </div>
+                
+                ${!isLead ? `
+                    <div style="display: flex; gap: 12px; margin-top: 16px; padding-top: 16px; border-top: 2px solid var(--unops-n-cold-200);">
+                        <button class="btn btn-secondary" onclick="makeLeadPartner(${partnerCount})" style="padding: 10px 20px;">
+                            ⭐ Make Lead Partner
+                        </button>
+                        <button class="btn btn-secondary" onclick="removePartner(${partnerCount})" style="padding: 10px 20px; color: var(--unops-red-500); border-color: var(--unops-red-500);">
+                            🗑️ Remove Partner
+                        </button>
+                    </div>
+                ` : ''}
+            `;
+            
+            document.getElementById('partnerCards').appendChild(partnerCard);
+            updateTotalShare();
+        }
+
+        function removePartner(id) {
+            document.getElementById('partner-' + id).remove();
+            updateTotalShare();
+        }
+
+        function makeLeadPartner(id) {
+            // Remove lead from all
+            document.querySelectorAll('.partner-card').forEach(card => {
+                card.classList.remove('lead');
+                const badge = card.querySelector('.partner-badge');
+                if (badge) badge.remove();
+            });
+            
+            // Add lead to selected
+            const card = document.getElementById('partner-' + id);
+            card.classList.add('lead');
+            const badge = document.createElement('div');
+            badge.className = 'partner-badge';
+            badge.textContent = 'LEAD PARTNER';
+            card.insertBefore(badge, card.firstChild);
+        }
+
+        function updateTotalShare() {
+            let total = 0;
+            document.querySelectorAll('.partner-share').forEach(input => {
+                total += parseFloat(input.value) || 0;
+            });
+            
+            const totalSpan = document.getElementById('totalShare');
+            const statusSpan = document.getElementById('shareStatus');
+            
+            totalSpan.textContent = total + '%';
+            
+            if (total === 100) {
+                statusSpan.innerHTML = '<span style="color: var(--unops-green-500);">✓ Valid</span>';
+            } else if (total > 100) {
+                statusSpan.innerHTML = '<span style="color: var(--unops-red-500);">⚠️ Exceeds 100%</span>';
+            } else {
+                statusSpan.innerHTML = '<span style="color: var(--unops-yellow-400);">⚠️ Must equal 100%</span>';
+            }
+        }
+
+        function toggleExplanation(id) {
+            const yesRadio = document.querySelector(`input[name="${id.replace('-explain', '')}"][id$="-yes"]`);
+            const explainDiv = document.getElementById(id);
+            if (yesRadio.checked) {
+                explainDiv.style.display = 'block';
+            } else {
+                explainDiv.style.display = 'none';
+            }
+        }
+
+        function saveDraft() {
+            alert('Draft saved successfully!\n\nYou can return to complete your bid anytime before the deadline.');
+        }
+
+        function submitBid() {
+            if (completedSections.length < 4) {
+                alert('Please complete all sections before submitting your bid.');
+                return;
+            }
+            
+            if (confirm('Ready to submit your bid?\n\nOnce submitted, you will not be able to make changes unless specifically requested by UNOPS.')) {
+                alert('🎉 Bid submitted successfully!\n\nReference: ITB/2025/60187\nSubmission Time: ' + new Date().toLocaleString() + '\n\nYou will receive a confirmation email shortly.');
+            }
+        }
+    </script>
+
+</body>
+</html>
