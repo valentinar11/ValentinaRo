@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNOPS eTendering - Technical Evaluation with Supplier Documents</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        .top-bar {
+            background: linear-gradient(135deg, #0052a3 0%, #003d7a 100%);
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .logo-text {
+            font-size: 1.4em;
+            font-weight: bold;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0052a3;
+            font-weight: bold;
+        }
+
+        .main-container {
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .breadcrumb {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .evaluation-header {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .evaluation-header h1 {
+            color: #0052a3;
+            margin-bottom: 10px;
+        }
+
+        .tender-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .info-label {
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        .info-value {
+            font-size: 1em;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        .role-selector {
+            background: white;
+            padding: 20px 25px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .role-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .role-btn {
+            padding: 12px 24px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .role-btn:hover {
+            background: #f5f7fa;
+            border-color: #0052a3;
+        }
+
+        .role-btn.active {
+            background: #0052a3;
+            color: white;
+        }
+
+        .legend-bar {
+            background: #f5f7fa;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85em;
+        }
+
+        .legend-box {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+
+        .vendor-tabs {
+            display: flex;
+            gap: 10px;
+            background: white;
+            padding: 15px 25px 0 25px;
+            border-radius: 8px 8px 0 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .vendor-tab {
+            padding: 12px 24px;
+            border: none;
+            background: transparent;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-weight: 600;
+            color: #666;
+        }
+
+        .vendor-tab.active {
+            color: #0052a3;
+            border-bottom-color: #0052a3;
+        }
+
+        .evaluation-content {
+            background: white;
+            padding: 25px;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .vendor-info-bar {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .vendor-detail-label {
+            font-size: 0.8em;
+            color: #0052a3;
+            font-weight: 600;
+        }
+
+        .vendor-detail-value {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #003d7a;
+            margin-top: 3px;
+        }
+
+        .system-note {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+
+        .evaluation-table-container {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        .evaluation-table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #e0e0e0;
+            background: white;
+        }
+
+        .evaluation-table th {
+            background: linear-gradient(135deg, #0052a3 0%, #003d7a 100%);
+            color: white;
+            padding: 12px 10px;
+            text-align: left;
+            font-size: 0.85em;
+            font-weight: 600;
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .evaluation-table td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #e0e0e0;
+            border-right: 1px solid #f0f0f0;
+            vertical-align: top;
+            font-size: 0.85em;
+        }
+
+        .evaluation-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        .system-column {
+            background: #e8f5e9 !important;
+        }
+
+        .manual-column {
+            background: #fff9e6 !important;
+        }
+
+        .req-id {
+            font-weight: bold;
+            color: #0052a3;
+        }
+
+        .mandatory-badge {
+            display: inline-block;
+            background: #ff5252;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7em;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .optional-badge {
+            display: inline-block;
+            background: #42a5f5;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7em;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .auto-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.8em;
+        }
+
+        .auto-status.pass {
+            background: #c8e6c9;
+            color: #2e7d32;
+        }
+
+        .auto-status.fail {
+            background: #ffcdd2;
+            color: #c62828;
+        }
+
+        .auto-status.clarification {
+            background: #fff9c4;
+            color: #f57f17;
+        }
+
+        .auto-status.pending {
+            background: #e1bee7;
+            color: #6a1b9a;
+        }
+
+        .auto-status.not_evaluated {
+            background: #e0e0e0;
+            color: #757575;
+        }
+
+        select.eval-select {
+            width: 100%;
+            padding: 6px 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        select.eval-select.pass {
+            border-color: #4caf50;
+            color: #2e7d32;
+        }
+
+        select.eval-select.fail {
+            border-color: #f44336;
+            color: #c62828;
+        }
+
+        textarea.comment-field {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 0.85em;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.85em;
+        }
+
+        .btn-primary {
+            background: #0052a3;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .btn-clarification {
+            background: #ff9800;
+            color: white;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+            justify-content: flex-end;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        /* Supplier Documents Styling */
+        .doc-count-badge {
+            display: inline-block;
+            background: #0052a3;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .supplier-docs-container {
+            max-height: 180px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .supplier-docs-container::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .supplier-docs-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        .supplier-docs-container::-webkit-scrollbar-thumb {
+            background: #0052a3;
+            border-radius: 3px;
+        }
+
+        .supplier-doc-card {
+            margin-bottom: 6px;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            border-left: 3px solid #0052a3;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .supplier-doc-card:hover {
+            background: #e3f2fd;
+            border-left-color: #1976d2;
+            transform: translateX(2px);
+        }
+
+        .supplier-doc-name {
+            font-weight: 600;
+            color: #0052a3;
+            font-size: 0.85em;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .supplier-doc-meta {
+            font-size: 0.7em;
+            color: #666;
+            margin-top: 3px;
+        }
+
+        .deviation-flag {
+            background: #fff3e0;
+            border-left: 3px solid #ff9800;
+            padding: 6px 10px;
+            margin-top: 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #2e7d32;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            display: none;
+            z-index: 2000;
+        }
+
+        .toast.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(400px); }
+            to { transform: translateX(0); }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 600px;
+            width: 90%;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+
+        .comparison-view {
+            display: none;
+        }
+
+        .comparison-view.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <div class="logo-text">🌐 UNOPS eTendering</div>
+        <div class="user-info">
+            <span id="currentUser">Evaluator 1 - Sarah Chen</span>
+            <div class="user-avatar">SC</div>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="breadcrumb">
+            <strong>Home</strong> / Tenders / ITB-2025-8392 / <strong>Technical Evaluation</strong>
+        </div>
+
+        <div class="evaluation-header">
+            <h1>ITB-2025-8392: Procurement of Medical Equipment</h1>
+            <div class="tender-info">
+                <div>
+                    <div class="info-label">Tender Type</div>
+                    <div class="info-value">Invitation to Bid (ITB)</div>
+                </div>
+                <div>
+                    <div class="info-label">Evaluation Stage</div>
+                    <div class="info-value">Technical Evaluation</div>
+                </div>
+                <div>
+                    <div class="info-label">Bids Received</div>
+                    <div class="info-value">3 Bidders</div>
+                </div>
+                <div>
+                    <div class="info-label">Closing Date</div>
+                    <div class="info-value">15 Nov 2025</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="role-selector">
+            <h3>👤 Select Your Role</h3>
+            <div class="role-buttons">
+                <button class="role-btn active" onclick="switchRole('evaluator1')">
+                    👨‍💼 Evaluator 1 - Sarah Chen
+                </button>
+                <button class="role-btn" onclick="switchRole('evaluator2')">
+                    👩‍💼 Evaluator 2 (Chair) - Dr. Ahmed
+                </button>
+                <button class="role-btn" onclick="switchRole('po')">
+                    👔 Procurement Official - Maria
+                </button>
+                <button class="role-btn" onclick="switchRole('comparison')">
+                    📊 Comparison View
+                </button>
+            </div>
+        </div>
+
+        <div class="legend-bar">
+            <strong>Legend:</strong>
+            <div class="legend-item">
+                <div class="legend-box" style="background: #e8f5e9;"></div>
+                <span>System Generated</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background: #fff9e6;"></div>
+                <span>Manual Input</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background: #c8e6c9;"></div>
+                <span>Pass</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background: #ffcdd2;"></div>
+                <span>Fail</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background: #e0e0e0;"></div>
+                <span>Not Evaluated</span>
+            </div>
+        </div>
+
+        <div class="vendor-tabs">
+            <button class="vendor-tab active" onclick="switchVendor('vendor1')">Supplier 1 - MedTech Solutions Ltd.</button>
+            <button class="vendor-tab" onclick="switchVendor('vendor2')">Supplier 2 - Global Medical Corp.</button>
+            <button class="vendor-tab" onclick="switchVendor('vendor3')">Supplier 3 - Healthcare Innovations Inc.</button>
+        </div>
+
+        <div class="evaluation-content">
+            <div class="vendor-info-bar">
+                <div>
+                    <div class="vendor-detail-label">Company Name</div>
+                    <div class="vendor-detail-value" id="vendorName">MedTech Solutions Ltd.</div>
+                </div>
+                <div>
+                    <div class="vendor-detail-label">UNGM Number</div>
+                    <div class="vendor-detail-value" id="vendorUNGM">309663</div>
+                </div>
+                <div>
+                    <div class="vendor-detail-label">Country</div>
+                    <div class="vendor-detail-value" id="vendorCountry">Germany</div>
+                </div>
+                <div>
+                    <div class="vendor-detail-label">Total Bid Price</div>
+                    <div class="vendor-detail-value" id="vendorPrice">$234,500 USD</div>
+                </div>
+                <div>
+                    <div class="vendor-detail-label">Price Rank</div>
+                    <div class="vendor-detail-value" id="vendorRank">2 of 3</div>
+                </div>
+            </div>
+
+            <div class="system-note" id="roleNote">
+                <strong>👨‍💼 Evaluator View:</strong> Review the system-generated evaluation and provide your independent assessment.
+            </div>
+
+            <div class="evaluation-table-container">
+                <table class="evaluation-table" id="evaluationTable">
+                    <thead>
+                        <tr id="tableHeader">
+                            <!-- Will be populated by JavaScript -->
+                        </tr>
+                    </thead>
+                    <tbody id="evaluationTableBody">
+                        <!-- Will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="comparison-view" id="comparisonView">
+                <!-- Comparison content -->
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-secondary" onclick="saveDraft()">💾 Save Draft</button>
+                <button class="btn btn-primary" onclick="submitEvaluation()">✅ Submit Evaluation</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="clarificationModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Request Clarification</h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <textarea class="comment-field" id="clarificationText" placeholder="Enter clarification request..." style="min-height: 120px;"></textarea>
+            <div style="margin-top: 15px; display: flex; gap: 10px;">
+                <button class="btn btn-primary" onclick="sendClarification()">Send</button>
+                <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">
+        <span id="toastMessage"></span>
+    </div>
+
+    <script>
+        const requirements = [
+            {
+                id: "R1",
+                description: "Integrated, maintenance-free, rechargeable batteries with integrated battery charger",
+                mandatory: true,
+                bidderCompliance: "Yes",
+                bidderResponse: "24V DC lithium-ion batteries, 28 cycle autonomy. Maintenance intervals: 5 years.",
+                specifications: "24 V DC, 25 cycles minimum",
+                deviation: null,
+                supplierDocuments: [
+                    { name: "Battery_Technical_Datasheet.pdf", size: "2.4 MB", date: "2025-11-12" },
+                    { name: "EN60601_Certification.pdf", size: "890 KB", date: "2025-11-12" },
+                    { name: "Lithium_Safety_Manual.pdf", size: "1.2 MB", date: "2025-11-12" }
+                ],
+                systemEval: "pass",
+                evaluations: {
+                    evaluator1: { status: "pass", comment: "Exceeds requirements. 28 cycles vs 25 required." },
+                    evaluator2: { status: "pass", comment: "Battery system compliant." },
+                    po: { status: "pass", comment: "Approved." }
+                }
+            },
+            {
+                id: "R2",
+                description: "Motorized leg section controlled by remote control",
+                mandatory: true,
+                bidderCompliance: "Partial",
+                bidderResponse: "Motorized leg included. Touchscreen control standard. Remote control optional (+$2,500).",
+                specifications: "Remote control required",
+                deviation: "Remote not in base price",
+                supplierDocuments: [
+                    { name: "Control_System_Manual.pdf", size: "3.1 MB", date: "2025-11-13" },
+                    { name: "Touchscreen_Guide.pdf", size: "1.8 MB", date: "2025-11-13" },
+                    { name: "Remote_Option_Spec.pdf", size: "450 KB", date: "2025-11-13" },
+                    { name: "Motor_Specifications.pdf", size: "780 KB", date: "2025-11-13" }
+                ],
+                systemEval: "fail",
+                evaluations: {
+                    evaluator1: { status: "clarification", comment: "Need clarification on remote control inclusion." },
+                    evaluator2: { status: "pass", comment: "Touchscreen acceptable alternative." },
+                    po: { status: "pending", comment: "Awaiting clarification." }
+                }
+            },
+            {
+                id: "R3",
+                description: "Radiolucent table-top for surgical X-ray imaging",
+                mandatory: true,
+                bidderCompliance: "No",
+                bidderResponse: "Partial radiolucency. Suitable for basic X-ray only. Full radiolucent option +$8,000.",
+                specifications: "Full radiolucency required",
+                deviation: "Partial radiolucency only",
+                supplierDocuments: [
+                    { name: "Material_Specifications.pdf", size: "1.5 MB", date: "2025-11-14" },
+                    { name: "Radiolucency_Test_Report.pdf", size: "2.2 MB", date: "2025-11-14" }
+                ],
+                systemEval: "fail",
+                evaluations: {
+                    evaluator1: { status: "fail", comment: "Does not meet mandatory requirement." },
+                    evaluator2: { status: "fail", comment: "Critical deviation." },
+                    po: { status: "fail", comment: "Non-compliant." }
+                }
+            },
+            {
+                id: "R4",
+                description: "Adjustable height range: 600mm to 1000mm",
+                mandatory: true,
+                bidderCompliance: "Yes",
+                bidderResponse: "Height range: 550mm to 1050mm. Electric with 3 memory positions.",
+                specifications: "600-1000mm minimum",
+                deviation: null,
+                supplierDocuments: [
+                    { name: "Height_Mechanism.pdf", size: "1.9 MB", date: "2025-11-12" },
+                    { name: "Electric_Motor_Specs.pdf", size: "670 KB", date: "2025-11-12" },
+                    { name: "Memory_System_Manual.pdf", size: "540 KB", date: "2025-11-12" }
+                ],
+                systemEval: "pass",
+                evaluations: {
+                    evaluator1: { status: "pass", comment: "Exceeds range. Memory feature is excellent." },
+                    evaluator2: { status: "pass", comment: "Compliant with added value." },
+                    po: { status: "pass", comment: "Approved." }
+                }
+            }
+        ];
+
+        // Vendor data for different suppliers
+        const vendors = {
+            vendor1: {
+                name: "MedTech Solutions Ltd.",
+                ungm: "309663",
+                country: "Germany",
+                price: "$234,500 USD",
+                rank: "2 of 3",
+                requirements: requirements // Using the same requirements structure for demo
+            },
+            vendor2: {
+                name: "Global Medical Corp.",
+                ungm: "301245",
+                country: "USA",
+                price: "$198,750 USD",
+                rank: "1 of 3 (Lowest)",
+                requirements: [
+                    {
+                        id: "R1",
+                        description: "Integrated, maintenance-free, rechargeable batteries with integrated battery charger",
+                        mandatory: true,
+                        bidderCompliance: "Yes",
+                        bidderResponse: "25V DC NiMH batteries, 26 cycle autonomy. Maintenance-free design.",
+                        specifications: "24 V DC, 25 cycles minimum",
+                        deviation: null,
+                        supplierDocuments: [
+                            { name: "Battery_Datasheet_GMC.pdf", size: "1.8 MB", date: "2025-11-11" },
+                            { name: "ISO_Certification.pdf", size: "650 KB", date: "2025-11-11" }
+                        ],
+                        systemEval: "pass",
+                        evaluations: {
+                            evaluator1: { status: "pass", comment: "Meets minimum requirements adequately." },
+                            evaluator2: { status: "pass", comment: "Compliant battery system." },
+                            po: { status: "pass", comment: "Approved." }
+                        }
+                    },
+                    {
+                        id: "R2",
+                        description: "Motorized leg section controlled by remote control",
+                        mandatory: true,
+                        bidderCompliance: "Yes",
+                        bidderResponse: "Fully motorized leg section with wireless remote control included in base price.",
+                        specifications: "Remote control required",
+                        deviation: null,
+                        supplierDocuments: [
+                            { name: "Remote_Control_System.pdf", size: "2.2 MB", date: "2025-11-11" },
+                            { name: "Wireless_Specifications.pdf", size: "890 KB", date: "2025-11-11" },
+                            { name: "Motor_Technical_Data.pdf", size: "1.1 MB", date: "2025-11-11" }
+                        ],
+                        systemEval: "pass",
+                        evaluations: {
+                            evaluator1: { status: "pass", comment: "Remote control included. Fully compliant." },
+                            evaluator2: { status: "pass", comment: "Meets all technical requirements." },
+                            po: { status: "pass", comment: "Approved." }
+                        }
+                    },
+                    {
+                        id: "R3",
+                        description: "Radiolucent table-top for surgical X-ray imaging",
+                        mandatory: true,
+                        bidderCompliance: "Yes",
+                        bidderResponse: "Full radiolucent carbon composite table-top. Compatible with all imaging modalities.",
+                        specifications: "Full radiolucency required",
+                        deviation: null,
+                        supplierDocuments: [
+                            { name: "Radiolucent_Material_Cert.pdf", size: "1.9 MB", date: "2025-11-11" },
+                            { name: "Imaging_Compatibility_Tests.pdf", size: "3.1 MB", date: "2025-11-11" },
+                            { name: "FDA_Clearance_Letter.pdf", size: "420 KB", date: "2025-11-11" }
+                        ],
+                        systemEval: "pass",
+                        evaluations: {
+                            evaluator1: { status: "pass", comment: "Full radiolucency confirmed. Excellent." },
+                            evaluator2: { status: "pass", comment: "Meets mandatory requirement fully." },
+                            po: { status: "pass", comment: "Approved." }
+                        }
+                    },
+                    {
+                        id: "R4",
+                        description: "Adjustable height range: 600mm to 1000mm",
+                        mandatory: true,
+                        bidderCompliance: "Yes",
+                        bidderResponse: "Height adjustment: 580mm to 980mm. Electric with foot pedal control.",
+                        specifications: "600-1000mm minimum",
+                        deviation: "Slightly narrower range",
+                        supplierDocuments: [
+                            { name: "Height_System_GMC.pdf", size: "1.4 MB", date: "2025-11-11" },
+                            { name: "Pedal_Control_Manual.pdf", size: "780 KB", date: "2025-11-11" }
+                        ],
+                        systemEval: "pass",
+                        evaluations: {
+                            evaluator1: { status: "pass", comment: "Within acceptable range despite being slightly narrower." },
+                            evaluator2: { status: "pass", comment: "Functional range is adequate." },
+                            po: { status: "pass", comment: "Approved." }
+                        }
+                    }
+                ]
+            },
+            vendor3: {
+                name: "Healthcare Innovations Inc.",
+                ungm: "315789",
+                country: "Japan",
+                price: "$267,900 USD",
+                rank: "3 of 3 (Highest)",
+                requirements: [
+                    {
+                        id: "R1",
+                        description: "Integrated, maintenance-free, rechargeable batteries with integrated battery charger",
+                        mandatory: true,
+                        bidderCompliance: "Yes",
+                        bidderResponse: "Advanced 24V lithium polymer batteries. 30 cycle autonomy with smart charging.",
+                        specifications: "24 V DC, 25 cycles minimum",
+                        deviation: null,
+                        supplierDocuments: [
+                            { name: "Advanced_Battery_Tech.pdf", size: "3.2 MB", date: "2025-11-10" },
+                            { name: "Smart_Charging_System.pdf", size: "1.5 MB", date: "2025-11-10" },
+                            { name: "Japanese_Safety_Cert.pdf", size: "990 KB", date: "2025-11-10" }
+                        ],
+                        systemEval: "pass",
+                        evaluations: {
+                            evaluator1: { status: "pass", comment: "Superior technology. Highest autonomy." },
+                            evaluator2: { status: "pass", comment: "Exceeds specifications significantly." },
+                            po: { status: "pass", comment: "Approved." }
+                        }
+                    },
+                    {
+                        id: "R2",
+                        description: "Motorized leg section controlled by remote control",
+                        mandatory: true,
+                        bidderCompliance: "Yes",
+                        bidderResponse: "Motorized with both remote control and tablet app control. Bluetooth enabled.",
+                        specifications: "Remote control required",
+                        deviation: null,
+                        supplierDocuments: [
+                            { name: "Dual_Control_System.pdf", size: "2.8 MB", date: "2025-11-10" },
+                            { name: "Tablet_App_Guide.pdf", size: "1.2 MB", date: "2025-11-10" },
+                            { name: "Bluetooth_Specifications.pdf", size: "560 KB", date: "2025-11-10" }
+                        ],
+                        systemEval: "pass",
+                        evaluations: {
+                            evaluator1: { status: "pass", comment: "Advanced control options. Very innovative." },
+                            evaluator2: { status: "pass", comment: "Exceeds requirements with modern features." },
+                            po: { status: "pass", comment: "Approved." }
+                        }
+                    },
+                    {
+                        id: "R3",
+                        description: "Radiolucent table-top for surgical X-ray imaging",
+                        mandatory: true,
+                        bidderCompliance: "No",
+                        bidderResponse: "Semi-radiolucent advanced polymer. Suitable for standard X-ray but limited fluoroscopy.",
+                        specifications: "Full radiolucency required",
+                        deviation: "Semi-radiolucent only",
+                        supplierDocuments: [
+                            { name: "Polymer_Material_Specs.pdf", size: "2.1 MB", date: "2025-11-10" },
+                            { name: "Imaging_Limitation_Report.pdf", size: "1.7 MB", date: "2025-11-10" }
+                        ],
+                        systemEval: "fail",
+                        evaluations: {
+                            evaluator1: { status: "fail", comment: "Insufficient radiolucency for surgical imaging." },
+                            evaluator2: { status: "fail", comment: "Does not meet mandatory requirement." },
+                            po: { status: "fail", comment: "Non-compliant." }
+                        }
+                    },
+                    {
+                        id: "R4",
+                        description: "Adjustable height range: 600mm to 1000mm",
+                        mandatory: true,
+                        bidderCompliance: "Yes",
+                        bidderResponse: "Ultra-wide range: 500mm to 1100mm. Voice-activated height control available.",
+                        specifications: "600-1000mm minimum",
+                        deviation: null,
+                        supplierDocuments: [
+                            { name: "Ultra_Wide_Range_System.pdf", size: "2.3 MB", date: "2025-11-10" },
+                            { name: "Voice_Control_Feature.pdf", size: "1.1 MB", date: "2025-11-10" },
+                            { name: "Precision_Motor_Tech.pdf", size: "890 KB", date: "2025-11-10" }
+                        ],
+                        systemEval: "pass",
+                        evaluations: {
+                            evaluator1: { status: "pass", comment: "Exceptional range. Voice control is innovative." },
+                            evaluator2: { status: "pass", comment: "Far exceeds requirements." },
+                            po: { status: "pass", comment: "Approved." }
+                        }
+                    }
+                ]
+            }
+        };
+
+        let currentRole = 'evaluator1';
+        let currentVendor = 'vendor1';
+
+        function renderTable() {
+            const thead = document.getElementById('tableHeader');
+            const tbody = document.getElementById('evaluationTableBody');
+            
+            // Get current vendor's requirements
+            const currentRequirements = vendors[currentVendor].requirements;
+            
+            if (currentRole === 'comparison') {
+                document.getElementById('evaluationTable').style.display = 'none';
+                renderComparison();
+                return;
+            }
+            
+            document.getElementById('evaluationTable').style.display = 'table';
+            document.getElementById('comparisonView').classList.remove('show');
+            
+            if (currentRole === 'po') {
+                // Compiled view for PO
+                thead.innerHTML = `
+                    <th>Req ID</th>
+                    <th>Requirement</th>
+                    <th class="system-column">System</th>
+                    <th>Evaluator 1</th>
+                    <th>Eval 1 Comments</th>
+                    <th>Evaluator 2</th>
+                    <th>Eval 2 Comments</th>
+                    <th class="manual-column">PO Final</th>
+                    <th class="manual-column">PO Comments</th>
+                `;
+                
+                tbody.innerHTML = currentRequirements.map(req => {
+                    const e1 = req.evaluations.evaluator1;
+                    const e2 = req.evaluations.evaluator2;
+                    const po = req.evaluations.po;
+                    
+                    return `
+                        <tr>
+                            <td><div class="req-id">${req.id}</div></td>
+                            <td>
+                                ${req.description}
+                                <div class="${req.mandatory ? 'mandatory-badge' : 'optional-badge'}">
+                                    ${req.mandatory ? 'MANDATORY' : 'OPTIONAL'}
+                                </div>
+                            </td>
+                            <td class="system-column">
+                                <span class="auto-status ${req.systemEval}">${req.systemEval === 'pass' ? '✅ Pass' : '❌ Fail'}</span>
+                            </td>
+                            <td><span class="auto-status ${e1.status}">${formatStatus(e1.status)}</span></td>
+                            <td>${e1.comment}</td>
+                            <td><span class="auto-status ${e2.status}">${formatStatus(e2.status)}</span></td>
+                            <td>${e2.comment}</td>
+                            <td class="manual-column">
+                                <select class="eval-select ${po.status}">
+                                    <option value="not_evaluated" ${po.status === 'not_evaluated' ? 'selected' : ''}>⊘ Not Evaluated</option>
+                                    <option value="pass" ${po.status === 'pass' ? 'selected' : ''}>✅ Pass</option>
+                                    <option value="fail" ${po.status === 'fail' ? 'selected' : ''}>❌ Fail</option>
+                                    <option value="pending" ${po.status === 'pending' ? 'selected' : ''}>⏳ Pending</option>
+                                </select>
+                            </td>
+                            <td class="manual-column">
+                                <textarea class="comment-field">${po.comment}</textarea>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+                
+            } else {
+                // Individual evaluator view
+                thead.innerHTML = `
+                    <th>Req ID</th>
+                    <th>Requirement</th>
+                    <th>Type</th>
+                    <th>Compliance</th>
+                    <th>Deviation</th>
+                    <th>Specifications</th>
+                    <th>Bidder Response</th>
+                    <th>Supplier Documents</th>
+                    <th class="system-column">System</th>
+                    <th class="manual-column">Your Eval</th>
+                    <th class="manual-column">Comments</th>
+                    <th class="manual-column">Action</th>
+                `;
+                
+                const evalKey = currentRole;
+                
+                tbody.innerHTML = currentRequirements.map(req => {
+                    const currentEval = req.evaluations[evalKey];
+                    
+                    return `
+                        <tr>
+                            <td><div class="req-id">${req.id}</div></td>
+                            <td>
+                                ${req.description}
+                                <div class="${req.mandatory ? 'mandatory-badge' : 'optional-badge'}">
+                                    ${req.mandatory ? 'MANDATORY' : 'OPTIONAL'}
+                                </div>
+                            </td>
+                            <td>${req.mandatory ? 'Mandatory' : 'Optional'}</td>
+                            <td>${req.bidderCompliance === 'Yes' ? '✅ Yes' : req.bidderCompliance === 'No' ? '❌ No' : '⚠️ Partial'}</td>
+                            <td style="color: ${req.deviation ? '#d84315' : '#666'};">${req.deviation || '-'}</td>
+                            <td style="font-size: 0.8em; color: #666;">${req.specifications}</td>
+                            <td>
+                                ${req.bidderResponse}
+                                ${req.deviation ? `<div class="deviation-flag"><strong>⚠️ Deviation:</strong> ${req.deviation}</div>` : ''}
+                            </td>
+                            <td>
+                                ${renderSupplierDocs(req.supplierDocuments)}
+                            </td>
+                            <td class="system-column">
+                                <span class="auto-status ${req.systemEval}">${req.systemEval === 'pass' ? '✅ Pass' : '❌ Fail'}</span>
+                            </td>
+                            <td class="manual-column">
+                                <select class="eval-select ${currentEval.status}">
+                                    <option value="not_evaluated" ${currentEval.status === 'not_evaluated' ? 'selected' : ''}>⊘ Not Evaluated</option>
+                                    <option value="pass" ${currentEval.status === 'pass' ? 'selected' : ''}>✅ Pass</option>
+                                    <option value="fail" ${currentEval.status === 'fail' ? 'selected' : ''}>❌ Fail</option>
+                                    <option value="clarification" ${currentEval.status === 'clarification' ? 'selected' : ''}>⚠️ Clarification</option>
+                                </select>
+                            </td>
+                            <td class="manual-column">
+                                <textarea class="comment-field" placeholder="Enter comments...">${currentEval.comment}</textarea>
+                            </td>
+                            <td class="manual-column" style="text-align: center;">
+                                <button class="btn btn-clarification" onclick="requestClarification('${req.id}')">💬</button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+        }
+
+        function renderSupplierDocs(docs) {
+            if (!docs || docs.length === 0) {
+                return '<span style="color: #999; font-style: italic;">No documents</span>';
+            }
+            
+            return `
+                <div class="doc-count-badge">📎 ${docs.length} Doc${docs.length > 1 ? 's' : ''}</div>
+                <div class="supplier-docs-container">
+                    ${docs.map(doc => `
+                        <div class="supplier-doc-card" onclick="viewDocument('${doc.name}')">
+                            <div class="supplier-doc-name">📄 ${doc.name}</div>
+                            <div class="supplier-doc-meta">📦 ${doc.size} | 📅 ${doc.date}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function formatStatus(status) {
+            const map = {
+                'pass': '✅ Pass',
+                'fail': '❌ Fail',
+                'clarification': '⚠️ Clarification',
+                'pending': '⏳ Pending',
+                'not_evaluated': '⊘ Not Evaluated'
+            };
+            return map[status] || status;
+        }
+
+        function renderComparison() {
+            document.getElementById('comparisonView').classList.add('show');
+            
+            const currentRequirements = vendors[currentVendor].requirements;
+            
+            document.getElementById('comparisonView').innerHTML = `
+                <h3 style="margin-bottom: 20px; color: #0052a3;">📊 Multi-Evaluator Comparison - ${vendors[currentVendor].name}</h3>
+                <div style="background: white; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
+                    <div style="display: grid; grid-template-columns: 180px 1fr 1fr 1fr 1fr; background: linear-gradient(135deg, #0052a3 0%, #003d7a 100%); color: white; font-weight: bold;">
+                        <div style="padding: 15px; border-right: 1px solid rgba(255,255,255,0.2);">Requirement</div>
+                        <div style="padding: 15px; border-right: 1px solid rgba(255,255,255,0.2);">System</div>
+                        <div style="padding: 15px; border-right: 1px solid rgba(255,255,255,0.2);">Evaluator 1<br><span style="font-size: 0.85em; font-weight: normal;">Sarah Chen</span></div>
+                        <div style="padding: 15px; border-right: 1px solid rgba(255,255,255,0.2);">Evaluator 2 (Chair)<br><span style="font-size: 0.85em; font-weight: normal;">Dr. Ahmed Ibrahim</span></div>
+                        <div style="padding: 15px;">PO Final<br><span style="font-size: 0.85em; font-weight: normal;">Maria Rodriguez</span></div>
+                    </div>
+                    ${currentRequirements.map(req => {
+                        const e1 = req.evaluations.evaluator1;
+                        const e2 = req.evaluations.evaluator2;
+                        const po = req.evaluations.po;
+                        const hasDiscrepancy = e1.status !== e2.status;
+                        const bgColor = hasDiscrepancy ? '#fff3e0' : 'white';
+                        
+                        return `
+                            <div style="display: grid; grid-template-columns: 180px 1fr 1fr 1fr 1fr; border-bottom: 1px solid #e0e0e0; background: ${bgColor};">
+                                <div style="padding: 15px; border-right: 1px solid #e0e0e0;">
+                                    <strong style="color: #0052a3;">${req.id}</strong>
+                                    ${hasDiscrepancy ? '<div style="color: #f57f17; font-size: 0.75em; margin-top: 5px; font-weight: bold;">⚠️ DISCREPANCY</div>' : ''}
+                                    <div style="font-size: 0.8em; margin-top: 8px; color: #666; line-height: 1.3;">${req.description.substring(0, 80)}...</div>
+                                    <div class="${req.mandatory ? 'mandatory-badge' : 'optional-badge'}" style="margin-top: 8px;">
+                                        ${req.mandatory ? 'MANDATORY' : 'OPTIONAL'}
+                                    </div>
+                                </div>
+                                <div style="padding: 15px; border-right: 1px solid #e0e0e0; text-align: center;">
+                                    <span class="auto-status ${req.systemEval}">${req.systemEval === 'pass' ? '✅ Pass' : '❌ Fail'}</span>
+                                </div>
+                                <div style="padding: 15px; border-right: 1px solid #e0e0e0;">
+                                    <span class="auto-status ${e1.status}">
+                                        ${formatStatus(e1.status)}
+                                    </span>
+                                    <div style="font-size: 0.8em; color: #666; margin-top: 8px; line-height: 1.4;">${e1.comment}</div>
+                                </div>
+                                <div style="padding: 15px; border-right: 1px solid #e0e0e0;">
+                                    <span class="auto-status ${e2.status}">
+                                        ${formatStatus(e2.status)}
+                                    </span>
+                                    <div style="font-size: 0.8em; color: #666; margin-top: 8px; line-height: 1.4;">${e2.comment}</div>
+                                </div>
+                                <div style="padding: 15px; background: #fffef7;">
+                                    <span class="auto-status ${po.status}">
+                                        ${formatStatus(po.status)}
+                                    </span>
+                                    <div style="font-size: 0.8em; color: #666; margin-top: 8px; line-height: 1.4;">${po.comment}</div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+                <div style="margin-top: 20px; padding: 15px; background: #fff3e0; border-left: 4px solid #ff9800; border-radius: 4px;">
+                    <strong style="color: #f57f17;">💡 Key Insights:</strong>
+                    <ul style="margin-top: 10px; margin-left: 20px; line-height: 1.8;">
+                        <li>Requirements with discrepancies are highlighted in orange</li>
+                        <li>PO Final column shows the procurement official's final decision</li>
+                        <li>Review discrepancies before finalizing evaluation</li>
+                    </ul>
+                </div>
+            `;
+        }
+
+        function switchRole(role) {
+            currentRole = role;
+            document.querySelectorAll('.role-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const userDisplay = document.getElementById('currentUser');
+            const noteDisplay = document.getElementById('roleNote');
+            
+            const roleMap = {
+                'evaluator1': { user: '👨‍💼 Sarah Chen (Evaluator 1)', note: '<strong>👨‍💼 Evaluator View:</strong> Review system evaluation and provide your assessment.' },
+                'evaluator2': { user: '👩‍💼 Dr. Ahmed (Chair)', note: '<strong>👩‍💼 Chair View:</strong> Review all assessments as evaluation chair.' },
+                'po': { user: '👔 Maria Rodriguez (PO)', note: '<strong>👔 PO View:</strong> Review all evaluator inputs and provide final ratings.' },
+                'comparison': { user: '📊 Comparison View', note: '<strong>📊 Comparison:</strong> View all evaluations side-by-side.' }
+            };
+            
+            userDisplay.textContent = roleMap[role].user;
+            noteDisplay.innerHTML = roleMap[role].note;
+            
+            renderTable();
+        }
+
+        function switchVendor(vendorId) {
+            currentVendor = vendorId;
+            
+            // Update active tab
+            document.querySelectorAll('.vendor-tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Update vendor info
+            const vendor = vendors[vendorId];
+            document.getElementById('vendorName').textContent = vendor.name;
+            document.getElementById('vendorUNGM').textContent = vendor.ungm;
+            document.getElementById('vendorCountry').textContent = vendor.country;
+            document.getElementById('vendorPrice').textContent = vendor.price;
+            document.getElementById('vendorRank').textContent = vendor.rank;
+            
+            // Re-render table with new vendor data
+            renderTable();
+            
+            showToast(`📋 Switched to ${vendor.name}`);
+        }
+
+        function viewDocument(docName) {
+            showToast('📄 Opening: ' + docName);
+        }
+
+        function requestClarification(reqId) {
+            document.getElementById('clarificationModal').classList.add('show');
+        }
+
+        function closeModal() {
+            document.getElementById('clarificationModal').classList.remove('show');
+        }
+
+        function sendClarification() {
+            showToast('✅ Clarification request sent');
+            closeModal();
+        }
+
+        function saveDraft() {
+            showToast('💾 Draft saved successfully');
+        }
+
+        function submitEvaluation() {
+            showToast('✅ Evaluation submitted');
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMessage').textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // Initialize
+        window.onload = () => renderTable();
+    </script>
+</body>
+</html>
