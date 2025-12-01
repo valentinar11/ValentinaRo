@@ -935,6 +935,101 @@
             gap: 1rem;
             margin-top: 1rem;
         }
+
+        /* Document Preview Modal */
+        .doc-preview-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+        }
+
+        .doc-preview-modal.active {
+            display: flex;
+        }
+
+        .doc-preview-container {
+            background: white;
+            width: 90%;
+            max-width: 1200px;
+            height: 90vh;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .doc-preview-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--unops-n-cold-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .doc-preview-body {
+            flex: 1;
+            overflow: auto;
+            padding: 2rem;
+            background: var(--surface-100);
+        }
+
+        .doc-preview-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: white;
+            border-radius: 4px;
+        }
+
+        .priority-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-left: 0.5rem;
+        }
+
+        .priority-high {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .priority-medium {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        .priority-low {
+            background: #E0E7FF;
+            color: #3730A3;
+        }
+
+        .requirement-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-left: 0.5rem;
+        }
+
+        .requirement-mandatory {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .requirement-optional {
+            background: #E0E7FF;
+            color: #3730A3;
+        }
     </style>
 </head>
 <body>
@@ -1450,6 +1545,36 @@
         </footer>
     </div>
 
+    <!-- Document Preview Modal -->
+    <div id="docPreviewModal" class="doc-preview-modal">
+        <div class="doc-preview-container">
+            <div class="doc-preview-header">
+                <div>
+                    <h3 style="margin: 0; font-size: 1.25rem;" id="preview-doc-name">Document Preview</h3>
+                    <div style="font-size: 0.875rem; color: var(--text-muted); margin-top: 0.25rem;" id="preview-doc-info"></div>
+                </div>
+                <div style="display: flex; gap: 0.5rem;">
+                    <button class="btn btn-primary" onclick="downloadCurrentDocument()">
+                        <i class="pi pi-download"></i>
+                        Download
+                    </button>
+                    <button class="btn btn-outline" onclick="closeDocumentPreview()">
+                        <i class="pi pi-times"></i>
+                        Close
+                    </button>
+                </div>
+            </div>
+            <div class="doc-preview-body">
+                <div id="preview-content" style="height: 100%; display: flex; align-items: center; justify-content: center;">
+                    <div style="text-align: center; color: var(--text-muted);">
+                        <i class="pi pi-file" style="font-size: 4rem; margin-bottom: 1rem;"></i>
+                        <p>Document preview loading...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         let currentStep = 1;
         const totalSteps = 4;
@@ -1952,6 +2077,24 @@
                             </div>
                         </div>
 
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label">Requirement Type *</label>
+                                <select class="form-select" id="requirement-type-${questionId}">
+                                    <option value="mandatory">Mandatory</option>
+                                    <option value="optional">Optional</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label">Priority *</label>
+                                <select class="form-select" id="priority-${questionId}">
+                                    <option value="high">High</option>
+                                    <option value="medium" selected>Medium</option>
+                                    <option value="low">Low</option>
+                                </select>
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <label class="form-label">CAPA Actions ${availableCapaOptions.length > 0 ? '' : '(No actions available)'}</label>
                             <div class="multiselect-container" id="capa-${questionId}-multiselect">
@@ -1971,6 +2114,15 @@
                                             </div>
                                         `).join('')
                                     }
+                                    <div style="padding: 0.75rem; border-top: 1px solid var(--unops-n-cold-200);">
+                                        <label style="font-size: 0.875rem; font-weight: 500; margin-bottom: 0.5rem; display: block;">Add Custom Action:</label>
+                                        <div style="display: flex; gap: 0.5rem;">
+                                            <input type="text" class="form-input" id="custom-action-${questionId}" placeholder="Enter custom action..." style="flex: 1; padding: 0.5rem;">
+                                            <button class="btn btn-primary" style="padding: 0.5rem 0.75rem;" onclick="addCustomAction(${questionId}, event)">
+                                                <i class="pi pi-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <small style="color: var(--text-muted); font-size: 0.75rem; margin-top: 0.25rem; display: block;">
@@ -1982,7 +2134,7 @@
 
                         <div class="form-group">
                             <label class="form-label">Additional Comments</label>
-                            <textarea class="form-textarea" placeholder="Add any additional comments or instructions for this CAPA..." rows="3"></textarea>
+                            <textarea class="form-textarea" id="comments-${questionId}" placeholder="Add any additional comments or instructions for this CAPA..." rows="3"></textarea>
                         </div>
                     </div>
                 `;
@@ -1999,6 +2151,53 @@
         function toggleCapaAction(questionId, value, element) {
             const multiselectId = `capa-${questionId}`;
             toggleOption(multiselectId, value, element);
+        }
+
+        function addCustomAction(questionId, event) {
+            event.stopPropagation();
+            const input = document.getElementById(`custom-action-${questionId}`);
+            const customAction = input.value.trim();
+            
+            if (!customAction) {
+                alert('Please enter a custom action.');
+                return;
+            }
+
+            const multiselectId = `capa-${questionId}`;
+            const dropdown = document.getElementById(`${multiselectId}-dropdown`);
+            
+            // Check if action already exists
+            if (selectedValues[multiselectId] && selectedValues[multiselectId].includes(customAction)) {
+                alert('This action has already been added.');
+                return;
+            }
+
+            // Add the option to the dropdown (before the custom action input section)
+            const customActionDiv = document.createElement('div');
+            customActionDiv.className = 'multiselect-option selected';
+            customActionDiv.innerHTML = `
+                <div class="multiselect-checkbox"></div>
+                <span>${customAction} <em style="color: var(--text-muted); font-size: 0.75rem;">(Custom)</em></span>
+            `;
+            customActionDiv.onclick = function() {
+                toggleCapaAction(questionId, customAction, this);
+            };
+            
+            // Insert before the last child (which is the custom action input section)
+            const lastChild = dropdown.lastElementChild;
+            dropdown.insertBefore(customActionDiv, lastChild);
+
+            // Add to selected values
+            if (!selectedValues[multiselectId]) {
+                selectedValues[multiselectId] = [];
+            }
+            selectedValues[multiselectId].push(customAction);
+            updateMultiselectDisplay(multiselectId);
+
+            // Clear input
+            input.value = '';
+            
+            alert('Custom action added successfully!');
         }
 
         function updateSummary() {
@@ -2209,7 +2408,10 @@
                                                 ${doc.size} • Uploaded: ${doc.uploadDate}
                                             </div>
                                         </div>
-                                        <button class="btn btn-outline" style="padding: 0.5rem;" onclick="downloadDocument('${doc.name}')">
+                                        <button class="btn btn-primary" style="padding: 0.5rem;" onclick="previewDocument('${doc.name}', '${doc.size}', '${doc.uploadDate}')" title="Preview">
+                                            <i class="pi pi-eye"></i>
+                                        </button>
+                                        <button class="btn btn-outline" style="padding: 0.5rem;" onclick="downloadDocument('${doc.name}')" title="Download">
                                             <i class="pi pi-download"></i>
                                         </button>
                                     </div>
@@ -2302,6 +2504,92 @@
             document.getElementById('capaViewPage').classList.add('hidden');
             document.getElementById('capaListPage').classList.remove('hidden');
             currentCapaId = null;
+        }
+
+        let currentPreviewDocument = null;
+
+        function previewDocument(filename, size, uploadDate) {
+            currentPreviewDocument = { filename, size, uploadDate };
+            
+            document.getElementById('preview-doc-name').textContent = filename;
+            document.getElementById('preview-doc-info').textContent = `${size} • Uploaded: ${uploadDate}`;
+            
+            const previewContent = document.getElementById('preview-content');
+            
+            // Simulate document preview based on file type
+            const extension = filename.split('.').pop().toLowerCase();
+            
+            if (extension === 'pdf') {
+                previewContent.innerHTML = `
+                    <div style="width: 100%; height: 100%; background: white; border-radius: 4px; padding: 2rem; overflow: auto;">
+                        <div style="max-width: 800px; margin: 0 auto;">
+                            <h2 style="color: var(--text-color); margin-bottom: 1rem;">${filename}</h2>
+                            <div style="border: 2px solid var(--unops-n-cold-200); padding: 2rem; border-radius: 4px; text-align: center;">
+                                <i class="pi pi-file-pdf" style="font-size: 5rem; color: #da291c; margin-bottom: 1rem;"></i>
+                                <p style="color: var(--text-muted); margin-bottom: 1rem;">PDF Document Preview</p>
+                                <p style="font-size: 0.875rem; color: var(--text-muted);">
+                                    In a production environment, the PDF would be displayed here using a PDF viewer.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (['xlsx', 'xls', 'csv'].includes(extension)) {
+                previewContent.innerHTML = `
+                    <div style="width: 100%; height: 100%; background: white; border-radius: 4px; padding: 2rem; overflow: auto;">
+                        <div style="max-width: 1000px; margin: 0 auto;">
+                            <h2 style="color: var(--text-color); margin-bottom: 1rem;">${filename}</h2>
+                            <div style="border: 2px solid var(--unops-n-cold-200); border-radius: 4px; overflow: hidden;">
+                                <table style="width: 100%; border-collapse: collapse;">
+                                    <thead style="background: var(--surface-100);">
+                                        <tr>
+                                            <th style="padding: 0.75rem; border: 1px solid var(--unops-n-cold-200); text-align: left;">Column A</th>
+                                            <th style="padding: 0.75rem; border: 1px solid var(--unops-n-cold-200); text-align: left;">Column B</th>
+                                            <th style="padding: 0.75rem; border: 1px solid var(--unops-n-cold-200); text-align: left;">Column C</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td style="padding: 0.75rem; border: 1px solid var(--unops-n-cold-200);">Sample Data 1</td>
+                                            <td style="padding: 0.75rem; border: 1px solid var(--unops-n-cold-200);">Sample Data 2</td>
+                                            <td style="padding: 0.75rem; border: 1px solid var(--unops-n-cold-200);">Sample Data 3</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 0.75rem; border: 1px solid var(--unops-n-cold-200);">Sample Data 4</td>
+                                            <td style="padding: 0.75rem; border: 1px solid var(--unops-n-cold-200);">Sample Data 5</td>
+                                            <td style="padding: 0.75rem; border: 1px solid var(--unops-n-cold-200);">Sample Data 6</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <p style="text-align: center; padding: 1rem; color: var(--text-muted); font-size: 0.875rem;">
+                                    Spreadsheet Preview (Sample Data)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                previewContent.innerHTML = `
+                    <div style="text-align: center; color: var(--text-muted);">
+                        <i class="pi pi-file" style="font-size: 4rem; margin-bottom: 1rem;"></i>
+                        <p>Preview not available for this file type.</p>
+                        <p style="font-size: 0.875rem;">Please download the file to view it.</p>
+                    </div>
+                `;
+            }
+            
+            document.getElementById('docPreviewModal').classList.add('active');
+        }
+
+        function closeDocumentPreview() {
+            document.getElementById('docPreviewModal').classList.remove('active');
+            currentPreviewDocument = null;
+        }
+
+        function downloadCurrentDocument() {
+            if (currentPreviewDocument) {
+                downloadDocument(currentPreviewDocument.filename);
+            }
         }
 
         function downloadDocument(filename) {
