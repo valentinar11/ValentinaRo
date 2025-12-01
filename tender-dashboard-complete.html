@@ -1449,6 +1449,9 @@
                         <button class="btn btn-secondary btn-sm" onclick="openCancelModal('RFQ/2024/001', 'Supply of Medical Equipment')">
                             <i class="pi pi-times-circle"></i> Cancel
                         </button>
+                        <button class="btn btn-secondary btn-sm" onclick="openClarificationsModal('RFQ/2024/001', 'Supply of Medical Equipment')">
+                            <i class="pi pi-comment"></i> Clarifications (5)
+                        </button>
                     </div>
                 </div>
 
@@ -1491,6 +1494,9 @@
                         </button>
                         <button class="btn btn-secondary btn-sm" onclick="openCancelModal('ITB/2024/045', 'Construction of Office Building')">
                             <i class="pi pi-times-circle"></i> Cancel
+                        </button>
+                        <button class="btn btn-secondary btn-sm" onclick="openClarificationsModal('ITB/2024/045', 'Construction of Office Building')">
+                            <i class="pi pi-comment"></i> Clarifications (12)
                         </button>
                     </div>
                 </div>
@@ -1574,6 +1580,9 @@
                         </button>
                         <button class="btn btn-secondary btn-sm" onclick="openCancelModal('RFQ/2024/102', 'Vehicle Fleet Procurement')">
                             <i class="pi pi-times-circle"></i> Cancel
+                        </button>
+                        <button class="btn btn-secondary btn-sm" onclick="openClarificationsModal('RFQ/2024/102', 'Vehicle Fleet Procurement')">
+                            <i class="pi pi-comment"></i> Clarifications (2)
                         </button>
                     </div>
                 </div>
@@ -1663,8 +1672,8 @@
                     <button class="btn btn-danger" onclick="openCancelModalFromDetails()">
                         <i class="pi pi-times-circle"></i> Cancel Tender
                     </button>
-                    <button class="btn btn-secondary">
-                        <i class="pi pi-comment"></i> Manage Clarifications
+                    <button class="btn btn-secondary" onclick="openClarificationsFromDetails()">
+                        <i class="pi pi-comment"></i> Manage Clarifications (5)
                     </button>
                 </div>
 
@@ -2029,7 +2038,7 @@
             </h3>
 
             <!-- Quick Actions -->
-            <div style="display: flex; gap: var(--spacing-sm); margin-bottom: var(--spacing-xl);">
+            <div style="display: flex; gap: var(--spacing-sm); margin-bottom: var(--spacing-md);">
                 <button class="btn btn-primary btn-sm" style="flex: 1;" onclick="closeTenderPreview(); openAmendModalFromPreview()">
                     <i class="pi pi-pencil"></i> Amend
                 </button>
@@ -2037,6 +2046,10 @@
                     <i class="pi pi-times-circle"></i> Cancel
                 </button>
             </div>
+
+            <button class="btn btn-secondary btn-sm" style="width: 100%; margin-bottom: var(--spacing-xl);" onclick="closeTenderPreview(); openClarificationsModal(currentTenderId, currentTenderTitle)">
+                <i class="pi pi-comment"></i> Manage Clarifications
+            </button>
 
             <!-- General Information -->
             <div class="collapsible-section-compact">
@@ -2454,6 +2467,174 @@
         </div>
     </div>
 
+    <!-- Clarifications Modal -->
+    <div class="modal-overlay" id="clarificationsModal">
+        <div class="modal" style="max-width: 1000px;">
+            <div class="modal-header">
+                <h2 class="modal-title">
+                    <i class="pi pi-comment"></i>
+                    <span>Manage Clarifications: <span id="clarificationsTenderTitle"></span></span>
+                </h2>
+                <button class="modal-close" onclick="closeClarificationsModal()">×</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="alert alert-info">
+                    <i class="pi pi-info-circle" style="font-size: 20px;"></i>
+                    <div>
+                        <strong>Clarification Management</strong>
+                        <p style="margin-top: 4px; font-size: 13px;">
+                            View all supplier questions and provide responses. Questions are anonymized and responses are visible to all suppliers.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Filter Bar -->
+                <div style="display: flex; gap: var(--spacing-md); margin-bottom: var(--spacing-lg);">
+                    <select class="filter-select" style="flex: 1;">
+                        <option value="all">All Questions</option>
+                        <option value="pending">Pending Response</option>
+                        <option value="answered">Answered</option>
+                    </select>
+                    <select class="filter-select" style="flex: 1;">
+                        <option value="all">All Sections</option>
+                        <option value="general">General Information</option>
+                        <option value="technical">Technical Specifications</option>
+                        <option value="pricing">Pricing</option>
+                    </select>
+                </div>
+
+                <!-- Clarifications List -->
+                <div style="max-height: 500px; overflow-y: auto;">
+                    <!-- Question 1 - Answered -->
+                    <div style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-md); padding: var(--spacing-lg); margin-bottom: var(--spacing-md);">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--spacing-md);">
+                            <div>
+                                <span style="font-weight: 600; color: var(--primary-400);">Question #001</span>
+                                <span style="margin-left: var(--spacing-md); font-size: 12px; color: var(--text-muted);">5 Dec 2024 • General Information</span>
+                            </div>
+                            <span class="status-badge" style="background: var(--success-50); color: var(--success-500);">Answered</span>
+                        </div>
+                        
+                        <div style="background: var(--info-50); padding: var(--spacing-md); border-radius: var(--radius-sm); margin-bottom: var(--spacing-md);">
+                            <div style="font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: var(--spacing-xs);">QUESTION</div>
+                            <p style="font-size: 14px; color: var(--text-primary);">What are the warranty requirements for the medical equipment?</p>
+                        </div>
+                        
+                        <div style="background: var(--success-50); padding: var(--spacing-md); border-radius: var(--radius-sm);">
+                            <div style="font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: var(--spacing-xs);">YOUR ANSWER</div>
+                            <p style="font-size: 14px; color: var(--text-primary);">Minimum 2 years parts and labor for all equipment. Warranty must be provided by the manufacturer or authorized distributor.</p>
+                            <div style="font-size: 12px; color: var(--text-muted); margin-top: var(--spacing-sm);">Answered by: Jane Doe • 6 Dec 2024</div>
+                        </div>
+                    </div>
+
+                    <!-- Question 2 - Pending -->
+                    <div style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-md); padding: var(--spacing-lg); margin-bottom: var(--spacing-md);">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--spacing-md);">
+                            <div>
+                                <span style="font-weight: 600; color: var(--primary-400);">Question #002</span>
+                                <span style="margin-left: var(--spacing-md); font-size: 12px; color: var(--text-muted);">8 Dec 2024 • Technical Specifications</span>
+                            </div>
+                            <span class="status-badge" style="background: var(--warning-50); color: var(--warning-500);">Pending</span>
+                        </div>
+                        
+                        <div style="background: var(--info-50); padding: var(--spacing-md); border-radius: var(--radius-sm); margin-bottom: var(--spacing-md);">
+                            <div style="font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: var(--spacing-xs);">QUESTION</div>
+                            <p style="font-size: 14px; color: var(--text-primary);">Can we propose alternative UNSPSC codes if our products meet the specifications but have different classification?</p>
+                        </div>
+                        
+                        <div style="background: var(--surface-100); padding: var(--spacing-md); border-radius: var(--radius-sm);">
+                            <textarea class="form-textarea" placeholder="Type your response here..." style="min-height: 100px;"></textarea>
+                            <div style="display: flex; justify-content: flex-end; gap: var(--spacing-sm); margin-top: var(--spacing-sm);">
+                                <button class="btn btn-secondary btn-sm">Save Draft</button>
+                                <button class="btn btn-primary btn-sm">
+                                    <i class="pi pi-send"></i> Publish Response
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 3 - Answered -->
+                    <div style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-md); padding: var(--spacing-lg); margin-bottom: var(--spacing-md);">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--spacing-md);">
+                            <div>
+                                <span style="font-weight: 600; color: var(--primary-400);">Question #003</span>
+                                <span style="margin-left: var(--spacing-md); font-size: 12px; color: var(--text-muted);">9 Dec 2024 • Technical Specifications</span>
+                            </div>
+                            <span class="status-badge" style="background: var(--success-50); color: var(--success-500);">Answered</span>
+                        </div>
+                        
+                        <div style="background: var(--info-50); padding: var(--spacing-md); border-radius: var(--radius-sm); margin-bottom: var(--spacing-md);">
+                            <div style="font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: var(--spacing-xs);">QUESTION</div>
+                            <p style="font-size: 14px; color: var(--text-primary);">Can ultrasound machines be from different manufacturers?</p>
+                        </div>
+                        
+                        <div style="background: var(--success-50); padding: var(--spacing-md); border-radius: var(--radius-sm);">
+                            <div style="font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: var(--spacing-xs);">YOUR ANSWER</div>
+                            <p style="font-size: 14px; color: var(--text-primary);">Yes, machines can be from different manufacturers as long as they meet the minimum specifications outlined in the tender documents and ISO standards.</p>
+                            <div style="font-size: 12px; color: var(--text-muted); margin-top: var(--spacing-sm);">Answered by: Jane Doe • 10 Dec 2024</div>
+                        </div>
+                    </div>
+
+                    <!-- Question 4 - Pending -->
+                    <div style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-md); padding: var(--spacing-lg); margin-bottom: var(--spacing-md);">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--spacing-md);">
+                            <div>
+                                <span style="font-weight: 600; color: var(--primary-400);">Question #004</span>
+                                <span style="margin-left: var(--spacing-md); font-size: 12px; color: var(--text-muted);">10 Dec 2024 • Pricing</span>
+                            </div>
+                            <span class="status-badge" style="background: var(--warning-50); color: var(--warning-500);">Pending</span>
+                        </div>
+                        
+                        <div style="background: var(--info-50); padding: var(--spacing-md); border-radius: var(--radius-sm); margin-bottom: var(--spacing-md);">
+                            <div style="font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: var(--spacing-xs);">QUESTION</div>
+                            <p style="font-size: 14px; color: var(--text-primary);">Are shipping costs to be included in the unit price or quoted separately?</p>
+                        </div>
+                        
+                        <div style="background: var(--surface-100); padding: var(--spacing-md); border-radius: var(--radius-sm);">
+                            <textarea class="form-textarea" placeholder="Type your response here..." style="min-height: 100px;"></textarea>
+                            <div style="display: flex; justify-content: flex-end; gap: var(--spacing-sm); margin-top: var(--spacing-sm);">
+                                <button class="btn btn-secondary btn-sm">Save Draft</button>
+                                <button class="btn btn-primary btn-sm">
+                                    <i class="pi pi-send"></i> Publish Response
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 5 - Answered -->
+                    <div style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-md); padding: var(--spacing-lg);">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--spacing-md);">
+                            <div>
+                                <span style="font-weight: 600; color: var(--primary-400);">Question #005</span>
+                                <span style="margin-left: var(--spacing-md); font-size: 12px; color: var(--text-muted);">11 Dec 2024 • General Information</span>
+                            </div>
+                            <span class="status-badge" style="background: var(--success-50); color: var(--success-500);">Answered</span>
+                        </div>
+                        
+                        <div style="background: var(--info-50); padding: var(--spacing-md); border-radius: var(--radius-sm); margin-bottom: var(--spacing-md);">
+                            <div style="font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: var(--spacing-xs);">QUESTION</div>
+                            <p style="font-size: 14px; color: var(--text-primary);">Is the pre-bid meeting mandatory for all bidders?</p>
+                        </div>
+                        
+                        <div style="background: var(--success-50); padding: var(--spacing-md); border-radius: var(--radius-sm);">
+                            <div style="font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: var(--spacing-xs);">YOUR ANSWER</div>
+                            <p style="font-size: 14px; color: var(--text-primary);">No, the pre-bid meeting is optional. However, attendance is recommended to better understand the requirements. Minutes will be shared with all bidders after the meeting.</p>
+                            <div style="font-size: 12px; color: var(--text-muted); margin-top: var(--spacing-sm);">Answered by: Jane Doe • 11 Dec 2024</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-ghost" onclick="closeClarificationsModal()">Close</button>
+                <button class="btn btn-secondary">
+                    <i class="pi pi-download"></i> Export All Clarifications
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Cancel Modal -->
     <div class="modal-overlay" id="cancelModal">
         <div class="modal">
@@ -2576,13 +2757,29 @@
             });
         }
 
-        // Tender Preview
+        // Sidebar Toggle
+        function toggleSidebar() {
+            const sidebar = document.getElementById('mainSidebar');
+            sidebar.classList.toggle('collapsed');
+        }
+
+        // Tender Preview - with toggle functionality
         function viewTenderPreview(tenderId, tenderTitle) {
+            const previewPanel = document.getElementById('tender-preview-sidebar');
+            
+            // If clicking the same tender and panel is open, close it (toggle)
+            if (previewPanel.classList.contains('open') && 
+                currentTenderId === tenderId) {
+                closeTenderPreview();
+                return;
+            }
+            
+            // Otherwise, update and open
             currentTenderId = tenderId;
             currentTenderTitle = tenderTitle;
             document.getElementById('preview-tender-id').textContent = tenderId;
             document.getElementById('preview-tender-title').textContent = tenderTitle;
-            document.getElementById('tender-preview-sidebar').classList.add('open');
+            previewPanel.classList.add('open');
         }
 
         function closeTenderPreview() {
@@ -2642,6 +2839,22 @@
                 content.classList.add('expanded');
                 arrow.classList.add('rotated');
             }
+        }
+
+        // Clarifications Modal
+        function openClarificationsModal(tenderId, tenderTitle) {
+            currentTenderId = tenderId;
+            currentTenderTitle = tenderTitle;
+            document.getElementById('clarificationsTenderTitle').textContent = tenderId;
+            document.getElementById('clarificationsModal').classList.add('active');
+        }
+
+        function closeClarificationsModal() {
+            document.getElementById('clarificationsModal').classList.remove('active');
+        }
+
+        function openClarificationsFromDetails() {
+            openClarificationsModal(currentTenderId, currentTenderTitle);
         }
 
         // Amendment Modal
