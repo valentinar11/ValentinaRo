@@ -139,6 +139,54 @@ color: var(--primary-600);
 cursor: pointer;
 }
 
+.header-icons {
+display: flex;
+align-items: center;
+gap: var(--spacing-sm);
+}
+
+.header-icon-btn {
+width: 36px;
+height: 36px;
+border-radius: 50%;
+background: transparent;
+border: none;
+display: flex;
+align-items: center;
+justify-content: center;
+cursor: pointer;
+transition: all 0.2s;
+color: var(--text-secondary);
+font-size: 18px;
+position: relative;
+}
+
+.header-icon-btn:hover {
+background: var(--surface-100);
+color: var(--primary-500);
+}
+
+.header-icon-btn.ai-btn {
+background: linear-gradient(135deg, #8B5CF6 0%, #6366F1 100%);
+color: white;
+}
+
+.header-icon-btn.ai-btn:hover {
+transform: scale(1.05);
+box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
+}
+
+.notification-badge {
+position: absolute;
+top: 2px;
+right: 2px;
+width: 8px;
+height: 8px;
+background: var(--danger-500);
+border-radius: 50%;
+border: 2px solid var(--surface-0);
+}
+
 .app-container {
 display: flex;
 min-height: calc(100vh - 65px);
@@ -429,6 +477,199 @@ color: var(--success-500);
 .status-cancelled {
 background: var(--danger-50);
 color: var(--danger-500);
+}
+
+.status-not-awarded {
+background: var(--surface-100);
+color: var(--text-muted);
+}
+
+/* Document Download List */
+.document-download-list {
+display: flex;
+flex-direction: column;
+gap: var(--spacing-sm);
+}
+
+.document-download-item {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: var(--spacing-md);
+background: var(--surface-50);
+border: 1px solid var(--surface-200);
+border-radius: var(--radius-md);
+transition: all 0.2s;
+}
+
+.document-download-item:hover {
+background: var(--surface-100);
+border-color: var(--primary-200);
+}
+
+.document-info {
+display: flex;
+align-items: center;
+gap: var(--spacing-md);
+}
+
+.document-icon {
+font-size: 24px;
+}
+
+.document-name {
+font-weight: 600;
+font-size: 14px;
+color: var(--text-primary);
+margin-bottom: 2px;
+}
+
+.document-meta {
+font-size: 12px;
+color: var(--text-muted);
+}
+
+/* Amendment Cards */
+.amendment-list {
+display: flex;
+flex-direction: column;
+gap: var(--spacing-md);
+}
+
+.amendment-card {
+background: var(--surface-50);
+border: 1px solid var(--surface-200);
+border-radius: var(--radius-md);
+padding: var(--spacing-lg);
+border-left: 4px solid var(--warning-500);
+}
+
+.amendment-header-card {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: var(--spacing-sm);
+}
+
+.amendment-badge {
+background: var(--warning-50);
+color: var(--warning-500);
+font-size: 12px;
+font-weight: 600;
+padding: 4px 10px;
+border-radius: var(--radius-sm);
+}
+
+.amendment-date-card {
+font-size: 12px;
+color: var(--text-muted);
+}
+
+.amendment-title {
+font-weight: 600;
+font-size: 15px;
+color: var(--text-primary);
+margin-bottom: var(--spacing-sm);
+}
+
+.amendment-description {
+font-size: 13px;
+color: var(--text-secondary);
+line-height: 1.6;
+margin-bottom: var(--spacing-md);
+}
+
+.amendment-actions {
+display: flex;
+gap: var(--spacing-sm);
+}
+
+/* Collapsible Sections */
+.collapsible-section {
+border: 1px solid var(--surface-200);
+border-radius: var(--radius-md);
+overflow: hidden;
+}
+
+.section-header-collapsible {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: var(--spacing-md) var(--spacing-lg);
+background: var(--surface-50);
+cursor: pointer;
+transition: background 0.2s;
+}
+
+.section-header-collapsible:hover {
+background: var(--surface-100);
+}
+
+.section-collapse-icon {
+font-size: 12px;
+color: var(--text-muted);
+transition: transform 0.3s ease;
+}
+
+.collapsible-section.collapsed .section-collapse-icon {
+transform: rotate(-90deg);
+}
+
+.section-collapsible-content {
+padding: var(--spacing-lg);
+transition: all 0.3s ease;
+}
+
+.collapsible-section.collapsed .section-collapsible-content {
+display: none;
+}
+
+/* Document Actions */
+.document-actions {
+display: flex;
+gap: var(--spacing-xs);
+}
+
+/* Submission Form List */
+.submission-form-list {
+display: flex;
+flex-direction: column;
+gap: var(--spacing-sm);
+}
+
+.submission-form-item {
+background: var(--surface-50);
+border: 1px solid var(--surface-200);
+border-radius: var(--radius-sm);
+padding: var(--spacing-sm) var(--spacing-md);
+}
+
+.submission-form-name {
+font-weight: 600;
+font-size: 13px;
+color: var(--text-primary);
+margin-bottom: var(--spacing-xs);
+}
+
+.submission-form-attachments {
+display: flex;
+flex-wrap: wrap;
+gap: 6px;
+}
+
+.attachment-tag {
+font-size: 11px;
+padding: 3px 8px;
+background: var(--surface-100);
+border: 1px solid var(--surface-200);
+border-radius: 4px;
+color: var(--text-secondary);
+}
+
+.attachment-tag.from-profile {
+background: var(--success-50);
+border-color: var(--success-500);
+color: var(--success-500);
 }
 
 .deadline-cell {
@@ -1903,6 +2144,18 @@ width: 100%;
 <span class="portal-badge">Supplier</span>
 </div>
 <div class="user-menu">
+<div class="header-icons">
+<button class="header-icon-btn ai-btn" title="AI Assistant" onclick="alert('AI Assistant coming soon!')">
+✨
+</button>
+<button class="header-icon-btn" title="Help & Support" onclick="alert('Help center coming soon!')">
+❓
+</button>
+<button class="header-icon-btn" title="Notifications" onclick="alert('Notifications panel coming soon!')">
+🔔
+<span class="notification-badge"></span>
+</button>
+</div>
 <div class="user-info">
 <div class="user-company">Acme Corporation Ltd.</div>
 <div class="user-name">John Doe</div>
@@ -2280,6 +2533,17 @@ Submit Question
 <div class="card">
 <div class="card-header">
 <h2 class="card-title">All My Tenders</h2>
+<div style="display: flex; gap: var(--spacing-sm); align-items: center;">
+<input type="search" placeholder="Search tenders..." style="padding: 8px 12px; border: 1px solid var(--surface-300); border-radius: var(--radius-md); width: 250px; font-size: 14px;">
+<select style="padding: 8px 12px; border: 1px solid var(--surface-300); border-radius: var(--radius-md); font-size: 14px;">
+<option value="">All Statuses</option>
+<option value="open">Open</option>
+<option value="submitted">Submitted</option>
+<option value="awarded">Awarded</option>
+<option value="not-awarded">Not Awarded</option>
+<option value="cancelled">Cancelled</option>
+</select>
+</div>
 </div>
 
 <table class="tender-table">
@@ -2311,6 +2575,70 @@ Submit Question
 <td><span class="status-badge status-in-progress">In Progress</span></td>
 <td><span class="status-badge status-open">Open</span></td>
 <td><button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); selectTenderForBid('UNOPS/ITB/2025/001')">Continue Bid</button></td>
+</tr>
+<tr onclick="viewTenderDetails('UNOPS/RFQ/2024/089')">
+<td>
+<div class="tender-ref">UNOPS/RFQ/2024/089</div>
+<div class="tender-title-cell">Office Supplies and Stationery</div>
+</td>
+<td><span class="tender-type-badge tender-type-limited">Limited</span></td>
+<td>15 Oct 2024</td>
+<td>
+<div class="deadline-cell">
+<div class="deadline-date">30 Nov 2024</div>
+</div>
+</td>
+<td><span class="status-badge status-submitted">Submitted</span></td>
+<td><span class="status-badge status-awarded">Awarded ✓</span></td>
+<td><button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); viewTenderDetails('UNOPS/RFQ/2024/089')">View Details</button></td>
+</tr>
+<tr onclick="viewTenderDetails('UNOPS/ITB/2024/072')">
+<td>
+<div class="tender-ref">UNOPS/ITB/2024/072</div>
+<div class="tender-title-cell">IT Infrastructure Services</div>
+</td>
+<td><span class="tender-type-badge tender-type-public">Public</span></td>
+<td>1 Sep 2024</td>
+<td>
+<div class="deadline-cell">
+<div class="deadline-date">15 Oct 2024</div>
+</div>
+</td>
+<td><span class="status-badge status-submitted">Submitted</span></td>
+<td><span class="status-badge status-not-awarded">Not Awarded</span></td>
+<td><button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); viewTenderDetails('UNOPS/ITB/2024/072')">View Details</button></td>
+</tr>
+<tr onclick="viewTenderDetails('UNOPS/RFP/2024/055')">
+<td>
+<div class="tender-ref">UNOPS/RFP/2024/055</div>
+<div class="tender-title-cell">Consulting Services - Project Management</div>
+</td>
+<td><span class="tender-type-badge tender-type-public">Public</span></td>
+<td>20 Aug 2024</td>
+<td>
+<div class="deadline-cell">
+<div class="deadline-date">25 Sep 2024</div>
+</div>
+</td>
+<td><span class="status-badge status-submitted">Submitted</span></td>
+<td><span class="status-badge status-cancelled">Cancelled</span></td>
+<td><button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); viewTenderDetails('UNOPS/RFP/2024/055')">View Details</button></td>
+</tr>
+<tr onclick="viewTenderDetails('UNOPS/ITB/2024/041')">
+<td>
+<div class="tender-ref">UNOPS/ITB/2024/041</div>
+<div class="tender-title-cell">Vehicle Fleet Procurement</div>
+</td>
+<td><span class="tender-type-badge tender-type-public">Public</span></td>
+<td>5 Jul 2024</td>
+<td>
+<div class="deadline-cell">
+<div class="deadline-date">20 Aug 2024</div>
+</div>
+</td>
+<td><span class="status-badge status-submitted">Submitted</span></td>
+<td><span class="status-badge status-awarded">Awarded ✓</span></td>
+<td><button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); viewTenderDetails('UNOPS/ITB/2024/041')">View Details</button></td>
 </tr>
         </tbody>
         </table>
@@ -2514,11 +2842,15 @@ General Information
           </div>
 
           <!-- Items & Specifications Section -->
-          <div class="overview-section">
-            <h3 class="overview-section-title">
-              <span class="overview-section-icon">📦</span>
-              Items & Specifications
-            </h3>
+          <div class="overview-section collapsible-section">
+            <div class="section-header-collapsible" onclick="toggleSection(this)">
+              <h3 class="overview-section-title" style="margin: 0;">
+                <span class="overview-section-icon">📦</span>
+                Items & Specifications
+              </h3>
+              <span class="section-collapse-icon">▼</span>
+            </div>
+            <div class="section-collapsible-content">
             <p style="line-height: 1.6; color: var(--text-muted); margin-bottom: var(--spacing-md); font-size: 14px;">
               The following items are being procured. Click on each item to view detailed specifications.
             </p>
@@ -2686,14 +3018,19 @@ General Information
                 </div>
               </div>
             </div>
+            </div>
           </div>
 
           <!-- Tender Particulars Section -->
-          <div class="overview-section">
-            <h3 class="overview-section-title">
-              <span class="overview-section-icon">⚙️</span>
-              Tender Particulars
-            </h3>
+          <div class="overview-section collapsible-section">
+            <div class="section-header-collapsible" onclick="toggleSection(this)">
+              <h3 class="overview-section-title" style="margin: 0;">
+                <span class="overview-section-icon">⚙️</span>
+                Tender Particulars
+              </h3>
+              <span class="section-collapse-icon">▼</span>
+            </div>
+            <div class="section-collapsible-content">
             <div class="info-row">
               <div class="info-label">Bid Security</div>
               <div class="info-value">Required - $5,000 USD</div>
@@ -2730,29 +3067,191 @@ General Information
               <div class="info-label">Clarification Period</div>
               <div class="info-value">Until 10 January 2025, 23:59 UTC</div>
             </div>
+            </div>
           </div>
 
-          <div class="overview-section">
-            <h3 class="overview-section-title">
-              <span class="overview-section-icon">📊</span>
-              Evaluation Criteria
-            </h3>
+          <div class="overview-section collapsible-section">
+            <div class="section-header-collapsible" onclick="toggleSection(this)">
+              <h3 class="overview-section-title" style="margin: 0;">
+                <span class="overview-section-icon">📊</span>
+                Evaluation Criteria
+              </h3>
+              <span class="section-collapse-icon">▼</span>
+            </div>
+            <div class="section-collapsible-content">
             <div class="info-box">
               <strong>Method:</strong> Lowest Evaluated Substantially Responsive Bid
             </div>
             <p style="margin-top: var(--spacing-md); line-height: 1.6; color: var(--text-secondary);">
               Technical evaluation (pass/fail) followed by financial comparison of compliant bids.
             </p>
+            </div>
           </div>
 
-<div class="overview-section">
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-md);">
+          <!-- Content Section (Documentation + Contract Documents) -->
+          <div class="overview-section collapsible-section">
+            <div class="section-header-collapsible" onclick="toggleSection(this)">
+              <h3 class="overview-section-title" style="margin: 0;">
+                <span class="overview-section-icon">📚</span>
+                Content
+              </h3>
+              <span class="section-collapse-icon">▼</span>
+            </div>
+            <div class="section-collapsible-content">
+              <p style="font-size: 13px; color: var(--text-muted); margin-bottom: var(--spacing-md);">Tender documents, instructions, and contract templates</p>
+              
+              <div style="font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; margin-bottom: var(--spacing-sm);">Tender Documentation</div>
+              <div class="document-download-list">
+                <div class="document-download-item">
+                  <div class="document-info">
+                    <span class="document-icon">📄</span>
+                    <div>
+                      <div class="document-name">Instructions to Bidders (ITB)</div>
+                      <div class="document-meta">PDF • 2.4 MB • Updated 5 Dec 2024</div>
+                    </div>
+                  </div>
+                  <div class="document-actions">
+                    <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); alert('Opening document viewer...')">👁️ View</button>
+                    <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();">⬇️ Download</button>
+                  </div>
+                </div>
+                <div class="document-download-item">
+                  <div class="document-info">
+                    <span class="document-icon">📄</span>
+                    <div>
+                      <div class="document-name">Technical Specifications</div>
+                      <div class="document-meta">PDF • 1.8 MB • Updated 5 Dec 2024</div>
+                    </div>
+                  </div>
+                  <div class="document-actions">
+                    <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); alert('Opening document viewer...')">👁️ View</button>
+                    <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();">⬇️ Download</button>
+                  </div>
+                </div>
+                <div class="document-download-item">
+                  <div class="document-info">
+                    <span class="document-icon">📊</span>
+                    <div>
+                      <div class="document-name">Bill of Quantities</div>
+                      <div class="document-meta">Excel • 156 KB • Updated 5 Dec 2024</div>
+                    </div>
+                  </div>
+                  <div class="document-actions">
+                    <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); alert('Opening document viewer...')">👁️ View</button>
+                    <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();">⬇️ Download</button>
+                  </div>
+                </div>
+                <div class="document-download-item">
+                  <div class="document-info">
+                    <span class="document-icon">📄</span>
+                    <div>
+                      <div class="document-name">Returnable Bidding Forms</div>
+                      <div class="document-meta">PDF • 890 KB • Updated 5 Dec 2024</div>
+                    </div>
+                  </div>
+                  <div class="document-actions">
+                    <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); alert('Opening document viewer...')">👁️ View</button>
+                    <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();">⬇️ Download</button>
+                  </div>
+                </div>
+              </div>
+
+              <div style="font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; margin: var(--spacing-lg) 0 var(--spacing-sm);">Contract Documents</div>
+              <div class="document-download-list">
+                <div class="document-download-item">
+                  <div class="document-info">
+                    <span class="document-icon">📜</span>
+                    <div>
+                      <div class="document-name">General Conditions of Contract (GCC)</div>
+                      <div class="document-meta">PDF • 1.2 MB</div>
+                    </div>
+                  </div>
+                  <div class="document-actions">
+                    <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); alert('Opening document viewer...')">👁️ View</button>
+                    <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();">⬇️ Download</button>
+                  </div>
+                </div>
+                <div class="document-download-item">
+                  <div class="document-info">
+                    <span class="document-icon">📜</span>
+                    <div>
+                      <div class="document-name">Special Conditions of Contract (SCC)</div>
+                      <div class="document-meta">PDF • 450 KB</div>
+                    </div>
+                  </div>
+                  <div class="document-actions">
+                    <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); alert('Opening document viewer...')">👁️ View</button>
+                    <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();">⬇️ Download</button>
+                  </div>
+                </div>
+                <div class="document-download-item">
+                  <div class="document-info">
+                    <span class="document-icon">📜</span>
+                    <div>
+                      <div class="document-name">Contract Agreement Template</div>
+                      <div class="document-meta">PDF • 320 KB</div>
+                    </div>
+                  </div>
+                  <div class="document-actions">
+                    <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); alert('Opening document viewer...')">👁️ View</button>
+                    <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();">⬇️ Download</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Amendments Section -->
+          <div class="overview-section collapsible-section">
+            <div class="section-header-collapsible" onclick="toggleSection(this)">
+              <h3 class="overview-section-title" style="margin: 0;">
+                <span class="overview-section-icon">📝</span>
+                Tender Amendments
+                <span style="background: var(--warning-50); color: var(--warning-500); font-size: 11px; padding: 2px 8px; border-radius: 10px; margin-left: 8px;">2</span>
+              </h3>
+              <span class="section-collapse-icon">▼</span>
+            </div>
+            <div class="section-collapsible-content">
+            <div class="amendment-list">
+              <div class="amendment-card">
+                <div class="amendment-header-card">
+                  <span class="amendment-badge">Amendment #2</span>
+                  <span class="amendment-date-card">18 Dec 2024</span>
+                </div>
+                <div class="amendment-title">Clarification Deadline Extension</div>
+                <p class="amendment-description">The clarification deadline has been extended from 5 January 2025 to 10 January 2025 to allow bidders additional time for queries.</p>
+                <div class="amendment-actions">
+                  <button class="btn btn-ghost btn-sm">📄 View Amendment Notice</button>
+                </div>
+              </div>
+              <div class="amendment-card">
+                <div class="amendment-header-card">
+                  <span class="amendment-badge">Amendment #1</span>
+                  <span class="amendment-date-card">12 Dec 2024</span>
+                </div>
+                <div class="amendment-title">Technical Specification Update</div>
+                <p class="amendment-description">Updated specifications for Patient Monitors (Item 2) to include optional IBP monitoring capability. Previous requirement was mandatory.</p>
+                <div class="amendment-actions">
+                  <button class="btn btn-ghost btn-sm">📄 View Amendment Notice</button>
+                  <button class="btn btn-ghost btn-sm">📊 View Updated Specs</button>
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>
+
+<div class="overview-section collapsible-section">
+<div class="section-header-collapsible" onclick="toggleSection(this)">
 <h3 class="overview-section-title" style="margin: 0;">
 <span class="overview-section-icon">💬</span>
 Clarifications
 </h3>
-<button class="btn btn-secondary btn-sm" onclick="openModal('ask-clarification-modal')">Ask Question</button>
+<div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+<button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); openModal('ask-clarification-modal')">Ask Question</button>
+<span class="section-collapse-icon">▼</span>
 </div>
+</div>
+<div class="section-collapsible-content">
 
 <div class="clarification-item">
 <div class="clarification-header">
@@ -2766,6 +3265,7 @@ Clarifications
 <div class="clarification-answer">
 <div class="clarification-label">Answer</div>
 <p style="font-size: 13px;">Yes, acceptable if meeting ISO standards.</p>
+</div>
 </div>
 </div>
 </div>
@@ -2795,34 +3295,43 @@ Key Dates
 
 <div class="overview-section">
 <h3 class="overview-section-title">
-<span class="overview-section-icon">📎</span>
-Documents to Upload
+<span class="overview-section-icon">✅</span>
+Submission Requirements
 </h3>
-<div class="info-box">
+<div class="info-box" style="margin-bottom: var(--spacing-md);">
 <span class="info-box-icon">💡</span>
 ⭐ = auto-filled from profile
 </div>
-<ul class="document-list">
-<li class="document-list-item from-profile">Company Registration</li>
-<li class="document-list-item from-profile">Tax Clearance</li>
-<li class="document-list-item from-profile">Financial Statements</li>
-<li class="document-list-item">ISO 13485 Certification</li>
-<li class="document-list-item">Product Brochures</li>
-<li class="document-list-item">Technical Data Sheets</li>
-</ul>
+<div class="submission-form-list">
+<div class="submission-form-item">
+<div class="submission-form-name">Form A: Bid Submission</div>
+<div class="submission-form-attachments">
+<span class="attachment-tag from-profile">Company Registration ⭐</span>
+<span class="attachment-tag from-profile">Tax Clearance ⭐</span>
 </div>
-
-<div class="overview-section">
-<h3 class="overview-section-title">
-<span class="overview-section-icon">📝</span>
-Forms to Complete
-</h3>
-<ul class="document-list">
-<li class="document-list-item">Form A: Bid Submission</li>
-<li class="document-list-item">Form C: Price Schedule</li>
-<li class="document-list-item">Form D: Technical Bid</li>
-<li class="document-list-item">DRiVE Self-Assessment</li>
-</ul>
+</div>
+<div class="submission-form-item">
+<div class="submission-form-name">Form C: Price Schedule</div>
+<div class="submission-form-attachments">
+<span class="attachment-tag">Price Breakdown (if applicable)</span>
+</div>
+</div>
+<div class="submission-form-item">
+<div class="submission-form-name">Form D: Technical Bid</div>
+<div class="submission-form-attachments">
+<span class="attachment-tag">ISO 13485 Certification</span>
+<span class="attachment-tag">Product Brochures</span>
+<span class="attachment-tag">Technical Data Sheets</span>
+</div>
+</div>
+<div class="submission-form-item">
+<div class="submission-form-name">DRiVE Self-Assessment</div>
+<div class="submission-form-attachments">
+<span class="attachment-tag from-profile">Financial Statements ⭐</span>
+<span class="attachment-tag">Quality Certificates</span>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -3525,6 +4034,13 @@ function expressInterest(tenderRef) {
 if (confirm(`Express interest in tender ${tenderRef}?\n\nYou will be able to access tender details and submit a bid.`)) {
 alert('✅ Interest expressed successfully!\n\nThis tender has been added to "My Tenders" and you can now prepare your bid.');
 // In a real application, this would make an API call
+}
+}
+
+function toggleSection(header) {
+const section = header.closest('.collapsible-section');
+if (section) {
+section.classList.toggle('collapsed');
 }
 }
 </script>
