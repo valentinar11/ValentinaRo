@@ -4837,9 +4837,14 @@
 
                 <!-- Evaluation Header -->
                 <div style="background: var(--surface-0); border-radius: var(--radius-lg); padding: var(--spacing-xl); box-shadow: var(--shadow-card); border: 1px solid var(--surface-200); margin-bottom: var(--spacing-xl);">
-                    <button class="btn btn-secondary" onclick="showDashboard()" style="margin-bottom: var(--spacing-md);">
-                        <i class="pi pi-arrow-left"></i> Back to Dashboard
-                    </button>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-md); flex-wrap: wrap; gap: var(--spacing-sm);">
+                        <button class="btn btn-secondary" onclick="showDashboard()">
+                            <i class="pi pi-arrow-left"></i> Back to Dashboard
+                        </button>
+                        <button class="btn btn-primary" onclick="downloadEvaluationExcel('all', 'all')">
+                            <i class="pi pi-download"></i> Download Excel for Offline Evaluation
+                        </button>
+                    </div>
                     <h1 style="font-size: 24px; font-weight: 600; color: var(--primary-400); margin-bottom: var(--spacing-sm);" id="eval-tender-title">
                         ITB/2024/023: Medical Supplies - Emergency Response
                     </h1>
@@ -4864,23 +4869,26 @@
                 </div>
 
                 <!-- Role Selector for Demo -->
-                <div style="background: var(--surface-0); border-radius: var(--radius-lg); padding: var(--spacing-lg); box-shadow: var(--shadow-card); border: 1px solid var(--surface-200); margin-bottom: var(--spacing-xl);">
-                    <h3 style="font-size: 16px; font-weight: 600; margin-bottom: var(--spacing-md);">👤 Demo: Switch Role</h3>
+                <div id="role-selector-section" style="background: var(--surface-0); border-radius: var(--radius-lg); padding: var(--spacing-lg); box-shadow: var(--shadow-card); border: 1px solid var(--surface-200); margin-bottom: var(--spacing-xl);">
+                    <h3 style="font-size: 16px; font-weight: 600; margin-bottom: var(--spacing-md);">👤 Switch View Mode</h3>
                     <div style="display: flex; gap: var(--spacing-sm); flex-wrap: wrap;">
                         <button class="btn btn-secondary" id="role-evaluator-btn" onclick="switchEvaluationRole('evaluator')">
-                            👨‍💼 Evaluator - Jane Doe
+                            👨‍💼 Evaluator View
                         </button>
                         <button class="btn btn-secondary" id="role-po-btn" onclick="switchEvaluationRole('po')">
-                            👔 Procurement Official - Sarah Chen
+                            👔 PO View
                         </button>
                         <button class="btn btn-secondary" id="role-comparison-btn" onclick="switchEvaluationRole('comparison')">
-                            📊 Comparison View
+                            📊 Overview Dashboard
                         </button>
                     </div>
+                    <p style="font-size: 11px; color: var(--text-muted); margin-top: var(--spacing-sm); margin-bottom: 0;">
+                        <strong>Evaluator:</strong> Individual evaluation input | <strong>PO:</strong> Review all evaluators | <strong>Overview:</strong> Complete dashboard with all stages, suppliers & evaluators
+                    </p>
                 </div>
 
                 <!-- Evaluation Steps Progress -->
-                <div style="background: var(--surface-0); border-radius: var(--radius-lg); padding: var(--spacing-xl); box-shadow: var(--shadow-card); border: 1px solid var(--surface-200); margin-bottom: var(--spacing-xl);">
+                <div id="evaluation-steps-section" style="background: var(--surface-0); border-radius: var(--radius-lg); padding: var(--spacing-xl); box-shadow: var(--shadow-card); border: 1px solid var(--surface-200); margin-bottom: var(--spacing-xl);">
                     <h3 style="font-size: 16px; font-weight: 600; margin-bottom: var(--spacing-lg);">Evaluation Steps</h3>
                     <div style="display: flex; justify-content: space-between; position: relative;">
                         <div style="position: absolute; top: 15px; left: 0; right: 0; height: 2px; background: var(--surface-200); z-index: 0;"></div>
@@ -4927,7 +4935,7 @@
                 <!-- Evaluation Content -->
                 <div style="background: var(--surface-0); padding: var(--spacing-xl); border-radius: 0 0 var(--radius-lg) var(--radius-lg); box-shadow: var(--shadow-card); border: 1px solid var(--surface-200);" id="evaluation-content-area">
                     <!-- Vendor Info Bar -->
-                    <div style="background: linear-gradient(135deg, var(--info-50) 0%, var(--primary-50) 100%); padding: var(--spacing-lg); border-radius: var(--radius-md); margin-bottom: var(--spacing-xl); display: flex; gap: var(--spacing-xl); flex-wrap: wrap;">
+                    <div id="vendor-info-bar" style="background: linear-gradient(135deg, var(--info-50) 0%, var(--primary-50) 100%); padding: var(--spacing-lg); border-radius: var(--radius-md); margin-bottom: var(--spacing-xl); display: flex; gap: var(--spacing-xl); flex-wrap: wrap;">
                         <div>
                             <div style="font-size: 12px; font-weight: 600; color: var(--primary-400); margin-bottom: 2px;">Company Name</div>
                             <div style="font-size: 16px; font-weight: 700; color: var(--primary-600);" id="vendor-eval-name">MedSupply Ltd.</div>
@@ -4948,11 +4956,6 @@
                             <div style="font-size: 12px; font-weight: 600; color: var(--primary-400); margin-bottom: 2px;">Price Rank</div>
                             <div style="font-size: 16px; font-weight: 700; color: var(--primary-600);">2 of 6</div>
                         </div>
-                    </div>
-
-                    <!-- Role Note -->
-                    <div id="eval-role-note" style="background: var(--info-50); border-left: 4px solid var(--info-400); padding: var(--spacing-md); margin-bottom: var(--spacing-xl); border-radius: var(--radius-sm);">
-                        <strong>👨‍💼 Evaluator View:</strong> Review system-generated evaluation and provide your independent assessment.
                     </div>
 
                     <!-- Evaluation Table -->
@@ -8540,9 +8543,9 @@
                                 quantity: '50,000 boxes',
                                 mandatory: true,
                                 prices: {
-                                    vendor1: { unitPrice: '$2.25', totalCurrency: '$112,500', totalIncoterm: '$112,500 (CIF)', corrections: '-$500', negotiations: '-$2,000', finalPrice: '$110,000', rank: '2 of 6' },
-                                    vendor2: { unitPrice: '$2.15', totalCurrency: '$107,500', totalIncoterm: '$107,500 (CIF)', corrections: '$0', negotiations: '-$1,000', finalPrice: '$106,500', rank: '1 of 6' },
-                                    vendor3: { unitPrice: '$2.35', totalCurrency: '$117,500', totalIncoterm: '$117,500 (CIF)', corrections: '$0', negotiations: '-$1,500', finalPrice: '$116,000', rank: '3 of 6' }
+                                    vendor1: { unitPrice: '$2.25', totalCurrency: '$112,500', totalIncoterm: '$112,500 (CIF)', corrections: '-$500', negotiations: '-$2,000', finalPrice: '$110,000', rank: '2 of 6', evalStatus: 'pass', comment: '' },
+                                    vendor2: { unitPrice: '$2.15', totalCurrency: '$107,500', totalIncoterm: '$107,500 (CIF)', corrections: '$0', negotiations: '-$1,000', finalPrice: '$106,500', rank: '1 of 6', evalStatus: 'pass', comment: '' },
+                                    vendor3: { unitPrice: '$2.35', totalCurrency: '$117,500', totalIncoterm: '$117,500 (CIF)', corrections: '$0', negotiations: '-$1,500', finalPrice: '$116,000', rank: '3 of 6', evalStatus: 'not_evaluated', comment: '' }
                                 },
                                 supplierDocs: {
                                     vendor1: [{ name: 'Price_Schedule_Gloves_V1.xlsx', size: '145 KB', date: '2024-11-12' }],
@@ -8557,9 +8560,9 @@
                                 quantity: '100,000 units',
                                 mandatory: true,
                                 prices: {
-                                    vendor1: { unitPrice: '$0.45', totalCurrency: '$45,000', totalIncoterm: '$45,000 (CIF)', corrections: '$0', negotiations: '-$1,000', finalPrice: '$44,000', rank: '2 of 6' },
-                                    vendor2: { unitPrice: '$0.42', totalCurrency: '$42,000', totalIncoterm: '$42,000 (CIF)', corrections: '$0', negotiations: '-$500', finalPrice: '$41,500', rank: '1 of 6' },
-                                    vendor3: { unitPrice: '$0.48', totalCurrency: '$48,000', totalIncoterm: '$48,000 (CIF)', corrections: '$0', negotiations: '-$800', finalPrice: '$47,200', rank: '3 of 6' }
+                                    vendor1: { unitPrice: '$0.45', totalCurrency: '$45,000', totalIncoterm: '$45,000 (CIF)', corrections: '$0', negotiations: '-$1,000', finalPrice: '$44,000', rank: '2 of 6', evalStatus: 'pass', comment: '' },
+                                    vendor2: { unitPrice: '$0.42', totalCurrency: '$42,000', totalIncoterm: '$42,000 (CIF)', corrections: '$0', negotiations: '-$500', finalPrice: '$41,500', rank: '1 of 6', evalStatus: 'clarification', comment: 'Need to verify currency exchange' },
+                                    vendor3: { unitPrice: '$0.48', totalCurrency: '$48,000', totalIncoterm: '$48,000 (CIF)', corrections: '$0', negotiations: '-$800', finalPrice: '$47,200', rank: '3 of 6', evalStatus: 'not_evaluated', comment: '' }
                                 },
                                 supplierDocs: {
                                     vendor1: [{ name: 'Price_Schedule_Masks_V1.xlsx', size: '128 KB', date: '2024-11-12' }],
@@ -8574,9 +8577,9 @@
                                 quantity: '10,000 units',
                                 mandatory: true,
                                 prices: {
-                                    vendor1: { unitPrice: '$3.80', totalCurrency: '$38,000', totalIncoterm: '$38,000 (CIF)', corrections: '$0', negotiations: '-$500', finalPrice: '$37,500', rank: '2 of 6' },
-                                    vendor2: { unitPrice: '$3.65', totalCurrency: '$36,500', totalIncoterm: '$36,500 (CIF)', corrections: '$0', negotiations: '-$300', finalPrice: '$36,200', rank: '1 of 6' },
-                                    vendor3: { unitPrice: '$3.95', totalCurrency: '$39,500', totalIncoterm: '$39,500 (CIF)', corrections: '$0', negotiations: '-$400', finalPrice: '$39,100', rank: '3 of 6' }
+                                    vendor1: { unitPrice: '$3.80', totalCurrency: '$38,000', totalIncoterm: '$38,000 (CIF)', corrections: '$0', negotiations: '-$500', finalPrice: '$37,500', rank: '2 of 6', evalStatus: 'not_evaluated', comment: '' },
+                                    vendor2: { unitPrice: '$3.65', totalCurrency: '$36,500', totalIncoterm: '$36,500 (CIF)', corrections: '$0', negotiations: '-$300', finalPrice: '$36,200', rank: '1 of 6', evalStatus: 'pass', comment: '' },
+                                    vendor3: { unitPrice: '$3.95', totalCurrency: '$39,500', totalIncoterm: '$39,500 (CIF)', corrections: '$0', negotiations: '-$400', finalPrice: '$39,100', rank: '3 of 6', evalStatus: 'fail', comment: 'Price above budget limit' }
                                 },
                                 supplierDocs: {
                                     vendor1: [{ name: 'Price_Schedule_Shields_V1.xlsx', size: '115 KB', date: '2024-11-12' }],
@@ -8598,9 +8601,9 @@
                                 quantity: '200,000 units',
                                 mandatory: true,
                                 prices: {
-                                    vendor1: { unitPrice: '$0.32', totalCurrency: '$64,000', totalIncoterm: '$64,000 (CIF)', corrections: '$0', negotiations: '-$1,500', finalPrice: '$62,500', rank: '2 of 6' },
-                                    vendor2: { unitPrice: '$0.30', totalCurrency: '$60,000', totalIncoterm: '$60,000 (CIF)', corrections: '$0', negotiations: '-$1,000', finalPrice: '$59,000', rank: '1 of 6' },
-                                    vendor3: { unitPrice: '$0.34', totalCurrency: '$68,000', totalIncoterm: '$68,000 (CIF)', corrections: '$0', negotiations: '-$1,200', finalPrice: '$66,800', rank: '3 of 6' }
+                                    vendor1: { unitPrice: '$0.32', totalCurrency: '$64,000', totalIncoterm: '$64,000 (CIF)', corrections: '$0', negotiations: '-$1,500', finalPrice: '$62,500', rank: '2 of 6', evalStatus: 'pass', comment: '' },
+                                    vendor2: { unitPrice: '$0.30', totalCurrency: '$60,000', totalIncoterm: '$60,000 (CIF)', corrections: '$0', negotiations: '-$1,000', finalPrice: '$59,000', rank: '1 of 6', evalStatus: 'pass', comment: '' },
+                                    vendor3: { unitPrice: '$0.34', totalCurrency: '$68,000', totalIncoterm: '$68,000 (CIF)', corrections: '$0', negotiations: '-$1,200', finalPrice: '$66,800', rank: '3 of 6', evalStatus: 'not_evaluated', comment: '' }
                                 },
                                 supplierDocs: {
                                     vendor1: [{ name: 'Price_Schedule_Syringes_V1.xlsx', size: '132 KB', date: '2024-11-12' }],
@@ -8615,9 +8618,9 @@
                                 quantity: '50,000 rolls',
                                 mandatory: true,
                                 prices: {
-                                    vendor1: { unitPrice: '$1.85', totalCurrency: '$92,500', totalIncoterm: '$92,500 (CIF)', corrections: '$0', negotiations: '-$1,000', finalPrice: '$91,500', rank: '2 of 6' },
-                                    vendor2: { unitPrice: '$1.75', totalCurrency: '$87,500', totalIncoterm: '$87,500 (CIF)', corrections: '$0', negotiations: '-$800', finalPrice: '$86,700', rank: '1 of 6' },
-                                    vendor3: { unitPrice: '$1.95', totalCurrency: '$97,500', totalIncoterm: '$97,500 (CIF)', corrections: '$0', negotiations: '-$900', finalPrice: '$96,600', rank: '3 of 6' }
+                                    vendor1: { unitPrice: '$1.85', totalCurrency: '$92,500', totalIncoterm: '$92,500 (CIF)', corrections: '$0', negotiations: '-$1,000', finalPrice: '$91,500', rank: '2 of 6', evalStatus: 'not_evaluated', comment: '' },
+                                    vendor2: { unitPrice: '$1.75', totalCurrency: '$87,500', totalIncoterm: '$87,500 (CIF)', corrections: '$0', negotiations: '-$800', finalPrice: '$86,700', rank: '1 of 6', evalStatus: 'pass', comment: '' },
+                                    vendor3: { unitPrice: '$1.95', totalCurrency: '$97,500', totalIncoterm: '$97,500 (CIF)', corrections: '$0', negotiations: '-$900', finalPrice: '$96,600', rank: '3 of 6', evalStatus: 'clarification', comment: 'Need manufacturer cert' }
                                 },
                                 supplierDocs: {
                                     vendor1: [{ name: 'Price_Schedule_Gauze_V1.xlsx', size: '118 KB', date: '2024-11-12' }],
@@ -8632,9 +8635,9 @@
                                 quantity: '75,000 units',
                                 mandatory: true,
                                 prices: {
-                                    vendor1: { unitPrice: '$0.95', totalCurrency: '$71,250', totalIncoterm: '$71,250 (CIF)', corrections: '$0', negotiations: '-$1,250', finalPrice: '$70,000', rank: '2 of 6' },
-                                    vendor2: { unitPrice: '$0.88', totalCurrency: '$66,000', totalIncoterm: '$66,000 (CIF)', corrections: '$0', negotiations: '-$800', finalPrice: '$65,200', rank: '1 of 6' },
-                                    vendor3: { unitPrice: '$0.98', totalCurrency: '$73,500', totalIncoterm: '$73,500 (CIF)', corrections: '$0', negotiations: '-$1,000', finalPrice: '$72,500', rank: '3 of 6' }
+                                    vendor1: { unitPrice: '$0.95', totalCurrency: '$71,250', totalIncoterm: '$71,250 (CIF)', corrections: '$0', negotiations: '-$1,250', finalPrice: '$70,000', rank: '2 of 6', evalStatus: 'pass', comment: '' },
+                                    vendor2: { unitPrice: '$0.88', totalCurrency: '$66,000', totalIncoterm: '$66,000 (CIF)', corrections: '$0', negotiations: '-$800', finalPrice: '$65,200', rank: '1 of 6', evalStatus: 'pass', comment: '' },
+                                    vendor3: { unitPrice: '$0.98', totalCurrency: '$73,500', totalIncoterm: '$73,500 (CIF)', corrections: '$0', negotiations: '-$1,000', finalPrice: '$72,500', rank: '3 of 6', evalStatus: 'not_evaluated', comment: '' }
                                 },
                                 supplierDocs: {
                                     vendor1: [{ name: 'Price_Schedule_Catheters_V1.xlsx', size: '125 KB', date: '2024-11-12' }],
@@ -8674,6 +8677,30 @@
         function switchEvaluationRole(role) {
             currentEvaluationRole = role;
             updateRoleButtons();
+            
+            // Hide/show elements based on role
+            const evalTabsContainer = document.getElementById('evalTabsContainer');
+            const vendorInfoBar = document.getElementById('vendor-info-bar');
+            const evaluationStepsSection = document.getElementById('evaluation-steps-section');
+            const viewToggle = document.getElementById('viewToggle');
+            
+            if (role === 'comparison') {
+                // Hide vendor tabs, info bar, steps, and view toggle for Overview Dashboard
+                if (evalTabsContainer) evalTabsContainer.parentElement.style.display = 'none';
+                if (vendorInfoBar) vendorInfoBar.style.display = 'none';
+                if (evaluationStepsSection) evaluationStepsSection.style.display = 'none';
+                if (viewToggle) viewToggle.style.display = 'none';
+            } else {
+                // Show vendor tabs, info bar, and steps for Evaluator and PO views
+                if (evalTabsContainer) evalTabsContainer.parentElement.style.display = 'flex';
+                if (vendorInfoBar) vendorInfoBar.style.display = 'flex';
+                if (evaluationStepsSection) evaluationStepsSection.style.display = 'block';
+                // Show view toggle only for Technical (3) and Financial (4) steps
+                if (viewToggle) {
+                    viewToggle.style.display = (currentEvaluationStep === 3 || currentEvaluationStep === 4) ? 'flex' : 'none';
+                }
+            }
+            
             renderEvaluationTable();
         }
 
@@ -8695,19 +8722,6 @@
                 activeBtn.style.color = 'white';
             }
             
-            const noteElement = document.getElementById('eval-role-note');
-            const noteMap = {
-                'evaluator': '<strong>👨‍💼 Evaluator View:</strong> Review system-generated evaluation and provide your independent assessment.',
-                'po': '<strong>👔 Procurement Official View:</strong> Review all evaluator inputs and provide final ratings.',
-                'comparison': '<strong>📊 Comparison View:</strong> View all evaluations side-by-side to identify discrepancies.'
-            };
-            // Hide role note for Eligibility (step 1) and Qualification (step 2)
-            if (currentEvaluationStep === 1 || currentEvaluationStep === 2) {
-                noteElement.style.display = 'none';
-            } else {
-                noteElement.style.display = 'block';
-                noteElement.innerHTML = noteMap[currentEvaluationRole] || noteMap['evaluator'];
-            }
         }
 
         function switchEvaluationStep(step) {
@@ -8719,11 +8733,13 @@
                 viewToggle.style.display = (step === 3 || step === 4) ? 'flex' : 'none';
             }
             
-            // Hide role note for Eligibility (step 1) and Qualification (step 2)
-            const noteElement = document.getElementById('eval-role-note');
-            if (noteElement) {
-                noteElement.style.display = (step === 1 || step === 2) ? 'none' : 'block';
-            }
+            // Show/hide view toggle based on step (show for Technical step 3 and Financial step 4)
+            const evalTabsContainer = document.getElementById('evalTabsContainer');
+            const vendorInfoBar = document.querySelector('#evaluation-content-area > div:first-child');
+            
+            // Always show vendor tabs and info bar for all steps (unless in comparison view)
+            if (evalTabsContainer) evalTabsContainer.parentElement.style.display = 'flex';
+            if (vendorInfoBar) vendorInfoBar.style.display = 'flex';
             
             // Reset to supplier view when changing steps
             if (step !== 3 && step !== 4) {
@@ -8739,12 +8755,13 @@
                 `;
             }
             
+            // Update step indicators
             document.querySelectorAll('.eval-step').forEach(el => {
                 el.classList.remove('active', 'completed');
             });
             
             document.querySelectorAll('.eval-step').forEach((el, index) => {
-                const stepNum = index + 1;
+                const stepNum = parseInt(el.getAttribute('data-step'));
                 if (stepNum < currentEvaluationStep) {
                     el.classList.add('completed');
                     el.querySelector('div').innerHTML = '✓';
@@ -9102,9 +9119,14 @@
                             <textarea class="eval-comment-field" rows="2" style="font-size: 11px;">${poStatus.comment}</textarea>
                         </td>
                         <td class="manual-eval-column" style="text-align: center;">
-                            <button class="btn btn-secondary btn-sm" onclick="startPrivateClarification('${req.id}')" title="Private Clarification" style="font-size: 9px; padding: 4px 6px;">
-                                🔒 Clarify
-                            </button>
+                            <div style="display: flex; flex-direction: column; gap: 3px;">
+                                <button class="btn btn-secondary btn-sm" onclick="startPrivateClarification('${req.id}')" title="Clarify with Supplier" style="font-size: 9px; padding: 4px 6px;">
+                                    🔒 Clarify
+                                </button>
+                                <button class="btn btn-secondary btn-sm" onclick="askEvalTeamQuestion('${req.id}')" title="Ask Team" style="font-size: 9px; padding: 4px 6px;">
+                                    💬 Team
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 `;
@@ -9202,46 +9224,40 @@
                 const isFirstLot = lotIndex === 0;
                 
                 html += `
-                    <div id="tech-lot-${lot.id}" class="lot-collapsible" style="margin-bottom: var(--spacing-xl);">
+                    <div id="tech-lot-${lot.id}" class="lot-collapsible" style="margin-bottom: var(--spacing-lg); border: 1px solid var(--surface-200); border-radius: var(--radius-lg); overflow: hidden;">
                         <!-- Lot Header with Status - Clickable to toggle -->
-                        <div class="lot-header" style="background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-400) 100%); color: white; padding: var(--spacing-md) var(--spacing-lg); border-radius: var(--radius-md) var(--radius-md) 0 0; cursor: pointer;" onclick="toggleLot('${lot.id}')">
+                        <div class="lot-header" style="background: linear-gradient(135deg, var(--primary-50) 0%, var(--info-50) 100%); padding: var(--spacing-lg); cursor: pointer;" onclick="toggleLot('${lot.id}')">
                             <div style="display: flex; justify-content: space-between; align-items: center;">
                                 <div style="display: flex; align-items: center; gap: var(--spacing-md);">
-                                    <span id="lot-icon-${lot.id}" style="font-size: 14px; transition: transform 0.2s ease;">${isFirstLot ? '▼' : '▶'}</span>
+                                    <span id="lot-icon-${lot.id}" style="font-size: 14px; color: var(--text-muted); transition: transform 0.2s ease;">${isFirstLot ? '▼' : '▶'}</span>
+                                    <div style="width: 4px; height: 45px; background: var(--primary-400); border-radius: 2px;"></div>
                                     <div>
-                                        <div style="font-size: 16px; font-weight: 600;">📦 ${lot.name}</div>
-                                        <div style="font-size: 12px; opacity: 0.9; margin-top: 4px;">${lot.items.length} UNSPSC Codes • ${lot.totalValue}</div>
+                                        <div style="font-size: 15px; font-weight: 700; color: var(--text-primary);">📦 ${lot.name}</div>
+                                        <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">${lot.items.length} UNSPSC Products • ${lot.totalValue}</div>
                                     </div>
                                 </div>
                                 <div style="display: flex; align-items: center; gap: var(--spacing-lg);">
-                                    <div style="text-align: center;">
-                                        <div style="font-size: 10px; opacity: 0.8;">Pass</div>
-                                        <div style="font-size: 16px; font-weight: 600;">${passCount}</div>
+                                    <!-- Pass Count Card -->
+                                    <div style="text-align: center; padding: 8px 16px; background: var(--success-50); border-radius: var(--radius-md); border: 1px solid var(--success-200);">
+                                        <div style="font-size: 10px; color: var(--success-600); text-transform: uppercase;">Pass</div>
+                                        <div style="font-size: 18px; font-weight: 700; color: var(--success-600);">${passCount}</div>
                                     </div>
-                                    <div style="text-align: center;">
-                                        <div style="font-size: 10px; opacity: 0.8;">Fail</div>
-                                        <div style="font-size: 16px; font-weight: 600;">${failCount}</div>
+                                    <!-- Fail Count Card -->
+                                    <div style="text-align: center; padding: 8px 16px; background: ${failCount > 0 ? 'var(--danger-50)' : 'var(--surface-50)'}; border-radius: var(--radius-md); border: 1px solid ${failCount > 0 ? 'var(--danger-200)' : 'var(--surface-200)'};">
+                                        <div style="font-size: 10px; color: ${failCount > 0 ? 'var(--danger-600)' : 'var(--text-muted)'}; text-transform: uppercase;">Fail</div>
+                                        <div style="font-size: 18px; font-weight: 700; color: ${failCount > 0 ? 'var(--danger-600)' : 'var(--text-muted)'};">${failCount}</div>
                                     </div>
-                                    <div style="background: rgba(255,255,255,0.2); padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--radius-sm);">
-                                        <div style="font-size: 10px; opacity: 0.8;">Lot Status (System)</div>
-                                        <div style="font-size: 12px; font-weight: 600;">${formatEvalStatus(lotStatus)}</div>
+                                    <!-- Lot Status Card -->
+                                    <div style="text-align: center; padding: 8px 16px; background: white; border-radius: var(--radius-md); border: 1px solid ${lotStatusColor};">
+                                        <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase;">Lot Status</div>
+                                        <div style="font-size: 14px; font-weight: 600; color: ${lotStatusColor};">${formatEvalStatus(lotStatus)}</div>
                                     </div>
                                 </div>
-                            </div>
-                            <!-- Evaluator Override for Lot -->
-                            <div style="margin-top: var(--spacing-md); padding-top: var(--spacing-md); border-top: 1px solid rgba(255,255,255,0.2); display: flex; align-items: center; gap: var(--spacing-md);" onclick="event.stopPropagation();">
-                                <span style="font-size: 11px; opacity: 0.9;">Your Lot Evaluation:</span>
-                                <select class="eval-select" style="font-size: 11px; background: rgba(255,255,255,0.9); border: none;" onchange="updateLotEvaluation('${lot.id}', this.value)">
-                                    <option value="system" selected>🤖 Use System (${formatEvalStatus(lotStatus)})</option>
-                                    <option value="pass">✅ Pass (Override)</option>
-                                    <option value="fail">❌ Fail (Override)</option>
-                                </select>
-                                <input type="text" placeholder="Lot evaluation comment..." style="flex: 1; font-size: 11px; padding: 6px 10px; border: none; border-radius: var(--radius-sm);">
                             </div>
                         </div>
                         
                         <!-- UNSPSC Items - Collapsible Content -->
-                        <div id="lot-content-${lot.id}" class="lot-content" style="border: 1px solid var(--surface-200); border-top: none; border-radius: 0 0 var(--radius-md) var(--radius-md); overflow: hidden; ${isFirstLot ? '' : 'display: none;'}">
+                        <div id="lot-content-${lot.id}" class="lot-content" style="border-top: 1px solid var(--surface-200); ${isFirstLot ? '' : 'display: none;'}">
                 `;
                 
                 lot.items.forEach((item, itemIndex) => {
@@ -9416,6 +9432,141 @@
                 icon.textContent = '▶';
             });
             showToast('⬆️ All lots collapsed');
+        }
+
+        // Financial Evaluation Lot Toggle Functions
+        function toggleFinancialLot(lotId) {
+            const content = document.getElementById(lotId);
+            const icon = document.getElementById(lotId + '-icon');
+            
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                icon.textContent = '▼';
+            } else {
+                content.style.display = 'none';
+                icon.textContent = '▶';
+            }
+        }
+
+        function expandAllFinancialLots() {
+            document.querySelectorAll('.financial-lot-content').forEach(content => {
+                content.style.display = 'block';
+            });
+            document.querySelectorAll('[id^="financial-lot-"][id$="-icon"]').forEach(icon => {
+                icon.textContent = '▼';
+            });
+            showToast('⬇️ All lots expanded');
+        }
+
+        function collapseAllFinancialLots() {
+            document.querySelectorAll('.financial-lot-content').forEach(content => {
+                content.style.display = 'none';
+            });
+            document.querySelectorAll('[id^="financial-lot-"][id$="-icon"]').forEach(icon => {
+                icon.textContent = '▶';
+            });
+            showToast('⬆️ All lots collapsed');
+        }
+        
+        // Update Financial Item Evaluation Status and recalculate lot status
+        function updateFinancialItemEval(lotId, itemId, newStatus) {
+            // Update the item's eval status in the data (step4.lots is at top level, not per vendor)
+            if (evaluationData && evaluationData.step4 && evaluationData.step4.lots) {
+                const lot = evaluationData.step4.lots.find(l => l.id === lotId);
+                if (lot) {
+                    const item = lot.items.find(i => i.id === itemId);
+                    if (item && item.prices && item.prices[currentVendorEval]) {
+                        item.prices[currentVendorEval].evalStatus = newStatus;
+                    }
+                    
+                    // Recalculate lot status for current vendor
+                    let passCount = 0, failCount = 0, clarificationCount = 0, notEvalCount = 0;
+                    lot.items.forEach(i => {
+                        const status = i.prices && i.prices[currentVendorEval]?.evalStatus || 'not_evaluated';
+                        if (status === 'pass') passCount++;
+                        else if (status === 'fail') failCount++;
+                        else if (status === 'clarification') clarificationCount++;
+                        else notEvalCount++;
+                    });
+                    
+                    let newLotStatus = 'not_evaluated';
+                    let newLotStatusColor = 'var(--surface-300)';
+                    if (failCount > 0) {
+                        newLotStatus = 'fail';
+                        newLotStatusColor = 'var(--danger-400)';
+                    } else if (clarificationCount > 0) {
+                        newLotStatus = 'clarification';
+                        newLotStatusColor = 'var(--warning-400)';
+                    } else if (notEvalCount > 0) {
+                        newLotStatus = 'not_evaluated';
+                        newLotStatusColor = 'var(--surface-300)';
+                    } else {
+                        newLotStatus = 'pass';
+                        newLotStatusColor = 'var(--success-400)';
+                    }
+                    
+                    // Update the lot header UI - find the lot header and update status card
+                    const lotCollapsible = document.getElementById('financial-lot-collapsible-' + lotId);
+                    if (lotCollapsible) {
+                        const lotStatusDiv = lotCollapsible.querySelector('.financial-lot-header > div:last-child > div:first-child');
+                        if (lotStatusDiv) {
+                            lotStatusDiv.style.borderColor = newLotStatusColor;
+                            const statusText = lotStatusDiv.querySelector('div:last-child');
+                            if (statusText) {
+                                statusText.textContent = formatEvalStatus(newLotStatus);
+                                statusText.style.color = newLotStatusColor;
+                            }
+                        }
+                        // Update the left bar color
+                        const leftBar = lotCollapsible.querySelector('.financial-lot-header > div:first-child > div:nth-child(2)');
+                        if (leftBar) {
+                            leftBar.style.background = newLotStatusColor;
+                        }
+                    }
+                    
+                    // Update progress bar
+                    updateFinancialProgress();
+                }
+            }
+            
+            showToast('Evaluation updated: ' + formatEvalStatus(newStatus));
+        }
+        
+        // Update financial evaluation progress bar
+        function updateFinancialProgress() {
+            if (!evaluationData || !evaluationData.step4 || !evaluationData.step4.lots) return;
+            
+            let totalItems = 0;
+            let evaluatedItems = 0;
+            
+            evaluationData.step4.lots.forEach(lot => {
+                lot.items.forEach(item => {
+                    totalItems++;
+                    const status = item.prices && item.prices[currentVendorEval]?.evalStatus;
+                    if (status && status !== 'not_evaluated') {
+                        evaluatedItems++;
+                    }
+                });
+            });
+            
+            const progressPercent = totalItems > 0 ? Math.round((evaluatedItems / totalItems) * 100) : 0;
+            
+            // Update progress bar in the UI
+            const progressBarFill = document.querySelector('#evaluation-modal .financial-lot-collapsible')?.closest('.evaluation-body')?.querySelector('[style*="width:"][style*="background"]');
+            if (progressBarFill) {
+                progressBarFill.style.width = progressPercent + '%';
+            }
+        }
+        
+        // Format evaluation status for display
+        function formatEvalStatus(status) {
+            const statusMap = {
+                'pass': '✅ Pass',
+                'fail': '❌ Fail',
+                'clarification': '⚠️ Clarify',
+                'not_evaluated': '⊘ Not Eval'
+            };
+            return statusMap[status] || status;
         }
         
         function showProductDetails(itemId) {
@@ -9918,100 +10069,235 @@
                 return;
             }
             
-            // For financial step 4, use UNSPSC grouping like technical and lot view
+            // For financial step 4, use lot-based structure like technical evaluation
             if (currentEvaluationStep === 4 && stepData.lots) {
-                // Get current vendor data
-                const vendorNames = {
-                    'vendor1': 'MedSupply Ltd.',
-                    'vendor2': 'HealthCare Corp.',
-                    'vendor3': 'MedTech Inc.'
-                };
-                
+                // Calculate lot totals and status for current vendor
+                const lotTotals = {};
+                const lotStatuses = {};
+                stepData.lots.forEach(lot => {
+                    let total = 0;
+                    let passCount = 0;
+                    let failCount = 0;
+                    let clarificationCount = 0;
+                    let notEvalCount = 0;
+                    
+                    lot.items.forEach(item => {
+                        const priceData = item.prices[currentVendorEval];
+                        if (priceData && priceData.finalPrice) {
+                            const price = parseFloat(priceData.finalPrice.replace(/[^0-9.-]/g, ''));
+                            total += price;
+                        }
+                        // Count statuses
+                        const status = priceData?.evalStatus || 'not_evaluated';
+                        if (status === 'pass') passCount++;
+                        else if (status === 'fail') failCount++;
+                        else if (status === 'clarification') clarificationCount++;
+                        else notEvalCount++;
+                    });
+                    lotTotals[lot.id] = total;
+                    
+                    // Determine lot status
+                    if (failCount > 0) lotStatuses[lot.id] = 'fail';
+                    else if (clarificationCount > 0) lotStatuses[lot.id] = 'clarification';
+                    else if (notEvalCount > 0) lotStatuses[lot.id] = 'not_evaluated';
+                    else lotStatuses[lot.id] = 'pass';
+                });
+
+                // Determine lot ranks
+                const lotRanks = {};
+                stepData.lots.forEach(lot => {
+                    // Simulate ranks based on total (in real app, compare across all vendors)
+                    const total = lotTotals[lot.id];
+                    if (currentVendorEval === 'vendor2') lotRanks[lot.id] = '1 of 6';
+                    else if (currentVendorEval === 'vendor1') lotRanks[lot.id] = '2 of 6';
+                    else lotRanks[lot.id] = '3 of 6';
+                });
+
+                // Calculate overall progress
+                let totalItems = 0;
+                let evaluatedItems = 0;
+                stepData.lots.forEach(lot => {
+                    lot.items.forEach(item => {
+                        totalItems++;
+                        const priceData = item.prices[currentVendorEval];
+                        if (priceData?.evalStatus && priceData.evalStatus !== 'not_evaluated') {
+                            evaluatedItems++;
+                        }
+                    });
+                });
+                const progressPercent = totalItems > 0 ? Math.round((evaluatedItems / totalItems) * 100) : 0;
+
+                // Lot navigation bar (like Technical)
                 html += `
-                    <div style="background: var(--info-50); padding: var(--spacing-md); border-left: 4px solid var(--info-400); border-radius: var(--radius-sm); margin-bottom: var(--spacing-lg);">
-                        <strong>Financial Evaluation: ${vendorNames[currentVendorEval]}</strong> - Products grouped by UNSPSC code
+                    <div style="background: var(--surface-0); padding: var(--spacing-md); border-radius: var(--radius-md); margin-bottom: var(--spacing-lg); border: 1px solid var(--surface-200);">
+                        <div style="display: flex; gap: var(--spacing-lg); align-items: center; flex-wrap: wrap;">
+                            <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                                <span style="font-size: 12px; color: var(--text-muted);">Jump to Lot:</span>
+                                ${stepData.lots.map((lot, i) => `
+                                    <button class="btn btn-secondary btn-sm" onclick="document.getElementById('financial-lot-collapsible-${lot.id}').scrollIntoView({behavior: 'smooth'})" style="font-size: 11px;">
+                                        📦 ${lot.name.split(':')[0]}
+                                    </button>
+                                `).join('')}
+                            </div>
+                            <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                                <button class="btn btn-secondary btn-sm" onclick="expandAllFinancialLots()" style="font-size: 11px;">
+                                    ⬇️ Expand All
+                                </button>
+                                <button class="btn btn-secondary btn-sm" onclick="collapseAllFinancialLots()" style="font-size: 11px;">
+                                    ⬆️ Collapse All
+                                </button>
+                            </div>
+                            <div style="margin-left: auto; display: flex; gap: var(--spacing-sm); align-items: center;">
+                                <span style="font-size: 11px; color: var(--text-muted);">Progress:</span>
+                                <div style="width: 120px; height: 8px; background: var(--surface-200); border-radius: 4px; overflow: hidden;">
+                                    <div style="width: ${progressPercent}%; height: 100%; background: ${progressPercent === 100 ? 'var(--success-500)' : 'var(--primary-400)'}; transition: width 0.3s;"></div>
+                                </div>
+                                <span style="font-size: 11px; font-weight: 600; color: ${progressPercent === 100 ? 'var(--success-600)' : 'var(--primary-500)'};">${progressPercent}%</span>
+                            </div>
+                        </div>
                     </div>
                 `;
                 
                 stepData.lots.forEach((lot, lotIndex) => {
+                    const lotTotal = lotTotals[lot.id] || 0;
+                    const lotRank = lotRanks[lot.id] || '-';
+                    const lotStatus = lotStatuses[lot.id] || 'not_evaluated';
+                    const lotStatusColor = lotStatus === 'pass' ? 'var(--success-400)' : 
+                                          lotStatus === 'fail' ? 'var(--danger-400)' : 
+                                          lotStatus === 'clarification' ? 'var(--warning-400)' : 'var(--surface-300)';
+                    const isFirstLot = lotIndex === 0;
+                    
                     html += `
-                        <div style="background: var(--primary-50); padding: var(--spacing-md); margin-bottom: var(--spacing-md); border-radius: var(--radius-sm); border-left: 4px solid var(--primary-400);">
-                            <strong>${lot.name}</strong>
-                            <span style="margin-left: var(--spacing-md); color: var(--primary-400);">${lot.items.length} Items</span>
-                        </div>
+                        <div id="financial-lot-collapsible-${lot.id}" class="financial-lot-collapsible" style="margin-bottom: var(--spacing-lg); border: 1px solid var(--surface-200); border-radius: var(--radius-lg); overflow: hidden;">
+                            <!-- Lot Header with Summary -->
+                            <div class="financial-lot-header" onclick="toggleFinancialLot('financial-lot-${lot.id}')" style="background: linear-gradient(135deg, var(--primary-50) 0%, var(--info-50) 100%); padding: var(--spacing-lg); cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                                <div style="display: flex; align-items: center; gap: var(--spacing-md);">
+                                    <span id="financial-lot-${lot.id}-icon" style="font-size: 14px; color: var(--text-muted); transition: transform 0.2s ease;">${isFirstLot ? '▼' : '▶'}</span>
+                                    <div style="width: 4px; height: 55px; background: ${lotStatusColor}; border-radius: 2px;"></div>
+                                    <div>
+                                        <div style="font-weight: 700; font-size: 15px; color: var(--text-primary);">📦 ${lot.name}</div>
+                                        <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">${lot.items.length} UNSPSC Products</div>
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: var(--spacing-lg); align-items: center;">
+                                    <!-- Lot Status -->
+                                    <div style="text-align: center; padding: 8px 16px; background: white; border-radius: var(--radius-md); border: 1px solid ${lotStatusColor};">
+                                        <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase;">Lot Status</div>
+                                        <div style="font-size: 14px; font-weight: 600; color: ${lotStatusColor};">${formatEvalStatus(lotStatus)}</div>
+                                    </div>
+                                    <!-- Lot Total Price -->
+                                    <div style="text-align: right; padding: 8px 16px; background: white; border-radius: var(--radius-md); border: 1px solid var(--surface-200);">
+                                        <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase;">Lot Total</div>
+                                        <div style="font-size: 18px; font-weight: 700; color: var(--success-600);">$${lotTotal.toLocaleString()}</div>
+                                    </div>
+                                    <!-- Lot Rank -->
+                                    <div style="text-align: center; padding: 8px 16px; background: ${lotRank.startsWith('1') ? 'var(--success-100)' : 'var(--surface-100)'}; border-radius: var(--radius-md); border: 1px solid ${lotRank.startsWith('1') ? 'var(--success-300)' : 'var(--surface-200)'};">
+                                        <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase;">Rank</div>
+                                        <div style="font-size: 16px; font-weight: 700; color: ${lotRank.startsWith('1') ? 'var(--success-600)' : 'var(--text-primary)'};">${lotRank}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Lot Content - Single Table for All Items -->
+                            <div id="financial-lot-${lot.id}" class="financial-lot-content" style="${isFirstLot ? '' : 'display: none;'}">
+                                <div style="padding: var(--spacing-lg); background: var(--surface-50);">
+                                    <table class="eval-table" style="margin-bottom: 0;">
+                                        <thead>
+                                            <tr style="background: var(--surface-100);">
+                                                <th style="min-width: 250px; text-align: left;">Product (UNSPSC / Description / Qty)</th>
+                                                <th style="width: 90px;">Unit Price</th>
+                                                <th style="width: 110px;">Total (Currency)</th>
+                                                <th style="width: 110px;">Total (Incoterm)</th>
+                                                <th style="width: 65px;">Rank</th>
+                                                <th style="width: 90px;">Corrections</th>
+                                                <th style="width: 90px;">Negotiations</th>
+                                                <th style="width: 100px;">Final Price</th>
+                                                <th style="width: 90px;">Your Eval</th>
+                                                <th style="min-width: 150px;">Comments</th>
+                                                <th style="width: 80px;">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
                     `;
                     
                     lot.items.forEach((item, itemIndex) => {
                         const priceData = item.prices[currentVendorEval];
-                        const docs = item.supplierDocs[currentVendorEval];
+                        const isEvenRow = itemIndex % 2 === 0;
+                        const itemStatus = priceData?.evalStatus || 'not_evaluated';
                         
                         html += `
-                            <div class="unspsc-collapsible">
-                                <div class="unspsc-header" onclick="toggleUnspsc('supplier-financial-unspsc-${item.id}')">
-                                    <div style="display: flex; align-items: center; gap: var(--spacing-md);">
-                                        <span id="supplier-financial-unspsc-${item.id}-icon" style="font-size: 14px; transition: transform 0.3s ease;">▼</span>
-                                        <div>
-                                            <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">UNSPSC ${item.unspsc}</div>
-                                            <div style="font-weight: 600; color: var(--text-primary); margin-top: 2px;">${item.description}</div>
-                                        </div>
-                                    </div>
-                                    <div class="${item.mandatory ? 'mandatory-flag' : 'optional-flag'}" style="margin: 0;">
-                                        ${item.mandatory ? 'MANDATORY' : 'OPTIONAL'}
-                                    </div>
-                                </div>
-                                <div id="supplier-financial-unspsc-${item.id}" class="unspsc-content">
-                                    <div style="margin-top: var(--spacing-md); padding: var(--spacing-md); background: white; border: 1px solid var(--surface-200); border-radius: var(--radius-sm);">
-                                        <div style="background: var(--info-50); padding: var(--spacing-sm); border-radius: var(--radius-sm); margin-bottom: var(--spacing-md); font-size: 12px;">
-                                            <strong>Required Qty:</strong> ${item.quantity}
-                                        </div>
-                                        <table class="eval-table" style="margin-bottom: 0;">
-                                            <thead>
-                                                <tr>
-                                                    <th style="width: 100px;">Unit Price</th>
-                                                    <th style="width: 120px;">Total (Currency)</th>
-                                                    <th style="width: 120px;">Total (Incoterm)</th>
-                                                    <th style="width: 100px;">Corrections</th>
-                                                    <th style="width: 100px;">Negotiations</th>
-                                                    <th style="width: 120px;">Final Price</th>
-                                                    <th style="width: 80px;">Rank</th>
-                                                    <th style="width: 200px;">Documents</th>
-                                                    <th class="manual-eval-column" style="width: 250px;">Comments</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td style="font-weight: 600; font-size: 13px;">${priceData.unitPrice}</td>
-                                                    <td style="font-weight: 600; font-size: 13px;">${priceData.totalCurrency}</td>
-                                                    <td style="font-weight: 600;">${priceData.totalIncoterm}</td>
-                                                    <td style="color: var(--danger-500); font-weight: 600;">${priceData.corrections}</td>
-                                                    <td style="color: var(--success-500); font-weight: 600;">${priceData.negotiations}</td>
-                                                    <td style="font-weight: 700; font-size: 14px; color: var(--primary-600);">${priceData.finalPrice}</td>
-                                                    <td><span class="eval-status-badge ${priceData.rank.includes('1') ? 'pass' : 'pending'}">${priceData.rank}</span></td>
-                                                    <td>${renderSupplierDocs(docs)}</td>
-                                                    <td class="manual-eval-column">
-                                                        <textarea class="eval-comment-field" placeholder="Enter your comments..." rows="2"></textarea>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
+                                            <tr style="background: ${isEvenRow ? 'white' : 'var(--surface-50)'}; border-bottom: 1px solid var(--surface-100);">
+                                                <td style="padding: 12px;">
+                                                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                                                        <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                                                            <span style="font-size: 11px; padding: 2px 8px; background: var(--primary-100); color: var(--primary-600); border-radius: var(--radius-xs); font-weight: 600; font-family: monospace;">${item.unspsc}</span>
+                                                            <span style="font-size: 10px; color: var(--text-muted); background: var(--surface-100); padding: 2px 6px; border-radius: var(--radius-xs);">Qty: ${item.quantity}</span>
+                                                        </div>
+                                                        <div style="font-size: 12px; font-weight: 500; color: var(--text-primary); line-height: 1.3;">${item.description}</div>
+                                                    </div>
+                                                </td>
+                                                <td style="font-weight: 600; font-size: 11px; color: var(--text-primary); text-align: center;">${priceData.unitPrice}</td>
+                                                <td style="font-weight: 600; font-size: 11px; color: var(--text-primary); text-align: center;">${priceData.totalCurrency}</td>
+                                                <td style="font-size: 10px; color: var(--text-secondary); text-align: center;">${priceData.totalIncoterm}</td>
+                                                <td style="text-align: center;">
+                                                    <span style="padding: 2px 6px; border-radius: var(--radius-sm); font-size: 9px; font-weight: 700; background: ${priceData.rank.startsWith('1') ? 'var(--success-100)' : 'var(--surface-100)'}; color: ${priceData.rank.startsWith('1') ? 'var(--success-600)' : 'var(--text-primary)'};">
+                                                        ${priceData.rank}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <input type="text" value="${priceData.corrections}" style="width: 100%; padding: 4px 5px; border: 1px solid var(--surface-300); border-radius: var(--radius-sm); font-size: 10px; color: var(--danger-500); font-weight: 600; text-align: center;" placeholder="$0">
+                                                </td>
+                                                <td>
+                                                    <input type="text" value="${priceData.negotiations}" style="width: 100%; padding: 4px 5px; border: 1px solid var(--surface-300); border-radius: var(--radius-sm); font-size: 10px; color: var(--success-600); font-weight: 600; text-align: center;" placeholder="$0">
+                                                </td>
+                                                <td>
+                                                    <input type="text" value="${priceData.finalPrice}" style="width: 100%; padding: 4px 5px; border: 1px solid var(--primary-300); border-radius: var(--radius-sm); font-size: 11px; font-weight: 700; color: var(--primary-600); background: var(--primary-50); text-align: center;">
+                                                </td>
+                                                <td style="text-align: center;">
+                                                    <select class="eval-select ${itemStatus}" style="font-size: 10px; padding: 4px;" onchange="updateFinancialItemEval('${lot.id}', '${item.id}', this.value)">
+                                                        <option value="not_evaluated" ${itemStatus === 'not_evaluated' ? 'selected' : ''}>⊘ Not Eval</option>
+                                                        <option value="pass" ${itemStatus === 'pass' ? 'selected' : ''}>✅ Pass</option>
+                                                        <option value="fail" ${itemStatus === 'fail' ? 'selected' : ''}>❌ Fail</option>
+                                                        <option value="clarification" ${itemStatus === 'clarification' ? 'selected' : ''}>⚠️ Clarify</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <textarea class="eval-comment-field" placeholder="Comments..." rows="2" style="font-size: 9px; padding: 4px;">${priceData.comment || ''}</textarea>
+                                                </td>
+                                                <td style="text-align: center;">
+                                                    <div style="display: flex; flex-direction: column; gap: 2px;">
+                                                        <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); startPrivateClarification('${item.id}')" title="Clarify with Supplier" style="font-size: 8px; padding: 2px 4px;">
+                                                            🔒 Supplier
+                                                        </button>
+                                                        <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); askEvalTeamQuestion('${item.id}')" title="Ask Team" style="font-size: 8px; padding: 2px 4px;">
+                                                            💬 Team
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
                         `;
                     });
+                    
+                    html += `
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    `;
                 });
                 
                 // Add overall evaluation remarks
                 html += `
                     <div style="margin-top: var(--spacing-xl); padding: var(--spacing-lg); background: white; border: 1px solid var(--surface-200); border-radius: var(--radius-md);">
-                        <h3 style="margin-bottom: var(--spacing-lg); color: var(--text-primary); font-size: 16px;">Overall Evaluation Stage Remarks</h3>
+                        <h3 style="margin-bottom: var(--spacing-lg); color: var(--text-primary); font-size: 16px;">📝 Overall Evaluation Stage Remarks</h3>
                         <div style="display: grid; gap: var(--spacing-lg);">
                             <div>
                                 <label style="display: block; font-weight: 600; margin-bottom: var(--spacing-sm); font-size: 13px;">Justification of Reasonableness of Price</label>
                                 <textarea class="eval-comment-field" rows="3" placeholder="Provide justification for price reasonableness..."></textarea>
                             </div>
                             <div>
-                                <label style="display: block; font-weight: 600; margin-bottom: var(--spacing-sm); font-size: 13px;">Negotiations</label>
+                                <label style="display: block; font-weight: 600; margin-bottom: var(--spacing-sm); font-size: 13px;">Negotiations Summary</label>
                                 <textarea class="eval-comment-field" rows="3" placeholder="Document negotiations details..."></textarea>
                             </div>
                             <div>
@@ -10125,37 +10411,60 @@
                 return;
             }
             
-            // Add download button for offline evaluation
+            // Navigation bar with expand/collapse
             html += `
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-lg); padding: var(--spacing-md); background: var(--surface-50); border-radius: var(--radius-md); border: 1px solid var(--surface-200);">
-                    <div>
-                        <strong>Financial Evaluation: ${selectedLot.name}</strong>
-                        <span style="margin-left: var(--spacing-md); color: var(--text-muted);">${selectedLot.items.length} Products</span>
+                    <div style="display: flex; align-items: center; gap: var(--spacing-md);">
+                        <button class="btn btn-secondary btn-sm" onclick="expandAllFinancialLotViewUnspsc()" style="font-size: 11px;">
+                            ⬇️ Expand All
+                        </button>
+                        <button class="btn btn-secondary btn-sm" onclick="collapseAllFinancialLotViewUnspsc()" style="font-size: 11px;">
+                            ⬆️ Collapse All
+                        </button>
+                        <span style="color: var(--text-muted); font-size: 12px;">${selectedLot.items.length} UNSPSC Products</span>
                     </div>
-                    <button class="btn btn-primary" onclick="downloadEvaluationExcel('${selectedLot.id}', 'step4')">
-                        <i class="pi pi-download"></i> Download Excel for Offline Evaluation
-                    </button>
                 </div>
             `;
             
-            // Group by UNSPSC code and render collapsible comparison for each
+            // Group by UNSPSC code and render collapsible table for each
             selectedLot.items.forEach((item, itemIndex) => {
+                const isFirstItem = itemIndex === 0;
+                
                 html += `
-                    <div class="unspsc-collapsible">
-                        <div class="unspsc-header" onclick="toggleUnspsc('financial-unspsc-${item.id}')">
+                    <div class="unspsc-collapsible financial-lot-view-unspsc" style="margin-bottom: var(--spacing-md); border: 1px solid var(--surface-200); border-radius: var(--radius-md); overflow: hidden;">
+                        <div class="unspsc-header" onclick="toggleUnspsc('financial-lotview-unspsc-${item.id}')" style="padding: var(--spacing-md); background: var(--surface-50); cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
                             <div style="display: flex; align-items: center; gap: var(--spacing-md);">
-                                <span id="financial-unspsc-${item.id}-icon" style="font-size: 14px; transition: transform 0.3s ease;">▼</span>
+                                <span id="financial-lotview-unspsc-${item.id}-icon" style="font-size: 12px; color: var(--text-muted);">${isFirstItem ? '▼' : '▶'}</span>
                                 <div>
-                                    <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">UNSPSC ${item.unspsc}</div>
-                                    <div style="font-weight: 600; color: var(--text-primary); margin-top: 2px;">${item.description}</div>
+                                    <span style="font-size: 11px; padding: 2px 8px; background: var(--primary-100); color: var(--primary-600); border-radius: var(--radius-xs); font-weight: 600; font-family: monospace;">${item.unspsc}</span>
+                                    <span style="font-weight: 600; color: var(--text-primary); margin-left: var(--spacing-sm); font-size: 13px;">${item.description}</span>
+                                    <span style="font-size: 11px; color: var(--text-muted); margin-left: var(--spacing-sm);">Qty: ${item.quantity}</span>
                                 </div>
                             </div>
-                            <div class="${item.mandatory ? 'mandatory-flag' : 'optional-flag'}" style="margin: 0;">
-                                ${item.mandatory ? 'MANDATORY' : 'OPTIONAL'}
-                            </div>
                         </div>
-                        <div id="financial-unspsc-${item.id}" class="unspsc-content">
-                            ${renderFinancialUnspscComparison(item, vendorData)}
+                        <div id="financial-lotview-unspsc-${item.id}" class="unspsc-content" style="${isFirstItem ? '' : 'display: none;'}">
+                            <div style="padding: var(--spacing-md); background: white;">
+                                <table class="eval-table" style="margin-bottom: 0; font-size: 12px;">
+                                    <thead>
+                                        <tr style="background: var(--surface-100);">
+                                            <th style="width: 120px;">Supplier</th>
+                                            <th style="width: 80px;">Unit Price</th>
+                                            <th style="width: 100px;">Total (Currency)</th>
+                                            <th style="width: 100px;">Total (Incoterm)</th>
+                                            <th style="width: 60px;">Rank</th>
+                                            <th style="width: 80px;">Corrections</th>
+                                            <th style="width: 80px;">Negotiations</th>
+                                            <th style="width: 90px;">Final Price</th>
+                                            <th style="width: 80px;">Your Eval</th>
+                                            <th style="min-width: 130px;">Comments</th>
+                                            <th style="width: 70px;">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${renderFinancialLotViewSupplierRows(item, vendorData)}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -10191,6 +10500,96 @@
             `;
             
             container.innerHTML = html;
+        }
+        
+        // Render supplier rows for Financial Lot View table
+        function renderFinancialLotViewSupplierRows(item, vendorData) {
+            const vendors = ['vendor1', 'vendor2', 'vendor3'];
+            let html = '';
+            
+            vendors.forEach((vendorId, idx) => {
+                const vendor = vendorData[vendorId];
+                const priceData = item.prices[vendorId] || {};
+                const evalStatus = priceData.evalStatus || 'not_evaluated';
+                const evalComment = priceData.comment || '';
+                const isEvenRow = idx % 2 === 0;
+                const isCurrentVendor = vendorId === currentVendorEval;
+                
+                html += `
+                    <tr style="background: ${isCurrentVendor ? 'var(--primary-50)' : isEvenRow ? 'white' : 'var(--surface-50)'}; border-bottom: 1px solid var(--surface-100); ${isCurrentVendor ? 'border-left: 3px solid var(--primary-400);' : ''}">
+                        <td style="padding: 10px;">
+                            <div style="font-weight: 600; font-size: 11px; color: var(--text-primary);">${vendor.name}</div>
+                            <div style="font-size: 9px; color: var(--text-muted);">UNGM: ${vendor.ungm}</div>
+                        </td>
+                        <td style="font-weight: 600; font-size: 11px; text-align: center;">${priceData.unitPrice || '-'}</td>
+                        <td style="font-weight: 600; font-size: 11px; text-align: center;">${priceData.totalCurrency || '-'}</td>
+                        <td style="font-size: 10px; text-align: center;">${priceData.totalIncoterm || '-'}</td>
+                        <td style="text-align: center;">
+                            <span style="padding: 2px 6px; border-radius: var(--radius-sm); font-size: 9px; font-weight: 700; background: ${priceData.rank && priceData.rank.startsWith('1') ? 'var(--success-100)' : 'var(--surface-100)'}; color: ${priceData.rank && priceData.rank.startsWith('1') ? 'var(--success-600)' : 'var(--text-primary)'};">
+                                ${priceData.rank || '-'}
+                            </span>
+                        </td>
+                        <td>
+                            <input type="text" value="${priceData.corrections || '$0'}" style="width: 100%; padding: 4px; border: 1px solid var(--surface-300); border-radius: var(--radius-sm); font-size: 10px; color: var(--danger-500); font-weight: 600; text-align: center;">
+                        </td>
+                        <td>
+                            <input type="text" value="${priceData.negotiations || '$0'}" style="width: 100%; padding: 4px; border: 1px solid var(--surface-300); border-radius: var(--radius-sm); font-size: 10px; color: var(--success-600); font-weight: 600; text-align: center;">
+                        </td>
+                        <td>
+                            <input type="text" value="${priceData.finalPrice || '-'}" style="width: 100%; padding: 4px; border: 1px solid var(--primary-300); border-radius: var(--radius-sm); font-size: 11px; font-weight: 700; color: var(--primary-600); background: var(--primary-50); text-align: center;">
+                        </td>
+                        <td style="text-align: center;">
+                            <select class="eval-select ${evalStatus}" style="font-size: 10px; padding: 3px;" onchange="updateFinancialLotViewEval('${item.id}', '${vendorId}', this.value)">
+                                <option value="not_evaluated" ${evalStatus === 'not_evaluated' ? 'selected' : ''}>⊘ Not Eval</option>
+                                <option value="pass" ${evalStatus === 'pass' ? 'selected' : ''}>✅ Pass</option>
+                                <option value="fail" ${evalStatus === 'fail' ? 'selected' : ''}>❌ Fail</option>
+                                <option value="clarification" ${evalStatus === 'clarification' ? 'selected' : ''}>⚠️ Clarify</option>
+                            </select>
+                        </td>
+                        <td>
+                            <textarea class="eval-comment-field" placeholder="Comments..." rows="2" style="font-size: 9px; padding: 4px; width: 100%;">${evalComment}</textarea>
+                        </td>
+                        <td style="text-align: center;">
+                            <div style="display: flex; flex-direction: column; gap: 2px;">
+                                <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); startPrivateClarification('${item.id}-${vendorId}')" title="Clarify with Supplier" style="font-size: 8px; padding: 2px 4px;">
+                                    🔒
+                                </button>
+                                <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); askEvalTeamQuestion('${item.id}')" title="Ask Team" style="font-size: 8px; padding: 2px 4px;">
+                                    💬
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            return html;
+        }
+        
+        // Expand/Collapse all UNSPSC items in Financial Lot View
+        function expandAllFinancialLotViewUnspsc() {
+            document.querySelectorAll('.financial-lot-view-unspsc .unspsc-content').forEach(content => {
+                content.style.display = 'block';
+            });
+            document.querySelectorAll('.financial-lot-view-unspsc [id$="-icon"]').forEach(icon => {
+                icon.textContent = '▼';
+            });
+            showToast('⬇️ All products expanded');
+        }
+        
+        function collapseAllFinancialLotViewUnspsc() {
+            document.querySelectorAll('.financial-lot-view-unspsc .unspsc-content').forEach(content => {
+                content.style.display = 'none';
+            });
+            document.querySelectorAll('.financial-lot-view-unspsc [id$="-icon"]').forEach(icon => {
+                icon.textContent = '▶';
+            });
+            showToast('⬆️ All products collapsed');
+        }
+        
+        // Update evaluation for Financial Lot View
+        function updateFinancialLotViewEval(itemId, vendorId, newStatus) {
+            showToast('Evaluation updated: ' + formatEvalStatus(newStatus));
         }
         
         function renderFinancialUnspscComparison(item, vendorData) {
@@ -10279,43 +10678,156 @@
                 return;
             }
             
-            // Add download button for offline evaluation
+            // Navigation bar with expand/collapse
             html += `
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-lg); padding: var(--spacing-md); background: var(--surface-50); border-radius: var(--radius-md); border: 1px solid var(--surface-200);">
-                    <div>
-                        <strong>Evaluating: ${selectedLot.name}</strong>
-                        <span style="margin-left: var(--spacing-md); color: var(--text-muted);">${selectedLot.items.length} Products</span>
+                    <div style="display: flex; align-items: center; gap: var(--spacing-md);">
+                        <button class="btn btn-secondary btn-sm" onclick="expandAllLotViewUnspsc()" style="font-size: 11px;">
+                            ⬇️ Expand All
+                        </button>
+                        <button class="btn btn-secondary btn-sm" onclick="collapseAllLotViewUnspsc()" style="font-size: 11px;">
+                            ⬆️ Collapse All
+                        </button>
+                        <span style="color: var(--text-muted); font-size: 12px;">${selectedLot.items.length} UNSPSC Products</span>
                     </div>
-                    <button class="btn btn-primary" onclick="downloadEvaluationExcel('${selectedLot.id}', 'step${currentEvaluationStep}')">
-                        <i class="pi pi-download"></i> Download Excel for Offline Evaluation
-                    </button>
                 </div>
             `;
             
-            // Group by UNSPSC code and render collapsible comparison for each
+            // Group by UNSPSC code and render collapsible table for each
             selectedLot.items.forEach((item, itemIndex) => {
+                const isFirstItem = itemIndex === 0;
+                
                 html += `
-                    <div class="unspsc-collapsible">
-                        <div class="unspsc-header" onclick="toggleUnspsc('unspsc-${item.id}')">
+                    <div class="unspsc-collapsible lot-view-unspsc" style="margin-bottom: var(--spacing-md); border: 1px solid var(--surface-200); border-radius: var(--radius-md); overflow: hidden;">
+                        <div class="unspsc-header" onclick="toggleUnspsc('lotview-unspsc-${item.id}')" style="padding: var(--spacing-md); background: var(--surface-50); cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
                             <div style="display: flex; align-items: center; gap: var(--spacing-md);">
-                                <span id="unspsc-${item.id}-icon" style="font-size: 14px; transition: transform 0.3s ease;">▼</span>
+                                <span id="lotview-unspsc-${item.id}-icon" style="font-size: 12px; color: var(--text-muted);">${isFirstItem ? '▼' : '▶'}</span>
                                 <div>
-                                    <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">UNSPSC ${item.unspsc}</div>
-                                    <div style="font-weight: 600; color: var(--text-primary); margin-top: 2px;">${item.description}</div>
+                                    <span style="font-size: 11px; padding: 2px 8px; background: var(--primary-100); color: var(--primary-600); border-radius: var(--radius-xs); font-weight: 600; font-family: monospace;">${item.unspsc}</span>
+                                    <span style="font-weight: 600; color: var(--text-primary); margin-left: var(--spacing-sm); font-size: 13px;">${item.description}</span>
+                                    <span style="font-size: 11px; color: var(--text-muted); margin-left: var(--spacing-sm);">Qty: ${item.quantity}</span>
                                 </div>
                             </div>
-                            <div class="${item.mandatory ? 'mandatory-flag' : 'optional-flag'}" style="margin: 0;">
-                                ${item.mandatory ? 'MANDATORY' : 'OPTIONAL'}
-                            </div>
                         </div>
-                        <div id="unspsc-${item.id}" class="unspsc-content">
-                            ${renderUnspscComparison(item, vendorData, false)}
+                        <div id="lotview-unspsc-${item.id}" class="unspsc-content" style="${isFirstItem ? '' : 'display: none;'}">
+                            <div style="padding: var(--spacing-md); background: white;">
+                                <table class="eval-table" style="margin-bottom: 0; font-size: 12px;">
+                                    <thead>
+                                        <tr style="background: var(--surface-100);">
+                                            <th style="width: 130px;">Supplier</th>
+                                            <th style="width: 80px;">Compliant?</th>
+                                            <th style="min-width: 200px;">Details Offered</th>
+                                            <th style="width: 150px;">Deviation</th>
+                                            <th style="width: 90px;">Your Eval</th>
+                                            <th style="min-width: 150px;">Comments</th>
+                                            <th style="width: 80px;">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${renderLotViewSupplierRows(item, vendorData)}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 `;
             });
             
             container.innerHTML = html;
+        }
+        
+        // Render supplier rows for Lot View table
+        function renderLotViewSupplierRows(item, vendorData) {
+            const vendors = ['vendor1', 'vendor2', 'vendor3'];
+            let html = '';
+            
+            vendors.forEach((vendorId, idx) => {
+                const vendor = vendorData[vendorId];
+                const response = item.bidderResponse || item.response || {};
+                const vendorResponse = Array.isArray(response) ? response[idx] : response;
+                const compliance = item.compliance || 'Yes';
+                const deviation = item.deviation || 'None';
+                const evalStatus = item.evaluations?.[vendorId]?.status || item.evaluations?.evaluator?.status || 'not_evaluated';
+                const evalComment = item.evaluations?.[vendorId]?.comment || item.evaluations?.evaluator?.comment || '';
+                const isEvenRow = idx % 2 === 0;
+                const isCurrentVendor = vendorId === currentVendorEval;
+                
+                html += `
+                    <tr style="background: ${isCurrentVendor ? 'var(--primary-50)' : isEvenRow ? 'white' : 'var(--surface-50)'}; border-bottom: 1px solid var(--surface-100); ${isCurrentVendor ? 'border-left: 3px solid var(--primary-400);' : ''}">
+                        <td style="padding: 10px;">
+                            <div style="font-weight: 600; font-size: 11px; color: var(--text-primary);">${vendor.name}</div>
+                            <div style="font-size: 9px; color: var(--text-muted);">UNGM: ${vendor.ungm}</div>
+                        </td>
+                        <td style="text-align: center;">
+                            <span style="padding: 3px 8px; border-radius: var(--radius-sm); font-size: 10px; font-weight: 600; background: ${compliance === 'Yes' || compliance === 'Full' ? 'var(--success-100)' : compliance === 'Partial' ? 'var(--warning-100)' : 'var(--danger-100)'}; color: ${compliance === 'Yes' || compliance === 'Full' ? 'var(--success-600)' : compliance === 'Partial' ? 'var(--warning-600)' : 'var(--danger-600)'};">
+                                ${compliance === 'Yes' || compliance === 'Full' ? '✓ Yes' : compliance === 'Partial' ? '⚠️ Partial' : '✗ No'}
+                            </span>
+                        </td>
+                        <td style="padding: 10px;">
+                            <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.4;">
+                                ${typeof vendorResponse === 'string' ? vendorResponse.substring(0, 80) + (vendorResponse.length > 80 ? '...' : '') : 'Specifications provided'}
+                            </div>
+                            <div style="margin-top: 4px; display: flex; gap: 4px;">
+                                <button class="btn btn-secondary btn-sm" onclick="showProductDetails('${item.id}')" style="font-size: 9px; padding: 2px 6px;">📋 View</button>
+                                <button class="btn btn-secondary btn-sm" onclick="previewDocumentOnline('specs_${vendorId}.pdf')" style="font-size: 9px; padding: 2px 6px;">📎 2</button>
+                            </div>
+                        </td>
+                        <td style="padding: 10px; font-size: 11px; color: ${deviation === 'None' || deviation === 'No deviation' ? 'var(--success-600)' : 'var(--warning-600)'};">
+                            ${deviation}
+                        </td>
+                        <td style="text-align: center;">
+                            <select class="eval-select ${evalStatus}" style="font-size: 10px; padding: 3px;" onchange="updateLotViewEval('${item.id}', '${vendorId}', this.value)">
+                                <option value="not_evaluated" ${evalStatus === 'not_evaluated' ? 'selected' : ''}>⊘ Not Eval</option>
+                                <option value="pass" ${evalStatus === 'pass' ? 'selected' : ''}>✅ Pass</option>
+                                <option value="fail" ${evalStatus === 'fail' ? 'selected' : ''}>❌ Fail</option>
+                                <option value="clarification" ${evalStatus === 'clarification' ? 'selected' : ''}>⚠️ Clarify</option>
+                            </select>
+                        </td>
+                        <td>
+                            <textarea class="eval-comment-field" placeholder="Comments..." rows="2" style="font-size: 10px; padding: 4px; width: 100%;">${evalComment}</textarea>
+                        </td>
+                        <td style="text-align: center;">
+                            <div style="display: flex; flex-direction: column; gap: 2px;">
+                                <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); startPrivateClarification('${item.id}-${vendorId}')" title="Clarify with Supplier" style="font-size: 8px; padding: 2px 4px;">
+                                    🔒
+                                </button>
+                                <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); askEvalTeamQuestion('${item.id}')" title="Ask Team" style="font-size: 8px; padding: 2px 4px;">
+                                    💬
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            return html;
+        }
+        
+        // Expand/Collapse all UNSPSC items in Lot View
+        function expandAllLotViewUnspsc() {
+            document.querySelectorAll('.lot-view-unspsc .unspsc-content').forEach(content => {
+                content.style.display = 'block';
+            });
+            document.querySelectorAll('.lot-view-unspsc [id$="-icon"]').forEach(icon => {
+                icon.textContent = '▼';
+            });
+            showToast('⬇️ All products expanded');
+        }
+        
+        function collapseAllLotViewUnspsc() {
+            document.querySelectorAll('.lot-view-unspsc .unspsc-content').forEach(content => {
+                content.style.display = 'none';
+            });
+            document.querySelectorAll('.lot-view-unspsc [id$="-icon"]').forEach(icon => {
+                icon.textContent = '▶';
+            });
+            showToast('⬆️ All products collapsed');
+        }
+        
+        // Update evaluation for Lot View
+        function updateLotViewEval(itemId, vendorId, newStatus) {
+            // Update evaluation status in data
+            showToast('Evaluation updated: ' + formatEvalStatus(newStatus));
         }
         
         function toggleUnspsc(id) {
@@ -10476,9 +10988,14 @@
                             <textarea class="eval-comment-field" rows="2" style="font-size: 11px;">${poStatus.comment}</textarea>
                         </td>
                         <td class="manual-eval-column" style="text-align: center;">
-                            <button class="btn btn-secondary btn-sm" onclick="startPrivateClarification('${req.id}')" title="Start Private Clarification" style="font-size: 9px; padding: 4px 6px;">
-                                🔒 Clarify
-                            </button>
+                            <div style="display: flex; flex-direction: column; gap: 3px;">
+                                <button class="btn btn-secondary btn-sm" onclick="startPrivateClarification('${req.id}')" title="Clarify with Supplier" style="font-size: 9px; padding: 4px 6px;">
+                                    🔒 Clarify
+                                </button>
+                                <button class="btn btn-secondary btn-sm" onclick="askEvalTeamQuestion('${req.id}')" title="Ask Team" style="font-size: 9px; padding: 4px 6px;">
+                                    💬 Team
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 `;
@@ -10507,120 +11024,719 @@
                 return;
             }
             
-            // For Technical step 3, use the same UI as evaluator but with PO controls
+            // For Technical step 3 - replicate Evaluator View with PO additions
             if (currentEvaluationStep === 3 && stepData.lots) {
-                container.innerHTML = renderTechnicalPOView(stepData);
+                // Check view mode - lot or supplier
+                if (currentEvalView === 'lot') {
+                    renderPOLotView(container, stepData);
+                } else {
+                    renderPOTechnicalSupplierView(container, stepData);
+                }
                 return;
             }
             
+            // For Financial step 4 - replicate Evaluator View with PO additions
+            if (currentEvaluationStep === 4 && stepData.lots) {
+                // Check view mode - lot or supplier
+                if (currentEvalView === 'lot') {
+                    renderPOFinancialLotView(container, stepData);
+                } else {
+                    renderPOFinancialSupplierView(container, stepData);
+                }
+                return;
+            }
+            
+            // Default fallback
             let headers = `
                 <th style="width: 80px;">Req ID</th>
                 <th>Requirement</th>
-            `;
-            
-            // Add price columns for financial step
-            if (currentEvaluationStep === 4) {
-                headers += `
-                    <th style="width: 110px;">Original Price</th>
-                    <th style="width: 100px;">Corrections</th>
-                    <th style="width: 100px;">Negotiations</th>
-                    <th style="width: 110px;">Final Price</th>
-                    <th style="width: 80px;">Rank</th>
-                `;
-            } else {
-                headers += `
-                    <th class="system-eval-column" style="width: 100px;">System</th>
-                `;
-            }
-            
-            headers += `
-                <th style="width: 120px;">Evaluator 1</th>
-                <th style="width: 200px;">Eval 1 Comments</th>
-            `;
-            
-            if (currentEvaluationStep >= 3 && stepData.requirements[0].evaluations.evaluator2) {
-                headers += `
-                    <th style="width: 120px;">Evaluator 2</th>
-                    <th style="width: 200px;">Eval 2 Comments</th>
-                `;
-            }
-            
-            headers += `
-                <th class="manual-eval-column" style="width: 120px;">PO Final</th>
-                <th class="manual-eval-column" style="width: 200px;">PO Comments</th>
+                <th class="system-eval-column" style="width: 100px;">System</th>
+                <th style="width: 100px;">Evaluator</th>
+                <th style="width: 180px;">Eval Comments</th>
+                <th class="manual-eval-column" style="width: 100px;">PO Final</th>
+                <th class="manual-eval-column" style="width: 180px;">PO Comments</th>
+                <th class="manual-eval-column" style="width: 80px;">Action</th>
             `;
             
             let rows = '';
             stepData.requirements.forEach(req => {
                 const e1 = req.evaluations.evaluator || req.evaluations.po;
-                const e2 = req.evaluations.evaluator2;
                 const po = req.evaluations.po;
                 
-                let row = `
+                rows += `
                     <tr>
                         <td><div class="req-id-badge">${req.id}</div></td>
-                        <td>
-                            ${req.description}
-                            <div class="${req.mandatory ? 'mandatory-flag' : 'optional-flag'}">
-                                ${req.mandatory ? 'MANDATORY' : 'OPTIONAL'}
+                        <td>${req.description}</td>
+                        <td class="system-eval-column">
+                            ${req.systemEval ? `<span class="eval-status-badge ${req.systemEval}">${req.systemEval === 'pass' ? '✅' : '❌'}</span>` : '-'}
+                        </td>
+                        <td><span class="eval-status-badge ${e1.status}">${formatEvalStatus(e1.status)}</span></td>
+                        <td style="font-size: 11px; color: var(--text-muted);">${e1.comment}</td>
+                        <td class="manual-eval-column">
+                            <select class="eval-select ${po.status}" style="font-size: 10px;">
+                                <option value="pending" ${po.status === 'pending' ? 'selected' : ''}>⏳ Pending</option>
+                                <option value="pass" ${po.status === 'pass' ? 'selected' : ''}>✅ Pass</option>
+                                <option value="fail" ${po.status === 'fail' ? 'selected' : ''}>❌ Fail</option>
+                            </select>
+                        </td>
+                        <td class="manual-eval-column">
+                            <textarea class="eval-comment-field" rows="2" style="font-size: 10px;">${po.comment}</textarea>
+                        </td>
+                        <td class="manual-eval-column" style="text-align: center;">
+                            <div style="display: flex; flex-direction: column; gap: 2px;">
+                                <button class="btn btn-secondary btn-sm" onclick="startPrivateClarification('${req.id}')" title="Clarify with Supplier" style="font-size: 8px; padding: 2px 4px;">🔒</button>
+                                <button class="btn btn-secondary btn-sm" onclick="askEvalTeamQuestion('${req.id}')" title="Ask Team" style="font-size: 8px; padding: 2px 4px;">💬</button>
                             </div>
                         </td>
+                    </tr>
                 `;
-                
-                if (currentEvaluationStep === 4) {
-                    row += `
-                        <td style="font-weight: 600; font-size: 13px;">${req.originalPrice || '-'}</td>
-                        <td style="color: var(--danger-500); font-weight: 600;">${req.corrections || '$0'}</td>
-                        <td style="color: var(--success-500); font-weight: 600;">${req.negotiations || '$0'}</td>
-                        <td style="font-weight: 700; font-size: 14px; color: var(--primary-600);">${req.finalPrice || req.originalPrice}</td>
-                        <td><span class="eval-status-badge ${req.rank.includes('1') ? 'pass' : 'pending'}">${req.rank || '-'}</span></td>
-                    `;
-                } else {
-                    row += `
-                        <td class="system-eval-column">
-                            ${req.systemEval ? `<span class="eval-status-badge ${req.systemEval}">${req.systemEval === 'pass' ? '✅ Pass' : '❌ Fail'}</span>` : '-'}
-                        </td>
-                    `;
-                }
-                
-                row += `
-                    <td><span class="eval-status-badge ${e1.status}">${formatEvalStatus(e1.status)}</span></td>
-                    <td style="font-size: 12px;">${e1.comment}</td>
-                `;
-                
-                if (e2) {
-                    row += `
-                        <td><span class="eval-status-badge ${e2.status}">${formatEvalStatus(e2.status)}</span></td>
-                        <td style="font-size: 12px;">${e2.comment}</td>
-                    `;
-                }
-                
-                row += `
-                    <td class="manual-eval-column">
-                        <select class="eval-select ${po.status}">
-                            <option value="not_evaluated" ${po.status === 'not_evaluated' ? 'selected' : ''}>⊘ Not Evaluated</option>
-                            <option value="pass" ${po.status === 'pass' ? 'selected' : ''}>✅ Pass</option>
-                            <option value="fail" ${po.status === 'fail' ? 'selected' : ''}>❌ Fail</option>
-                            <option value="pending" ${po.status === 'pending' ? 'selected' : ''}>⏳ Pending</option>
-                        </select>
-                    </td>
-                    <td class="manual-eval-column">
-                        <textarea class="eval-comment-field">${po.comment}</textarea>
-                    </td>
-                </tr>
-                `;
-                
-                rows += row;
             });
             
             container.innerHTML = `
                 <table class="eval-table">
-                    <thead>
-                        <tr>${headers}</tr>
-                    </thead>
+                    <thead><tr>${headers}</tr></thead>
                     <tbody>${rows}</tbody>
                 </table>
             `;
+        }
+        
+        // PO Technical Supplier View - replicates Evaluator structure with PO additions
+        function renderPOTechnicalSupplierView(container, stepData) {
+            const vendorNames = {
+                'vendor1': 'MedSupply Ltd.',
+                'vendor2': 'HealthCare Corp.',
+                'vendor3': 'MedTech Inc.'
+            };
+            
+            // Calculate lot status
+            function calculateLotStatusFromItems(items) {
+                if (!items || items.length === 0) return 'not_evaluated';
+                const statuses = items.map(item => item.evaluations?.evaluator?.status || 'not_evaluated');
+                if (statuses.includes('fail')) return 'fail';
+                if (statuses.includes('clarification')) return 'clarification';
+                if (statuses.includes('not_evaluated')) return 'not_evaluated';
+                return 'pass';
+            }
+            
+            let html = `
+                <!-- Navigation Bar -->
+                <div style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-md); padding: var(--spacing-md); margin-bottom: var(--spacing-lg);">
+                    <div style="display: flex; gap: var(--spacing-lg); align-items: center; flex-wrap: wrap;">
+                        <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                            <span style="font-size: 12px; color: var(--text-muted);">Jump to Lot:</span>
+                            ${stepData.lots.map((lot, i) => `
+                                <button class="btn btn-secondary btn-sm" onclick="document.getElementById('po-tech-lot-${lot.id}').scrollIntoView({behavior: 'smooth'})" style="font-size: 11px;">
+                                    📦 ${lot.name.split(':')[0]}
+                                </button>
+                            `).join('')}
+                        </div>
+                        <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                            <button class="btn btn-secondary btn-sm" onclick="expandAllPOLots()" style="font-size: 11px;">⬇️ Expand All</button>
+                            <button class="btn btn-secondary btn-sm" onclick="collapseAllPOLots()" style="font-size: 11px;">⬆️ Collapse All</button>
+                        </div>
+                        <div style="margin-left: auto; display: flex; gap: var(--spacing-sm); align-items: center;">
+                            <span style="font-size: 11px; color: var(--text-muted);">Progress:</span>
+                            <div style="background: var(--surface-200); border-radius: 10px; height: 8px; width: 150px; overflow: hidden;">
+                                <div style="background: var(--success-400); height: 100%; width: 65%;"></div>
+                            </div>
+                            <span style="font-size: 11px; color: var(--success-500);">65%</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            stepData.lots.forEach((lot, lotIndex) => {
+                const lotStatus = calculateLotStatusFromItems(lot.items);
+                const lotStatusColor = lotStatus === 'pass' ? 'var(--success-400)' : 
+                                       lotStatus === 'fail' ? 'var(--danger-400)' : 
+                                       lotStatus === 'clarification' ? 'var(--warning-400)' : 'var(--surface-300)';
+                const isFirstLot = lotIndex === 0;
+                
+                html += `
+                    <div id="po-tech-lot-${lot.id}" class="po-lot-collapsible" style="margin-bottom: var(--spacing-lg); border: 1px solid var(--surface-200); border-radius: var(--radius-lg); overflow: hidden;">
+                        <div class="lot-header" style="background: linear-gradient(135deg, var(--primary-50) 0%, var(--info-50) 100%); padding: var(--spacing-lg); cursor: pointer;" onclick="togglePOLot('${lot.id}')">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div style="display: flex; align-items: center; gap: var(--spacing-md);">
+                                    <span id="po-lot-icon-${lot.id}" style="font-size: 14px; color: var(--text-muted);">${isFirstLot ? '▼' : '▶'}</span>
+                                    <div style="width: 4px; height: 45px; background: ${lotStatusColor}; border-radius: 2px;"></div>
+                                    <div>
+                                        <div style="font-size: 15px; font-weight: 700; color: var(--text-primary);">📦 ${lot.name}</div>
+                                        <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">${lot.items.length} UNSPSC Products</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="po-lot-content-${lot.id}" class="po-lot-content" style="${isFirstLot ? '' : 'display: none;'}">
+                `;
+                
+                lot.items.forEach((item, itemIndex) => {
+                    const evalStatus = item.evaluations?.evaluator?.status || 'not_evaluated';
+                    const evalComment = item.evaluations?.evaluator?.comment || '';
+                    const poStatus = item.evaluations?.po?.status || 'pending';
+                    const poComment = item.evaluations?.po?.comment || '';
+                    const isFirstItem = itemIndex === 0;
+                    
+                    html += `
+                            <div class="po-unspsc-collapsible" style="border-bottom: 1px solid var(--surface-100);">
+                                <div class="unspsc-header" onclick="togglePOUnspsc('po-unspsc-${item.id}')" style="padding: var(--spacing-md); background: white; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                                    <div style="display: flex; align-items: center; gap: var(--spacing-md);">
+                                        <span id="po-unspsc-${item.id}-icon" style="font-size: 12px; color: var(--text-muted);">${isFirstItem ? '▼' : '▶'}</span>
+                                        <div>
+                                            <span style="font-size: 11px; padding: 2px 8px; background: var(--primary-100); color: var(--primary-600); border-radius: var(--radius-xs); font-weight: 600; font-family: monospace;">${item.unspsc}</span>
+                                            <span style="font-weight: 600; color: var(--text-primary); margin-left: var(--spacing-sm); font-size: 13px;">${item.description}</span>
+                                            <span style="font-size: 11px; color: var(--text-muted); margin-left: var(--spacing-sm);">Qty: ${item.quantity}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="po-unspsc-${item.id}" class="unspsc-content" style="${isFirstItem ? '' : 'display: none;'}">
+                                    <div style="padding: var(--spacing-md); background: var(--surface-50);">
+                                        <table class="eval-table" style="margin-bottom: 0; font-size: 12px;">
+                                            <thead>
+                                                <tr style="background: var(--surface-100);">
+                                                    <th style="width: 80px;">Compliant?</th>
+                                                    <th style="min-width: 180px;">Details Offered</th>
+                                                    <th style="width: 120px;">Deviation</th>
+                                                    <th style="width: 90px;">Evaluator</th>
+                                                    <th style="width: 150px;">Eval Comments</th>
+                                                    <th style="width: 90px;">PO Final</th>
+                                                    <th style="min-width: 130px;">PO Comments</th>
+                                                    <th style="width: 70px;">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td style="text-align: center;">
+                                                        <span style="padding: 3px 8px; border-radius: var(--radius-sm); font-size: 10px; font-weight: 600; background: ${item.bidderCompliance === 'Yes' ? 'var(--success-100)' : 'var(--warning-100)'}; color: ${item.bidderCompliance === 'Yes' ? 'var(--success-600)' : 'var(--warning-600)'};">
+                                                            ${item.bidderCompliance === 'Yes' ? '✓ Yes' : '⚠️ ' + item.bidderCompliance}
+                                                        </span>
+                                                    </td>
+                                                    <td style="padding: 10px;">
+                                                        <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.4;">
+                                                            ${item.bidderResponse ? item.bidderResponse.substring(0, 80) + '...' : 'Specifications provided'}
+                                                        </div>
+                                                        <div style="margin-top: 4px;">
+                                                            <button class="btn btn-secondary btn-sm" onclick="showProductDetails('${item.id}')" style="font-size: 9px; padding: 2px 6px;">📋 View</button>
+                                                            <button class="btn btn-secondary btn-sm" onclick="previewDocumentOnline('specs.pdf')" style="font-size: 9px; padding: 2px 6px;">📎 2</button>
+                                                        </div>
+                                                    </td>
+                                                    <td style="padding: 10px; font-size: 11px; color: ${item.deviation === 'None' ? 'var(--success-600)' : 'var(--warning-600)'};">
+                                                        ${item.deviation || 'None'}
+                                                    </td>
+                                                    <td style="text-align: center;">
+                                                        <span class="eval-status-badge ${evalStatus}" style="font-size: 10px;">${formatEvalStatus(evalStatus)}</span>
+                                                    </td>
+                                                    <td style="font-size: 10px; color: var(--text-muted); padding: 8px;">${evalComment || '-'}</td>
+                                                    <td style="text-align: center;">
+                                                        <select class="eval-select ${poStatus}" style="font-size: 10px; padding: 3px;">
+                                                            <option value="pending" ${poStatus === 'pending' ? 'selected' : ''}>⏳ Pending</option>
+                                                            <option value="pass" ${poStatus === 'pass' ? 'selected' : ''}>✅ Pass</option>
+                                                            <option value="fail" ${poStatus === 'fail' ? 'selected' : ''}>❌ Fail</option>
+                                                            <option value="clarification" ${poStatus === 'clarification' ? 'selected' : ''}>⚠️ Clarify</option>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <textarea class="eval-comment-field" placeholder="PO Comments..." rows="2" style="font-size: 10px; padding: 4px; width: 100%;">${poComment}</textarea>
+                                                    </td>
+                                                    <td style="text-align: center;">
+                                                        <div style="display: flex; flex-direction: column; gap: 2px;">
+                                                            <button class="btn btn-secondary btn-sm" onclick="startPrivateClarification('${item.id}')" title="Clarify with Supplier" style="font-size: 8px; padding: 2px 4px;">🔒</button>
+                                                            <button class="btn btn-secondary btn-sm" onclick="askEvalTeamQuestion('${item.id}')" title="Ask Team" style="font-size: 8px; padding: 2px 4px;">💬</button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                    `;
+                });
+                
+                html += `
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+        
+        // PO Technical Lot View - shows all suppliers per UNSPSC
+        function renderPOLotView(container, stepData) {
+            const vendorData = {
+                'vendor1': { name: 'MedSupply Ltd.', ungm: '309663', country: 'Germany' },
+                'vendor2': { name: 'HealthCare Corp.', ungm: '301245', country: 'USA' },
+                'vendor3': { name: 'MedTech Inc.', ungm: '315789', country: 'Japan' }
+            };
+            
+            const selectedLot = stepData.lots.find(lot => lot.id === currentLotId);
+            if (!selectedLot) {
+                container.innerHTML = '<p>Lot not found.</p>';
+                return;
+            }
+            
+            let html = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-lg); padding: var(--spacing-md); background: var(--surface-50); border-radius: var(--radius-md); border: 1px solid var(--surface-200);">
+                    <div style="display: flex; align-items: center; gap: var(--spacing-md);">
+                        <button class="btn btn-secondary btn-sm" onclick="expandAllPOLotViewUnspsc()" style="font-size: 11px;">⬇️ Expand All</button>
+                        <button class="btn btn-secondary btn-sm" onclick="collapseAllPOLotViewUnspsc()" style="font-size: 11px;">⬆️ Collapse All</button>
+                        <span style="color: var(--text-muted); font-size: 12px;">${selectedLot.items.length} UNSPSC Products</span>
+                    </div>
+                </div>
+            `;
+            
+            selectedLot.items.forEach((item, itemIndex) => {
+                const isFirstItem = itemIndex === 0;
+                
+                html += `
+                    <div class="po-lot-view-unspsc" style="margin-bottom: var(--spacing-md); border: 1px solid var(--surface-200); border-radius: var(--radius-md); overflow: hidden;">
+                        <div class="unspsc-header" onclick="togglePOUnspsc('po-lotview-unspsc-${item.id}')" style="padding: var(--spacing-md); background: var(--surface-50); cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; align-items: center; gap: var(--spacing-md);">
+                                <span id="po-lotview-unspsc-${item.id}-icon" style="font-size: 12px; color: var(--text-muted);">${isFirstItem ? '▼' : '▶'}</span>
+                                <div>
+                                    <span style="font-size: 11px; padding: 2px 8px; background: var(--primary-100); color: var(--primary-600); border-radius: var(--radius-xs); font-weight: 600; font-family: monospace;">${item.unspsc}</span>
+                                    <span style="font-weight: 600; color: var(--text-primary); margin-left: var(--spacing-sm); font-size: 13px;">${item.description}</span>
+                                    <span style="font-size: 11px; color: var(--text-muted); margin-left: var(--spacing-sm);">Qty: ${item.quantity}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="po-lotview-unspsc-${item.id}" class="unspsc-content" style="${isFirstItem ? '' : 'display: none;'}">
+                            <div style="padding: var(--spacing-md); background: white;">
+                                <table class="eval-table" style="margin-bottom: 0; font-size: 12px;">
+                                    <thead>
+                                        <tr style="background: var(--surface-100);">
+                                            <th style="width: 120px;">Supplier</th>
+                                            <th style="width: 80px;">Compliant?</th>
+                                            <th style="min-width: 150px;">Details Offered</th>
+                                            <th style="width: 100px;">Deviation</th>
+                                            <th style="width: 80px;">Evaluator</th>
+                                            <th style="width: 120px;">Eval Comments</th>
+                                            <th style="width: 80px;">PO Final</th>
+                                            <th style="min-width: 110px;">PO Comments</th>
+                                            <th style="width: 70px;">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${renderPOLotViewSupplierRows(item, vendorData)}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+        
+        // Render supplier rows for PO Lot View
+        function renderPOLotViewSupplierRows(item, vendorData) {
+            const vendors = ['vendor1', 'vendor2', 'vendor3'];
+            let html = '';
+            
+            vendors.forEach((vendorId, idx) => {
+                const vendor = vendorData[vendorId];
+                const evalStatus = item.evaluations?.[vendorId]?.status || item.evaluations?.evaluator?.status || 'not_evaluated';
+                const evalComment = item.evaluations?.[vendorId]?.comment || item.evaluations?.evaluator?.comment || '';
+                const poStatus = item.evaluations?.po?.[vendorId]?.status || 'pending';
+                const poComment = item.evaluations?.po?.[vendorId]?.comment || '';
+                const isEvenRow = idx % 2 === 0;
+                
+                html += `
+                    <tr style="background: ${isEvenRow ? 'white' : 'var(--surface-50)'}; border-bottom: 1px solid var(--surface-100);">
+                        <td style="padding: 10px;">
+                            <div style="font-weight: 600; font-size: 11px;">${vendor.name}</div>
+                            <div style="font-size: 9px; color: var(--text-muted);">UNGM: ${vendor.ungm}</div>
+                        </td>
+                        <td style="text-align: center;">
+                            <span style="padding: 3px 6px; border-radius: var(--radius-sm); font-size: 9px; font-weight: 600; background: var(--success-100); color: var(--success-600);">✓ Yes</span>
+                        </td>
+                        <td style="padding: 8px;">
+                            <div style="font-size: 10px; color: var(--text-secondary);">Specs provided</div>
+                            <button class="btn btn-secondary btn-sm" onclick="showProductDetails('${item.id}')" style="font-size: 8px; padding: 2px 4px; margin-top: 2px;">📋 View</button>
+                        </td>
+                        <td style="font-size: 10px; color: var(--success-600);">None</td>
+                        <td style="text-align: center;">
+                            <span class="eval-status-badge ${evalStatus}" style="font-size: 9px;">${formatEvalStatus(evalStatus)}</span>
+                        </td>
+                        <td style="font-size: 9px; color: var(--text-muted); padding: 6px;">${evalComment || '-'}</td>
+                        <td style="text-align: center;">
+                            <select class="eval-select ${poStatus}" style="font-size: 9px; padding: 2px;">
+                                <option value="pending" ${poStatus === 'pending' ? 'selected' : ''}>⏳</option>
+                                <option value="pass" ${poStatus === 'pass' ? 'selected' : ''}>✅</option>
+                                <option value="fail" ${poStatus === 'fail' ? 'selected' : ''}>❌</option>
+                                <option value="clarification" ${poStatus === 'clarification' ? 'selected' : ''}>⚠️</option>
+                            </select>
+                        </td>
+                        <td>
+                            <textarea class="eval-comment-field" placeholder="PO..." rows="2" style="font-size: 9px; padding: 3px; width: 100%;">${poComment}</textarea>
+                        </td>
+                        <td style="text-align: center;">
+                            <div style="display: flex; flex-direction: column; gap: 2px;">
+                                <button class="btn btn-secondary btn-sm" onclick="startPrivateClarification('${item.id}-${vendorId}')" style="font-size: 7px; padding: 2px 3px;">🔒</button>
+                                <button class="btn btn-secondary btn-sm" onclick="askEvalTeamQuestion('${item.id}')" style="font-size: 7px; padding: 2px 3px;">💬</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            return html;
+        }
+        
+        // PO Financial Supplier View
+        function renderPOFinancialSupplierView(container, stepData) {
+            // Similar structure to Evaluator's Financial view but with PO additions
+            const lotTotals = {};
+            const lotStatuses = {};
+            
+            stepData.lots.forEach(lot => {
+                let total = 0;
+                lot.items.forEach(item => {
+                    const priceData = item.prices[currentVendorEval];
+                    if (priceData && priceData.finalPrice) {
+                        const price = parseFloat(priceData.finalPrice.replace(/[^0-9.-]/g, ''));
+                        total += price;
+                    }
+                });
+                lotTotals[lot.id] = total;
+                lotStatuses[lot.id] = 'not_evaluated';
+            });
+            
+            let html = `
+                <div style="background: var(--surface-0); padding: var(--spacing-md); border-radius: var(--radius-md); margin-bottom: var(--spacing-lg); border: 1px solid var(--surface-200);">
+                    <div style="display: flex; gap: var(--spacing-lg); align-items: center; flex-wrap: wrap;">
+                        <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                            <span style="font-size: 12px; color: var(--text-muted);">Jump to Lot:</span>
+                            ${stepData.lots.map((lot, i) => `
+                                <button class="btn btn-secondary btn-sm" onclick="document.getElementById('po-financial-lot-${lot.id}').scrollIntoView({behavior: 'smooth'})" style="font-size: 11px;">
+                                    📦 ${lot.name.split(':')[0]}
+                                </button>
+                            `).join('')}
+                        </div>
+                        <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                            <button class="btn btn-secondary btn-sm" onclick="expandAllPOFinancialLots()" style="font-size: 11px;">⬇️ Expand All</button>
+                            <button class="btn btn-secondary btn-sm" onclick="collapseAllPOFinancialLots()" style="font-size: 11px;">⬆️ Collapse All</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            stepData.lots.forEach((lot, lotIndex) => {
+                const lotTotal = lotTotals[lot.id] || 0;
+                const isFirstLot = lotIndex === 0;
+                
+                html += `
+                    <div id="po-financial-lot-${lot.id}" class="po-financial-lot-collapsible" style="margin-bottom: var(--spacing-lg); border: 1px solid var(--surface-200); border-radius: var(--radius-lg); overflow: hidden;">
+                        <div class="financial-lot-header" onclick="togglePOFinancialLot('po-financial-lot-content-${lot.id}')" style="background: linear-gradient(135deg, var(--primary-50) 0%, var(--info-50) 100%); padding: var(--spacing-lg); cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; align-items: center; gap: var(--spacing-md);">
+                                <span id="po-financial-lot-${lot.id}-icon" style="font-size: 14px; color: var(--text-muted);">${isFirstLot ? '▼' : '▶'}</span>
+                                <div style="width: 4px; height: 45px; background: var(--primary-400); border-radius: 2px;"></div>
+                                <div>
+                                    <div style="font-weight: 700; font-size: 15px; color: var(--text-primary);">📦 ${lot.name}</div>
+                                    <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">${lot.items.length} UNSPSC Products</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: var(--spacing-lg); align-items: center;">
+                                <div style="text-align: right; padding: 8px 16px; background: white; border-radius: var(--radius-md); border: 1px solid var(--surface-200);">
+                                    <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase;">Lot Total</div>
+                                    <div style="font-size: 18px; font-weight: 700; color: var(--success-600);">$${lotTotal.toLocaleString()}</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="po-financial-lot-content-${lot.id}" class="po-financial-lot-content" style="${isFirstLot ? '' : 'display: none;'}">
+                            <div style="padding: var(--spacing-lg); background: var(--surface-50);">
+                                <table class="eval-table" style="margin-bottom: 0;">
+                                    <thead>
+                                        <tr style="background: var(--surface-100);">
+                                            <th style="min-width: 200px;">Product (UNSPSC)</th>
+                                            <th style="width: 80px;">Unit Price</th>
+                                            <th style="width: 100px;">Total</th>
+                                            <th style="width: 60px;">Rank</th>
+                                            <th style="width: 80px;">Evaluator</th>
+                                            <th style="width: 100px;">Eval Comments</th>
+                                            <th style="width: 80px;">PO Final</th>
+                                            <th style="min-width: 100px;">PO Comments</th>
+                                            <th style="width: 70px;">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                `;
+                
+                lot.items.forEach((item, itemIndex) => {
+                    const priceData = item.prices[currentVendorEval];
+                    const evalStatus = priceData?.evalStatus || 'not_evaluated';
+                    const evalComment = priceData?.comment || '';
+                    const poStatus = priceData?.poStatus || 'pending';
+                    const poComment = priceData?.poComment || '';
+                    const isEvenRow = itemIndex % 2 === 0;
+                    
+                    html += `
+                                        <tr style="background: ${isEvenRow ? 'white' : 'var(--surface-50)'}; border-bottom: 1px solid var(--surface-100);">
+                                            <td style="padding: 10px;">
+                                                <div style="display: flex; flex-direction: column; gap: 2px;">
+                                                    <span style="font-size: 10px; padding: 2px 6px; background: var(--primary-100); color: var(--primary-600); border-radius: var(--radius-xs); font-weight: 600; font-family: monospace; width: fit-content;">${item.unspsc}</span>
+                                                    <div style="font-size: 11px; font-weight: 500; color: var(--text-primary);">${item.description}</div>
+                                                    <span style="font-size: 9px; color: var(--text-muted);">Qty: ${item.quantity}</span>
+                                                </div>
+                                            </td>
+                                            <td style="font-weight: 600; font-size: 11px; text-align: center;">${priceData?.unitPrice || '-'}</td>
+                                            <td style="font-weight: 600; font-size: 11px; text-align: center;">${priceData?.finalPrice || '-'}</td>
+                                            <td style="text-align: center;">
+                                                <span style="padding: 2px 6px; border-radius: var(--radius-sm); font-size: 9px; font-weight: 700; background: ${priceData?.rank?.startsWith('1') ? 'var(--success-100)' : 'var(--surface-100)'}; color: ${priceData?.rank?.startsWith('1') ? 'var(--success-600)' : 'var(--text-primary)'};">
+                                                    ${priceData?.rank || '-'}
+                                                </span>
+                                            </td>
+                                            <td style="text-align: center;">
+                                                <span class="eval-status-badge ${evalStatus}" style="font-size: 9px;">${formatEvalStatus(evalStatus)}</span>
+                                            </td>
+                                            <td style="font-size: 9px; color: var(--text-muted); padding: 6px;">${evalComment || '-'}</td>
+                                            <td style="text-align: center;">
+                                                <select class="eval-select ${poStatus}" style="font-size: 9px; padding: 2px;">
+                                                    <option value="pending" ${poStatus === 'pending' ? 'selected' : ''}>⏳</option>
+                                                    <option value="pass" ${poStatus === 'pass' ? 'selected' : ''}>✅</option>
+                                                    <option value="fail" ${poStatus === 'fail' ? 'selected' : ''}>❌</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <textarea class="eval-comment-field" placeholder="PO..." rows="2" style="font-size: 9px; padding: 3px; width: 100%;">${poComment}</textarea>
+                                            </td>
+                                            <td style="text-align: center;">
+                                                <div style="display: flex; flex-direction: column; gap: 2px;">
+                                                    <button class="btn btn-secondary btn-sm" onclick="startPrivateClarification('${item.id}')" style="font-size: 7px; padding: 2px 3px;">🔒</button>
+                                                    <button class="btn btn-secondary btn-sm" onclick="askEvalTeamQuestion('${item.id}')" style="font-size: 7px; padding: 2px 3px;">💬</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                    `;
+                });
+                
+                html += `
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+        
+        // PO Financial Lot View - shows all suppliers per UNSPSC
+        function renderPOFinancialLotView(container, stepData) {
+            const vendorData = {
+                'vendor1': { name: 'MedSupply Ltd.', ungm: '309663', country: 'Germany' },
+                'vendor2': { name: 'HealthCare Corp.', ungm: '301245', country: 'USA' },
+                'vendor3': { name: 'MedTech Inc.', ungm: '315789', country: 'Japan' }
+            };
+            
+            const selectedLot = stepData.lots.find(lot => lot.id === currentLotId);
+            if (!selectedLot) {
+                container.innerHTML = '<p>Lot not found.</p>';
+                return;
+            }
+            
+            let html = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-lg); padding: var(--spacing-md); background: var(--surface-50); border-radius: var(--radius-md); border: 1px solid var(--surface-200);">
+                    <div style="display: flex; align-items: center; gap: var(--spacing-md);">
+                        <button class="btn btn-secondary btn-sm" onclick="expandAllPOFinancialLotViewUnspsc()" style="font-size: 11px;">⬇️ Expand All</button>
+                        <button class="btn btn-secondary btn-sm" onclick="collapseAllPOFinancialLotViewUnspsc()" style="font-size: 11px;">⬆️ Collapse All</button>
+                        <span style="color: var(--text-muted); font-size: 12px;">${selectedLot.items.length} UNSPSC Products</span>
+                    </div>
+                </div>
+            `;
+            
+            selectedLot.items.forEach((item, itemIndex) => {
+                const isFirstItem = itemIndex === 0;
+                
+                html += `
+                    <div class="po-financial-lot-view-unspsc" style="margin-bottom: var(--spacing-md); border: 1px solid var(--surface-200); border-radius: var(--radius-md); overflow: hidden;">
+                        <div class="unspsc-header" onclick="togglePOUnspsc('po-fin-lotview-unspsc-${item.id}')" style="padding: var(--spacing-md); background: var(--surface-50); cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; align-items: center; gap: var(--spacing-md);">
+                                <span id="po-fin-lotview-unspsc-${item.id}-icon" style="font-size: 12px; color: var(--text-muted);">${isFirstItem ? '▼' : '▶'}</span>
+                                <div>
+                                    <span style="font-size: 11px; padding: 2px 8px; background: var(--primary-100); color: var(--primary-600); border-radius: var(--radius-xs); font-weight: 600; font-family: monospace;">${item.unspsc}</span>
+                                    <span style="font-weight: 600; color: var(--text-primary); margin-left: var(--spacing-sm); font-size: 13px;">${item.description}</span>
+                                    <span style="font-size: 11px; color: var(--text-muted); margin-left: var(--spacing-sm);">Qty: ${item.quantity}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="po-fin-lotview-unspsc-${item.id}" class="unspsc-content" style="${isFirstItem ? '' : 'display: none;'}">
+                            <div style="padding: var(--spacing-md); background: white;">
+                                <table class="eval-table" style="margin-bottom: 0; font-size: 12px;">
+                                    <thead>
+                                        <tr style="background: var(--surface-100);">
+                                            <th style="width: 110px;">Supplier</th>
+                                            <th style="width: 70px;">Unit Price</th>
+                                            <th style="width: 90px;">Total</th>
+                                            <th style="width: 55px;">Rank</th>
+                                            <th style="width: 75px;">Evaluator</th>
+                                            <th style="width: 100px;">Eval Comments</th>
+                                            <th style="width: 75px;">PO Final</th>
+                                            <th style="min-width: 100px;">PO Comments</th>
+                                            <th style="width: 65px;">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${renderPOFinancialLotViewSupplierRows(item, vendorData)}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+        
+        // Render supplier rows for PO Financial Lot View
+        function renderPOFinancialLotViewSupplierRows(item, vendorData) {
+            const vendors = ['vendor1', 'vendor2', 'vendor3'];
+            let html = '';
+            
+            vendors.forEach((vendorId, idx) => {
+                const vendor = vendorData[vendorId];
+                const priceData = item.prices?.[vendorId] || {};
+                const evalStatus = priceData.evalStatus || 'not_evaluated';
+                const evalComment = priceData.comment || '';
+                const poStatus = priceData.poStatus || 'pending';
+                const poComment = priceData.poComment || '';
+                const isEvenRow = idx % 2 === 0;
+                
+                html += `
+                    <tr style="background: ${isEvenRow ? 'white' : 'var(--surface-50)'}; border-bottom: 1px solid var(--surface-100);">
+                        <td style="padding: 8px;">
+                            <div style="font-weight: 600; font-size: 10px;">${vendor.name}</div>
+                            <div style="font-size: 8px; color: var(--text-muted);">UNGM: ${vendor.ungm}</div>
+                        </td>
+                        <td style="font-weight: 600; font-size: 10px; text-align: center;">${priceData.unitPrice || '-'}</td>
+                        <td style="font-weight: 600; font-size: 10px; text-align: center;">${priceData.finalPrice || '-'}</td>
+                        <td style="text-align: center;">
+                            <span style="padding: 2px 5px; border-radius: var(--radius-sm); font-size: 8px; font-weight: 700; background: ${priceData.rank?.startsWith('1') ? 'var(--success-100)' : 'var(--surface-100)'}; color: ${priceData.rank?.startsWith('1') ? 'var(--success-600)' : 'var(--text-primary)'};">
+                                ${priceData.rank || '-'}
+                            </span>
+                        </td>
+                        <td style="text-align: center;">
+                            <span class="eval-status-badge ${evalStatus}" style="font-size: 8px;">${formatEvalStatus(evalStatus)}</span>
+                        </td>
+                        <td style="font-size: 8px; color: var(--text-muted); padding: 5px;">${evalComment || '-'}</td>
+                        <td style="text-align: center;">
+                            <select class="eval-select ${poStatus}" style="font-size: 8px; padding: 2px;">
+                                <option value="pending" ${poStatus === 'pending' ? 'selected' : ''}>⏳</option>
+                                <option value="pass" ${poStatus === 'pass' ? 'selected' : ''}>✅</option>
+                                <option value="fail" ${poStatus === 'fail' ? 'selected' : ''}>❌</option>
+                            </select>
+                        </td>
+                        <td>
+                            <textarea class="eval-comment-field" placeholder="PO..." rows="2" style="font-size: 8px; padding: 2px; width: 100%;">${poComment}</textarea>
+                        </td>
+                        <td style="text-align: center;">
+                            <div style="display: flex; flex-direction: column; gap: 1px;">
+                                <button class="btn btn-secondary btn-sm" onclick="startPrivateClarification('${item.id}-${vendorId}')" style="font-size: 7px; padding: 1px 2px;">🔒</button>
+                                <button class="btn btn-secondary btn-sm" onclick="askEvalTeamQuestion('${item.id}')" style="font-size: 7px; padding: 1px 2px;">💬</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            return html;
+        }
+        
+        // PO View toggle functions
+        function togglePOLot(lotId) {
+            const content = document.getElementById('po-lot-content-' + lotId);
+            const icon = document.getElementById('po-lot-icon-' + lotId);
+            if (!content || !icon) return;
+            
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                icon.textContent = '▼';
+            } else {
+                content.style.display = 'none';
+                icon.textContent = '▶';
+            }
+        }
+        
+        function togglePOUnspsc(id) {
+            const content = document.getElementById(id);
+            const icon = document.getElementById(id + '-icon');
+            if (!content || !icon) return;
+            
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                icon.textContent = '▼';
+            } else {
+                content.style.display = 'none';
+                icon.textContent = '▶';
+            }
+        }
+        
+        function togglePOFinancialLot(contentId) {
+            const content = document.getElementById(contentId);
+            const lotId = contentId.replace('po-financial-lot-content-', '');
+            const icon = document.getElementById('po-financial-lot-' + lotId + '-icon');
+            if (!content || !icon) return;
+            
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                icon.textContent = '▼';
+            } else {
+                content.style.display = 'none';
+                icon.textContent = '▶';
+            }
+        }
+        
+        function expandAllPOLots() {
+            document.querySelectorAll('.po-lot-content').forEach(c => c.style.display = 'block');
+            document.querySelectorAll('[id^="po-lot-icon-"]').forEach(i => i.textContent = '▼');
+            showToast('⬇️ All lots expanded');
+        }
+        
+        function collapseAllPOLots() {
+            document.querySelectorAll('.po-lot-content').forEach(c => c.style.display = 'none');
+            document.querySelectorAll('[id^="po-lot-icon-"]').forEach(i => i.textContent = '▶');
+            showToast('⬆️ All lots collapsed');
+        }
+        
+        function expandAllPOLotViewUnspsc() {
+            document.querySelectorAll('.po-lot-view-unspsc .unspsc-content').forEach(c => c.style.display = 'block');
+            document.querySelectorAll('.po-lot-view-unspsc [id$="-icon"]').forEach(i => i.textContent = '▼');
+            showToast('⬇️ All products expanded');
+        }
+        
+        function collapseAllPOLotViewUnspsc() {
+            document.querySelectorAll('.po-lot-view-unspsc .unspsc-content').forEach(c => c.style.display = 'none');
+            document.querySelectorAll('.po-lot-view-unspsc [id$="-icon"]').forEach(i => i.textContent = '▶');
+            showToast('⬆️ All products collapsed');
+        }
+        
+        function expandAllPOFinancialLots() {
+            document.querySelectorAll('.po-financial-lot-content').forEach(c => c.style.display = 'block');
+            document.querySelectorAll('[id^="po-financial-lot-"][id$="-icon"]').forEach(i => i.textContent = '▼');
+            showToast('⬇️ All lots expanded');
+        }
+        
+        function collapseAllPOFinancialLots() {
+            document.querySelectorAll('.po-financial-lot-content').forEach(c => c.style.display = 'none');
+            document.querySelectorAll('[id^="po-financial-lot-"][id$="-icon"]').forEach(i => i.textContent = '▶');
+            showToast('⬆️ All lots collapsed');
+        }
+        
+        function expandAllPOFinancialLotViewUnspsc() {
+            document.querySelectorAll('.po-financial-lot-view-unspsc .unspsc-content').forEach(c => c.style.display = 'block');
+            document.querySelectorAll('.po-financial-lot-view-unspsc [id$="-icon"]').forEach(i => i.textContent = '▼');
+            showToast('⬇️ All products expanded');
+        }
+        
+        function collapseAllPOFinancialLotViewUnspsc() {
+            document.querySelectorAll('.po-financial-lot-view-unspsc .unspsc-content').forEach(c => c.style.display = 'none');
+            document.querySelectorAll('.po-financial-lot-view-unspsc [id$="-icon"]').forEach(i => i.textContent = '▶');
+            showToast('⬆️ All products collapsed');
         }
         
         function renderSupplierComparisons(item, vendorData) {
@@ -10764,7 +11880,314 @@
             return responseArray[vendorIndex] || responseArray[0];
         }
 
+        // Render comprehensive Evaluation Overview (Step 0)
+        function renderEvaluationOverview(container) {
+            const suppliers = [
+                { id: 'vendor1', name: 'MedSupply Ltd.', ungm: '309663', country: 'Germany', totalBid: '$234,500' },
+                { id: 'vendor2', name: 'HealthCare Corp.', ungm: '301245', country: 'USA', totalBid: '$228,900' },
+                { id: 'vendor3', name: 'MedTech Inc.', ungm: '315789', country: 'Japan', totalBid: '$241,200' }
+            ];
+            
+            const evaluators = [
+                { id: 'eval1', name: 'Jane Doe', role: 'Lead Evaluator', email: 'jane.doe@unops.org' },
+                { id: 'eval2', name: 'John Smith', role: 'Technical Expert', email: 'john.smith@unops.org' },
+                { id: 'eval3', name: 'Sarah Johnson', role: 'Procurement Officer', email: 'sarah.j@unops.org' }
+            ];
+            
+            const stages = [
+                { id: 1, name: 'Eligibility & Formal', status: 'completed', progress: 100 },
+                { id: 2, name: 'Qualification', status: 'completed', progress: 100 },
+                { id: 3, name: 'Technical', status: 'in_progress', progress: 65 },
+                { id: 4, name: 'Financial', status: 'pending', progress: 0 }
+            ];
+            
+            const lots = [
+                { id: 'lot1', name: 'Lot 1: Personal Protective Equipment', itemCount: 3 },
+                { id: 'lot2', name: 'Lot 2: Medical Consumables', itemCount: 3 }
+            ];
+            
+            // Simulated evaluation matrix data
+            const evalMatrix = {
+                vendor1: {
+                    step1: { status: 'pass', evaluator: 'Jane Doe', comment: 'All eligibility criteria met', date: '2024-12-01' },
+                    step2: { status: 'pass', evaluator: 'John Smith', comment: 'Qualified supplier', date: '2024-12-02' },
+                    step3: { status: 'in_progress', evaluator: 'Jane Doe', comment: 'Technical review ongoing', date: '2024-12-05', progress: 70 },
+                    step4: { status: 'pending', evaluator: '-', comment: '-', date: '-' },
+                    lot1: { status: 'pass', evaluator: 'Jane Doe', comment: 'PPE meets specs' },
+                    lot2: { status: 'in_progress', evaluator: 'John Smith', comment: 'Reviewing consumables' }
+                },
+                vendor2: {
+                    step1: { status: 'pass', evaluator: 'Jane Doe', comment: 'Eligibility verified', date: '2024-12-01' },
+                    step2: { status: 'pass', evaluator: 'John Smith', comment: 'Good qualifications', date: '2024-12-02' },
+                    step3: { status: 'in_progress', evaluator: 'Sarah Johnson', comment: 'Technical specs being reviewed', date: '2024-12-05', progress: 55 },
+                    step4: { status: 'pending', evaluator: '-', comment: '-', date: '-' },
+                    lot1: { status: 'clarification', evaluator: 'Sarah Johnson', comment: 'Need cert clarification' },
+                    lot2: { status: 'pass', evaluator: 'Jane Doe', comment: 'Consumables verified' }
+                },
+                vendor3: {
+                    step1: { status: 'pass', evaluator: 'Jane Doe', comment: 'Eligible bidder', date: '2024-12-01' },
+                    step2: { status: 'clarification', evaluator: 'John Smith', comment: 'Missing Form D', date: '2024-12-03' },
+                    step3: { status: 'not_started', evaluator: '-', comment: 'Pending qualification', date: '-', progress: 0 },
+                    step4: { status: 'pending', evaluator: '-', comment: '-', date: '-' },
+                    lot1: { status: 'not_started', evaluator: '-', comment: '-' },
+                    lot2: { status: 'not_started', evaluator: '-', comment: '-' }
+                }
+            };
+            
+            const getStatusBadge = (status) => {
+                const badges = {
+                    'pass': '<span style="padding: 3px 8px; border-radius: var(--radius-sm); font-size: 10px; font-weight: 600; background: var(--success-100); color: var(--success-600);">✅ Pass</span>',
+                    'fail': '<span style="padding: 3px 8px; border-radius: var(--radius-sm); font-size: 10px; font-weight: 600; background: var(--danger-100); color: var(--danger-600);">❌ Fail</span>',
+                    'clarification': '<span style="padding: 3px 8px; border-radius: var(--radius-sm); font-size: 10px; font-weight: 600; background: var(--warning-100); color: var(--warning-600);">⚠️ Clarify</span>',
+                    'in_progress': '<span style="padding: 3px 8px; border-radius: var(--radius-sm); font-size: 10px; font-weight: 600; background: var(--primary-100); color: var(--primary-600);">🔄 In Progress</span>',
+                    'pending': '<span style="padding: 3px 8px; border-radius: var(--radius-sm); font-size: 10px; font-weight: 600; background: var(--surface-100); color: var(--text-muted);">⏳ Pending</span>',
+                    'not_started': '<span style="padding: 3px 8px; border-radius: var(--radius-sm); font-size: 10px; font-weight: 600; background: var(--surface-100); color: var(--text-muted);">⊘ Not Started</span>',
+                    'completed': '<span style="padding: 3px 8px; border-radius: var(--radius-sm); font-size: 10px; font-weight: 600; background: var(--success-100); color: var(--success-600);">✓ Complete</span>'
+                };
+                return badges[status] || badges['pending'];
+            };
+            
+            let html = `
+                <!-- Overview Header -->
+                <div style="margin-bottom: var(--spacing-xl);">
+                    <h2 style="font-size: 20px; font-weight: 700; color: var(--text-primary); margin-bottom: var(--spacing-sm);">📊 Evaluation Overview</h2>
+                    <p style="color: var(--text-muted); font-size: 13px;">Comprehensive view of all evaluation stages, suppliers, lots, and evaluator progress.</p>
+                </div>
+                
+                <!-- Summary Cards -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--spacing-md); margin-bottom: var(--spacing-xl);">
+                    <div style="background: linear-gradient(135deg, var(--primary-50) 0%, var(--info-50) 100%); padding: var(--spacing-lg); border-radius: var(--radius-md); border: 1px solid var(--primary-200);">
+                        <div style="font-size: 28px; font-weight: 700; color: var(--primary-600);">${suppliers.length}</div>
+                        <div style="font-size: 12px; color: var(--text-muted);">Suppliers Under Evaluation</div>
+                    </div>
+                    <div style="background: linear-gradient(135deg, var(--success-50) 0%, var(--teal-50) 100%); padding: var(--spacing-lg); border-radius: var(--radius-md); border: 1px solid var(--success-200);">
+                        <div style="font-size: 28px; font-weight: 700; color: var(--success-600);">2 / 4</div>
+                        <div style="font-size: 12px; color: var(--text-muted);">Stages Completed</div>
+                    </div>
+                    <div style="background: linear-gradient(135deg, var(--warning-50) 0%, var(--orange-50) 100%); padding: var(--spacing-lg); border-radius: var(--radius-md); border: 1px solid var(--warning-200);">
+                        <div style="font-size: 28px; font-weight: 700; color: var(--warning-600);">${lots.length}</div>
+                        <div style="font-size: 12px; color: var(--text-muted);">Lots Being Evaluated</div>
+                    </div>
+                    <div style="background: linear-gradient(135deg, var(--info-50) 0%, var(--primary-50) 100%); padding: var(--spacing-lg); border-radius: var(--radius-md); border: 1px solid var(--info-200);">
+                        <div style="font-size: 28px; font-weight: 700; color: var(--info-600);">${evaluators.length}</div>
+                        <div style="font-size: 12px; color: var(--text-muted);">Active Evaluators</div>
+                    </div>
+                </div>
+                
+                <!-- Stage Progress Overview -->
+                <div style="background: white; border: 1px solid var(--surface-200); border-radius: var(--radius-lg); padding: var(--spacing-lg); margin-bottom: var(--spacing-xl);">
+                    <h3 style="font-size: 15px; font-weight: 600; margin-bottom: var(--spacing-lg); display: flex; align-items: center; gap: var(--spacing-sm);">
+                        <span style="color: var(--primary-500);">📋</span> Stage Progress
+                    </h3>
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--spacing-md);">
+                        ${stages.map(stage => `
+                            <div style="text-align: center; padding: var(--spacing-md); background: ${stage.status === 'completed' ? 'var(--success-50)' : stage.status === 'in_progress' ? 'var(--primary-50)' : 'var(--surface-50)'}; border-radius: var(--radius-md); border: 1px solid ${stage.status === 'completed' ? 'var(--success-200)' : stage.status === 'in_progress' ? 'var(--primary-200)' : 'var(--surface-200)'};">
+                                <div style="font-weight: 600; font-size: 13px; margin-bottom: var(--spacing-sm); color: ${stage.status === 'completed' ? 'var(--success-600)' : stage.status === 'in_progress' ? 'var(--primary-600)' : 'var(--text-muted)'};">
+                                    ${stage.status === 'completed' ? '✓' : stage.id}. ${stage.name}
+                                </div>
+                                <div style="width: 100%; height: 6px; background: var(--surface-200); border-radius: 3px; overflow: hidden; margin-bottom: var(--spacing-xs);">
+                                    <div style="width: ${stage.progress}%; height: 100%; background: ${stage.status === 'completed' ? 'var(--success-500)' : 'var(--primary-400)'}; transition: width 0.3s;"></div>
+                                </div>
+                                <div style="font-size: 11px; color: var(--text-muted);">${stage.progress}% Complete</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                
+                <!-- Supplier x Stage Matrix -->
+                <div style="background: white; border: 1px solid var(--surface-200); border-radius: var(--radius-lg); padding: var(--spacing-lg); margin-bottom: var(--spacing-xl);">
+                    <h3 style="font-size: 15px; font-weight: 600; margin-bottom: var(--spacing-lg); display: flex; align-items: center; gap: var(--spacing-sm);">
+                        <span style="color: var(--primary-500);">🏢</span> Supplier Evaluation Status by Stage
+                    </h3>
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+                            <thead>
+                                <tr style="background: var(--surface-50);">
+                                    <th style="padding: 12px; text-align: left; border-bottom: 2px solid var(--surface-200); font-weight: 600;">Supplier</th>
+                                    <th style="padding: 12px; text-align: center; border-bottom: 2px solid var(--surface-200); font-weight: 600;">1. Eligibility</th>
+                                    <th style="padding: 12px; text-align: center; border-bottom: 2px solid var(--surface-200); font-weight: 600;">2. Qualification</th>
+                                    <th style="padding: 12px; text-align: center; border-bottom: 2px solid var(--surface-200); font-weight: 600;">3. Technical</th>
+                                    <th style="padding: 12px; text-align: center; border-bottom: 2px solid var(--surface-200); font-weight: 600;">4. Financial</th>
+                                    <th style="padding: 12px; text-align: center; border-bottom: 2px solid var(--surface-200); font-weight: 600;">Overall</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${suppliers.map((supplier, idx) => {
+                                    const matrix = evalMatrix[supplier.id];
+                                    const passCount = [matrix.step1, matrix.step2, matrix.step3, matrix.step4].filter(s => s.status === 'pass').length;
+                                    return `
+                                        <tr style="background: ${idx % 2 === 0 ? 'white' : 'var(--surface-50)'}; border-bottom: 1px solid var(--surface-100);">
+                                            <td style="padding: 12px;">
+                                                <div style="font-weight: 600; color: var(--text-primary);">${supplier.name}</div>
+                                                <div style="font-size: 10px; color: var(--text-muted);">UNGM: ${supplier.ungm} | ${supplier.country}</div>
+                                            </td>
+                                            <td style="padding: 12px; text-align: center;">${getStatusBadge(matrix.step1.status)}</td>
+                                            <td style="padding: 12px; text-align: center;">${getStatusBadge(matrix.step2.status)}</td>
+                                            <td style="padding: 12px; text-align: center;">
+                                                ${getStatusBadge(matrix.step3.status)}
+                                                ${matrix.step3.progress ? `<div style="font-size: 10px; color: var(--text-muted); margin-top: 2px;">${matrix.step3.progress}%</div>` : ''}
+                                            </td>
+                                            <td style="padding: 12px; text-align: center;">${getStatusBadge(matrix.step4.status)}</td>
+                                            <td style="padding: 12px; text-align: center;">
+                                                <span style="font-size: 11px; font-weight: 600; color: var(--primary-600);">${passCount}/4 Stages</span>
+                                            </td>
+                                        </tr>
+                                    `;
+                                }).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Detailed Evaluation by Supplier, Lot & Evaluator -->
+                <div style="background: white; border: 1px solid var(--surface-200); border-radius: var(--radius-lg); padding: var(--spacing-lg); margin-bottom: var(--spacing-xl);">
+                    <h3 style="font-size: 15px; font-weight: 600; margin-bottom: var(--spacing-lg); display: flex; align-items: center; gap: var(--spacing-sm);">
+                        <span style="color: var(--primary-500);">👥</span> Detailed Evaluator Progress
+                    </h3>
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+                            <thead>
+                                <tr style="background: var(--surface-50);">
+                                    <th style="padding: 10px; text-align: left; border-bottom: 2px solid var(--surface-200);">Supplier</th>
+                                    <th style="padding: 10px; text-align: left; border-bottom: 2px solid var(--surface-200);">Stage</th>
+                                    <th style="padding: 10px; text-align: left; border-bottom: 2px solid var(--surface-200);">Lot</th>
+                                    <th style="padding: 10px; text-align: center; border-bottom: 2px solid var(--surface-200);">Status</th>
+                                    <th style="padding: 10px; text-align: left; border-bottom: 2px solid var(--surface-200);">Evaluator</th>
+                                    <th style="padding: 10px; text-align: left; border-bottom: 2px solid var(--surface-200);">Comment</th>
+                                    <th style="padding: 10px; text-align: center; border-bottom: 2px solid var(--surface-200);">Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${suppliers.map(supplier => {
+                                    const matrix = evalMatrix[supplier.id];
+                                    let rows = '';
+                                    
+                                    // Technical evaluation by lot
+                                    lots.forEach((lot, lotIdx) => {
+                                        const lotData = matrix[lot.id];
+                                        rows += `
+                                            <tr style="background: ${lotIdx % 2 === 0 ? 'white' : 'var(--surface-50)'}; border-bottom: 1px solid var(--surface-100);">
+                                                ${lotIdx === 0 ? `<td rowspan="${lots.length}" style="padding: 10px; border-right: 1px solid var(--surface-100); vertical-align: top;">
+                                                    <div style="font-weight: 600;">${supplier.name}</div>
+                                                    <div style="font-size: 10px; color: var(--text-muted);">${supplier.totalBid}</div>
+                                                </td>` : ''}
+                                                <td style="padding: 10px; font-size: 11px;">3. Technical</td>
+                                                <td style="padding: 10px;">
+                                                    <div style="font-size: 11px; font-weight: 500;">${lot.name.split(':')[0]}</div>
+                                                    <div style="font-size: 10px; color: var(--text-muted);">${lot.itemCount} items</div>
+                                                </td>
+                                                <td style="padding: 10px; text-align: center;">${getStatusBadge(lotData.status)}</td>
+                                                <td style="padding: 10px;">
+                                                    <div style="font-size: 11px; font-weight: 500;">${lotData.evaluator}</div>
+                                                </td>
+                                                <td style="padding: 10px; font-size: 11px; color: var(--text-secondary); max-width: 200px;">
+                                                    ${lotData.comment !== '-' ? `"${lotData.comment}"` : '<span style="color: var(--text-muted);">-</span>'}
+                                                </td>
+                                                <td style="padding: 10px; text-align: center; font-size: 10px; color: var(--text-muted);">
+                                                    ${matrix.step3.date !== '-' ? matrix.step3.date : '-'}
+                                                </td>
+                                            </tr>
+                                        `;
+                                    });
+                                    return rows;
+                                }).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Evaluator Workload Summary -->
+                <div style="background: white; border: 1px solid var(--surface-200); border-radius: var(--radius-lg); padding: var(--spacing-lg); margin-bottom: var(--spacing-xl);">
+                    <h3 style="font-size: 15px; font-weight: 600; margin-bottom: var(--spacing-lg); display: flex; align-items: center; gap: var(--spacing-sm);">
+                        <span style="color: var(--primary-500);">📊</span> Evaluator Workload & Activity
+                    </h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--spacing-md);">
+                        ${evaluators.map(evaluator => `
+                            <div style="border: 1px solid var(--surface-200); border-radius: var(--radius-md); padding: var(--spacing-md);">
+                                <div style="display: flex; align-items: center; gap: var(--spacing-sm); margin-bottom: var(--spacing-md);">
+                                    <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--primary-100); display: flex; align-items: center; justify-content: center; font-weight: 600; color: var(--primary-600);">
+                                        ${evaluator.name.split(' ').map(n => n[0]).join('')}
+                                    </div>
+                                    <div>
+                                        <div style="font-weight: 600; font-size: 13px;">${evaluator.name}</div>
+                                        <div style="font-size: 11px; color: var(--text-muted);">${evaluator.role}</div>
+                                    </div>
+                                </div>
+                                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-xs); text-align: center;">
+                                    <div style="padding: var(--spacing-xs); background: var(--success-50); border-radius: var(--radius-xs);">
+                                        <div style="font-size: 16px; font-weight: 700; color: var(--success-600);">${evaluator.id === 'eval1' ? 5 : evaluator.id === 'eval2' ? 3 : 4}</div>
+                                        <div style="font-size: 9px; color: var(--text-muted);">Completed</div>
+                                    </div>
+                                    <div style="padding: var(--spacing-xs); background: var(--primary-50); border-radius: var(--radius-xs);">
+                                        <div style="font-size: 16px; font-weight: 700; color: var(--primary-600);">${evaluator.id === 'eval1' ? 2 : evaluator.id === 'eval2' ? 3 : 1}</div>
+                                        <div style="font-size: 9px; color: var(--text-muted);">In Progress</div>
+                                    </div>
+                                    <div style="padding: var(--spacing-xs); background: var(--warning-50); border-radius: var(--radius-xs);">
+                                        <div style="font-size: 16px; font-weight: 700; color: var(--warning-600);">${evaluator.id === 'eval1' ? 0 : evaluator.id === 'eval2' ? 1 : 0}</div>
+                                        <div style="font-size: 9px; color: var(--text-muted);">Pending Clarify</div>
+                                    </div>
+                                </div>
+                                <div style="margin-top: var(--spacing-sm); font-size: 10px; color: var(--text-muted);">
+                                    Last activity: ${evaluator.id === 'eval1' ? '2 hours ago' : evaluator.id === 'eval2' ? '4 hours ago' : '1 hour ago'}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                
+                <!-- Pending Actions & Alerts -->
+                <div style="background: white; border: 1px solid var(--surface-200); border-radius: var(--radius-lg); padding: var(--spacing-lg);">
+                    <h3 style="font-size: 15px; font-weight: 600; margin-bottom: var(--spacing-lg); display: flex; align-items: center; gap: var(--spacing-sm);">
+                        <span style="color: var(--warning-500);">⚠️</span> Pending Actions & Alerts
+                    </h3>
+                    <div style="display: grid; gap: var(--spacing-sm);">
+                        <div style="display: flex; align-items: center; gap: var(--spacing-md); padding: var(--spacing-md); background: var(--warning-50); border-left: 4px solid var(--warning-400); border-radius: var(--radius-sm);">
+                            <span style="font-size: 18px;">⚠️</span>
+                            <div style="flex: 1;">
+                                <div style="font-weight: 600; font-size: 12px; color: var(--text-primary);">Clarification Required - MedTech Inc.</div>
+                                <div style="font-size: 11px; color: var(--text-muted);">Stage 2: Qualification - Missing Manufacturer's Authorization (Form D)</div>
+                            </div>
+                            <button class="btn btn-secondary btn-sm" onclick="switchEvaluationStep(2); switchVendorEval('vendor3');">View</button>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: var(--spacing-md); padding: var(--spacing-md); background: var(--warning-50); border-left: 4px solid var(--warning-400); border-radius: var(--radius-sm);">
+                            <span style="font-size: 18px;">⚠️</span>
+                            <div style="flex: 1;">
+                                <div style="font-weight: 600; font-size: 12px; color: var(--text-primary);">Clarification Required - HealthCare Corp.</div>
+                                <div style="font-size: 11px; color: var(--text-muted);">Stage 3: Technical - Lot 1 - Certificate verification needed</div>
+                            </div>
+                            <button class="btn btn-secondary btn-sm" onclick="switchEvaluationStep(3); switchVendorEval('vendor2');">View</button>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: var(--spacing-md); padding: var(--spacing-md); background: var(--info-50); border-left: 4px solid var(--info-400); border-radius: var(--radius-sm);">
+                            <span style="font-size: 18px;">📋</span>
+                            <div style="flex: 1;">
+                                <div style="font-weight: 600; font-size: 12px; color: var(--text-primary);">Technical Evaluation In Progress</div>
+                                <div style="font-size: 11px; color: var(--text-muted);">3 suppliers, 2 lots - 65% overall progress</div>
+                            </div>
+                            <button class="btn btn-primary btn-sm" onclick="switchEvaluationStep(3);">Continue</button>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: var(--spacing-md); padding: var(--spacing-md); background: var(--surface-50); border-left: 4px solid var(--surface-300); border-radius: var(--radius-sm);">
+                            <span style="font-size: 18px;">⏳</span>
+                            <div style="flex: 1;">
+                                <div style="font-weight: 600; font-size: 12px; color: var(--text-primary);">Financial Evaluation Pending</div>
+                                <div style="font-size: 11px; color: var(--text-muted);">Waiting for Technical evaluation completion</div>
+                            </div>
+                            <span style="font-size: 11px; color: var(--text-muted);">Blocked</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            container.innerHTML = html;
+        }
+
         function renderComparisonView(container, stepData) {
+            // Show the comprehensive evaluation overview dashboard
+            renderEvaluationOverview(container);
+            return;
+        }
+        
+        // Old comparison view kept for reference but not used
+        function renderOldComparisonView(container, stepData) {
             // For technical evaluation, use the comprehensive comparison dashboard
             if (currentEvaluationStep === 3 && stepData.lots) {
                 container.innerHTML = renderTechnicalComparisonView(stepData);
@@ -10891,6 +12314,12 @@
                 btn.classList.remove('active');
             });
             event.target.classList.add('active');
+            
+            // Hide/show vendor info bar based on view
+            const vendorInfoBar = document.getElementById('vendor-info-bar');
+            if (vendorInfoBar) {
+                vendorInfoBar.style.display = (view === 'lot') ? 'none' : 'flex';
+            }
             
             // Update tabs container
             const tabsContainer = document.getElementById('evalTabsContainer');
