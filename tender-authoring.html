@@ -5382,14 +5382,6 @@
               </div>
             </div>
 
-            <!-- Authoring Action Footer -->
-            <footer class="action-footer">
-              <div class="footer-info">Auto-saved 2 minutes ago</div>
-              <div class="footer-actions">
-                <button class="btn btn-ghost" id="prev-block-btn" style="display: none;">Previous Block</button>
-                <button class="btn btn-primary" id="next-block-btn">Next Block</button>
-              </div>
-            </footer>
           </div>
 
           <!-- NOTE: Initiation and Wizard views are in tender-create.html -->
@@ -7288,7 +7280,8 @@
                   <div class="collapsible-header-left">
                     <span class="collapsible-header-title">Requisition Lines (from ERP)</span>
                     <span class="badge badge-info" style="margin-left: 6px; font-size: 10px;">${requisitionLines.length}</span>
-                </div>
+                    ${renderSectionProgress('req-lines', requisitionLines)}
+                  </div>
                   <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
                     <button class="btn btn-secondary" onclick="event.stopPropagation(); openAddReqLineModal()"><i class="pi pi-plus"></i> Add Line</button>
                     <div class="collapsible-toggle">▼</div>
@@ -7335,6 +7328,7 @@
                   <div class="collapsible-header-left">
                     <span class="collapsible-header-title">Lots</span>
                     <span class="badge badge-info" style="margin-left: 6px; font-size: 10px;">${lots.length}</span>
+                    ${renderSectionProgress('lots', lots)}
                   </div>
                   <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
                     <button class="btn btn-secondary" onclick="event.stopPropagation(); downloadLotsTemplate()" title="Download Excel template for bulk import"><i class="pi pi-download"></i> Template</button>
@@ -7860,6 +7854,53 @@
         }
       }
 
+      // ===== SECTION PROGRESS INDICATOR =====
+      function renderSectionProgress(sectionType, items) {
+        let completed = 0;
+        let total = items ? items.length : 0;
+        
+        if (sectionType === 'product-req' && items) {
+          items.forEach(item => {
+            const req = productRequirements[item.code];
+            if (req && req.requirementType && (req.attributes.length > 0 || req.description || req.uploadedFile || req.templateFile)) {
+              completed++;
+            }
+          });
+        } else if (sectionType === 'req-lines') {
+          completed = requisitionLines.length;
+          total = requisitionLines.length > 0 ? requisitionLines.length : 1;
+        } else if (sectionType === 'lots') {
+          completed = lots.filter(l => l.unspscCodes.length > 0).length;
+          total = lots.length > 0 ? lots.length : 1;
+        } else if (sectionType === 'project-info') {
+          total = 4;
+          completed = 0;
+        } else if (sectionType === 'particulars') {
+          total = 10;
+          completed = 0;
+        } else if (sectionType === 'scope-objectives') {
+          total = 1;
+          completed = 0;
+        } else if (sectionType === 'other-req') {
+          total = 3;
+          completed = tenderAuthorConfig.serviceDescriptions.length > 0 ? 1 : 0;
+          completed += deliveryRequirementFields.filter(f => f.value).length > 0 ? 1 : 0;
+          completed += tenderAuthorConfig.specificRequirements ? 1 : 0;
+        }
+        
+        const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+        const color = percentage === 100 ? 'var(--success-500)' : percentage > 50 ? 'var(--warning-500)' : 'var(--surface-300)';
+        
+        return `
+          <div class="section-progress" style="margin-left: 12px; display: flex; align-items: center; gap: 6px;">
+            <div class="progress-bar-mini" style="width: 50px; height: 5px; background: var(--surface-200); border-radius: 3px; overflow: hidden;">
+              <div style="width: ${percentage}%; height: 100%; background: ${color}; border-radius: 3px;"></div>
+            </div>
+            <span style="font-size: 10px; color: var(--text-muted);">${completed}/${total}</span>
+          </div>
+        `;
+      }
+      
       // ===== SCOPE & REQUIREMENTS BLOCK =====
       function renderScopeRequirementsBlock(block) {
         // Initialize requisition lines if not already done
@@ -7909,6 +7950,7 @@
                 <div class="collapsible-header" onclick="toggleCollapsibleSection('scope-objectives-section')">
                   <div class="collapsible-header-left">
                     <span class="collapsible-header-title">Scope and Objectives</span>
+                    ${renderSectionProgress('scope-objectives', null)}
                   </div>
                   <div class="collapsible-toggle">▼</div>
                 </div>
@@ -7926,8 +7968,14 @@
                   <div class="collapsible-header-left">
                     <span class="collapsible-header-title">Product Requirements & Specifications</span>
                     <span class="badge badge-info" style="margin-left: 8px; font-size: 10px;">${uniqueUnspscCodes.length} products</span>
+                    ${renderSectionProgress('product-req', uniqueUnspscCodes)}
                   </div>
-                  <div class="collapsible-toggle">▼</div>
+                  <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                    <button class="btn btn-secondary" onclick="event.stopPropagation(); downloadProductReqTemplate()"><i class="pi pi-download"></i> Template</button>
+                    <button class="btn btn-secondary" onclick="event.stopPropagation(); document.getElementById('product-req-upload-input').click()"><i class="pi pi-upload"></i> Upload</button>
+                    <input type="file" id="product-req-upload-input" accept=".xlsx,.xls,.csv" style="display: none;" onchange="handleProductReqUpload(event)" />
+                    <div class="collapsible-toggle">▼</div>
+                  </div>
                 </div>
                 <div class="collapsible-body">
                   ${renderProductRequirementsContent(uniqueUnspscCodes)}
@@ -7939,6 +7987,7 @@
                 <div class="collapsible-header" onclick="toggleCollapsibleSection('other-requirements-section')">
                   <div class="collapsible-header-left">
                     <span class="collapsible-header-title">Other Requirements</span>
+                    ${renderSectionProgress('other-req', null)}
                   </div>
                   <div class="collapsible-toggle">▼</div>
                 </div>
@@ -7965,13 +8014,6 @@
         }
         
         return `
-          <!-- Quick Actions Bar -->
-          <div style="display: flex; gap: var(--spacing-sm); margin-bottom: var(--spacing-md); padding: var(--spacing-sm); background: var(--surface-50); border-radius: var(--radius-sm); border: 1px solid var(--surface-200);">
-            <button class="btn btn-secondary" onclick="downloadProductReqTemplate()"><i class="pi pi-download"></i> Template</button>
-            <button class="btn btn-secondary" onclick="document.getElementById('product-req-upload-input').click()"><i class="pi pi-upload"></i> Upload</button>
-            <input type="file" id="product-req-upload-input" accept=".xlsx,.xls,.csv" style="display: none;" onchange="handleProductReqUpload(event)" />
-          </div>
-          
           <!-- Products List - Compact Accordion Style -->
           <div class="product-requirements-compact">
             ${uniqueUnspscCodes.map((unspsc, idx) => {
@@ -8005,16 +8047,22 @@
       
       // Render individual product requirement body
       function renderProductRequirementBody(unspsc, req) {
-        if (!req.requirementType || (req.attributes.length === 0 && !req.description)) {
+        if (!req.requirementType || (req.attributes.length === 0 && !req.description && !req.uploadedFile && !req.templateFile)) {
           return `
             <div class="req-type-selector">
               <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--spacing-sm);">Choose requirement type:</p>
-              <div style="display: flex; gap: var(--spacing-sm);">
+              <div style="display: flex; flex-wrap: wrap; gap: var(--spacing-sm);">
                 <button class="btn btn-secondary" onclick="event.stopPropagation(); addRequirementAttributeInline('${unspsc.code}')">
                   <span style="font-size: 14px; margin-right: 4px;">📋</span> Attributes
                 </button>
                 <button class="btn btn-secondary" onclick="event.stopPropagation(); addDescriptionFieldInline('${unspsc.code}')">
                   <span style="font-size: 14px; margin-right: 4px;">📝</span> Description
+                </button>
+                <button class="btn btn-secondary" onclick="event.stopPropagation(); addUploadFieldInline('${unspsc.code}')">
+                  <span style="font-size: 14px; margin-right: 4px;">📄</span> Upload
+                </button>
+                <button class="btn btn-secondary" onclick="event.stopPropagation(); addTemplateFieldInline('${unspsc.code}')">
+                  <span style="font-size: 14px; margin-right: 4px;">📑</span> Template
                 </button>
               </div>
             </div>
@@ -8057,6 +8105,60 @@
               </div>
               <div class="req-actions-row">
                 <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); switchToAttributesInline('${unspsc.code}')"><i class="pi pi-list"></i> Switch to Attributes</button>
+                <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); clearRequirementsInline('${unspsc.code}')" style="color: var(--danger-600);"><i class="pi pi-trash"></i> Clear</button>
+              </div>
+            </div>
+          `;
+        } else if (req.requirementType === 'upload') {
+          return `
+            <div class="req-upload-area">
+              <div style="border: 2px dashed var(--surface-300); border-radius: var(--radius-md); padding: var(--spacing-lg); text-align: center; cursor: pointer; background: var(--surface-50);" onclick="event.stopPropagation(); document.getElementById('upload-file-${unspsc.code.replace(/[^a-zA-Z0-9]/g, '_')}').click()">
+                ${req.uploadedFile ? `
+                  <div style="display: flex; align-items: center; justify-content: center; gap: var(--spacing-sm);">
+                    <span style="font-size: 24px;">📄</span>
+                    <div style="text-align: left;">
+                      <div style="font-weight: 600; color: var(--success-600);">${req.uploadedFile.name}</div>
+                      <div style="font-size: 11px; color: var(--text-muted);">${req.uploadedFile.size}</div>
+                    </div>
+                    <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); removeUploadedFile('${unspsc.code}')" style="margin-left: auto; color: var(--danger-600);"><i class="pi pi-trash"></i></button>
+                  </div>
+                ` : `
+                  <div style="font-size: 32px; margin-bottom: var(--spacing-xs);">📤</div>
+                  <div style="font-weight: 500; color: var(--text-secondary);">Click to upload PDF or document</div>
+                  <div style="font-size: 11px; color: var(--text-muted);">PDF, DOC, DOCX (max 10MB)</div>
+                `}
+                <input type="file" id="upload-file-${unspsc.code.replace(/[^a-zA-Z0-9]/g, '_')}" accept=".pdf,.doc,.docx" style="display: none;" onchange="handleRequirementFileUpload('${unspsc.code}', event)" />
+              </div>
+              <div class="req-actions-row">
+                <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); clearRequirementsInline('${unspsc.code}')" style="color: var(--danger-600);"><i class="pi pi-trash"></i> Clear</button>
+              </div>
+            </div>
+          `;
+        } else if (req.requirementType === 'template') {
+          return `
+            <div class="req-template-area">
+              <div class="form-group" style="margin: 0;">
+                <label class="form-label" style="font-size: 12px;">Select Standard Template</label>
+                <select class="form-select" style="font-size: 13px;" onchange="updateRequirementTemplate('${unspsc.code}', this.value)" onclick="event.stopPropagation()">
+                  <option value="">-- Select a template --</option>
+                  <option value="tech-specs-goods" ${req.templateFile === 'tech-specs-goods' ? 'selected' : ''}>Technical Specifications - Goods</option>
+                  <option value="tech-specs-services" ${req.templateFile === 'tech-specs-services' ? 'selected' : ''}>Technical Specifications - Services</option>
+                  <option value="tech-specs-works" ${req.templateFile === 'tech-specs-works' ? 'selected' : ''}>Technical Specifications - Works</option>
+                  <option value="requirements-matrix" ${req.templateFile === 'requirements-matrix' ? 'selected' : ''}>Requirements Matrix</option>
+                  <option value="evaluation-criteria" ${req.templateFile === 'evaluation-criteria' ? 'selected' : ''}>Evaluation Criteria Template</option>
+                </select>
+              </div>
+              ${req.templateFile ? `
+                <div style="margin-top: var(--spacing-sm); padding: var(--spacing-sm); background: var(--success-50); border-radius: var(--radius-sm); border: 1px solid var(--success-200); display: flex; align-items: center; gap: 8px;">
+                  <span style="font-size: 18px;">📑</span>
+                  <div style="flex: 1;">
+                    <div style="font-weight: 600; font-size: 12px; color: var(--success-700);">Template Selected</div>
+                    <div style="font-size: 11px; color: var(--success-600);">${req.templateFile.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</div>
+                  </div>
+                  <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); downloadRequirementTemplate('${unspsc.code}')"><i class="pi pi-download"></i></button>
+                </div>
+              ` : ''}
+              <div class="req-actions-row">
                 <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); clearRequirementsInline('${unspsc.code}')" style="color: var(--danger-600);"><i class="pi pi-trash"></i> Clear</button>
               </div>
             </div>
@@ -8134,10 +8236,79 @@
       
       window.clearRequirementsInline = function(unspscCode) {
         if (confirm('This will clear all requirements for this product. Continue?')) {
-          productRequirements[unspscCode] = { requirementType: null, attributes: [], description: '' };
+          productRequirements[unspscCode] = { requirementType: null, attributes: [], description: '', uploadedFile: null, templateFile: null };
           updateProductReqBodyContent(unspscCode);
-          // Update status badge
           updateProductReqStatus(unspscCode);
+        }
+      }
+      
+      window.addUploadFieldInline = function(unspscCode) {
+        if (!productRequirements[unspscCode]) {
+          productRequirements[unspscCode] = { requirementType: 'upload', attributes: [], description: '', uploadedFile: null, templateFile: null };
+        }
+        productRequirements[unspscCode].requirementType = 'upload';
+        updateProductReqBodyContent(unspscCode);
+      }
+      
+      window.addTemplateFieldInline = function(unspscCode) {
+        if (!productRequirements[unspscCode]) {
+          productRequirements[unspscCode] = { requirementType: 'template', attributes: [], description: '', uploadedFile: null, templateFile: null };
+        }
+        productRequirements[unspscCode].requirementType = 'template';
+        updateProductReqBodyContent(unspscCode);
+      }
+      
+      window.handleRequirementFileUpload = function(unspscCode, event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        
+        if (file.size > 10 * 1024 * 1024) {
+          alert('File size must be less than 10MB');
+          return;
+        }
+        
+        const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+        if (!allowedTypes.includes(file.type)) {
+          alert('Only PDF, DOC, and DOCX files are allowed');
+          return;
+        }
+        
+        if (!productRequirements[unspscCode]) {
+          productRequirements[unspscCode] = { requirementType: 'upload', attributes: [], description: '', uploadedFile: null, templateFile: null };
+        }
+        
+        productRequirements[unspscCode].uploadedFile = {
+          name: file.name,
+          size: (file.size / 1024).toFixed(1) + ' KB',
+          type: file.type
+        };
+        
+        updateProductReqBodyContent(unspscCode);
+        updateProductReqStatus(unspscCode);
+        showNotification(`File "${file.name}" uploaded`, 'success');
+      }
+      
+      window.removeUploadedFile = function(unspscCode) {
+        if (productRequirements[unspscCode]) {
+          productRequirements[unspscCode].uploadedFile = null;
+          updateProductReqBodyContent(unspscCode);
+          updateProductReqStatus(unspscCode);
+        }
+      }
+      
+      window.updateRequirementTemplate = function(unspscCode, templateValue) {
+        if (!productRequirements[unspscCode]) {
+          productRequirements[unspscCode] = { requirementType: 'template', attributes: [], description: '', uploadedFile: null, templateFile: null };
+        }
+        productRequirements[unspscCode].templateFile = templateValue;
+        updateProductReqBodyContent(unspscCode);
+        updateProductReqStatus(unspscCode);
+      }
+      
+      window.downloadRequirementTemplate = function(unspscCode) {
+        const req = productRequirements[unspscCode];
+        if (req && req.templateFile) {
+          showNotification(`Downloading template: ${req.templateFile.replace(/-/g, ' ')}`, 'success');
         }
       }
       
@@ -8168,8 +8339,8 @@
         const item = document.querySelector(`.product-req-item[data-unspsc="${unspscCode}"]`);
         if (!item) return;
         
-        const req = productRequirements[unspscCode] || { requirementType: null, attributes: [], description: '' };
-        const hasRequirements = req.requirementType && (req.attributes.length > 0 || req.description);
+        const req = productRequirements[unspscCode] || { requirementType: null, attributes: [], description: '', uploadedFile: null, templateFile: null };
+        const hasRequirements = req.requirementType && (req.attributes.length > 0 || req.description || req.uploadedFile || req.templateFile);
         
         const statusBadge = item.querySelector('.status-badge');
         if (statusBadge) {
@@ -9938,6 +10109,7 @@
             <div class="collapsible-header" onclick="toggleCollapsibleSection('particulars-section')">
               <div class="collapsible-header-left">
                 <span class="collapsible-header-title">Particulars</span>
+                ${renderSectionProgress('particulars', null)}
               </div>
               <div class="collapsible-toggle">▼</div>
             </div>
@@ -10520,6 +10692,7 @@
                     <div class="collapsible-header" onclick="toggleCollapsibleSection('project-info-section')">
                       <div class="collapsible-header-left">
                         <span class="collapsible-header-title">Project Information</span>
+                        ${renderSectionProgress('project-info', null)}
                       </div>
                       <div class="collapsible-toggle">▼</div>
                     </div>
@@ -10900,19 +11073,7 @@
       }
 
       function updateNavigationButtons() {
-        const prevBtn = document.getElementById('prev-block-btn');
-        const nextBtn = document.getElementById('next-block-btn');
-
-        prevBtn.style.display = currentBlockIndex > 0 ? 'inline-flex' : 'none';
-        nextBtn.textContent = currentBlockIndex < templateBlocks.length - 1 ? 'Next Block' : 'Complete Authoring';
-
-        if (currentBlockIndex === templateBlocks.length - 1) {
-          nextBtn.onclick = () => {
-            alert('Ready to proceed to Review step');
-          };
-        } else {
-          nextBtn.onclick = () => switchToBlock(currentBlockIndex + 1);
-        }
+        // Footer removed - navigation via block tabs only
       }
 
       function attachAuthoringEventListeners() {
@@ -10930,12 +11091,6 @@
               updateProgressSteps();
             }
           });
-        });
-
-        document.getElementById('prev-block-btn').addEventListener('click', () => {
-          if (currentBlockIndex > 0) {
-            switchToBlock(currentBlockIndex - 1);
-          }
         });
       }
 
