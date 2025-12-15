@@ -59,6 +59,28 @@
             --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
         }
 
+        /* Action Menu Styles */
+        .tender-table-row:hover {
+            background: var(--primary-50) !important;
+        }
+        .action-menu-btn:hover {
+            background: var(--surface-100) !important;
+            border-color: var(--surface-300) !important;
+        }
+        .action-menu-btn:hover i {
+            color: var(--text-primary) !important;
+        }
+        .action-menu-item:hover {
+            background: var(--surface-50) !important;
+        }
+        .action-menu-dropdown {
+            animation: fadeIn 0.15s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         body {
             font-family: 'Lato', 'Noto Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: var(--surface-50);
@@ -2909,19 +2931,10 @@
                         <span class="menu-icon">📊</span>
                         <span>Overview</span>
                     </a>
-                    <a class="menu-item" id="menu-tendering-tenders" href="javascript:void(0)" onclick="showDashboard(this); return false;">
+                    <a class="menu-item" id="menu-tendering-tenders" href="javascript:void(0)" onclick="showTendersList(this); return false;">
                         <span class="menu-icon">📋</span>
-                        <span>My Tenders</span>
-                        <span class="menu-badge">8</span>
-                    </a>
-                    <a class="menu-item" id="menu-tendering-create" href="javascript:void(0)">
-                        <span class="menu-icon">✏️</span>
-                        <span>Create Tender</span>
-                    </a>
-                    <a class="menu-item" id="menu-tendering-drafts" href="javascript:void(0)">
-                        <span class="menu-icon">📝</span>
-                        <span>Drafts</span>
-                        <span class="menu-badge" style="background: var(--surface-400);">3</span>
+                        <span>Tenders</span>
+                        <span class="menu-badge">13</span>
                     </a>
                     <a class="menu-item" id="menu-tendering-templates" href="javascript:void(0)">
                         <span class="menu-icon">📁</span>
@@ -2969,9 +2982,9 @@
                 </div>
 
             <!-- My Pending Tasks -->
-            <div class="pending-tasks-section">
+            <div class="pending-tasks-section" style="margin-bottom: var(--spacing-xl);">
                 <h2 class="section-title">
-                    <i class="pi pi-list-check"></i> My Pending Tasks
+                    <i class="pi pi-check-square" style="color: var(--primary-500);"></i> My Pending Tasks
                 </h2>
                 <div class="tasks-grid">
                     <div class="task-item" onclick="filterTenders('pre-clearance')">
@@ -3019,58 +3032,60 @@
                 </div>
             </div>
 
-            <!-- Action Required List -->
-            <div class="tasks-list-section" style="background: var(--surface-0); border-radius: var(--radius-lg); padding: var(--spacing-xl); margin-bottom: var(--spacing-xl); border: 1px solid var(--surface-200);">
-                <h2 class="section-title" style="margin-bottom: var(--spacing-lg);">
+            <!-- Action Required -->
+            <div class="action-required-section" style="margin-bottom: var(--spacing-xl);">
+                <h2 class="section-title">
                     <i class="pi pi-bell"></i> Action Required
+                    <span style="margin-left: auto; font-size: 12px; font-weight: 500; color: var(--text-muted);">4 items</span>
                 </h2>
-                <div style="display: flex; flex-direction: column; gap: var(--spacing-md);">
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--spacing-md); background: var(--warning-50); border-left: 4px solid var(--warning-500); border-radius: 0 var(--radius-sm) var(--radius-sm) 0;">
-                        <div>
-                            <div style="font-weight: 600; color: var(--text-primary);">ITB/2024/089 - Approval Required</div>
-                            <div style="font-size: 12px; color: var(--text-muted);">Laboratory Equipment Procurement | Pre-clearance completed, awaiting your approval</div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--spacing-sm);">
+                    <div style="display: flex; align-items: center; gap: var(--spacing-sm); padding: var(--spacing-sm) var(--spacing-md); background: var(--surface-0); border: 1px solid var(--surface-200); border-left: 3px solid var(--warning-500); border-radius: var(--radius-sm); cursor: pointer; transition: all 0.2s;" onclick="showTenderDetails({id: 'ITB/2024/089', title: 'Laboratory Equipment Procurement', status: 'Pre-Clearance', statusKey: 'pre-clearance'})">
+                        <i class="pi pi-check-square" style="color: var(--warning-500); font-size: 16px;"></i>
+                        <div style="flex: 1; min-width: 0;">
+                            <div style="font-weight: 600; font-size: 13px; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">ITB/2024/089 - Approval Required</div>
+                            <div style="font-size: 11px; color: var(--text-muted);">Laboratory Equipment • Due Today</div>
                         </div>
-                        <div style="display: flex; gap: var(--spacing-sm);">
-                            <span style="padding: 4px 10px; background: var(--warning-100); color: var(--warning-700); border-radius: var(--radius-sm); font-size: 11px; font-weight: 600;">Due: Today</span>
-                            <button class="btn btn-primary btn-sm" onclick="showTenderDetails({id: 'ITB/2024/089', title: 'Laboratory Equipment Procurement', status: 'Pre-Clearance', statusKey: 'pre-clearance'})">Review</button>
-                        </div>
+                        <span style="padding: 2px 8px; background: var(--warning-100); color: var(--warning-700); border-radius: 10px; font-size: 10px; font-weight: 600;">Urgent</span>
                     </div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--spacing-md); background: var(--info-50); border-left: 4px solid var(--info-500); border-radius: 0 var(--radius-sm) var(--radius-sm) 0;">
-                        <div>
-                            <div style="font-weight: 600; color: var(--text-primary);">RFQ/2024/001 - 5 New Clarifications</div>
-                            <div style="font-size: 12px; color: var(--text-muted);">Supply of Medical Equipment | 5 supplier questions pending response</div>
+                    <div style="display: flex; align-items: center; gap: var(--spacing-sm); padding: var(--spacing-sm) var(--spacing-md); background: var(--surface-0); border: 1px solid var(--surface-200); border-left: 3px solid var(--info-500); border-radius: var(--radius-sm); cursor: pointer; transition: all 0.2s;" onclick="openClarificationsModal('RFQ/2024/001', 'Supply of Medical Equipment')">
+                        <i class="pi pi-comments" style="color: var(--info-500); font-size: 16px;"></i>
+                        <div style="flex: 1; min-width: 0;">
+                            <div style="font-weight: 600; font-size: 13px; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">RFQ/2024/001 - 5 Clarifications</div>
+                            <div style="font-size: 11px; color: var(--text-muted);">Medical Equipment • Respond</div>
                         </div>
-                        <div style="display: flex; gap: var(--spacing-sm);">
-                            <span style="padding: 4px 10px; background: var(--info-100); color: var(--info-700); border-radius: var(--radius-sm); font-size: 11px; font-weight: 600;">Clarifications</span>
-                            <button class="btn btn-secondary btn-sm" onclick="openClarificationsModal('RFQ/2024/001', 'Supply of Medical Equipment')">Respond</button>
-                        </div>
+                        <span style="padding: 2px 8px; background: var(--info-100); color: var(--info-700); border-radius: 10px; font-size: 10px; font-weight: 600;">5 new</span>
                     </div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--spacing-md); background: var(--success-50); border-left: 4px solid var(--success-500); border-radius: 0 var(--radius-sm) var(--radius-sm) 0;">
-                        <div>
-                            <div style="font-weight: 600; color: var(--text-primary);">ITB/2024/067 - Bid Opening Ready</div>
-                            <div style="font-size: 12px; color: var(--text-muted);">Construction Materials | Deadline passed, 8 bids received</div>
+                    <div style="display: flex; align-items: center; gap: var(--spacing-sm); padding: var(--spacing-sm) var(--spacing-md); background: var(--surface-0); border: 1px solid var(--surface-200); border-left: 3px solid var(--success-500); border-radius: var(--radius-sm); cursor: pointer; transition: all 0.2s;" onclick="openBidOpeningFromDashboard('ITB/2024/067')">
+                        <i class="pi pi-envelope-open" style="color: var(--success-500); font-size: 16px;"></i>
+                        <div style="flex: 1; min-width: 0;">
+                            <div style="font-weight: 600; font-size: 13px; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">ITB/2024/067 - Bid Opening</div>
+                            <div style="font-size: 11px; color: var(--text-muted);">Construction Materials • 8 bids</div>
                         </div>
-                        <div style="display: flex; gap: var(--spacing-sm);">
-                            <span style="padding: 4px 10px; background: var(--success-100); color: var(--success-700); border-radius: var(--radius-sm); font-size: 11px; font-weight: 600;">8 Bids</span>
-                            <button class="btn btn-secondary btn-sm" onclick="openBidOpeningFromDashboard('ITB/2024/067')">Open Bids</button>
-                        </div>
+                        <span style="padding: 2px 8px; background: var(--success-100); color: var(--success-700); border-radius: 10px; font-size: 10px; font-weight: 600;">Ready</span>
                     </div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--spacing-md); background: var(--purple-50); border-left: 4px solid var(--purple-500); border-radius: 0 var(--radius-sm) var(--radius-sm) 0;">
-                        <div>
-                            <div style="font-weight: 600; color: var(--text-primary);">RFP/2024/045 - Continue Evaluation</div>
-                            <div style="font-size: 12px; color: var(--text-muted);">IT Infrastructure | Technical evaluation 65% complete</div>
+                    <div style="display: flex; align-items: center; gap: var(--spacing-sm); padding: var(--spacing-sm) var(--spacing-md); background: var(--surface-0); border: 1px solid var(--surface-200); border-left: 3px solid var(--primary-500); border-radius: var(--radius-sm); cursor: pointer; transition: all 0.2s;" onclick="continueEvaluation('RFP/2024/045')">
+                        <i class="pi pi-chart-line" style="color: var(--primary-500); font-size: 16px;"></i>
+                        <div style="flex: 1; min-width: 0;">
+                            <div style="font-weight: 600; font-size: 13px; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">RFP/2024/045 - Evaluation</div>
+                            <div style="font-size: 11px; color: var(--text-muted);">IT Infrastructure • 65% done</div>
                         </div>
-                        <div style="display: flex; gap: var(--spacing-sm);">
-                            <span style="padding: 4px 10px; background: var(--purple-100); color: var(--purple-700); border-radius: var(--radius-sm); font-size: 11px; font-weight: 600;">65%</span>
-                            <button class="btn btn-secondary btn-sm" onclick="continueEvaluation('RFP/2024/045')">Continue</button>
-                        </div>
+                        <span style="padding: 2px 8px; background: var(--primary-100); color: var(--primary-700); border-radius: 10px; font-size: 10px; font-weight: 600;">65%</span>
                     </div>
                 </div>
+            </div>
+
+            <!-- My Tenders Section -->
+            <div class="my-tenders-section" style="margin-bottom: var(--spacing-md);">
+                <h2 class="section-title" style="margin-bottom: var(--spacing-md);">
+                    <i class="pi pi-folder-open"></i> My Tenders
+                    <span style="margin-left: auto; font-size: 12px; font-weight: 500; color: var(--text-muted);">13 tenders</span>
+                </h2>
             </div>
 
             <!-- Filter Bar -->
             <div class="filter-bar">
                 <div class="filter-group">
+                    <i class="pi pi-filter" style="color: var(--text-muted); font-size: 14px;"></i>
                     <span class="filter-label">Status:</span>
                     <select class="filter-select" onchange="filterTenders()">
                         <option value="all">All Statuses</option>
@@ -3088,6 +3103,7 @@
                     </select>
                 </div>
                 <div class="filter-group">
+                    <i class="pi pi-sort-alt" style="color: var(--text-muted); font-size: 14px;"></i>
                     <span class="filter-label">Sort by:</span>
                     <select class="filter-select">
                         <option value="recent">Most Recent</option>
@@ -3096,555 +3112,661 @@
                     </select>
                 </div>
                 <div style="flex: 1;"></div>
-                <input type="text" placeholder="Search tenders..." class="filter-select" style="width: 200px; margin-right: var(--spacing-md);">
+                <div class="filter-group">
+                    <i class="pi pi-search" style="color: var(--text-muted); font-size: 14px;"></i>
+                    <input type="text" placeholder="Search tenders..." class="filter-select" style="width: 200px;">
+                </div>
                 <button class="btn btn-primary">
                     <i class="pi pi-plus"></i>
                     Create New Tender
                 </button>
             </div>
 
-            <!-- Tender Grid -->
-            <div class="tender-grid" id="tenderGrid">
-                <!-- Tender Card 1 -->
-                <div class="tender-card" data-status="active">
-                    <div class="tender-header">
-                        <div class="tender-title-section">
-                            <div class="tender-id">RFQ/2024/001</div>
-                            <div class="tender-title">Supply of Medical Equipment</div>
-                        </div>
-                        <span class="status-badge active">Active</span>
-                    </div>
-                    <div class="tender-meta">
-                        <div class="meta-item">
-                            <span class="meta-label">Posted Date</span>
-                            <span class="meta-value">15 Nov 2024</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Deadline</span>
-                            <span class="meta-value">15 Dec 2024</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Est. Value</span>
-                            <span class="meta-value">$250,000</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Bids Received</span>
-                            <span class="meta-value">3 / 12 interested</span>
-                        </div>
-                    </div>
-                    <div class="tender-actions">
-                        <button class="btn btn-primary btn-sm" onclick="showTenderDetails({id: 'RFQ/2024/001', title: 'Supply of Medical Equipment', status: 'Posted', statusKey: 'active'})">
-                            <i class="pi pi-eye"></i> View Full Details
-                        </button>
-                        <button class="btn btn-secondary btn-sm" onclick="viewTenderPreview('RFQ/2024/001', 'Supply of Medical Equipment')">
-                            <i class="pi pi-file-o"></i> Quick Preview
-                        </button>
-                        <button class="btn btn-secondary btn-sm" onclick="openAmendModal('RFQ/2024/001', 'Supply of Medical Equipment')">
-                            <i class="pi pi-pencil"></i> Amend
-                        </button>
-                        <button class="btn btn-secondary btn-sm" onclick="openCancelModal('RFQ/2024/001', 'Supply of Medical Equipment')">
-                            <i class="pi pi-times-circle"></i> Cancel
-                        </button>
-                        <button class="btn btn-secondary btn-sm" onclick="openClarificationsModal('RFQ/2024/001', 'Supply of Medical Equipment')">
-                            <i class="pi pi-comment"></i> Clarifications (5)
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Tender Card 2 -->
-                <div class="tender-card" data-status="active">
-                    <div class="tender-header">
-                        <div class="tender-title-section">
-                            <div class="tender-id">ITB/2024/045</div>
-                            <div class="tender-title">Construction of Office Building</div>
-                        </div>
-                        <span class="status-badge active">Active</span>
-                    </div>
-                    <div class="tender-meta">
-                        <div class="meta-item">
-                            <span class="meta-label">Posted Date</span>
-                            <span class="meta-value">10 Nov 2024</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Deadline</span>
-                            <span class="meta-value">10 Jan 2025</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Est. Value</span>
-                            <span class="meta-value">$1,500,000</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Bids Received</span>
-                            <span class="meta-value">7 / 25 interested</span>
-                        </div>
-                    </div>
-                    <div class="tender-actions">
-                        <button class="btn btn-primary btn-sm" onclick="showTenderDetails({id: 'ITB/2024/045', title: 'Construction of Office Building', status: 'Posted', statusKey: 'active'})">
-                            <i class="pi pi-eye"></i> View Full Details
-                        </button>
-                        <button class="btn btn-secondary btn-sm" onclick="viewTenderPreview('ITB/2024/045', 'Construction of Office Building')">
-                            <i class="pi pi-file-o"></i> Quick Preview
-                        </button>
-                        <button class="btn btn-secondary btn-sm" onclick="openAmendModal('ITB/2024/045', 'Construction of Office Building')">
-                            <i class="pi pi-pencil"></i> Amend
-                        </button>
-                        <button class="btn btn-secondary btn-sm" onclick="openCancelModal('ITB/2024/045', 'Construction of Office Building')">
-                            <i class="pi pi-times-circle"></i> Cancel
-                        </button>
-                        <button class="btn btn-secondary btn-sm" onclick="openClarificationsModal('ITB/2024/045', 'Construction of Office Building')">
-                            <i class="pi pi-comment"></i> Clarifications (12)
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Tender Card 3 -->
-                <div class="tender-card" data-status="approval">
-                    <div class="tender-header">
-                        <div class="tender-title-section">
-                            <div class="tender-id">RFP/2024/078</div>
-                            <div class="tender-title">IT Infrastructure Services</div>
-                        </div>
-                        <span class="status-badge review">Pending Approval</span>
-                    </div>
-                    <div class="tender-meta">
-                        <div class="meta-item">
-                            <span class="meta-label">Submitted</span>
-                            <span class="meta-value">28 Nov 2024</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Reviewer</span>
-                            <span class="meta-value">PR Team</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Est. Value</span>
-                            <span class="meta-value">$500,000</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Status</span>
-                            <span class="meta-value">Pending Approval</span>
-                        </div>
-                    </div>
-                    <div class="tender-actions">
-                        <button class="btn btn-primary btn-sm" onclick="showTenderDetails({id: 'RFP/2024/078', title: 'IT Infrastructure Services', status: 'Pending Approval', statusKey: 'approval'})">
-                            <i class="pi pi-eye"></i> View Full Details
-                        </button>
-                        <button class="btn btn-secondary btn-sm" onclick="viewTenderPreview('RFP/2024/078', 'IT Infrastructure Services')">
-                            <i class="pi pi-file-o"></i> Quick Preview
-                        </button>
-                        <button class="btn btn-secondary btn-sm">
-                            <i class="pi pi-pencil"></i> Edit Draft
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Tender Card 4 -->
-                <div class="tender-card" data-status="active">
-                    <div class="tender-header">
-                        <div class="tender-title-section">
-                            <div class="tender-id">RFQ/2024/102</div>
-                            <div class="tender-title">Vehicle Fleet Procurement</div>
-                        </div>
-                        <span class="status-badge active">Active</span>
-                    </div>
-                    <div class="tender-meta">
-                        <div class="meta-item">
-                            <span class="meta-label">Posted Date</span>
-                            <span class="meta-value">20 Nov 2024</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Deadline</span>
-                            <span class="meta-value">20 Dec 2024</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Est. Value</span>
-                            <span class="meta-value">$850,000</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Bids Received</span>
-                            <span class="meta-value">1 / 8 interested</span>
-                        </div>
-                    </div>
-                    <div class="tender-actions">
-                        <button class="btn btn-primary btn-sm" onclick="showTenderDetails({id: 'RFQ/2024/102', title: 'Vehicle Fleet Procurement', status: 'Posted', statusKey: 'active'})">
-                            <i class="pi pi-eye"></i> View Full Details
-                        </button>
-                        <button class="btn btn-secondary btn-sm" onclick="viewTenderPreview('RFQ/2024/102', 'Vehicle Fleet Procurement')">
-                            <i class="pi pi-file-o"></i> Quick Preview
-                        </button>
-                        <button class="btn btn-secondary btn-sm" onclick="openAmendModal('RFQ/2024/102', 'Vehicle Fleet Procurement')">
-                            <i class="pi pi-pencil"></i> Amend
-                        </button>
-                        <button class="btn btn-secondary btn-sm" onclick="openCancelModal('RFQ/2024/102', 'Vehicle Fleet Procurement')">
-                            <i class="pi pi-times-circle"></i> Cancel
-                        </button>
-                        <button class="btn btn-secondary btn-sm" onclick="openClarificationsModal('RFQ/2024/102', 'Vehicle Fleet Procurement')">
-                            <i class="pi pi-comment"></i> Clarifications (2)
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Tender Card 5 -->
-                <div class="tender-card" data-status="draft">
-                    <div class="tender-header">
-                        <div class="tender-title-section">
-                            <div class="tender-id">DRAFT-2024-156</div>
-                            <div class="tender-title">Consulting Services - HR Management</div>
-                        </div>
-                        <span class="status-badge draft">Draft</span>
-                    </div>
-                    <div class="tender-meta">
-                        <div class="meta-item">
-                            <span class="meta-label">Created</span>
-                            <span class="meta-value">25 Nov 2024</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Last Modified</span>
-                            <span class="meta-value">28 Nov 2024</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Est. Value</span>
-                            <span class="meta-value">$120,000</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Completion</span>
-                            <span class="meta-value">75%</span>
-                        </div>
-                    </div>
-                    <div class="tender-actions">
-                        <button class="btn btn-primary btn-sm">
-                            <i class="pi pi-pencil"></i> Continue Editing
-                        </button>
-                        <button class="btn btn-secondary btn-sm">
-                            <i class="pi pi-copy"></i> Duplicate
-                        </button>
-                        <button class="btn btn-secondary btn-sm">
-                            <i class="pi pi-trash"></i> Delete
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Tender Card 6 - Pre-Clearance -->
-                <div class="tender-card" data-status="pre-clearance">
-                    <div class="tender-header">
-                        <div class="tender-title-section">
-                            <div class="tender-id">ITB/2024/089</div>
-                            <div class="tender-title">Laboratory Equipment Procurement</div>
-                        </div>
-                        <span class="status-badge" style="background: var(--info-50); color: var(--info-400);">Pre-Clearance</span>
-                    </div>
-                    <div class="tender-meta">
-                        <div class="meta-item">
-                            <span class="meta-label">Submitted</span>
-                            <span class="meta-value">29 Nov 2024</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Reviewer</span>
-                            <span class="meta-value">TME Team</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Est. Value</span>
-                            <span class="meta-value">$350,000</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Status</span>
-                            <span class="meta-value">Awaiting Pre-Clearance</span>
-                        </div>
-                    </div>
-                    <div class="tender-actions">
-                        <button class="btn btn-primary btn-sm" onclick="showTenderDetails({id: 'ITB/2024/089', title: 'Laboratory Equipment Procurement', status: 'Pre-Clearance', statusKey: 'pre-clearance'})">
-                            <i class="pi pi-eye"></i> View Full Details
-                        </button>
-                        <button class="btn btn-secondary btn-sm" onclick="viewTenderPreview('ITB/2024/089', 'Laboratory Equipment Procurement')">
-                            <i class="pi pi-file-o"></i> Quick Preview
-                        </button>
-                        <button class="btn btn-secondary btn-sm">
-                            <i class="pi pi-history"></i> View Comments
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Tender Card 7 - TME Signed -->
-                <div class="tender-card" data-status="tme-signed">
-                    <div class="tender-header">
-                        <div class="tender-title-section">
-                            <div class="tender-id">RFQ/2024/115</div>
-                            <div class="tender-title">Furniture and Office Supplies</div>
-                        </div>
-                        <span class="status-badge" style="background: var(--success-50); color: var(--success-500);">TME Signed</span>
-                    </div>
-                    <div class="tender-meta">
-                        <div class="meta-item">
-                            <span class="meta-label">TME Signed</span>
-                            <span class="meta-value">27 Nov 2024</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Expected Publish</span>
-                            <span class="meta-value">2 Dec 2024</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Est. Value</span>
-                            <span class="meta-value">$180,000</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Status</span>
-                            <span class="meta-value">Ready to Publish</span>
-                        </div>
-                    </div>
-                    <div class="tender-actions">
-                        <button class="btn btn-primary btn-sm" onclick="showTenderDetails({id: 'RFQ/2024/115', title: 'Furniture and Office Supplies', status: 'TME Signed', statusKey: 'tme-signed'})">
-                            <i class="pi pi-eye"></i> View Full Details
-                        </button>
-                        <button class="btn btn-success btn-sm">
-                            <i class="pi pi-send"></i> Publish Tender
-                        </button>
-                        <button class="btn btn-secondary btn-sm" onclick="viewTenderPreview('RFQ/2024/115', 'Furniture and Office Supplies')">
-                            <i class="pi pi-file-o"></i> Preview
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Tender Card 8 - Closed -->
-                <div class="tender-card" data-status="closed">
-                    <div class="tender-header">
-                        <div class="tender-title-section">
-                            <div class="tender-id">ITB/2024/034</div>
-                            <div class="tender-title">Water Infrastructure Development</div>
-                        </div>
-                        <span class="status-badge closed">Closed</span>
-                    </div>
-                    <div class="tender-meta">
-                        <div class="meta-item">
-                            <span class="meta-label">Closed Date</span>
-                            <span class="meta-value">25 Nov 2024</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Deadline Was</span>
-                            <span class="meta-value">25 Nov 2024</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Est. Value</span>
-                            <span class="meta-value">$2,500,000</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Bids Received</span>
-                            <span class="meta-value">9 bids</span>
-                        </div>
-                    </div>
-                    <div class="tender-actions">
-                        <button class="btn btn-primary btn-sm" onclick="showTenderDetails({id: 'ITB/2024/034', title: 'Water Infrastructure Development', status: 'Closed', statusKey: 'closed'})">
-                            <i class="pi pi-eye"></i> View Full Details
-                        </button>
-                        <button class="btn btn-success btn-sm" onclick="showBidOpening('ITB/2024/034', 'Water Infrastructure Development', 'ITB')">
-                            <i class="pi pi-envelope-open"></i> Start Bid Opening
-                        </button>
-                        <button class="btn btn-secondary btn-sm" onclick="showBidOpening('ITB/2024/034', 'Water Infrastructure Development', 'ITB')">
-                            <i class="pi pi-users"></i> View Bidders (9)
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Tender Card 9 - Bid Opening -->
-                <div class="tender-card" data-status="bid-opening">
-                    <div class="tender-header">
-                        <div class="tender-title-section">
-                            <div class="tender-id">RFP/2024/067</div>
-                            <div class="tender-title">Security Services Contract</div>
-                        </div>
-                        <span class="status-badge" style="background: #fff3cd; color: #856404;">Bid Opening</span>
-                    </div>
-                    <div class="tender-meta">
-                        <div class="meta-item">
-                            <span class="meta-label">Closed Date</span>
-                            <span class="meta-value">20 Nov 2024</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Opening Started</span>
-                            <span class="meta-value">22 Nov 2024</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Est. Value</span>
-                            <span class="meta-value">$650,000</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Status</span>
-                            <span class="meta-value">Technical Opening</span>
-                        </div>
-                    </div>
-                    <div class="tender-actions">
-                        <button class="btn btn-primary btn-sm" onclick="showTenderDetails({id: 'RFP/2024/067', title: 'Security Services Contract', status: 'Bid Opening', statusKey: 'bid-opening', type: 'RFP'})">
-                            <i class="pi pi-eye"></i> View Full Details
-                        </button>
-                        <button class="btn btn-success btn-sm" onclick="showBidOpening('RFP/2024/067', 'Security Services Contract', 'RFP')">
-                            <i class="pi pi-folder-open"></i> Continue Opening
-                        </button>
-                        <button class="btn btn-secondary btn-sm" onclick="downloadBidOpeningReport('pdf')">
-                            <i class="pi pi-file-pdf"></i> Opening Report
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Tender Card 10 - Evaluation -->
-                <div class="tender-card" data-status="evaluation">
-                    <div class="tender-header">
-                        <div class="tender-title-section">
-                            <div class="tender-id">ITB/2024/023</div>
-                            <div class="tender-title">Medical Supplies - Emergency Response</div>
-                        </div>
-                        <span class="status-badge" style="background: #e3f2fd; color: #1565c0;">Evaluation</span>
-                    </div>
-                    <div class="tender-meta">
-                        <div class="meta-item">
-                            <span class="meta-label">Bids Opened</span>
-                            <span class="meta-value">15 Nov 2024</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Evaluation Stage</span>
-                            <span class="meta-value">In Progress (Step 1 of 4)</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Est. Value</span>
-                            <span class="meta-value">$420,000</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Your Role</span>
-                            <span class="meta-value">Evaluator | 3 of 6 evaluated</span>
-                        </div>
-                    </div>
-                    <div class="tender-actions">
-                        <button class="btn btn-success btn-sm" onclick="showEvaluation('ITB/2024/023', 'Medical Supplies - Emergency Response', 'evaluator')">
-                            <i class="pi pi-chart-bar"></i> Continue Evaluation
-                        </button>
-                        <button class="btn btn-primary btn-sm" onclick="showTenderDetails({id: 'ITB/2024/023', title: 'Medical Supplies - Emergency Response', status: 'Evaluation', statusKey: 'evaluation'})">
-                            <i class="pi pi-eye"></i> View Full Details
-                        </button>
-                        <button class="btn btn-secondary btn-sm" onclick="showEvaluation('ITB/2024/023', 'Medical Supplies - Emergency Response', 'comparison')">
-                            <i class="pi pi-table"></i> Comparison View
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Tender Card 11 - Award Recommendation -->
-                <div class="tender-card" data-status="award">
-                    <div class="tender-header">
-                        <div class="tender-title-section">
-                            <div class="tender-id">RFQ/2024/055</div>
-                            <div class="tender-title">IT Equipment and Software Licenses</div>
-                        </div>
-                        <span class="status-badge" style="background: #f3e5f5; color: #6a1b9a;">Award Recommendation</span>
-                    </div>
-                    <div class="tender-meta">
-                        <div class="meta-item">
-                            <span class="meta-label">Evaluation Complete</span>
-                            <span class="meta-value">18 Nov 2024</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Recommended Supplier</span>
-                            <span class="meta-value">TechCorp Ltd.</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Award Value</span>
-                            <span class="meta-value">$285,000</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Status</span>
-                            <span class="meta-value">Pending Signature</span>
-                        </div>
-                    </div>
-                    <div class="tender-actions">
-                        <button class="btn btn-primary btn-sm" onclick="showTenderDetails({id: 'RFQ/2024/055', title: 'IT Equipment and Software Licenses', status: 'Award Recommendation', statusKey: 'award'})">
-                            <i class="pi pi-eye"></i> View Full Details
-                        </button>
-                        <button class="btn btn-success btn-sm">
-                            <i class="pi pi-file-edit"></i> Sign Report
-                        </button>
-                        <button class="btn btn-secondary btn-sm">
-                            <i class="pi pi-file-pdf"></i> Award Report
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Tender Card 12 - Finalized -->
-                <div class="tender-card" data-status="finalized">
-                    <div class="tender-header">
-                        <div class="tender-title-section">
-                            <div class="tender-id">ITB/2024/012</div>
-                            <div class="tender-title">Construction - School Building</div>
-                        </div>
-                        <span class="status-badge" style="background: #c8e6c9; color: #2e7d32;">Finalized</span>
-                    </div>
-                    <div class="tender-meta">
-                        <div class="meta-item">
-                            <span class="meta-label">Finalized Date</span>
-                            <span class="meta-value">10 Nov 2024</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Awarded To</span>
-                            <span class="meta-value">BuildCo International</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Award Value</span>
-                            <span class="meta-value">$3,200,000</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Contract Status</span>
-                            <span class="meta-value">Active</span>
-                        </div>
-                    </div>
-                    <div class="tender-actions">
-                        <button class="btn btn-primary btn-sm" onclick="showTenderDetails({id: 'ITB/2024/012', title: 'Construction - School Building', status: 'Finalized', statusKey: 'finalized'})">
-                            <i class="pi pi-eye"></i> View Full Details
-                        </button>
-                        <button class="btn btn-secondary btn-sm">
-                            <i class="pi pi-file"></i> View Contract
-                        </button>
-                        <button class="btn btn-secondary btn-sm">
-                            <i class="pi pi-history"></i> Tender History
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Tender Card 13 - Cancelled -->
-                <div class="tender-card" data-status="cancelled">
-                    <div class="tender-header">
-                        <div class="tender-title-section">
-                            <div class="tender-id">RFP/2024/091</div>
-                            <div class="tender-title">Training Services - Capacity Building</div>
-                        </div>
-                        <span class="status-badge" style="background: var(--danger-50); color: var(--danger-500);">Cancelled</span>
-                    </div>
-                    <div class="tender-meta">
-                        <div class="meta-item">
-                            <span class="meta-label">Cancelled Date</span>
-                            <span class="meta-value">5 Nov 2024</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Reason</span>
-                            <span class="meta-value">Budget Constraints</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Est. Value</span>
-                            <span class="meta-value">$95,000</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Interested Suppliers</span>
-                            <span class="meta-value">14</span>
-                        </div>
-                    </div>
-                    <div class="tender-actions">
-                        <button class="btn btn-primary btn-sm" onclick="showTenderDetails({id: 'RFP/2024/091', title: 'Training Services - Capacity Building', status: 'Cancelled', statusKey: 'cancelled'})">
-                            <i class="pi pi-eye"></i> View Full Details
-                        </button>
-                        <button class="btn btn-secondary btn-sm">
-                            <i class="pi pi-history"></i> Cancellation Details
-                        </button>
-                        <button class="btn btn-secondary btn-sm">
-                            <i class="pi pi-copy"></i> Reopen/Clone
-                        </button>
-                    </div>
-                </div>
+            <!-- Tender Listing Table -->
+            <div class="tender-listing" id="tenderGrid" style="background: var(--surface-0); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm);">
+                <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                    <thead>
+                        <tr style="background: linear-gradient(to bottom, var(--surface-50), var(--surface-100)); border-bottom: 1px solid var(--surface-200);">
+                            <th style="padding: 14px 20px; text-align: left; font-weight: 600; color: var(--text-secondary); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">Reference</th>
+                            <th style="padding: 14px 16px; text-align: left; font-weight: 600; color: var(--text-secondary); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">Title</th>
+                            <th style="padding: 14px 16px; text-align: center; font-weight: 600; color: var(--text-secondary); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">Status</th>
+                            <th style="padding: 14px 16px; text-align: right; font-weight: 600; color: var(--text-secondary); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">Value</th>
+                            <th style="padding: 14px 16px; text-align: center; font-weight: 600; color: var(--text-secondary); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">Deadline</th>
+                            <th style="padding: 14px 20px; text-align: center; font-weight: 600; color: var(--text-secondary); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; width: 60px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Row 1: Active -->
+                        <tr data-status="active" class="tender-table-row" style="border-bottom: 1px solid var(--surface-100); transition: background 0.15s;">
+                            <td style="padding: 14px 20px;"><span style="font-weight: 600; color: var(--primary-600); font-size: 13px;">RFQ/2024/001</span></td>
+                            <td style="padding: 14px 16px;"><span style="font-weight: 500; color: var(--text-primary);">Supply of Medical Equipment</span></td>
+                            <td style="padding: 14px 16px; text-align: center;"><span class="status-badge active">Active</span></td>
+                            <td style="padding: 14px 16px; text-align: right; font-weight: 600; color: var(--text-primary);">$250,000</td>
+                            <td style="padding: 14px 16px; text-align: center; color: var(--text-secondary);">15 Dec 2024</td>
+                            <td style="padding: 14px 20px; text-align: center;">
+                                <div class="action-menu-container" style="position: relative;">
+                                    <button class="action-menu-btn" onclick="toggleActionMenu(this)" style="background: none; border: 1px solid var(--surface-200); border-radius: var(--radius-sm); width: 32px; height: 32px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s;">
+                                        <i class="pi pi-ellipsis-v" style="color: var(--text-muted); font-size: 14px;"></i>
+                                    </button>
+                                    <div class="action-menu-dropdown" style="display: none; position: absolute; right: 0; top: 100%; margin-top: 4px; background: var(--surface-0); border: 1px solid var(--surface-200); border-radius: var(--radius-md); box-shadow: var(--shadow-lg); min-width: 180px; z-index: 100;">
+                                        <div onclick="showTenderDetails({id: 'RFQ/2024/001', title: 'Supply of Medical Equipment', status: 'Posted', statusKey: 'active'})" class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-primary); transition: background 0.15s;"><i class="pi pi-eye" style="color: var(--primary-500);"></i> View Details</div>
+                                        <div onclick="viewTenderPreview('RFQ/2024/001', 'Supply of Medical Equipment')" class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-primary); transition: background 0.15s;"><i class="pi pi-file" style="color: var(--text-muted);"></i> Quick Preview</div>
+                                        <div style="border-top: 1px solid var(--surface-100); margin: 4px 0;"></div>
+                                        <div onclick="openAmendModal('RFQ/2024/001', 'Supply of Medical Equipment')" class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-primary); transition: background 0.15s;"><i class="pi pi-pencil" style="color: var(--warning-500);"></i> Amend Tender</div>
+                                        <div onclick="openClarificationsModal('RFQ/2024/001', 'Supply of Medical Equipment')" class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-primary); transition: background 0.15s;"><i class="pi pi-comments" style="color: var(--info-500);"></i> Clarifications <span style="margin-left: auto; background: var(--danger-500); color: white; padding: 1px 6px; border-radius: 10px; font-size: 10px; font-weight: 600;">5</span></div>
+                                        <div style="border-top: 1px solid var(--surface-100); margin: 4px 0;"></div>
+                                        <div onclick="openCancelModal('RFQ/2024/001', 'Supply of Medical Equipment')" class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--danger-500); transition: background 0.15s;"><i class="pi pi-times-circle"></i> Cancel Tender</div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- Row 2: Active -->
+                        <tr data-status="active" class="tender-table-row" style="background: var(--surface-50); border-bottom: 1px solid var(--surface-100); transition: background 0.15s;">
+                            <td style="padding: 14px 20px;"><span style="font-weight: 600; color: var(--primary-600); font-size: 13px;">ITB/2024/045</span></td>
+                            <td style="padding: 14px 16px;"><span style="font-weight: 500; color: var(--text-primary);">Construction of Office Building</span></td>
+                            <td style="padding: 14px 16px; text-align: center;"><span class="status-badge active">Active</span></td>
+                            <td style="padding: 14px 16px; text-align: right; font-weight: 600; color: var(--text-primary);">$1,500,000</td>
+                            <td style="padding: 14px 16px; text-align: center; color: var(--text-secondary);">10 Jan 2025</td>
+                            <td style="padding: 14px 20px; text-align: center;">
+                                <div class="action-menu-container" style="position: relative;">
+                                    <button class="action-menu-btn" onclick="toggleActionMenu(this)" style="background: none; border: 1px solid var(--surface-200); border-radius: var(--radius-sm); width: 32px; height: 32px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s;">
+                                        <i class="pi pi-ellipsis-v" style="color: var(--text-muted); font-size: 14px;"></i>
+                                    </button>
+                                    <div class="action-menu-dropdown" style="display: none; position: absolute; right: 0; top: 100%; margin-top: 4px; background: var(--surface-0); border: 1px solid var(--surface-200); border-radius: var(--radius-md); box-shadow: var(--shadow-lg); min-width: 180px; z-index: 100;">
+                                        <div onclick="showTenderDetails({id: 'ITB/2024/045', title: 'Construction of Office Building', status: 'Posted', statusKey: 'active'})" class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-primary); transition: background 0.15s;"><i class="pi pi-eye" style="color: var(--primary-500);"></i> View Details</div>
+                                        <div onclick="viewTenderPreview('ITB/2024/045', 'Construction of Office Building')" class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-primary); transition: background 0.15s;"><i class="pi pi-file" style="color: var(--text-muted);"></i> Quick Preview</div>
+                                        <div style="border-top: 1px solid var(--surface-100); margin: 4px 0;"></div>
+                                        <div onclick="openAmendModal('ITB/2024/045', 'Construction of Office Building')" class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-primary); transition: background 0.15s;"><i class="pi pi-pencil" style="color: var(--warning-500);"></i> Amend Tender</div>
+                                        <div onclick="openClarificationsModal('ITB/2024/045', 'Construction of Office Building')" class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-primary); transition: background 0.15s;"><i class="pi pi-comments" style="color: var(--info-500);"></i> Clarifications <span style="margin-left: auto; background: var(--danger-500); color: white; padding: 1px 6px; border-radius: 10px; font-size: 10px; font-weight: 600;">12</span></div>
+                                        <div style="border-top: 1px solid var(--surface-100); margin: 4px 0;"></div>
+                                        <div onclick="openCancelModal('ITB/2024/045', 'Construction of Office Building')" class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--danger-500); transition: background 0.15s;"><i class="pi pi-times-circle"></i> Cancel Tender</div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- Row 3: Pending Approval -->
+                        <tr data-status="approval" class="tender-table-row" style="border-bottom: 1px solid var(--surface-100); transition: background 0.15s;">
+                            <td style="padding: 14px 20px;"><span style="font-weight: 600; color: var(--primary-600); font-size: 13px;">RFP/2024/078</span></td>
+                            <td style="padding: 14px 16px;"><span style="font-weight: 500; color: var(--text-primary);">IT Infrastructure Services</span></td>
+                            <td style="padding: 14px 16px; text-align: center;"><span class="status-badge review">Pending Approval</span></td>
+                            <td style="padding: 14px 16px; text-align: right; font-weight: 600; color: var(--text-primary);">$500,000</td>
+                            <td style="padding: 14px 16px; text-align: center; color: var(--text-muted);">—</td>
+                            <td style="padding: 14px 20px; text-align: center;">
+                                <div class="action-menu-container" style="position: relative;">
+                                    <button class="action-menu-btn" onclick="toggleActionMenu(this)" style="background: none; border: 1px solid var(--surface-200); border-radius: var(--radius-sm); width: 32px; height: 32px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s;">
+                                        <i class="pi pi-ellipsis-v" style="color: var(--text-muted); font-size: 14px;"></i>
+                                    </button>
+                                    <div class="action-menu-dropdown" style="display: none; position: absolute; right: 0; top: 100%; margin-top: 4px; background: var(--surface-0); border: 1px solid var(--surface-200); border-radius: var(--radius-md); box-shadow: var(--shadow-lg); min-width: 180px; z-index: 100;">
+                                        <div onclick="showTenderDetails({id: 'RFP/2024/078', title: 'IT Infrastructure Services', status: 'Pending Approval', statusKey: 'approval'})" class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-primary); transition: background 0.15s;"><i class="pi pi-eye" style="color: var(--primary-500);"></i> View Details</div>
+                                        <div onclick="viewTenderPreview('RFP/2024/078', 'IT Infrastructure Services')" class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-primary); transition: background 0.15s;"><i class="pi pi-file" style="color: var(--text-muted);"></i> Quick Preview</div>
+                                        <div style="border-top: 1px solid var(--surface-100); margin: 4px 0;"></div>
+                                        <div class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-primary); transition: background 0.15s;"><i class="pi pi-pencil" style="color: var(--warning-500);"></i> Edit Draft</div>
+                                        <div class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-primary); transition: background 0.15s;"><i class="pi pi-history" style="color: var(--text-muted);"></i> View Comments</div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- Row 4: Active -->
+                        <tr data-status="active" class="tender-table-row" style="background: var(--surface-50); border-bottom: 1px solid var(--surface-100); transition: background 0.15s;">
+                            <td style="padding: 14px 20px;"><span style="font-weight: 600; color: var(--primary-600); font-size: 13px;">RFQ/2024/102</span></td>
+                            <td style="padding: 14px 16px;"><span style="font-weight: 500; color: var(--text-primary);">Vehicle Fleet Procurement</span></td>
+                            <td style="padding: 14px 16px; text-align: center;"><span class="status-badge active">Active</span></td>
+                            <td style="padding: 14px 16px; text-align: right; font-weight: 600; color: var(--text-primary);">$850,000</td>
+                            <td style="padding: 14px 16px; text-align: center; color: var(--text-secondary);">20 Dec 2024</td>
+                            <td style="padding: 14px 20px; text-align: center;">
+                                <div class="action-menu-container" style="position: relative;">
+                                    <button class="action-menu-btn" onclick="toggleActionMenu(this)" style="background: none; border: 1px solid var(--surface-200); border-radius: var(--radius-sm); width: 32px; height: 32px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s;">
+                                        <i class="pi pi-ellipsis-v" style="color: var(--text-muted); font-size: 14px;"></i>
+                                    </button>
+                                    <div class="action-menu-dropdown" style="display: none; position: absolute; right: 0; top: 100%; margin-top: 4px; background: var(--surface-0); border: 1px solid var(--surface-200); border-radius: var(--radius-md); box-shadow: var(--shadow-lg); min-width: 180px; z-index: 100;">
+                                        <div onclick="showTenderDetails({id: 'RFQ/2024/102', title: 'Vehicle Fleet Procurement', status: 'Posted', statusKey: 'active'})" class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-primary); transition: background 0.15s;"><i class="pi pi-eye" style="color: var(--primary-500);"></i> View Details</div>
+                                        <div onclick="openAmendModal('RFQ/2024/102', 'Vehicle Fleet Procurement')" class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-primary); transition: background 0.15s;"><i class="pi pi-pencil" style="color: var(--warning-500);"></i> Amend Tender</div>
+                                        <div onclick="openClarificationsModal('RFQ/2024/102', 'Vehicle Fleet Procurement')" class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-primary); transition: background 0.15s;"><i class="pi pi-comments" style="color: var(--info-500);"></i> Clarifications <span style="margin-left: auto; background: var(--info-500); color: white; padding: 1px 6px; border-radius: 10px; font-size: 10px; font-weight: 600;">2</span></div>
+                                        <div style="border-top: 1px solid var(--surface-100); margin: 4px 0;"></div>
+                                        <div onclick="openCancelModal('RFQ/2024/102', 'Vehicle Fleet Procurement')" class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--danger-500); transition: background 0.15s;"><i class="pi pi-times-circle"></i> Cancel Tender</div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- Row 5: Draft -->
+                        <tr data-status="draft" class="tender-table-row" style="border-bottom: 1px solid var(--surface-100); transition: background 0.15s;">
+                            <td style="padding: 14px 20px;"><span style="font-weight: 600; color: var(--text-muted); font-size: 13px;">DRAFT-2024-156</span></td>
+                            <td style="padding: 14px 16px;"><span style="font-weight: 500; color: var(--text-secondary);">Consulting Services - HR Management</span></td>
+                            <td style="padding: 14px 16px; text-align: center;"><span class="status-badge draft">Draft</span></td>
+                            <td style="padding: 14px 16px; text-align: right; font-weight: 600; color: var(--text-secondary);">$120,000</td>
+                            <td style="padding: 14px 16px; text-align: center; color: var(--text-muted);">—</td>
+                            <td style="padding: 14px 20px; text-align: center;">
+                                <div class="action-menu-container" style="position: relative;">
+                                    <button class="action-menu-btn" onclick="toggleActionMenu(this)" style="background: none; border: 1px solid var(--surface-200); border-radius: var(--radius-sm); width: 32px; height: 32px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s;">
+                                        <i class="pi pi-ellipsis-v" style="color: var(--text-muted); font-size: 14px;"></i>
+                                    </button>
+                                    <div class="action-menu-dropdown" style="display: none; position: absolute; right: 0; top: 100%; margin-top: 4px; background: var(--surface-0); border: 1px solid var(--surface-200); border-radius: var(--radius-md); box-shadow: var(--shadow-lg); min-width: 180px; z-index: 100;">
+                                        <div class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--primary-600); font-weight: 500; transition: background 0.15s;"><i class="pi pi-pencil" style="color: var(--primary-500);"></i> Continue Editing</div>
+                                        <div style="border-top: 1px solid var(--surface-100); margin: 4px 0;"></div>
+                                        <div class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-primary); transition: background 0.15s;"><i class="pi pi-copy" style="color: var(--text-muted);"></i> Duplicate</div>
+                                        <div class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--danger-500); transition: background 0.15s;"><i class="pi pi-trash"></i> Delete Draft</div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- Row 6: Pre-Clearance -->
+                        <tr data-status="pre-clearance" class="tender-table-row" style="background: var(--surface-50); border-bottom: 1px solid var(--surface-100); transition: background 0.15s;">
+                            <td style="padding: 14px 20px;"><span style="font-weight: 600; color: var(--primary-600); font-size: 13px;">ITB/2024/089</span></td>
+                            <td style="padding: 14px 16px;"><span style="font-weight: 500; color: var(--text-primary);">Laboratory Equipment Procurement</span></td>
+                            <td style="padding: 14px 16px; text-align: center;"><span class="status-badge" style="background: var(--info-50); color: var(--info-500);">Pre-Clearance</span></td>
+                            <td style="padding: 14px 16px; text-align: right; font-weight: 600; color: var(--text-primary);">$350,000</td>
+                            <td style="padding: 14px 16px; text-align: center; color: var(--text-muted);">—</td>
+                            <td style="padding: 14px 20px; text-align: center;">
+                                <div class="action-menu-container" style="position: relative;">
+                                    <button class="action-menu-btn" onclick="toggleActionMenu(this)" style="background: none; border: 1px solid var(--surface-200); border-radius: var(--radius-sm); width: 32px; height: 32px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s;">
+                                        <i class="pi pi-ellipsis-v" style="color: var(--text-muted); font-size: 14px;"></i>
+                                    </button>
+                                    <div class="action-menu-dropdown" style="display: none; position: absolute; right: 0; top: 100%; margin-top: 4px; background: var(--surface-0); border: 1px solid var(--surface-200); border-radius: var(--radius-md); box-shadow: var(--shadow-lg); min-width: 180px; z-index: 100;">
+                                        <div onclick="showTenderDetails({id: 'ITB/2024/089', title: 'Laboratory Equipment Procurement', status: 'Pre-Clearance', statusKey: 'pre-clearance'})" class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-primary); transition: background 0.15s;"><i class="pi pi-eye" style="color: var(--primary-500);"></i> View Details</div>
+                                        <div onclick="viewTenderPreview('ITB/2024/089', 'Laboratory Equipment Procurement')" class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-primary); transition: background 0.15s;"><i class="pi pi-file" style="color: var(--text-muted);"></i> Quick Preview</div>
+                                        <div style="border-top: 1px solid var(--surface-100); margin: 4px 0;"></div>
+                                        <div class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-primary); transition: background 0.15s;"><i class="pi pi-history" style="color: var(--text-muted);"></i> View Comments</div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- Row 7: TME Signed -->
+                        <tr data-status="tme-signed" class="tender-table-row" style="border-bottom: 1px solid var(--surface-100); transition: background 0.15s;">
+                            <td style="padding: 14px 20px;"><span style="font-weight: 600; color: var(--primary-600); font-size: 13px;">RFQ/2024/115</span></td>
+                            <td style="padding: 14px 16px;"><span style="font-weight: 500; color: var(--text-primary);">Furniture and Office Supplies</span></td>
+                            <td style="padding: 14px 16px; text-align: center;"><span class="status-badge" style="background: var(--success-50); color: var(--success-500);">TME Signed</span></td>
+                            <td style="padding: 14px 16px; text-align: right; font-weight: 600; color: var(--text-primary);">$180,000</td>
+                            <td style="padding: 14px 16px; text-align: center; color: var(--text-muted);">—</td>
+                            <td style="padding: 14px 20px; text-align: center;">
+                                <div class="action-menu-container" style="position: relative;">
+                                    <button class="action-menu-btn" onclick="toggleActionMenu(this)" style="background: none; border: 1px solid var(--surface-200); border-radius: var(--radius-sm); width: 32px; height: 32px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s;">
+                                        <i class="pi pi-ellipsis-v" style="color: var(--text-muted); font-size: 14px;"></i>
+                                    </button>
+                                    <div class="action-menu-dropdown" style="display: none; position: absolute; right: 0; top: 100%; margin-top: 4px; background: var(--surface-0); border: 1px solid var(--surface-200); border-radius: var(--radius-md); box-shadow: var(--shadow-lg); min-width: 180px; z-index: 100;">
+                                        <div onclick="showTenderDetails({id: 'RFQ/2024/115', title: 'Furniture and Office Supplies', status: 'TME Signed', statusKey: 'tme-signed'})" class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-primary); transition: background 0.15s;"><i class="pi pi-eye" style="color: var(--primary-500);"></i> View Details</div>
+                                        <div onclick="viewTenderPreview('RFQ/2024/115', 'Furniture and Office Supplies')" class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-primary); transition: background 0.15s;"><i class="pi pi-file" style="color: var(--text-muted);"></i> Quick Preview</div>
+                                        <div style="border-top: 1px solid var(--surface-100); margin: 4px 0;"></div>
+                                        <div class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--success-600); font-weight: 500; transition: background 0.15s;"><i class="pi pi-send" style="color: var(--success-500);"></i> Publish Tender</div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- Row 8: Closed -->
+                        <tr data-status="closed" class="tender-table-row" style="background: var(--surface-50); border-bottom: 1px solid var(--surface-100); transition: background 0.15s;">
+                            <td style="padding: 14px 20px;"><span style="font-weight: 600; color: var(--primary-600); font-size: 13px;">ITB/2024/034</span></td>
+                            <td style="padding: 14px 16px;"><span style="font-weight: 500; color: var(--text-primary);">Water Infrastructure Development</span></td>
+                            <td style="padding: 14px 16px; text-align: center;"><span class="status-badge closed">Closed</span></td>
+                            <td style="padding: 14px 16px; text-align: right; font-weight: 600; color: var(--text-primary);">$2,500,000</td>
+                            <td style="padding: 14px 16px; text-align: center; color: var(--text-secondary);">25 Nov 2024</td>
+                            <td style="padding: 14px 20px; text-align: center;">
+                                <div class="action-menu-container" style="position: relative;">
+                                    <button class="action-menu-btn" onclick="toggleActionMenu(this)" style="background: none; border: 1px solid var(--surface-200); border-radius: var(--radius-sm); width: 32px; height: 32px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s;">
+                                        <i class="pi pi-ellipsis-v" style="color: var(--text-muted); font-size: 14px;"></i>
+                                    </button>
+                                    <div class="action-menu-dropdown" style="display: none; position: absolute; right: 0; top: 100%; margin-top: 4px; background: var(--surface-0); border: 1px solid var(--surface-200); border-radius: var(--radius-md); box-shadow: var(--shadow-lg); min-width: 180px; z-index: 100;">
+                                        <div onclick="showTenderDetails({id: 'ITB/2024/034', title: 'Water Infrastructure Development', status: 'Closed', statusKey: 'closed'})" class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-primary); transition: background 0.15s;"><i class="pi pi-eye" style="color: var(--primary-500);"></i> View Details</div>
+                                        <div style="border-top: 1px solid var(--surface-100); margin: 4px 0;"></div>
+                                        <div onclick="showBidOpening('ITB/2024/034', 'Water Infrastructure Development', 'ITB')" class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--success-600); font-weight: 500; transition: background 0.15s;"><i class="pi pi-envelope-open" style="color: var(--success-500);"></i> Start Bid Opening</div>
+                                        <div class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-primary); transition: background 0.15s;"><i class="pi pi-users" style="color: var(--text-muted);"></i> View Bidders <span style="margin-left: auto; background: var(--primary-500); color: white; padding: 1px 6px; border-radius: 10px; font-size: 10px; font-weight: 600;">9</span></div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- Row 9: Bid Opening -->
+                        <tr data-status="bid-opening" class="tender-table-row" style="border-bottom: 1px solid var(--surface-100); transition: background 0.15s;">
+                            <td style="padding: 14px 20px;"><span style="font-weight: 600; color: var(--primary-600); font-size: 13px;">RFP/2024/067</span></td>
+                            <td style="padding: 14px 16px;"><span style="font-weight: 500; color: var(--text-primary);">Security Services Contract</span></td>
+                            <td style="padding: 14px 16px; text-align: center;"><span class="status-badge" style="background: #fff3cd; color: #856404;">Bid Opening</span></td>
+                            <td style="padding: 14px 16px; text-align: right; font-weight: 600; color: var(--text-primary);">$650,000</td>
+                            <td style="padding: 14px 16px; text-align: center; color: var(--text-secondary);">20 Nov 2024</td>
+                            <td style="padding: 14px 20px; text-align: center;">
+                                <div class="action-menu-container" style="position: relative;">
+                                    <button class="action-menu-btn" onclick="toggleActionMenu(this)" style="background: none; border: 1px solid var(--surface-200); border-radius: var(--radius-sm); width: 32px; height: 32px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s;">
+                                        <i class="pi pi-ellipsis-v" style="color: var(--text-muted); font-size: 14px;"></i>
+                                    </button>
+                                    <div class="action-menu-dropdown" style="display: none; position: absolute; right: 0; top: 100%; margin-top: 4px; background: var(--surface-0); border: 1px solid var(--surface-200); border-radius: var(--radius-md); box-shadow: var(--shadow-lg); min-width: 180px; z-index: 100;">
+                                        <div onclick="showTenderDetails({id: 'RFP/2024/067', title: 'Security Services Contract', status: 'Bid Opening', statusKey: 'bid-opening', type: 'RFP'})" class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-primary); transition: background 0.15s;"><i class="pi pi-eye" style="color: var(--primary-500);"></i> View Details</div>
+                                        <div style="border-top: 1px solid var(--surface-100); margin: 4px 0;"></div>
+                                        <div onclick="showBidOpening('RFP/2024/067', 'Security Services Contract', 'RFP')" class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--success-600); font-weight: 500; transition: background 0.15s;"><i class="pi pi-folder-open" style="color: var(--success-500);"></i> Continue Opening</div>
+                                        <div onclick="downloadBidOpeningReport('pdf')" class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-primary); transition: background 0.15s;"><i class="pi pi-file-pdf" style="color: var(--danger-500);"></i> Opening Report</div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- Row 10: Evaluation -->
+                        <tr data-status="evaluation" class="tender-table-row" style="background: var(--surface-50); border-bottom: 1px solid var(--surface-100); transition: background 0.15s;">
+                            <td style="padding: 14px 20px;"><span style="font-weight: 600; color: var(--primary-600); font-size: 13px;">ITB/2024/023</span></td>
+                            <td style="padding: 14px 16px;"><span style="font-weight: 500; color: var(--text-primary);">Medical Supplies - Emergency Response</span></td>
+                            <td style="padding: 14px 16px; text-align: center;"><span class="status-badge" style="background: #e3f2fd; color: #1565c0;">Evaluation</span></td>
+                            <td style="padding: 14px 16px; text-align: right; font-weight: 600; color: var(--text-primary);">$420,000</td>
+                            <td style="padding: 14px 16px; text-align: center; color: var(--text-secondary);">15 Nov 2024</td>
+                            <td style="padding: 14px 20px; text-align: center;">
+                                <div class="action-menu-container" style="position: relative;">
+                                    <button class="action-menu-btn" onclick="toggleActionMenu(this)" style="background: none; border: 1px solid var(--surface-200); border-radius: var(--radius-sm); width: 32px; height: 32px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s;">
+                                        <i class="pi pi-ellipsis-v" style="color: var(--text-muted); font-size: 14px;"></i>
+                                    </button>
+                                    <div class="action-menu-dropdown" style="display: none; position: absolute; right: 0; top: 100%; margin-top: 4px; background: var(--surface-0); border: 1px solid var(--surface-200); border-radius: var(--radius-md); box-shadow: var(--shadow-lg); min-width: 180px; z-index: 100;">
+                                        <div onclick="showTenderDetails({id: 'ITB/2024/023', title: 'Medical Supplies - Emergency Response', status: 'Evaluation', statusKey: 'evaluation'})" class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-primary); transition: background 0.15s;"><i class="pi pi-eye" style="color: var(--primary-500);"></i> View Details</div>
+                                        <div style="border-top: 1px solid var(--surface-100); margin: 4px 0;"></div>
+                                        <div onclick="showEvaluation('ITB/2024/023', 'Medical Supplies - Emergency Response', 'evaluator')" class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--success-600); font-weight: 500; transition: background 0.15s;"><i class="pi pi-chart-bar" style="color: var(--success-500);"></i> Continue Evaluation</div>
+                                        <div onclick="showEvaluation('ITB/2024/023', 'Medical Supplies - Emergency Response', 'comparison')" class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-primary); transition: background 0.15s;"><i class="pi pi-table" style="color: var(--text-muted);"></i> Comparison View</div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- Row 11: Award -->
+                        <tr data-status="award" class="tender-table-row" style="border-bottom: 1px solid var(--surface-100); transition: background 0.15s;">
+                            <td style="padding: 14px 20px;"><span style="font-weight: 600; color: var(--primary-600); font-size: 13px;">RFQ/2024/055</span></td>
+                            <td style="padding: 14px 16px;"><span style="font-weight: 500; color: var(--text-primary);">IT Equipment and Software Licenses</span></td>
+                            <td style="padding: 14px 16px; text-align: center;"><span class="status-badge" style="background: #f3e5f5; color: #6a1b9a;">Award</span></td>
+                            <td style="padding: 14px 16px; text-align: right; font-weight: 600; color: var(--text-primary);">$285,000</td>
+                            <td style="padding: 14px 16px; text-align: center; color: var(--text-secondary);">18 Nov 2024</td>
+                            <td style="padding: 14px 20px; text-align: center;">
+                                <div class="action-menu-container" style="position: relative;">
+                                    <button class="action-menu-btn" onclick="toggleActionMenu(this)" style="background: none; border: 1px solid var(--surface-200); border-radius: var(--radius-sm); width: 32px; height: 32px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s;">
+                                        <i class="pi pi-ellipsis-v" style="color: var(--text-muted); font-size: 14px;"></i>
+                                    </button>
+                                    <div class="action-menu-dropdown" style="display: none; position: absolute; right: 0; top: 100%; margin-top: 4px; background: var(--surface-0); border: 1px solid var(--surface-200); border-radius: var(--radius-md); box-shadow: var(--shadow-lg); min-width: 180px; z-index: 100;">
+                                        <div onclick="showTenderDetails({id: 'RFQ/2024/055', title: 'IT Equipment and Software Licenses', status: 'Award Recommendation', statusKey: 'award'})" class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-primary); transition: background 0.15s;"><i class="pi pi-eye" style="color: var(--primary-500);"></i> View Details</div>
+                                        <div style="border-top: 1px solid var(--surface-100); margin: 4px 0;"></div>
+                                        <div class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--success-600); font-weight: 500; transition: background 0.15s;"><i class="pi pi-file-edit" style="color: var(--success-500);"></i> Sign Report</div>
+                                        <div class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-primary); transition: background 0.15s;"><i class="pi pi-file-pdf" style="color: var(--danger-500);"></i> Award Report</div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- Row 12: Finalized -->
+                        <tr data-status="finalized" class="tender-table-row" style="background: var(--surface-50); border-bottom: 1px solid var(--surface-100); transition: background 0.15s;">
+                            <td style="padding: 14px 20px;"><span style="font-weight: 600; color: var(--primary-600); font-size: 13px;">ITB/2024/012</span></td>
+                            <td style="padding: 14px 16px;"><span style="font-weight: 500; color: var(--text-primary);">Construction - School Building</span></td>
+                            <td style="padding: 14px 16px; text-align: center;"><span class="status-badge" style="background: #c8e6c9; color: #2e7d32;">Finalized</span></td>
+                            <td style="padding: 14px 16px; text-align: right; font-weight: 600; color: var(--text-primary);">$3,200,000</td>
+                            <td style="padding: 14px 16px; text-align: center; color: var(--text-secondary);">10 Nov 2024</td>
+                            <td style="padding: 14px 20px; text-align: center;">
+                                <div class="action-menu-container" style="position: relative;">
+                                    <button class="action-menu-btn" onclick="toggleActionMenu(this)" style="background: none; border: 1px solid var(--surface-200); border-radius: var(--radius-sm); width: 32px; height: 32px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s;">
+                                        <i class="pi pi-ellipsis-v" style="color: var(--text-muted); font-size: 14px;"></i>
+                                    </button>
+                                    <div class="action-menu-dropdown" style="display: none; position: absolute; right: 0; top: 100%; margin-top: 4px; background: var(--surface-0); border: 1px solid var(--surface-200); border-radius: var(--radius-md); box-shadow: var(--shadow-lg); min-width: 180px; z-index: 100;">
+                                        <div onclick="showTenderDetails({id: 'ITB/2024/012', title: 'Construction - School Building', status: 'Finalized', statusKey: 'finalized'})" class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-primary); transition: background 0.15s;"><i class="pi pi-eye" style="color: var(--primary-500);"></i> View Details</div>
+                                        <div style="border-top: 1px solid var(--surface-100); margin: 4px 0;"></div>
+                                        <div class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-primary); transition: background 0.15s;"><i class="pi pi-file" style="color: var(--text-muted);"></i> View Contract</div>
+                                        <div class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-primary); transition: background 0.15s;"><i class="pi pi-history" style="color: var(--text-muted);"></i> Tender History</div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- Row 13: Cancelled -->
+                        <tr data-status="cancelled" class="tender-table-row" style="border-bottom: 1px solid var(--surface-100); transition: background 0.15s; opacity: 0.7;">
+                            <td style="padding: 14px 20px;"><span style="font-weight: 600; color: var(--text-muted); font-size: 13px;">RFP/2024/091</span></td>
+                            <td style="padding: 14px 16px;"><span style="font-weight: 500; color: var(--text-muted);">Training Services - Capacity Building</span></td>
+                            <td style="padding: 14px 16px; text-align: center;"><span class="status-badge" style="background: var(--danger-50); color: var(--danger-500);">Cancelled</span></td>
+                            <td style="padding: 14px 16px; text-align: right; font-weight: 600; color: var(--text-muted);">$95,000</td>
+                            <td style="padding: 14px 16px; text-align: center; color: var(--text-muted);">—</td>
+                            <td style="padding: 14px 20px; text-align: center;">
+                                <div class="action-menu-container" style="position: relative;">
+                                    <button class="action-menu-btn" onclick="toggleActionMenu(this)" style="background: none; border: 1px solid var(--surface-200); border-radius: var(--radius-sm); width: 32px; height: 32px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s;">
+                                        <i class="pi pi-ellipsis-v" style="color: var(--text-muted); font-size: 14px;"></i>
+                                    </button>
+                                    <div class="action-menu-dropdown" style="display: none; position: absolute; right: 0; top: 100%; margin-top: 4px; background: var(--surface-0); border: 1px solid var(--surface-200); border-radius: var(--radius-md); box-shadow: var(--shadow-lg); min-width: 180px; z-index: 100;">
+                                        <div onclick="showTenderDetails({id: 'RFP/2024/091', title: 'Training Services - Capacity Building', status: 'Cancelled', statusKey: 'cancelled'})" class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-primary); transition: background 0.15s;"><i class="pi pi-eye" style="color: var(--primary-500);"></i> View Details</div>
+                                        <div style="border-top: 1px solid var(--surface-100); margin: 4px 0;"></div>
+                                        <div class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-primary); transition: background 0.15s;"><i class="pi pi-info-circle" style="color: var(--text-muted);"></i> Cancellation Details</div>
+                                        <div class="action-menu-item" style="padding: 10px 14px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-primary); transition: background 0.15s;"><i class="pi pi-copy" style="color: var(--primary-500);"></i> Clone / Reopen</div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
             </div>
             <!-- End Dashboard View -->
+
+            <!-- Tenders List View -->
+            <div class="view-section" id="view-tenders-list" style="display: none;">
+                <div class="page-header" style="margin-bottom: var(--spacing-xl);">
+                    <h1 class="page-title">Tenders</h1>
+                    <p class="page-subtitle">View and manage all procurement tenders</p>
+                </div>
+
+                <!-- Tenders Filter Bar -->
+                <div class="filter-bar">
+                    <div class="filter-group">
+                        <span class="filter-label">Status:</span>
+                        <select class="filter-select" id="tenders-list-status-filter" onchange="filterTendersListTable()">
+                            <option value="all">All Statuses</option>
+                            <option value="draft">Draft</option>
+                            <option value="pre-clearance">Pre-Clearance</option>
+                            <option value="approval">Pending Approval</option>
+                            <option value="tme-signed">TME Signed</option>
+                            <option value="active">Posted/Active</option>
+                            <option value="closed">Closed</option>
+                            <option value="bid-opening">Bid Opening</option>
+                            <option value="evaluation">Evaluation</option>
+                            <option value="award">Award Recommendation</option>
+                            <option value="finalized">Finalized</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <span class="filter-label">Type:</span>
+                        <select class="filter-select" id="tenders-list-type-filter" onchange="filterTendersListTable()">
+                            <option value="all">All Types</option>
+                            <option value="ITB">ITB</option>
+                            <option value="RFQ">RFQ</option>
+                            <option value="RFP">RFP</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <span class="filter-label">Sort by:</span>
+                        <select class="filter-select" id="tenders-list-sort" onchange="sortTendersListTable()">
+                            <option value="recent">Most Recent</option>
+                            <option value="deadline">Deadline</option>
+                            <option value="value-desc">Value (High to Low)</option>
+                            <option value="value-asc">Value (Low to High)</option>
+                            <option value="reference">Reference</option>
+                        </select>
+                    </div>
+                    <div style="flex: 1;"></div>
+                    <input type="text" id="tenders-list-search" placeholder="Search tenders..." class="filter-select" style="width: 250px;" onkeyup="filterTendersListTable()">
+                    <button class="btn btn-primary" onclick="document.getElementById('menu-tendering-create').click()">
+                        <i class="pi pi-plus"></i>
+                        Create New Tender
+                    </button>
+                </div>
+
+                <!-- Summary Stats -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--spacing-md); margin-bottom: var(--spacing-xl);">
+                    <div style="background: var(--surface-0); border: 1px solid var(--surface-200); border-radius: var(--radius-md); padding: var(--spacing-md); text-align: center;">
+                        <div style="font-size: 24px; font-weight: 700; color: var(--primary-500);">13</div>
+                        <div style="font-size: 12px; color: var(--text-muted);">Total Tenders</div>
+                    </div>
+                    <div style="background: var(--info-50); border: 1px solid var(--info-200); border-radius: var(--radius-md); padding: var(--spacing-md); text-align: center;">
+                        <div style="font-size: 24px; font-weight: 700; color: var(--info-500);">4</div>
+                        <div style="font-size: 12px; color: var(--text-muted);">Active</div>
+                    </div>
+                    <div style="background: var(--warning-50); border: 1px solid var(--warning-200); border-radius: var(--radius-md); padding: var(--spacing-md); text-align: center;">
+                        <div style="font-size: 24px; font-weight: 700; color: var(--warning-500);">3</div>
+                        <div style="font-size: 12px; color: var(--text-muted);">In Review</div>
+                    </div>
+                    <div style="background: var(--success-50); border: 1px solid var(--success-200); border-radius: var(--radius-md); padding: var(--spacing-md); text-align: center;">
+                        <div style="font-size: 24px; font-weight: 700; color: var(--success-500);">2</div>
+                        <div style="font-size: 12px; color: var(--text-muted);">Finalized</div>
+                    </div>
+                    <div style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-md); padding: var(--spacing-md); text-align: center;">
+                        <div style="font-size: 24px; font-weight: 700; color: var(--text-secondary);">1</div>
+                        <div style="font-size: 12px; color: var(--text-muted);">Draft</div>
+                    </div>
+                </div>
+
+                <!-- Tenders Table -->
+                <div style="background: var(--surface-0); border: 1px solid var(--surface-200); border-radius: var(--radius-lg); overflow: hidden;">
+                    <table id="tenders-list-table" style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                        <thead>
+                            <tr style="background: var(--surface-50); border-bottom: 2px solid var(--surface-200);">
+                                <th style="padding: 12px 16px; text-align: left; font-weight: 600; color: var(--text-primary);">Reference</th>
+                                <th style="padding: 12px 16px; text-align: left; font-weight: 600; color: var(--text-primary);">Title</th>
+                                <th style="padding: 12px 16px; text-align: center; font-weight: 600; color: var(--text-primary);">Type</th>
+                                <th style="padding: 12px 16px; text-align: center; font-weight: 600; color: var(--text-primary);">Status</th>
+                                <th style="padding: 12px 16px; text-align: right; font-weight: 600; color: var(--text-primary);">Est. Value</th>
+                                <th style="padding: 12px 16px; text-align: center; font-weight: 600; color: var(--text-primary);">Deadline</th>
+                                <th style="padding: 12px 16px; text-align: center; font-weight: 600; color: var(--text-primary);">Bids</th>
+                                <th style="padding: 12px 16px; text-align: center; font-weight: 600; color: var(--text-primary);">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tenders-list-tbody">
+                            <!-- Row 1: Active -->
+                            <tr class="tender-row" data-status="active" data-type="RFQ" data-value="250000" data-deadline="2024-12-15" style="border-bottom: 1px solid var(--surface-100);">
+                                <td style="padding: 12px 16px; font-weight: 600; color: var(--primary-500);">RFQ/2024/001</td>
+                                <td style="padding: 12px 16px;">
+                                    <div style="font-weight: 500;">Supply of Medical Equipment</div>
+                                    <div style="font-size: 11px; color: var(--text-muted);">Posted: 15 Nov 2024</div>
+                                </td>
+                                <td style="padding: 12px 16px; text-align: center;"><span style="padding: 2px 8px; background: var(--primary-50); color: var(--primary-500); border-radius: 4px; font-size: 11px; font-weight: 600;">RFQ</span></td>
+                                <td style="padding: 12px 16px; text-align: center;"><span class="status-badge active">Active</span></td>
+                                <td style="padding: 12px 16px; text-align: right; font-weight: 500;">$250,000</td>
+                                <td style="padding: 12px 16px; text-align: center;">15 Dec 2024</td>
+                                <td style="padding: 12px 16px; text-align: center;">3 / 12</td>
+                                <td style="padding: 12px 16px; text-align: center;">
+                                    <button class="btn btn-secondary btn-sm" onclick="showTenderDetails({id: 'RFQ/2024/001', title: 'Supply of Medical Equipment', status: 'Posted', statusKey: 'active'})" style="padding: 4px 8px;">
+                                        <i class="pi pi-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <!-- Row 2: Active -->
+                            <tr class="tender-row" data-status="active" data-type="ITB" data-value="1500000" data-deadline="2025-01-10" style="background: var(--surface-50); border-bottom: 1px solid var(--surface-100);">
+                                <td style="padding: 12px 16px; font-weight: 600; color: var(--primary-500);">ITB/2024/045</td>
+                                <td style="padding: 12px 16px;">
+                                    <div style="font-weight: 500;">Construction of Office Building</div>
+                                    <div style="font-size: 11px; color: var(--text-muted);">Posted: 10 Nov 2024</div>
+                                </td>
+                                <td style="padding: 12px 16px; text-align: center;"><span style="padding: 2px 8px; background: var(--success-50); color: var(--success-500); border-radius: 4px; font-size: 11px; font-weight: 600;">ITB</span></td>
+                                <td style="padding: 12px 16px; text-align: center;"><span class="status-badge active">Active</span></td>
+                                <td style="padding: 12px 16px; text-align: right; font-weight: 500;">$1,500,000</td>
+                                <td style="padding: 12px 16px; text-align: center;">10 Jan 2025</td>
+                                <td style="padding: 12px 16px; text-align: center;">7 / 25</td>
+                                <td style="padding: 12px 16px; text-align: center;">
+                                    <button class="btn btn-secondary btn-sm" onclick="showTenderDetails({id: 'ITB/2024/045', title: 'Construction of Office Building', status: 'Posted', statusKey: 'active'})" style="padding: 4px 8px;">
+                                        <i class="pi pi-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <!-- Row 3: Pending Approval -->
+                            <tr class="tender-row" data-status="approval" data-type="RFP" data-value="500000" data-deadline="" style="border-bottom: 1px solid var(--surface-100);">
+                                <td style="padding: 12px 16px; font-weight: 600; color: var(--primary-500);">RFP/2024/078</td>
+                                <td style="padding: 12px 16px;">
+                                    <div style="font-weight: 500;">IT Infrastructure Services</div>
+                                    <div style="font-size: 11px; color: var(--text-muted);">Submitted: 28 Nov 2024</div>
+                                </td>
+                                <td style="padding: 12px 16px; text-align: center;"><span style="padding: 2px 8px; background: var(--warning-50); color: var(--warning-500); border-radius: 4px; font-size: 11px; font-weight: 600;">RFP</span></td>
+                                <td style="padding: 12px 16px; text-align: center;"><span class="status-badge review">Pending Approval</span></td>
+                                <td style="padding: 12px 16px; text-align: right; font-weight: 500;">$500,000</td>
+                                <td style="padding: 12px 16px; text-align: center; color: var(--text-muted);">-</td>
+                                <td style="padding: 12px 16px; text-align: center; color: var(--text-muted);">-</td>
+                                <td style="padding: 12px 16px; text-align: center;">
+                                    <button class="btn btn-secondary btn-sm" onclick="showTenderDetails({id: 'RFP/2024/078', title: 'IT Infrastructure Services', status: 'Pending Approval', statusKey: 'approval'})" style="padding: 4px 8px;">
+                                        <i class="pi pi-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <!-- Row 4: Active -->
+                            <tr class="tender-row" data-status="active" data-type="RFQ" data-value="850000" data-deadline="2024-12-20" style="background: var(--surface-50); border-bottom: 1px solid var(--surface-100);">
+                                <td style="padding: 12px 16px; font-weight: 600; color: var(--primary-500);">RFQ/2024/102</td>
+                                <td style="padding: 12px 16px;">
+                                    <div style="font-weight: 500;">Vehicle Fleet Procurement</div>
+                                    <div style="font-size: 11px; color: var(--text-muted);">Posted: 20 Nov 2024</div>
+                                </td>
+                                <td style="padding: 12px 16px; text-align: center;"><span style="padding: 2px 8px; background: var(--primary-50); color: var(--primary-500); border-radius: 4px; font-size: 11px; font-weight: 600;">RFQ</span></td>
+                                <td style="padding: 12px 16px; text-align: center;"><span class="status-badge active">Active</span></td>
+                                <td style="padding: 12px 16px; text-align: right; font-weight: 500;">$850,000</td>
+                                <td style="padding: 12px 16px; text-align: center;">20 Dec 2024</td>
+                                <td style="padding: 12px 16px; text-align: center;">1 / 8</td>
+                                <td style="padding: 12px 16px; text-align: center;">
+                                    <button class="btn btn-secondary btn-sm" onclick="showTenderDetails({id: 'RFQ/2024/102', title: 'Vehicle Fleet Procurement', status: 'Posted', statusKey: 'active'})" style="padding: 4px 8px;">
+                                        <i class="pi pi-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <!-- Row 5: Draft -->
+                            <tr class="tender-row" data-status="draft" data-type="RFP" data-value="120000" data-deadline="" style="border-bottom: 1px solid var(--surface-100);">
+                                <td style="padding: 12px 16px; font-weight: 600; color: var(--text-muted);">DRAFT-2024-156</td>
+                                <td style="padding: 12px 16px;">
+                                    <div style="font-weight: 500;">Consulting Services - HR Management</div>
+                                    <div style="font-size: 11px; color: var(--text-muted);">Created: 25 Nov 2024 • 75% complete</div>
+                                </td>
+                                <td style="padding: 12px 16px; text-align: center;"><span style="padding: 2px 8px; background: var(--warning-50); color: var(--warning-500); border-radius: 4px; font-size: 11px; font-weight: 600;">RFP</span></td>
+                                <td style="padding: 12px 16px; text-align: center;"><span class="status-badge draft">Draft</span></td>
+                                <td style="padding: 12px 16px; text-align: right; font-weight: 500;">$120,000</td>
+                                <td style="padding: 12px 16px; text-align: center; color: var(--text-muted);">-</td>
+                                <td style="padding: 12px 16px; text-align: center; color: var(--text-muted);">-</td>
+                                <td style="padding: 12px 16px; text-align: center;">
+                                    <button class="btn btn-primary btn-sm" style="padding: 4px 8px;">
+                                        <i class="pi pi-pencil"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <!-- Row 6: Pre-Clearance -->
+                            <tr class="tender-row" data-status="pre-clearance" data-type="ITB" data-value="350000" data-deadline="" style="background: var(--surface-50); border-bottom: 1px solid var(--surface-100);">
+                                <td style="padding: 12px 16px; font-weight: 600; color: var(--primary-500);">ITB/2024/089</td>
+                                <td style="padding: 12px 16px;">
+                                    <div style="font-weight: 500;">Laboratory Equipment Procurement</div>
+                                    <div style="font-size: 11px; color: var(--text-muted);">Submitted: 29 Nov 2024</div>
+                                </td>
+                                <td style="padding: 12px 16px; text-align: center;"><span style="padding: 2px 8px; background: var(--success-50); color: var(--success-500); border-radius: 4px; font-size: 11px; font-weight: 600;">ITB</span></td>
+                                <td style="padding: 12px 16px; text-align: center;"><span class="status-badge" style="background: var(--info-50); color: var(--info-400);">Pre-Clearance</span></td>
+                                <td style="padding: 12px 16px; text-align: right; font-weight: 500;">$350,000</td>
+                                <td style="padding: 12px 16px; text-align: center; color: var(--text-muted);">-</td>
+                                <td style="padding: 12px 16px; text-align: center; color: var(--text-muted);">-</td>
+                                <td style="padding: 12px 16px; text-align: center;">
+                                    <button class="btn btn-secondary btn-sm" onclick="showTenderDetails({id: 'ITB/2024/089', title: 'Laboratory Equipment Procurement', status: 'Pre-Clearance', statusKey: 'pre-clearance'})" style="padding: 4px 8px;">
+                                        <i class="pi pi-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <!-- Row 7: TME Signed -->
+                            <tr class="tender-row" data-status="tme-signed" data-type="RFQ" data-value="180000" data-deadline="" style="border-bottom: 1px solid var(--surface-100);">
+                                <td style="padding: 12px 16px; font-weight: 600; color: var(--primary-500);">RFQ/2024/115</td>
+                                <td style="padding: 12px 16px;">
+                                    <div style="font-weight: 500;">Furniture and Office Supplies</div>
+                                    <div style="font-size: 11px; color: var(--text-muted);">TME Signed: 27 Nov 2024</div>
+                                </td>
+                                <td style="padding: 12px 16px; text-align: center;"><span style="padding: 2px 8px; background: var(--primary-50); color: var(--primary-500); border-radius: 4px; font-size: 11px; font-weight: 600;">RFQ</span></td>
+                                <td style="padding: 12px 16px; text-align: center;"><span class="status-badge" style="background: var(--success-50); color: var(--success-500);">TME Signed</span></td>
+                                <td style="padding: 12px 16px; text-align: right; font-weight: 500;">$180,000</td>
+                                <td style="padding: 12px 16px; text-align: center; color: var(--text-muted);">-</td>
+                                <td style="padding: 12px 16px; text-align: center; color: var(--text-muted);">-</td>
+                                <td style="padding: 12px 16px; text-align: center;">
+                                    <button class="btn btn-success btn-sm" style="padding: 4px 8px;">
+                                        <i class="pi pi-send"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <!-- Row 8: Closed -->
+                            <tr class="tender-row" data-status="closed" data-type="ITB" data-value="2500000" data-deadline="2024-11-25" style="background: var(--surface-50); border-bottom: 1px solid var(--surface-100);">
+                                <td style="padding: 12px 16px; font-weight: 600; color: var(--primary-500);">ITB/2024/034</td>
+                                <td style="padding: 12px 16px;">
+                                    <div style="font-weight: 500;">Water Infrastructure Development</div>
+                                    <div style="font-size: 11px; color: var(--text-muted);">Closed: 25 Nov 2024</div>
+                                </td>
+                                <td style="padding: 12px 16px; text-align: center;"><span style="padding: 2px 8px; background: var(--success-50); color: var(--success-500); border-radius: 4px; font-size: 11px; font-weight: 600;">ITB</span></td>
+                                <td style="padding: 12px 16px; text-align: center;"><span class="status-badge closed">Closed</span></td>
+                                <td style="padding: 12px 16px; text-align: right; font-weight: 500;">$2,500,000</td>
+                                <td style="padding: 12px 16px; text-align: center;">25 Nov 2024</td>
+                                <td style="padding: 12px 16px; text-align: center;">9</td>
+                                <td style="padding: 12px 16px; text-align: center;">
+                                    <button class="btn btn-secondary btn-sm" onclick="showTenderDetails({id: 'ITB/2024/034', title: 'Water Infrastructure Development', status: 'Closed', statusKey: 'closed'})" style="padding: 4px 8px;">
+                                        <i class="pi pi-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <!-- Row 9: Bid Opening -->
+                            <tr class="tender-row" data-status="bid-opening" data-type="RFP" data-value="650000" data-deadline="2024-11-20" style="border-bottom: 1px solid var(--surface-100);">
+                                <td style="padding: 12px 16px; font-weight: 600; color: var(--primary-500);">RFP/2024/067</td>
+                                <td style="padding: 12px 16px;">
+                                    <div style="font-weight: 500;">Security Services Contract</div>
+                                    <div style="font-size: 11px; color: var(--text-muted);">Opening Started: 22 Nov 2024</div>
+                                </td>
+                                <td style="padding: 12px 16px; text-align: center;"><span style="padding: 2px 8px; background: var(--warning-50); color: var(--warning-500); border-radius: 4px; font-size: 11px; font-weight: 600;">RFP</span></td>
+                                <td style="padding: 12px 16px; text-align: center;"><span class="status-badge" style="background: #fff3cd; color: #856404;">Bid Opening</span></td>
+                                <td style="padding: 12px 16px; text-align: right; font-weight: 500;">$650,000</td>
+                                <td style="padding: 12px 16px; text-align: center;">20 Nov 2024</td>
+                                <td style="padding: 12px 16px; text-align: center;">6</td>
+                                <td style="padding: 12px 16px; text-align: center;">
+                                    <button class="btn btn-secondary btn-sm" onclick="showBidOpening('RFP/2024/067', 'Security Services Contract', 'RFP')" style="padding: 4px 8px;">
+                                        <i class="pi pi-folder-open"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <!-- Row 10: Evaluation -->
+                            <tr class="tender-row" data-status="evaluation" data-type="ITB" data-value="480000" data-deadline="2024-11-10" style="background: var(--surface-50); border-bottom: 1px solid var(--surface-100);">
+                                <td style="padding: 12px 16px; font-weight: 600; color: var(--primary-500);">ITB/2024/023</td>
+                                <td style="padding: 12px 16px;">
+                                    <div style="font-weight: 500;">Medical Supplies - Emergency Response</div>
+                                    <div style="font-size: 11px; color: var(--text-muted);">Evaluation: 65% complete</div>
+                                </td>
+                                <td style="padding: 12px 16px; text-align: center;"><span style="padding: 2px 8px; background: var(--success-50); color: var(--success-500); border-radius: 4px; font-size: 11px; font-weight: 600;">ITB</span></td>
+                                <td style="padding: 12px 16px; text-align: center;"><span class="status-badge" style="background: #e3f2fd; color: #1565c0;">Evaluation</span></td>
+                                <td style="padding: 12px 16px; text-align: right; font-weight: 500;">$480,000</td>
+                                <td style="padding: 12px 16px; text-align: center;">10 Nov 2024</td>
+                                <td style="padding: 12px 16px; text-align: center;">5</td>
+                                <td style="padding: 12px 16px; text-align: center;">
+                                    <button class="btn btn-secondary btn-sm" onclick="showTenderDetails({id: 'ITB/2024/023', title: 'Medical Supplies - Emergency Response', status: 'Evaluation', statusKey: 'evaluation'})" style="padding: 4px 8px;">
+                                        <i class="pi pi-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <!-- Row 11: Award Recommendation -->
+                            <tr class="tender-row" data-status="award" data-type="RFQ" data-value="310000" data-deadline="2024-10-25" style="border-bottom: 1px solid var(--surface-100);">
+                                <td style="padding: 12px 16px; font-weight: 600; color: var(--primary-500);">RFQ/2024/055</td>
+                                <td style="padding: 12px 16px;">
+                                    <div style="font-weight: 500;">IT Equipment and Software Licenses</div>
+                                    <div style="font-size: 11px; color: var(--text-muted);">Pending Signature</div>
+                                </td>
+                                <td style="padding: 12px 16px; text-align: center;"><span style="padding: 2px 8px; background: var(--primary-50); color: var(--primary-500); border-radius: 4px; font-size: 11px; font-weight: 600;">RFQ</span></td>
+                                <td style="padding: 12px 16px; text-align: center;"><span class="status-badge" style="background: #f3e5f5; color: #7b1fa2;">Award</span></td>
+                                <td style="padding: 12px 16px; text-align: right; font-weight: 500;">$310,000</td>
+                                <td style="padding: 12px 16px; text-align: center;">25 Oct 2024</td>
+                                <td style="padding: 12px 16px; text-align: center;">4</td>
+                                <td style="padding: 12px 16px; text-align: center;">
+                                    <button class="btn btn-secondary btn-sm" onclick="showTenderDetails({id: 'RFQ/2024/055', title: 'IT Equipment and Software Licenses', status: 'Award Recommendation', statusKey: 'award'})" style="padding: 4px 8px;">
+                                        <i class="pi pi-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <!-- Row 12: Finalized -->
+                            <tr class="tender-row" data-status="finalized" data-type="ITB" data-value="3200000" data-deadline="2024-09-30" style="background: var(--surface-50); border-bottom: 1px solid var(--surface-100);">
+                                <td style="padding: 12px 16px; font-weight: 600; color: var(--primary-500);">ITB/2024/012</td>
+                                <td style="padding: 12px 16px;">
+                                    <div style="font-weight: 500;">Construction - School Building</div>
+                                    <div style="font-size: 11px; color: var(--text-muted);">Awarded to: BuildCo International</div>
+                                </td>
+                                <td style="padding: 12px 16px; text-align: center;"><span style="padding: 2px 8px; background: var(--success-50); color: var(--success-500); border-radius: 4px; font-size: 11px; font-weight: 600;">ITB</span></td>
+                                <td style="padding: 12px 16px; text-align: center;"><span class="status-badge" style="background: #c8e6c9; color: #2e7d32;">Finalized</span></td>
+                                <td style="padding: 12px 16px; text-align: right; font-weight: 500;">$3,200,000</td>
+                                <td style="padding: 12px 16px; text-align: center;">30 Sep 2024</td>
+                                <td style="padding: 12px 16px; text-align: center;">6</td>
+                                <td style="padding: 12px 16px; text-align: center;">
+                                    <button class="btn btn-secondary btn-sm" onclick="showTenderDetails({id: 'ITB/2024/012', title: 'Construction - School Building', status: 'Finalized', statusKey: 'finalized'})" style="padding: 4px 8px;">
+                                        <i class="pi pi-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <!-- Row 13: Cancelled -->
+                            <tr class="tender-row" data-status="cancelled" data-type="RFP" data-value="95000" data-deadline="" style="border-bottom: 1px solid var(--surface-100);">
+                                <td style="padding: 12px 16px; font-weight: 600; color: var(--text-muted);">RFP/2024/091</td>
+                                <td style="padding: 12px 16px;">
+                                    <div style="font-weight: 500; color: var(--text-muted);">Training Services - Capacity Building</div>
+                                    <div style="font-size: 11px; color: var(--text-muted);">Cancelled: Budget Constraints</div>
+                                </td>
+                                <td style="padding: 12px 16px; text-align: center;"><span style="padding: 2px 8px; background: var(--warning-50); color: var(--warning-500); border-radius: 4px; font-size: 11px; font-weight: 600;">RFP</span></td>
+                                <td style="padding: 12px 16px; text-align: center;"><span class="status-badge" style="background: var(--danger-50); color: var(--danger-500);">Cancelled</span></td>
+                                <td style="padding: 12px 16px; text-align: right; font-weight: 500; color: var(--text-muted);">$95,000</td>
+                                <td style="padding: 12px 16px; text-align: center; color: var(--text-muted);">-</td>
+                                <td style="padding: 12px 16px; text-align: center; color: var(--text-muted);">14 interested</td>
+                                <td style="padding: 12px 16px; text-align: center;">
+                                    <button class="btn btn-secondary btn-sm" onclick="showTenderDetails({id: 'RFP/2024/091', title: 'Training Services - Capacity Building', status: 'Cancelled', statusKey: 'cancelled'})" style="padding: 4px 8px;">
+                                        <i class="pi pi-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: var(--spacing-lg); padding: var(--spacing-md); background: var(--surface-0); border: 1px solid var(--surface-200); border-radius: var(--radius-md);">
+                    <div style="font-size: 13px; color: var(--text-muted);">
+                        Showing <strong>1-13</strong> of <strong>13</strong> tenders
+                    </div>
+                    <div style="display: flex; gap: var(--spacing-xs);">
+                        <button class="btn btn-ghost btn-sm" disabled style="padding: 6px 12px;">Previous</button>
+                        <button class="btn btn-primary btn-sm" style="padding: 6px 12px;">1</button>
+                        <button class="btn btn-ghost btn-sm" disabled style="padding: 6px 12px;">Next</button>
+                    </div>
+                </div>
+            </div>
+            <!-- End Tenders List View -->
 
             <!-- Tender Details View -->
             <div class="view-section" id="view-tender-details">
@@ -8016,6 +8138,142 @@
             }
             
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ==================== TENDERS LIST FUNCTIONALITY ====================
+        
+        function showTendersList(menuItem) {
+            // Hide all view sections - force inline style as well
+            document.querySelectorAll('.view-section').forEach(section => {
+                section.classList.remove('active');
+                section.style.display = 'none';
+            });
+            
+            // Show tenders list view
+            const tendersList = document.getElementById('view-tenders-list');
+            if (tendersList) {
+                tendersList.classList.add('active');
+                tendersList.style.display = 'block';
+            }
+            
+            // Update active menu item
+            document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
+            if (menuItem) {
+                menuItem.classList.add('active');
+            } else {
+                document.getElementById('menu-tendering-tenders')?.classList.add('active');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // ==================== ACTION MENU FUNCTIONALITY ====================
+        
+        function toggleActionMenu(button) {
+            // Close all other open menus
+            document.querySelectorAll('.action-menu-dropdown').forEach(dropdown => {
+                if (dropdown !== button.nextElementSibling) {
+                    dropdown.style.display = 'none';
+                }
+            });
+            
+            // Toggle the clicked menu
+            const dropdown = button.nextElementSibling;
+            if (dropdown.style.display === 'none' || dropdown.style.display === '') {
+                dropdown.style.display = 'block';
+            } else {
+                dropdown.style.display = 'none';
+            }
+        }
+        
+        // Close action menus when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.action-menu-container')) {
+                document.querySelectorAll('.action-menu-dropdown').forEach(dropdown => {
+                    dropdown.style.display = 'none';
+                });
+            }
+        });
+        
+        // Helper functions for menu actions
+        function viewTenderPreview(tenderId, tenderTitle) {
+            showToast('📋 Quick preview: ' + tenderId + ' - ' + tenderTitle);
+            closeAllActionMenus();
+        }
+        
+        function openCancelModal(tenderId, tenderTitle) {
+            showToast('⚠️ Opening cancellation dialog for ' + tenderId);
+            closeAllActionMenus();
+        }
+        
+        function closeAllActionMenus() {
+            document.querySelectorAll('.action-menu-dropdown').forEach(dropdown => {
+                dropdown.style.display = 'none';
+            });
+        }
+        
+        function filterTendersListTable() {
+            const statusFilter = document.getElementById('tenders-list-status-filter').value;
+            const typeFilter = document.getElementById('tenders-list-type-filter').value;
+            const searchTerm = document.getElementById('tenders-list-search').value.toLowerCase();
+            
+            const rows = document.querySelectorAll('#tenders-list-tbody .tender-row');
+            let visibleCount = 0;
+            
+            rows.forEach((row, index) => {
+                const status = row.getAttribute('data-status');
+                const type = row.getAttribute('data-type');
+                const text = row.textContent.toLowerCase();
+                
+                const statusMatch = statusFilter === 'all' || status === statusFilter;
+                const typeMatch = typeFilter === 'all' || type === typeFilter;
+                const searchMatch = searchTerm === '' || text.includes(searchTerm);
+                
+                if (statusMatch && typeMatch && searchMatch) {
+                    row.style.display = '';
+                    row.style.background = visibleCount % 2 === 0 ? '' : 'var(--surface-50)';
+                    visibleCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+        
+        function sortTendersListTable() {
+            const sortBy = document.getElementById('tenders-list-sort').value;
+            const tbody = document.getElementById('tenders-list-tbody');
+            const rows = Array.from(tbody.querySelectorAll('.tender-row'));
+            
+            rows.sort((a, b) => {
+                switch (sortBy) {
+                    case 'recent':
+                        return 0; // Keep original order (most recent first)
+                    case 'deadline':
+                        const deadlineA = a.getAttribute('data-deadline') || '9999-99-99';
+                        const deadlineB = b.getAttribute('data-deadline') || '9999-99-99';
+                        return deadlineA.localeCompare(deadlineB);
+                    case 'value-desc':
+                        const valueDescA = parseInt(a.getAttribute('data-value')) || 0;
+                        const valueDescB = parseInt(b.getAttribute('data-value')) || 0;
+                        return valueDescB - valueDescA;
+                    case 'value-asc':
+                        const valueAscA = parseInt(a.getAttribute('data-value')) || 0;
+                        const valueAscB = parseInt(b.getAttribute('data-value')) || 0;
+                        return valueAscA - valueAscB;
+                    case 'reference':
+                        const refA = a.querySelector('td').textContent;
+                        const refB = b.querySelector('td').textContent;
+                        return refA.localeCompare(refB);
+                    default:
+                        return 0;
+                }
+            });
+            
+            // Re-append rows in sorted order
+            rows.forEach((row, index) => {
+                row.style.background = index % 2 === 0 ? '' : 'var(--surface-50)';
+                tbody.appendChild(row);
+            });
         }
 
         // ==================== EVALUATION REPORT FUNCTIONALITY ====================
