@@ -263,13 +263,13 @@
       }
 
       .btn-secondary {
-        background: var(--surface-100);
-        color: var(--text-primary);
-        border: 1px solid var(--surface-200);
+        background: transparent;
+        border: 1px solid var(--primary-400);
+        color: var(--primary-400);
       }
 
       .btn-secondary:hover {
-        background: var(--surface-200);
+        background: var(--primary-50);
       }
 
       .btn-primary {
@@ -3180,23 +3180,17 @@
   </head>
   <body>
     <div class="app">
-      <!-- Header - Matching award-review-dashboard -->
+      <!-- Header - Matching tender-dashboard-complete -->
       <header class="header" role="banner">
         <div class="header-top">
           <div class="logo-container">
             <div class="logo">UNOPS</div>
             <span class="portal-badge">Procurement</span>
             <span style="color: var(--surface-400); margin: 0 8px; font-size: 18px;">|</span>
-            <div style="display: flex; flex-direction: column;">
-              <span style="color: var(--primary-500); font-weight: 600; font-size: 14px;" id="page-title">Create New Tender</span>
-              <span style="color: var(--text-muted); font-size: 12px;" id="page-breadcrumbs">Event Setup</span>
-            </div>
+            <span style="color: var(--primary-500); font-weight: 600; font-size: 14px;">eTendering</span>
           </div>
 
           <div class="user-menu">
-            <div id="top-actions" style="display: flex; align-items: center; gap: var(--spacing-sm); margin-right: var(--spacing-md);">
-              <button class="btn btn-ghost" onclick="window.location.href='template-library.html'">Cancel</button>
-            </div>
             <div class="user-info">
               <div class="user-company">UNOPS</div>
               <div class="user-name">Current User</div>
@@ -3268,39 +3262,39 @@
                   </div>
                 </div>
 
-                <!-- Option 2: Template Library -->
-                <div class="initiation-card" onclick="startWithTemplate()">
-                  <div class="initiation-card-icon">📚</div>
-                  <h3 class="initiation-card-title">Pick from Templates</h3>
+                <!-- Option 2: From Scratch -->
+                <div class="initiation-card" onclick="startFromScratch()">
+                  <div class="initiation-card-icon">📝</div>
+                  <h3 class="initiation-card-title">From Scratch</h3>
                   <p class="initiation-card-description">
-                    Browse our complete template library and select a pre-configured tender template to start with.
+                    Start from a template library or clone an existing tender to create your new procurement document.
                   </p>
                   <ul class="initiation-card-features">
-                    <li>View all available templates</li>
-                    <li>Compare template features</li>
+                    <li>Browse template library</li>
+                    <li>Clone existing tender</li>
+                    <li>Full customization options</li>
                     <li>Best for experienced users</li>
-                    <li>Direct template selection</li>
                   </ul>
                   <div class="initiation-card-action">
-                    <button class="btn btn-ghost">Browse Templates</button>
+                    <button class="btn btn-ghost"><i class="pi pi-file-edit" style="margin-right: 6px;"></i>Start From Scratch</button>
                   </div>
                 </div>
 
-                <!-- Option 3: Clone Existing Tender -->
-                <div class="initiation-card" onclick="startWithClone()">
-                  <div class="initiation-card-icon">📋</div>
-                  <h3 class="initiation-card-title">Clone Existing Tender</h3>
+                <!-- Option 3: By Uploading a File -->
+                <div class="initiation-card" onclick="startWithUpload()">
+                  <div class="initiation-card-icon">📤</div>
+                  <h3 class="initiation-card-title">By Uploading a File</h3>
                   <p class="initiation-card-description">
-                    Start from a previously created tender. All blocks, fields, and configurations will be copied.
+                    Upload an existing tender document to automatically populate the tender details and structure.
                   </p>
                   <ul class="initiation-card-features">
-                    <li>Reuse existing setup</li>
-                    <li>Maintain consistency</li>
-                    <li>Save time on configuration</li>
-                    <li>Perfect for similar tenders</li>
+                    <li>Import from existing documents</li>
+                    <li>Auto-extract tender details</li>
+                    <li>Supports multiple file formats</li>
+                    <li>Quick setup from documents</li>
                   </ul>
                   <div class="initiation-card-action">
-                    <button class="btn btn-ghost">Select Tender to Clone</button>
+                    <button class="btn btn-ghost"><i class="pi pi-upload" style="margin-right: 6px;"></i>Upload File</button>
                   </div>
                 </div>
               </div>
@@ -3309,6 +3303,13 @@
                 <div class="info-alert-text">
                   💡 <strong>Not sure which to choose?</strong> We recommend starting with the Guided Wizard if you're creating a new type of tender or need help selecting the right template.
                 </div>
+              </div>
+
+              <!-- Cancel Button -->
+              <div style="display: flex; justify-content: center; margin-top: var(--spacing-xl);">
+                <button class="btn btn-secondary" onclick="window.location.href='tender-dashboard-complete.html'" style="padding: 12px 24px;">
+                  <i class="pi pi-times" style="margin-right: 8px;"></i>Cancel
+                </button>
               </div>
             </div>
           </div>
@@ -4120,7 +4121,6 @@
         currentView = 'wizard';
         document.getElementById('initiation-view').classList.remove('active');
         document.getElementById('wizard-view').classList.add('active');
-        document.getElementById('page-breadcrumbs').textContent = 'Event Setup · Guided Wizard';
         initWizard();
       }
 
@@ -4132,6 +4132,184 @@
       function startWithClone() {
         // Show tender selection modal
         showTenderSelectionModal();
+      }
+
+      function startWithUpload() {
+        // Show file upload modal for tender document import
+        showFileUploadModal();
+      }
+
+      function startFromScratch() {
+        // Show modal to choose between template library or existing tender
+        showFromScratchModal();
+      }
+
+      function showFromScratchModal() {
+        // Create and show from scratch options modal
+        const existingModal = document.getElementById('from-scratch-modal');
+        if (existingModal) {
+          existingModal.style.display = 'flex';
+          return;
+        }
+
+        const modal = document.createElement('div');
+        modal.id = 'from-scratch-modal';
+        modal.className = 'modal-overlay';
+        modal.style.cssText = 'display: flex; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;';
+        modal.innerHTML = `
+          <div style="background: white; border-radius: var(--radius-lg); max-width: 700px; width: 90%; max-height: 90vh; overflow: hidden; box-shadow: var(--shadow-xl);">
+            <div style="padding: var(--spacing-lg); border-bottom: 1px solid var(--surface-200); display: flex; justify-content: space-between; align-items: center;">
+              <h2 style="margin: 0; font-size: 20px; font-weight: 600;">Start From Scratch</h2>
+              <button onclick="closeFromScratchModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: var(--text-muted);">&times;</button>
+            </div>
+            <div style="padding: var(--spacing-xl);">
+              <p style="color: var(--text-secondary); margin-bottom: var(--spacing-lg);">Choose how you'd like to start your new tender:</p>
+              
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-lg);">
+                <!-- Option 1: Template Library -->
+                <div onclick="selectFromScratchOption('template')" style="border: 2px solid var(--surface-200); border-radius: var(--radius-lg); padding: var(--spacing-xl); text-align: center; cursor: pointer; transition: all 0.2s; background: var(--surface-0);" onmouseover="this.style.borderColor='var(--primary-400)'; this.style.background='var(--primary-50)';" onmouseout="this.style.borderColor='var(--surface-200)'; this.style.background='var(--surface-0)';">
+                  <div style="font-size: 48px; margin-bottom: var(--spacing-md);">📚</div>
+                  <h3 style="font-size: 16px; font-weight: 600; color: var(--text-primary); margin-bottom: var(--spacing-sm);">From Template Library</h3>
+                  <p style="font-size: 13px; color: var(--text-muted); margin: 0;">Browse and select from pre-configured tender templates</p>
+                </div>
+                
+                <!-- Option 2: Clone Existing Tender -->
+                <div onclick="selectFromScratchOption('clone')" style="border: 2px solid var(--surface-200); border-radius: var(--radius-lg); padding: var(--spacing-xl); text-align: center; cursor: pointer; transition: all 0.2s; background: var(--surface-0);" onmouseover="this.style.borderColor='var(--primary-400)'; this.style.background='var(--primary-50)';" onmouseout="this.style.borderColor='var(--surface-200)'; this.style.background='var(--surface-0)';">
+                  <div style="font-size: 48px; margin-bottom: var(--spacing-md);">📋</div>
+                  <h3 style="font-size: 16px; font-weight: 600; color: var(--text-primary); margin-bottom: var(--spacing-sm);">From Existing Tender</h3>
+                  <p style="font-size: 13px; color: var(--text-muted); margin: 0;">Clone a previously created tender with all its configurations</p>
+                </div>
+              </div>
+            </div>
+            <div style="padding: var(--spacing-lg); border-top: 1px solid var(--surface-200); display: flex; justify-content: flex-end;">
+              <button class="btn btn-ghost" onclick="closeFromScratchModal()">Cancel</button>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(modal);
+      }
+
+      function closeFromScratchModal() {
+        const modal = document.getElementById('from-scratch-modal');
+        if (modal) {
+          modal.style.display = 'none';
+        }
+      }
+
+      function selectFromScratchOption(option) {
+        closeFromScratchModal();
+        if (option === 'template') {
+          // Navigate to template library
+          startWithTemplate();
+        } else if (option === 'clone') {
+          // Show tender selection modal for cloning
+          startWithClone();
+        }
+      }
+
+      function showFileUploadModal() {
+        // Create and show file upload modal
+        const existingModal = document.getElementById('file-upload-modal');
+        if (existingModal) {
+          existingModal.style.display = 'flex';
+          return;
+        }
+
+        const modal = document.createElement('div');
+        modal.id = 'file-upload-modal';
+        modal.className = 'modal-overlay';
+        modal.style.cssText = 'display: flex; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;';
+        modal.innerHTML = `
+          <div style="background: white; border-radius: var(--radius-lg); max-width: 600px; width: 90%; max-height: 90vh; overflow: hidden; box-shadow: var(--shadow-xl);">
+            <div style="padding: var(--spacing-lg); border-bottom: 1px solid var(--surface-200); display: flex; justify-content: space-between; align-items: center;">
+              <h2 style="margin: 0; font-size: 20px; font-weight: 600;">Upload Tender Document</h2>
+              <button onclick="closeFileUploadModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: var(--text-muted);">&times;</button>
+            </div>
+            <div style="padding: var(--spacing-xl);">
+              <div style="border: 2px dashed var(--surface-300); border-radius: var(--radius-lg); padding: var(--spacing-2xl); text-align: center; background: var(--surface-50); margin-bottom: var(--spacing-lg);">
+                <div style="font-size: 48px; margin-bottom: var(--spacing-md);">📤</div>
+                <p style="font-size: 16px; font-weight: 600; color: var(--text-primary); margin-bottom: var(--spacing-sm);">Drag & drop your file here</p>
+                <p style="font-size: 14px; color: var(--text-muted); margin-bottom: var(--spacing-md);">or click to browse</p>
+                <input type="file" id="tender-file-input" accept=".pdf,.doc,.docx,.xlsx,.xls" style="display: none;" onchange="handleFileSelect(this)">
+                <button class="btn btn-primary" onclick="document.getElementById('tender-file-input').click()">
+                  <i class="pi pi-upload" style="margin-right: 6px;"></i>Browse Files
+                </button>
+              </div>
+              <div style="background: var(--info-50); border: 1px solid var(--info-200); border-radius: var(--radius-md); padding: var(--spacing-md);">
+                <p style="font-size: 13px; color: var(--info-700); margin: 0;">
+                  <strong>Supported formats:</strong> PDF, Word (.doc, .docx), Excel (.xls, .xlsx)<br>
+                  <strong>Maximum file size:</strong> 25MB
+                </p>
+              </div>
+              <div id="selected-file-info" style="display: none; margin-top: var(--spacing-lg); padding: var(--spacing-md); background: var(--surface-50); border-radius: var(--radius-md); border: 1px solid var(--surface-200);">
+              </div>
+            </div>
+            <div style="padding: var(--spacing-lg); border-top: 1px solid var(--surface-200); display: flex; justify-content: flex-end; gap: var(--spacing-md);">
+              <button class="btn btn-ghost" onclick="closeFileUploadModal()">Cancel</button>
+              <button class="btn btn-primary" id="process-file-btn" disabled onclick="processUploadedFile()">
+                <i class="pi pi-check" style="margin-right: 6px;"></i>Process File
+              </button>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(modal);
+      }
+
+      function closeFileUploadModal() {
+        const modal = document.getElementById('file-upload-modal');
+        if (modal) {
+          modal.style.display = 'none';
+        }
+      }
+
+      function handleFileSelect(input) {
+        const file = input.files[0];
+        if (file) {
+          const fileInfo = document.getElementById('selected-file-info');
+          const processBtn = document.getElementById('process-file-btn');
+          
+          const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+          const fileIcon = file.name.endsWith('.pdf') ? '📄' : file.name.endsWith('.xlsx') || file.name.endsWith('.xls') ? '📊' : '📝';
+          
+          fileInfo.innerHTML = `
+            <div style="display: flex; align-items: center; gap: var(--spacing-md);">
+              <span style="font-size: 32px;">${fileIcon}</span>
+              <div>
+                <p style="font-weight: 600; color: var(--text-primary); margin: 0;">${file.name}</p>
+                <p style="font-size: 12px; color: var(--text-muted); margin: 4px 0 0 0;">${fileSizeMB} MB</p>
+              </div>
+              <button onclick="clearFileSelection()" style="margin-left: auto; background: none; border: none; color: var(--danger-500); cursor: pointer; font-size: 18px;">
+                <i class="pi pi-times"></i>
+              </button>
+            </div>
+          `;
+          fileInfo.style.display = 'block';
+          processBtn.disabled = false;
+        }
+      }
+
+      function clearFileSelection() {
+        document.getElementById('tender-file-input').value = '';
+        document.getElementById('selected-file-info').style.display = 'none';
+        document.getElementById('process-file-btn').disabled = true;
+      }
+
+      function processUploadedFile() {
+        const file = document.getElementById('tender-file-input').files[0];
+        if (file) {
+          // Show processing state
+          const processBtn = document.getElementById('process-file-btn');
+          processBtn.innerHTML = '<i class="pi pi-spin pi-spinner" style="margin-right: 6px;"></i>Processing...';
+          processBtn.disabled = true;
+          
+          // Simulate file processing
+          setTimeout(() => {
+            closeFileUploadModal();
+            alert('File processed successfully! Tender details have been extracted and populated.');
+            // In real implementation, this would parse the file and populate tender fields
+            startWithWizard();
+          }, 2000);
+        }
       }
 
       function showTenderSelectionModal() {
