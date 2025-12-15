@@ -199,6 +199,160 @@
         cursor: pointer;
       }
 
+      /* Header Actions - Matching tender-dashboard */
+      .header-actions {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-md);
+        margin-left: auto;
+        margin-right: var(--spacing-lg);
+      }
+
+      .header-action-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px;
+        background: transparent;
+        border: none;
+        border-radius: var(--radius-md);
+        color: var(--text-primary);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        position: relative;
+        font-size: 13px;
+      }
+
+      .header-action-btn:hover {
+        background: var(--surface-100);
+        transform: scale(1.1);
+      }
+
+      .header-action-btn i {
+        font-size: 20px;
+        color: var(--text-muted);
+        transition: color 0.2s ease;
+      }
+
+      .header-action-btn:hover i {
+        color: var(--primary-500);
+      }
+
+      .header-action-label {
+        display: none;
+      }
+
+      .notification-badge {
+        position: absolute;
+        top: -4px;
+        right: -4px;
+        background: var(--danger-500);
+        color: white;
+        font-size: 10px;
+        font-weight: 700;
+        min-width: 18px;
+        height: 18px;
+        border-radius: 9px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 5px;
+        border: 2px solid white;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      }
+
+      .ai-badge {
+        background: linear-gradient(135deg, #8b5cf6, #6366f1);
+        color: white;
+        font-size: 9px;
+        font-weight: 700;
+        padding: 2px 6px;
+        border-radius: 4px;
+        margin-left: 4px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .ai-icon-wrapper {
+        width: 24px;
+        height: 24px;
+        background: linear-gradient(135deg, #8b5cf6, #6366f1);
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+      }
+
+      .ai-icon-wrapper i {
+        font-size: 14px;
+        color: white !important;
+      }
+
+      .language-selector {
+        gap: 4px;
+      }
+
+      .lang-flag {
+        font-size: 18px;
+      }
+
+      /* Page Action Bar - for buttons moved from header */
+      .page-action-bar {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: var(--spacing-sm);
+        padding: var(--spacing-md) 0;
+        margin-bottom: var(--spacing-md);
+        border-bottom: 1px solid var(--surface-200);
+        background: var(--surface-0);
+        border-radius: var(--radius-lg);
+        padding: var(--spacing-md) var(--spacing-lg);
+        box-shadow: var(--shadow-card);
+        border: 1px solid var(--surface-200);
+      }
+
+      /* Button styles matching award-review-dashboard */
+      .page-action-bar .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 10px 16px;
+        border-radius: var(--radius-sm);
+        font-size: 14px;
+        font-weight: 500;
+        font-family: 'Lato', 'Noto Sans', system-ui, sans-serif;
+        cursor: pointer;
+        border: none;
+        transition: all 0.2s;
+        text-decoration: none;
+      }
+
+      .page-action-bar .btn-secondary {
+        background: var(--surface-100);
+        color: var(--text-primary);
+        border: 1px solid var(--surface-200);
+      }
+
+      .page-action-bar .btn-secondary:hover {
+        background: var(--surface-200);
+        border-color: var(--surface-300);
+      }
+
+      .page-action-bar .btn-primary {
+        background: var(--primary-500);
+        color: white;
+      }
+
+      .page-action-bar .btn-primary:hover {
+        background: var(--primary-600);
+      }
+
+      .page-action-bar .btn i {
+        font-size: 14px;
+      }
+
       /* Legacy top-bar classes for backward compatibility */
       .top-bar {
         background: var(--surface-0);
@@ -237,7 +391,7 @@
         gap: var(--spacing-md);
       }
 
-      /* Buttons - Matching award-review-dashboard */
+      /* Buttons - Matching award-review-dashboard exactly */
       .btn {
         display: inline-flex;
         align-items: center;
@@ -246,6 +400,7 @@
         border-radius: var(--radius-sm);
         font-size: 14px;
         font-weight: 500;
+        font-family: 'Lato', 'Noto Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         cursor: pointer;
         border: none;
         transition: all 0.2s;
@@ -291,6 +446,10 @@
       .btn-sm {
         padding: 6px 12px;
         font-size: 13px;
+      }
+
+      .btn i {
+        font-size: 14px;
       }
 
       /* Layout - App Container */
@@ -1674,6 +1833,7 @@
         color: var(--text-secondary);
         font-size: 14px;
         font-weight: 500;
+        font-family: 'Lato', 'Noto Sans', system-ui, sans-serif;
         cursor: pointer;
         transition: all 0.2s ease;
         white-space: nowrap;
@@ -1695,7 +1855,8 @@
       }
 
       .block-tab-icon {
-        font-size: 18px;
+        font-size: 16px;
+        font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;
       }
 
       .block-tab-badge {
@@ -1726,76 +1887,315 @@
 
       .content-wrapper {
         flex: 1;
-        max-width: 1200px;
-        margin: 0 auto;
+        width: 100%;
+        max-width: none;
         overflow-y: auto;
+        padding-right: 80px; /* Space for floating button */
       }
 
-      /* Form Library Panel */
-      .form-library-panel {
-        width: 320px;
-        background: white;
-        border: 1px solid var(--surface-200);
+      /* General Information - Improved Layout */
+      .general-info-container {
+        background: var(--surface-0);
         border-radius: var(--radius-lg);
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
+        border: 1px solid var(--surface-200);
         box-shadow: var(--shadow-card);
-        transition: width 0.3s ease;
-      }
-
-      .form-library-panel.collapsed {
-        width: 0;
-        border: none;
-        padding: 0;
         overflow: hidden;
       }
 
-      .form-library-header {
-        padding: var(--spacing-md) var(--spacing-lg);
+      .general-info-header {
+        padding: var(--spacing-lg) var(--spacing-xl);
+        background: linear-gradient(135deg, var(--primary-50) 0%, var(--surface-50) 100%);
         border-bottom: 1px solid var(--surface-200);
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: var(--surface-50);
       }
 
-      .form-library-title {
-        font-size: 13px;
+      .general-info-header-title {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-md);
+      }
+
+      .general-info-header-title h2 {
+        font-size: 18px;
         font-weight: 600;
-        color: var(--text-secondary);
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
+        color: var(--text-primary);
+        margin: 0;
+        font-family: 'Lato', 'Noto Sans', system-ui, sans-serif;
       }
 
-      .toggle-library-btn {
-        width: 28px;
-        height: 28px;
-        border: 1px solid var(--surface-200);
-        background: var(--surface-0);
-        border-radius: var(--radius-sm);
+      .general-info-header-title .subtitle {
+        font-size: 13px;
+        color: var(--text-muted);
+      }
+
+      .general-info-body {
+        padding: var(--spacing-xl);
+      }
+
+      /* Field Groups for General Information */
+      .field-group {
+        margin-bottom: var(--spacing-xl);
+        padding-bottom: var(--spacing-xl);
+        border-bottom: 1px solid var(--surface-200);
+      }
+
+      .field-group:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+      }
+
+      .field-group-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: var(--spacing-lg);
+        padding-bottom: var(--spacing-sm);
+        border-bottom: 2px solid var(--primary-400);
+        display: inline-block;
+        font-family: 'Lato', 'Noto Sans', system-ui, sans-serif;
+      }
+
+      /* 3-column grid for General Information */
+      .form-grid-3col {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--spacing-lg);
+      }
+
+      .form-grid-3col .form-group.full-width {
+        grid-column: 1 / -1;
+      }
+
+      .form-grid-3col .form-group.two-col {
+        grid-column: span 2;
+      }
+
+      @media (max-width: 1200px) {
+        .form-grid-3col {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .form-grid-3col {
+          grid-template-columns: 1fr;
+        }
+        .form-grid-3col .form-group.two-col {
+          grid-column: 1;
+        }
+      }
+
+      /* Inline form group for related fields */
+      .inline-form-group {
+        display: flex;
+        gap: var(--spacing-md);
+        align-items: flex-start;
+      }
+
+      .inline-form-group .form-group {
+        flex: 1;
+      }
+
+      /* Info Card within forms */
+      .form-info-card {
+        background: var(--info-50);
+        border: 1px solid var(--info-200);
+        border-left: 4px solid var(--info-500);
+        border-radius: var(--radius-md);
+        padding: var(--spacing-md);
+        margin-bottom: var(--spacing-lg);
+      }
+
+      .form-info-card p {
+        margin: 0;
+        font-size: 13px;
+        color: var(--text-secondary);
+        line-height: 1.5;
+      }
+
+      .form-info-card strong {
+        color: var(--text-primary);
+      }
+
+      /* Form Library Panel - EXACT match with Team Board from tender-dashboard */
+      .form-library-floating-btn {
+        position: fixed;
+        right: 0;
+        top: 35%;
+        transform: translateY(-50%);
+        width: 60px;
+        background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-600) 100%);
+        border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+        padding: 12px 8px;
         cursor: pointer;
+        z-index: 1000;
+        box-shadow: var(--shadow-lg);
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        border: 2px solid #4db8e8;
+        border-right: none;
+      }
+
+      .form-library-floating-btn:hover {
+        width: 70px;
+        box-shadow: 0 8px 30px rgba(0, 146, 209, 0.4);
+      }
+
+      .form-library-floating-btn:focus {
+        outline: 3px solid var(--warning-400);
+        outline-offset: 2px;
+      }
+
+      .form-library-btn-icon {
+        width: 36px;
+        height: 36px;
+        background: white;
+        border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 12px;
-        color: var(--text-secondary);
-        transition: all 0.2s ease;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
       }
 
-      .toggle-library-btn:hover {
-        background: var(--primary-50);
-        border-color: var(--primary-500);
+      .form-library-btn-icon i {
+        font-size: 18px;
         color: var(--primary-500);
+      }
+
+      .form-library-btn-badge {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        background: var(--danger-500);
+        color: white;
+        font-size: 9px;
+        font-weight: 700;
+        min-width: 16px;
+        height: 16px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 4px;
+      }
+
+      .form-library-btn-label {
+        font-size: 9px;
+        color: white;
+        text-align: center;
+        font-weight: 600;
+        line-height: 1.2;
+      }
+
+      .form-library-panel {
+        position: fixed;
+        top: 0;
+        right: -420px;
+        bottom: 0;
+        width: 400px;
+        background: var(--surface-0);
+        box-shadow: var(--shadow-lg);
+        z-index: 1001;
+        display: flex;
+        flex-direction: column;
+        transition: right 0.3s ease;
+      }
+
+      .form-library-panel.open {
+        right: 0;
+      }
+
+      .form-library-panel.collapsed {
+        right: -420px;
+      }
+
+      .form-library-header {
+        background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-600) 100%);
+        color: white;
+        padding: var(--spacing-lg);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .form-library-header-content {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+      }
+
+      .form-library-header-icon {
+        width: 36px;
+        height: 36px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .form-library-header-icon i {
+        color: white;
+        font-size: 16px;
+      }
+
+      .form-library-header-text {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .form-library-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: white;
+      }
+
+      .form-library-subtitle {
+        font-size: 11px;
+        color: rgba(255,255,255,0.8);
+      }
+
+      .toggle-library-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 4px;
+      }
+
+      .toggle-library-btn i {
+        color: rgba(255,255,255,0.8);
+        font-size: 16px;
+      }
+
+      .toggle-library-btn:hover i {
+        color: white;
+      }
+
+      /* Form Library Panel Top Accent */
+      .form-library-panel::before {
+        content: '';
+        display: block;
+        height: 3px;
+        background: linear-gradient(90deg, var(--primary-400), var(--primary-600));
       }
 
       .form-library-body {
         flex: 1;
         overflow-y: auto;
-        padding: var(--spacing-lg);
         display: flex;
         flex-direction: column;
-        gap: var(--spacing-lg);
+      }
+
+      .form-library-search-area {
+        padding: var(--spacing-md);
+        background: var(--surface-50);
+        border-bottom: 1px solid var(--surface-200);
       }
 
       .form-library-search {
@@ -1804,85 +2204,140 @@
 
       .form-library-search input {
         width: 100%;
-        border-radius: var(--radius-sm);
-        border: 1px solid var(--surface-200);
-        padding: 8px 12px 8px 36px;
-        font-family: inherit;
-        font-size: 14px;
-        background: var(--surface-0);
+        border-radius: var(--radius-md);
+        border: 1px solid var(--surface-300);
+        padding: 10px 12px 10px 40px;
+        font-family: 'Lato', 'Noto Sans', sans-serif;
+        font-size: 13px;
+        background: white;
         color: var(--text-primary);
         transition: all 0.2s ease;
+      }
+
+      .form-library-search input::placeholder {
+        color: var(--text-muted);
       }
 
       .form-library-search input:focus {
         outline: none;
         border-color: var(--primary-500);
+        box-shadow: 0 0 0 3px var(--primary-50);
       }
 
-      .form-library-search::before {
-        content: '🔍';
+      .form-library-search-icon {
         position: absolute;
         left: 12px;
         top: 50%;
         transform: translateY(-50%);
+        color: var(--text-muted);
         font-size: 14px;
         pointer-events: none;
       }
 
+      .form-library-content {
+        flex: 1;
+        padding: var(--spacing-md);
+        overflow-y: auto;
+      }
+
       .form-library-group {
-        display: flex;
-        flex-direction: column;
-        gap: var(--spacing-md);
+        margin-bottom: var(--spacing-lg);
       }
 
       .form-library-group-label {
-        font-size: 12px;
-        letter-spacing: 0.08em;
+        font-size: 11px;
+        letter-spacing: 0.05em;
         color: var(--text-muted);
         text-transform: uppercase;
-        margin-bottom: var(--spacing-xs);
+        margin-bottom: var(--spacing-sm);
         font-weight: 600;
+        display: block;
       }
 
       .form-library-list {
         display: flex;
         flex-direction: column;
         gap: var(--spacing-sm);
-        max-height: 400px;
-        overflow-y: auto;
       }
 
       .form-library-item {
-        border: 1px dashed var(--surface-300);
-        border-radius: var(--radius-sm);
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-md);
         padding: var(--spacing-md);
         cursor: grab;
         transition: all 0.2s ease;
-        background: var(--surface-50);
+        background: var(--surface-0);
+        display: flex;
+        align-items: flex-start;
+        gap: var(--spacing-sm);
       }
 
       .form-library-item:hover {
-        border-color: var(--primary-500);
+        border-color: var(--primary-400);
         background: var(--primary-50);
         transform: translateY(-1px);
+        box-shadow: var(--shadow-sm);
       }
 
       .form-library-item:active {
         cursor: grabbing;
       }
 
+      .form-library-item-icon {
+        width: 32px;
+        height: 32px;
+        background: var(--surface-100);
+        border-radius: var(--radius-sm);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        flex-shrink: 0;
+      }
+
+      .form-library-item-content {
+        flex: 1;
+        min-width: 0;
+      }
+
       .form-library-item strong {
         display: block;
-        font-size: 14px;
+        font-size: 13px;
         font-weight: 600;
         color: var(--text-primary);
-        margin-bottom: var(--spacing-xs);
+        margin-bottom: 2px;
       }
 
       .form-library-item span {
-        font-size: 12px;
+        font-size: 11px;
         color: var(--text-muted);
-        line-height: 1.4;
+        line-height: 1.3;
+      }
+
+      .form-library-item-action {
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+
+      .form-library-item:hover .form-library-item-action {
+        opacity: 1;
+      }
+
+      /* Form Library Footer */
+      .form-library-footer {
+        padding: var(--spacing-md);
+        background: var(--surface-50);
+        border-top: 1px solid var(--surface-200);
+      }
+
+      .form-library-footer-hint {
+        font-size: 11px;
+        color: var(--text-muted);
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--spacing-xs);
       }
 
       /* Added Forms Display */
@@ -1990,35 +2445,9 @@
         color: var(--success-500);
       }
 
-      /* Floating Toggle Button */
+      /* Floating Toggle Button - Hidden by default, shown when panel is collapsed */
       .floating-library-toggle {
-        position: fixed;
-        right: var(--spacing-xl);
-        bottom: var(--spacing-xl);
-        width: 56px;
-        height: 56px;
-        border-radius: 50%;
-        background: var(--primary-400);
-        color: white;
-        border: none;
-        cursor: pointer;
         display: none;
-        align-items: center;
-        justify-content: center;
-        font-size: 24px;
-        box-shadow: var(--shadow-card);
-        z-index: 50;
-        transition: all 0.2s ease;
-      }
-
-      .floating-library-toggle:hover {
-        background: var(--primary-500);
-        transform: scale(1.1);
-      }
-
-      /* Show floating toggle when panel is collapsed */
-      .form-library-panel.collapsed ~ .floating-library-toggle {
-        display: flex;
       }
 
       /* Scrollbar for form library */
@@ -2044,7 +2473,7 @@
         background: var(--surface-600);
       }
 
-      /* Common Form Styles */
+      /* Common Form Styles - Matching tender-dashboard-complete */
       .form-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -2055,7 +2484,7 @@
       .form-group {
         display: flex;
         flex-direction: column;
-        gap: var(--spacing-sm);
+        gap: 6px;
       }
 
       .form-group.full-width {
@@ -2063,9 +2492,13 @@
       }
 
       .form-label {
-        font-size: 14px;
+        font-size: 13px;
         font-weight: 600;
         color: var(--text-primary);
+        font-family: 'Lato', 'Noto Sans', system-ui, sans-serif;
+        display: flex;
+        align-items: center;
+        gap: 4px;
       }
 
       .required {
@@ -2076,14 +2509,27 @@
       .form-select,
       .form-textarea {
         padding: 10px 14px;
-        border: 1px solid var(--surface-200);
-        border-radius: var(--radius-sm);
+        border: 1px solid var(--surface-300);
+        border-radius: var(--radius-md);
         font-size: 14px;
-        font-family: inherit;
+        font-family: 'Lato', 'Noto Sans', system-ui, sans-serif;
         background: white;
         color: var(--text-primary);
-        transition: all 0.2s;
+        transition: all 0.2s ease;
         width: 100%;
+      }
+
+      .form-input::placeholder,
+      .form-select::placeholder,
+      .form-textarea::placeholder {
+        color: var(--text-muted);
+        font-weight: 400;
+      }
+
+      .form-input:hover,
+      .form-select:hover,
+      .form-textarea:hover {
+        border-color: var(--surface-400);
       }
 
       .form-input:focus,
@@ -2091,11 +2537,101 @@
       .form-textarea:focus {
         outline: none;
         border-color: var(--primary-500);
+        box-shadow: 0 0 0 3px var(--primary-50);
+      }
+
+      .form-input:disabled,
+      .form-select:disabled,
+      .form-textarea:disabled {
+        background: var(--surface-100);
+        color: var(--text-muted);
+        cursor: not-allowed;
+      }
+
+      .form-input[readonly] {
+        background: var(--surface-50);
+        color: var(--text-secondary);
       }
 
       .form-textarea {
         resize: vertical;
         min-height: 120px;
+        line-height: 1.5;
+      }
+
+      .form-select {
+        cursor: pointer;
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        padding-right: 36px;
+      }
+
+      /* Form Helper Text */
+      .form-helper {
+        font-size: 11px;
+        color: var(--text-muted);
+        margin-top: 4px;
+        line-height: 1.4;
+      }
+
+      .form-helper.error {
+        color: var(--danger-500);
+      }
+
+      .form-helper.success {
+        color: var(--success-500);
+      }
+
+      /* Input with Icon */
+      .input-with-icon {
+        position: relative;
+      }
+
+      .input-with-icon .form-input {
+        padding-left: 40px;
+      }
+
+      .input-with-icon .input-icon {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+        font-size: 16px;
+      }
+
+      /* Checkbox and Radio Styles */
+      .form-checkbox,
+      .form-radio {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+        cursor: pointer;
+        font-size: 13px;
+        color: var(--text-primary);
+      }
+
+      .form-checkbox input,
+      .form-radio input {
+        accent-color: var(--primary-500);
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+      }
+
+      /* Checkbox Group */
+      .checkbox-group {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-sm);
+      }
+
+      .checkbox-group.horizontal {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: var(--spacing-md);
       }
 
       /* Rich Text Editor */
@@ -2504,6 +3040,137 @@
 
       .view-all-link a:hover {
         text-decoration: underline;
+      }
+
+      /* Lifecycle Tracker - Compact Version */
+      .lifecycle-tracker-compact {
+        background: var(--surface-0);
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-md);
+        overflow: hidden;
+      }
+
+      .lifecycle-tracker-compact-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: var(--spacing-sm) var(--spacing-md);
+        background: var(--surface-50);
+        border-bottom: 1px solid var(--surface-200);
+      }
+
+      .lifecycle-tracker-compact-title {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .lifecycle-count-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 20px;
+        height: 20px;
+        padding: 0 6px;
+        background: var(--primary-100);
+        color: var(--primary-600);
+        border-radius: 10px;
+        font-size: 11px;
+        font-weight: 600;
+      }
+
+      .lifecycle-empty-compact {
+        padding: var(--spacing-md);
+        text-align: center;
+      }
+
+      .lifecycle-linked-list-compact {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .lifecycle-linked-item-compact {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+        padding: var(--spacing-sm) var(--spacing-md);
+        border-bottom: 1px solid var(--surface-100);
+        transition: background 0.2s;
+      }
+
+      .lifecycle-linked-item-compact:last-child {
+        border-bottom: none;
+      }
+
+      .lifecycle-linked-item-compact:hover {
+        background: var(--surface-50);
+      }
+
+      .lifecycle-type-indicator {
+        width: 4px;
+        height: 32px;
+        border-radius: 2px;
+        flex-shrink: 0;
+      }
+
+      .lifecycle-linked-info {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .lifecycle-linked-title {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .lifecycle-linked-subtitle {
+        font-size: 11px;
+        color: var(--text-muted);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .lifecycle-relation-badge {
+        font-size: 10px;
+        font-weight: 600;
+        padding: 2px 8px;
+        background: var(--surface-100);
+        color: var(--text-secondary);
+        border-radius: 10px;
+        white-space: nowrap;
+      }
+
+      .lifecycle-remove-btn {
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        border-radius: var(--radius-sm);
+        color: var(--text-muted);
+        cursor: pointer;
+        opacity: 0;
+        transition: all 0.2s;
+      }
+
+      .lifecycle-linked-item-compact:hover .lifecycle-remove-btn {
+        opacity: 1;
+      }
+
+      .lifecycle-remove-btn:hover {
+        background: var(--danger-50);
+        color: var(--danger-500);
+      }
+
+      .lifecycle-remove-btn i {
+        font-size: 12px;
       }
 
       /* Alerts - Matching award-review-dashboard */
@@ -3180,28 +3847,54 @@
   </head>
   <body>
     <div class="app">
-      <!-- Header - Matching award-review-dashboard -->
+      <!-- Header - Matching tender-dashboard-complete -->
       <header class="header" role="banner">
         <div class="header-top">
           <div class="logo-container">
             <div class="logo">UNOPS</div>
             <span class="portal-badge">Procurement</span>
             <span style="color: var(--surface-400); margin: 0 8px; font-size: 18px;">|</span>
-            <div style="display: flex; flex-direction: column;">
-              <span style="color: var(--primary-500); font-weight: 600; font-size: 14px;" id="page-title">Create New Tender</span>
-              <span style="color: var(--text-muted); font-size: 12px;" id="page-breadcrumbs">Event Setup</span>
+            <span style="color: var(--primary-500); font-weight: 600; font-size: 14px;">eTendering</span>
+          </div>
+
+          <!-- Header Actions: Accessibility, Language, AI, Help, Notifications -->
+          <div class="header-actions">
+            <!-- Accessibility Button -->
+            <div class="header-action-btn" title="Accessibility Options" aria-label="Accessibility Options">
+              <i class="pi pi-eye" aria-hidden="true"></i>
+            </div>
+
+            <!-- Language Selector -->
+            <div class="header-action-btn language-selector" title="Change Language" aria-label="Change Language">
+              <span class="lang-flag">🌐</span>
+            </div>
+
+            <!-- AI Assistant -->
+            <div class="header-action-btn ai-assistant-btn" title="AI Assistant" aria-label="AI Procurement Assistant">
+              <div class="ai-icon-wrapper">
+                <i class="pi pi-bolt" aria-hidden="true"></i>
+              </div>
+              <span class="ai-badge">NEW</span>
+            </div>
+
+            <!-- Help/Questions -->
+            <div class="header-action-btn" title="Help Center" aria-label="Help Center">
+              <i class="pi pi-question-circle" aria-hidden="true"></i>
+            </div>
+
+            <!-- Notifications -->
+            <div class="header-action-btn notification-btn" title="Notifications" aria-label="View Notifications">
+              <i class="pi pi-bell" aria-hidden="true"></i>
+              <span class="notification-badge" id="notificationCount">7</span>
             </div>
           </div>
 
           <div class="user-menu">
-            <div id="top-actions" style="display: flex; align-items: center; gap: var(--spacing-sm); margin-right: var(--spacing-md);">
-              <button class="btn btn-ghost" onclick="window.location.href='template-library.html'">Cancel</button>
-            </div>
             <div class="user-info">
-              <div class="user-company">UNOPS</div>
-              <div class="user-name">Current User</div>
+              <div class="user-company">UNOPS Internal</div>
+              <div class="user-name">Jane Doe</div>
             </div>
-            <div class="user-avatar">CU</div>
+            <div class="user-avatar" aria-label="User menu">JD</div>
           </div>
         </div>
       </header>
@@ -3222,11 +3915,11 @@
                 <span class="menu-icon">📋</span>
                 <span>My Tenders</span>
               </a>
-              <a class="menu-item active" id="menu-create-tender">
+              <a class="menu-item" onclick="window.location.href='tender-create.html'">
                 <span class="menu-icon">✏️</span>
                 <span>Create Tender</span>
               </a>
-              <a class="menu-item disabled">
+              <a class="menu-item active" id="menu-drafts">
                 <span class="menu-icon">📝</span>
                 <span>Drafts</span>
               </a>
@@ -3240,276 +3933,229 @@
 
         <!-- Main Content -->
         <main class="main-content">
-          <!-- Tender Initiation Method Selection -->
-          <div class="view-section active" id="initiation-view">
-            <div class="initiation-container">
-              <div class="initiation-header">
-                <h1 class="initiation-title">Create New Tender</h1>
-                <p class="initiation-subtitle">Choose how you'd like to start creating your tender. Select the method that best suits your needs.</p>
-              </div>
+          <!-- Page Action Bar - Buttons moved from header -->
+          <div class="page-action-bar" id="top-actions">
+            <button class="btn btn-secondary"><i class="pi pi-download"></i> Download Package</button>
+            <button class="btn btn-secondary"><i class="pi pi-eye"></i> Preview</button>
+            <button class="btn btn-secondary"><i class="pi pi-save"></i> Save Draft</button>
+            <button class="btn btn-primary"><i class="pi pi-send"></i> Submit for Review</button>
+          </div>
 
-              <div class="initiation-options">
-                <!-- Option 1: Guided Wizard -->
-                <div class="initiation-card" onclick="startWithWizard()">
-                  <div class="initiation-card-badge">Recommended</div>
-                  <div class="initiation-card-icon">🧙‍♂️</div>
-                  <h3 class="initiation-card-title">Guided Wizard</h3>
-                  <p class="initiation-card-description">
-                    Answer a few questions and we'll help you find the perfect template for your procurement needs.
-                  </p>
-                  <ul class="initiation-card-features">
-                    <li>Smart template recommendations</li>
-                    <li>Step-by-step guidance</li>
-                    <li>Best for new tenders</li>
-                    <li>Personalized suggestions</li>
-                  </ul>
-                  <div class="initiation-card-action">
-                    <button class="btn btn-primary">Start with Wizard</button>
-                  </div>
+          <!-- Tender Authoring View -->
+          <div class="view-section active" id="authoring-view">
+            <!-- Progress Steps -->
+            <div class="progress-container">
+              <div class="progress-steps">
+                <div class="progress-step completed" data-step="1">
+                  <div class="step-icon">✓</div>
+                  <div class="step-label">Event Setup</div>
                 </div>
-
-                <!-- Option 2: Template Library -->
-                <div class="initiation-card" onclick="startWithTemplate()">
-                  <div class="initiation-card-icon">📚</div>
-                  <h3 class="initiation-card-title">Pick from Templates</h3>
-                  <p class="initiation-card-description">
-                    Browse our complete template library and select a pre-configured tender template to start with.
-                  </p>
-                  <ul class="initiation-card-features">
-                    <li>View all available templates</li>
-                    <li>Compare template features</li>
-                    <li>Best for experienced users</li>
-                    <li>Direct template selection</li>
-                  </ul>
-                  <div class="initiation-card-action">
-                    <button class="btn btn-ghost">Browse Templates</button>
-                  </div>
+                <div class="progress-step active" data-step="2">
+                  <div class="step-icon">2</div>
+                  <div class="step-label">Authoring</div>
                 </div>
-
-                <!-- Option 3: Clone Existing Tender -->
-                <div class="initiation-card" onclick="startWithClone()">
-                  <div class="initiation-card-icon">📋</div>
-                  <h3 class="initiation-card-title">Clone Existing Tender</h3>
-                  <p class="initiation-card-description">
-                    Start from a previously created tender. All blocks, fields, and configurations will be copied.
-                  </p>
-                  <ul class="initiation-card-features">
-                    <li>Reuse existing setup</li>
-                    <li>Maintain consistency</li>
-                    <li>Save time on configuration</li>
-                    <li>Perfect for similar tenders</li>
-                  </ul>
-                  <div class="initiation-card-action">
-                    <button class="btn btn-ghost">Select Tender to Clone</button>
-                  </div>
+                <div class="progress-step" data-step="3">
+                  <div class="step-icon">3</div>
+                  <div class="step-label">Review</div>
                 </div>
-              </div>
-
-              <div class="info-alert" style="max-width: 700px; margin: 0 auto;">
-                <div class="info-alert-text">
-                  💡 <strong>Not sure which to choose?</strong> We recommend starting with the Guided Wizard if you're creating a new type of tender or need help selecting the right template.
+                <div class="progress-step" data-step="4">
+                  <div class="step-icon">4</div>
+                  <div class="step-label">Publish</div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <!-- Event Setup Wizard View -->
-          <div class="view-section" id="wizard-view">
-            <div class="wizard-container">
-              <!-- Wizard Steps Indicator -->
-              <div class="wizard-steps">
-                <div class="wizard-step active" data-step="1">
-                  <div class="step-circle">1</div>
-                  <div class="step-label">Procurement Details</div>
-                </div>
-                <div class="wizard-step" data-step="2">
-                  <div class="step-circle">2</div>
-                  <div class="step-label">Template Selection</div>
-                </div>
-                <div class="wizard-step" data-step="3">
-                  <div class="step-circle">3</div>
-                  <div class="step-label">Review & Initiate</div>
-                </div>
+            <!-- Block Navigation Tabs -->
+            <div class="block-nav" id="block-nav">
+              <!-- Block tabs will be dynamically generated -->
+            </div>
+
+            <!-- Content Area -->
+            <div class="content-area">
+              <div class="content-wrapper" id="content-wrapper">
+                <!-- Content will be dynamically generated based on selected block -->
               </div>
 
-              <!-- Wizard Content -->
-              <div class="wizard-content">
-                <!-- Step 1: Procurement Details -->
-                <div class="wizard-step-content active" id="step-1">
-                  <h2 class="step-title">What are you procuring?</h2>
-                  <p class="step-description">Tell us about your procurement needs to find the best template</p>
+              <!-- Form Library Floating Button -->
+              <div id="formLibraryFloatingBtn" class="form-library-floating-btn" onclick="toggleFormLibrary()" title="Form Library" aria-label="Open Form Library">
+                <div class="form-library-btn-icon">
+                  <i class="pi pi-folder-open"></i>
+                </div>
+                <div class="form-library-btn-badge" id="formLibraryBadge">8</div>
+                <div class="form-library-btn-label">Form<br>Library</div>
+              </div>
 
-                  <div class="form-grid">
-                    <div class="form-group">
-                      <label class="form-label">Type of Requirement <span class="required">*</span></label>
-                      <select class="form-select" id="requirement-type" required>
-                        <option value="">Select...</option>
-                        <option value="goods">Goods</option>
-                        <option value="services">Services</option>
-                        <option value="works">Works</option>
-                        <option value="goods-services">Goods & Services</option>
-                      </select>
+              <!-- Form Library Panel - Matching Team Collaboration style (Forms only) -->
+              <div class="form-library-panel" id="form-library-panel">
+                <div class="form-library-header">
+                  <div class="form-library-header-content">
+                    <div class="form-library-header-icon">
+                      <i class="pi pi-folder-open"></i>
                     </div>
-
-                    <div class="form-group">
-                      <label class="form-label">Sourcing or Solicitation? <span class="required">*</span></label>
-                      <select class="form-select" id="sourcing-type" required>
-                        <option value="">Select...</option>
-                        <option value="sourcing">Sourcing</option>
-                        <option value="solicitation">Solicitation</option>
-                      </select>
-                    </div>
-
-                    <div class="form-group">
-                      <label class="form-label">Solicitation Method <span class="required">*</span></label>
-                      <select class="form-select" id="method" required>
-                        <option value="">Select...</option>
-                        <option value="itb">ITB - Invitation to Bid</option>
-                        <option value="rfp">RFP - Request for Proposal</option>
-                        <option value="rfq">RFQ - Request for Quotation</option>
-                        <option value="eoi">EOI - Expression of Interest</option>
-                        <option value="direct">Direct Contracting</option>
-                      </select>
-                    </div>
-
-                    <div class="form-group">
-                      <label class="form-label">Estimated Value (USD) <span class="required">*</span></label>
-                      <input type="number" class="form-input" id="estimated-value" placeholder="0.00" required />
-                      <span class="help-text">Approximate contract value</span>
-                    </div>
-
-                    <div class="form-group">
-                      <label class="form-label">Project Type</label>
-                      <select class="form-select" id="project-type">
-                        <option value="">Select...</option>
-                        <option value="infrastructure">Infrastructure</option>
-                        <option value="health">Health</option>
-                        <option value="education">Education</option>
-                        <option value="emergency">Emergency</option>
-                        <option value="other">Other</option>
-                      </select>
-                    </div>
-
-                    <div class="form-group">
-                      <label class="form-label">Beneficiary Country(ies)</label>
-                      <select class="form-select" id="country" multiple>
-                        <option value="afghanistan">Afghanistan</option>
-                        <option value="bangladesh">Bangladesh</option>
-                        <option value="cambodia">Cambodia</option>
-                        <option value="ethiopia">Ethiopia</option>
-                        <option value="haiti">Haiti</option>
-                      </select>
-                      <span class="help-text">Select one or more countries</span>
-                    </div>
-
-                    <div class="form-group full-width">
-                      <label class="form-label">Brief Description</label>
-                      <textarea class="form-textarea" id="description" placeholder="Brief description of the procurement objective..."></textarea>
-                      <span class="help-text">This helps us suggest the most relevant template</span>
+                    <div class="form-library-header-text">
+                      <div class="form-library-title">Form Library</div>
+                      <div class="form-library-subtitle">Drag & drop to add forms</div>
                     </div>
                   </div>
+                  <button class="toggle-library-btn" onclick="toggleFormLibrary()" aria-label="Close panel">
+                    <i class="pi pi-times"></i>
+                  </button>
                 </div>
 
-                <!-- Step 2: Template Selection -->
-                <div class="wizard-step-content" id="step-2">
-                  <h2 class="step-title">Select a Template</h2>
-                  <p class="step-description">Based on your answers, we've found the best matching templates</p>
-
-                  <div class="info-alert">
-                    <div class="info-alert-text">
-                      💡 We recommend the template below based on your procurement type and method
+                <div class="form-library-body">
+                  <!-- Search Area -->
+                  <div class="form-library-search-area">
+                    <div class="form-library-search">
+                      <i class="pi pi-search form-library-search-icon"></i>
+                      <input type="search" placeholder="Search forms..." id="form-library-search" />
                     </div>
                   </div>
 
-                  <div class="template-suggestions">
-                    <div class="suggestions-header">
-                      <div class="suggestions-title">
-                        Suggested Templates
-                        <span class="suggestions-badge" id="suggestion-count">3 matches</span>
+                  <!-- Content Area -->
+                  <div class="form-library-content">
+                    <div class="form-library-group">
+                      <div class="form-library-group-label">Submission Forms</div>
+                      <div class="form-library-list" id="form-library-list">
+                        <div class="form-library-item" draggable="true" data-form-type="instructions" data-form-name="Instructions to Bidders">
+                          <div class="form-library-item-icon">📄</div>
+                          <div class="form-library-item-content">
+                            <strong>Instructions to Bidders</strong>
+                            <span>Standard format for tender instructions</span>
+                          </div>
+                        </div>
+                        <div class="form-library-item" draggable="true" data-form-type="contracts" data-form-name="Contract Forms">
+                          <div class="form-library-item-icon">📝</div>
+                          <div class="form-library-item-content">
+                            <strong>Contract Forms</strong>
+                            <span>Offer & award documentation</span>
+                          </div>
+                        </div>
+                        <div class="form-library-item" draggable="true" data-form-type="bank-guarantee" data-form-name="Bank Guarantee Form">
+                          <div class="form-library-item-icon">🏦</div>
+                          <div class="form-library-item-content">
+                            <strong>Bank Guarantee Form</strong>
+                            <span>Security requirements documentation</span>
+                          </div>
+                        </div>
+                        <div class="form-library-item" draggable="true" data-form-type="bid-security" data-form-name="Bid Security Form">
+                          <div class="form-library-item-icon">🔒</div>
+                          <div class="form-library-item-content">
+                            <strong>Bid Security Form</strong>
+                            <span>Security requirements for bids</span>
+                          </div>
+                        </div>
                       </div>
                     </div>
 
-                    <div class="template-cards" id="template-cards">
-                      <!-- Template cards will be dynamically generated -->
-                    </div>
-
-                    <div class="view-all-link">
-                      <a href="template-library.html">
-                        View All Templates
-                        <span>→</span>
-                      </a>
+                    <div class="form-library-group">
+                      <div class="form-library-group-label">Technical Documents</div>
+                      <div class="form-library-list">
+                        <div class="form-library-item" draggable="true" data-form-type="drive-questionnaire" data-form-name="DRiVE Questionnaire">
+                          <div class="form-library-item-icon">📊</div>
+                          <div class="form-library-item-content">
+                            <strong>DRiVE Questionnaire</strong>
+                            <span>Risk assessment questionnaire</span>
+                          </div>
+                        </div>
+                        <div class="form-library-item" draggable="true" data-form-type="technical-specs" data-form-name="Technical Specifications">
+                          <div class="form-library-item-icon">⚙️</div>
+                          <div class="form-library-item-content">
+                            <strong>Technical Specifications</strong>
+                            <span>Detailed technical requirements</span>
+                          </div>
+                        </div>
+                        <div class="form-library-item" draggable="true" data-form-type="evaluation" data-form-name="Evaluation Form">
+                          <div class="form-library-item-icon">✅</div>
+                          <div class="form-library-item-content">
+                            <strong>Evaluation Form</strong>
+                            <span>Scoring and evaluation matrix</span>
+                          </div>
+                        </div>
+                        <div class="form-library-item" draggable="true" data-form-type="price-schedule" data-form-name="Price Schedule">
+                          <div class="form-library-item-icon">💰</div>
+                          <div class="form-library-item-content">
+                            <strong>Price Schedule</strong>
+                            <span>Pricing breakdown template</span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                <!-- Step 3: Review & Initiate -->
-                <div class="wizard-step-content" id="step-3">
-                  <h2 class="step-title">Review & Initiate Tender</h2>
-                  <p class="step-description">Review your selections and initiate the tender authoring process</p>
-
-                  <div class="form-grid">
-                    <div class="form-group full-width">
-                      <label class="form-label">Tender Title <span class="required">*</span></label>
-                      <input type="text" class="form-input" id="tender-title" placeholder="Enter tender title" required />
-                    </div>
-
-                    <div class="form-group">
-                      <label class="form-label">Reference Number</label>
-                      <input type="text" class="form-input" id="reference" value="Auto-generated" readonly style="background: var(--surface-50);" />
-                    </div>
-
-                    <div class="form-group">
-                      <label class="form-label">Selected Template</label>
-                      <input type="text" class="form-input" id="selected-template-display" readonly style="background: var(--surface-50);" />
-                    </div>
-
-                    <div class="form-group">
-                      <label class="form-label">Type of Requirement</label>
-                      <input type="text" class="form-input" id="review-requirement-type" readonly style="background: var(--surface-50);" />
-                    </div>
-
-                    <div class="form-group">
-                      <label class="form-label">Solicitation Method</label>
-                      <input type="text" class="form-input" id="review-method" readonly style="background: var(--surface-50);" />
-                    </div>
-
-                    <div class="form-group">
-                      <label class="form-label">Estimated Value</label>
-                      <input type="text" class="form-input" id="review-value" readonly style="background: var(--surface-50);" />
-                    </div>
-                  </div>
-
-                  <div class="info-alert">
-                    <div class="info-alert-text">
-                      ℹ️ Once initiated, you'll proceed to the authoring workspace where you can customize the template and complete all tender details
-                    </div>
+                <!-- Footer -->
+                <div class="form-library-footer">
+                  <div class="form-library-footer-hint">
+                    <i class="pi pi-info-circle"></i>
+                    Drag forms to sections or click to add
                   </div>
                 </div>
               </div>
             </div>
 
-            <!-- Wizard Action Footer -->
+            <!-- Authoring Action Footer -->
             <footer class="action-footer">
-              <div></div>
+              <div class="footer-info">Auto-saved 2 minutes ago</div>
               <div class="footer-actions">
-                <button class="btn btn-ghost" id="wizard-prev-btn" style="display: none;">Previous</button>
-                <button class="btn btn-primary" id="wizard-next-btn">Next</button>
+                <button class="btn btn-ghost" id="prev-block-btn" style="display: none;">Previous Block</button>
+                <button class="btn btn-primary" id="next-block-btn">Next Block</button>
               </div>
             </footer>
           </div>
 
-          <!-- NOTE: Authoring View has been moved to tender-authoring.html -->
+          <!-- NOTE: Initiation and Wizard views are in tender-create.html -->
         </main>
       </div>
     </div>
 
     <script>
       // ===== GLOBAL STATE =====
-      let currentView = 'initiation'; // 'initiation', 'wizard', or 'authoring'
+      let currentView = 'authoring'; // This page is authoring-only
       let wizardStep = 1;
       const totalWizardSteps = 3;
       let selectedTemplate = null;
       let wizardData = {};
+      
+      // Load data from localStorage (from tender-create.html wizard)
+      function loadTenderInitData() {
+        const savedData = localStorage.getItem('tenderInitData');
+        if (savedData) {
+          try {
+            const initData = JSON.parse(savedData);
+            wizardData = initData.wizardData || {};
+            selectedTemplate = initData.selectedTemplate || null;
+            currentProcessInfo = initData.currentProcessInfo || currentProcessInfo;
+            currentLifecycleLinks = initData.currentLifecycleLinks || [];
+            
+            // Update page title and breadcrumbs
+            if (wizardData.title) {
+              document.getElementById('page-title').textContent = wizardData.title;
+            }
+            const methodMap = { itb: 'ITB', rfp: 'RFP', rfq: 'RFQ', eoi: 'EOI', direct: 'Direct' };
+            const requirementMap = { goods: 'Goods', services: 'Services', works: 'Works', 'goods-services': 'Goods & Services' };
+            document.getElementById('page-breadcrumbs').textContent = 
+              `${methodMap[wizardData.method] || 'Tender'} · ${requirementMap[wizardData.requirementType] || 'Goods'} · Draft`;
+            
+            // Update top actions for authoring mode
+            const topActions = document.getElementById('top-actions');
+            topActions.innerHTML = `
+              <button class="btn btn-ghost">Preview</button>
+              <button class="btn btn-ghost">💾 Save Draft</button>
+              <button class="btn btn-ghost" onclick="downloadTenderPackage()" title="Download all documents as ZIP">📦 Download Package</button>
+              <button class="btn btn-primary">Submit for Review</button>
+            `;
+            
+            // Pre-populate template blocks with wizard data
+            populateTemplateBlocks();
+            
+            console.log('Loaded tender init data:', initData);
+            return true;
+          } catch (e) {
+            console.error('Error loading tender init data:', e);
+          }
+        }
+        return false;
+      }
 
       // Template blocks structure (based on template builder)
       const templateBlocks = [
@@ -4315,39 +4961,64 @@
         if (!container) return;
 
         container.innerHTML = `
-          <div class="lifecycle-tracker-container">
-            <div class="lifecycle-tracker-header">
-              <div class="lifecycle-tracker-title">
-                🔗 Procurement Lifecycle & Related Processes
+          <div class="lifecycle-tracker-compact">
+            <div class="lifecycle-tracker-compact-header">
+              <div class="lifecycle-tracker-compact-title">
+                <i class="pi pi-link" style="color: var(--primary-500);"></i>
+                <span>Related Procurement Processes</span>
+                <span class="lifecycle-count-badge" id="lifecycle-count">${currentLifecycleLinks.length}</span>
               </div>
-              <div class="lifecycle-tracker-actions">
-                <button class="btn btn-ghost btn-icon" onclick="openLifecycleSearch()">
-                  <span>➕</span>
-                  <span>Link Process</span>
-                </button>
-                <button class="btn btn-ghost btn-icon" onclick="refreshLifecycleView()">
-                  <span>🔄</span>
-                  <span>Refresh</span>
-                </button>
-              </div>
+              <button class="btn btn-sm btn-primary" onclick="openLifecycleSearch()">
+                <i class="pi pi-plus"></i> Link Process
+              </button>
             </div>
             
             <div id="lifecycle-chain-container">
-              ${renderLifecycleChain()}
-            </div>
-            
-            <div id="linked-processes-container">
-              ${renderLinkedProcesses()}
-            </div>
-            
-            <div class="lifecycle-audit-trail">
-              <div class="lifecycle-audit-trail-title">Audit Trail</div>
-              <div id="lifecycle-audit-list">
-                ${renderAuditTrail()}
-              </div>
+              ${renderLifecycleChainCompact()}
             </div>
           </div>
         `;
+      }
+
+      function renderLifecycleChainCompact() {
+        if (currentLifecycleLinks.length === 0) {
+          return `
+            <div class="lifecycle-empty-compact">
+              <span style="color: var(--text-muted); font-size: 13px;">No linked processes. Click "Link Process" to connect related procurement events.</span>
+            </div>
+          `;
+        }
+
+        const linkedHtml = currentLifecycleLinks.map(link => {
+          const typeColors = {
+            'Requisition': 'var(--info-500)',
+            'RFI': 'var(--warning-500)',
+            'EOI': 'var(--purple-500)',
+            'RFQ': 'var(--success-500)',
+            'RFP': 'var(--primary-500)',
+            'ITB': 'var(--danger-500)',
+            'LTA': 'var(--teal-500)',
+            'Contract': 'var(--info-600)'
+          };
+          const color = typeColors[link.process.type] || 'var(--text-muted)';
+          const relationLabel = { predecessor: '← Before', successor: 'After →', related: '↔ Related' }[link.relationshipType] || 'Related';
+
+          return `
+            <div class="lifecycle-linked-item-compact">
+              <div class="lifecycle-type-indicator" style="background: ${color};"></div>
+              <div class="lifecycle-linked-info">
+                <div class="lifecycle-linked-title">${link.process.type}: ${link.process.id}</div>
+                <div class="lifecycle-linked-subtitle">${link.process.title}</div>
+              </div>
+              <span class="lifecycle-relation-badge">${relationLabel}</span>
+              <button class="lifecycle-remove-btn" onclick="removeLifecycleLink('${link.process.id}')" title="Remove">
+                <i class="pi pi-times"></i>
+              </button>
+            </div>
+          `;
+        }).join('');
+
+        return `<div class="lifecycle-linked-list-compact">${linkedHtml}</div>`;
       }
 
       function renderLifecycleChain() {
@@ -4583,12 +5254,10 @@
 
       function refreshLifecycleView() {
         const chainContainer = document.getElementById('lifecycle-chain-container');
-        const linkedContainer = document.getElementById('linked-processes-container');
-        const auditContainer = document.getElementById('lifecycle-audit-list');
+        const countBadge = document.getElementById('lifecycle-count');
 
-        if (chainContainer) chainContainer.innerHTML = renderLifecycleChain();
-        if (linkedContainer) linkedContainer.innerHTML = renderLinkedProcesses();
-        if (auditContainer) auditContainer.innerHTML = renderAuditTrail();
+        if (chainContainer) chainContainer.innerHTML = renderLifecycleChainCompact();
+        if (countBadge) countBadge.textContent = currentLifecycleLinks.length;
       }
 
       function showProcessDetails(processId) {
@@ -7692,23 +8361,33 @@
             return;
           }
           
+          // Special layout for General Information block - no section header, full width
+          const isGeneralInfo = block.id === 'general' && sectionIndex === 0;
+          
           html += `
-            <div class="form-section">
-              <div class="section-header">
-                <div class="section-title">
-                  <span class="section-icon">${block.icon}</span>
-                  <span>${section.title}</span>
-                </div>
-                ${sectionIndex === 0 ? '<span class="status-indicator status-incomplete">Incomplete</span>' : ''}
-              </div>
-              <div class="section-body">
-                ${sectionIndex === 0 && block.id === 'general' ? `
-                  <div class="info-alert">
-                    <div class="info-alert-text">
-                      ℹ️ Information will be automatically populated from the requisition where applicable
-                    </div>
+            <div class="${isGeneralInfo ? 'general-info-container' : 'form-section'}">
+              ${isGeneralInfo ? `
+                <div class="general-info-header">
+                  <div class="general-info-header-title">
+                    <h2>📋 General Information</h2>
+                    <span class="subtitle">Configure basic tender details and settings</span>
                   </div>
-                ` : ''}
+                  <span class="status-indicator status-incomplete">Incomplete</span>
+                </div>
+                <div class="general-info-body">
+                  <div class="form-info-card">
+                    <p><strong>ℹ️ Auto-populated data:</strong> Information will be automatically populated from the requisition where applicable. Required fields are marked with <span class="required">*</span></p>
+                  </div>
+              ` : `
+                <div class="section-header">
+                  <div class="section-title">
+                    <span class="section-icon">${block.icon}</span>
+                    <span>${section.title}</span>
+                  </div>
+                  ${sectionIndex === 0 ? '<span class="status-indicator status-incomplete">Incomplete</span>' : ''}
+                </div>
+                <div class="section-body">
+              `}
                 
                 ${(() => {
                   // Display added forms for this section
@@ -7739,7 +8418,7 @@
                   return '';
                 })()}
                 
-                <div class="form-grid">
+                <div class="${isGeneralInfo ? 'form-grid-3col' : 'form-grid'}">
                   ${section.fields.map((field) => {
                     // Check conditional visibility
                     if (!shouldShowField(field)) {
@@ -7873,7 +8552,7 @@
                 
                 <!-- Drop Zone for Forms -->
                 <div class="form-drop-zone">Drop forms from library here</div>
-              </div>
+              ${isGeneralInfo ? '</div>' : '</div>'}
             </div>
           `;
         });
@@ -7949,9 +8628,41 @@
         });
       }
 
-      // Initialize
-      // Note: Don't initialize wizard immediately, let user choose initiation method
-      // initWizard();
+      // ===== FORM LIBRARY FUNCTIONS =====
+      let formLibraryOpen = false;
+
+      function toggleFormLibrary() {
+        const panel = document.getElementById('form-library-panel');
+        const floatingBtn = document.getElementById('formLibraryFloatingBtn');
+        
+        formLibraryOpen = !formLibraryOpen;
+        
+        if (formLibraryOpen) {
+          panel.classList.add('open');
+          panel.classList.remove('collapsed');
+          if (floatingBtn) floatingBtn.style.opacity = '0.3';
+        } else {
+          panel.classList.remove('open');
+          panel.classList.add('collapsed');
+          if (floatingBtn) floatingBtn.style.opacity = '1';
+        }
+      }
+
+      // Initialize - Authoring page auto-starts
+      document.addEventListener('DOMContentLoaded', function() {
+        // Load data from localStorage (from tender-create.html wizard)
+        const hasData = loadTenderInitData();
+        
+        // Initialize authoring view
+        initAuthoring();
+        
+        // Show success message if data was loaded
+        if (hasData && wizardData.title) {
+          showSuccessMessage();
+        }
+        
+        console.log('Tender authoring page initialized');
+      });
     </script>
 
     <!-- Tender Selection Modal for Cloning -->
