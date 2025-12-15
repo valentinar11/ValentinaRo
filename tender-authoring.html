@@ -4813,20 +4813,34 @@
         color: var(--text-muted);
       }
 
-      /* Compact Rich Text Editor */
-      .rich-text-toolbar-compact {
+      /* Full Rich Text Toolbar */
+      .rich-text-toolbar-full {
         display: flex;
-        gap: 2px;
-        padding: 4px;
+        align-items: center;
+        gap: 4px;
+        padding: 6px 8px;
         background: var(--surface-50);
         border: 1px solid var(--surface-200);
         border-bottom: none;
         border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+        flex-wrap: wrap;
+      }
+
+      .toolbar-group {
+        display: flex;
+        gap: 2px;
+      }
+
+      .toolbar-sep {
+        width: 1px;
+        height: 20px;
+        background: var(--surface-300);
+        margin: 0 4px;
       }
 
       .tb-btn {
-        width: 26px;
-        height: 26px;
+        width: 28px;
+        height: 28px;
         border: none;
         background: transparent;
         cursor: pointer;
@@ -4836,11 +4850,49 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        transition: all 0.15s ease;
       }
 
       .tb-btn:hover {
         background: var(--surface-200);
         color: var(--text-primary);
+      }
+
+      .tb-btn:active {
+        background: var(--primary-100);
+        color: var(--primary-600);
+      }
+
+      .rich-text-editor-full {
+        min-height: 120px;
+        padding: 12px;
+        border: 1px solid var(--surface-200);
+        border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+        font-size: 13px;
+        line-height: 1.6;
+        outline: none;
+        background: var(--surface-0);
+      }
+
+      .rich-text-editor-full:focus {
+        border-color: var(--primary-400);
+        box-shadow: 0 0 0 3px var(--primary-50);
+      }
+
+      .rich-text-editor-full:empty:before {
+        content: attr(placeholder);
+        color: var(--text-muted);
+      }
+
+      /* Compact Rich Text Editor */
+      .rich-text-toolbar-compact {
+        display: flex;
+        gap: 2px;
+        padding: 4px;
+        background: var(--surface-50);
+        border: 1px solid var(--surface-200);
+        border-bottom: none;
+        border-radius: var(--radius-sm) var(--radius-sm) 0 0;
       }
 
       .rich-text-editor-compact {
@@ -7234,12 +7286,11 @@
               <div class="collapsible-section collapsed" id="req-lines-section">
                 <div class="collapsible-header" onclick="toggleCollapsibleSection('req-lines-section')">
                   <div class="collapsible-header-left">
-                    <div class="collapsible-header-icon">📋</div>
                     <span class="collapsible-header-title">Requisition Lines (from ERP)</span>
                     <span class="badge badge-info" style="margin-left: 6px; font-size: 10px;">${requisitionLines.length}</span>
                 </div>
-                  <div style="display: flex; align-items: center; gap: var(--spacing-xs);">
-                    <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); openAddReqLineModal()" style="font-size: 10px; padding: 4px 8px;">+ Add Line</button>
+                  <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                    <button class="btn btn-secondary" onclick="event.stopPropagation(); openAddReqLineModal()"><i class="pi pi-plus"></i> Add Line</button>
                     <div class="collapsible-toggle">▼</div>
                   </div>
                 </div>
@@ -7282,25 +7333,24 @@
               <div class="collapsible-section collapsed" id="lots-section">
                 <div class="collapsible-header" onclick="toggleCollapsibleSection('lots-section')">
                   <div class="collapsible-header-left">
-                    <div class="collapsible-header-icon">📦</div>
                     <span class="collapsible-header-title">Lots</span>
                     <span class="badge badge-info" style="margin-left: 6px; font-size: 10px;">${lots.length}</span>
                   </div>
-                  <div style="display: flex; align-items: center; gap: var(--spacing-xs);">
-                    <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); downloadLotsTemplate()" style="font-size: 10px; padding: 4px 8px;" title="Download Excel template for bulk import">⬇️ Template</button>
-                    <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); document.getElementById('lots-upload-input').click()" style="font-size: 10px; padding: 4px 8px;" title="Upload Excel file to bulk import lots">⬆️ Upload</button>
+                  <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                    <button class="btn btn-secondary" onclick="event.stopPropagation(); downloadLotsTemplate()" title="Download Excel template for bulk import"><i class="pi pi-download"></i> Template</button>
+                    <button class="btn btn-secondary" onclick="event.stopPropagation(); document.getElementById('lots-upload-input').click()" title="Upload Excel file to bulk import lots"><i class="pi pi-upload"></i> Upload</button>
                     <input type="file" id="lots-upload-input" accept=".xlsx,.xls,.csv" style="display: none;" onchange="handleLotsUpload(event)" />
-                    <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); openCreateLotModal()" style="font-size: 10px; padding: 4px 8px;">+ Create Lot</button>
+                    <button class="btn btn-primary" onclick="event.stopPropagation(); openCreateLotModal()"><i class="pi pi-plus"></i> Create Lot</button>
                     <div class="collapsible-toggle">▼</div>
-                          </div>
-                          </div>
+                  </div>
+                </div>
                 <div class="collapsible-body">
                   ${lots.length === 0 ? `
                     <div class="lot-empty-state" style="padding: var(--spacing-lg);">
                       <div style="font-size: 28px; margin-bottom: var(--spacing-xs);">📦</div>
                       <div style="font-weight: 600; font-size: 13px; margin-bottom: var(--spacing-xs);">No lots created yet</div>
                       <div style="color: var(--text-muted); font-size: 11px; margin-bottom: var(--spacing-md);">Create lots to organize products or proceed without lots</div>
-                      <button class="btn btn-ghost btn-sm" onclick="openCreateLotModal()" style="font-size: 11px;">Create First Lot</button>
+                      <button class="btn btn-primary" onclick="openCreateLotModal()"><i class="pi pi-plus"></i> Create First Lot</button>
                         </div>
                   ` : `
                     <div style="overflow-x: auto;">
@@ -7917,10 +7967,9 @@
         return `
           <!-- Quick Actions Bar -->
           <div style="display: flex; gap: var(--spacing-sm); margin-bottom: var(--spacing-md); padding: var(--spacing-sm); background: var(--surface-50); border-radius: var(--radius-sm); border: 1px solid var(--surface-200);">
-            <button class="btn btn-ghost btn-sm" onclick="exportProductRequirementsToSpreadsheet()" style="font-size: 11px;">📥 Export</button>
-            <button class="btn btn-ghost btn-sm" onclick="uploadProductRequirementsSpreadsheet()" style="font-size: 11px;">📤 Import</button>
-            <span style="flex: 1;"></span>
-            <span style="font-size: 11px; color: var(--text-muted); display: flex; align-items: center;">Bulk manage via spreadsheet</span>
+            <button class="btn btn-secondary" onclick="downloadProductReqTemplate()"><i class="pi pi-download"></i> Template</button>
+            <button class="btn btn-secondary" onclick="document.getElementById('product-req-upload-input').click()"><i class="pi pi-upload"></i> Upload</button>
+            <input type="file" id="product-req-upload-input" accept=".xlsx,.xls,.csv" style="display: none;" onchange="handleProductReqUpload(event)" />
           </div>
           
           <!-- Products List - Compact Accordion Style -->
@@ -7961,15 +8010,11 @@
             <div class="req-type-selector">
               <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--spacing-sm);">Choose requirement type:</p>
               <div style="display: flex; gap: var(--spacing-sm);">
-                <button class="req-type-btn" onclick="event.stopPropagation(); addRequirementAttribute('${unspsc.code}')">
-                  <span class="req-type-icon">📋</span>
-                  <span class="req-type-label">Attributes</span>
-                  <span class="req-type-hint">Structured data</span>
+                <button class="btn btn-secondary" onclick="event.stopPropagation(); addRequirementAttributeInline('${unspsc.code}')">
+                  <span style="font-size: 14px; margin-right: 4px;">📋</span> Attributes
                 </button>
-                <button class="req-type-btn" onclick="event.stopPropagation(); addDescriptionField('${unspsc.code}')">
-                  <span class="req-type-icon">📝</span>
-                  <span class="req-type-label">Description</span>
-                  <span class="req-type-hint">Free-text</span>
+                <button class="btn btn-secondary" onclick="event.stopPropagation(); addDescriptionFieldInline('${unspsc.code}')">
+                  <span style="font-size: 14px; margin-right: 4px;">📝</span> Description
                 </button>
               </div>
             </div>
@@ -7978,24 +8023,41 @@
           return `
             <div class="req-description-compact">
               <div class="form-group" style="margin: 0;">
-                <div class="rich-text-toolbar-compact">
-                  <button type="button" class="tb-btn" onclick="formatTextByCode('${unspsc.code}', 'bold')" title="Bold"><strong>B</strong></button>
-                  <button type="button" class="tb-btn" onclick="formatTextByCode('${unspsc.code}', 'italic')" title="Italic"><em>I</em></button>
-                  <button type="button" class="tb-btn" onclick="formatTextByCode('${unspsc.code}', 'insertUnorderedList')" title="List">•</button>
-                  <button type="button" class="tb-btn" onclick="insertLinkByCode('${unspsc.code}')" title="Link">🔗</button>
+                <div class="rich-text-toolbar-full">
+                  <div class="toolbar-group">
+                    <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatTextByCode('${unspsc.code}', 'bold')" title="Bold"><strong>B</strong></button>
+                    <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatTextByCode('${unspsc.code}', 'italic')" title="Italic"><em>I</em></button>
+                    <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatTextByCode('${unspsc.code}', 'underline')" title="Underline"><u>U</u></button>
+                    <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatTextByCode('${unspsc.code}', 'strikeThrough')" title="Strikethrough"><s>S</s></button>
+                  </div>
+                  <span class="toolbar-sep"></span>
+                  <div class="toolbar-group">
+                    <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatTextByCode('${unspsc.code}', 'formatBlock', 'h3')" title="Heading">H1</button>
+                    <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatTextByCode('${unspsc.code}', 'formatBlock', 'h4')" title="Subheading">H2</button>
+                  </div>
+                  <span class="toolbar-sep"></span>
+                  <div class="toolbar-group">
+                    <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatTextByCode('${unspsc.code}', 'insertUnorderedList')" title="Bullet List">•</button>
+                    <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatTextByCode('${unspsc.code}', 'insertOrderedList')" title="Numbered List">1.</button>
+                  </div>
+                  <span class="toolbar-sep"></span>
+                  <div class="toolbar-group">
+                    <button type="button" class="tb-btn" onclick="event.stopPropagation(); insertLinkByCode('${unspsc.code}')" title="Insert Link">🔗</button>
+                  </div>
                 </div>
                 <div 
                   id="rich-text-editor-${unspsc.code.replace(/[^a-zA-Z0-9]/g, '_')}"
-                  class="rich-text-editor-compact" 
+                  class="rich-text-editor-full" 
                   contenteditable="true"
                   data-unspsc="${unspsc.code}"
-                  placeholder="Enter product/service description..."
+                  placeholder="Enter detailed product/service description. Use formatting tools above to structure your content..."
                   oninput="updateRequirementDescriptionFromEditor('${unspsc.code}')"
+                  onclick="event.stopPropagation()"
                 >${req.description || ''}</div>
               </div>
               <div class="req-actions-row">
-                <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); switchToAttributes('${unspsc.code}')" style="font-size: 10px;">Switch to Attributes</button>
-                <button class="btn btn-ghost btn-sm btn-danger" onclick="event.stopPropagation(); clearRequirements('${unspsc.code}')" style="font-size: 10px;">Clear</button>
+                <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); switchToAttributesInline('${unspsc.code}')"><i class="pi pi-list"></i> Switch to Attributes</button>
+                <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); clearRequirementsInline('${unspsc.code}')" style="color: var(--danger-600);"><i class="pi pi-trash"></i> Clear</button>
               </div>
             </div>
           `;
@@ -8005,15 +8067,15 @@
               <div class="attributes-grid">
                 ${req.attributes.map((attr, idx) => `
                   <div class="attr-row">
-                    <input type="text" class="attr-input attr-name" value="${attr.name}" placeholder="Attribute" onchange="updateAttributeName('${unspsc.code}', ${idx}, this.value)" />
-                    <input type="text" class="attr-input attr-value" value="${attr.value}" placeholder="Value" onchange="updateAttributeValue('${unspsc.code}', ${idx}, this.value)" />
-                    <button class="attr-remove" onclick="event.stopPropagation(); removeAttribute('${unspsc.code}', ${idx})">×</button>
+                    <input type="text" class="attr-input attr-name" value="${attr.name}" placeholder="Attribute name" onchange="updateAttributeName('${unspsc.code}', ${idx}, this.value)" onclick="event.stopPropagation()" />
+                    <input type="text" class="attr-input attr-value" value="${attr.value}" placeholder="Value" onchange="updateAttributeValue('${unspsc.code}', ${idx}, this.value)" onclick="event.stopPropagation()" />
+                    <button class="attr-remove" onclick="event.stopPropagation(); removeAttributeInline('${unspsc.code}', ${idx})">×</button>
                   </div>
                 `).join('')}
               </div>
               <div class="req-actions-row">
-                <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); addRequirementAttribute('${unspsc.code}')" style="font-size: 10px;">+ Add Attribute</button>
-                <button class="btn btn-ghost btn-sm btn-danger" onclick="event.stopPropagation(); clearRequirements('${unspsc.code}')" style="font-size: 10px;">Clear</button>
+                <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); addRequirementAttributeInline('${unspsc.code}')"><i class="pi pi-plus"></i> Add Attribute</button>
+                <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); clearRequirementsInline('${unspsc.code}')" style="color: var(--danger-600);"><i class="pi pi-trash"></i> Clear</button>
               </div>
             </div>
           `;
@@ -8035,6 +8097,198 @@
         }
       }
       
+      // Inline functions that update DOM without re-rendering the whole block
+      window.addRequirementAttributeInline = function(unspscCode) {
+        if (!productRequirements[unspscCode]) {
+          productRequirements[unspscCode] = { requirementType: 'attributes', attributes: [], description: '' };
+        }
+        
+        productRequirements[unspscCode].requirementType = 'attributes';
+        productRequirements[unspscCode].attributes.push({ name: '', value: '' });
+        
+        // Update just the body content
+        updateProductReqBodyContent(unspscCode);
+      }
+      
+      window.addDescriptionFieldInline = function(unspscCode) {
+        if (!productRequirements[unspscCode]) {
+          productRequirements[unspscCode] = { requirementType: 'description', attributes: [], description: '' };
+        }
+        
+        productRequirements[unspscCode].requirementType = 'description';
+        productRequirements[unspscCode].description = '';
+        productRequirements[unspscCode].attributes = [];
+        
+        // Update just the body content
+        updateProductReqBodyContent(unspscCode);
+      }
+      
+      window.switchToAttributesInline = function(unspscCode) {
+        if (confirm('Switching to attributes will clear your description. Continue?')) {
+          productRequirements[unspscCode].requirementType = 'attributes';
+          productRequirements[unspscCode].description = '';
+          productRequirements[unspscCode].attributes = [];
+          updateProductReqBodyContent(unspscCode);
+        }
+      }
+      
+      window.clearRequirementsInline = function(unspscCode) {
+        if (confirm('This will clear all requirements for this product. Continue?')) {
+          productRequirements[unspscCode] = { requirementType: null, attributes: [], description: '' };
+          updateProductReqBodyContent(unspscCode);
+          // Update status badge
+          updateProductReqStatus(unspscCode);
+        }
+      }
+      
+      window.removeAttributeInline = function(unspscCode, index) {
+        if (productRequirements[unspscCode] && productRequirements[unspscCode].attributes[index]) {
+          productRequirements[unspscCode].attributes.splice(index, 1);
+          updateProductReqBodyContent(unspscCode);
+          updateProductReqStatus(unspscCode);
+        }
+      }
+      
+      // Update just the product requirement body content
+      function updateProductReqBodyContent(unspscCode) {
+        const sanitizedCode = unspscCode.replace(/[^a-zA-Z0-9]/g, '_');
+        const body = document.getElementById('product-req-body-' + sanitizedCode);
+        if (!body) return;
+        
+        const req = productRequirements[unspscCode] || { requirementType: null, attributes: [], description: '' };
+        const unspsc = { code: unspscCode, description: '' }; // We don't need full description for the body
+        
+        body.innerHTML = renderProductRequirementBody(unspsc, req);
+        body.style.display = 'block';
+        body.closest('.product-req-item').classList.add('expanded');
+      }
+      
+      // Update product requirement status badge
+      function updateProductReqStatus(unspscCode) {
+        const item = document.querySelector(`.product-req-item[data-unspsc="${unspscCode}"]`);
+        if (!item) return;
+        
+        const req = productRequirements[unspscCode] || { requirementType: null, attributes: [], description: '' };
+        const hasRequirements = req.requirementType && (req.attributes.length > 0 || req.description);
+        
+        const statusBadge = item.querySelector('.status-badge');
+        if (statusBadge) {
+          statusBadge.className = 'status-badge ' + (hasRequirements ? 'status-complete' : 'status-pending');
+          statusBadge.textContent = hasRequirements ? '✓ Defined' : '○ Pending';
+        }
+        
+        if (hasRequirements) {
+          item.classList.add('has-requirements');
+        } else {
+          item.classList.remove('has-requirements');
+        }
+      }
+      
+      // Download product requirements template
+      window.downloadProductReqTemplate = function() {
+        const csvContent = `UNSPSC Code,Description,Requirement Type,Attribute Name,Attribute Value,Free Text Description
+# Instructions: Fill in requirements for each UNSPSC code
+# Requirement Type: Use "attributes" for structured data or "description" for free text
+# For attributes: Fill Attribute Name and Attribute Value columns (one row per attribute)
+# For description: Fill the Free Text Description column
+# Example rows below:
+43211500,Computers,attributes,Processor,Intel Core i7,
+43211500,Computers,attributes,RAM,16GB DDR4,
+43211500,Computers,attributes,Storage,512GB SSD,
+72151500,Building cleaning services,description,,,Professional cleaning services including daily office cleaning and monthly deep cleaning. Must use eco-friendly products.`;
+        
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'product_requirements_template.csv';
+        link.click();
+        
+        showNotification('Template downloaded! Fill in requirements and upload.', 'success');
+      }
+      
+      // Handle product requirements upload
+      window.handleProductReqUpload = function(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const content = e.target.result;
+          const lines = content.split('\n').filter(line => line.trim() && !line.startsWith('#'));
+          
+          // Skip header
+          const dataLines = lines.slice(1);
+          
+          dataLines.forEach(line => {
+            const parts = line.split(',').map(p => p.trim());
+            if (parts.length >= 3) {
+              const [unspscCode, description, reqType, attrName, attrValue, freeText] = parts;
+              
+              if (!productRequirements[unspscCode]) {
+                productRequirements[unspscCode] = { requirementType: null, attributes: [], description: '' };
+              }
+              
+              if (reqType === 'attributes' && attrName) {
+                productRequirements[unspscCode].requirementType = 'attributes';
+                productRequirements[unspscCode].attributes.push({
+                  name: attrName,
+                  value: attrValue || ''
+                });
+              } else if (reqType === 'description' && freeText) {
+                productRequirements[unspscCode].requirementType = 'description';
+                productRequirements[unspscCode].description = freeText;
+              }
+            }
+          });
+          
+          // Refresh the product requirements section only
+          const section = document.getElementById('product-requirements-section');
+          if (section) {
+            const body = section.querySelector('.collapsible-body');
+            if (body) {
+              // Re-render product requirements content
+              let unspscCodesToShow = [];
+              if (lots.length === 0) {
+                unspscCodesToShow = requisitionLines.map(line => ({
+                  code: line.unspscCode,
+                  description: line.unspscDescription,
+                  source: 'requisition',
+                  sourceId: line.id,
+                }));
+              } else {
+                lots.forEach(lot => {
+                  lot.unspscCodes.forEach(unspsc => {
+                    unspscCodesToShow.push({
+                      code: unspsc.code,
+                      description: unspsc.description,
+                      source: 'lot',
+                      sourceId: lot.id,
+                      lotName: lot.name,
+                    });
+                  });
+                });
+              }
+              
+              const uniqueUnspscCodes = [];
+              const seenCodes = new Set();
+              unspscCodesToShow.forEach(item => {
+                if (!seenCodes.has(item.code)) {
+                  seenCodes.add(item.code);
+                  uniqueUnspscCodes.push(item);
+                }
+              });
+              
+              body.innerHTML = renderProductRequirementsContent(uniqueUnspscCodes);
+            }
+          }
+          
+          showNotification('Requirements imported successfully!', 'success');
+        };
+        
+        reader.readAsText(file);
+        event.target.value = '';
+      }
+      
       // Render Other Requirements Content (3-column layout)
       function renderOtherRequirementsContent() {
         return `
@@ -8042,7 +8296,7 @@
           <div class="other-req-subsection">
             <div class="subsection-header">
               <span class="subsection-title">Service Descriptions</span>
-              <button class="btn btn-ghost btn-sm" onclick="addServiceLine()" style="font-size: 10px;">+ Add</button>
+              <button class="btn btn-secondary btn-sm" onclick="addServiceLine()"><i class="pi pi-plus"></i> Add</button>
             </div>
             <div class="subsection-body">
               ${tenderAuthorConfig.serviceDescriptions.length === 0 ? `
@@ -8067,7 +8321,7 @@
           <div class="other-req-subsection" style="margin-top: var(--spacing-md);">
             <div class="subsection-header">
               <span class="subsection-title">Delivery Requirements</span>
-              <button class="btn btn-ghost btn-sm" onclick="addDeliveryRequirementField()" style="font-size: 10px;">+ Add Field</button>
+              <button class="btn btn-secondary btn-sm" onclick="addDeliveryRequirementField()"><i class="pi pi-plus"></i> Add Field</button>
             </div>
             <div class="subsection-body">
               <div class="form-grid-3col">
