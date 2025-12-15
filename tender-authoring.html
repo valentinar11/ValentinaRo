@@ -3843,6 +3843,1243 @@
         color: var(--text-primary);
         font-weight: 600;
       }
+
+      /* ===== REQUISITION & LOTS IMPROVED UI ===== */
+      
+      /* General Info Container for Requisition & Lots */
+      .general-info-container {
+        background: var(--surface-0);
+        border-radius: var(--radius-lg);
+        margin-bottom: var(--spacing-lg);
+        box-shadow: var(--shadow-card);
+        border: 1px solid var(--surface-200);
+      }
+
+      .general-info-body {
+        padding: var(--spacing-lg);
+      }
+
+      .form-info-card {
+        background: var(--info-50);
+        border: 1px solid var(--info-200);
+        border-radius: var(--radius-md);
+        padding: var(--spacing-md);
+        margin-bottom: var(--spacing-lg);
+        font-size: 13px;
+        color: var(--text-secondary);
+      }
+
+      .form-info-card p {
+        margin: 0;
+      }
+
+      /* 3-Column Form Grid */
+      .form-grid-3col {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--spacing-lg);
+        margin-bottom: var(--spacing-md);
+      }
+
+      .form-grid-3col .form-group.full-width {
+        grid-column: 1 / -1;
+      }
+
+      @media (max-width: 1200px) {
+        .form-grid-3col {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .form-grid-3col {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* Summary Stats Row */
+      .summary-stats-row {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: var(--spacing-md);
+        margin-bottom: var(--spacing-lg);
+        background: var(--surface-50);
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-md);
+        padding: var(--spacing-md);
+      }
+
+      .stat-item {
+        text-align: center;
+        padding: var(--spacing-sm);
+      }
+
+      .stat-value {
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--primary-600);
+        line-height: 1.2;
+      }
+
+      .stat-label {
+        font-size: 11px;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        margin-top: 2px;
+      }
+
+      /* Collapsible Sections */
+      .collapsible-section {
+        background: var(--surface-0);
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-md);
+        margin-bottom: var(--spacing-md);
+        overflow: hidden;
+      }
+
+      .collapsible-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: var(--spacing-sm) var(--spacing-md);
+        background: var(--surface-50);
+        cursor: pointer;
+        transition: background 0.2s ease;
+        user-select: none;
+      }
+
+      .collapsible-header:hover {
+        background: var(--surface-100);
+      }
+
+      .collapsible-header-left {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+      }
+
+      .collapsible-header-icon {
+        width: 26px;
+        height: 26px;
+        background: var(--primary-100);
+        border-radius: var(--radius-sm);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+      }
+
+      .collapsible-header-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .collapsible-toggle {
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-muted);
+        font-size: 10px;
+        transition: transform 0.2s ease;
+      }
+
+      .collapsible-section.collapsed .collapsible-toggle {
+        transform: rotate(-90deg);
+      }
+
+      .collapsible-body {
+        padding: var(--spacing-md);
+        border-top: 1px solid var(--surface-200);
+        display: block;
+      }
+
+      .collapsible-section.collapsed .collapsible-body {
+        display: none;
+      }
+
+      /* Compact Requisition Table */
+      .req-table-compact {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+      }
+
+      .req-table-compact th {
+        background: var(--surface-100);
+        padding: 6px 8px;
+        text-align: left;
+        font-weight: 600;
+        color: var(--text-secondary);
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        border-bottom: 1px solid var(--surface-200);
+      }
+
+      .req-table-compact td {
+        padding: 6px 8px;
+        border-bottom: 1px solid var(--surface-100);
+        color: var(--text-primary);
+        vertical-align: middle;
+      }
+
+      .req-table-compact tbody tr:hover {
+        background: var(--surface-50);
+      }
+
+      .req-table-compact tbody tr:last-child td {
+        border-bottom: none;
+      }
+
+      /* Standard Requisition Table (larger) */
+      .req-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+
+      .req-table th {
+        background: var(--surface-100);
+        padding: 12px 16px;
+        text-align: left;
+        font-weight: 600;
+        color: var(--text-secondary);
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        border-bottom: 2px solid var(--surface-200);
+      }
+
+      .req-table td {
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--surface-100);
+        color: var(--text-primary);
+        vertical-align: middle;
+        font-size: 13px;
+      }
+
+      .req-table tbody tr:hover {
+        background: var(--surface-50);
+      }
+
+      .req-table tbody tr:last-child td {
+        border-bottom: none;
+      }
+
+      .req-table .req-id {
+        font-weight: 600;
+        font-size: 12px;
+        color: var(--text-secondary);
+      }
+
+      .req-table .req-unspsc {
+        font-family: 'Courier New', monospace;
+        font-size: 13px;
+        color: var(--primary-600);
+        font-weight: 600;
+      }
+
+      .req-table .req-unspsc-desc {
+        font-size: 12px;
+        color: var(--text-muted);
+        max-width: 180px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .req-table .req-amount {
+        font-weight: 600;
+        color: var(--success-600);
+        font-size: 13px;
+      }
+
+      /* Remove button for requisition lines */
+      .req-remove-btn {
+        width: 32px;
+        height: 32px;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--radius-sm);
+        transition: all 0.15s ease;
+        opacity: 0.6;
+      }
+
+      .req-remove-btn:hover {
+        background: var(--danger-50);
+        opacity: 1;
+      }
+
+      .req-id {
+        font-weight: 600;
+        font-size: 10px;
+        color: var(--text-secondary);
+      }
+
+      .req-unspsc {
+        font-family: 'Courier New', monospace;
+        font-size: 11px;
+        color: var(--primary-600);
+        font-weight: 600;
+      }
+
+      .req-unspsc-desc {
+        font-size: 10px;
+        color: var(--text-muted);
+        max-width: 150px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .req-amount {
+        font-weight: 600;
+        color: var(--success-600);
+        font-size: 11px;
+        white-space: nowrap;
+      }
+
+      /* Compact Lots Grid */
+      .lots-grid-compact {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: var(--spacing-md);
+      }
+
+      .lot-card-compact {
+        background: var(--surface-0);
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        transition: all 0.2s ease;
+      }
+
+      .lot-card-compact:hover {
+        border-color: var(--primary-300);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .lot-header-compact {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px var(--spacing-sm);
+        background: var(--surface-50);
+        border-bottom: 1px solid var(--surface-200);
+      }
+
+      .lot-badge {
+        background: var(--primary-500);
+        color: white;
+        padding: 2px 6px;
+        border-radius: var(--radius-sm);
+        font-size: 9px;
+        font-weight: 600;
+      }
+
+      .lot-name-input-compact {
+        flex: 1;
+        margin-left: var(--spacing-xs);
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text-primary);
+        border: none;
+        background: transparent;
+        padding: 3px;
+        border-radius: var(--radius-sm);
+        min-width: 80px;
+      }
+
+      .lot-name-input-compact:focus {
+        outline: none;
+        background: var(--surface-0);
+        box-shadow: 0 0 0 2px var(--primary-200);
+      }
+
+      .lot-actions-compact {
+        display: flex;
+        gap: 2px;
+      }
+
+      .lot-action-btn {
+        width: 22px;
+        height: 22px;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        color: var(--text-muted);
+        border-radius: var(--radius-sm);
+        transition: all 0.2s ease;
+      }
+
+      .lot-action-btn:hover {
+        background: var(--surface-200);
+        color: var(--text-primary);
+      }
+
+      .lot-action-btn.danger:hover {
+        background: var(--danger-50);
+        color: var(--danger-500);
+      }
+
+      .lot-body-compact {
+        padding: var(--spacing-xs) var(--spacing-sm);
+        max-height: 140px;
+        overflow-y: auto;
+      }
+
+      .lot-products-header-compact {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 10px;
+        color: var(--text-muted);
+        margin-bottom: var(--spacing-xs);
+        padding-bottom: var(--spacing-xs);
+        border-bottom: 1px dashed var(--surface-200);
+      }
+
+      .add-product-btn {
+        font-size: 9px;
+        color: var(--primary-500);
+        cursor: pointer;
+        font-weight: 600;
+        padding: 1px 5px;
+        background: var(--primary-50);
+        border-radius: var(--radius-sm);
+        border: none;
+      }
+
+      .add-product-btn:hover {
+        background: var(--primary-100);
+      }
+
+      .lot-product-compact {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+        padding: 3px 0;
+        font-size: 10px;
+      }
+
+      .lot-product-code {
+        font-family: 'Courier New', monospace;
+        color: var(--primary-600);
+        font-weight: 600;
+        font-size: 9px;
+        min-width: 60px;
+      }
+
+      .lot-product-name {
+        flex: 1;
+        color: var(--text-secondary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .lot-product-qty {
+        font-size: 9px;
+        color: var(--text-muted);
+        background: var(--surface-100);
+        padding: 0px 4px;
+        border-radius: 6px;
+      }
+
+      .lot-product-remove {
+        width: 16px;
+        height: 16px;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        color: var(--text-muted);
+        font-size: 9px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        opacity: 0;
+        transition: all 0.2s ease;
+      }
+
+      .lot-product-compact:hover .lot-product-remove {
+        opacity: 1;
+      }
+
+      .lot-product-remove:hover {
+        background: var(--danger-50);
+        color: var(--danger-500);
+      }
+
+      .lot-empty-state {
+        text-align: center;
+        padding: var(--spacing-sm);
+        color: var(--text-muted);
+        font-size: 10px;
+        background: var(--surface-50);
+        border-radius: var(--radius-sm);
+        border: 1px dashed var(--surface-300);
+      }
+
+      /* Create Lot Card */
+      .create-lot-card {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--spacing-xs);
+        padding: var(--spacing-lg);
+        border: 2px dashed var(--surface-300);
+        background: var(--surface-50);
+        border-radius: var(--radius-md);
+        color: var(--text-muted);
+        font-size: 12px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        min-height: 80px;
+      }
+
+      .create-lot-card:hover {
+        border-color: var(--primary-400);
+        background: var(--primary-50);
+        color: var(--primary-600);
+      }
+
+      /* Lots Table Styles */
+      .lots-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+        background: var(--surface-0);
+      }
+
+      .lots-table thead th {
+        padding: 14px 16px;
+        text-align: left;
+        font-weight: 600;
+        color: var(--text-secondary);
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        border-bottom: 2px solid var(--surface-200);
+        background: var(--surface-50);
+      }
+
+      .lots-table tbody td {
+        padding: 16px;
+        border-bottom: 1px solid var(--surface-100);
+        vertical-align: top;
+        font-size: 13px;
+      }
+
+      .lots-table tbody tr:hover {
+        background: var(--surface-50);
+      }
+
+      .lot-number-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        background: var(--primary-100);
+        color: var(--primary-700);
+        border-radius: 50%;
+        font-weight: 700;
+        font-size: 14px;
+      }
+
+      .lot-name-cell {
+        font-weight: 600;
+        color: var(--text-primary);
+        font-size: 14px;
+      }
+
+      .lot-desc-cell {
+        color: var(--text-secondary);
+        font-size: 13px;
+        display: block;
+        max-width: 220px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .lot-products-cell {
+        min-width: 250px;
+      }
+
+      .no-products-text {
+        color: var(--text-muted);
+        font-style: italic;
+        font-size: 12px;
+      }
+
+      .product-tags-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .product-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        background: var(--surface-100);
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-sm);
+        font-size: 12px;
+        transition: all 0.15s ease;
+      }
+
+      .product-tag:hover {
+        background: var(--surface-50);
+        border-color: var(--surface-300);
+      }
+
+      .product-tag-code {
+        font-family: 'Courier New', monospace;
+        font-weight: 600;
+        color: var(--primary-600);
+        font-size: 12px;
+      }
+
+      .product-tag-name {
+        color: var(--text-secondary);
+        max-width: 120px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 12px;
+      }
+
+      .product-tag-qty {
+        color: var(--text-muted);
+        font-weight: 500;
+        font-size: 12px;
+      }
+
+      .product-tag-value {
+        color: var(--success-600);
+        font-weight: 600;
+        font-size: 12px;
+      }
+
+      .product-tag-remove {
+        width: 18px;
+        height: 18px;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        color: var(--text-muted);
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        opacity: 0.6;
+        transition: all 0.15s ease;
+        margin-left: 2px;
+      }
+
+      .product-tag:hover .product-tag-remove {
+        opacity: 1;
+      }
+
+      .product-tag-remove:hover {
+        background: var(--danger-100);
+        color: var(--danger-600);
+      }
+
+      /* Lot Actions Menu */
+      .lot-actions-menu-wrapper {
+        position: relative;
+        display: inline-block;
+      }
+
+      .lot-actions-btn {
+        width: 32px;
+        height: 32px;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        color: var(--text-secondary);
+        font-size: 18px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--radius-sm);
+        transition: all 0.15s ease;
+      }
+
+      .lot-actions-btn:hover {
+        background: var(--surface-100);
+        color: var(--text-primary);
+      }
+
+      .lot-actions-dropdown {
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: var(--surface-0);
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-lg);
+        min-width: 150px;
+        z-index: 100;
+        overflow: hidden;
+      }
+
+      .lot-actions-dropdown.show {
+        display: block;
+      }
+
+      .lot-action-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+        padding: 10px 14px;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        font-size: 12px;
+        color: var(--text-primary);
+        text-align: left;
+        transition: background 0.15s ease;
+      }
+
+      .lot-action-item:hover {
+        background: var(--surface-50);
+      }
+
+      .lot-action-item.danger {
+        color: var(--danger-600);
+      }
+
+      .lot-action-item.danger:hover {
+        background: var(--danger-50);
+      }
+
+      .lot-action-icon {
+        font-size: 12px;
+        width: 16px;
+        text-align: center;
+      }
+
+      /* Add Product Modal Styles */
+      .product-modal-tabs {
+        display: flex;
+        border-bottom: 1px solid var(--surface-200);
+        margin-bottom: var(--spacing-md);
+      }
+
+      .product-modal-tab {
+        padding: 10px 16px;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        font-size: 12px;
+        color: var(--text-secondary);
+        border-bottom: 2px solid transparent;
+        transition: all 0.15s ease;
+      }
+
+      .product-modal-tab:hover {
+        color: var(--text-primary);
+      }
+
+      .product-modal-tab.active {
+        color: var(--primary-600);
+        border-bottom-color: var(--primary-500);
+        font-weight: 600;
+      }
+
+      .product-modal-tab-content {
+        display: none;
+      }
+
+      .product-modal-tab-content.active {
+        display: block;
+      }
+
+      .req-line-option {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 10px;
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-sm);
+        margin-bottom: 8px;
+        cursor: pointer;
+        transition: all 0.15s ease;
+      }
+
+      .req-line-option:hover {
+        background: var(--surface-50);
+        border-color: var(--primary-300);
+      }
+
+      .req-line-option.selected {
+        background: var(--primary-50);
+        border-color: var(--primary-400);
+      }
+
+      .req-line-option input[type="checkbox"] {
+        margin-top: 2px;
+      }
+
+      .req-line-details {
+        flex: 1;
+      }
+
+      .req-line-code {
+        font-family: 'Courier New', monospace;
+        font-weight: 600;
+        color: var(--primary-600);
+        font-size: 12px;
+      }
+
+      /* Compact Product Requirements Styles */
+      .product-requirements-compact {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .product-req-item {
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-sm);
+        background: var(--surface-0);
+        overflow: hidden;
+        transition: all 0.15s ease;
+      }
+
+      .product-req-item:hover {
+        border-color: var(--surface-300);
+      }
+
+      .product-req-item.has-requirements {
+        border-left: 3px solid var(--success-500);
+      }
+
+      .product-req-item.expanded {
+        box-shadow: var(--shadow-sm);
+      }
+
+      .product-req-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 14px;
+        cursor: pointer;
+        background: var(--surface-50);
+        transition: background 0.15s ease;
+      }
+
+      .product-req-header:hover {
+        background: var(--surface-100);
+      }
+
+      .product-req-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex: 1;
+        min-width: 0;
+      }
+
+      .product-req-code {
+        font-family: 'Courier New', monospace;
+        font-weight: 600;
+        color: var(--primary-600);
+        font-size: 12px;
+        background: var(--primary-50);
+        padding: 2px 8px;
+        border-radius: 4px;
+        flex-shrink: 0;
+      }
+
+      .product-req-desc {
+        font-size: 13px;
+        color: var(--text-primary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .product-req-lot {
+        font-size: 10px;
+        color: var(--text-muted);
+        background: var(--surface-100);
+        padding: 2px 6px;
+        border-radius: 4px;
+        flex-shrink: 0;
+      }
+
+      .product-req-status {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+      }
+
+      .status-badge {
+        font-size: 10px;
+        padding: 2px 8px;
+        border-radius: 10px;
+        font-weight: 500;
+      }
+
+      .status-badge.status-complete {
+        background: var(--success-100);
+        color: var(--success-700);
+      }
+
+      .status-badge.status-pending {
+        background: var(--surface-100);
+        color: var(--text-muted);
+      }
+
+      .product-req-toggle {
+        font-size: 10px;
+        color: var(--text-muted);
+        transition: transform 0.2s ease;
+      }
+
+      .product-req-item.expanded .product-req-toggle {
+        transform: rotate(180deg);
+      }
+
+      .product-req-body {
+        padding: 14px;
+        border-top: 1px solid var(--surface-200);
+        background: var(--surface-0);
+      }
+
+      /* Requirement Type Selector */
+      .req-type-selector {
+        text-align: center;
+        padding: var(--spacing-sm);
+      }
+
+      .req-type-btn {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        padding: 12px 20px;
+        border: 1px solid var(--surface-200);
+        background: var(--surface-0);
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        transition: all 0.15s ease;
+        min-width: 100px;
+      }
+
+      .req-type-btn:hover {
+        border-color: var(--primary-400);
+        background: var(--primary-50);
+      }
+
+      .req-type-icon {
+        font-size: 20px;
+      }
+
+      .req-type-label {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .req-type-hint {
+        font-size: 10px;
+        color: var(--text-muted);
+      }
+
+      /* Compact Rich Text Editor */
+      .rich-text-toolbar-compact {
+        display: flex;
+        gap: 2px;
+        padding: 4px;
+        background: var(--surface-50);
+        border: 1px solid var(--surface-200);
+        border-bottom: none;
+        border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+      }
+
+      .tb-btn {
+        width: 26px;
+        height: 26px;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        border-radius: 4px;
+        font-size: 12px;
+        color: var(--text-secondary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .tb-btn:hover {
+        background: var(--surface-200);
+        color: var(--text-primary);
+      }
+
+      .rich-text-editor-compact {
+        min-height: 80px;
+        padding: 10px;
+        border: 1px solid var(--surface-200);
+        border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+        font-size: 13px;
+        line-height: 1.5;
+        outline: none;
+      }
+
+      .rich-text-editor-compact:focus {
+        border-color: var(--primary-400);
+      }
+
+      .rich-text-editor-compact:empty:before {
+        content: attr(placeholder);
+        color: var(--text-muted);
+      }
+
+      /* Compact Attributes */
+      .req-attributes-compact {
+        padding: var(--spacing-xs);
+      }
+
+      .attributes-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .attr-row {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+      }
+
+      .attr-input {
+        padding: 6px 10px;
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-sm);
+        font-size: 12px;
+        outline: none;
+        transition: border-color 0.15s ease;
+      }
+
+      .attr-input:focus {
+        border-color: var(--primary-400);
+      }
+
+      .attr-name {
+        flex: 1;
+      }
+
+      .attr-value {
+        flex: 1.5;
+      }
+
+      .attr-remove {
+        width: 24px;
+        height: 24px;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        color: var(--text-muted);
+        font-size: 14px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .attr-remove:hover {
+        background: var(--danger-50);
+        color: var(--danger-600);
+      }
+
+      .req-actions-row {
+        display: flex;
+        gap: var(--spacing-sm);
+        margin-top: var(--spacing-sm);
+        padding-top: var(--spacing-sm);
+        border-top: 1px solid var(--surface-100);
+      }
+
+      /* Other Requirements Subsections */
+      .other-req-subsection {
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-sm);
+        overflow: hidden;
+      }
+
+      .subsection-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 14px;
+        background: var(--surface-50);
+        border-bottom: 1px solid var(--surface-200);
+      }
+
+      .subsection-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .subsection-body {
+        padding: 14px;
+      }
+
+      .service-line-compact {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+
+      .req-line-desc {
+        color: var(--text-secondary);
+        font-size: 11px;
+        margin-top: 2px;
+      }
+
+      .new-product-form {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-md);
+      }
+
+      .new-product-form .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--spacing-md);
+      }
+
+      /* Requisition Line Modal */
+      .req-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1002;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(2px);
+      }
+
+      .req-modal-content {
+        background: var(--surface-0);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-2xl);
+        max-width: 550px;
+        width: 95%;
+        max-height: 75vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .req-modal-header {
+        padding: var(--spacing-md);
+        border-bottom: 1px solid var(--surface-200);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: var(--surface-50);
+      }
+
+      .req-modal-title {
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .req-modal-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: var(--spacing-sm);
+      }
+
+      .req-option {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+        padding: var(--spacing-sm);
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-sm);
+        margin-bottom: var(--spacing-xs);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-size: 12px;
+      }
+
+      .req-option:hover {
+        background: var(--primary-50);
+        border-color: var(--primary-300);
+      }
+
+      .req-option.selected {
+        background: var(--primary-50);
+        border-color: var(--primary-500);
+      }
+
+      .req-option-checkbox {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+      }
+
+      .req-option-details {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .req-option-main {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+        font-size: 12px;
+      }
+
+      .req-option-sub {
+        font-size: 10px;
+        color: var(--text-muted);
+        margin-top: 1px;
+      }
+
+      .req-modal-footer {
+        padding: var(--spacing-sm) var(--spacing-md);
+        border-top: 1px solid var(--surface-200);
+        display: flex;
+        justify-content: flex-end;
+        gap: var(--spacing-sm);
+        background: var(--surface-50);
+      }
     </style>
   </head>
   <body>
@@ -3855,14 +5092,14 @@
             <span class="portal-badge">Procurement</span>
             <span style="color: var(--surface-400); margin: 0 8px; font-size: 18px;">|</span>
             <span style="color: var(--primary-500); font-weight: 600; font-size: 14px;">eTendering</span>
-          </div>
+            </div>
 
           <!-- Header Actions: Accessibility, Language, AI, Help, Notifications -->
           <div class="header-actions">
             <!-- Accessibility Button -->
             <div class="header-action-btn" title="Accessibility Options" aria-label="Accessibility Options">
               <i class="pi pi-eye" aria-hidden="true"></i>
-            </div>
+          </div>
 
             <!-- Language Selector -->
             <div class="header-action-btn language-selector" title="Change Language" aria-label="Change Language">
@@ -3993,9 +5230,9 @@
                       <i class="pi pi-folder-open"></i>
                     </div>
                     <div class="form-library-header-text">
-                      <div class="form-library-title">Form Library</div>
+                  <div class="form-library-title">Form Library</div>
                       <div class="form-library-subtitle">Drag & drop to add forms</div>
-                    </div>
+                </div>
                   </div>
                   <button class="toggle-library-btn" onclick="toggleFormLibrary()" aria-label="Close panel">
                     <i class="pi pi-times"></i>
@@ -4005,44 +5242,44 @@
                 <div class="form-library-body">
                   <!-- Search Area -->
                   <div class="form-library-search-area">
-                    <div class="form-library-search">
+                  <div class="form-library-search">
                       <i class="pi pi-search form-library-search-icon"></i>
-                      <input type="search" placeholder="Search forms..." id="form-library-search" />
-                    </div>
+                    <input type="search" placeholder="Search forms..." id="form-library-search" />
+                  </div>
                   </div>
 
                   <!-- Content Area -->
                   <div class="form-library-content">
-                    <div class="form-library-group">
+                  <div class="form-library-group">
                       <div class="form-library-group-label">Submission Forms</div>
-                      <div class="form-library-list" id="form-library-list">
-                        <div class="form-library-item" draggable="true" data-form-type="instructions" data-form-name="Instructions to Bidders">
+                    <div class="form-library-list" id="form-library-list">
+                      <div class="form-library-item" draggable="true" data-form-type="instructions" data-form-name="Instructions to Bidders">
                           <div class="form-library-item-icon">📄</div>
                           <div class="form-library-item-content">
-                            <strong>Instructions to Bidders</strong>
+                        <strong>Instructions to Bidders</strong>
                             <span>Standard format for tender instructions</span>
                           </div>
-                        </div>
-                        <div class="form-library-item" draggable="true" data-form-type="contracts" data-form-name="Contract Forms">
+                      </div>
+                      <div class="form-library-item" draggable="true" data-form-type="contracts" data-form-name="Contract Forms">
                           <div class="form-library-item-icon">📝</div>
                           <div class="form-library-item-content">
-                            <strong>Contract Forms</strong>
+                        <strong>Contract Forms</strong>
                             <span>Offer & award documentation</span>
                           </div>
-                        </div>
-                        <div class="form-library-item" draggable="true" data-form-type="bank-guarantee" data-form-name="Bank Guarantee Form">
+                      </div>
+                      <div class="form-library-item" draggable="true" data-form-type="bank-guarantee" data-form-name="Bank Guarantee Form">
                           <div class="form-library-item-icon">🏦</div>
                           <div class="form-library-item-content">
-                            <strong>Bank Guarantee Form</strong>
+                        <strong>Bank Guarantee Form</strong>
                             <span>Security requirements documentation</span>
                           </div>
-                        </div>
-                        <div class="form-library-item" draggable="true" data-form-type="bid-security" data-form-name="Bid Security Form">
+                      </div>
+                      <div class="form-library-item" draggable="true" data-form-type="bid-security" data-form-name="Bid Security Form">
                           <div class="form-library-item-icon">🔒</div>
                           <div class="form-library-item-content">
-                            <strong>Bid Security Form</strong>
+                        <strong>Bid Security Form</strong>
                             <span>Security requirements for bids</span>
-                          </div>
+                      </div>
                         </div>
                       </div>
                     </div>
@@ -4050,38 +5287,38 @@
                     <div class="form-library-group">
                       <div class="form-library-group-label">Technical Documents</div>
                       <div class="form-library-list">
-                        <div class="form-library-item" draggable="true" data-form-type="drive-questionnaire" data-form-name="DRiVE Questionnaire">
+                      <div class="form-library-item" draggable="true" data-form-type="drive-questionnaire" data-form-name="DRiVE Questionnaire">
                           <div class="form-library-item-icon">📊</div>
                           <div class="form-library-item-content">
-                            <strong>DRiVE Questionnaire</strong>
-                            <span>Risk assessment questionnaire</span>
+                        <strong>DRiVE Questionnaire</strong>
+                        <span>Risk assessment questionnaire</span>
                           </div>
-                        </div>
-                        <div class="form-library-item" draggable="true" data-form-type="technical-specs" data-form-name="Technical Specifications">
+                      </div>
+                      <div class="form-library-item" draggable="true" data-form-type="technical-specs" data-form-name="Technical Specifications">
                           <div class="form-library-item-icon">⚙️</div>
                           <div class="form-library-item-content">
-                            <strong>Technical Specifications</strong>
-                            <span>Detailed technical requirements</span>
+                        <strong>Technical Specifications</strong>
+                        <span>Detailed technical requirements</span>
                           </div>
-                        </div>
-                        <div class="form-library-item" draggable="true" data-form-type="evaluation" data-form-name="Evaluation Form">
+                      </div>
+                      <div class="form-library-item" draggable="true" data-form-type="evaluation" data-form-name="Evaluation Form">
                           <div class="form-library-item-icon">✅</div>
                           <div class="form-library-item-content">
-                            <strong>Evaluation Form</strong>
-                            <span>Scoring and evaluation matrix</span>
+                        <strong>Evaluation Form</strong>
+                        <span>Scoring and evaluation matrix</span>
                           </div>
-                        </div>
-                        <div class="form-library-item" draggable="true" data-form-type="price-schedule" data-form-name="Price Schedule">
+                      </div>
+                      <div class="form-library-item" draggable="true" data-form-type="price-schedule" data-form-name="Price Schedule">
                           <div class="form-library-item-icon">💰</div>
                           <div class="form-library-item-content">
-                            <strong>Price Schedule</strong>
-                            <span>Pricing breakdown template</span>
+                        <strong>Price Schedule</strong>
+                        <span>Pricing breakdown template</span>
                           </div>
-                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
+              </div>
 
                 <!-- Footer -->
                 <div class="form-library-footer">
@@ -4970,7 +6207,7 @@
               </div>
               <button class="btn btn-sm btn-primary" onclick="openLifecycleSearch()">
                 <i class="pi pi-plus"></i> Link Process
-              </button>
+                </button>
             </div>
             
             <div id="lifecycle-chain-container">
@@ -5014,8 +6251,8 @@
               <button class="lifecycle-remove-btn" onclick="removeLifecycleLink('${link.process.id}')" title="Remove">
                 <i class="pi pi-times"></i>
               </button>
-            </div>
-          `;
+          </div>
+        `;
         }).join('');
 
         return `<div class="lifecycle-linked-list-compact">${linkedHtml}</div>`;
@@ -5967,152 +7204,165 @@
         
         // Get unique UNSPSC codes from requisition lines for reference
         const requisitionUnspscCodes = [...new Set(requisitionLines.map(line => line.unspscCode))];
+        const totalValue = requisitionLines.reduce((sum, line) => sum + line.amount, 0);
+        const totalProducts = lots.reduce((sum, lot) => sum + lot.unspscCodes.length, 0);
         
         return `
-          <div class="form-section">
-            <div class="section-header">
-              <div class="section-title">
-                <span class="section-icon">${block.icon}</span>
-                <span>${section.title}</span>
+          <div class="general-info-container">
+            <div class="general-info-body">
+              <!-- Summary Stats -->
+              <div class="summary-stats-row">
+                <div class="stat-item">
+                  <div class="stat-value">${requisitionLines.length}</div>
+                  <div class="stat-label">Req. Lines</div>
               </div>
-              ${sectionIndex === 0 ? '<span class="status-indicator status-incomplete">Incomplete</span>' : ''}
+                <div class="stat-item">
+                  <div class="stat-value">${lots.length}</div>
+                  <div class="stat-label">Lots</div>
             </div>
-            <div class="section-body">
-              <div class="info-alert">
-                <div class="info-alert-text">
-                  ℹ️ Requisition lines are imported from ERP (reference only). Lots are independent and can contain any UNSPSC codes (same as requisition lines or different).
+                <div class="stat-item">
+                  <div class="stat-value">${totalProducts}</div>
+                  <div class="stat-label">Products</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value">$${(totalValue/1000).toFixed(0)}K</div>
+                  <div class="stat-label">Total Value</div>
                 </div>
               </div>
               
-              <!-- Requisition Lines Table -->
-              <div class="requisition-section">
-                <div class="section-subheader">
-                  <h3>Requisition Lines (from ERP - Reference Only)</h3>
-                  <span class="badge">${requisitionLines.length} lines</span>
+              <!-- Requisition Lines - Collapsible (collapsed by default) -->
+              <div class="collapsible-section collapsed" id="req-lines-section">
+                <div class="collapsible-header" onclick="toggleCollapsibleSection('req-lines-section')">
+                  <div class="collapsible-header-left">
+                    <div class="collapsible-header-icon">📋</div>
+                    <span class="collapsible-header-title">Requisition Lines (from ERP)</span>
+                    <span class="badge badge-info" style="margin-left: 6px; font-size: 10px;">${requisitionLines.length}</span>
                 </div>
-                <div class="requisition-table-container">
-                  <table class="requisition-table">
+                  <div style="display: flex; align-items: center; gap: var(--spacing-xs);">
+                    <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); openAddReqLineModal()" style="font-size: 10px; padding: 4px 8px;">+ Add Line</button>
+                    <div class="collapsible-toggle">▼</div>
+                  </div>
+                </div>
+                <div class="collapsible-body">
+                  <div style="overflow-x: auto;">
+                    <table class="req-table">
                     <thead>
                       <tr>
                         <th>ID</th>
-                        <th>UNSPSC Code</th>
+                          <th>UNSPSC</th>
                         <th>Description</th>
-                        <th>Quantity</th>
-                        <th>Unit</th>
+                          <th>Qty</th>
                         <th>Amount</th>
+                          <th style="width: 60px;">Actions</th>
                       </tr>
                     </thead>
                     <tbody>
                       ${requisitionLines.map(line => `
                         <tr data-line-id="${line.id}">
-                          <td><strong>${line.id}</strong></td>
+                            <td><span class="req-id">${line.id}</span></td>
                           <td>
-                            <div class="unspsc-code">${line.unspscCode}</div>
-                            <div class="unspsc-desc">${line.unspscDescription}</div>
+                              <div class="req-unspsc">${line.unspscCode}</div>
+                              <div class="req-unspsc-desc">${line.unspscDescription}</div>
                           </td>
-                          <td>${line.description}</td>
-                          <td>${line.quantity}</td>
-                          <td>${line.unitOfMeasure}</td>
-                          <td>${line.currency} ${line.amount.toLocaleString()}</td>
+                            <td style="max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${line.description}">${line.description}</td>
+                            <td>${line.quantity} ${line.unitOfMeasure}</td>
+                            <td><span class="req-amount">${line.currency} ${line.amount.toLocaleString()}</span></td>
+                            <td>
+                              <button class="req-remove-btn" onclick="removeRequisitionLine('${line.id}')" title="Remove line">🗑️</button>
+                            </td>
                         </tr>
                       `).join('')}
                     </tbody>
                   </table>
                 </div>
               </div>
-              
-              <!-- Lots Management -->
-              <div class="lots-section">
-                <div class="section-subheader">
-                  <h3>Lots</h3>
-                  <button class="btn btn-primary" onclick="createNewLot()">+ Create Lot</button>
                 </div>
                 
-                ${lots.length === 0 ? `
-                  <div class="empty-state">
-                    <div class="empty-state-icon">📦</div>
-                    <div class="empty-state-text">No lots created yet</div>
-                    <div class="empty-state-hint">Create lots to organize products (UNSPSC codes), or proceed without lots. Each lot can contain 1 or more products.</div>
-                    <button class="btn btn-ghost" onclick="createNewLot()">Create First Lot</button>
+              <!-- Lots Management - Collapsible (collapsed by default) -->
+              <div class="collapsible-section collapsed" id="lots-section">
+                <div class="collapsible-header" onclick="toggleCollapsibleSection('lots-section')">
+                  <div class="collapsible-header-left">
+                    <div class="collapsible-header-icon">📦</div>
+                    <span class="collapsible-header-title">Lots</span>
+                    <span class="badge badge-info" style="margin-left: 6px; font-size: 10px;">${lots.length}</span>
                   </div>
-                ` : `
-                  <div class="lots-list">
-                    ${lots.map((lot, lotIndex) => `
-                      <div class="lot-card" data-lot-id="${lot.id}">
-                        <div class="lot-header">
-                          <div class="lot-title">
-                            <span class="lot-number">Lot ${lotIndex + 1}</span>
-                            <input type="text" class="lot-name-input" value="${lot.name}" onchange="updateLotName('${lot.id}', this.value)" placeholder="Enter lot name" />
+                  <div style="display: flex; align-items: center; gap: var(--spacing-xs);">
+                    <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); downloadLotsTemplate()" style="font-size: 10px; padding: 4px 8px;" title="Download Excel template for bulk import">⬇️ Template</button>
+                    <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); document.getElementById('lots-upload-input').click()" style="font-size: 10px; padding: 4px 8px;" title="Upload Excel file to bulk import lots">⬆️ Upload</button>
+                    <input type="file" id="lots-upload-input" accept=".xlsx,.xls,.csv" style="display: none;" onchange="handleLotsUpload(event)" />
+                    <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); openCreateLotModal()" style="font-size: 10px; padding: 4px 8px;">+ Create Lot</button>
+                    <div class="collapsible-toggle">▼</div>
                           </div>
-                          <div class="lot-actions">
-                            <button class="btn-icon" onclick="editLot('${lot.id}')" title="Edit">✏️</button>
-                            <button class="btn-icon danger" onclick="deleteLot('${lot.id}')" title="Delete">🗑️</button>
                           </div>
+                <div class="collapsible-body">
+                  ${lots.length === 0 ? `
+                    <div class="lot-empty-state" style="padding: var(--spacing-lg);">
+                      <div style="font-size: 28px; margin-bottom: var(--spacing-xs);">📦</div>
+                      <div style="font-weight: 600; font-size: 13px; margin-bottom: var(--spacing-xs);">No lots created yet</div>
+                      <div style="color: var(--text-muted); font-size: 11px; margin-bottom: var(--spacing-md);">Create lots to organize products or proceed without lots</div>
+                      <button class="btn btn-ghost btn-sm" onclick="openCreateLotModal()" style="font-size: 11px;">Create First Lot</button>
                         </div>
-                        <div class="lot-body">
-                          <div class="lot-products">
-                            <div class="lot-lines-header">
-                              <span>Products (UNSPSC Codes) in this Lot (${lot.unspscCodes.length})</span>
-                              <button class="btn btn-ghost btn-sm" onclick="addProductsToLot('${lot.id}')">+ Add Products</button>
-                            </div>
+                  ` : `
+                    <div style="overflow-x: auto;">
+                      <table class="lots-table">
+                        <thead>
+                          <tr>
+                            <th style="width: 60px;">Lot</th>
+                            <th style="width: 150px;">Name</th>
+                            <th style="width: 180px;">Description</th>
+                            <th>Products</th>
+                            <th style="width: 50px;">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          ${lots.map((lot, lotIndex) => `
+                            <tr data-lot-id="${lot.id}">
+                              <td><span class="lot-number-badge">${lotIndex + 1}</span></td>
+                              <td><span class="lot-name-cell">${lot.name || 'Unnamed Lot'}</span></td>
+                              <td><span class="lot-desc-cell" title="${lot.description || ''}">${lot.description || '-'}</span></td>
+                              <td>
+                                <div class="lot-products-cell">
                             ${lot.unspscCodes.length === 0 ? `
-                              <div class="lot-empty">No products added. Click "Add Products" to add UNSPSC codes.</div>
+                                    <span class="no-products-text">No products</span>
                             ` : `
-                              <div class="lot-lines-list">
+                                    <div class="product-tags-container">
                                 ${lot.unspscCodes.map((unspsc, idx) => `
-                                  <div class="lot-line-item">
-                                    <span class="lot-line-code">${unspsc.code}</span>
-                                    <span class="lot-line-desc">${unspsc.description || 'No description'}</span>
-                                    ${unspsc.quantity ? `<span class="quantity-badge" title="Quantity">Qty: ${unspsc.quantity}</span>` : ''}
-                                    ${requisitionUnspscCodes.includes(unspsc.code) ? '<span class="match-badge" title="Matches requisition line">✓ From Req</span>' : '<span class="match-badge new" title="New UNSPSC code">New</span>'}
-                                    <button class="btn-icon-sm" onclick="removeProductFromLot('${lot.id}', ${idx})" title="Remove">✖</button>
+                                        <div class="product-tag">
+                                          <span class="product-tag-code">${unspsc.code}</span>
+                                          <span class="product-tag-name" title="${unspsc.description || ''}">${unspsc.description ? unspsc.description.substring(0, 20) + (unspsc.description.length > 20 ? '...' : '') : ''}</span>
+                                          ${unspsc.quantity ? `<span class="product-tag-qty">×${unspsc.quantity}</span>` : ''}
+                                          ${unspsc.estimatedValue ? `<span class="product-tag-value">$${unspsc.estimatedValue.toLocaleString()}</span>` : ''}
+                                          <button class="product-tag-remove" onclick="removeProductFromLot('${lot.id}', ${idx})" title="Remove">×</button>
                                   </div>
                                 `).join('')}
                               </div>
                             `}
                           </div>
+                              </td>
+                              <td>
+                                <div class="lot-actions-menu-wrapper">
+                                  <button class="lot-actions-btn" onclick="toggleLotActionsMenu('${lot.id}')" title="Actions">⋮</button>
+                                  <div class="lot-actions-dropdown" id="lot-menu-${lot.id}">
+                                    <button class="lot-action-item" onclick="openAddProductModal('${lot.id}')">
+                                      <span class="lot-action-icon">➕</span> Add Products
+                                    </button>
+                                    <button class="lot-action-item" onclick="openEditLotModal('${lot.id}')">
+                                      <span class="lot-action-icon">✏️</span> Edit Lot
+                                    </button>
+                                    <button class="lot-action-item danger" onclick="deleteLot('${lot.id}')">
+                                      <span class="lot-action-icon">🗑️</span> Remove Lot
+                                    </button>
                         </div>
                       </div>
+                              </td>
+                            </tr>
                     `).join('')}
+                        </tbody>
+                      </table>
                   </div>
                 `}
               </div>
-              
-              <!-- Tender Structure Summary -->
-              <div class="structure-summary">
-                <div class="section-subheader">
-                  <h3>Tender Structure Summary</h3>
                 </div>
-                <div class="summary-card">
-                  ${lots.length === 0 ? `
-                    <div class="summary-item">
-                      <span class="summary-label">Structure:</span>
-                      <span class="summary-value">No Lots (${requisitionLines.length} requisition lines from ERP)</span>
-                    </div>
-                    <div class="summary-item">
-                      <span class="summary-label">Total Value:</span>
-                      <span class="summary-value">${requisitionLines.reduce((sum, line) => sum + line.amount, 0).toLocaleString()} USD</span>
-                    </div>
-                  ` : `
-                    <div class="summary-item">
-                      <span class="summary-label">Structure:</span>
-                      <span class="summary-value">${lots.length} Lot(s)</span>
-                    </div>
-                    <div class="summary-item">
-                      <span class="summary-label">Requisition Lines (from ERP):</span>
-                      <span class="summary-value">${requisitionLines.length}</span>
-                    </div>
-                    <div class="summary-item">
-                      <span class="summary-label">Total Products in Lots:</span>
-                      <span class="summary-value">${lots.reduce((sum, lot) => sum + lot.unspscCodes.length, 0)}</span>
-                    </div>
-                    <div class="summary-item">
-                      <span class="summary-label">Total Value (Requisition Lines):</span>
-                      <span class="summary-value">${requisitionLines.reduce((sum, line) => sum + line.amount, 0).toLocaleString()} USD</span>
-                    </div>
-                  `}
-                </div>
-              </div>
             </div>
           </div>
         `;
@@ -6148,75 +7398,396 @@
         renderCurrentBlock();
       }
       
-      window.addProductsToLot = function(lotId) {
-        const lot = lots.find(l => l.id === lotId);
-        if (!lot) return;
-        
-        // Get available UNSPSC codes from requisition lines for quick selection
-        const requisitionUnspscCodes = requisitionLines.map(line => ({
-          code: line.unspscCode,
-          description: line.unspscDescription,
-          fromRequisition: true,
-        }));
-        
-        // Build selection message
-        let message = `Add products (UNSPSC codes) to "${lot.name}":\n\n`;
-        message += `You can:\n`;
-        message += `1. Select from requisition line UNSPSC codes (enter numbers)\n`;
-        message += `2. Enter new UNSPSC codes manually (format: CODE or CODE|DESCRIPTION)\n\n`;
-        
-        if (requisitionUnspscCodes.length > 0) {
-          message += `Available from Requisition Lines:\n`;
-          requisitionUnspscCodes.forEach((item, idx) => {
-            message += `${idx + 1}. ${item.code} - ${item.description}\n`;
-          });
+      // Remove Requisition Line
+      window.removeRequisitionLine = function(lineId) {
+        if (!confirm('Are you sure you want to remove this requisition line?')) {
+          return;
         }
         
-        message += `\nEnter selection (e.g., "1,2,3" for requisition codes, or "43211503|Laptop computers" for new codes):`;
-        const input = prompt(message);
+        requisitionLines = requisitionLines.filter(l => l.id !== lineId);
+        renderCurrentBlock();
+        showNotification('Requisition line removed', 'success');
+      }
+      
+      // Download Lots Template
+      window.downloadLotsTemplate = function() {
+        // Create CSV template content
+        const templateHeaders = ['Lot Name', 'Lot Description', 'UNSPSC Code', 'Product Description', 'Quantity', 'Estimated Value (USD)'];
+        const exampleRows = [
+          ['IT Equipment Lot', 'All IT hardware items', '43211503', 'Laptop computers', '50', '75000'],
+          ['IT Equipment Lot', 'All IT hardware items', '43212105', 'Computer monitors', '50', '15000'],
+          ['Office Supplies Lot', 'General office supplies', '44121700', 'Office supplies', '100', '5000'],
+          ['Furniture Lot', 'Office furniture items', '56101500', 'Office desks', '25', '12500'],
+        ];
         
-        if (!input) return;
+        // Build CSV content
+        let csvContent = templateHeaders.join(',') + '\n';
+        csvContent += '# Instructions: Fill in the rows below. Each row represents one product in a lot.\n';
+        csvContent += '# Products with the same Lot Name will be grouped into the same lot.\n';
+        csvContent += '# Delete these instruction lines before uploading.\n';
+        exampleRows.forEach(row => {
+          csvContent += row.map(cell => `"${cell}"`).join(',') + '\n';
+        });
         
-        const parts = input.split(',').map(s => s.trim());
-        parts.forEach(part => {
-          // Check if it's a number (index for requisition codes)
-          const index = parseInt(part) - 1;
-          if (index >= 0 && index < requisitionUnspscCodes.length) {
-            // Add from requisition
-            const item = requisitionUnspscCodes[index];
-            if (!lot.unspscCodes.some(u => u.code === item.code)) {
-              const quantity = prompt(`Enter quantity for ${item.code} - ${item.description}:`, '1');
-              lot.unspscCodes.push({ 
-                code: item.code, 
-                description: item.description,
-                quantity: quantity ? parseInt(quantity) : 1
-              });
+        // Create and trigger download
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', 'lots_template.csv');
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        showNotification('Template downloaded! Fill it out and upload to bulk import lots.', 'success');
+      }
+      
+      // Handle Lots Upload
+      window.handleLotsUpload = function(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          try {
+            const content = e.target.result;
+            const lines = content.split('\n').filter(line => line.trim() && !line.startsWith('#'));
+            
+            if (lines.length < 2) {
+              alert('The file appears to be empty or invalid. Please use the template format.');
+              return;
             }
-          } else if (part.includes('|')) {
-            // New code with description: CODE|DESCRIPTION
-            const [code, description] = part.split('|').map(s => s.trim());
-            if (code && !lot.unspscCodes.some(u => u.code === code)) {
-              const quantity = prompt(`Enter quantity for ${code} - ${description}:`, '1');
-              lot.unspscCodes.push({ 
-                code, 
-                description: description || '',
-                quantity: quantity ? parseInt(quantity) : 1
+            
+            // Skip header row
+            const dataLines = lines.slice(1);
+            const lotsMap = new Map(); // Group by lot name
+            
+            dataLines.forEach(line => {
+              // Parse CSV line (handle quoted values)
+              const values = line.match(/("([^"]*)"|[^,]+)/g);
+              if (!values || values.length < 4) return;
+              
+              // Clean values (remove quotes)
+              const cleanValues = values.map(v => v.replace(/^"|"$/g, '').trim());
+              
+              const [lotName, lotDesc, unspscCode, productDesc, quantity, estimatedValue] = cleanValues;
+              
+              if (!lotName || !unspscCode) return;
+              
+              if (!lotsMap.has(lotName)) {
+                lotsMap.set(lotName, {
+                  id: 'lot-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9),
+                  name: lotName,
+                  description: lotDesc || '',
+                  unspscCodes: []
+                });
+              }
+              
+              const lot = lotsMap.get(lotName);
+              lot.unspscCodes.push({
+                code: unspscCode,
+                description: productDesc || '',
+                quantity: parseInt(quantity) || 1,
+                estimatedValue: parseFloat(estimatedValue) || 0
               });
+            });
+            
+            if (lotsMap.size === 0) {
+              alert('No valid lots found in the file. Please check the format.');
+              return;
             }
-          } else if (part.length >= 8) {
-            // Just UNSPSC code (8 digits)
-            if (!lot.unspscCodes.some(u => u.code === part)) {
-              const quantity = prompt(`Enter quantity for UNSPSC ${part}:`, '1');
-              lot.unspscCodes.push({ 
-                code: part, 
-                description: '',
-                quantity: quantity ? parseInt(quantity) : 1
-              });
-            }
+            
+            // Show preview modal
+            openLotsUploadPreviewModal(Array.from(lotsMap.values()));
+            
+          } catch (error) {
+            console.error('Error parsing file:', error);
+            alert('Error reading the file. Please make sure it is a valid CSV file.');
+          }
+        };
+        
+        reader.readAsText(file);
+        
+        // Reset the input so the same file can be uploaded again
+        event.target.value = '';
+      }
+      
+      // Lots Upload Preview Modal
+      let pendingLotsUpload = [];
+      
+      window.openLotsUploadPreviewModal = function(lotsData) {
+        pendingLotsUpload = lotsData;
+        
+        const modal = document.getElementById('lots-upload-preview-modal');
+        const body = document.getElementById('lots-upload-preview-body');
+        
+        let totalProducts = lotsData.reduce((sum, lot) => sum + lot.unspscCodes.length, 0);
+        let totalValue = lotsData.reduce((sum, lot) => 
+          sum + lot.unspscCodes.reduce((s, p) => s + (p.estimatedValue || 0), 0), 0);
+        
+        body.innerHTML = `
+          <div style="margin-bottom: var(--spacing-md); padding: var(--spacing-md); background: var(--info-50); border-radius: var(--radius-sm); font-size: 12px;">
+            <strong>Summary:</strong> ${lotsData.length} lot(s), ${totalProducts} product(s), $${totalValue.toLocaleString()} total value
+          </div>
+          <div style="max-height: 300px; overflow-y: auto;">
+            ${lotsData.map((lot, idx) => `
+              <div style="border: 1px solid var(--surface-200); border-radius: var(--radius-sm); margin-bottom: var(--spacing-sm); overflow: hidden;">
+                <div style="background: var(--surface-50); padding: var(--spacing-sm) var(--spacing-md); border-bottom: 1px solid var(--surface-200); display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <span style="font-weight: 600; font-size: 13px;">${lot.name}</span>
+                    ${lot.description ? `<span style="color: var(--text-muted); font-size: 11px; margin-left: 8px;">${lot.description}</span>` : ''}
+                  </div>
+                  <span style="font-size: 11px; color: var(--text-muted);">${lot.unspscCodes.length} product(s)</span>
+                </div>
+                <div style="padding: var(--spacing-sm);">
+                  <div style="display: flex; flex-wrap: wrap; gap: 4px;">
+                    ${lot.unspscCodes.map(p => `
+                      <span style="display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; background: var(--surface-100); border-radius: 12px; font-size: 10px;">
+                        <span style="font-family: monospace; color: var(--primary-600); font-weight: 600;">${p.code}</span>
+                        <span style="color: var(--text-secondary);">${p.description ? p.description.substring(0, 15) + (p.description.length > 15 ? '...' : '') : ''}</span>
+                        <span style="color: var(--text-muted);">×${p.quantity}</span>
+                      </span>
+                    `).join('')}
+                  </div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+        
+        modal.style.display = 'flex';
+      }
+      
+      window.closeLotsUploadPreviewModal = function() {
+        document.getElementById('lots-upload-preview-modal').style.display = 'none';
+        pendingLotsUpload = [];
+      }
+      
+      window.confirmLotsUpload = function() {
+        if (pendingLotsUpload.length === 0) return;
+        
+        // Add all uploaded lots
+        lots = [...lots, ...pendingLotsUpload];
+        
+        closeLotsUploadPreviewModal();
+        renderCurrentBlock();
+        showNotification(`Successfully imported ${pendingLotsUpload.length} lot(s)!`, 'success');
+      }
+      
+      // Lot actions menu toggle
+      window.toggleLotActionsMenu = function(lotId) {
+        // Close all other menus first
+        document.querySelectorAll('.lot-actions-dropdown').forEach(menu => {
+          if (menu.id !== 'lot-menu-' + lotId) {
+            menu.classList.remove('show');
           }
         });
         
+        const menu = document.getElementById('lot-menu-' + lotId);
+        if (menu) {
+          menu.classList.toggle('show');
+        }
+      }
+      
+      // Close menus when clicking outside
+      document.addEventListener('click', function(e) {
+        if (!e.target.closest('.lot-actions-menu-wrapper')) {
+          document.querySelectorAll('.lot-actions-dropdown').forEach(menu => {
+            menu.classList.remove('show');
+          });
+        }
+      });
+      
+      // Open Add Product Modal
+      let currentLotIdForProduct = null;
+      let selectedReqLinesForProduct = [];
+      
+      window.openAddProductModal = function(lotId) {
+        currentLotIdForProduct = lotId;
+        selectedReqLinesForProduct = [];
+        
+        // Close any open menus
+        document.querySelectorAll('.lot-actions-dropdown').forEach(menu => {
+          menu.classList.remove('show');
+        });
+        
+        const lot = lots.find(l => l.id === lotId);
+        if (!lot) return;
+        
+        // Populate requisition lines options
+        const reqLinesBody = document.getElementById('add-product-req-lines');
+        if (reqLinesBody) {
+          const existingCodes = lot.unspscCodes.map(u => u.code);
+          const availableLines = requisitionLines.filter(line => !existingCodes.includes(line.unspscCode));
+          
+          if (availableLines.length === 0) {
+            reqLinesBody.innerHTML = '<div style="text-align: center; padding: var(--spacing-lg); color: var(--text-muted); font-size: 12px;">All requisition lines have already been added to this lot.</div>';
+          } else {
+            reqLinesBody.innerHTML = availableLines.map(line => `
+              <div class="req-line-option" onclick="toggleReqLineForProduct('${line.unspscCode}', this)">
+                <input type="checkbox" id="req-${line.unspscCode}" />
+                <div class="req-line-details">
+                  <div class="req-line-code">${line.unspscCode}</div>
+                  <div class="req-line-desc">${line.unspscDescription}</div>
+                  <div style="font-size: 10px; color: var(--text-muted); margin-top: 4px;">${line.quantity} ${line.unitOfMeasure} • ${line.currency} ${line.amount.toLocaleString()}</div>
+                </div>
+              </div>
+            `).join('');
+          }
+        }
+        
+        // Clear new product form
+        const unspscInput = document.getElementById('new-product-unspsc');
+        const descInput = document.getElementById('new-product-desc');
+        const qtyInput = document.getElementById('new-product-qty');
+        const valueInput = document.getElementById('new-product-value');
+        if (unspscInput) unspscInput.value = '';
+        if (descInput) descInput.value = '';
+        if (qtyInput) qtyInput.value = '1';
+        if (valueInput) valueInput.value = '';
+        
+        // Reset to first tab
+        switchProductModalTab('from-requisition');
+        
+        // Show modal
+        document.getElementById('add-product-modal').style.display = 'flex';
+      }
+      
+      window.closeAddProductModal = function() {
+        document.getElementById('add-product-modal').style.display = 'none';
+        currentLotIdForProduct = null;
+        selectedReqLinesForProduct = [];
+      }
+      
+      window.switchProductModalTab = function(tabId) {
+        document.querySelectorAll('.product-modal-tab').forEach(tab => {
+          tab.classList.toggle('active', tab.dataset.tab === tabId);
+        });
+        document.querySelectorAll('.product-modal-tab-content').forEach(content => {
+          content.classList.toggle('active', content.id === 'tab-' + tabId);
+          });
+        
+        // Update button based on tab
+        const confirmBtn = document.getElementById('add-product-confirm-btn');
+        if (confirmBtn) {
+          if (tabId === 'from-requisition') {
+            confirmBtn.textContent = 'Add Selected';
+            confirmBtn.onclick = addProductsFromRequisition;
+          } else {
+            confirmBtn.textContent = 'Create Product';
+            confirmBtn.onclick = addNewProduct;
+          }
+        }
+      }
+      
+      window.toggleReqLineForProduct = function(unspscCode, element) {
+        const checkbox = element.querySelector('input[type="checkbox"]');
+        const isSelected = selectedReqLinesForProduct.includes(unspscCode);
+        
+        if (isSelected) {
+          selectedReqLinesForProduct = selectedReqLinesForProduct.filter(c => c !== unspscCode);
+          element.classList.remove('selected');
+          checkbox.checked = false;
+        } else {
+          selectedReqLinesForProduct.push(unspscCode);
+          element.classList.add('selected');
+          checkbox.checked = true;
+        }
+      }
+      
+      window.addProductsFromRequisition = function() {
+        if (!currentLotIdForProduct || selectedReqLinesForProduct.length === 0) {
+          alert('Please select at least one requisition line.');
+          return;
+        }
+        
+        const lot = lots.find(l => l.id === currentLotIdForProduct);
+        if (!lot) return;
+        
+        selectedReqLinesForProduct.forEach(unspscCode => {
+          const line = requisitionLines.find(l => l.unspscCode === unspscCode);
+          if (line && !lot.unspscCodes.some(u => u.code === unspscCode)) {
+              lot.unspscCodes.push({ 
+              code: line.unspscCode,
+              description: line.unspscDescription,
+              quantity: line.quantity,
+              estimatedValue: line.amount
+              });
+            }
+        });
+        
+        closeAddProductModal();
         renderCurrentBlock();
+      }
+      
+      window.addNewProduct = function() {
+        if (!currentLotIdForProduct) return;
+        
+        const lot = lots.find(l => l.id === currentLotIdForProduct);
+        if (!lot) return;
+        
+        const unspsc = document.getElementById('new-product-unspsc').value.trim();
+        const desc = document.getElementById('new-product-desc').value.trim();
+        const qty = parseInt(document.getElementById('new-product-qty').value) || 1;
+        const value = parseFloat(document.getElementById('new-product-value').value) || 0;
+        
+        if (!unspsc) {
+          alert('Please enter a UNSPSC code.');
+          return;
+        }
+        
+        if (lot.unspscCodes.some(u => u.code === unspsc)) {
+          alert('This UNSPSC code is already in the lot.');
+          return;
+        }
+        
+              lot.unspscCodes.push({ 
+          code: unspsc,
+          description: desc,
+          quantity: qty,
+          estimatedValue: value
+        });
+        
+        closeAddProductModal();
+        renderCurrentBlock();
+      }
+      
+      // Edit Lot Modal
+      window.openEditLotModal = function(lotId) {
+        // Close any open menus
+        document.querySelectorAll('.lot-actions-dropdown').forEach(menu => {
+          menu.classList.remove('show');
+        });
+        
+        const lot = lots.find(l => l.id === lotId);
+        if (!lot) return;
+        
+        document.getElementById('edit-lot-id').value = lotId;
+        document.getElementById('edit-lot-name-input').value = lot.name || '';
+        document.getElementById('edit-lot-desc-input').value = lot.description || '';
+        
+        document.getElementById('edit-lot-modal').style.display = 'flex';
+      }
+      
+      window.closeEditLotModal = function() {
+        document.getElementById('edit-lot-modal').style.display = 'none';
+            }
+      
+      window.saveEditLot = function() {
+        const lotId = document.getElementById('edit-lot-id').value;
+        const lot = lots.find(l => l.id === lotId);
+        if (!lot) return;
+        
+        lot.name = document.getElementById('edit-lot-name-input').value.trim();
+        lot.description = document.getElementById('edit-lot-desc-input').value.trim();
+        
+        closeEditLotModal();
+        renderCurrentBlock();
+      }
+      
+      window.addProductsToLot = function(lotId) {
+        openAddProductModal(lotId);
       }
       
       window.removeProductFromLot = function(lotId, index) {
@@ -6239,6 +7810,321 @@
         }
       }
 
+      // ===== SCOPE & REQUIREMENTS BLOCK =====
+      function renderScopeRequirementsBlock(block) {
+        // Initialize requisition lines if not already done
+        if (requisitionLines.length === 0) {
+          initializeRequisitionLines();
+        }
+        
+        // Get all UNSPSC codes for Product Requirements
+        let unspscCodesToShow = [];
+        if (lots.length === 0) {
+          unspscCodesToShow = requisitionLines.map(line => ({
+            code: line.unspscCode,
+            description: line.unspscDescription,
+            source: 'requisition',
+            sourceId: line.id,
+          }));
+        } else {
+          lots.forEach(lot => {
+            lot.unspscCodes.forEach(unspsc => {
+              unspscCodesToShow.push({
+                code: unspsc.code,
+                description: unspsc.description,
+                source: 'lot',
+                sourceId: lot.id,
+                lotName: lot.name,
+              });
+            });
+          });
+        }
+        
+        // Remove duplicates
+        const uniqueUnspscCodes = [];
+        const seenCodes = new Set();
+        unspscCodesToShow.forEach(item => {
+          if (!seenCodes.has(item.code)) {
+            seenCodes.add(item.code);
+            uniqueUnspscCodes.push(item);
+          }
+        });
+
+        return `
+          <div class="general-info-container">
+            <div class="general-info-body">
+              
+              <!-- Scope and Objectives Section - Collapsible -->
+              <div class="collapsible-section collapsed" id="scope-objectives-section">
+                <div class="collapsible-header" onclick="toggleCollapsibleSection('scope-objectives-section')">
+                  <div class="collapsible-header-left">
+                    <span class="collapsible-header-title">Scope and Objectives</span>
+                  </div>
+                  <div class="collapsible-toggle">▼</div>
+                </div>
+                <div class="collapsible-body">
+                  <div class="form-group">
+                    <label class="form-label">Scope and objectives of sourcing or solicitation process <span class="required">*</span></label>
+                    <textarea class="form-textarea" placeholder="Describe the scope and objectives of this procurement process..." style="min-height: 120px;"></textarea>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Product Requirements Section - Collapsible -->
+              <div class="collapsible-section collapsed" id="product-requirements-section" style="margin-top: var(--spacing-md);">
+                <div class="collapsible-header" onclick="toggleCollapsibleSection('product-requirements-section')">
+                  <div class="collapsible-header-left">
+                    <span class="collapsible-header-title">Product Requirements & Specifications</span>
+                    <span class="badge badge-info" style="margin-left: 8px; font-size: 10px;">${uniqueUnspscCodes.length} products</span>
+                  </div>
+                  <div class="collapsible-toggle">▼</div>
+                </div>
+                <div class="collapsible-body">
+                  ${renderProductRequirementsContent(uniqueUnspscCodes)}
+                </div>
+              </div>
+              
+              <!-- Other Requirements Section - Collapsible -->
+              <div class="collapsible-section collapsed" id="other-requirements-section" style="margin-top: var(--spacing-md);">
+                <div class="collapsible-header" onclick="toggleCollapsibleSection('other-requirements-section')">
+                  <div class="collapsible-header-left">
+                    <span class="collapsible-header-title">Other Requirements</span>
+                  </div>
+                  <div class="collapsible-toggle">▼</div>
+                </div>
+                <div class="collapsible-body">
+                  ${renderOtherRequirementsContent()}
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        `;
+      }
+      
+      // Render Product Requirements Content (compact version)
+      function renderProductRequirementsContent(uniqueUnspscCodes) {
+        if (uniqueUnspscCodes.length === 0) {
+          return `
+            <div class="empty-state" style="padding: var(--spacing-lg); text-align: center;">
+              <div style="font-size: 24px; margin-bottom: var(--spacing-xs);">📋</div>
+              <div style="font-weight: 600; margin-bottom: var(--spacing-xs);">No products available</div>
+              <div style="color: var(--text-muted); font-size: 12px;">${lots.length === 0 ? 'Add requisition lines or create lots with products.' : 'Add products to lots to define requirements.'}</div>
+            </div>
+          `;
+        }
+        
+        return `
+          <!-- Quick Actions Bar -->
+          <div style="display: flex; gap: var(--spacing-sm); margin-bottom: var(--spacing-md); padding: var(--spacing-sm); background: var(--surface-50); border-radius: var(--radius-sm); border: 1px solid var(--surface-200);">
+            <button class="btn btn-ghost btn-sm" onclick="exportProductRequirementsToSpreadsheet()" style="font-size: 11px;">📥 Export</button>
+            <button class="btn btn-ghost btn-sm" onclick="uploadProductRequirementsSpreadsheet()" style="font-size: 11px;">📤 Import</button>
+            <span style="flex: 1;"></span>
+            <span style="font-size: 11px; color: var(--text-muted); display: flex; align-items: center;">Bulk manage via spreadsheet</span>
+          </div>
+          
+          <!-- Products List - Compact Accordion Style -->
+          <div class="product-requirements-compact">
+            ${uniqueUnspscCodes.map((unspsc, idx) => {
+              const req = productRequirements[unspsc.code] || { requirementType: null, attributes: [], description: '' };
+              const hasRequirements = req.requirementType && (req.attributes.length > 0 || req.description);
+              const statusClass = hasRequirements ? 'status-complete' : 'status-pending';
+              const statusText = hasRequirements ? '✓ Defined' : '○ Pending';
+              
+              return `
+                <div class="product-req-item ${hasRequirements ? 'has-requirements' : ''}" data-unspsc="${unspsc.code}">
+                  <div class="product-req-header" onclick="toggleProductRequirement('${unspsc.code}')">
+                    <div class="product-req-info">
+                      <span class="product-req-code">${unspsc.code}</span>
+                      <span class="product-req-desc">${unspsc.description}</span>
+                      ${unspsc.lotName ? `<span class="product-req-lot">Lot: ${unspsc.lotName}</span>` : ''}
+                    </div>
+                    <div class="product-req-status">
+                      <span class="status-badge ${statusClass}">${statusText}</span>
+                      <span class="product-req-toggle">▼</span>
+                    </div>
+                  </div>
+                  <div class="product-req-body" id="product-req-body-${unspsc.code.replace(/[^a-zA-Z0-9]/g, '_')}" style="display: none;">
+                    ${renderProductRequirementBody(unspsc, req)}
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        `;
+      }
+      
+      // Render individual product requirement body
+      function renderProductRequirementBody(unspsc, req) {
+        if (!req.requirementType || (req.attributes.length === 0 && !req.description)) {
+          return `
+            <div class="req-type-selector">
+              <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--spacing-sm);">Choose requirement type:</p>
+              <div style="display: flex; gap: var(--spacing-sm);">
+                <button class="req-type-btn" onclick="event.stopPropagation(); addRequirementAttribute('${unspsc.code}')">
+                  <span class="req-type-icon">📋</span>
+                  <span class="req-type-label">Attributes</span>
+                  <span class="req-type-hint">Structured data</span>
+                </button>
+                <button class="req-type-btn" onclick="event.stopPropagation(); addDescriptionField('${unspsc.code}')">
+                  <span class="req-type-icon">📝</span>
+                  <span class="req-type-label">Description</span>
+                  <span class="req-type-hint">Free-text</span>
+                </button>
+              </div>
+            </div>
+          `;
+        } else if (req.requirementType === 'description') {
+          return `
+            <div class="req-description-compact">
+              <div class="form-group" style="margin: 0;">
+                <div class="rich-text-toolbar-compact">
+                  <button type="button" class="tb-btn" onclick="formatTextByCode('${unspsc.code}', 'bold')" title="Bold"><strong>B</strong></button>
+                  <button type="button" class="tb-btn" onclick="formatTextByCode('${unspsc.code}', 'italic')" title="Italic"><em>I</em></button>
+                  <button type="button" class="tb-btn" onclick="formatTextByCode('${unspsc.code}', 'insertUnorderedList')" title="List">•</button>
+                  <button type="button" class="tb-btn" onclick="insertLinkByCode('${unspsc.code}')" title="Link">🔗</button>
+                </div>
+                <div 
+                  id="rich-text-editor-${unspsc.code.replace(/[^a-zA-Z0-9]/g, '_')}"
+                  class="rich-text-editor-compact" 
+                  contenteditable="true"
+                  data-unspsc="${unspsc.code}"
+                  placeholder="Enter product/service description..."
+                  oninput="updateRequirementDescriptionFromEditor('${unspsc.code}')"
+                >${req.description || ''}</div>
+              </div>
+              <div class="req-actions-row">
+                <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); switchToAttributes('${unspsc.code}')" style="font-size: 10px;">Switch to Attributes</button>
+                <button class="btn btn-ghost btn-sm btn-danger" onclick="event.stopPropagation(); clearRequirements('${unspsc.code}')" style="font-size: 10px;">Clear</button>
+              </div>
+            </div>
+          `;
+        } else {
+          return `
+            <div class="req-attributes-compact">
+              <div class="attributes-grid">
+                ${req.attributes.map((attr, idx) => `
+                  <div class="attr-row">
+                    <input type="text" class="attr-input attr-name" value="${attr.name}" placeholder="Attribute" onchange="updateAttributeName('${unspsc.code}', ${idx}, this.value)" />
+                    <input type="text" class="attr-input attr-value" value="${attr.value}" placeholder="Value" onchange="updateAttributeValue('${unspsc.code}', ${idx}, this.value)" />
+                    <button class="attr-remove" onclick="event.stopPropagation(); removeAttribute('${unspsc.code}', ${idx})">×</button>
+                  </div>
+                `).join('')}
+              </div>
+              <div class="req-actions-row">
+                <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); addRequirementAttribute('${unspsc.code}')" style="font-size: 10px;">+ Add Attribute</button>
+                <button class="btn btn-ghost btn-sm btn-danger" onclick="event.stopPropagation(); clearRequirements('${unspsc.code}')" style="font-size: 10px;">Clear</button>
+              </div>
+            </div>
+          `;
+        }
+      }
+      
+      // Toggle product requirement expansion
+      window.toggleProductRequirement = function(unspscCode) {
+        const sanitizedCode = unspscCode.replace(/[^a-zA-Z0-9]/g, '_');
+        const body = document.getElementById('product-req-body-' + sanitizedCode);
+        const item = body.closest('.product-req-item');
+        
+        if (body.style.display === 'none') {
+          body.style.display = 'block';
+          item.classList.add('expanded');
+        } else {
+          body.style.display = 'none';
+          item.classList.remove('expanded');
+        }
+      }
+      
+      // Render Other Requirements Content (3-column layout)
+      function renderOtherRequirementsContent() {
+        return `
+          <!-- Service Descriptions - Compact -->
+          <div class="other-req-subsection">
+            <div class="subsection-header">
+              <span class="subsection-title">Service Descriptions</span>
+              <button class="btn btn-ghost btn-sm" onclick="addServiceLine()" style="font-size: 10px;">+ Add</button>
+            </div>
+            <div class="subsection-body">
+              ${tenderAuthorConfig.serviceDescriptions.length === 0 ? `
+                <div style="text-align: center; padding: var(--spacing-md); color: var(--text-muted); font-size: 12px; border: 1px dashed var(--surface-300); border-radius: var(--radius-sm);">
+                  No service lines. Click "+ Add" to create one.
+                </div>
+              ` : `
+                <div style="display: flex; flex-direction: column; gap: var(--spacing-sm);">
+                  ${tenderAuthorConfig.serviceDescriptions.map((service, idx) => `
+                    <div class="service-line-compact">
+                      <input type="text" class="form-input" value="${service.name}" placeholder="Service name" onchange="updateServiceLine(${idx}, 'name', this.value)" style="flex: 1; font-size: 12px; padding: 6px 10px;" />
+                      <input type="text" class="form-input" value="${service.description || ''}" placeholder="Description (optional)" onchange="updateServiceLine(${idx}, 'description', this.value)" style="flex: 2; font-size: 12px; padding: 6px 10px;" />
+                      <button class="btn-icon-sm" onclick="removeServiceLine(${idx})" style="font-size: 12px;">×</button>
+                    </div>
+                  `).join('')}
+                </div>
+              `}
+            </div>
+          </div>
+          
+          <!-- Delivery Requirements - 3 Column Layout -->
+          <div class="other-req-subsection" style="margin-top: var(--spacing-md);">
+            <div class="subsection-header">
+              <span class="subsection-title">Delivery Requirements</span>
+              <button class="btn btn-ghost btn-sm" onclick="addDeliveryRequirementField()" style="font-size: 10px;">+ Add Field</button>
+            </div>
+            <div class="subsection-body">
+              <div class="form-grid-3col">
+                ${deliveryRequirementFields.map((field, idx) => {
+                  if (field.type === 'text') {
+                    return `
+                      <div class="form-group">
+                        <label class="form-label" style="font-size: 12px;">${field.label}</label>
+                        <div style="display: flex; gap: 4px;">
+                          <input type="text" class="form-input" value="${field.value}" placeholder="${field.placeholder}" onchange="updateDeliveryFieldValue('${field.id}', this.value)" style="flex: 1; font-size: 12px; padding: 6px 10px;" />
+                          <button class="btn-icon-sm" onclick="removeDeliveryRequirementField('${field.id}')" style="font-size: 10px;">×</button>
+                        </div>
+                      </div>
+                    `;
+                  } else if (field.type === 'multi-select' && field.id === 'dr3') {
+                    return `
+                      <div class="form-group">
+                        <label class="form-label" style="font-size: 12px;">${field.label}</label>
+                        <select class="form-select" multiple size="3" onchange="updateAllowedIncoterms(this)" style="font-size: 12px;">
+                          <option value="EXW" ${tenderAuthorConfig.deliveryConfig.allowedIncoterms?.includes('EXW') ? 'selected' : ''}>EXW</option>
+                          <option value="FCA" ${tenderAuthorConfig.deliveryConfig.allowedIncoterms?.includes('FCA') ? 'selected' : ''}>FCA</option>
+                          <option value="DAP" ${tenderAuthorConfig.deliveryConfig.allowedIncoterms?.includes('DAP') ? 'selected' : ''}>DAP</option>
+                          <option value="DDP" ${tenderAuthorConfig.deliveryConfig.allowedIncoterms?.includes('DDP') ? 'selected' : ''}>DDP</option>
+                        </select>
+                      </div>
+                    `;
+                  } else if (field.type === 'textarea') {
+                    return `
+                      <div class="form-group full-width">
+                        <label class="form-label" style="font-size: 12px;">${field.label}</label>
+                        <div style="display: flex; gap: 4px;">
+                          <textarea class="form-textarea" placeholder="${field.placeholder}" onchange="updateDeliveryFieldValue('${field.id}', this.value)" style="flex: 1; font-size: 12px; padding: 6px 10px; min-height: 60px;">${field.value}</textarea>
+                          <button class="btn-icon-sm" onclick="removeDeliveryRequirementField('${field.id}')" style="font-size: 10px;">×</button>
+                        </div>
+                      </div>
+                    `;
+                  }
+                  return '';
+                }).join('')}
+              </div>
+            </div>
+          </div>
+          
+          <!-- Specific Requirements - Full Width -->
+          <div class="other-req-subsection" style="margin-top: var(--spacing-md);">
+            <div class="subsection-header">
+              <span class="subsection-title">Specific Requirements</span>
+            </div>
+            <div class="subsection-body">
+              <div class="form-group" style="margin: 0;">
+                <textarea class="form-textarea" placeholder="Enter specific requirements, conditions and additional information..." style="min-height: 80px; font-size: 13px;" onchange="tenderAuthorConfig.specificRequirements = this.value">${tenderAuthorConfig.specificRequirements || ''}</textarea>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+      
       // ===== PRODUCT REQUIREMENTS FUNCTIONS =====
       function renderProductRequirementsSection(block, section, sectionIndex, isFirst) {
         // Initialize requisition lines if not already done
@@ -7794,21 +9680,15 @@
 
       function renderParticularsSection(block, section, sectionIndex, isFirst) {
         return `
-          <div class="form-section">
-            <div class="section-header">
-              <div class="section-title">
-                <span class="section-icon">${block.icon}</span>
-                <span>${section.title}</span>
+          <div class="collapsible-section collapsed" id="particulars-section" style="margin-top: var(--spacing-md);">
+            <div class="collapsible-header" onclick="toggleCollapsibleSection('particulars-section')">
+              <div class="collapsible-header-left">
+                <span class="collapsible-header-title">Particulars</span>
               </div>
+              <div class="collapsible-toggle">▼</div>
             </div>
-            <div class="section-body">
-              <div class="info-alert" style="margin-bottom: var(--spacing-lg);">
-                <div class="info-alert-text">
-                  ℹ️ Define comprehensive tender particulars including scope, requirements, and commercial conditions
-                </div>
-              </div>
-              
-              <div class="form-grid">
+            <div class="collapsible-body">
+              <div class="form-grid-3col">
                 <!-- Scope and objectives -->
                 <div class="form-group full-width">
                   <label class="form-label">Scope and objectives of the sourcing or solicitation process</label>
@@ -8306,6 +10186,8 @@
                 
               </div>
             </div>
+              </div>
+            </div>
           </div>
         `;
       }
@@ -8315,6 +10197,15 @@
         const block = templateBlocks[currentBlockIndex];
 
         let html = '';
+
+        // Special handling for Scope & Requirements block - render all sections in one container
+        if (block.id === 'scope') {
+          html = renderScopeRequirementsBlock(block);
+          wrapper.innerHTML = html;
+          attachAuthoringEventListeners();
+          updateNavigationButtons();
+          return;
+        }
 
         block.sections.forEach((section, sectionIndex) => {
           const isFirst = sectionIndex === 0;
@@ -8364,29 +10255,80 @@
           // Special layout for General Information block - no section header, full width
           const isGeneralInfo = block.id === 'general' && sectionIndex === 0;
           
+          // Special layout for Project Information section - collapsible, 3-column, no icon
+          const isProjectInfo = block.id === 'project' && sectionIndex === 0;
+          
+          if (isProjectInfo) {
+          html += `
+              <div class="general-info-container">
+                <div class="general-info-body">
+                  <div class="collapsible-section collapsed" id="project-info-section">
+                    <div class="collapsible-header" onclick="toggleCollapsibleSection('project-info-section')">
+                      <div class="collapsible-header-left">
+                        <span class="collapsible-header-title">Project Information</span>
+                      </div>
+                      <div class="collapsible-toggle">▼</div>
+                    </div>
+                    <div class="collapsible-body">
+                      <div class="form-grid-3col">
+                        ${section.fields.map((field) => {
+                          if (!shouldShowField(field)) return '';
+                          const onchangeAttr = field.onchange ? `onchange="${field.onchange}(this.value)"` : '';
+                          if (field.type === 'search') {
+                            return `
+                              <div class="form-group">
+                                <label class="form-label">
+                                  ${field.label} ${field.required ? '<span class="required">*</span>' : ''}
+                                </label>
+                                <div style="position: relative;">
+                                  <input type="text" class="form-input" value="${field.value || ''}" placeholder="${field.placeholder || 'Search...'}" ${field.required ? 'required' : ''} ${field.readonly ? 'readonly' : ''} style="padding-left: 36px;" />
+                                  <span style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 13px;">🔍</span>
+                                </div>
+                                ${field.source ? '<span class="help-text">Source: ' + field.source + '</span>' : ''}
+                              </div>
+                            `;
+                          } else if (field.type === 'date') {
+                            return `
+                              <div class="form-group">
+                                <label class="form-label">
+                                  ${field.label} ${field.required ? '<span class="required">*</span>' : ''}
+                                </label>
+                                <input type="date" class="form-input" value="${field.value || ''}" ${field.required ? 'required' : ''} ${field.readonly ? 'readonly' : ''} ${onchangeAttr} />
+                                ${field.source ? '<span class="help-text">Source: ' + field.source + '</span>' : ''}
+                              </div>
+                            `;
+                          } else {
+                            return `
+                              <div class="form-group">
+                                <label class="form-label">
+                                  ${field.label} ${field.required ? '<span class="required">*</span>' : ''}
+                                </label>
+                                <input type="text" class="form-input" value="${field.value || ''}" placeholder="${field.placeholder || ''}" ${field.required ? 'required' : ''} ${field.readonly ? 'readonly' : ''} ${onchangeAttr} />
+                                ${field.source ? '<span class="help-text">Source: ' + field.source + '</span>' : ''}
+                              </div>
+                            `;
+                          }
+                        }).join('')}
+                      </div>
+                    </div>
+                  </div>
+            `;
+            return; // Project Info section rendering continues in next iteration for Particulars
+          }
+          
           html += `
             <div class="${isGeneralInfo ? 'general-info-container' : 'form-section'}">
               ${isGeneralInfo ? `
-                <div class="general-info-header">
-                  <div class="general-info-header-title">
-                    <h2>📋 General Information</h2>
-                    <span class="subtitle">Configure basic tender details and settings</span>
-                  </div>
-                  <span class="status-indicator status-incomplete">Incomplete</span>
-                </div>
                 <div class="general-info-body">
-                  <div class="form-info-card">
-                    <p><strong>ℹ️ Auto-populated data:</strong> Information will be automatically populated from the requisition where applicable. Required fields are marked with <span class="required">*</span></p>
-                  </div>
               ` : `
-                <div class="section-header">
-                  <div class="section-title">
-                    <span class="section-icon">${block.icon}</span>
-                    <span>${section.title}</span>
-                  </div>
-                  ${sectionIndex === 0 ? '<span class="status-indicator status-incomplete">Incomplete</span>' : ''}
+              <div class="section-header">
+                <div class="section-title">
+                  <span class="section-icon">${block.icon}</span>
+                  <span>${section.title}</span>
                 </div>
-                <div class="section-body">
+                ${sectionIndex === 0 ? '<span class="status-indicator status-incomplete">Incomplete</span>' : ''}
+              </div>
+              <div class="section-body">
               `}
                 
                 ${(() => {
@@ -8575,6 +10517,133 @@
           console.error('Section not found for header:', header);
         }
       }
+      
+      // Toggle collapsible section by ID
+      window.toggleCollapsibleSection = function(sectionId) {
+        const section = document.getElementById(sectionId);
+        if (section) {
+          section.classList.toggle('collapsed');
+        }
+      }
+      
+      // ===== REQUISITION LINE & LOT MODAL FUNCTIONS =====
+      let selectedReqLines = [];
+      
+      window.openAddReqLineModal = function() {
+        const modal = document.getElementById('add-req-line-modal');
+        const body = document.getElementById('add-req-line-body');
+        selectedReqLines = [];
+        
+        // Available sample requisition lines to add
+        const availableLines = [
+          { id: 'REQ-LINE-008', unspscCode: '43211515', unspscDescription: 'Desktop computers', description: 'Desktop workstations', quantity: 25, unitOfMeasure: 'Unit', amount: 30000, currency: 'USD' },
+          { id: 'REQ-LINE-009', unspscCode: '43212105', unspscDescription: 'Computer monitors', description: '27-inch monitors', quantity: 50, unitOfMeasure: 'Unit', amount: 15000, currency: 'USD' },
+          { id: 'REQ-LINE-010', unspscCode: '43211706', unspscDescription: 'Computer keyboards', description: 'Wireless keyboards', quantity: 75, unitOfMeasure: 'Unit', amount: 3750, currency: 'USD' },
+          { id: 'REQ-LINE-011', unspscCode: '43211707', unspscDescription: 'Computer mice', description: 'Wireless mice', quantity: 75, unitOfMeasure: 'Unit', amount: 2250, currency: 'USD' },
+        ];
+        
+        // Filter out lines already added
+        const existingIds = requisitionLines.map(l => l.id);
+        const newLines = availableLines.filter(l => !existingIds.includes(l.id));
+        
+        if (newLines.length === 0) {
+          body.innerHTML = `
+            <div style="text-align: center; padding: var(--spacing-xl); color: var(--text-muted);">
+              <div style="font-size: 28px; margin-bottom: var(--spacing-sm);">✅</div>
+              <div style="font-size: 13px;">All available requisition lines have been added.</div>
+            </div>
+          `;
+        } else {
+          body.innerHTML = newLines.map(line => `
+            <div class="req-option" data-line-id="${line.id}" onclick="toggleReqLineSelection('${line.id}')">
+              <input type="checkbox" class="req-option-checkbox" id="req-cb-${line.id}" />
+              <div class="req-option-details">
+                <div class="req-option-main">
+                  <span style="font-weight: 600;">${line.id}</span>
+                  <span style="font-family: monospace; color: var(--primary-600); font-size: 11px;">${line.unspscCode}</span>
+                  <span style="color: var(--success-600); font-weight: 600; font-size: 11px;">$${line.amount.toLocaleString()}</span>
+                </div>
+                <div class="req-option-sub">${line.unspscDescription} - ${line.description}</div>
+              </div>
+            </div>
+          `).join('');
+        }
+        
+        modal.style.display = 'flex';
+      }
+      
+      window.closeAddReqLineModal = function() {
+        document.getElementById('add-req-line-modal').style.display = 'none';
+        selectedReqLines = [];
+      }
+      
+      window.toggleReqLineSelection = function(lineId) {
+        const option = document.querySelector(`.req-option[data-line-id="${lineId}"]`);
+        const checkbox = document.getElementById(`req-cb-${lineId}`);
+        
+        if (selectedReqLines.includes(lineId)) {
+          selectedReqLines = selectedReqLines.filter(id => id !== lineId);
+          option.classList.remove('selected');
+          checkbox.checked = false;
+        } else {
+          selectedReqLines.push(lineId);
+          option.classList.add('selected');
+          checkbox.checked = true;
+        }
+      }
+      
+      window.addSelectedReqLines = function() {
+        if (selectedReqLines.length === 0) {
+          alert('Please select at least one requisition line to add.');
+          return;
+        }
+        
+        // Sample data - in real app, this would come from the selection
+        const availableLines = [
+          { id: 'REQ-LINE-008', unspscCode: '43211515', unspscDescription: 'Desktop computers', description: 'Desktop workstations', quantity: 25, unitOfMeasure: 'Unit', amount: 30000, currency: 'USD' },
+          { id: 'REQ-LINE-009', unspscCode: '43212105', unspscDescription: 'Computer monitors', description: '27-inch monitors', quantity: 50, unitOfMeasure: 'Unit', amount: 15000, currency: 'USD' },
+          { id: 'REQ-LINE-010', unspscCode: '43211706', unspscDescription: 'Computer keyboards', description: 'Wireless keyboards', quantity: 75, unitOfMeasure: 'Unit', amount: 3750, currency: 'USD' },
+          { id: 'REQ-LINE-011', unspscCode: '43211707', unspscDescription: 'Computer mice', description: 'Wireless mice', quantity: 75, unitOfMeasure: 'Unit', amount: 2250, currency: 'USD' },
+        ];
+        
+        const linesToAdd = availableLines.filter(l => selectedReqLines.includes(l.id));
+        requisitionLines = [...requisitionLines, ...linesToAdd];
+        
+        closeAddReqLineModal();
+        renderCurrentBlock();
+        showNotification(`Added ${linesToAdd.length} requisition line(s)`, 'success');
+      }
+      
+      window.openCreateLotModal = function() {
+        document.getElementById('create-lot-modal').style.display = 'flex';
+        document.getElementById('new-lot-name-input').value = '';
+        document.getElementById('new-lot-desc-input').value = '';
+        setTimeout(() => document.getElementById('new-lot-name-input').focus(), 100);
+      }
+      
+      window.closeCreateLotModal = function() {
+        document.getElementById('create-lot-modal').style.display = 'none';
+      }
+      
+      window.createLotFromModal = function() {
+        const lotName = document.getElementById('new-lot-name-input').value.trim();
+        if (!lotName) {
+          alert('Please enter a lot name.');
+          return;
+        }
+        
+        const newLot = {
+          id: 'lot-' + Date.now(),
+          name: lotName,
+          description: document.getElementById('new-lot-desc-input').value.trim(),
+          unspscCodes: [],
+        };
+        
+        lots.push(newLot);
+        closeCreateLotModal();
+        renderCurrentBlock();
+        showNotification(`Lot "${lotName}" created successfully`, 'success');
+      }
 
       function updateNavigationButtons() {
         const prevBtn = document.getElementById('prev-block-btn');
@@ -8714,6 +10783,141 @@
           <div class="lifecycle-search-results" id="lifecycle-search-results">
             <!-- Results will be dynamically populated -->
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Requisition Line Modal -->
+    <div class="req-modal" id="add-req-line-modal" onclick="if(event.target === this) closeAddReqLineModal()">
+      <div class="req-modal-content">
+        <div class="req-modal-header">
+          <span class="req-modal-title">📋 Add Requisition Line</span>
+          <button class="modal-close-btn" onclick="closeAddReqLineModal()">✕</button>
+        </div>
+        <div class="req-modal-body" id="add-req-line-body">
+          <!-- Options will be populated here -->
+        </div>
+        <div class="req-modal-footer">
+          <button class="btn btn-ghost btn-sm" onclick="closeAddReqLineModal()">Cancel</button>
+          <button class="btn btn-primary btn-sm" onclick="addSelectedReqLines()">Add Selected</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Create Lot Modal -->
+    <div class="req-modal" id="create-lot-modal" onclick="if(event.target === this) closeCreateLotModal()">
+      <div class="req-modal-content" style="max-width: 400px;">
+        <div class="req-modal-header">
+          <span class="req-modal-title">📦 Create New Lot</span>
+          <button class="modal-close-btn" onclick="closeCreateLotModal()">✕</button>
+        </div>
+        <div class="req-modal-body" style="padding: var(--spacing-md);">
+          <div class="form-group">
+            <label class="form-label">Lot Name <span class="required">*</span></label>
+            <input type="text" id="new-lot-name-input" class="form-input" placeholder="e.g., IT Equipment Lot" style="font-size: 13px;" />
+          </div>
+          <div class="form-group" style="margin-top: var(--spacing-md);">
+            <label class="form-label">Description (Optional)</label>
+            <textarea id="new-lot-desc-input" class="form-textarea" placeholder="Brief description of this lot..." style="min-height: 50px; font-size: 13px;"></textarea>
+          </div>
+        </div>
+        <div class="req-modal-footer">
+          <button class="btn btn-ghost btn-sm" onclick="closeCreateLotModal()">Cancel</button>
+          <button class="btn btn-primary btn-sm" onclick="createLotFromModal()">Create Lot</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Product to Lot Modal -->
+    <div class="req-modal" id="add-product-modal" onclick="if(event.target === this) closeAddProductModal()">
+      <div class="req-modal-content" style="max-width: 500px;">
+        <div class="req-modal-header">
+          <span class="req-modal-title">➕ Add Products to Lot</span>
+          <button class="modal-close-btn" onclick="closeAddProductModal()">✕</button>
+        </div>
+        <div class="req-modal-body" style="padding: 0;">
+          <div class="product-modal-tabs">
+            <button class="product-modal-tab active" data-tab="from-requisition" onclick="switchProductModalTab('from-requisition')">From Requisition Lines</button>
+            <button class="product-modal-tab" data-tab="new-product" onclick="switchProductModalTab('new-product')">Create New</button>
+          </div>
+          
+          <!-- From Requisition Lines Tab -->
+          <div class="product-modal-tab-content active" id="tab-from-requisition" style="padding: var(--spacing-md); max-height: 350px; overflow-y: auto;">
+            <div id="add-product-req-lines">
+              <!-- Requisition lines will be populated here -->
+            </div>
+          </div>
+          
+          <!-- Create New Product Tab -->
+          <div class="product-modal-tab-content" id="tab-new-product" style="padding: var(--spacing-md);">
+            <div class="new-product-form">
+              <div class="form-group">
+                <label class="form-label">UNSPSC Code <span class="required">*</span></label>
+                <input type="text" id="new-product-unspsc" class="form-input" placeholder="e.g., 43211503" maxlength="8" style="font-size: 13px; font-family: 'Courier New', monospace;" />
+                <span class="help-text">8-digit UNSPSC code</span>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Description <span class="required">*</span></label>
+                <input type="text" id="new-product-desc" class="form-input" placeholder="e.g., Laptop computers" style="font-size: 13px;" />
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Quantity</label>
+                  <input type="number" id="new-product-qty" class="form-input" value="1" min="1" style="font-size: 13px;" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Estimated Value (USD)</label>
+                  <input type="number" id="new-product-value" class="form-input" placeholder="0.00" min="0" step="0.01" style="font-size: 13px;" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="req-modal-footer">
+          <button class="btn btn-ghost btn-sm" onclick="closeAddProductModal()">Cancel</button>
+          <button class="btn btn-primary btn-sm" id="add-product-confirm-btn" onclick="addProductsFromRequisition()">Add Selected</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Lot Modal -->
+    <div class="req-modal" id="edit-lot-modal" onclick="if(event.target === this) closeEditLotModal()">
+      <div class="req-modal-content" style="max-width: 400px;">
+        <div class="req-modal-header">
+          <span class="req-modal-title">✏️ Edit Lot</span>
+          <button class="modal-close-btn" onclick="closeEditLotModal()">✕</button>
+        </div>
+        <div class="req-modal-body" style="padding: var(--spacing-md);">
+          <input type="hidden" id="edit-lot-id" />
+          <div class="form-group">
+            <label class="form-label">Lot Name <span class="required">*</span></label>
+            <input type="text" id="edit-lot-name-input" class="form-input" placeholder="e.g., IT Equipment Lot" style="font-size: 13px;" />
+          </div>
+          <div class="form-group" style="margin-top: var(--spacing-md);">
+            <label class="form-label">Description (Optional)</label>
+            <textarea id="edit-lot-desc-input" class="form-textarea" placeholder="Brief description of this lot..." style="min-height: 50px; font-size: 13px;"></textarea>
+          </div>
+        </div>
+        <div class="req-modal-footer">
+          <button class="btn btn-ghost btn-sm" onclick="closeEditLotModal()">Cancel</button>
+          <button class="btn btn-primary btn-sm" onclick="saveEditLot()">Save Changes</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lots Upload Preview Modal -->
+    <div class="req-modal" id="lots-upload-preview-modal" onclick="if(event.target === this) closeLotsUploadPreviewModal()">
+      <div class="req-modal-content" style="max-width: 600px;">
+        <div class="req-modal-header">
+          <span class="req-modal-title">📦 Import Lots Preview</span>
+          <button class="modal-close-btn" onclick="closeLotsUploadPreviewModal()">✕</button>
+        </div>
+        <div class="req-modal-body" id="lots-upload-preview-body" style="padding: var(--spacing-md);">
+          <!-- Preview content will be populated here -->
+        </div>
+        <div class="req-modal-footer">
+          <button class="btn btn-ghost btn-sm" onclick="closeLotsUploadPreviewModal()">Cancel</button>
+          <button class="btn btn-primary btn-sm" onclick="confirmLotsUpload()">Import All Lots</button>
         </div>
       </div>
     </div>
