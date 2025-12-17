@@ -6351,6 +6351,7 @@
       // Requisition & Lots Management
       let requisitionLines = []; // From ERP integration (independent, just for reference)
       let lots = []; // Created lots: [{ id, name, unspscCodes: [{ code, description }] }]
+      let allowPartialQuotations = ''; // 'Yes' or 'No' - determines if lots section is visible
       
       // Product Requirements (per UNSPSC code)
       let productRequirements = {}; // { unspscCode: { requirementType: 'attributes'|'description', attributes: [{name, value}], description: '' } }
@@ -8033,6 +8034,9 @@
         const totalValue = requisitionLines.reduce((sum, line) => sum + line.amount, 0);
         const totalProducts = lots.reduce((sum, lot) => sum + lot.unspscCodes.length, 0);
         
+        // Determine if lots section should be visible
+        const showLotsSection = allowPartialQuotations === 'Yes';
+        
         return `
           <div class="general-info-container">
             <div class="general-info-body">
@@ -8042,11 +8046,11 @@
                   <div class="stat-value">${requisitionLines.length}</div>
                   <div class="stat-label">Req. Lines</div>
               </div>
-                <div class="stat-item">
+                <div class="stat-item" style="${showLotsSection ? '' : 'opacity: 0.4;'}">
                   <div class="stat-value">${lots.length}</div>
                   <div class="stat-label">Lots</div>
             </div>
-                <div class="stat-item">
+                <div class="stat-item" style="${showLotsSection ? '' : 'opacity: 0.4;'}">
                   <div class="stat-value">${totalProducts}</div>
                   <div class="stat-label">Products</div>
                 </div>
@@ -8060,7 +8064,7 @@
               <div class="collapsible-section collapsed" id="req-lines-section">
                 <div class="collapsible-header" onclick="toggleCollapsibleSection('req-lines-section')">
                   <div class="collapsible-header-left">
-                    <span class="collapsible-header-title">Requisition Lines (from ERP)</span>
+                    <span class="collapsible-header-title">Requisition Lines</span>
                     <span class="badge badge-info" style="margin-left: 6px; font-size: 10px;">${requisitionLines.length}</span>
                     ${renderSectionProgress('req-lines', requisitionLines)}
                   </div>
@@ -8103,8 +8107,35 @@
                 </div>
               </div>
                 </div>
+              
+              <!-- Partial Quotations/Bids/Proposals - Collapsible -->
+              <div class="collapsible-section" id="partial-quotations-section">
+                <div class="collapsible-header" onclick="toggleCollapsibleSection('partial-quotations-section')">
+                  <div class="collapsible-header-left">
+                    <span class="collapsible-header-title">Partial Quotations/Bids/Proposals</span>
+                    ${allowPartialQuotations ? `<span class="badge ${allowPartialQuotations === 'Yes' ? 'badge-success' : 'badge-secondary'}" style="margin-left: 8px; font-size: 10px;">${allowPartialQuotations}</span>` : ''}
+                  </div>
+                  <div class="collapsible-toggle">▼</div>
+                </div>
+                <div class="collapsible-body" onclick="event.stopPropagation()">
+                  <div class="form-grid">
+                    <div class="form-group">
+                      <label class="form-label">
+                        Are partial quotations/bids/proposals allowed? <span class="required">*</span>
+                      </label>
+                      <select class="form-select" onchange="updateAllowPartialQuotations(this.value)" style="max-width: 300px;">
+                        <option value="" ${allowPartialQuotations === '' ? 'selected' : ''}>Select...</option>
+                        <option value="Yes" ${allowPartialQuotations === 'Yes' ? 'selected' : ''}>Yes - Allow partial quotations (Lots enabled)</option>
+                        <option value="No" ${allowPartialQuotations === 'No' ? 'selected' : ''}>No - Full quotation required (No lots)</option>
+                      </select>
+                      <span class="help-text">If Yes, suppliers can submit bids for individual lots. If No, suppliers must bid on all items.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
                 
-              <!-- Lots Management - Collapsible (collapsed by default) -->
+              <!-- Lots Management - Collapsible (only shown when partial quotations allowed) -->
+              ${showLotsSection ? `
               <div class="collapsible-section collapsed" id="lots-section">
                 <div class="collapsible-header" onclick="toggleCollapsibleSection('lots-section')">
                   <div class="collapsible-header-left">
@@ -8189,9 +8220,25 @@
                 `}
               </div>
                 </div>
+              ` : `
+              <!-- Lots Section Hidden - show info message -->
+              <div class="info-alert" style="margin-top: var(--spacing-md); background: var(--surface-50); border-color: var(--surface-200);">
+                <div class="info-alert-text" style="color: var(--text-muted);">
+                  <i class="pi pi-info-circle" style="margin-right: 6px;"></i>
+                  Lots management is disabled. To enable lots, select <strong>"Yes"</strong> in the "Partial Quotations/Bids/Proposals" section above.
+                </div>
+              </div>
+              `}
             </div>
           </div>
         `;
+      }
+      
+      // Update function for Partial Quotations field
+      window.updateAllowPartialQuotations = function(value) {
+        allowPartialQuotations = value;
+        // Re-render the section to show/hide lots
+        renderCurrentBlock();
       }
       
       window.createNewLot = function() {
