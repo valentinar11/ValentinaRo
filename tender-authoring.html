@@ -5063,13 +5063,13 @@
       }
 
       .lot-actions-btn {
-        width: 32px;
-        height: 32px;
-        border: none;
-        background: transparent;
+        width: 28px;
+        height: 28px;
+        border: 1px solid var(--surface-200);
+        background: var(--surface-100);
         cursor: pointer;
         color: var(--text-secondary);
-        font-size: 18px;
+        font-size: 14px;
         font-weight: bold;
         display: flex;
         align-items: center;
@@ -5079,7 +5079,8 @@
       }
 
       .lot-actions-btn:hover {
-        background: var(--surface-100);
+        background: var(--surface-200);
+        border-color: var(--surface-300);
         color: var(--text-primary);
       }
 
@@ -5106,32 +5107,40 @@
         align-items: center;
         gap: 8px;
         width: 100%;
-        padding: 10px 14px;
+        padding: 8px 12px;
         border: none;
         background: transparent;
         cursor: pointer;
-        font-size: 12px;
+        font-size: 13px;
+        font-weight: 500;
+        font-family: 'Lato', 'Noto Sans', system-ui, sans-serif;
         color: var(--text-primary);
         text-align: left;
-        transition: background 0.15s ease;
+        transition: all 0.15s ease;
       }
 
       .lot-action-item:hover {
-        background: var(--surface-50);
+        background: var(--surface-100);
+        color: var(--primary-600);
       }
 
       .lot-action-item.danger {
-        color: var(--danger-600);
+        color: var(--text-secondary);
       }
 
       .lot-action-item.danger:hover {
         background: var(--danger-50);
+        color: var(--danger-600);
+      }
+
+      .lot-action-item i {
+        font-size: 14px;
+        width: 18px;
+        text-align: center;
       }
 
       .lot-action-icon {
-        font-size: 12px;
-        width: 16px;
-        text-align: center;
+        display: none;
       }
 
       /* Add Product Modal Styles */
@@ -8082,6 +8091,7 @@
                           <th>UNSPSC</th>
                         <th>Description</th>
                           <th>Qty</th>
+                          <th>UoM</th>
                         <th>Amount</th>
                           <th style="width: 60px;">Actions</th>
                       </tr>
@@ -8095,7 +8105,8 @@
                               <div class="req-unspsc-desc">${line.unspscDescription}</div>
                           </td>
                             <td style="max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${line.description}">${line.description}</td>
-                            <td>${line.quantity} ${line.unitOfMeasure}</td>
+                            <td>${line.quantity}</td>
+                            <td>${line.unitOfMeasure}</td>
                             <td><span class="req-amount">${line.currency} ${line.amount.toLocaleString()}</span></td>
                             <td>
                               <button class="req-remove-btn" onclick="removeRequisitionLine('${line.id}')" title="Remove line">🗑️</button>
@@ -8144,6 +8155,7 @@
                     ${renderSectionProgress('lots', lots)}
                   </div>
                   <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                    <button class="btn btn-secondary" onclick="event.stopPropagation(); createLotPerRequisitionLine()" title="Create one lot for each requisition line"><i class="pi pi-copy"></i> 1 Lot per Req Line</button>
                     <button class="btn btn-secondary" onclick="event.stopPropagation(); downloadLotsTemplate()" title="Download Excel template for bulk import"><i class="pi pi-download"></i> Template</button>
                     <button class="btn btn-secondary" onclick="event.stopPropagation(); document.getElementById('lots-upload-input').click()" title="Upload Excel file to bulk import lots"><i class="pi pi-upload"></i> Upload</button>
                     <input type="file" id="lots-upload-input" accept=".xlsx,.xls,.csv" style="display: none;" onchange="handleLotsUpload(event)" />
@@ -8156,8 +8168,7 @@
                     <div class="lot-empty-state" style="padding: var(--spacing-lg);">
                       <div style="font-size: 28px; margin-bottom: var(--spacing-xs);">📦</div>
                       <div style="font-weight: 600; font-size: 13px; margin-bottom: var(--spacing-xs);">No lots created yet</div>
-                      <div style="color: var(--text-muted); font-size: 11px; margin-bottom: var(--spacing-md);">Create lots to organize products or proceed without lots</div>
-                      <button class="btn btn-primary" onclick="openCreateLotModal()"><i class="pi pi-plus"></i> Create First Lot</button>
+                      <div style="color: var(--text-muted); font-size: 11px;">Create lots to organize products using the buttons above</div>
                         </div>
                   ` : `
                     <div style="overflow-x: auto;">
@@ -8201,13 +8212,13 @@
                                   <button class="lot-actions-btn" onclick="toggleLotActionsMenu('${lot.id}')" title="Actions">⋮</button>
                                   <div class="lot-actions-dropdown" id="lot-menu-${lot.id}">
                                     <button class="lot-action-item" onclick="openAddProductModal('${lot.id}')">
-                                      <span class="lot-action-icon">➕</span> Add Products
+                                      <i class="pi pi-plus"></i> Add Products
                                     </button>
                                     <button class="lot-action-item" onclick="openEditLotModal('${lot.id}')">
-                                      <span class="lot-action-icon">✏️</span> Edit Lot
+                                      <i class="pi pi-pencil"></i> Edit Lot
                                     </button>
                                     <button class="lot-action-item danger" onclick="deleteLot('${lot.id}')">
-                                      <span class="lot-action-icon">🗑️</span> Remove Lot
+                                      <i class="pi pi-trash"></i> Remove Lot
                                     </button>
                         </div>
                       </div>
@@ -8253,6 +8264,39 @@
         
         lots.push(newLot);
         renderCurrentBlock();
+      }
+      
+      // Create 1 lot per requisition line
+      window.createLotPerRequisitionLine = function() {
+        if (requisitionLines.length === 0) {
+          alert('No requisition lines available to create lots from.');
+          return;
+        }
+        
+        const existingLotCount = lots.length;
+        let lotsCreated = 0;
+        
+        requisitionLines.forEach((line, index) => {
+          const lotNumber = existingLotCount + index + 1;
+          const newLot = {
+            id: 'lot-' + Date.now() + '-' + index,
+            name: 'Lot ' + lotNumber,
+            description: line.description || line.unspscDescription,
+            unspscCodes: [{
+              code: line.unspscCode,
+              description: line.unspscDescription,
+              quantity: line.quantity,
+              unitOfMeasure: line.unitOfMeasure,
+              estimatedValue: line.amount,
+              linkedRequisitionId: line.id
+            }]
+          };
+          lots.push(newLot);
+          lotsCreated++;
+        });
+        
+        renderCurrentBlock();
+        alert(lotsCreated + ' lot(s) created successfully from requisition lines.');
       }
       
       window.updateLotName = function(lotId, newName) {
@@ -8514,11 +8558,24 @@
         const unspscInput = document.getElementById('new-product-unspsc');
         const descInput = document.getElementById('new-product-desc');
         const qtyInput = document.getElementById('new-product-qty');
+        const uomSelect = document.getElementById('new-product-uom');
         const valueInput = document.getElementById('new-product-value');
+        const linkedReqSelect = document.getElementById('new-product-linked-req');
         if (unspscInput) unspscInput.value = '';
         if (descInput) descInput.value = '';
         if (qtyInput) qtyInput.value = '1';
+        if (uomSelect) uomSelect.value = 'Unit';
         if (valueInput) valueInput.value = '';
+        
+        // Populate linked requisition dropdown
+        if (linkedReqSelect) {
+          linkedReqSelect.innerHTML = '<option value="">-- None (No link) --</option>' +
+            requisitionLines.map(line => `
+              <option value="${line.id}" data-unspsc="${line.unspscCode}" data-desc="${line.unspscDescription}" data-qty="${line.quantity}" data-value="${line.amount}">
+                ${line.id} - ${line.unspscCode} (${line.unspscDescription.substring(0, 30)}${line.unspscDescription.length > 30 ? '...' : ''})
+              </option>
+            `).join('');
+        }
         
         // Reset to first tab
         switchProductModalTab('from-requisition');
@@ -8552,6 +8609,12 @@
             confirmBtn.onclick = addNewProduct;
           }
         }
+      }
+      
+      // Handle linked requisition selection (link only, no auto-populate)
+      window.populateFromLinkedRequisition = function(reqId) {
+        // Link only - no auto-populate of form fields
+        // The linked requisition ID is stored when the product is created
       }
       
       window.toggleReqLineForProduct = function(unspscCode, element) {
@@ -8603,7 +8666,9 @@
         const unspsc = document.getElementById('new-product-unspsc').value.trim();
         const desc = document.getElementById('new-product-desc').value.trim();
         const qty = parseInt(document.getElementById('new-product-qty').value) || 1;
+        const uom = document.getElementById('new-product-uom').value || 'Unit';
         const value = parseFloat(document.getElementById('new-product-value').value) || 0;
+        const linkedReqId = document.getElementById('new-product-linked-req').value || null;
         
         if (!unspsc) {
           alert('Please enter a UNSPSC code.');
@@ -8619,7 +8684,9 @@
           code: unspsc,
           description: desc,
           quantity: qty,
-          estimatedValue: value
+          unitOfMeasure: uom,
+          estimatedValue: value,
+          linkedRequisitionId: linkedReqId
         });
         
         closeAddProductModal();
@@ -13343,9 +13410,34 @@
                   <input type="number" id="new-product-qty" class="form-input" value="1" min="1" style="font-size: 13px;" />
                 </div>
                 <div class="form-group">
+                  <label class="form-label">Unit of Measure</label>
+                  <select id="new-product-uom" class="form-select" style="font-size: 13px;">
+                    <option value="Unit">Unit</option>
+                    <option value="Lot">Lot</option>
+                    <option value="Service">Service</option>
+                    <option value="Pack">Pack</option>
+                    <option value="Box">Box</option>
+                    <option value="Set">Set</option>
+                    <option value="Piece">Piece</option>
+                    <option value="Kg">Kg</option>
+                    <option value="Liter">Liter</option>
+                    <option value="Meter">Meter</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
                   <label class="form-label">Estimated Value (USD)</label>
                   <input type="number" id="new-product-value" class="form-input" placeholder="0.00" min="0" step="0.01" style="font-size: 13px;" />
                 </div>
+              </div>
+              <div class="form-group" style="margin-top: var(--spacing-sm);">
+                <label class="form-label">Linked Requisition</label>
+                <select id="new-product-linked-req" class="form-select" style="font-size: 13px;" onchange="populateFromLinkedRequisition(this.value)">
+                  <option value="">-- None (No link) --</option>
+                  <!-- Options will be populated dynamically -->
+                </select>
+                <span class="help-text">Optionally link this product to an existing requisition line</span>
               </div>
             </div>
           </div>
