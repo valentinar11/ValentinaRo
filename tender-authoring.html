@@ -1820,18 +1820,25 @@
         border-bottom: 1px solid var(--surface-200);
         padding: 0 var(--spacing-xl);
         display: flex;
-        gap: var(--spacing-xs);
+        gap: 0;
         overflow-x: auto;
         flex-wrap: nowrap;
+        position: relative;
+      }
+
+      /* Connector line between tabs - hidden for cleaner look */
+      .block-nav::before {
+        display: none;
       }
 
       .block-tab {
-        padding: 12px 20px;
+        padding: 16px 20px;
         border: none;
         border-bottom: 3px solid transparent;
+        border-radius: 0;
         background: transparent;
         color: var(--text-secondary);
-        font-size: 14px;
+        font-size: 13px;
         font-weight: 500;
         font-family: 'Lato', 'Noto Sans', system-ui, sans-serif;
         cursor: pointer;
@@ -1840,41 +1847,239 @@
         position: relative;
         display: flex;
         align-items: center;
-        gap: var(--spacing-sm);
+        gap: 12px;
+        z-index: 1;
+        box-shadow: none;
+        min-width: fit-content;
       }
 
       .block-tab:hover {
-        color: var(--primary-500);
+        color: var(--primary-600);
         background: var(--surface-50);
+        border-color: transparent;
+        transform: none;
+        box-shadow: none;
+        border-bottom-color: var(--primary-200);
       }
 
       .block-tab.active {
-        color: var(--primary-500);
-        border-bottom-color: var(--primary-500);
+        color: var(--primary-600);
+        background: var(--primary-50);
+        border-color: transparent;
+        border-bottom: 3px solid var(--primary-500);
         font-weight: 600;
+        box-shadow: none;
+        transform: none;
+      }
+
+      .block-tab.active:hover {
+        background: var(--primary-100);
+        transform: none;
+      }
+
+      /* Completed state for tabs */
+      .block-tab.completed {
+        border-bottom-color: var(--success-400);
+        background: transparent;
+      }
+
+      .block-tab.completed:hover {
+        background: var(--success-50);
+      }
+
+      .block-tab.completed::after {
+        display: none;
+      }
+
+      .block-tab-number {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: var(--surface-100);
+        border: 2px solid var(--surface-200);
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text-muted);
+        transition: all 0.2s ease;
+        flex-shrink: 0;
+      }
+
+      .block-tab:hover .block-tab-number {
+        background: var(--primary-50);
+        border-color: var(--primary-200);
+        color: var(--primary-600);
+      }
+
+      .block-tab.active .block-tab-number {
+        background: var(--primary-500);
+        border-color: var(--primary-500);
+        color: white;
+      }
+
+      .block-tab.completed .block-tab-number {
+        background: var(--success-500);
+        border-color: var(--success-500);
+        color: white;
+      }
+
+      .block-tab-pi-icon {
+        font-size: 15px;
+        color: var(--text-muted);
+        transition: all 0.2s ease;
+        flex-shrink: 0;
+      }
+
+      .block-tab:hover .block-tab-pi-icon {
+        color: var(--primary-500);
+      }
+
+      .block-tab.active .block-tab-pi-icon {
+        color: var(--primary-600);
+      }
+
+      .block-tab.completed .block-tab-pi-icon {
+        color: var(--success-500);
       }
 
       .block-tab-icon {
         font-size: 16px;
         font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;
-      }
-
-      .block-tab-badge {
-        display: inline-flex;
+        display: none;
         align-items: center;
         justify-content: center;
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        background: var(--surface-200);
-        color: var(--text-muted);
-        font-size: 11px;
+        width: 28px;
+        height: 28px;
+        background: var(--surface-100);
+        border-radius: var(--radius-md);
+        transition: all 0.25s ease;
+      }
+
+      .block-tab:hover .block-tab-icon {
+        background: var(--primary-100);
+      }
+
+      .block-tab.active .block-tab-icon {
+        background: rgba(255, 255, 255, 0.2);
+      }
+
+      .block-tab-content {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+      }
+
+      .block-tab-name {
+        font-size: 13px;
+        font-weight: 500;
+        line-height: 1.3;
+        color: inherit;
+      }
+
+      .block-tab.active .block-tab-name {
         font-weight: 600;
       }
 
+      .block-tab-status {
+        font-size: 11px;
+        font-weight: 500;
+        text-transform: none;
+        letter-spacing: 0;
+        padding: 0;
+        border-radius: 0;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        background: transparent;
+      }
+
+      .block-tab-status.status-pending {
+        background: transparent;
+        color: var(--text-muted);
+      }
+
+      .block-tab-status.status-in-progress {
+        background: transparent;
+        color: var(--info-500);
+      }
+
+      .block-tab-status.status-complete {
+        background: transparent;
+        color: var(--success-600);
+      }
+
+      .block-tab:hover .block-tab-status.status-pending {
+        background: transparent;
+        color: var(--primary-500);
+      }
+
+      .block-tab.active .block-tab-status {
+        background: transparent;
+        color: var(--primary-500);
+      }
+
+      .block-tab.completed .block-tab-status.status-complete {
+        background: transparent;
+        color: var(--success-600);
+      }
+
+      .block-tab-badge {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        min-width: 22px;
+        height: 22px;
+        padding: 0 6px;
+        border-radius: 11px;
+        background: var(--surface-100);
+        color: var(--text-muted);
+        font-size: 11px;
+        font-weight: 700;
+        transition: all 0.25s ease;
+        border: 1px solid var(--surface-200);
+      }
+
+      .block-tab:hover .block-tab-badge {
+        background: var(--primary-100);
+        color: var(--primary-600);
+        border-color: var(--primary-200);
+      }
+
       .block-tab.active .block-tab-badge {
-        background: var(--primary-500);
+        background: rgba(255, 255, 255, 0.25);
         color: white;
+        border-color: rgba(255, 255, 255, 0.3);
+      }
+
+      /* Progress indicator - hidden for cleaner look */
+      .block-tab-progress {
+        display: none;
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: var(--surface-200);
+        border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+        overflow: hidden;
+      }
+
+      .block-tab-progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, var(--success-500), var(--success-400));
+        transition: width 0.4s ease;
+        border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+      }
+
+      .block-tab.active .block-tab-progress {
+        background: rgba(255, 255, 255, 0.2);
+      }
+
+      .block-tab.active .block-tab-progress-bar {
+        background: linear-gradient(90deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7));
       }
 
       .content-area {
@@ -1891,6 +2096,338 @@
         max-width: none;
         overflow-y: auto;
         padding-right: 80px; /* Space for floating button */
+      }
+
+      /* ===== SUBMISSION FORMS CARDS ===== */
+      .submission-forms-drop-zone {
+        position: relative;
+        min-height: 200px;
+        padding: var(--spacing-md);
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-lg);
+        background: var(--surface-0);
+        transition: all 0.3s ease;
+      }
+
+      .submission-forms-drop-zone.drag-over {
+        border-color: var(--primary-300);
+        border-style: dashed;
+        background: var(--surface-50);
+      }
+
+      .submission-forms-drop-hint {
+        display: none;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: var(--spacing-md) var(--spacing-lg);
+        background: var(--surface-0);
+        color: var(--primary-600);
+        border: 1px solid var(--primary-200);
+        border-radius: var(--radius-lg);
+        font-size: 13px;
+        font-weight: 500;
+        gap: var(--spacing-sm);
+        align-items: center;
+        box-shadow: var(--shadow-md);
+        z-index: 10;
+      }
+
+      .submission-forms-drop-zone.drag-over .submission-forms-drop-hint {
+        display: flex;
+      }
+
+      .submission-forms-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: var(--spacing-sm);
+      }
+
+      .submission-form-card {
+        position: relative;
+        background: var(--surface-0);
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-lg);
+        padding: var(--spacing-md);
+        cursor: grab;
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        min-height: 160px;
+      }
+
+      .submission-form-card:hover {
+        border-color: var(--primary-200);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        transform: translateY(-2px);
+      }
+
+      .submission-form-card.added {
+        border-color: var(--surface-200);
+        background: var(--surface-0);
+      }
+
+      .submission-form-card.added:hover {
+        border-color: var(--primary-300);
+        background: var(--surface-50);
+      }
+
+      .submission-form-card.not-added {
+        opacity: 0.7;
+        background: var(--surface-50);
+        border-style: dashed;
+        border-color: var(--surface-300);
+      }
+
+      .submission-form-card.not-added:hover {
+        opacity: 1;
+        border-color: var(--primary-300);
+        background: var(--surface-0);
+        border-style: solid;
+      }
+
+      .submission-form-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        width: 100%;
+        margin-bottom: var(--spacing-sm);
+      }
+
+      .submission-form-code {
+        min-width: 28px;
+        height: 28px;
+        padding: 0 8px;
+        background: var(--surface-100);
+        color: var(--text-secondary);
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 700;
+        border: 1px solid var(--surface-200);
+      }
+
+      .submission-form-card.added .submission-form-code {
+        background: var(--primary-50);
+        color: var(--primary-600);
+        border-color: var(--primary-200);
+      }
+
+      .submission-form-card.not-added .submission-form-code {
+        background: var(--surface-100);
+        color: var(--text-muted);
+        border-color: var(--surface-200);
+      }
+
+      .submission-form-actions {
+        display: flex;
+        gap: 4px;
+      }
+
+      .btn-icon-xs {
+        min-width: 26px;
+        height: 26px;
+        padding: 0 8px;
+        border: 1px solid var(--surface-200);
+        background: var(--surface-100);
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        color: var(--text-primary);
+        font-family: 'Lato', 'Noto Sans', system-ui, sans-serif;
+      }
+
+      .btn-icon-xs:hover {
+        background: var(--surface-200);
+        border-color: var(--surface-300);
+      }
+
+      .btn-icon-xs.danger {
+        background: var(--surface-100);
+        border-color: var(--surface-200);
+        color: var(--text-secondary);
+      }
+
+      .btn-icon-xs.danger:hover {
+        background: var(--danger-50);
+        border-color: var(--danger-200);
+        color: var(--danger-600);
+      }
+
+      .btn-icon-xs.success {
+        background: var(--primary-500);
+        color: white;
+        border-color: var(--primary-500);
+      }
+
+      .btn-icon-xs.success:hover {
+        background: var(--primary-600);
+        border-color: var(--primary-600);
+      }
+      
+      .btn-icon-xs.preview {
+        background: var(--surface-100);
+        border-color: var(--surface-200);
+        color: var(--text-secondary);
+      }
+
+      .btn-icon-xs.preview:hover {
+        background: var(--info-50);
+        border-color: var(--info-200);
+        color: var(--info-600);
+      }
+
+      .submission-form-icon {
+        font-size: 32px;
+        margin-bottom: var(--spacing-sm);
+      }
+
+      .submission-form-name {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 4px;
+        line-height: 1.3;
+      }
+
+      .submission-form-description {
+        font-size: 11px;
+        color: var(--text-muted);
+        line-height: 1.4;
+      }
+
+      .submission-form-required-badge {
+        position: absolute;
+        top: -1px;
+        right: -1px;
+        font-size: 8px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding: 3px 8px;
+        background: var(--surface-100);
+        color: var(--text-muted);
+        border-radius: 0 var(--radius-lg) 0 var(--radius-md);
+        border-left: 1px solid var(--surface-200);
+        border-bottom: 1px solid var(--surface-200);
+        display: none;
+      }
+
+      .submission-form-card.required .submission-form-required-badge {
+        display: block;
+      }
+
+      .submission-form-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--radius-lg);
+        opacity: 0;
+        transition: opacity 0.2s ease;
+      }
+
+      .submission-form-overlay span {
+        font-size: 11px;
+        font-weight: 500;
+        color: var(--text-muted);
+        background: var(--surface-0);
+        padding: 4px 10px;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--surface-200);
+      }
+
+      .submission-form-card.not-added:hover .submission-form-overlay {
+        opacity: 0;
+      }
+
+      /* ===== BID RESPONSE CATEGORIES ===== */
+      .bid-response-category {
+        background: var(--surface-0);
+        border: 1px solid var(--surface-200);
+        border-left: 4px solid var(--primary-400);
+        border-radius: var(--radius-md);
+        padding: var(--spacing-md);
+        margin-bottom: var(--spacing-md);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .bid-response-category:last-child {
+        margin-bottom: 0;
+      }
+
+      .bid-response-category-header {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-md);
+        margin-bottom: var(--spacing-sm);
+      }
+
+      .bid-response-category-header h4 {
+        font-size: 14px;
+        font-weight: 600;
+        margin: 0;
+        min-width: 120px;
+      }
+
+      .bid-response-category-hint {
+        font-size: 12px;
+        color: var(--text-muted);
+        flex: 1;
+      }
+
+      .bid-response-fields {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xs);
+      }
+
+      .bid-response-field {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 12px;
+        background: var(--surface-50);
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-sm);
+        transition: all 0.2s ease;
+      }
+
+      .bid-response-field:hover {
+        background: var(--surface-100);
+        border-color: var(--surface-300);
+      }
+
+      .bid-response-field-info {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+
+      .bid-response-field-info strong {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text-primary);
+      }
+
+      .bid-response-field-info span {
+        font-size: 11px;
+        color: var(--text-muted);
       }
 
       /* General Information - Improved Layout */
@@ -3267,26 +3804,40 @@
       }
 
       /* Scrollbar Styling */
-      .content-area::-webkit-scrollbar,
-      .block-nav::-webkit-scrollbar {
+      .content-area::-webkit-scrollbar {
         width: 8px;
         height: 8px;
       }
 
-      .content-area::-webkit-scrollbar-track,
-      .block-nav::-webkit-scrollbar-track {
+      .content-area::-webkit-scrollbar-track {
         background: var(--surface-100);
       }
 
-      .content-area::-webkit-scrollbar-thumb,
-      .block-nav::-webkit-scrollbar-thumb {
+      .content-area::-webkit-scrollbar-thumb {
         background: var(--surface-300);
         border-radius: 4px;
       }
 
-      .content-area::-webkit-scrollbar-thumb:hover,
-      .block-nav::-webkit-scrollbar-thumb:hover {
+      .content-area::-webkit-scrollbar-thumb:hover {
         background: var(--surface-600);
+      }
+
+      /* Block Nav Scrollbar - More subtle */
+      .block-nav::-webkit-scrollbar {
+        height: 4px;
+      }
+
+      .block-nav::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      .block-nav::-webkit-scrollbar-thumb {
+        background: var(--primary-200);
+        border-radius: 2px;
+      }
+
+      .block-nav::-webkit-scrollbar-thumb:hover {
+        background: var(--primary-400);
       }
 
       .hidden {
@@ -4884,6 +5435,197 @@
         color: var(--text-muted);
       }
 
+      /* Rich Text Content Box */
+      .rich-text-content {
+        outline: none;
+        background: var(--surface-0);
+      }
+
+      .rich-text-content:focus {
+        background: var(--surface-0);
+      }
+
+      .rich-text-content:empty:before {
+        content: attr(placeholder);
+        color: var(--text-muted);
+        font-style: italic;
+      }
+
+      .rich-text-box:focus-within {
+        border-color: var(--primary-400);
+        box-shadow: 0 0 0 3px var(--primary-50);
+      }
+
+      /* Team UI Styles */
+      .team-section-content {
+        padding: var(--spacing-sm) 0;
+      }
+
+      .team-member-card {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+        padding: var(--spacing-sm) var(--spacing-md);
+        background: var(--surface-50);
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-md);
+        margin-bottom: var(--spacing-xs);
+      }
+
+      .team-member-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 600;
+        font-size: 14px;
+        flex-shrink: 0;
+      }
+
+      .team-member-info {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .team-member-name {
+        font-weight: 600;
+        font-size: 13px;
+        color: var(--text-primary);
+      }
+
+      .team-member-email {
+        font-size: 11px;
+        color: var(--text-muted);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .team-member-role {
+        font-size: 11px;
+        color: var(--text-secondary);
+        background: var(--surface-100);
+        padding: 2px 8px;
+        border-radius: 12px;
+        white-space: nowrap;
+      }
+
+      .team-member-remove {
+        width: 24px;
+        height: 24px;
+        border: none;
+        background: none;
+        color: var(--text-muted);
+        cursor: pointer;
+        font-size: 18px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .team-member-remove:hover {
+        background: var(--danger-50);
+        color: var(--danger-600);
+      }
+
+      .team-subsection {
+        margin-bottom: var(--spacing-md);
+      }
+
+      .team-subsection-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: var(--spacing-sm);
+      }
+
+      .team-subsection-title {
+        font-weight: 600;
+        font-size: 13px;
+        color: var(--text-secondary);
+      }
+
+      .team-members-list {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xs);
+      }
+
+      .team-empty-slot {
+        padding: var(--spacing-md);
+        text-align: center;
+        color: var(--text-muted);
+        font-size: 12px;
+        background: var(--surface-50);
+        border: 1px dashed var(--surface-300);
+        border-radius: var(--radius-md);
+      }
+
+      .team-roles-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: var(--spacing-md);
+      }
+
+      .team-role-card {
+        background: var(--surface-0);
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-md);
+        padding: var(--spacing-md);
+      }
+
+      .team-role-header {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+        margin-bottom: var(--spacing-sm);
+        padding-bottom: var(--spacing-sm);
+        border-bottom: 1px solid var(--surface-100);
+      }
+
+      .team-role-icon {
+        font-size: 20px;
+      }
+
+      .team-role-title {
+        font-weight: 600;
+        font-size: 14px;
+        color: var(--text-primary);
+      }
+
+      .team-role-content {
+        min-height: 60px;
+      }
+
+      .team-add-placeholder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--spacing-xs);
+        padding: var(--spacing-md);
+        background: var(--surface-50);
+        border: 2px dashed var(--surface-300);
+        border-radius: var(--radius-md);
+        color: var(--text-muted);
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 0.15s ease;
+      }
+
+      .team-add-placeholder:hover {
+        border-color: var(--primary-400);
+        background: var(--primary-50);
+        color: var(--primary-600);
+      }
+
+      .team-add-placeholder i {
+        font-size: 16px;
+      }
+
       /* Compact Rich Text Editor */
       .rich-text-toolbar-compact {
         display: flex;
@@ -5443,6 +6185,7 @@
         {
           id: 'general',
           icon: '📋',
+          piIcon: 'pi-file',
           name: 'General Information',
           sections: [
             {
@@ -5480,6 +6223,7 @@
         {
           id: 'project',
           icon: '🏗️',
+          piIcon: 'pi-briefcase',
           name: 'Project & Tender Details',
           sections: [
             {
@@ -5500,6 +6244,7 @@
         {
           id: 'requisition-lots',
           icon: '📋',
+          piIcon: 'pi-list',
           name: 'Requisition & Lots',
           sections: [
             {
@@ -5512,6 +6257,7 @@
         {
           id: 'scope',
           icon: '🎯',
+          piIcon: 'pi-check-square',
           name: 'Scope & Requirements',
           sections: [
             {
@@ -5533,33 +6279,11 @@
           ],
         },
         {
-          id: 'timeline',
-          icon: '📅',
-          name: 'Timeline & Deadlines',
-          sections: [
-            {
-              title: 'Key Dates',
-              fields: [
-                { label: 'Deadline', type: 'datetime-local', required: true, value: '' },
-                { label: 'Deadline for clarifications', type: 'datetime-local', required: false, value: '' },
-                { label: 'Expected Contract award date', type: 'date', required: false, value: '' },
-              ],
-            },
-          ],
-        },
-        {
           id: 'submission',
           icon: '📝',
+          piIcon: 'pi-upload',
           name: 'Submission Requirements',
           sections: [
-            {
-              title: 'Submission Details',
-              fields: [
-                { label: 'Quotation/Bid/Proposal validity period in days', type: 'number', required: true, value: '' },
-                { label: 'Quotation/Bid/Proposal currency(ies)', type: 'select', required: true, multiple: true, options: ['USD', 'EUR', 'GBP', 'Local'] },
-                { label: 'Languages of quotations/bids/proposals', type: 'select', required: true, multiple: true, options: ['English', 'French', 'Spanish'] },
-              ],
-            },
             {
               title: 'Bid Response Requirements',
               fields: [],
@@ -5575,6 +6299,7 @@
         {
           id: 'evaluation',
           icon: '📊',
+          piIcon: 'pi-chart-bar',
           name: 'Evaluation',
           sections: [
             {
@@ -5594,21 +6319,26 @@
           ],
         },
         {
+          id: 'competition',
+          icon: '🏆',
+          piIcon: 'pi-flag',
+          name: 'Competition',
+          sections: [
+            {
+              title: 'Competition Type',
+              isCompetition: true,
+            },
+          ],
+        },
+        {
           id: 'team',
           icon: '👥',
+          piIcon: 'pi-users',
           name: 'Team',
           sections: [
             {
               title: 'Team Members',
-              fields: [
-                { id: 'alternateAuthors', label: 'Alternate authors (names)', type: 'search', required: false, value: '', placeholder: 'Search from oneUNOPS (RDAT)', source: 'RDAT', multiple: true },
-                { id: 'procurementReviewer', label: 'Additional roles – Procurement Reviewer', type: 'search', required: false, value: '', placeholder: 'Search from oneUNOPS (RDAT)', source: 'RDAT' },
-                { id: 'procurementAuthority', label: 'Additional roles – Procurement Authority', type: 'search', required: false, value: '', placeholder: 'Search from oneUNOPS (RDAT)', source: 'RDAT', prefilled: true },
-                { id: 'technicalExpert', label: 'Additional roles – Technical Matter Expert', type: 'search', required: false, value: '', placeholder: 'Search from oneUNOPS (RDAT)', source: 'RDAT' },
-                { id: 'bidOpeningPanel', label: 'Additional roles – Bid opening panel', type: 'search', required: false, value: '', placeholder: 'Search from oneUNOPS (RDAT)', source: 'RDAT', help: 'Required for public bid openings or offline tenders' },
-                { id: 'evaluationTeam', label: 'Additional roles – Evaluation team (Procurement Official, Chair, Members, Observers)', type: 'search', required: false, value: '', placeholder: 'Search from oneUNOPS (RDAT)', source: 'RDAT', multiple: true },
-                { id: 'collaborators', label: 'Additional roles – Collaborators', type: 'search', required: false, value: '', placeholder: 'Search from oneUNOPS (RDAT)', source: 'RDAT', multiple: true },
-              ],
+              isTeamMembers: true,
             },
           ],
         },
@@ -5625,6 +6355,58 @@
       // Product Requirements (per UNSPSC code)
       let productRequirements = {}; // { unspscCode: { requirementType: 'attributes'|'description', attributes: [{name, value}], description: '' } }
       
+      // Competition settings
+      let competitionValues = {
+        competitionType: '',
+        ungmVendors: [],
+        unregisteredEmail: '',
+        unregisteredCompanyName: '',
+        marketResearchDetails: '',
+        effectiveCompetitionDetails: '',
+        limitedCompetitionJustification: '',
+        directContractingReason: '',
+        linkedProcess: '',
+        directContractingJustification: ''
+      };
+      
+      // Contract Provisions settings
+      let contractProvisionsValues = {
+        generalConditions: '',
+        specialConditions: '',
+        sampleContract: '',
+        contractClausesKPIs: '',
+        contractClausesDrive: '',
+        performanceSecurityRequired: '',
+        performanceSecurityDetails: '',
+        advancePaymentRequired: '',
+        advancePaymentDetails: ''
+      };
+      
+      // Team Members
+      let teamMembers = {
+        author: { name: 'Valentina Rossi', email: 'valentina.rossi@unops.org', role: 'Author', avatar: 'VR' },
+        alternateAuthors: [],
+        procurementReviewer: null,
+        procurementAuthority: null,
+        technicalExpert: null,
+        bidOpeningPanel: [],
+        evaluationTeam: [],
+        collaborators: []
+      };
+      
+      // Submission Forms - Standard forms for tender
+      let submissionForms = [
+        { id: 'form-a', code: 'A', name: 'JV Partner Info', description: 'Joint Venture partner information and details', icon: '🤝', required: false, added: true },
+        { id: 'form-b', code: 'B', name: 'Bid Submission', description: 'Main bid submission form and declaration', icon: '📝', required: true, added: true },
+        { id: 'form-c', code: 'C', name: 'Price Schedule', description: 'Pricing template and cost breakdown', icon: '💰', required: true, added: true },
+        { id: 'form-d', code: 'D', name: 'Technical Bid', description: 'Technical proposal and specifications', icon: '⚙️', required: true, added: true },
+        { id: 'form-e', code: 'E', name: 'Bid Security Form', description: 'Bank Guarantee for bid security', icon: '🏦', required: false, added: true },
+        { id: 'form-f', code: 'F', name: "Manufacturer's Authorization", description: 'Authorization letter from manufacturer', icon: '✅', required: false, added: true },
+        { id: 'form-g', code: 'G', name: 'Performance Statement', description: 'Past performance and experience record', icon: '📊', required: true, added: true },
+        { id: 'form-h', code: 'H', name: 'Self Disclosure Form', description: 'Supplier self-disclosure declaration', icon: '📋', required: true, added: true },
+        { id: 'form-drive', code: 'DRiVE', name: 'DRiVE Self Assessment', description: 'Due diligence risk self-assessment questionnaire', icon: '🛡️', required: false, added: false }
+      ];
+
       // Bid Response Requirements - Custom Fields
       let bidResponseFields = {
         perBid: [
@@ -7862,7 +8644,7 @@
         if (sectionType === 'product-req' && items) {
           items.forEach(item => {
             const req = productRequirements[item.code];
-            if (req && req.requirementType && (req.attributes.length > 0 || req.description || req.uploadedFile || req.templateFile)) {
+            if (req && req.requirementType && (req.attributes.length > 0 || req.description)) {
               completed++;
             }
           });
@@ -7886,6 +8668,53 @@
           completed = tenderAuthorConfig.serviceDescriptions.length > 0 ? 1 : 0;
           completed += deliveryRequirementFields.filter(f => f.value).length > 0 ? 1 : 0;
           completed += tenderAuthorConfig.specificRequirements ? 1 : 0;
+        } else if (sectionType === 'key-dates') {
+          total = 3;
+          completed = 0;
+        } else if (sectionType === 'contract-provisions') {
+          total = 7;
+          completed = 0;
+          if (contractProvisionsValues.generalConditions) completed++;
+          if (contractProvisionsValues.specialConditions) completed++;
+          if (contractProvisionsValues.sampleContract) completed++;
+          if (contractProvisionsValues.contractClausesKPIs) completed++;
+          if (contractProvisionsValues.contractClausesDrive) completed++;
+          if (contractProvisionsValues.performanceSecurityRequired) completed++;
+          if (contractProvisionsValues.advancePaymentRequired) completed++;
+        } else if (sectionType === 'competition-type') {
+          total = 1;
+          completed = competitionValues.competitionType ? 1 : 0;
+        } else if (sectionType === 'vendor-notification') {
+          total = 3;
+          completed = 0;
+          if (competitionValues.ungmVendors.length > 0) completed++;
+          if (competitionValues.unregisteredEmail) completed++;
+          if (competitionValues.unregisteredCompanyName) completed++;
+        } else if (sectionType === 'market-research') {
+          total = 2;
+          completed = 0;
+          if (competitionValues.marketResearchDetails) completed++;
+          if (competitionValues.effectiveCompetitionDetails) completed++;
+        } else if (sectionType === 'limited-justification') {
+          total = 1;
+          completed = competitionValues.limitedCompetitionJustification ? 1 : 0;
+        } else if (sectionType === 'direct-contracting') {
+          total = 3;
+          completed = 0;
+          if (competitionValues.directContractingReason) completed++;
+          if (competitionValues.linkedProcess) completed++;
+          if (competitionValues.directContractingJustification) completed++;
+        } else if (sectionType === 'team-procurement') {
+          total = 3;
+          completed = 0;
+          if (teamMembers.procurementReviewer) completed++;
+          if (teamMembers.procurementAuthority) completed++;
+          if (teamMembers.technicalExpert) completed++;
+        } else if (sectionType === 'team-evaluation') {
+          total = 2;
+          completed = 0;
+          if (teamMembers.bidOpeningPanel.length > 0) completed++;
+          if (teamMembers.evaluationTeam.length > 0) completed++;
         }
         
         const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
@@ -7899,6 +8728,543 @@
             <span style="font-size: 10px; color: var(--text-muted);">${completed}/${total}</span>
           </div>
         `;
+      }
+      
+      // ===== COMPETITION BLOCK =====
+      function renderCompetitionBlock(block) {
+        const isOpenOrLimited = ['Open competition', 'Limited competition'].includes(competitionValues.competitionType);
+        const isLimited = competitionValues.competitionType === 'Limited competition';
+        const isDirect = competitionValues.competitionType === 'Direct contracting';
+        
+        return `
+          <div class="general-info-container">
+            <div class="general-info-body">
+              
+              <!-- Competition Type Section - Collapsible -->
+              <div class="collapsible-section collapsed" id="competition-type-section">
+                <div class="collapsible-header" onclick="toggleCollapsibleSection('competition-type-section')">
+                  <div class="collapsible-header-left">
+                    <span class="collapsible-header-title">Competition Type</span>
+                    ${renderSectionProgress('competition-type', null)}
+                  </div>
+                  <div class="collapsible-toggle">▼</div>
+                </div>
+                <div class="collapsible-body" onclick="event.stopPropagation()">
+                  <div class="form-grid-3col">
+                    <div class="form-group">
+                      <label class="form-label">Vendor competition type <span class="required">*</span></label>
+                      <select class="form-select" onchange="updateCompetitionType(this.value)" onclick="event.stopPropagation()" required>
+                        <option value="">Select...</option>
+                        <option value="Open competition" ${competitionValues.competitionType === 'Open competition' ? 'selected' : ''}>Open competition</option>
+                        <option value="Limited competition" ${competitionValues.competitionType === 'Limited competition' ? 'selected' : ''}>Limited competition</option>
+                        <option value="Direct contracting" ${competitionValues.competitionType === 'Direct contracting' ? 'selected' : ''}>Direct contracting</option>
+                      </select>
+                      <span class="help-text">Select the type of vendor competition for this tender</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Vendor Notification Section - Collapsible -->
+              <div class="collapsible-section collapsed" id="vendor-notification-section" style="margin-top: var(--spacing-md);">
+                <div class="collapsible-header" onclick="toggleCollapsibleSection('vendor-notification-section')">
+                  <div class="collapsible-header-left">
+                    <span class="collapsible-header-title">Vendor Notification</span>
+                    ${renderSectionProgress('vendor-notification', null)}
+                  </div>
+                  <div class="collapsible-toggle">▼</div>
+                </div>
+                <div class="collapsible-body" onclick="event.stopPropagation()">
+                  <div class="form-grid-3col">
+                    <div class="form-group full-width">
+                      <label class="form-label">Add UNGM vendor to be notified</label>
+                      <div style="position: relative;">
+                        <input type="text" class="form-input" placeholder="Search UNGM vendors or shortlist..." style="padding-left: 36px;" id="ungm-vendor-search" onclick="event.stopPropagation()" />
+                        <span style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 13px;">🔍</span>
+                      </div>
+                      <span class="help-text">Search from UNGM database or existing shortlists</span>
+                      
+                      <!-- Selected vendors display -->
+                      <div id="selected-ungm-vendors" style="margin-top: var(--spacing-sm); display: flex; flex-wrap: wrap; gap: var(--spacing-xs);">
+                        ${competitionValues.ungmVendors.map((vendor, idx) => `
+                          <span class="badge badge-info" style="display: inline-flex; align-items: center; gap: 4px;">
+                            ${vendor}
+                            <button type="button" onclick="event.stopPropagation(); removeUngmVendor(${idx})" style="background: none; border: none; cursor: pointer; padding: 0; font-size: 14px;">×</button>
+                          </span>
+                        `).join('')}
+                      </div>
+                    </div>
+                    
+                    <div class="form-group">
+                      <label class="form-label">Add email address (unregistered supplier)</label>
+                      <input type="email" class="form-input" placeholder="supplier@company.com" value="${competitionValues.unregisteredEmail}" onchange="updateCompetitionValue('unregisteredEmail', this.value)" onclick="event.stopPropagation()" />
+                      <span class="help-text">For suppliers not registered in UNGM</span>
+                    </div>
+                    
+                    <div class="form-group">
+                      <label class="form-label">Add Company Name (unregistered supplier)</label>
+                      <input type="text" class="form-input" placeholder="Company name" value="${competitionValues.unregisteredCompanyName}" onchange="updateCompetitionValue('unregisteredCompanyName', this.value)" onclick="event.stopPropagation()" />
+                      <span class="help-text">For suppliers not registered in UNGM</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Market Research & Outreach Section - Collapsible (visible for Open/Limited) -->
+              ${isOpenOrLimited ? `
+              <div class="collapsible-section collapsed" id="market-research-section" style="margin-top: var(--spacing-md);">
+                <div class="collapsible-header" onclick="toggleCollapsibleSection('market-research-section')">
+                  <div class="collapsible-header-left">
+                    <span class="collapsible-header-title">Market Research & Outreach</span>
+                    ${renderSectionProgress('market-research', null)}
+                  </div>
+                  <div class="collapsible-toggle">▼</div>
+                </div>
+                <div class="collapsible-body" onclick="event.stopPropagation()">
+                  <div class="form-grid-3col">
+                    <div class="form-group full-width">
+                      <label class="form-label">Details on market research and outreach <span class="required">*</span></label>
+                      <textarea class="form-textarea" placeholder="Describe the market research conducted and outreach efforts..." style="min-height: 100px;" onchange="updateCompetitionValue('marketResearchDetails', this.value)" onclick="event.stopPropagation()" required>${competitionValues.marketResearchDetails}</textarea>
+                      <span class="help-text">Required for Open and Limited competition types</span>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                      <label class="form-label">Details on how you intend to achieve effective competition <span class="required">*</span></label>
+                      <textarea class="form-textarea" placeholder="Explain how effective competition will be achieved..." style="min-height: 100px;" onchange="updateCompetitionValue('effectiveCompetitionDetails', this.value)" onclick="event.stopPropagation()" required>${competitionValues.effectiveCompetitionDetails}</textarea>
+                      <span class="help-text">Describe strategies to ensure competitive process</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              ` : ''}
+              
+              <!-- Limited Competition Justification Section - Collapsible (visible for Limited) -->
+              ${isLimited ? `
+              <div class="collapsible-section collapsed" id="limited-justification-section" style="margin-top: var(--spacing-md);">
+                <div class="collapsible-header" onclick="toggleCollapsibleSection('limited-justification-section')">
+                  <div class="collapsible-header-left">
+                    <span class="collapsible-header-title">Limited Competition Justification</span>
+                    ${renderSectionProgress('limited-justification', null)}
+                  </div>
+                  <div class="collapsible-toggle">▼</div>
+                </div>
+                <div class="collapsible-body" onclick="event.stopPropagation()">
+                  <div class="form-grid-3col">
+                    <div class="form-group full-width">
+                      <label class="form-label">Justification for reason for limited competition <span class="required">*</span></label>
+                      <textarea class="form-textarea" placeholder="Provide detailed justification for selecting limited competition..." style="min-height: 120px;" onchange="updateCompetitionValue('limitedCompetitionJustification', this.value)" onclick="event.stopPropagation()" required>${competitionValues.limitedCompetitionJustification}</textarea>
+                      <span class="help-text">Explain why limited competition is appropriate for this procurement</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              ` : ''}
+              
+              <!-- Direct Contracting Section - Collapsible (visible for Direct) -->
+              ${isDirect ? `
+              <div class="collapsible-section collapsed" id="direct-contracting-section" style="margin-top: var(--spacing-md);">
+                <div class="collapsible-header" onclick="toggleCollapsibleSection('direct-contracting-section')">
+                  <div class="collapsible-header-left">
+                    <span class="collapsible-header-title">Direct Contracting Details</span>
+                    ${renderSectionProgress('direct-contracting', null)}
+                  </div>
+                  <div class="collapsible-toggle">▼</div>
+                </div>
+                <div class="collapsible-body" onclick="event.stopPropagation()">
+                  <div class="form-grid-3col">
+                    <div class="form-group full-width">
+                      <label class="form-label">Reason for direct contracting under UNOPS Financial Rule 118.05(a) <span class="required">*</span></label>
+                      <select class="form-select" onchange="updateCompetitionValue('directContractingReason', this.value)" onclick="event.stopPropagation()" required>
+                        <option value="">Select reason...</option>
+                        <option value="sole-source" ${competitionValues.directContractingReason === 'sole-source' ? 'selected' : ''}>Sole source - only one supplier capable</option>
+                        <option value="emergency" ${competitionValues.directContractingReason === 'emergency' ? 'selected' : ''}>Emergency procurement</option>
+                        <option value="standardization" ${competitionValues.directContractingReason === 'standardization' ? 'selected' : ''}>Standardization of equipment</option>
+                        <option value="proprietary" ${competitionValues.directContractingReason === 'proprietary' ? 'selected' : ''}>Proprietary rights</option>
+                        <option value="previous-contract" ${competitionValues.directContractingReason === 'previous-contract' ? 'selected' : ''}>Extension of existing contract</option>
+                        <option value="other" ${competitionValues.directContractingReason === 'other' ? 'selected' : ''}>Other (specify in justification)</option>
+                      </select>
+                      <span class="help-text">Select the applicable reason per UNOPS Financial Rules</span>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                      <label class="form-label">Linked process</label>
+                      <div style="position: relative;">
+                        <input type="text" class="form-input" placeholder="Search for linked procurement process..." style="padding-left: 36px;" value="${competitionValues.linkedProcess}" onchange="updateCompetitionValue('linkedProcess', this.value)" onclick="event.stopPropagation()" />
+                        <span style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 13px;">🔍</span>
+                      </div>
+                      <span class="help-text">Link to related procurement process if applicable</span>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                      <label class="form-label">Justification for reason for direct contracting selected above <span class="required">*</span></label>
+                      <textarea class="form-textarea" placeholder="Provide detailed justification for direct contracting..." style="min-height: 120px;" onchange="updateCompetitionValue('directContractingJustification', this.value)" onclick="event.stopPropagation()" required>${competitionValues.directContractingJustification}</textarea>
+                      <span class="help-text">Provide comprehensive justification supporting the selected reason</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              ` : ''}
+              
+            </div>
+          </div>
+        `;
+      }
+      
+      // Competition update functions
+      // Track expanded sections for Competition tab
+      let competitionExpandedSections = {
+        'competition-type-section': false,
+        'vendor-notification-section': false,
+        'market-research-section': false,
+        'limited-justification-section': false,
+        'direct-contracting-section': false
+      };
+      
+      window.updateCompetitionType = function(value) {
+        // Save current expanded states before re-render
+        saveCompetitionSectionStates();
+        
+        competitionValues.competitionType = value;
+        renderCurrentBlock();
+        
+        // Restore expanded states after re-render
+        restoreCompetitionSectionStates();
+      }
+      
+      function saveCompetitionSectionStates() {
+        const sectionIds = ['competition-type-section', 'vendor-notification-section', 'market-research-section', 'limited-justification-section', 'direct-contracting-section'];
+        sectionIds.forEach(id => {
+          const section = document.getElementById(id);
+          if (section) {
+            competitionExpandedSections[id] = !section.classList.contains('collapsed');
+          }
+        });
+      }
+      
+      function restoreCompetitionSectionStates() {
+        Object.keys(competitionExpandedSections).forEach(id => {
+          const section = document.getElementById(id);
+          if (section && competitionExpandedSections[id]) {
+            section.classList.remove('collapsed');
+          }
+        });
+      }
+      
+      window.updateCompetitionValue = function(field, value) {
+        competitionValues[field] = value;
+      }
+      
+      window.removeUngmVendor = function(index) {
+        saveCompetitionSectionStates();
+        competitionValues.ungmVendors.splice(index, 1);
+        renderCurrentBlock();
+        restoreCompetitionSectionStates();
+      }
+      
+      // Contract Provisions update functions
+      // Track expanded sections for Project & Tender Details
+      let projectDetailsExpandedSections = {
+        'project-info-section': false,
+        'particulars-section': false,
+        'key-dates-section': false,
+        'contract-provisions-section': false
+      };
+      
+      function saveProjectDetailsSectionStates() {
+        Object.keys(projectDetailsExpandedSections).forEach(id => {
+          const section = document.getElementById(id);
+          if (section) {
+            projectDetailsExpandedSections[id] = !section.classList.contains('collapsed');
+          }
+        });
+      }
+      
+      function restoreProjectDetailsSectionStates() {
+        Object.keys(projectDetailsExpandedSections).forEach(id => {
+          const section = document.getElementById(id);
+          if (section && projectDetailsExpandedSections[id]) {
+            section.classList.remove('collapsed');
+          }
+        });
+      }
+      
+      window.updateContractProvision = function(field, value) {
+        const needsRerender = ['performanceSecurityRequired', 'advancePaymentRequired'].includes(field);
+        
+        if (needsRerender) {
+          saveProjectDetailsSectionStates();
+        }
+        
+        contractProvisionsValues[field] = value;
+        
+        if (needsRerender) {
+          renderCurrentBlock();
+          restoreProjectDetailsSectionStates();
+        }
+      }
+      
+      window.formatContractText = function(editorId, command) {
+        const editorMap = {
+          'specialConditions': 'contract-special-conditions-editor',
+          'clausesKPIs': 'contract-clauses-kpis-editor',
+          'clausesDrive': 'contract-clauses-drive-editor',
+          'perfSecurityDetails': 'contract-perf-security-editor',
+          'advancePaymentDetails': 'contract-advance-payment-editor'
+        };
+        
+        const editor = document.getElementById(editorMap[editorId]);
+        if (editor) {
+          editor.focus();
+          document.execCommand(command, false, null);
+        }
+      }
+      
+      // ===== TEAM BLOCK =====
+      function renderTeamBlock(block) {
+        const renderTeamMemberCard = (member, role, canRemove = false, removeFunc = null) => {
+          if (!member) return '';
+          return `
+            <div class="team-member-card">
+              <div class="team-member-avatar" style="background: ${role === 'Author' ? 'var(--primary-500)' : 'var(--info-500)'};">${member.avatar || member.name.split(' ').map(n => n[0]).join('')}</div>
+              <div class="team-member-info">
+                <div class="team-member-name">${member.name}</div>
+                <div class="team-member-email">${member.email || ''}</div>
+              </div>
+              <div class="team-member-role">${role}</div>
+              ${canRemove ? `<button class="team-member-remove" onclick="event.stopPropagation(); ${removeFunc}" title="Remove">×</button>` : ''}
+            </div>
+          `;
+        };
+        
+        const renderTeamMemberList = (members, role, removeFunc) => {
+          if (!members || members.length === 0) return '<div class="team-empty-slot">No members assigned</div>';
+          return members.map((m, idx) => renderTeamMemberCard(m, role, true, `${removeFunc}(${idx})`)).join('');
+        };
+        
+        return `
+          <div class="general-info-container">
+            <div class="general-info-body">
+              
+              <!-- Current Author Section -->
+              <div class="collapsible-section" id="team-author-section">
+                <div class="collapsible-header" onclick="toggleCollapsibleSection('team-author-section')">
+                  <div class="collapsible-header-left">
+                    <span class="collapsible-header-title">Process Author</span>
+                    <span class="badge badge-success" style="margin-left: 8px;">Active</span>
+                  </div>
+                  <div class="collapsible-toggle">▼</div>
+                </div>
+                <div class="collapsible-body" onclick="event.stopPropagation()">
+                  <div class="team-section-content">
+                    ${renderTeamMemberCard(teamMembers.author, 'Author')}
+                    
+                    <div class="team-subsection" style="margin-top: var(--spacing-md);">
+                      <div class="team-subsection-header">
+                        <span class="team-subsection-title">Alternate Authors</span>
+                        <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); openAddTeamMemberModal('alternateAuthors')"><i class="pi pi-plus"></i> Add</button>
+                      </div>
+                      <div class="team-members-list">
+                        ${renderTeamMemberList(teamMembers.alternateAuthors, 'Alternate Author', 'removeAlternateAuthor')}
+                      </div>
+                      <span class="help-text">Alternate authors can edit the tender document</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Procurement Roles Section -->
+              <div class="collapsible-section collapsed" id="team-procurement-section" style="margin-top: var(--spacing-md);">
+                <div class="collapsible-header" onclick="toggleCollapsibleSection('team-procurement-section')">
+                  <div class="collapsible-header-left">
+                    <span class="collapsible-header-title">Procurement Roles</span>
+                    ${renderSectionProgress('team-procurement', null)}
+                  </div>
+                  <div class="collapsible-toggle">▼</div>
+                </div>
+                <div class="collapsible-body" onclick="event.stopPropagation()">
+                  <div class="team-roles-grid">
+                    
+                    <!-- Procurement Reviewer -->
+                    <div class="team-role-card">
+                      <div class="team-role-header">
+                        <div class="team-role-icon">📋</div>
+                        <div class="team-role-title">Procurement Reviewer</div>
+                      </div>
+                      <div class="team-role-content">
+                        ${teamMembers.procurementReviewer ? 
+                          renderTeamMemberCard(teamMembers.procurementReviewer, 'Reviewer', true, 'removeProcurementReviewer()') :
+                          `<div class="team-add-placeholder" onclick="event.stopPropagation(); openAddTeamMemberModal('procurementReviewer')">
+                            <i class="pi pi-plus"></i>
+                            <span>Assign Reviewer</span>
+                          </div>`
+                        }
+                      </div>
+                      <span class="help-text">Reviews and approves tender documents</span>
+                    </div>
+                    
+                    <!-- Procurement Authority -->
+                    <div class="team-role-card">
+                      <div class="team-role-header">
+                        <div class="team-role-icon">✅</div>
+                        <div class="team-role-title">Procurement Authority</div>
+                      </div>
+                      <div class="team-role-content">
+                        ${teamMembers.procurementAuthority ? 
+                          renderTeamMemberCard(teamMembers.procurementAuthority, 'Authority', true, 'removeProcurementAuthority()') :
+                          `<div class="team-add-placeholder" onclick="event.stopPropagation(); openAddTeamMemberModal('procurementAuthority')">
+                            <i class="pi pi-plus"></i>
+                            <span>Assign Authority</span>
+                          </div>`
+                        }
+                      </div>
+                      <span class="help-text">Final approval authority for procurement</span>
+                    </div>
+                    
+                    <!-- Technical Expert -->
+                    <div class="team-role-card">
+                      <div class="team-role-header">
+                        <div class="team-role-icon">🔧</div>
+                        <div class="team-role-title">Technical Expert</div>
+                      </div>
+                      <div class="team-role-content">
+                        ${teamMembers.technicalExpert ? 
+                          renderTeamMemberCard(teamMembers.technicalExpert, 'Expert', true, 'removeTechnicalExpert()') :
+                          `<div class="team-add-placeholder" onclick="event.stopPropagation(); openAddTeamMemberModal('technicalExpert')">
+                            <i class="pi pi-plus"></i>
+                            <span>Assign Expert</span>
+                          </div>`
+                        }
+                      </div>
+                      <span class="help-text">Provides technical guidance and specifications</span>
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Evaluation Team Section -->
+              <div class="collapsible-section collapsed" id="team-evaluation-section" style="margin-top: var(--spacing-md);">
+                <div class="collapsible-header" onclick="toggleCollapsibleSection('team-evaluation-section')">
+                  <div class="collapsible-header-left">
+                    <span class="collapsible-header-title">Evaluation Team</span>
+                    ${renderSectionProgress('team-evaluation', null)}
+                  </div>
+                  <div class="collapsible-toggle">▼</div>
+                </div>
+                <div class="collapsible-body" onclick="event.stopPropagation()">
+                  <div class="team-section-content">
+                    
+                    <!-- Bid Opening Panel -->
+                    <div class="team-subsection">
+                      <div class="team-subsection-header">
+                        <span class="team-subsection-title">📂 Bid Opening Panel</span>
+                        <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); openAddTeamMemberModal('bidOpeningPanel')"><i class="pi pi-plus"></i> Add Member</button>
+                      </div>
+                      <div class="team-members-list">
+                        ${renderTeamMemberList(teamMembers.bidOpeningPanel, 'Panel Member', 'removeBidOpeningPanelMember')}
+                      </div>
+                      <span class="help-text">Required for public bid openings or offline tenders</span>
+                    </div>
+                    
+                    <!-- Evaluation Team Members -->
+                    <div class="team-subsection" style="margin-top: var(--spacing-lg);">
+                      <div class="team-subsection-header">
+                        <span class="team-subsection-title">📊 Evaluation Committee</span>
+                        <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); openAddTeamMemberModal('evaluationTeam')"><i class="pi pi-plus"></i> Add Member</button>
+                      </div>
+                      <div class="team-members-list">
+                        ${renderTeamMemberList(teamMembers.evaluationTeam, 'Evaluator', 'removeEvaluationTeamMember')}
+                      </div>
+                      <span class="help-text">Procurement Official, Chair, Members, and Observers</span>
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Collaborators Section -->
+              <div class="collapsible-section collapsed" id="team-collaborators-section" style="margin-top: var(--spacing-md);">
+                <div class="collapsible-header" onclick="toggleCollapsibleSection('team-collaborators-section')">
+                  <div class="collapsible-header-left">
+                    <span class="collapsible-header-title">Collaborators</span>
+                    <span class="badge badge-info" style="margin-left: 8px;">${teamMembers.collaborators.length}</span>
+                  </div>
+                  <div class="collapsible-toggle">▼</div>
+                </div>
+                <div class="collapsible-body" onclick="event.stopPropagation()">
+                  <div class="team-section-content">
+                    <div class="team-subsection-header" style="margin-bottom: var(--spacing-sm);">
+                      <span class="team-subsection-title">Additional Collaborators</span>
+                      <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); openAddTeamMemberModal('collaborators')"><i class="pi pi-plus"></i> Add Collaborator</button>
+                    </div>
+                    <div class="team-members-list">
+                      ${renderTeamMemberList(teamMembers.collaborators, 'Collaborator', 'removeCollaborator')}
+                    </div>
+                    <span class="help-text">Collaborators can view and comment on the tender</span>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        `;
+      }
+      
+      // Team member management functions
+      window.openAddTeamMemberModal = function(role) {
+        // In real app, this would open a modal to search and select team members
+        const mockMembers = [
+          { name: 'John Smith', email: 'john.smith@unops.org', avatar: 'JS' },
+          { name: 'Sarah Johnson', email: 'sarah.johnson@unops.org', avatar: 'SJ' },
+          { name: 'Michael Chen', email: 'michael.chen@unops.org', avatar: 'MC' },
+          { name: 'Emma Wilson', email: 'emma.wilson@unops.org', avatar: 'EW' },
+        ];
+        
+        const randomMember = mockMembers[Math.floor(Math.random() * mockMembers.length)];
+        
+        if (['alternateAuthors', 'bidOpeningPanel', 'evaluationTeam', 'collaborators'].includes(role)) {
+          teamMembers[role].push(randomMember);
+        } else {
+          teamMembers[role] = randomMember;
+        }
+        
+        renderCurrentBlock();
+        showNotification(`${randomMember.name} added as ${role.replace(/([A-Z])/g, ' $1').toLowerCase()}`, 'success');
+      }
+      
+      window.removeAlternateAuthor = function(index) {
+        teamMembers.alternateAuthors.splice(index, 1);
+        renderCurrentBlock();
+      }
+      
+      window.removeProcurementReviewer = function() {
+        teamMembers.procurementReviewer = null;
+        renderCurrentBlock();
+      }
+      
+      window.removeProcurementAuthority = function() {
+        teamMembers.procurementAuthority = null;
+        renderCurrentBlock();
+      }
+      
+      window.removeTechnicalExpert = function() {
+        teamMembers.technicalExpert = null;
+        renderCurrentBlock();
+      }
+      
+      window.removeBidOpeningPanelMember = function(index) {
+        teamMembers.bidOpeningPanel.splice(index, 1);
+        renderCurrentBlock();
+      }
+      
+      window.removeEvaluationTeamMember = function(index) {
+        teamMembers.evaluationTeam.splice(index, 1);
+        renderCurrentBlock();
+      }
+      
+      window.removeCollaborator = function(index) {
+        teamMembers.collaborators.splice(index, 1);
+        renderCurrentBlock();
       }
       
       // ===== SCOPE & REQUIREMENTS BLOCK =====
@@ -8047,9 +9413,22 @@
       
       // Render individual product requirement body
       function renderProductRequirementBody(unspsc, req) {
-        if (!req.requirementType || (req.attributes.length === 0 && !req.description && !req.uploadedFile && !req.templateFile)) {
+        // Show attachment if exists
+        const attachmentHtml = req.uploadedFile ? `
+          <div style="margin-bottom: var(--spacing-sm); padding: var(--spacing-sm); background: var(--info-50); border: 1px solid var(--info-200); border-radius: var(--radius-sm); display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 18px;">📎</span>
+            <div style="flex: 1;">
+              <div style="font-weight: 600; font-size: 12px; color: var(--info-700);">${req.uploadedFile.name}</div>
+              <div style="font-size: 11px; color: var(--info-600);">${req.uploadedFile.size}</div>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); removeAttachment('${unspsc.code}')" style="color: var(--danger-600);" title="Remove attachment"><i class="pi pi-times"></i></button>
+          </div>
+        ` : '';
+        
+        if (!req.requirementType || (req.attributes.length === 0 && !req.description)) {
           return `
             <div class="req-type-selector">
+              ${attachmentHtml}
               <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--spacing-sm);">Choose requirement type:</p>
               <div style="display: flex; flex-wrap: wrap; gap: var(--spacing-sm);">
                 <button class="btn btn-secondary" onclick="event.stopPropagation(); addRequirementAttributeInline('${unspsc.code}')">
@@ -8058,18 +9437,17 @@
                 <button class="btn btn-secondary" onclick="event.stopPropagation(); addDescriptionFieldInline('${unspsc.code}')">
                   <span style="font-size: 14px; margin-right: 4px;">📝</span> Description
                 </button>
-                <button class="btn btn-secondary" onclick="event.stopPropagation(); addUploadFieldInline('${unspsc.code}')">
-                  <span style="font-size: 14px; margin-right: 4px;">📄</span> Upload
+                <button class="btn btn-secondary" onclick="event.stopPropagation(); document.getElementById('attach-file-${unspsc.code.replace(/[^a-zA-Z0-9]/g, '_')}').click()">
+                  <span style="font-size: 14px; margin-right: 4px;">📎</span> Attach
                 </button>
-                <button class="btn btn-secondary" onclick="event.stopPropagation(); addTemplateFieldInline('${unspsc.code}')">
-                  <span style="font-size: 14px; margin-right: 4px;">📑</span> Template
-                </button>
+                <input type="file" id="attach-file-${unspsc.code.replace(/[^a-zA-Z0-9]/g, '_')}" accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg" style="display: none;" onchange="handleAttachFile('${unspsc.code}', event)" />
               </div>
             </div>
           `;
         } else if (req.requirementType === 'description') {
           return `
             <div class="req-description-compact">
+              ${attachmentHtml}
               <div class="form-group" style="margin: 0;">
                 <div class="rich-text-toolbar-full">
                   <div class="toolbar-group">
@@ -8105,67 +9483,17 @@
               </div>
               <div class="req-actions-row">
                 <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); switchToAttributesInline('${unspsc.code}')"><i class="pi pi-list"></i> Switch to Attributes</button>
-                <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); clearRequirementsInline('${unspsc.code}')" style="color: var(--danger-600);"><i class="pi pi-trash"></i> Clear</button>
-              </div>
-            </div>
-          `;
-        } else if (req.requirementType === 'upload') {
-          return `
-            <div class="req-upload-area">
-              <div style="border: 2px dashed var(--surface-300); border-radius: var(--radius-md); padding: var(--spacing-lg); text-align: center; cursor: pointer; background: var(--surface-50);" onclick="event.stopPropagation(); document.getElementById('upload-file-${unspsc.code.replace(/[^a-zA-Z0-9]/g, '_')}').click()">
-                ${req.uploadedFile ? `
-                  <div style="display: flex; align-items: center; justify-content: center; gap: var(--spacing-sm);">
-                    <span style="font-size: 24px;">📄</span>
-                    <div style="text-align: left;">
-                      <div style="font-weight: 600; color: var(--success-600);">${req.uploadedFile.name}</div>
-                      <div style="font-size: 11px; color: var(--text-muted);">${req.uploadedFile.size}</div>
-                    </div>
-                    <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); removeUploadedFile('${unspsc.code}')" style="margin-left: auto; color: var(--danger-600);"><i class="pi pi-trash"></i></button>
-                  </div>
-                ` : `
-                  <div style="font-size: 32px; margin-bottom: var(--spacing-xs);">📤</div>
-                  <div style="font-weight: 500; color: var(--text-secondary);">Click to upload PDF or document</div>
-                  <div style="font-size: 11px; color: var(--text-muted);">PDF, DOC, DOCX (max 10MB)</div>
-                `}
-                <input type="file" id="upload-file-${unspsc.code.replace(/[^a-zA-Z0-9]/g, '_')}" accept=".pdf,.doc,.docx" style="display: none;" onchange="handleRequirementFileUpload('${unspsc.code}', event)" />
-              </div>
-              <div class="req-actions-row">
-                <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); clearRequirementsInline('${unspsc.code}')" style="color: var(--danger-600);"><i class="pi pi-trash"></i> Clear</button>
-              </div>
-            </div>
-          `;
-        } else if (req.requirementType === 'template') {
-          return `
-            <div class="req-template-area">
-              <div class="form-group" style="margin: 0;">
-                <label class="form-label" style="font-size: 12px;">Select Standard Template</label>
-                <select class="form-select" style="font-size: 13px;" onchange="updateRequirementTemplate('${unspsc.code}', this.value)" onclick="event.stopPropagation()">
-                  <option value="">-- Select a template --</option>
-                  <option value="tech-specs-goods" ${req.templateFile === 'tech-specs-goods' ? 'selected' : ''}>Technical Specifications - Goods</option>
-                  <option value="tech-specs-services" ${req.templateFile === 'tech-specs-services' ? 'selected' : ''}>Technical Specifications - Services</option>
-                  <option value="tech-specs-works" ${req.templateFile === 'tech-specs-works' ? 'selected' : ''}>Technical Specifications - Works</option>
-                  <option value="requirements-matrix" ${req.templateFile === 'requirements-matrix' ? 'selected' : ''}>Requirements Matrix</option>
-                  <option value="evaluation-criteria" ${req.templateFile === 'evaluation-criteria' ? 'selected' : ''}>Evaluation Criteria Template</option>
-                </select>
-              </div>
-              ${req.templateFile ? `
-                <div style="margin-top: var(--spacing-sm); padding: var(--spacing-sm); background: var(--success-50); border-radius: var(--radius-sm); border: 1px solid var(--success-200); display: flex; align-items: center; gap: 8px;">
-                  <span style="font-size: 18px;">📑</span>
-                  <div style="flex: 1;">
-                    <div style="font-weight: 600; font-size: 12px; color: var(--success-700);">Template Selected</div>
-                    <div style="font-size: 11px; color: var(--success-600);">${req.templateFile.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</div>
-                  </div>
-                  <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); downloadRequirementTemplate('${unspsc.code}')"><i class="pi pi-download"></i></button>
-                </div>
-              ` : ''}
-              <div class="req-actions-row">
+                <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); document.getElementById('attach-file-${unspsc.code.replace(/[^a-zA-Z0-9]/g, '_')}').click()"><i class="pi pi-paperclip"></i> Attach</button>
+                <input type="file" id="attach-file-${unspsc.code.replace(/[^a-zA-Z0-9]/g, '_')}" accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg" style="display: none;" onchange="handleAttachFile('${unspsc.code}', event)" />
                 <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); clearRequirementsInline('${unspsc.code}')" style="color: var(--danger-600);"><i class="pi pi-trash"></i> Clear</button>
               </div>
             </div>
           `;
         } else {
+          // Attributes type (default)
           return `
             <div class="req-attributes-compact">
+              ${attachmentHtml}
               <div class="attributes-grid">
                 ${req.attributes.map((attr, idx) => `
                   <div class="attr-row">
@@ -8177,6 +9505,8 @@
               </div>
               <div class="req-actions-row">
                 <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); addRequirementAttributeInline('${unspsc.code}')"><i class="pi pi-plus"></i> Add Attribute</button>
+                <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); document.getElementById('attach-file-${unspsc.code.replace(/[^a-zA-Z0-9]/g, '_')}').click()"><i class="pi pi-paperclip"></i> Attach</button>
+                <input type="file" id="attach-file-${unspsc.code.replace(/[^a-zA-Z0-9]/g, '_')}" accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg" style="display: none;" onchange="handleAttachFile('${unspsc.code}', event)" />
                 <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); clearRequirementsInline('${unspsc.code}')" style="color: var(--danger-600);"><i class="pi pi-trash"></i> Clear</button>
               </div>
             </div>
@@ -8236,29 +9566,13 @@
       
       window.clearRequirementsInline = function(unspscCode) {
         if (confirm('This will clear all requirements for this product. Continue?')) {
-          productRequirements[unspscCode] = { requirementType: null, attributes: [], description: '', uploadedFile: null, templateFile: null };
+          productRequirements[unspscCode] = { requirementType: null, attributes: [], description: '', uploadedFile: null };
           updateProductReqBodyContent(unspscCode);
           updateProductReqStatus(unspscCode);
         }
       }
       
-      window.addUploadFieldInline = function(unspscCode) {
-        if (!productRequirements[unspscCode]) {
-          productRequirements[unspscCode] = { requirementType: 'upload', attributes: [], description: '', uploadedFile: null, templateFile: null };
-        }
-        productRequirements[unspscCode].requirementType = 'upload';
-        updateProductReqBodyContent(unspscCode);
-      }
-      
-      window.addTemplateFieldInline = function(unspscCode) {
-        if (!productRequirements[unspscCode]) {
-          productRequirements[unspscCode] = { requirementType: 'template', attributes: [], description: '', uploadedFile: null, templateFile: null };
-        }
-        productRequirements[unspscCode].requirementType = 'template';
-        updateProductReqBodyContent(unspscCode);
-      }
-      
-      window.handleRequirementFileUpload = function(unspscCode, event) {
+      window.handleAttachFile = function(unspscCode, event) {
         const file = event.target.files[0];
         if (!file) return;
         
@@ -8267,14 +9581,8 @@
           return;
         }
         
-        const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
-        if (!allowedTypes.includes(file.type)) {
-          alert('Only PDF, DOC, and DOCX files are allowed');
-          return;
-        }
-        
         if (!productRequirements[unspscCode]) {
-          productRequirements[unspscCode] = { requirementType: 'upload', attributes: [], description: '', uploadedFile: null, templateFile: null };
+          productRequirements[unspscCode] = { requirementType: null, attributes: [], description: '', uploadedFile: null };
         }
         
         productRequirements[unspscCode].uploadedFile = {
@@ -8285,30 +9593,14 @@
         
         updateProductReqBodyContent(unspscCode);
         updateProductReqStatus(unspscCode);
-        showNotification(`File "${file.name}" uploaded`, 'success');
+        showNotification(`File "${file.name}" attached`, 'success');
       }
       
-      window.removeUploadedFile = function(unspscCode) {
+      window.removeAttachment = function(unspscCode) {
         if (productRequirements[unspscCode]) {
           productRequirements[unspscCode].uploadedFile = null;
           updateProductReqBodyContent(unspscCode);
           updateProductReqStatus(unspscCode);
-        }
-      }
-      
-      window.updateRequirementTemplate = function(unspscCode, templateValue) {
-        if (!productRequirements[unspscCode]) {
-          productRequirements[unspscCode] = { requirementType: 'template', attributes: [], description: '', uploadedFile: null, templateFile: null };
-        }
-        productRequirements[unspscCode].templateFile = templateValue;
-        updateProductReqBodyContent(unspscCode);
-        updateProductReqStatus(unspscCode);
-      }
-      
-      window.downloadRequirementTemplate = function(unspscCode) {
-        const req = productRequirements[unspscCode];
-        if (req && req.templateFile) {
-          showNotification(`Downloading template: ${req.templateFile.replace(/-/g, ' ')}`, 'success');
         }
       }
       
@@ -8339,8 +9631,8 @@
         const item = document.querySelector(`.product-req-item[data-unspsc="${unspscCode}"]`);
         if (!item) return;
         
-        const req = productRequirements[unspscCode] || { requirementType: null, attributes: [], description: '', uploadedFile: null, templateFile: null };
-        const hasRequirements = req.requirementType && (req.attributes.length > 0 || req.description || req.uploadedFile || req.templateFile);
+        const req = productRequirements[unspscCode] || { requirementType: null, attributes: [], description: '', uploadedFile: null };
+        const hasRequirements = req.requirementType && (req.attributes.length > 0 || req.description);
         
         const statusBadge = item.querySelector('.status-badge');
         if (statusBadge) {
@@ -8982,6 +10274,100 @@
             renderCurrentBlock();
           }
         }
+      }
+      
+      // ===== SUBMISSION FORMS MANAGEMENT =====
+      window.toggleSubmissionForm = function(formId) {
+        const form = submissionForms.find(f => f.id === formId);
+        if (form) {
+          form.added = !form.added;
+          renderCurrentBlock();
+        }
+      }
+      
+      window.toggleFormPreview = function(formId) {
+        const form = submissionForms.find(f => f.id === formId);
+        if (form) {
+          alert(`Preview of "${form.name}":\n\n${form.description}\n\nThis would open a modal showing the full form template.`);
+        }
+      }
+      
+      window.handleFormsDragOver = function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        const dropZone = document.getElementById('submission-forms-drop-zone');
+        if (dropZone) {
+          dropZone.classList.add('drag-over');
+        }
+      }
+      
+      window.handleFormsDragLeave = function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        const dropZone = document.getElementById('submission-forms-drop-zone');
+        if (dropZone) {
+          dropZone.classList.remove('drag-over');
+        }
+      }
+      
+      window.handleFormsDrop = function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        
+        const dropZone = document.getElementById('submission-forms-drop-zone');
+        if (dropZone) {
+          dropZone.classList.remove('drag-over');
+        }
+        
+        // Get the form data from the dragged item (from form library)
+        const formType = event.dataTransfer.getData('form-type');
+        const formName = event.dataTransfer.getData('form-name');
+        
+        if (formType && formName) {
+          // Check if this form already exists by name match
+          const existingForm = submissionForms.find(f => 
+            f.name.toLowerCase() === formName.toLowerCase() ||
+            f.name.toLowerCase().includes(formName.toLowerCase().split(' ')[0])
+          );
+          
+          if (existingForm) {
+            // If form exists but not added, add it
+            if (!existingForm.added) {
+              existingForm.added = true;
+              renderCurrentBlock();
+            }
+          } else {
+            // Add new form to the list
+            const icons = {
+              'instructions': '📋',
+              'contracts': '📝',
+              'bank-guarantee': '🏦',
+              'bid-security': '🔒',
+              'drive-questionnaire': '🛡️',
+              'technical-specs': '⚙️',
+              'evaluation': '✅',
+              'price-schedule': '💰'
+            };
+            
+            const newForm = {
+              id: `form-custom-${Date.now()}`,
+              code: String.fromCharCode(65 + submissionForms.length), // Next letter (I, J, K...)
+              name: formName,
+              description: `Custom form added from library`,
+              icon: icons[formType] || '📄',
+              required: false,
+              added: true
+            };
+            submissionForms.push(newForm);
+            renderCurrentBlock();
+          }
+        }
+      }
+      
+      window.handleFormCardDragStart = function(event, formId) {
+        event.dataTransfer.setData('text/plain', formId);
+        event.dataTransfer.setData('source', 'submission-forms');
+        event.dataTransfer.effectAllowed = 'move';
       }
       
       // ===== DELIVERY REQUIREMENTS FIELDS MANAGEMENT =====
@@ -9747,120 +11133,189 @@
       
       // ===== BID RESPONSE REQUIREMENTS SECTION =====
       function renderSupplierResponseStructureSection(block, section, sectionIndex, isFirst) {
+        const addedFormsCount = submissionForms.filter(f => f.added).length;
+        const requiredFormsCount = submissionForms.filter(f => f.required).length;
+        
         return `
-          <div class="form-section">
-            <div class="section-header">
-              <div class="section-title" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                <div>
-                  <span class="section-icon">${block.icon}</span>
-                  <span>Bid Response Requirements</span>
+          <div class="general-info-container">
+            <div class="general-info-body">
+              <!-- Required Forms Section - Collapsible -->
+              <div class="collapsible-section" id="submission-forms-section">
+                <div class="collapsible-header" onclick="toggleCollapsibleSection('submission-forms-section')">
+                  <div class="collapsible-header-left">
+                    <span class="collapsible-header-title">Required Forms</span>
+                    <span class="section-progress-badge" style="margin-left: 8px; font-size: 11px; background: var(--primary-50); color: var(--primary-600); padding: 2px 8px; border-radius: 10px;">${addedFormsCount} forms included</span>
+                  </div>
+                  <div class="collapsible-toggle">▼</div>
                 </div>
-                <button class="btn btn-ghost btn-sm" onclick="toggleSupplierFormPreview()" style="font-size: 13px;">
-                  👁️ Preview Supplier Form
-                </button>
-              </div>
-            </div>
-            <div class="section-body">
-              <div class="info-alert" style="margin-bottom: var(--spacing-lg);">
-                <div class="info-alert-text">
-                  ℹ️ This shows how supplier questions will be structured and grouped by answer level
+                <div class="collapsible-body" onclick="event.stopPropagation()">
+                  <div class="info-alert" style="margin-bottom: var(--spacing-lg);">
+                    <div class="info-alert-text">
+                      📄 Configure the standard forms to include in your tender package. Drag forms from the Form Library panel to add more.
+                    </div>
+                  </div>
+                  
+                  <!-- Forms Drop Zone -->
+                  <div class="submission-forms-drop-zone" id="submission-forms-drop-zone" 
+                       ondragover="handleFormsDragOver(event)" 
+                       ondragleave="handleFormsDragLeave(event)" 
+                       ondrop="handleFormsDrop(event)">
+                    <div class="submission-forms-grid">
+                      ${submissionForms.map(form => `
+                        <div class="submission-form-card ${form.added ? 'added' : 'not-added'} ${form.required ? 'required' : ''}" 
+                             data-form-id="${form.id}"
+                             draggable="true"
+                             ondragstart="handleFormCardDragStart(event, '${form.id}')">
+                          <div class="submission-form-card-header">
+                            <div class="submission-form-code">${form.code}</div>
+                            <div class="submission-form-actions">
+                              ${form.added ? `
+                                <button class="btn-icon-xs preview" onclick="event.stopPropagation(); toggleFormPreview('${form.id}')" title="Preview form"><i class="pi pi-eye"></i></button>
+                                ${!form.required ? `<button class="btn-icon-xs danger" onclick="event.stopPropagation(); toggleSubmissionForm('${form.id}')" title="Remove form"><i class="pi pi-times"></i></button>` : ''}
+                              ` : `
+                                <button class="btn-icon-xs success" onclick="event.stopPropagation(); toggleSubmissionForm('${form.id}')" title="Add form"><i class="pi pi-plus"></i></button>
+                              `}
+                            </div>
+                          </div>
+                          <div class="submission-form-icon">${form.icon}</div>
+                          <div class="submission-form-name">${form.name}</div>
+                          <div class="submission-form-description">${form.description}</div>
+                          ${form.required ? '<div class="submission-form-required-badge">Required</div>' : ''}
+                          ${!form.added ? '<div class="submission-form-overlay"><span>Click + to add</span></div>' : ''}
+                        </div>
+                      `).join('')}
+                    </div>
+                    <div class="submission-forms-drop-hint" id="forms-drop-hint">
+                      <i class="pi pi-download"></i> Drop forms here from the Form Library
+                    </div>
+                  </div>
                 </div>
               </div>
               
-              <!-- A. Per Bid -->
-              <div style="background: var(--surface-0); border-left: 4px solid var(--primary-400); padding: var(--spacing-lg); margin-bottom: var(--spacing-xl); border-radius: var(--radius-sm); box-shadow: var(--shadow-card);">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-md);">
-                  <h4 style="font-size: 16px; font-weight: 600; margin: 0; color: var(--primary-600);">A. Per Bid (answered once for entire bid)</h4>
-                  <button class="btn btn-ghost btn-sm" onclick="addBidResponseField('perBid')" style="font-size: 13px;">+ Add Field</button>
+              <!-- Bid Response Structure Section - Collapsible -->
+              <div class="collapsible-section collapsed" id="bid-response-section" style="margin-top: var(--spacing-md);">
+                <div class="collapsible-header" onclick="toggleCollapsibleSection('bid-response-section')">
+                  <div class="collapsible-header-left">
+                    <span class="collapsible-header-title">Bid Response Structure</span>
+                    <span class="section-progress-badge" style="margin-left: 8px; font-size: 11px; background: var(--info-50); color: var(--info-600); padding: 2px 8px; border-radius: 10px;">5 categories</span>
+                  </div>
+                  <div class="collapsible-toggle">▼</div>
                 </div>
-                <div style="display: flex; flex-direction: column; gap: var(--spacing-md);">
-                  ${bidResponseFields.perBid.map((field, idx) => `
-                    <div style="padding: var(--spacing-md); background: var(--surface-50); border-radius: var(--radius-sm); border: 1px solid var(--surface-200); display: flex; justify-content: space-between; align-items: start;">
-                      <div>
-                        <strong style="font-size: 14px; display: block; margin-bottom: 4px;">${field.name}</strong>
-                        <span style="font-size: 12px; color: var(--text-muted);">Field type: ${field.type}</span>
-                      </div>
-                      <button class="btn-icon-sm" onclick="removeBidResponseField('perBid', '${field.id}')" title="Remove field">✖</button>
+                <div class="collapsible-body" onclick="event.stopPropagation()">
+                  <div class="info-alert" style="margin-bottom: var(--spacing-lg);">
+                    <div class="info-alert-text">
+                      ℹ️ Define how supplier responses will be structured and grouped by answer level
                     </div>
-                  `).join('')}
+                  </div>
+                  
+                  <div style="display: flex; justify-content: flex-end; margin-bottom: var(--spacing-md);">
+                    <button class="btn btn-secondary" onclick="event.stopPropagation(); toggleSupplierFormPreview()">
+                      <i class="pi pi-eye"></i> Preview Supplier Form
+                    </button>
+                  </div>
+                  
+                  <!-- A. Per Bid -->
+                  <div class="bid-response-category" style="border-left-color: var(--primary-400);">
+                    <div class="bid-response-category-header">
+                      <h4 style="color: var(--primary-600);">A. Per Bid</h4>
+                      <span class="bid-response-category-hint">Answered once for entire bid</span>
+                      <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); addBidResponseField('perBid')"><i class="pi pi-plus"></i> Add Field</button>
+                    </div>
+                    <div class="bid-response-fields">
+                      ${bidResponseFields.perBid.map((field, idx) => `
+                        <div class="bid-response-field">
+                          <div class="bid-response-field-info">
+                            <strong>${field.name}</strong>
+                            <span>${field.type}</span>
+                          </div>
+                          <button class="btn-icon-xs danger" onclick="event.stopPropagation(); removeBidResponseField('perBid', '${field.id}')" title="Remove"><i class="pi pi-times"></i></button>
+                        </div>
+                      `).join('')}
+                    </div>
+                  </div>
+                  
+                  <!-- B. Per UNSPSC -->
+                  <div class="bid-response-category" style="border-left-color: var(--info-400);">
+                    <div class="bid-response-category-header">
+                      <h4 style="color: var(--info-600);">B. Per UNSPSC</h4>
+                      <span class="bid-response-category-hint">For each UNSPSC item</span>
+                      <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); addBidResponseField('perUNSPSC')"><i class="pi pi-plus"></i> Add Field</button>
+                    </div>
+                    <div class="bid-response-fields">
+                      ${bidResponseFields.perUNSPSC.map((field, idx) => `
+                        <div class="bid-response-field">
+                          <div class="bid-response-field-info">
+                            <strong>${field.name}</strong>
+                            <span>${field.type}</span>
+                          </div>
+                          <button class="btn-icon-xs danger" onclick="event.stopPropagation(); removeBidResponseField('perUNSPSC', '${field.id}')" title="Remove"><i class="pi pi-times"></i></button>
+                        </div>
+                      `).join('')}
+                    </div>
+                  </div>
+                  
+                  <!-- C. Per Attribute -->
+                  <div class="bid-response-category" style="border-left-color: var(--success-500);">
+                    <div class="bid-response-category-header">
+                      <h4 style="color: var(--success-600);">C. Per Attribute</h4>
+                      <span class="bid-response-category-hint">Under each UNSPSC attribute</span>
+                      <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); addBidResponseField('perAttribute')"><i class="pi pi-plus"></i> Add Field</button>
+                    </div>
+                    <div class="bid-response-fields">
+                      ${bidResponseFields.perAttribute.map((field, idx) => `
+                        <div class="bid-response-field">
+                          <div class="bid-response-field-info">
+                            <strong>${field.name}</strong>
+                            <span>${field.type}</span>
+                          </div>
+                          <button class="btn-icon-xs danger" onclick="event.stopPropagation(); removeBidResponseField('perAttribute', '${field.id}')" title="Remove"><i class="pi pi-times"></i></button>
+                        </div>
+                      `).join('')}
+                    </div>
+                  </div>
+                  
+                  <!-- D. Per Service Line -->
+                  <div class="bid-response-category" style="border-left-color: var(--warning-500);">
+                    <div class="bid-response-category-header">
+                      <h4 style="color: var(--warning-600);">D. Per Service Line</h4>
+                      <span class="bid-response-category-hint">For service-based items</span>
+                      <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); addBidResponseField('perServiceLine')"><i class="pi pi-plus"></i> Add Field</button>
+                    </div>
+                    <div class="bid-response-fields">
+                      ${bidResponseFields.perServiceLine.map((field, idx) => `
+                        <div class="bid-response-field">
+                          <div class="bid-response-field-info">
+                            <strong>${field.name}</strong>
+                            <span>${field.type}</span>
+                          </div>
+                          <button class="btn-icon-xs danger" onclick="event.stopPropagation(); removeBidResponseField('perServiceLine', '${field.id}')" title="Remove"><i class="pi pi-times"></i></button>
+                        </div>
+                      `).join('')}
+                    </div>
+                  </div>
+                  
+                  <!-- E. Delivery Requirements -->
+                  <div class="bid-response-category" style="border-left-color: var(--danger-500);">
+                    <div class="bid-response-category-header">
+                      <h4 style="color: var(--danger-600);">E. Per Delivery</h4>
+                      <span class="bid-response-category-hint">Delivery requirements</span>
+                      <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); addBidResponseField('perDelivery')"><i class="pi pi-plus"></i> Add Field</button>
+                    </div>
+                    <div class="bid-response-fields">
+                      ${bidResponseFields.perDelivery.map((field, idx) => `
+                        <div class="bid-response-field">
+                          <div class="bid-response-field-info">
+                            <strong>${field.name}</strong>
+                            <span>${field.type}</span>
+                          </div>
+                          <button class="btn-icon-xs danger" onclick="event.stopPropagation(); removeBidResponseField('perDelivery', '${field.id}')" title="Remove"><i class="pi pi-times"></i></button>
+                        </div>
+                      `).join('')}
+                    </div>
+                  </div>
                 </div>
               </div>
               
-              <!-- B. Per UNSPSC -->
-              <div style="background: var(--surface-0); border-left: 4px solid var(--info-400); padding: var(--spacing-lg); margin-bottom: var(--spacing-xl); border-radius: var(--radius-sm); box-shadow: var(--shadow-card);">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-md);">
-                  <h4 style="font-size: 16px; font-weight: 600; margin: 0; color: var(--info-400);">B. Per UNSPSC (for each UNSPSC item)</h4>
-                  <button class="btn btn-ghost btn-sm" onclick="addBidResponseField('perUNSPSC')" style="font-size: 13px;">+ Add Field</button>
-                </div>
-                <div style="display: flex; flex-direction: column; gap: var(--spacing-md);">
-                  ${bidResponseFields.perUNSPSC.map((field, idx) => `
-                    <div style="padding: var(--spacing-md); background: var(--surface-50); border-radius: var(--radius-sm); border: 1px solid var(--surface-200); display: flex; justify-content: space-between; align-items: start;">
-                      <div>
-                        <strong style="font-size: 14px; display: block; margin-bottom: 4px;">${field.name}</strong>
-                        <span style="font-size: 12px; color: var(--text-muted);">Field type: ${field.type}</span>
-                      </div>
-                      <button class="btn-icon-sm" onclick="removeBidResponseField('perUNSPSC', '${field.id}')" title="Remove field">✖</button>
-                    </div>
-                  `).join('')}
-                </div>
-              </div>
-              
-              <!-- C. Per Attribute -->
-              <div style="background: var(--surface-0); border-left: 4px solid var(--success-500); padding: var(--spacing-lg); margin-bottom: var(--spacing-xl); border-radius: var(--radius-sm); box-shadow: var(--shadow-card);">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-md);">
-                  <h4 style="font-size: 16px; font-weight: 600; margin: 0; color: var(--success-500);">C. Per Attribute (under each UNSPSC attribute)</h4>
-                  <button class="btn btn-ghost btn-sm" onclick="addBidResponseField('perAttribute')" style="font-size: 13px;">+ Add Field</button>
-                </div>
-                <div style="display: flex; flex-direction: column; gap: var(--spacing-md);">
-                  ${bidResponseFields.perAttribute.map((field, idx) => `
-                    <div style="padding: var(--spacing-md); background: var(--surface-50); border-radius: var(--radius-sm); border: 1px solid var(--surface-200); display: flex; justify-content: space-between; align-items: start;">
-                      <div>
-                        <strong style="font-size: 14px; display: block; margin-bottom: 4px;">${field.name}</strong>
-                        <span style="font-size: 12px; color: var(--text-muted);">Field type: ${field.type}</span>
-                      </div>
-                      <button class="btn-icon-sm" onclick="removeBidResponseField('perAttribute', '${field.id}')" title="Remove field">✖</button>
-                    </div>
-                  `).join('')}
-                </div>
-              </div>
-              
-              <!-- D. Per Service Line -->
-              <div style="background: var(--surface-0); border-left: 4px solid var(--warning-500); padding: var(--spacing-lg); margin-bottom: var(--spacing-xl); border-radius: var(--radius-sm); box-shadow: var(--shadow-card);">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-md);">
-                  <h4 style="font-size: 16px; font-weight: 600; margin: 0; color: var(--warning-500);">D. Per Service Line</h4>
-                  <button class="btn btn-ghost btn-sm" onclick="addBidResponseField('perServiceLine')" style="font-size: 13px;">+ Add Field</button>
-                </div>
-                <div style="display: flex; flex-direction: column; gap: var(--spacing-md);">
-                  ${bidResponseFields.perServiceLine.map((field, idx) => `
-                    <div style="padding: var(--spacing-md); background: var(--surface-50); border-radius: var(--radius-sm); border: 1px solid var(--surface-200); display: flex; justify-content: space-between; align-items: start;">
-                      <div>
-                        <strong style="font-size: 14px; display: block; margin-bottom: 4px;">${field.name}</strong>
-                        <span style="font-size: 12px; color: var(--text-muted);">Field type: ${field.type}</span>
-                      </div>
-                      <button class="btn-icon-sm" onclick="removeBidResponseField('perServiceLine', '${field.id}')" title="Remove field">✖</button>
-                    </div>
-                  `).join('')}
-                </div>
-              </div>
-              
-              <!-- E. Delivery Requirements -->
-              <div style="background: var(--surface-0); border-left: 4px solid var(--danger-500); padding: var(--spacing-lg); margin-bottom: var(--spacing-xl); border-radius: var(--radius-sm); box-shadow: var(--shadow-card);">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-md);">
-                  <h4 style="font-size: 16px; font-weight: 600; margin: 0; color: var(--danger-500);">E. Delivery Requirements (per requirement)</h4>
-                  <button class="btn btn-ghost btn-sm" onclick="addBidResponseField('perDelivery')" style="font-size: 13px;">+ Add Field</button>
-                </div>
-                <div style="display: flex; flex-direction: column; gap: var(--spacing-md);">
-                  ${bidResponseFields.perDelivery.map((field, idx) => `
-                    <div style="padding: var(--spacing-md); background: var(--surface-50); border-radius: var(--radius-sm); border: 1px solid var(--surface-200); display: flex; justify-content: space-between; align-items: start;">
-                      <div>
-                        <strong style="font-size: 14px; display: block; margin-bottom: 4px;">${field.name}</strong>
-                        <span style="font-size: 12px; color: var(--text-muted);">Field type: ${field.type}</span>
-                      </div>
-                      <button class="btn-icon-sm" onclick="removeBidResponseField('perDelivery', '${field.id}')" title="Remove field">✖</button>
-                    </div>
-                  `).join('')}
-                </div>
-              </div>
             </div>
           </div>
         `;
@@ -9890,10 +11345,51 @@
           if (index === currentBlockIndex) {
             tab.classList.add('active');
           }
+          
+          // Calculate a mock progress for visual demo (in real app, this would be based on actual completion)
+          const progress = index < currentBlockIndex ? 100 : (index === currentBlockIndex ? 30 : 0);
+          const isCompleted = index < currentBlockIndex;
+          
+          if (isCompleted) {
+            tab.classList.add('completed');
+          }
+          
+          // Generate progress status text
+          let progressStatus = '';
+          let progressClass = '';
+          let statusIcon = '';
+          if (progress === 100) {
+            progressStatus = 'Complete';
+            progressClass = 'status-complete';
+            statusIcon = '✓';
+          } else if (progress > 0) {
+            progressStatus = 'In progress';
+            progressClass = 'status-in-progress';
+            statusIcon = '●';
+          } else {
+            progressStatus = 'Not started';
+            progressClass = 'status-pending';
+            statusIcon = '○';
+          }
+          
+          // Show checkmark in number circle if completed
+          const numberContent = isCompleted ? '✓' : (index + 1);
+          
+          // Get the PrimeIcon class or fallback to emoji
+          const iconClass = block.piIcon || '';
+          
           tab.innerHTML = `
+            <span class="block-tab-number">${numberContent}</span>
+            ${iconClass ? `<i class="block-tab-pi-icon pi ${iconClass}"></i>` : ''}
             <span class="block-tab-icon">${block.icon}</span>
-            <span>${block.name}</span>
+            <span class="block-tab-content">
+              <span class="block-tab-name">${block.name}</span>
+              <span class="block-tab-status ${progressClass}">${statusIcon} ${progressStatus}</span>
+            </span>
             <span class="block-tab-badge">${index + 1}</span>
+            <div class="block-tab-progress">
+              <div class="block-tab-progress-bar" style="width: ${progress}%"></div>
+            </div>
           `;
           tab.addEventListener('click', () => {
             switchToBlock(index);
@@ -10098,6 +11594,282 @@
                   `).join('')}
                 </div>
               `}
+            </div>
+          </div>
+        `;
+      }
+
+      function renderEvaluationBlock(block) {
+        // Get available UNSPSC codes for criteria section
+        const availableUnspscCodes = getAvailableUnspscCodes();
+        
+        // Find the Evaluation Method section fields
+        const methodSection = block.sections.find(s => s.title === 'Evaluation Method');
+        const methodFields = methodSection ? methodSection.fields : [];
+        
+        return `
+          <div class="general-info-container">
+            <div class="general-info-body">
+              <!-- Evaluation Method Section - Collapsible -->
+              <div class="collapsible-section collapsed" id="evaluation-method-section">
+                <div class="collapsible-header" onclick="toggleCollapsibleSection('evaluation-method-section')">
+                  <div class="collapsible-header-left">
+                    <span class="collapsible-header-title">Evaluation Method</span>
+                    ${renderSectionProgress('evaluation-method', null)}
+                  </div>
+                  <div class="collapsible-toggle">▼</div>
+                </div>
+                <div class="collapsible-body" onclick="event.stopPropagation()">
+                  <div class="form-grid">
+                    ${methodFields.map((field) => {
+                      // Check conditional visibility
+                      if (!shouldShowField(field)) {
+                        return '';
+                      }
+                      
+                      let fieldHtml = '';
+                      const onchangeAttr = field.onchange ? `onchange="${field.onchange}(this.value)"` : '';
+                      
+                      if (field.type === 'textarea') {
+                        fieldHtml = `
+                          <div class="form-group full-width">
+                            <label class="form-label">
+                              ${field.label} ${field.required ? '<span class="required">*</span>' : ''}
+                            </label>
+                            <textarea class="form-textarea" ${field.readonly ? 'readonly' : ''} ${field.required ? 'required' : ''} placeholder="${field.placeholder || ''}">${field.value || ''}</textarea>
+                            ${field.help ? '<span class="help-text">' + field.help + '</span>' : ''}
+                          </div>
+                        `;
+                      } else if (field.type === 'select') {
+                        const options = field.options.map(opt => '<option>' + opt + '</option>').join('');
+                        fieldHtml = `
+                          <div class="form-group ${field.multiple ? 'full-width' : ''}">
+                            <label class="form-label">
+                              ${field.label} ${field.required ? '<span class="required">*</span>' : ''}
+                            </label>
+                            <select class="form-select" ${field.multiple ? 'multiple size="5"' : ''} ${field.required ? 'required' : ''} ${field.readonly ? 'disabled' : ''} ${onchangeAttr}>
+                              ${options}
+                            </select>
+                            ${field.multiple ? '<span class="help-text">Hold Ctrl/Cmd to select multiple</span>' : ''}
+                            ${field.help ? '<span class="help-text">' + field.help + '</span>' : ''}
+                          </div>
+                        `;
+                      } else if (field.type === 'number') {
+                        fieldHtml = `
+                          <div class="form-group">
+                            <label class="form-label">
+                              ${field.label} ${field.required ? '<span class="required">*</span>' : ''}
+                            </label>
+                            <input type="number" class="form-input" value="${field.value || ''}" placeholder="${field.placeholder || ''}" ${field.required ? 'required' : ''} ${field.readonly ? 'readonly' : ''} ${onchangeAttr} />
+                            ${field.help ? '<span class="help-text">' + field.help + '</span>' : ''}
+                          </div>
+                        `;
+                      } else {
+                        fieldHtml = `
+                          <div class="form-group">
+                            <label class="form-label">
+                              ${field.label} ${field.required ? '<span class="required">*</span>' : ''}
+                            </label>
+                            <input type="text" class="form-input" value="${field.value || ''}" placeholder="${field.placeholder || ''}" ${field.required ? 'required' : ''} ${field.readonly ? 'readonly' : ''} ${onchangeAttr} />
+                            ${field.help ? '<span class="help-text">' + field.help + '</span>' : ''}
+                          </div>
+                        `;
+                      }
+                      return fieldHtml;
+                    }).join('')}
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Evaluation Criteria Section - Collapsible -->
+              <div class="collapsible-section collapsed" id="evaluation-criteria-section" style="margin-top: var(--spacing-md);">
+                <div class="collapsible-header" onclick="toggleCollapsibleSection('evaluation-criteria-section')">
+                  <div class="collapsible-header-left">
+                    <span class="collapsible-header-title">Evaluation Criteria</span>
+                    ${renderSectionProgress('evaluation-criteria', null)}
+                  </div>
+                  <div class="collapsible-toggle">▼</div>
+                </div>
+                <div class="collapsible-body" onclick="event.stopPropagation()">
+                  <div class="info-alert" style="margin-bottom: var(--spacing-lg);">
+                    <div class="info-alert-text">
+                      ℹ️ Define evaluation criteria that will be used to assess supplier submissions
+                    </div>
+                  </div>
+                  
+                  <div style="display: flex; justify-content: flex-end; margin-bottom: var(--spacing-lg);">
+                    <button class="btn btn-primary" onclick="event.stopPropagation(); addEvaluationCriterion()"><i class="pi pi-plus"></i> Add Evaluation Criterion</button>
+                  </div>
+                  
+                  ${evaluationCriteria.length === 0 ? `
+                    <div class="empty-state">
+                      <div class="empty-state-icon">📊</div>
+                      <div class="empty-state-text">No evaluation criteria defined</div>
+                      <div class="empty-state-hint">Click "Add Evaluation Criterion" to define how submissions will be evaluated</div>
+                    </div>
+                  ` : `
+                    <div style="display: flex; flex-direction: column; gap: var(--spacing-lg);">
+                      ${evaluationCriteria.map((criterion, idx) => `
+                        <div style="background: var(--surface-0); border: 1px solid var(--surface-200); border-radius: var(--radius-md); padding: var(--spacing-lg); box-shadow: var(--shadow-card);">
+                          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-md);">
+                            <h4 style="font-size: 16px; font-weight: 600; margin: 0; flex: 1;">Criterion ${idx + 1}</h4>
+                            <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); removeEvaluationCriterion('${criterion.id}')" title="Remove criterion"><i class="pi pi-trash"></i> Remove</button>
+                          </div>
+                          
+                          <div class="form-grid">
+                            <!-- Type -->
+                            <div class="form-group">
+                              <label class="form-label">Type <span class="required-indicator">*</span></label>
+                              <select class="form-select" value="${criterion.type}" onchange="updateEvaluationCriterionType('${criterion.id}', this.value)">
+                                <option value="Eligibility and formal criteria" ${criterion.type === 'Eligibility and formal criteria' ? 'selected' : ''}>Eligibility and formal criteria</option>
+                                <option value="Qualification criteria" ${criterion.type === 'Qualification criteria' ? 'selected' : ''}>Qualification criteria</option>
+                                <option value="Technical criteria" ${criterion.type === 'Technical criteria' ? 'selected' : ''}>Technical criteria</option>
+                                <option value="Shortlisting criteria" ${criterion.type === 'Shortlisting criteria' ? 'selected' : ''}>Shortlisting criteria</option>
+                              </select>
+                            </div>
+                            
+                            <!-- Evaluation Method -->
+                            <div class="form-group">
+                              <label class="form-label">Evaluation Method <span class="required-indicator">*</span></label>
+                              <select class="form-select" value="${criterion.evaluationMethod}" onchange="updateEvaluationCriterionMethod('${criterion.id}', this.value)">
+                                <option value="Pass/Fail" ${criterion.evaluationMethod === 'Pass/Fail' ? 'selected' : ''}>Pass/Fail</option>
+                                <option value="Scoring (0-100)" ${criterion.evaluationMethod === 'Scoring (0-100)' ? 'selected' : ''}>Scoring (0-100)</option>
+                                <option value="Weighted Scoring" ${criterion.evaluationMethod === 'Weighted Scoring' ? 'selected' : ''}>Weighted Scoring</option>
+                                <option value="Ranking" ${criterion.evaluationMethod === 'Ranking' ? 'selected' : ''}>Ranking</option>
+                              </select>
+                            </div>
+                            
+                            <!-- Description -->
+                            <div class="form-group full-width">
+                              <label class="form-label">Description <span class="required-indicator">*</span></label>
+                              <textarea 
+                                class="form-textarea" 
+                                placeholder="Describe the evaluation criterion in detail..." 
+                                style="min-height: 100px;"
+                                onchange="updateEvaluationCriterionDescription('${criterion.id}', this.value)"
+                              >${criterion.description}</textarea>
+                              <span class="help-text">Provide a clear description of what will be evaluated and how</span>
+                            </div>
+                            
+                            <!-- Applies To -->
+                            <div class="form-group full-width">
+                              <label class="form-label">Applies To <span class="required-indicator">*</span></label>
+                              <div style="display: flex; gap: var(--spacing-lg); margin-bottom: var(--spacing-sm);">
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                  <input 
+                                    type="radio" 
+                                    name="appliesTo_${criterion.id}" 
+                                    value="entire" 
+                                    ${criterion.appliesTo === 'entire' ? 'checked' : ''}
+                                    onchange="updateEvaluationCriterionAppliesTo('${criterion.id}', this.value)"
+                                    style="cursor: pointer;"
+                                  />
+                                  <span>Entire Tender</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                  <input 
+                                    type="radio" 
+                                    name="appliesTo_${criterion.id}" 
+                                    value="specific" 
+                                    ${criterion.appliesTo === 'specific' ? 'checked' : ''}
+                                    onchange="updateEvaluationCriterionAppliesTo('${criterion.id}', this.value)"
+                                    style="cursor: pointer;"
+                                  />
+                                  <span>Specific Lot(s) or Product(s)</span>
+                                </label>
+                              </div>
+                              
+                              ${criterion.appliesTo === 'specific' ? `
+                                <div style="margin-top: var(--spacing-md);">
+                                  ${availableUnspscCodes.length === 0 && lots.length === 0 ? `
+                                    <div style="padding: var(--spacing-md); background: var(--warning-50); border: 1px solid var(--warning-200); border-radius: var(--radius-sm); color: var(--warning-700);">
+                                      ⚠️ No lots or products available. Please add requisition lines or create lots with products first.
+                                    </div>
+                                  ` : `
+                                    ${lots.length > 0 ? `
+                                      <div style="margin-bottom: var(--spacing-lg);">
+                                        <label class="form-label" style="font-size: 13px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.08em;">
+                                          Select by Lot
+                                        </label>
+                                        <select 
+                                          class="form-select" 
+                                          multiple 
+                                          size="4"
+                                          onchange="updateEvaluationCriterionLots('${criterion.id}', this)"
+                                          style="width: 100%;"
+                                        >
+                                          ${lots.map(lot => `
+                                            <option 
+                                              value="${lot.id}" 
+                                              ${criterion.lots.includes(lot.id) ? 'selected' : ''}
+                                            >
+                                              ${lot.name} (${lot.unspscCodes.length} products)
+                                            </option>
+                                          `).join('')}
+                                        </select>
+                                        <span class="help-text">Selecting a lot automatically includes all products in that lot. Hold Ctrl/Cmd to select multiple lots.</span>
+                                      </div>
+                                    ` : ''}
+                                    
+                                    ${availableUnspscCodes.length > 0 ? `
+                                      <div>
+                                        <label class="form-label" style="font-size: 13px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.08em;">
+                                          ${lots.length > 0 ? 'Or Select Individual Products (UNSPSC Codes)' : 'Select Products (UNSPSC Codes)'}
+                                        </label>
+                                        <select 
+                                          class="form-select" 
+                                          multiple 
+                                          size="6"
+                                          onchange="updateEvaluationCriterionUnspscCodes('${criterion.id}', this)"
+                                          style="width: 100%;"
+                                        >
+                                          ${availableUnspscCodes.map(unspsc => {
+                                            // Find which lot(s) contain this UNSPSC code
+                                            const containingLots = lots.filter(lot => 
+                                              lot.unspscCodes.some(u => u.code === unspsc.code)
+                                            ).map(lot => lot.name);
+                                            
+                                            const lotInfo = containingLots.length > 0 
+                                              ? ' [In: ' + containingLots.join(', ') + ']' 
+                                              : ' [From requisition]';
+                                            
+                                            return `
+                                              <option 
+                                                value="${unspsc.code}" 
+                                                ${criterion.unspscCodes.includes(unspsc.code) ? 'selected' : ''}
+                                              >
+                                                ${unspsc.code} - ${unspsc.description}${lotInfo}
+                                              </option>
+                                            `;
+                                          }).join('')}
+                                        </select>
+                                        <span class="help-text">Hold Ctrl/Cmd to select multiple products. Products selected via lots above are automatically included.</span>
+                                      </div>
+                                    ` : ''}
+                                    
+                                    ${criterion.lots.length > 0 || criterion.unspscCodes.length > 0 ? `
+                                      <div style="margin-top: var(--spacing-md); padding: var(--spacing-md); background: var(--info-50); border: 1px solid var(--info-200); border-radius: var(--radius-sm);">
+                                        <strong style="color: var(--info-700);">📊 Current Selection:</strong>
+                                        <div style="margin-top: var(--spacing-xs); color: var(--info-700);">
+                                          ${criterion.lots.length > 0 ? `
+                                            <div>✓ ${criterion.lots.length} lot(s) selected</div>
+                                          ` : ''}
+                                          <div>✓ ${criterion.unspscCodes.length} product(s) will be evaluated with this criterion</div>
+                                        </div>
+                                      </div>
+                                    ` : ''}
+                                  `}
+                                </div>
+                              ` : ''}
+                            </div>
+                          </div>
+                        </div>
+                      `).join('')}
+                    </div>
+                  `}
+                </div>
+              </div>
+              
             </div>
           </div>
         `;
@@ -10613,6 +12385,228 @@
               </div>
             </div>
               </div>
+              
+              <!-- Key Dates Section - Collapsible -->
+              <div class="collapsible-section collapsed" id="key-dates-section" style="margin-top: var(--spacing-md);">
+                <div class="collapsible-header" onclick="toggleCollapsibleSection('key-dates-section')">
+                  <div class="collapsible-header-left">
+                    <span class="collapsible-header-title">Key Dates</span>
+                    ${renderSectionProgress('key-dates', null)}
+                  </div>
+                  <div class="collapsible-toggle">▼</div>
+                </div>
+                <div class="collapsible-body">
+                  <div class="form-grid-3col">
+                    <div class="form-group">
+                      <label class="form-label">Deadline <span class="required">*</span></label>
+                      <input type="datetime-local" class="form-input" required />
+                      <span class="help-text">Submission deadline for bids/proposals</span>
+                    </div>
+                    
+                    <div class="form-group">
+                      <label class="form-label">Deadline for clarifications</label>
+                      <input type="datetime-local" class="form-input" />
+                      <span class="help-text">Last date for suppliers to submit questions</span>
+                    </div>
+                    
+                    <div class="form-group">
+                      <label class="form-label">Expected Contract award date</label>
+                      <input type="date" class="form-input" />
+                      <span class="help-text">Estimated date for contract award</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Contract Provisions Section - Collapsible -->
+              <div class="collapsible-section collapsed" id="contract-provisions-section" style="margin-top: var(--spacing-md);">
+                <div class="collapsible-header" onclick="toggleCollapsibleSection('contract-provisions-section')">
+                  <div class="collapsible-header-left">
+                    <span class="collapsible-header-title">Contract Provisions</span>
+                    ${renderSectionProgress('contract-provisions', null)}
+                  </div>
+                  <div class="collapsible-toggle">▼</div>
+                </div>
+                <div class="collapsible-body" onclick="event.stopPropagation()">
+                  <div class="form-grid-3col">
+                    
+                    <!-- UNOPS General Conditions of Contract -->
+                    <div class="form-group full-width">
+                      <label class="form-label">UNOPS General Conditions of Contract</label>
+                      <select class="form-select" onchange="updateContractProvision('generalConditions', this.value)" onclick="event.stopPropagation()">
+                        <option value="">Select...</option>
+                        <option value="goods" ${contractProvisionsValues.generalConditions === 'goods' ? 'selected' : ''}>General Conditions for Goods</option>
+                        <option value="services" ${contractProvisionsValues.generalConditions === 'services' ? 'selected' : ''}>General Conditions for Services</option>
+                        <option value="works" ${contractProvisionsValues.generalConditions === 'works' ? 'selected' : ''}>General Conditions for Works</option>
+                        <option value="consultancy" ${contractProvisionsValues.generalConditions === 'consultancy' ? 'selected' : ''}>General Conditions for Consultancy</option>
+                      </select>
+                      <span class="help-text">Select applicable UNOPS General Conditions</span>
+                    </div>
+                    
+                    <!-- UNOPS Special Conditions of Contract -->
+                    <div class="form-group full-width">
+                      <label class="form-label">UNOPS Special Conditions of Contract</label>
+                      <div class="rich-text-box" style="border: 1px solid var(--surface-300); border-radius: var(--radius-md); overflow: hidden;">
+                        <div class="rich-text-toolbar-mini" style="display: flex; gap: 4px; padding: 8px; background: var(--surface-100); border-bottom: 1px solid var(--surface-300);">
+                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('specialConditions', 'bold')" title="Bold"><strong>B</strong></button>
+                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('specialConditions', 'italic')" title="Italic"><em>I</em></button>
+                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('specialConditions', 'underline')" title="Underline"><u>U</u></button>
+                          <span style="width: 1px; background: var(--surface-300); margin: 0 4px;"></span>
+                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('specialConditions', 'insertUnorderedList')" title="Bullet List">•</button>
+                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('specialConditions', 'insertOrderedList')" title="Numbered List">1.</button>
+                        </div>
+                        <div 
+                          id="contract-special-conditions-editor"
+                          class="rich-text-content" 
+                          contenteditable="true"
+                          style="min-height: 120px; padding: 12px; font-size: 13px; line-height: 1.5;"
+                          onclick="event.stopPropagation()"
+                          onblur="updateContractProvision('specialConditions', this.innerHTML)"
+                          placeholder="Enter special conditions that modify or supplement the General Conditions..."
+                        >${contractProvisionsValues.specialConditions}</div>
+                      </div>
+                      <span class="help-text">Add any special conditions specific to this contract</span>
+                    </div>
+                    
+                    <!-- UNOPS Sample Contract -->
+                    <div class="form-group full-width">
+                      <label class="form-label">UNOPS Sample Contract</label>
+                      <select class="form-select" onchange="updateContractProvision('sampleContract', this.value)" onclick="event.stopPropagation()">
+                        <option value="">Select template...</option>
+                        <option value="purchase-order" ${contractProvisionsValues.sampleContract === 'purchase-order' ? 'selected' : ''}>Purchase Order (PO)</option>
+                        <option value="contract-goods" ${contractProvisionsValues.sampleContract === 'contract-goods' ? 'selected' : ''}>Contract for Goods</option>
+                        <option value="contract-services" ${contractProvisionsValues.sampleContract === 'contract-services' ? 'selected' : ''}>Contract for Services</option>
+                        <option value="contract-works" ${contractProvisionsValues.sampleContract === 'contract-works' ? 'selected' : ''}>Contract for Works</option>
+                        <option value="lta" ${contractProvisionsValues.sampleContract === 'lta' ? 'selected' : ''}>Long-Term Agreement (LTA)</option>
+                        <option value="bpa" ${contractProvisionsValues.sampleContract === 'bpa' ? 'selected' : ''}>Blanket Purchase Agreement (BPA)</option>
+                      </select>
+                      <span class="help-text">Select the applicable contract template</span>
+                    </div>
+                    
+                    <!-- Contract clauses and KPIs (SP criteria) -->
+                    <div class="form-group full-width">
+                      <label class="form-label">Contract Clauses and KPIs (SP Criteria)</label>
+                      <div class="rich-text-box" style="border: 1px solid var(--surface-300); border-radius: var(--radius-md); overflow: hidden;">
+                        <div class="rich-text-toolbar-mini" style="display: flex; gap: 4px; padding: 8px; background: var(--surface-100); border-bottom: 1px solid var(--surface-300);">
+                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('clausesKPIs', 'bold')" title="Bold"><strong>B</strong></button>
+                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('clausesKPIs', 'italic')" title="Italic"><em>I</em></button>
+                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('clausesKPIs', 'underline')" title="Underline"><u>U</u></button>
+                          <span style="width: 1px; background: var(--surface-300); margin: 0 4px;"></span>
+                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('clausesKPIs', 'insertUnorderedList')" title="Bullet List">•</button>
+                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('clausesKPIs', 'insertOrderedList')" title="Numbered List">1.</button>
+                        </div>
+                        <div 
+                          id="contract-clauses-kpis-editor"
+                          class="rich-text-content" 
+                          contenteditable="true"
+                          style="min-height: 120px; padding: 12px; font-size: 13px; line-height: 1.5;"
+                          onclick="event.stopPropagation()"
+                          onblur="updateContractProvision('contractClausesKPIs', this.innerHTML)"
+                          placeholder="Define contract clauses and Key Performance Indicators based on Sustainable Procurement criteria..."
+                        >${contractProvisionsValues.contractClausesKPIs}</div>
+                      </div>
+                      <span class="help-text">Define KPIs and clauses aligned with Sustainable Procurement criteria</span>
+                    </div>
+                    
+                    <!-- Contract clauses (DRiVE/Risk app) -->
+                    <div class="form-group full-width">
+                      <label class="form-label">Contract Clauses (DRiVE/Risk App)</label>
+                      <div class="rich-text-box" style="border: 1px solid var(--surface-300); border-radius: var(--radius-md); overflow: hidden;">
+                        <div class="rich-text-toolbar-mini" style="display: flex; gap: 4px; padding: 8px; background: var(--surface-100); border-bottom: 1px solid var(--surface-300);">
+                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('clausesDrive', 'bold')" title="Bold"><strong>B</strong></button>
+                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('clausesDrive', 'italic')" title="Italic"><em>I</em></button>
+                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('clausesDrive', 'underline')" title="Underline"><u>U</u></button>
+                          <span style="width: 1px; background: var(--surface-300); margin: 0 4px;"></span>
+                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('clausesDrive', 'insertUnorderedList')" title="Bullet List">•</button>
+                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('clausesDrive', 'insertOrderedList')" title="Numbered List">1.</button>
+                        </div>
+                        <div 
+                          id="contract-clauses-drive-editor"
+                          class="rich-text-content" 
+                          contenteditable="true"
+                          style="min-height: 120px; padding: 12px; font-size: 13px; line-height: 1.5;"
+                          onclick="event.stopPropagation()"
+                          onblur="updateContractProvision('contractClausesDrive', this.innerHTML)"
+                          placeholder="Enter contract clauses from DRiVE/Risk application..."
+                        >${contractProvisionsValues.contractClausesDrive}</div>
+                      </div>
+                      <span class="help-text">Import or define clauses from DRiVE/Risk application</span>
+                    </div>
+                    
+                    <!-- Performance Security / Bank Guarantee -->
+                    <div class="form-group">
+                      <label class="form-label">Performance Security / Bank Guarantee</label>
+                      <select class="form-select" onchange="updateContractProvision('performanceSecurityRequired', this.value)" onclick="event.stopPropagation()">
+                        <option value="">Select...</option>
+                        <option value="not-required" ${contractProvisionsValues.performanceSecurityRequired === 'not-required' ? 'selected' : ''}>Not Required</option>
+                        <option value="required" ${contractProvisionsValues.performanceSecurityRequired === 'required' ? 'selected' : ''}>Required</option>
+                      </select>
+                    </div>
+                    
+                    ${contractProvisionsValues.performanceSecurityRequired === 'required' ? `
+                    <div class="form-group full-width">
+                      <label class="form-label">Performance Security Details</label>
+                      <div class="rich-text-box" style="border: 1px solid var(--surface-300); border-radius: var(--radius-md); overflow: hidden;">
+                        <div class="rich-text-toolbar-mini" style="display: flex; gap: 4px; padding: 8px; background: var(--surface-100); border-bottom: 1px solid var(--surface-300);">
+                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('perfSecurityDetails', 'bold')" title="Bold"><strong>B</strong></button>
+                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('perfSecurityDetails', 'italic')" title="Italic"><em>I</em></button>
+                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('perfSecurityDetails', 'underline')" title="Underline"><u>U</u></button>
+                          <span style="width: 1px; background: var(--surface-300); margin: 0 4px;"></span>
+                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('perfSecurityDetails', 'insertUnorderedList')" title="Bullet List">•</button>
+                        </div>
+                        <div 
+                          id="contract-perf-security-editor"
+                          class="rich-text-content" 
+                          contenteditable="true"
+                          style="min-height: 100px; padding: 12px; font-size: 13px; line-height: 1.5;"
+                          onclick="event.stopPropagation()"
+                          onblur="updateContractProvision('performanceSecurityDetails', this.innerHTML)"
+                          placeholder="Specify performance security requirements (amount, percentage, format, validity period, etc.)..."
+                        >${contractProvisionsValues.performanceSecurityDetails}</div>
+                      </div>
+                      <span class="help-text">Define the performance security/bank guarantee requirements</span>
+                    </div>
+                    ` : ''}
+                    
+                    <!-- Advance Payment -->
+                    <div class="form-group">
+                      <label class="form-label">Advance Payment</label>
+                      <select class="form-select" onchange="updateContractProvision('advancePaymentRequired', this.value)" onclick="event.stopPropagation()">
+                        <option value="">Select...</option>
+                        <option value="not-allowed" ${contractProvisionsValues.advancePaymentRequired === 'not-allowed' ? 'selected' : ''}>Not Allowed</option>
+                        <option value="allowed" ${contractProvisionsValues.advancePaymentRequired === 'allowed' ? 'selected' : ''}>Allowed</option>
+                      </select>
+                    </div>
+                    
+                    ${contractProvisionsValues.advancePaymentRequired === 'allowed' ? `
+                    <div class="form-group full-width">
+                      <label class="form-label">Advance Payment Details</label>
+                      <div class="rich-text-box" style="border: 1px solid var(--surface-300); border-radius: var(--radius-md); overflow: hidden;">
+                        <div class="rich-text-toolbar-mini" style="display: flex; gap: 4px; padding: 8px; background: var(--surface-100); border-bottom: 1px solid var(--surface-300);">
+                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('advancePaymentDetails', 'bold')" title="Bold"><strong>B</strong></button>
+                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('advancePaymentDetails', 'italic')" title="Italic"><em>I</em></button>
+                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('advancePaymentDetails', 'underline')" title="Underline"><u>U</u></button>
+                          <span style="width: 1px; background: var(--surface-300); margin: 0 4px;"></span>
+                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('advancePaymentDetails', 'insertUnorderedList')" title="Bullet List">•</button>
+                        </div>
+                        <div 
+                          id="contract-advance-payment-editor"
+                          class="rich-text-content" 
+                          contenteditable="true"
+                          style="min-height: 100px; padding: 12px; font-size: 13px; line-height: 1.5;"
+                          onclick="event.stopPropagation()"
+                          onblur="updateContractProvision('advancePaymentDetails', this.innerHTML)"
+                          placeholder="Specify advance payment terms (percentage, conditions, guarantee requirements, etc.)..."
+                        >${contractProvisionsValues.advancePaymentDetails}</div>
+                      </div>
+                      <span class="help-text">Define the advance payment terms and conditions</span>
+                    </div>
+                    ` : ''}
+                    
+                  </div>
+                </div>
+              </div>
+              
             </div>
           </div>
         `;
@@ -10627,6 +12621,33 @@
         // Special handling for Scope & Requirements block - render all sections in one container
         if (block.id === 'scope') {
           html = renderScopeRequirementsBlock(block);
+          wrapper.innerHTML = html;
+          attachAuthoringEventListeners();
+          updateNavigationButtons();
+          return;
+        }
+        
+        // Special handling for Competition block
+        if (block.id === 'competition') {
+          html = renderCompetitionBlock(block);
+          wrapper.innerHTML = html;
+          attachAuthoringEventListeners();
+          updateNavigationButtons();
+          return;
+        }
+        
+        // Special handling for Team block
+        if (block.id === 'team') {
+          html = renderTeamBlock(block);
+          wrapper.innerHTML = html;
+          attachAuthoringEventListeners();
+          updateNavigationButtons();
+          return;
+        }
+        
+        // Special handling for Evaluation block
+        if (block.id === 'evaluation') {
+          html = renderEvaluationBlock(block);
           wrapper.innerHTML = html;
           attachAuthoringEventListeners();
           updateNavigationButtons();
