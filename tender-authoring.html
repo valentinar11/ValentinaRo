@@ -6656,6 +6656,293 @@
         border-top: 1px solid var(--surface-200);
         background: var(--surface-50);
       }
+
+      /* ===== CRITERIA LIBRARY MODAL STYLES ===== */
+      .criteria-library-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1100;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(4px);
+      }
+
+      .criteria-library-content {
+        background: white;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-2xl);
+        max-width: 900px;
+        width: 95%;
+        max-height: 85vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .criteria-library-header {
+        padding: var(--spacing-lg);
+        border-bottom: 1px solid var(--surface-200);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-600) 100%);
+        color: white;
+      }
+
+      .criteria-library-header-info {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .criteria-library-title {
+        font-size: 18px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .criteria-library-subtitle {
+        font-size: 13px;
+        opacity: 0.9;
+      }
+
+      .criteria-library-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: var(--spacing-lg);
+      }
+
+      .criteria-library-search-section {
+        margin-bottom: var(--spacing-lg);
+      }
+
+      .criteria-library-search-row {
+        display: flex;
+        gap: var(--spacing-sm);
+        align-items: flex-end;
+      }
+
+      .criteria-library-search-field {
+        flex: 1;
+      }
+
+      .criteria-library-search-field label {
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text-secondary);
+        margin-bottom: 6px;
+      }
+
+      .criteria-library-search-input {
+        width: 100%;
+        padding: 10px 14px;
+        border: 1px solid var(--surface-300);
+        border-radius: var(--radius-md);
+        font-size: 14px;
+        font-family: inherit;
+        transition: all 0.2s;
+      }
+
+      .criteria-library-search-input:focus {
+        outline: none;
+        border-color: var(--primary-400);
+        box-shadow: 0 0 0 3px var(--primary-50);
+      }
+
+      .criteria-library-search-btn {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 10px 18px;
+        background: var(--primary-500);
+        color: white;
+        border: none;
+        border-radius: var(--radius-md);
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+        white-space: nowrap;
+      }
+
+      .criteria-library-search-btn:hover {
+        background: var(--primary-600);
+      }
+
+      .criteria-library-results {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-md);
+      }
+
+      .criteria-library-result-card {
+        background: var(--surface-50);
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-md);
+        padding: var(--spacing-md);
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .criteria-library-result-card:hover {
+        border-color: var(--primary-400);
+        box-shadow: 0 2px 8px rgba(0, 146, 209, 0.15);
+        transform: translateX(4px);
+      }
+
+      .criteria-library-result-card.selected {
+        border-color: var(--primary-500);
+        background: var(--primary-50);
+      }
+
+      .criteria-result-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: var(--spacing-sm);
+      }
+
+      .criteria-result-tender-info {
+        flex: 1;
+      }
+
+      .criteria-result-tender-name {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 2px;
+      }
+
+      .criteria-result-tender-ref {
+        font-size: 12px;
+        color: var(--text-muted);
+        font-family: 'Courier New', monospace;
+      }
+
+      .criteria-result-type-badge {
+        font-size: 10px;
+        font-weight: 600;
+        padding: 3px 8px;
+        border-radius: var(--radius-sm);
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+      }
+
+      .criteria-result-type-badge.type-attributes {
+        background: var(--info-50);
+        color: var(--info-600);
+      }
+
+      .criteria-result-type-badge.type-description {
+        background: var(--success-50);
+        color: var(--success-600);
+      }
+
+      .criteria-result-type-badge.type-upload {
+        background: var(--warning-50);
+        color: var(--warning-600);
+      }
+
+      .criteria-result-content {
+        margin-top: var(--spacing-sm);
+        padding-top: var(--spacing-sm);
+        border-top: 1px solid var(--surface-200);
+      }
+
+      .criteria-result-attributes {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .criteria-result-attr {
+        font-size: 11px;
+        background: white;
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-sm);
+        padding: 3px 8px;
+        display: flex;
+        gap: 4px;
+      }
+
+      .criteria-result-attr-name {
+        font-weight: 600;
+        color: var(--text-secondary);
+      }
+
+      .criteria-result-attr-value {
+        color: var(--text-primary);
+      }
+
+      .criteria-result-description {
+        font-size: 13px;
+        color: var(--text-secondary);
+        line-height: 1.5;
+        max-height: 60px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .criteria-result-upload {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: var(--text-secondary);
+      }
+
+      .criteria-result-upload-icon {
+        font-size: 18px;
+      }
+
+      .criteria-library-empty {
+        text-align: center;
+        padding: var(--spacing-2xl);
+        color: var(--text-muted);
+      }
+
+      .criteria-library-empty-icon {
+        font-size: 48px;
+        margin-bottom: var(--spacing-md);
+        opacity: 0.5;
+      }
+
+      .criteria-library-empty-text {
+        font-size: 14px;
+        margin-bottom: 4px;
+      }
+
+      .criteria-library-empty-hint {
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+
+      .criteria-library-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: var(--spacing-md) var(--spacing-lg);
+        border-top: 1px solid var(--surface-200);
+        background: var(--surface-50);
+      }
+
+      .criteria-library-footer-info {
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+
+      .criteria-library-footer-actions {
+        display: flex;
+        gap: var(--spacing-sm);
+      }
     </style>
   </head>
   <body>
@@ -6976,8 +7263,10 @@
                 { id: 'title', label: 'Title', type: 'text', required: true, value: '' },
                 { id: 'reference', label: 'Reference', type: 'text', required: true, value: 'Auto-generated', readonly: true },
                 { id: 'sourcingOrSolicitation', label: 'Sourcing or Solicitation', type: 'select', required: true, options: ['Select...', 'Sourcing', 'Solicitation'], onchange: 'updateSourcingOrSolicitation' },
+                { id: 'eventType', label: 'Event Type', type: 'select', required: false, options: ['Select...', 'RFQ', 'RFP', 'ITB', 'EOI', 'RFI', 'PQ'], onchange: 'updateEventType' },
                 { id: 'sourcingMethod', label: 'Sourcing Method', type: 'select', required: false, options: ['Select...', 'RFI', 'EOI', 'PQ', 'Ad-hoc shortlist'], conditionalVisibility: { field: 'sourcingOrSolicitation', value: 'Sourcing' } },
-                { id: 'typeOfRequirement', label: 'Type of Requirement', type: 'select', required: true, options: ['Select...', 'Goods', 'Services', 'Works'] },
+                { id: 'processType', label: 'Process Type', type: 'select', required: false, options: ['Select...', 'Standard solicitation', 'Solicit offers against LTA/BPA', 'Secondary bidding against LTA/BPA', 'Direct contracting / Sole sourcing'], onchange: 'updateProcessTypeSelect', conditionalVisibility: { field: 'sourcingOrSolicitation', value: 'Solicitation' } },
+                { id: 'typeOfRequirement', label: 'Type of Requirement', type: 'select', required: true, options: ['Select...', 'Goods', 'Services', 'Works'], onchange: 'updateTypeOfRequirement' },
                 { id: 'description', label: 'Description', type: 'textarea', required: true, value: '' },
                 { id: 'beneficiaryCountries', label: 'Beneficiary country(ies)', type: 'country-multiselect', required: false, multiple: true, options: ['Afghanistan', 'Albania', 'Algeria', 'Angola', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahrain', 'Bangladesh', 'Belarus', 'Belgium', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia and Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina Faso', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Central African Republic', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominican Republic', 'DR Congo', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Eswatini', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Lithuania', 'Luxembourg', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Mauritania', 'Mauritius', 'Mexico', 'Moldova', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar', 'Namibia', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'North Korea', 'North Macedonia', 'Norway', 'Oman', 'Pakistan', 'Palestine', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russia', 'Rwanda', 'Saudi Arabia', 'Senegal', 'Serbia', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Somalia', 'South Africa', 'South Korea', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Sweden', 'Switzerland', 'Syria', 'Tajikistan', 'Tanzania', 'Thailand', 'Timor-Leste', 'Togo', 'Trinidad and Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'] },
                 { id: 'modalityOfBidReceipt', label: 'Modality of Bid Receipt', type: 'select', required: true, options: ['Select...', 'Online Only', 'Email Submission', 'Physical Submission'], onchange: 'updateModalityOfBidReceipt' },
@@ -6988,10 +7277,12 @@
                 { id: 'scopeOfEPPApproval', label: 'Scope of EPP Approval', type: 'select', required: false, options: ['Select...', 'Project', 'Org Unit', 'Specific procurement process', 'Other'], conditionalVisibility: { field: 'epp', value: 'Yes' } },
                 { id: 'medicineOrMedical', label: 'Medicine / Medical Equipment', type: 'select', required: false, options: ['Select...', 'Yes', 'No'], onchange: 'updateMedicineOrMedical' },
                 { id: 'policyExceptionLink', label: 'Policy Exception for Medicine/Medical Equipment Procurement (Annex 2 Jira Link)', type: 'text', required: false, value: '', placeholder: 'Enter Jira link', conditionalVisibility: { field: 'medicineOrMedical', value: 'Yes' } },
-                { id: 'processType', label: 'Process Type', type: 'checkbox-group', required: false, options: ['Standard solicitation', 'Solicit offers against LTA/BPA', 'Secondary bidding against LTA/BPA', 'Direct contracting / Sole sourcing'], onchange: 'updateProcessType', conditionalVisibility: { field: 'sourcingOrSolicitation', value: 'Solicitation' } },
                 { id: 'contractAmendment', label: 'Contract Amendment', type: 'select', required: false, options: ['Select...', 'Yes', 'No'], conditionalVisibility: { field: 'processType', contains: 'Direct contracting / Sole sourcing' } },
                 { id: 'solicitationMethod', label: 'Solicitation Method', type: 'select', required: false, options: ['Select...', 'RFQ', 'ITB', 'RFP', 'e-reserve auctions'], conditionalVisibility: { field: 'sourcingOrSolicitation', value: 'Solicitation' } },
-                { id: 'procurementLifecycleTracker', label: 'Procurement Lifecycle & Related Processes', type: 'lifecycle-tracker', required: false, description: 'Link this process to related procurement events to maintain a complete audit trail' },
+                { id: 'procurementLifecycleTracker', label: 'Procurement Lifecycle & Related Processes', type: 'lifecycle-tracker', required: false, conditionalRequired: { field: 'isRetendering', value: true }, description: 'Link this process to related procurement events to maintain a complete audit trail' },
+                { id: 'isRetendering', label: 'Is this a Retender?', type: 'checkbox', required: false, onchange: 'updateIsRetendering' },
+                { id: 'lessonsLearned', label: 'Lessons Learned from Previous Process', type: 'textarea', required: true, value: '', placeholder: 'Document lessons learned from the previous process that will be applied...', conditionalVisibility: { field: 'isRetendering', value: true } },
+                { id: 'designReviewDocumentation', label: 'Design Review Documentation', type: 'file', required: false, value: '', help: 'Required for Works procurement', conditionalVisibility: { field: 'typeOfRequirement', value: 'Works' } },
                 { id: 'unCollaboration', label: 'UN Collaboration', type: 'select', required: false, options: ['Select...', 'Yes', 'No'], onchange: 'updateUNCollaboration' },
                 { id: 'unCollaborationType', label: 'UN Collaboration Type', type: 'select', required: false, options: ['Select...', 'Joint tendering process with other UN organizations', 'Secondary bidding using other UN agency\'s LTA', 'Re-use of solicitation results of another UN agency'], conditionalVisibility: { field: 'unCollaboration', value: 'Yes' } },
                 { id: 'unAgencies', label: 'UN Agencies', type: 'select', required: false, multiple: true, options: ['UNDP', 'UNICEF', 'UNHCR', 'WFP', 'WHO', 'FAO', 'ILO', 'UNESCO', 'UNIDO'], conditionalVisibility: { field: 'unCollaboration', value: 'Yes' } },
@@ -7467,13 +7758,17 @@
       // General Information - Field Values for Conditional Visibility
       let generalInfoValues = {
         sourcingOrSolicitation: '',
+        eventType: '',
+        solicitationType: '',
+        typeOfRequirement: '',
         modalityOfBidReceipt: '',
         epp: '',
         medicineOrMedical: '',
-        processType: [],
+        processType: '',
         directContracting: false,
         unCollaboration: '',
         isLease: '',
+        isRetendering: false,
         beneficiaryCountries: []
       };
       
@@ -10655,7 +10950,7 @@
                   </div>
                   <div class="collapsible-toggle">▼</div>
                 </div>
-                <div class="collapsible-body">
+                <div class="collapsible-body" onclick="event.stopPropagation()">
                   <div class="form-group">
                     <label class="form-label">Scope and objectives of sourcing or solicitation process <span class="required">*</span></label>
                     <textarea class="form-textarea" placeholder="Describe the scope and objectives of this procurement process..." style="min-height: 120px;"></textarea>
@@ -10678,7 +10973,7 @@
                     <div class="collapsible-toggle">▼</div>
                   </div>
                 </div>
-                <div class="collapsible-body">
+                <div class="collapsible-body" onclick="event.stopPropagation()">
                   ${renderProductRequirementsContent(uniqueUnspscCodes)}
                 </div>
               </div>
@@ -10692,7 +10987,7 @@
                   </div>
                   <div class="collapsible-toggle">▼</div>
                 </div>
-                <div class="collapsible-body">
+                <div class="collapsible-body" onclick="event.stopPropagation()">
                   ${renderOtherRequirementsContent()}
                 </div>
               </div>
@@ -10766,16 +11061,19 @@
               ${attachmentHtml}
               <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--spacing-sm);">Choose requirement type:</p>
               <div style="display: flex; flex-wrap: wrap; gap: var(--spacing-sm);">
-                <button class="btn btn-secondary" onclick="event.stopPropagation(); addRequirementAttributeInline('${unspsc.code}')">
-                  <span style="font-size: 14px; margin-right: 4px;">📋</span> Attributes
+                <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); addRequirementAttributeInline('${unspsc.code}')">
+                  <i class="pi pi-list"></i> Attributes
                 </button>
-                <button class="btn btn-secondary" onclick="event.stopPropagation(); addDescriptionFieldInline('${unspsc.code}')">
-                  <span style="font-size: 14px; margin-right: 4px;">📝</span> Description
+                <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); addDescriptionFieldInline('${unspsc.code}')">
+                  <i class="pi pi-align-left"></i> Description
                 </button>
-                <button class="btn btn-secondary" onclick="event.stopPropagation(); document.getElementById('attach-file-${unspsc.code.replace(/[^a-zA-Z0-9]/g, '_')}').click()">
-                  <span style="font-size: 14px; margin-right: 4px;">📎</span> Attach
+                <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); document.getElementById('attach-file-${unspsc.code.replace(/[^a-zA-Z0-9]/g, '_')}').click()">
+                  <i class="pi pi-paperclip"></i> Attach
                 </button>
                 <input type="file" id="attach-file-${unspsc.code.replace(/[^a-zA-Z0-9]/g, '_')}" accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg" style="display: none;" onchange="handleAttachFile('${unspsc.code}', event)" />
+                <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); openCriteriaLibrary('${unspsc.code}', '${unspsc.description.replace(/'/g, "\\'")}')">
+                  <i class="pi pi-book"></i> Browse Library
+                </button>
               </div>
             </div>
           `;
@@ -10820,6 +11118,7 @@
                 <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); switchToAttributesInline('${unspsc.code}')"><i class="pi pi-list"></i> Switch to Attributes</button>
                 <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); document.getElementById('attach-file-${unspsc.code.replace(/[^a-zA-Z0-9]/g, '_')}').click()"><i class="pi pi-paperclip"></i> Attach</button>
                 <input type="file" id="attach-file-${unspsc.code.replace(/[^a-zA-Z0-9]/g, '_')}" accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg" style="display: none;" onchange="handleAttachFile('${unspsc.code}', event)" />
+                <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); openCriteriaLibrary('${unspsc.code}', '${unspsc.description.replace(/'/g, "\\'")}')"><i class="pi pi-book"></i> Browse Library</button>
                 <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); clearRequirementsInline('${unspsc.code}')" style="color: var(--danger-600);"><i class="pi pi-trash"></i> Clear</button>
               </div>
             </div>
@@ -10842,6 +11141,7 @@
                 <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); addRequirementAttributeInline('${unspsc.code}')"><i class="pi pi-plus"></i> Add Attribute</button>
                 <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); document.getElementById('attach-file-${unspsc.code.replace(/[^a-zA-Z0-9]/g, '_')}').click()"><i class="pi pi-paperclip"></i> Attach</button>
                 <input type="file" id="attach-file-${unspsc.code.replace(/[^a-zA-Z0-9]/g, '_')}" accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg" style="display: none;" onchange="handleAttachFile('${unspsc.code}', event)" />
+                <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); openCriteriaLibrary('${unspsc.code}', '${unspsc.description.replace(/'/g, "\\'")}')"><i class="pi pi-book"></i> Browse Library</button>
                 <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); clearRequirementsInline('${unspsc.code}')" style="color: var(--danger-600);"><i class="pi pi-trash"></i> Clear</button>
               </div>
             </div>
@@ -10990,9 +11290,9 @@
 # For attributes: Fill Attribute Name and Attribute Value columns (one row per attribute)
 # For description: Fill the Free Text Description column
 # Example rows below:
-43211500,Computers,attributes,Processor,Intel Core i7,
-43211500,Computers,attributes,RAM,16GB DDR4,
-43211500,Computers,attributes,Storage,512GB SSD,
+43211503,Laptop computers,attributes,Processor,Intel Core i7,
+43211503,Laptop computers,attributes,RAM,16GB DDR4,
+43211503,Laptop computers,attributes,Storage,512GB SSD,
 72151500,Building cleaning services,description,,,Professional cleaning services including daily office cleaning and monthly deep cleaning. Must use eco-friendly products.`;
         
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -13419,6 +13719,42 @@
         renderCurrentBlock();
       }
       
+      window.updateEventType = function(value) {
+        generalInfoValues.eventType = value;
+        renderCurrentBlock();
+      }
+      
+      window.updateTypeOfRequirement = function(value) {
+        generalInfoValues.typeOfRequirement = value;
+        renderCurrentBlock();
+      }
+      
+      window.updateIsRetendering = function(checkbox) {
+        generalInfoValues.isRetendering = checkbox.checked;
+        renderCurrentBlock();
+      }
+      
+      window.updateProcessTypeSelect = function(value) {
+        generalInfoValues.processType = value;
+        generalInfoValues.directContracting = value === 'Direct contracting / Sole sourcing';
+        renderCurrentBlock();
+      }
+      
+      window.openLifecycleTrackerSearch = function() {
+        // Open lifecycle tracker search modal/dialog
+        showNotification('Lifecycle Tracker Search', 'Opening lifecycle tracker to link previous process...');
+        // In a real implementation, this would open a modal to search the lifecycle tracker
+        // For now, we simulate with a simple prompt
+        const processRef = prompt('Enter the reference of the previous process from Lifecycle Tracker:');
+        if (processRef) {
+          const input = document.querySelector('input[placeholder*="lifecycle tracker"]');
+          if (input) {
+            input.value = processRef;
+          }
+          showNotification('Process Linked', `Successfully linked to process: ${processRef}`);
+        }
+      }
+      
       window.shouldShowField = function(field) {
         if (!field.conditionalVisibility) return true;
         
@@ -13426,15 +13762,15 @@
         
         // Complex condition for Linked Process
         if (condition.complex && field.id === 'linkedProcess') {
-          const hasDirectContracting = generalInfoValues.processType.includes('Direct contracting / Sole sourcing');
+          const hasDirectContracting = generalInfoValues.processType === 'Direct contracting / Sole sourcing';
           const hasSolicitation = generalInfoValues.sourcingOrSolicitation !== '';
-          const hasLTABPA = generalInfoValues.processType.includes('Solicit offers against LTA/BPA');
-          const hasContractAmendment = generalInfoValues.processType.includes('Contract Amendment');
+          const hasLTABPA = generalInfoValues.processType === 'Solicit offers against LTA/BPA';
+          const hasContractAmendment = generalInfoValues.processType === 'Contract Amendment';
           return hasDirectContracting || hasSolicitation || hasLTABPA || hasContractAmendment;
         }
         
         // Single value condition - Check both generalInfoValues and evaluationBlockValues
-        if (condition.field && condition.value) {
+        if (condition.field && condition.value !== undefined) {
           if (generalInfoValues[condition.field] !== undefined) {
             return generalInfoValues[condition.field] === condition.value;
           }
@@ -13453,9 +13789,9 @@
           }
         }
         
-        // Contains condition (for checkboxes)
+        // Contains condition (for processType - now a string value)
         if (condition.field && condition.contains) {
-          return generalInfoValues.processType.includes(condition.contains);
+          return generalInfoValues.processType === condition.contains;
         }
         
         return true;
@@ -13474,6 +13810,7 @@
       
       // ===== PARTICULARS - CONDITIONAL VISIBILITY HANDLERS =====
       window.updateClarificationsOrPreBid = function(value) {
+        saveProjectDetailsSectionStates();
         particularsValues.clarificationsOrPreBid = value;
         // Parse number of meetings from value
         if (value === 'One pre-bid meeting') {
@@ -13484,26 +13821,35 @@
           particularsValues.numberOfMeetings = 0;
         }
         renderCurrentBlock();
+        restoreProjectDetailsSectionStates();
       }
       
       window.updateSiteVisit = function(value) {
+        saveProjectDetailsSectionStates();
         particularsValues.siteVisit = value;
         renderCurrentBlock();
+        restoreProjectDetailsSectionStates();
       }
       
       window.updateSiteVisitDateOption = function(value) {
+        saveProjectDetailsSectionStates();
         particularsValues.dateOption = value;
         renderCurrentBlock();
+        restoreProjectDetailsSectionStates();
       }
       
       window.updateExclusivity = function(value) {
+        saveProjectDetailsSectionStates();
         particularsValues.exclusivity = value;
         renderCurrentBlock();
+        restoreProjectDetailsSectionStates();
       }
       
       window.updateAlternativeOffers = function(value) {
+        saveProjectDetailsSectionStates();
         particularsValues.alternativeOffers = value;
         renderCurrentBlock();
+        restoreProjectDetailsSectionStates();
       }
       
       window.updateAdvancePaymentAllowed = function(value) {
@@ -14563,7 +14909,7 @@
               </div>
               <div class="collapsible-toggle">▼</div>
             </div>
-            <div class="collapsible-body">
+            <div class="collapsible-body" onclick="event.stopPropagation()">
               <div class="form-grid-3col">
                 <!-- Scope and objectives -->
                 <div class="form-group full-width">
@@ -15073,7 +15419,7 @@
                   </div>
                   <div class="collapsible-toggle">▼</div>
                 </div>
-                <div class="collapsible-body">
+                <div class="collapsible-body" onclick="event.stopPropagation()">
                   <div class="form-grid-3col">
                     <div class="form-group">
                       <label class="form-label">Deadline <span class="required">*</span></label>
@@ -15395,7 +15741,7 @@
                       </div>
                       <div class="collapsible-toggle">▼</div>
                     </div>
-                    <div class="collapsible-body">
+                    <div class="collapsible-body" onclick="event.stopPropagation()">
                       <div class="form-grid-3col">
                         ${section.fields.map((field) => {
                           if (!shouldShowField(field)) return '';
@@ -15620,6 +15966,36 @@
                           <span class="help-text">Click to select one or more beneficiary countries</span>
                         </div>
                       `;
+                    } else if (field.type === 'checkbox') {
+                      const isChecked = generalInfoValues[field.id] === true;
+                      fieldHtml = `
+                        <div class="form-group">
+                          <label class="form-label" style="display: flex; align-items: center; gap: var(--spacing-sm); cursor: pointer;">
+                            <input 
+                              type="checkbox" 
+                              ${isChecked ? 'checked' : ''}
+                              onchange="${field.onchange}(this)"
+                              style="width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary-500);"
+                            />
+                            <span>${field.label}</span>
+                          </label>
+                          ${field.help ? `<span class="help-text">${field.help}</span>` : ''}
+                        </div>
+                      `;
+                    } else if (field.type === 'lifecycle-search') {
+                      fieldHtml = `
+                        <div class="form-group full-width">
+                          <label class="form-label">
+                            ${field.label} ${field.required ? '<span class="required">*</span>' : ''}
+                          </label>
+                          <div style="position: relative;">
+                            <input type="text" class="form-input" value="${field.value || ''}" placeholder="${field.placeholder || 'Search lifecycle tracker...'}" ${field.required ? 'required' : ''} style="padding-left: 40px; padding-right: 120px;" />
+                            <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted);">🔗</span>
+                            <button type="button" class="btn btn-secondary btn-sm" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%);" onclick="openLifecycleTrackerSearch()">Browse Tracker</button>
+                          </div>
+                          ${field.help ? `<span class="help-text" style="color: var(--warning-500);">${field.help}</span>` : ''}
+                        </div>
+                      `;
                     } else if (field.type === 'file') {
                       fieldHtml = `
                         <div class="form-group full-width">
@@ -15635,11 +16011,18 @@
                       `;
                     } else if (field.type === 'lifecycle-tracker') {
                       const trackerId = `lifecycle-tracker-${field.id}`;
+                      // Check for conditional required (when retendering is Yes)
+                      const isConditionallyRequired = field.conditionalRequired && 
+                        generalInfoValues[field.conditionalRequired.field] === field.conditionalRequired.value;
+                      const isRequired = field.required || isConditionallyRequired;
+                      const requiredWarning = isConditionallyRequired ? 
+                        `<div class="help-text" style="color: var(--warning-600); margin-bottom: var(--spacing-sm);"><strong>⚠️ Required:</strong> At least one related process must be linked when this is a retender.</div>` : '';
                       fieldHtml = `
                         <div class="form-group full-width">
                           <label class="form-label">
-                            ${field.label} ${field.required ? '<span class="required">*</span>' : ''}
+                            ${field.label} ${isRequired ? '<span class="required">*</span>' : ''}
                           </label>
+                          ${requiredWarning}
                           ${field.description ? `<div class="help-text" style="margin-bottom: var(--spacing-md);">${field.description}</div>` : ''}
                           <div id="${trackerId}"></div>
                         </div>
@@ -16193,6 +16576,333 @@
         }
       }
 
+      // ===== CRITERIA LIBRARY FUNCTIONS =====
+      
+      // Mock data for criteria library (in real app, this would come from API)
+      const criteriaLibraryData = [
+        {
+          id: 'CL001',
+          tenderRef: 'TND-2024-0892',
+          tenderName: 'IT Equipment Procurement - Phase II',
+          unspscCode: '43211503',
+          unspscDescription: 'Laptop computers',
+          type: 'attributes',
+          attributes: [
+            { name: 'Processor', value: 'Intel Core i7 or AMD Ryzen 7' },
+            { name: 'RAM', value: '16GB DDR4 minimum' },
+            { name: 'Storage', value: '512GB SSD NVMe' },
+            { name: 'Display', value: '15.6" FHD IPS' },
+            { name: 'Warranty', value: '3 years on-site' }
+          ],
+          description: '',
+          uploadedFile: null,
+          date: '2024-11-15'
+        },
+        {
+          id: 'CL002',
+          tenderRef: 'TND-2024-0756',
+          tenderName: 'Office Laptops for Regional Offices',
+          unspscCode: '43211503',
+          unspscDescription: 'Laptop computers',
+          type: 'description',
+          attributes: [],
+          description: 'High-performance laptop computers for office use. Must include:\n- Latest generation Intel or AMD processors\n- Minimum 8GB RAM expandable to 32GB\n- 256GB SSD + 1TB HDD storage\n- Full HD display with anti-glare coating\n- Energy Star certified\n- Windows 11 Pro pre-installed',
+          uploadedFile: null,
+          date: '2024-10-22'
+        },
+        {
+          id: 'CL003',
+          tenderRef: 'TND-2024-0621',
+          tenderName: 'Laptop Procurement for Field Operations',
+          unspscCode: '43211503',
+          unspscDescription: 'Laptop computers',
+          type: 'upload',
+          attributes: [],
+          description: '',
+          uploadedFile: { name: 'Laptop_Technical_Specifications_v2.pdf', size: '2.4 MB' },
+          date: '2024-09-08'
+        },
+        {
+          id: 'CL004',
+          tenderRef: 'TND-2024-1023',
+          tenderName: 'Network Equipment Upgrade',
+          unspscCode: '43222600',
+          unspscDescription: 'Network switches',
+          type: 'attributes',
+          attributes: [
+            { name: 'Ports', value: '48 x Gigabit Ethernet' },
+            { name: 'PoE Support', value: 'PoE+ (802.3at)' },
+            { name: 'Management', value: 'Layer 2/3 managed' },
+            { name: 'Stacking', value: 'Yes, up to 8 units' }
+          ],
+          description: '',
+          uploadedFile: null,
+          date: '2024-12-01'
+        },
+        {
+          id: 'CL005',
+          tenderRef: 'TND-2024-0445',
+          tenderName: 'Server Infrastructure Renewal',
+          unspscCode: '43211600',
+          unspscDescription: 'Servers',
+          type: 'attributes',
+          attributes: [
+            { name: 'Processor', value: 'Dual Intel Xeon Gold 6348' },
+            { name: 'RAM', value: '256GB DDR4 ECC' },
+            { name: 'Storage', value: '8 x 2.4TB SAS SSD RAID' },
+            { name: 'Redundancy', value: 'Dual PSU, Hot-swap disks' }
+          ],
+          description: '',
+          uploadedFile: null,
+          date: '2024-08-17'
+        },
+        {
+          id: 'CL006',
+          tenderRef: 'TND-2024-0388',
+          tenderName: 'Cleaning Services for Headquarters',
+          unspscCode: '76111500',
+          unspscDescription: 'Cleaning and janitorial services',
+          type: 'description',
+          attributes: [],
+          description: 'Professional cleaning services for office premises including:\n- Daily general cleaning of all office areas\n- Weekly deep cleaning of kitchens and restrooms\n- Monthly carpet cleaning and window washing\n- Use of eco-friendly, certified cleaning products only\n- Staff must be properly trained and background-checked\n- Service hours: 6:00 PM - 10:00 PM Monday-Friday',
+          uploadedFile: null,
+          date: '2024-07-25'
+        },
+        {
+          id: 'CL007',
+          tenderRef: 'TND-2024-0912',
+          tenderName: 'Medical Equipment for Field Clinics',
+          unspscCode: '42181500',
+          unspscDescription: 'Patient examination equipment',
+          type: 'attributes',
+          attributes: [
+            { name: 'Examination Table', value: 'Hydraulic, height-adjustable' },
+            { name: 'Blood Pressure Monitor', value: 'Digital, automatic' },
+            { name: 'Stethoscope', value: 'Professional grade, dual-head' },
+            { name: 'Otoscope/Ophthalmoscope', value: 'LED illumination' }
+          ],
+          description: '',
+          uploadedFile: null,
+          date: '2024-11-28'
+        },
+        {
+          id: 'CL008',
+          tenderRef: 'TND-2024-0567',
+          tenderName: 'Vehicle Fleet Procurement',
+          unspscCode: '25101500',
+          unspscDescription: 'Passenger motor vehicles',
+          type: 'upload',
+          attributes: [],
+          description: '',
+          uploadedFile: { name: 'Vehicle_Specifications_4WD_SUV.pdf', size: '5.1 MB' },
+          date: '2024-09-30'
+        }
+      ];
+      
+      let currentCriteriaUnspscCode = '';
+      let currentCriteriaDescription = '';
+      let selectedCriteriaItem = null;
+      
+      // Open Criteria Library Modal
+      window.openCriteriaLibrary = function(unspscCode, description) {
+        currentCriteriaUnspscCode = unspscCode;
+        currentCriteriaDescription = description || '';
+        selectedCriteriaItem = null;
+        
+        const modal = document.getElementById('criteria-library-modal');
+        const searchInput = document.getElementById('criteria-library-search-input');
+        const subtitleEl = document.getElementById('criteria-library-product-info');
+        
+        // Pre-fill search with UNSPSC code
+        if (searchInput) {
+          searchInput.value = unspscCode;
+        }
+        
+        // Update subtitle
+        if (subtitleEl) {
+          subtitleEl.textContent = `${unspscCode} - ${description}`;
+        }
+        
+        // Show modal
+        modal.style.display = 'flex';
+        
+        // Search with pre-filled code
+        searchCriteriaLibrary(unspscCode);
+        
+        // Focus search input
+        setTimeout(() => {
+          if (searchInput) searchInput.focus();
+        }, 100);
+      }
+      
+      // Close Criteria Library Modal
+      window.closeCriteriaLibrary = function() {
+        const modal = document.getElementById('criteria-library-modal');
+        modal.style.display = 'none';
+        selectedCriteriaItem = null;
+      }
+      
+      // Search Criteria Library
+      window.searchCriteriaLibrary = function(searchTerm) {
+        const resultsContainer = document.getElementById('criteria-library-results');
+        const footerInfo = document.getElementById('criteria-library-footer-info');
+        
+        if (!searchTerm || searchTerm.trim() === '') {
+          resultsContainer.innerHTML = `
+            <div class="criteria-library-empty">
+              <div class="criteria-library-empty-icon">🔍</div>
+              <div class="criteria-library-empty-text">Enter a UNSPSC code to search</div>
+              <div class="criteria-library-empty-hint">You can search by code or description keywords</div>
+            </div>
+          `;
+          if (footerInfo) footerInfo.textContent = '';
+          return;
+        }
+        
+        const term = searchTerm.trim().toLowerCase();
+        
+        // Filter criteria by UNSPSC code or description
+        const results = criteriaLibraryData.filter(item => 
+          item.unspscCode.toLowerCase().includes(term) ||
+          item.unspscDescription.toLowerCase().includes(term) ||
+          item.tenderName.toLowerCase().includes(term)
+        );
+        
+        if (results.length === 0) {
+          resultsContainer.innerHTML = `
+            <div class="criteria-library-empty">
+              <div class="criteria-library-empty-icon">📭</div>
+              <div class="criteria-library-empty-text">No specifications found</div>
+              <div class="criteria-library-empty-hint">Try a different UNSPSC code or keywords</div>
+            </div>
+          `;
+          if (footerInfo) footerInfo.textContent = '0 results found';
+          return;
+        }
+        
+        // Render results
+        resultsContainer.innerHTML = results.map(item => renderCriteriaResultCard(item)).join('');
+        if (footerInfo) footerInfo.textContent = `${results.length} specification${results.length !== 1 ? 's' : ''} found`;
+      }
+      
+      // Render criteria result card
+      function renderCriteriaResultCard(item) {
+        const typeClass = item.type === 'attributes' ? 'type-attributes' : 
+                          item.type === 'description' ? 'type-description' : 'type-upload';
+        const typeLabel = item.type === 'attributes' ? 'Attributes' : 
+                          item.type === 'description' ? 'Description' : 'File Upload';
+        
+        let contentHtml = '';
+        if (item.type === 'attributes' && item.attributes.length > 0) {
+          contentHtml = `
+            <div class="criteria-result-attributes">
+              ${item.attributes.slice(0, 4).map(attr => `
+                <span class="criteria-result-attr">
+                  <span class="criteria-result-attr-name">${attr.name}:</span>
+                  <span class="criteria-result-attr-value">${attr.value}</span>
+                </span>
+              `).join('')}
+              ${item.attributes.length > 4 ? `<span class="criteria-result-attr" style="background: var(--surface-100);">+${item.attributes.length - 4} more</span>` : ''}
+            </div>
+          `;
+        } else if (item.type === 'description' && item.description) {
+          contentHtml = `
+            <div class="criteria-result-description">${item.description.substring(0, 150)}${item.description.length > 150 ? '...' : ''}</div>
+          `;
+        } else if (item.type === 'upload' && item.uploadedFile) {
+          contentHtml = `
+            <div class="criteria-result-upload">
+              <span class="criteria-result-upload-icon">📄</span>
+              <span>${item.uploadedFile.name} (${item.uploadedFile.size})</span>
+            </div>
+          `;
+        }
+        
+        return `
+          <div class="criteria-library-result-card" onclick="selectCriteriaItem('${item.id}')" data-criteria-id="${item.id}">
+            <div class="criteria-result-header">
+              <div class="criteria-result-tender-info">
+                <div class="criteria-result-tender-name">${item.tenderName}</div>
+                <div class="criteria-result-tender-ref">${item.tenderRef} · ${item.unspscCode} · ${item.date}</div>
+              </div>
+              <span class="criteria-result-type-badge ${typeClass}">${typeLabel}</span>
+            </div>
+            <div class="criteria-result-content">
+              ${contentHtml}
+            </div>
+          </div>
+        `;
+      }
+      
+      // Select criteria item
+      window.selectCriteriaItem = function(itemId) {
+        // Remove previous selection
+        document.querySelectorAll('.criteria-library-result-card').forEach(card => {
+          card.classList.remove('selected');
+        });
+        
+        // Add selection to clicked card
+        const card = document.querySelector(`.criteria-library-result-card[data-criteria-id="${itemId}"]`);
+        if (card) {
+          card.classList.add('selected');
+        }
+        
+        // Store selected item
+        selectedCriteriaItem = criteriaLibraryData.find(item => item.id === itemId);
+      }
+      
+      // Apply selected criteria
+      window.applyCriteriaFromLibrary = function() {
+        if (!selectedCriteriaItem) {
+          showNotification('Please select a specification to apply.', 'warning');
+          return;
+        }
+        
+        const unspscCode = currentCriteriaUnspscCode;
+        
+        // Initialize product requirements if needed
+        if (!productRequirements[unspscCode]) {
+          productRequirements[unspscCode] = { requirementType: null, attributes: [], description: '', uploadedFile: null };
+        }
+        
+        // Apply the selected criteria
+        if (selectedCriteriaItem.type === 'attributes') {
+          productRequirements[unspscCode].requirementType = 'attributes';
+          productRequirements[unspscCode].attributes = selectedCriteriaItem.attributes.map(attr => ({
+            name: attr.name,
+            value: attr.value
+          }));
+          productRequirements[unspscCode].description = '';
+        } else if (selectedCriteriaItem.type === 'description') {
+          productRequirements[unspscCode].requirementType = 'description';
+          productRequirements[unspscCode].description = selectedCriteriaItem.description;
+          productRequirements[unspscCode].attributes = [];
+        } else if (selectedCriteriaItem.type === 'upload') {
+          productRequirements[unspscCode].uploadedFile = {
+            name: selectedCriteriaItem.uploadedFile.name,
+            size: selectedCriteriaItem.uploadedFile.size,
+            fromLibrary: true
+          };
+        }
+        
+        // Update the UI
+        updateProductReqBodyContent(unspscCode);
+        updateProductReqStatus(unspscCode);
+        
+        // Close modal
+        closeCriteriaLibrary();
+        
+        // Show success message
+        showNotification(`Specifications from "${selectedCriteriaItem.tenderName}" applied successfully!`, 'success');
+      }
+      
+      // Handle Enter key in search
+      window.handleCriteriaSearchKeyup = function(event) {
+        if (event.key === 'Enter') {
+          searchCriteriaLibrary(event.target.value);
+        }
+      }
+
       // Initialize - Authoring page auto-starts
       document.addEventListener('DOMContentLoaded', function() {
         // Load data from localStorage (from tender-create.html wizard)
@@ -16570,6 +17280,64 @@
         <div class="form-attachment-footer">
           <button class="btn btn-secondary" onclick="closeFormAttachmentModal()">Close</button>
           <button class="btn btn-primary" onclick="saveFormAttachments()"><i class="pi pi-check"></i> Save</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Criteria Library Modal -->
+    <div class="criteria-library-modal" id="criteria-library-modal" onclick="if(event.target === this) closeCriteriaLibrary()">
+      <div class="criteria-library-content">
+        <div class="criteria-library-header">
+          <div class="criteria-library-header-info">
+            <div class="criteria-library-title">
+              <span>📚</span> Criteria Library
+            </div>
+            <div class="criteria-library-subtitle">
+              Browse specifications from other tenders for: <strong id="criteria-library-product-info">Loading...</strong>
+            </div>
+          </div>
+          <button class="modal-close-btn" onclick="closeCriteriaLibrary()" style="color: white; background: rgba(255,255,255,0.2);">✕</button>
+        </div>
+        <div class="criteria-library-body">
+          <!-- Search Section -->
+          <div class="criteria-library-search-section">
+            <div class="criteria-library-search-row">
+              <div class="criteria-library-search-field" style="flex: 2;">
+                <label>UNSPSC Code or Keywords</label>
+                <input 
+                  type="text" 
+                  id="criteria-library-search-input" 
+                  class="criteria-library-search-input" 
+                  placeholder="Enter UNSPSC code or search keywords..."
+                  onkeyup="handleCriteriaSearchKeyup(event)"
+                />
+              </div>
+              <button class="criteria-library-search-btn" onclick="searchCriteriaLibrary(document.getElementById('criteria-library-search-input').value)">
+                <i class="pi pi-search"></i> Search
+              </button>
+            </div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 6px;">
+              💡 Tip: The UNSPSC code is pre-filled. You can modify it or add keywords to refine your search.
+            </div>
+          </div>
+          
+          <!-- Results Section -->
+          <div class="criteria-library-results" id="criteria-library-results">
+            <div class="criteria-library-empty">
+              <div class="criteria-library-empty-icon">📚</div>
+              <div class="criteria-library-empty-text">Search the criteria library</div>
+              <div class="criteria-library-empty-hint">Find and reuse specifications from previous tenders</div>
+            </div>
+          </div>
+        </div>
+        <div class="criteria-library-footer">
+          <div class="criteria-library-footer-info" id="criteria-library-footer-info"></div>
+          <div class="criteria-library-footer-actions">
+            <button class="btn btn-secondary" onclick="closeCriteriaLibrary()">Cancel</button>
+            <button class="btn btn-primary" onclick="applyCriteriaFromLibrary()">
+              <i class="pi pi-check"></i> Apply Selected
+            </button>
+          </div>
         </div>
       </div>
     </div>
