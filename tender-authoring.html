@@ -6507,6 +6507,155 @@
         border: 2px solid var(--info-300) !important;
         font-weight: 600;
       }
+
+      /* Country Multiselect Dropdown Styles */
+      .country-multiselect-container {
+        position: relative;
+        width: 100%;
+      }
+
+      .country-multiselect-input {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 42px;
+        padding: 8px 12px;
+        background: var(--surface-0);
+        border: 1px solid var(--surface-300);
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      }
+
+      .country-multiselect-input:hover {
+        border-color: var(--primary-400);
+      }
+
+      .country-multiselect-input:focus-within {
+        border-color: var(--primary-500);
+        box-shadow: 0 0 0 3px var(--primary-100);
+      }
+
+      .country-multiselect-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        flex: 1;
+      }
+
+      .country-placeholder {
+        color: var(--text-muted);
+        font-size: 13px;
+      }
+
+      .country-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 4px 8px;
+        background: var(--primary-100);
+        color: var(--primary-700);
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 500;
+      }
+
+      .country-tag-remove {
+        background: none;
+        border: none;
+        color: var(--primary-600);
+        cursor: pointer;
+        padding: 0;
+        font-size: 14px;
+        line-height: 1;
+        margin-left: 2px;
+      }
+
+      .country-tag-remove:hover {
+        color: var(--danger-500);
+      }
+
+      .country-multiselect-arrow {
+        color: var(--text-muted);
+        font-size: 10px;
+        margin-left: 8px;
+        transition: transform 0.2s ease;
+      }
+
+      .country-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        margin-top: 4px;
+        background: var(--surface-0);
+        border: 1px solid var(--surface-300);
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-lg);
+        z-index: 1000;
+        max-height: 350px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .country-dropdown-search {
+        padding: 10px;
+        border-bottom: 1px solid var(--surface-200);
+      }
+
+      .country-dropdown-search input {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid var(--surface-300);
+        border-radius: var(--radius-sm);
+        font-size: 13px;
+      }
+
+      .country-dropdown-search input:focus {
+        outline: none;
+        border-color: var(--primary-400);
+      }
+
+      .country-dropdown-list {
+        flex: 1;
+        overflow-y: auto;
+        max-height: 220px;
+        padding: 6px 0;
+      }
+
+      .country-option {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 14px;
+        cursor: pointer;
+        font-size: 13px;
+        transition: background 0.1s ease;
+      }
+
+      .country-option:hover {
+        background: var(--surface-100);
+      }
+
+      .country-option.selected {
+        background: var(--primary-50);
+      }
+
+      .country-option input[type="checkbox"] {
+        cursor: pointer;
+        width: 16px;
+        height: 16px;
+        accent-color: var(--primary-500);
+      }
+
+      .country-dropdown-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        border-top: 1px solid var(--surface-200);
+        background: var(--surface-50);
+      }
     </style>
   </head>
   <body>
@@ -6678,7 +6827,7 @@
                   <!-- Content Area -->
                   <div class="form-library-content">
                   <div class="form-library-group">
-                      <div class="form-library-group-label">Submission Forms</div>
+                      <div class="form-library-group-label">Corporate Forms</div>
                     <div class="form-library-list" id="form-library-list">
                       <div class="form-library-item" draggable="true" data-form-type="instructions" data-form-name="Instructions to Bidders">
                           <div class="form-library-item-icon">📄</div>
@@ -6712,7 +6861,7 @@
                     </div>
 
                     <div class="form-library-group">
-                      <div class="form-library-group-label">Technical Documents</div>
+                      <div class="form-library-group-label">Custom Forms</div>
                       <div class="form-library-list">
                       <div class="form-library-item" draggable="true" data-form-type="drive-questionnaire" data-form-name="DRiVE Questionnaire">
                           <div class="form-library-item-icon">📊</div>
@@ -6830,7 +6979,7 @@
                 { id: 'sourcingMethod', label: 'Sourcing Method', type: 'select', required: false, options: ['Select...', 'RFI', 'EOI', 'PQ', 'Ad-hoc shortlist'], conditionalVisibility: { field: 'sourcingOrSolicitation', value: 'Sourcing' } },
                 { id: 'typeOfRequirement', label: 'Type of Requirement', type: 'select', required: true, options: ['Select...', 'Goods', 'Services', 'Works'] },
                 { id: 'description', label: 'Description', type: 'textarea', required: true, value: '' },
-                { id: 'beneficiaryCountries', label: 'Beneficiary country(ies)', type: 'select', required: false, multiple: true, options: ['Afghanistan', 'Bangladesh', 'Cambodia', 'India', 'Pakistan', 'Somalia', 'South Sudan', 'Sudan', 'Syria', 'Yemen'] },
+                { id: 'beneficiaryCountries', label: 'Beneficiary country(ies)', type: 'country-multiselect', required: false, multiple: true, options: ['Afghanistan', 'Albania', 'Algeria', 'Angola', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahrain', 'Bangladesh', 'Belarus', 'Belgium', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia and Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina Faso', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Central African Republic', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominican Republic', 'DR Congo', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Eswatini', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Lithuania', 'Luxembourg', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Mauritania', 'Mauritius', 'Mexico', 'Moldova', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar', 'Namibia', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'North Korea', 'North Macedonia', 'Norway', 'Oman', 'Pakistan', 'Palestine', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russia', 'Rwanda', 'Saudi Arabia', 'Senegal', 'Serbia', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Somalia', 'South Africa', 'South Korea', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Sweden', 'Switzerland', 'Syria', 'Tajikistan', 'Tanzania', 'Thailand', 'Timor-Leste', 'Togo', 'Trinidad and Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'] },
                 { id: 'modalityOfBidReceipt', label: 'Modality of Bid Receipt', type: 'select', required: true, options: ['Select...', 'Online Only', 'Email Submission', 'Physical Submission'], onchange: 'updateModalityOfBidReceipt' },
                 { id: 'waiverForBidReceipt', label: 'Waiver for Bid Receipt Modality', type: 'text', required: false, value: '', placeholder: 'Provide waiver link', conditionalVisibility: { field: 'modalityOfBidReceipt', values: ['Email Submission', 'Physical Submission'] } },
                 { id: 'epp', label: 'EPP', type: 'select', required: false, options: ['Select...', 'Yes', 'No'], onchange: 'updateEPP' },
@@ -6995,6 +7144,7 @@
         ungmVendors: [],
         unregisteredEmail: '',
         unregisteredCompanyName: '',
+        uploadedVendors: [],
         marketResearchDetails: '',
         effectiveCompetitionDetails: '',
         limitedCompetitionJustification: '',
@@ -7323,7 +7473,8 @@
         processType: [],
         directContracting: false,
         unCollaboration: '',
-        isLease: ''
+        isLease: '',
+        beneficiaryCountries: []
       };
       
       // Particulars - Field Values for Conditional Visibility
@@ -9824,6 +9975,47 @@
                       <input type="text" class="form-input" placeholder="Company name" value="${competitionValues.unregisteredCompanyName}" onchange="updateCompetitionValue('unregisteredCompanyName', this.value)" onclick="event.stopPropagation()" />
                       <span class="help-text">For suppliers not registered in UNGM</span>
                     </div>
+                    
+                    <!-- Bulk Vendor Upload Section -->
+                    <div class="form-group full-width" style="margin-top: var(--spacing-md); padding-top: var(--spacing-md); border-top: 1px dashed var(--surface-300);">
+                      <label class="form-label">Bulk Vendor Upload</label>
+                      <div style="display: flex; align-items: center; gap: var(--spacing-sm); flex-wrap: wrap;">
+                        <button class="btn btn-secondary" onclick="event.stopPropagation(); downloadVendorNotificationTemplate()" title="Download Excel template for vendor list">
+                          <i class="pi pi-download"></i> Download Template
+                        </button>
+                        <button class="btn btn-secondary" onclick="event.stopPropagation(); document.getElementById('vendor-upload-input').click()" title="Upload vendor list from spreadsheet">
+                          <i class="pi pi-upload"></i> Upload Vendor List
+                        </button>
+                        <input type="file" id="vendor-upload-input" accept=".xlsx,.xls,.csv" style="display: none;" onchange="handleVendorListUpload(event)" />
+                        <span style="font-size: 12px; color: var(--text-muted);">Supported formats: .xlsx, .xls, .csv</span>
+                      </div>
+                      <span class="help-text">Download the template, fill in vendor details, and upload to bulk add vendors to be notified</span>
+                      
+                      <!-- Uploaded Vendors List -->
+                      <div id="uploaded-vendors-list" style="margin-top: var(--spacing-sm);">
+                        ${competitionValues.uploadedVendors && competitionValues.uploadedVendors.length > 0 ? `
+                          <div style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-md); padding: var(--spacing-sm); margin-top: var(--spacing-sm);">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-xs);">
+                              <span style="font-size: 12px; font-weight: 600; color: var(--text-secondary);">
+                                <i class="pi pi-users" style="margin-right: 4px;"></i>
+                                Uploaded Vendors (${competitionValues.uploadedVendors.length})
+                              </span>
+                              <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); clearUploadedVendors()" style="font-size: 11px; color: var(--danger-500);">
+                                <i class="pi pi-trash"></i> Clear All
+                              </button>
+                            </div>
+                            <div style="display: flex; flex-wrap: wrap; gap: 6px; max-height: 120px; overflow-y: auto;">
+                              ${competitionValues.uploadedVendors.map((vendor, idx) => `
+                                <span class="badge badge-secondary" style="display: inline-flex; align-items: center; gap: 4px; font-size: 11px;">
+                                  ${vendor.companyName}${vendor.email ? ' (' + vendor.email + ')' : ''}
+                                  <button type="button" onclick="event.stopPropagation(); removeUploadedVendor(${idx})" style="background: none; border: none; cursor: pointer; padding: 0; font-size: 12px; color: var(--text-muted);">×</button>
+                                </span>
+                              `).join('')}
+                            </div>
+                          </div>
+                        ` : ''}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -9977,6 +10169,131 @@
         competitionValues.ungmVendors.splice(index, 1);
         renderCurrentBlock();
         restoreCompetitionSectionStates();
+      }
+      
+      // Download Vendor Notification Template
+      window.downloadVendorNotificationTemplate = function() {
+        // Create CSV template content
+        const templateHeaders = ['Company Name', 'Email Address', 'Contact Person', 'Phone Number', 'Country', 'UNGM ID (if registered)'];
+        const exampleRows = [
+          ['Acme Corporation', 'procurement@acme.com', 'John Smith', '+1-555-0100', 'United States', 'UNGM-123456'],
+          ['Global Supplies Ltd', 'bids@globalsupplies.co.uk', 'Jane Doe', '+44-20-7946-0958', 'United Kingdom', ''],
+          ['Tech Solutions GmbH', 'tender@techsolutions.de', 'Hans Mueller', '+49-30-12345678', 'Germany', 'UNGM-789012'],
+        ];
+        
+        // Build CSV content
+        let csvContent = templateHeaders.join(',') + '\n';
+        csvContent += '# Instructions: Fill in the vendor details below. Each row represents one vendor to be notified.\n';
+        csvContent += '# Required fields: Company Name, Email Address\n';
+        csvContent += '# Optional fields: Contact Person, Phone Number, Country, UNGM ID\n';
+        csvContent += '# Delete these instruction lines before uploading.\n';
+        exampleRows.forEach(row => {
+          csvContent += row.map(cell => `"${cell}"`).join(',') + '\n';
+        });
+        
+        // Create and trigger download
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', 'vendor_notification_template.csv');
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        showNotification('Template downloaded! Fill in vendor details and upload to bulk add vendors.', 'success');
+      }
+      
+      // Handle Vendor List Upload
+      window.handleVendorListUpload = function(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          try {
+            const content = e.target.result;
+            const lines = content.split('\n').filter(line => line.trim() && !line.startsWith('#'));
+            
+            if (lines.length < 2) {
+              alert('The file appears to be empty or invalid. Please use the template format.');
+              return;
+            }
+            
+            // Skip header row
+            const dataLines = lines.slice(1);
+            let vendorsAdded = 0;
+            
+            saveCompetitionSectionStates();
+            
+            dataLines.forEach(line => {
+              // Parse CSV line (handle quoted values)
+              const values = line.match(/("([^"]*)"|[^,]+)/g);
+              if (!values || values.length < 2) return;
+              
+              // Clean values (remove quotes)
+              const cleanValues = values.map(v => v.replace(/^"|"$/g, '').trim());
+              
+              const [companyName, email, contactPerson, phone, country, ungmId] = cleanValues;
+              
+              if (!companyName) return;
+              
+              // Check for duplicates
+              const isDuplicate = competitionValues.uploadedVendors.some(
+                v => v.companyName.toLowerCase() === companyName.toLowerCase() || 
+                     (v.email && email && v.email.toLowerCase() === email.toLowerCase())
+              );
+              
+              if (!isDuplicate) {
+                competitionValues.uploadedVendors.push({
+                  companyName: companyName,
+                  email: email || '',
+                  contactPerson: contactPerson || '',
+                  phone: phone || '',
+                  country: country || '',
+                  ungmId: ungmId || ''
+                });
+                vendorsAdded++;
+              }
+            });
+            
+            renderCurrentBlock();
+            restoreCompetitionSectionStates();
+            
+            if (vendorsAdded > 0) {
+              showNotification(`${vendorsAdded} vendor(s) imported successfully!`, 'success');
+            } else {
+              showNotification('No new vendors were added (duplicates skipped or empty file).', 'warning');
+            }
+          } catch (err) {
+            console.error('Error parsing vendor file:', err);
+            alert('Error parsing the file. Please ensure it follows the template format.');
+          }
+        };
+        
+        reader.readAsText(file);
+        event.target.value = ''; // Reset file input
+      }
+      
+      // Remove single uploaded vendor
+      window.removeUploadedVendor = function(index) {
+        saveCompetitionSectionStates();
+        competitionValues.uploadedVendors.splice(index, 1);
+        renderCurrentBlock();
+        restoreCompetitionSectionStates();
+      }
+      
+      // Clear all uploaded vendors
+      window.clearUploadedVendors = function() {
+        if (!confirm('Are you sure you want to remove all uploaded vendors?')) {
+          return;
+        }
+        saveCompetitionSectionStates();
+        competitionValues.uploadedVendors = [];
+        renderCurrentBlock();
+        restoreCompetitionSectionStates();
+        showNotification('All uploaded vendors have been removed.', 'success');
       }
       
       // Contract Provisions update functions
@@ -15259,6 +15576,50 @@
                           ${field.help ? `<span class="help-text">${field.help}</span>` : ''}
                         </div>
                       `;
+                    } else if (field.type === 'country-multiselect') {
+                      // Get selected countries from stored values
+                      const selectedCountries = generalInfoValues.beneficiaryCountries || [];
+                      fieldHtml = `
+                        <div class="form-group full-width">
+                          <label class="form-label">
+                            ${field.label} ${field.required ? '<span class="required">*</span>' : ''}
+                          </label>
+                          <div class="country-multiselect-container" id="country-multiselect-container">
+                            <div class="country-multiselect-input" onclick="toggleCountryDropdown()">
+                              <div class="country-multiselect-tags" id="country-selected-tags">
+                                ${selectedCountries.length > 0 ? 
+                                  selectedCountries.map(country => `
+                                    <span class="country-tag">
+                                      ${country}
+                                      <button type="button" onclick="event.stopPropagation(); removeCountry('${country}')" class="country-tag-remove">×</button>
+                                    </span>
+                                  `).join('') : 
+                                  '<span class="country-placeholder">Select countries...</span>'
+                                }
+                              </div>
+                              <span class="country-multiselect-arrow">▼</span>
+                            </div>
+                            <div class="country-dropdown" id="country-dropdown" style="display: none;">
+                              <div class="country-dropdown-search">
+                                <input type="text" placeholder="Search countries..." id="country-search-input" oninput="filterCountries(this.value)" onclick="event.stopPropagation()" />
+                              </div>
+                              <div class="country-dropdown-list" id="country-dropdown-list">
+                                ${field.options.map(country => `
+                                  <label class="country-option ${selectedCountries.includes(country) ? 'selected' : ''}">
+                                    <input type="checkbox" value="${country}" ${selectedCountries.includes(country) ? 'checked' : ''} onchange="toggleCountrySelection('${country}', this.checked)" onclick="event.stopPropagation()" />
+                                    <span>${country}</span>
+                                  </label>
+                                `).join('')}
+                              </div>
+                              <div class="country-dropdown-footer">
+                                <button type="button" class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); clearAllCountries()">Clear All</button>
+                                <button type="button" class="btn btn-primary btn-sm" onclick="event.stopPropagation(); toggleCountryDropdown()">Done</button>
+                              </div>
+                            </div>
+                          </div>
+                          <span class="help-text">Click to select one or more beneficiary countries</span>
+                        </div>
+                      `;
                     } else if (field.type === 'file') {
                       fieldHtml = `
                         <div class="form-group full-width">
@@ -15334,6 +15695,116 @@
           section.classList.toggle('collapsed');
         }
       }
+      
+      // ===== COUNTRY MULTISELECT FUNCTIONS =====
+      let countryDropdownOpen = false;
+      
+      window.toggleCountryDropdown = function() {
+        const dropdown = document.getElementById('country-dropdown');
+        const arrow = document.querySelector('.country-multiselect-arrow');
+        
+        if (dropdown) {
+          countryDropdownOpen = !countryDropdownOpen;
+          dropdown.style.display = countryDropdownOpen ? 'flex' : 'none';
+          if (arrow) {
+            arrow.style.transform = countryDropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+          }
+          
+          // Focus search input when opening
+          if (countryDropdownOpen) {
+            const searchInput = document.getElementById('country-search-input');
+            if (searchInput) {
+              setTimeout(() => searchInput.focus(), 50);
+            }
+          }
+        }
+      }
+      
+      window.toggleCountrySelection = function(country, isChecked) {
+        if (isChecked) {
+          if (!generalInfoValues.beneficiaryCountries.includes(country)) {
+            generalInfoValues.beneficiaryCountries.push(country);
+          }
+        } else {
+          generalInfoValues.beneficiaryCountries = generalInfoValues.beneficiaryCountries.filter(c => c !== country);
+        }
+        updateCountryTags();
+        updateCountryOptionStyles();
+      }
+      
+      window.removeCountry = function(country) {
+        generalInfoValues.beneficiaryCountries = generalInfoValues.beneficiaryCountries.filter(c => c !== country);
+        updateCountryTags();
+        updateCountryOptionStyles();
+        
+        // Uncheck the checkbox in dropdown
+        const checkbox = document.querySelector(`.country-option input[value="${country}"]`);
+        if (checkbox) {
+          checkbox.checked = false;
+        }
+      }
+      
+      window.clearAllCountries = function() {
+        generalInfoValues.beneficiaryCountries = [];
+        updateCountryTags();
+        updateCountryOptionStyles();
+        
+        // Uncheck all checkboxes
+        const checkboxes = document.querySelectorAll('.country-option input[type="checkbox"]');
+        checkboxes.forEach(cb => cb.checked = false);
+      }
+      
+      window.filterCountries = function(searchTerm) {
+        const options = document.querySelectorAll('.country-option');
+        const lowerSearch = searchTerm.toLowerCase();
+        
+        options.forEach(option => {
+          const countryName = option.querySelector('span').textContent.toLowerCase();
+          if (countryName.includes(lowerSearch)) {
+            option.style.display = 'flex';
+          } else {
+            option.style.display = 'none';
+          }
+        });
+      }
+      
+      function updateCountryTags() {
+        const tagsContainer = document.getElementById('country-selected-tags');
+        if (!tagsContainer) return;
+        
+        if (generalInfoValues.beneficiaryCountries.length === 0) {
+          tagsContainer.innerHTML = '<span class="country-placeholder">Select countries...</span>';
+        } else {
+          tagsContainer.innerHTML = generalInfoValues.beneficiaryCountries.map(country => `
+            <span class="country-tag">
+              ${country}
+              <button type="button" onclick="event.stopPropagation(); removeCountry('${country}')" class="country-tag-remove">×</button>
+            </span>
+          `).join('');
+        }
+      }
+      
+      function updateCountryOptionStyles() {
+        const options = document.querySelectorAll('.country-option');
+        options.forEach(option => {
+          const checkbox = option.querySelector('input[type="checkbox"]');
+          if (checkbox) {
+            if (generalInfoValues.beneficiaryCountries.includes(checkbox.value)) {
+              option.classList.add('selected');
+            } else {
+              option.classList.remove('selected');
+            }
+          }
+        });
+      }
+      
+      // Close country dropdown when clicking outside
+      document.addEventListener('click', function(event) {
+        const container = document.getElementById('country-multiselect-container');
+        if (container && !container.contains(event.target) && countryDropdownOpen) {
+          toggleCountryDropdown();
+        }
+      });
       
       // ===== REQUISITION LINE & LOT MODAL FUNCTIONS =====
       let selectedReqLines = [];
