@@ -7422,9 +7422,26 @@
       let addedForms = {}; // Store added forms by block and section: { blockId: { sectionIndex: [forms] } }
       
       // Requisition & Lots Management
-      let requisitionLines = []; // From ERP integration (independent, just for reference)
+      let requisitionLines = []; // Products added to Products and Services section (when NO is selected)
       let lots = []; // Created lots: [{ id, name, unspscCodes: [{ code, description }] }]
       let allowPartialQuotations = ''; // 'Yes' or 'No' - determines if lots section is visible
+      
+      // Available requisition lines from ERP (centralized source for both Products and Services AND Lots)
+      const availableRequisitionLines = [
+        { id: 'REQ-LINE-001', unspscCode: '43000000', unspscDescription: 'Information Technology Broadcasting and Telecommunications', description: 'IT Equipment and Services', quantity: 1, unitOfMeasure: 'Lot', amount: 50000, currency: 'USD', procurementOfficial: 'John Smith' },
+        { id: 'REQ-LINE-002', unspscCode: '43211503', unspscDescription: 'Laptop computers', description: 'Laptop computers for office use', quantity: 50, unitOfMeasure: 'Unit', amount: 25000, currency: 'USD', procurementOfficial: 'Sarah Johnson' },
+        { id: 'REQ-LINE-003', unspscCode: '43211602', unspscDescription: 'Docking stations', description: 'Docking stations for laptops', quantity: 50, unitOfMeasure: 'Unit', amount: 10000, currency: 'USD', procurementOfficial: 'Sarah Johnson' },
+        { id: 'REQ-LINE-004', unspscCode: '43211708', unspscDescription: 'Laptop bags', description: 'Laptop carrying bags', quantity: 50, unitOfMeasure: 'Unit', amount: 2500, currency: 'USD', procurementOfficial: 'Sarah Johnson' },
+        { id: 'REQ-LINE-005', unspscCode: '43222609', unspscDescription: 'Network switches', description: 'Network switches for office setup', quantity: 10, unitOfMeasure: 'Unit', amount: 5000, currency: 'USD', procurementOfficial: 'Michael Chen' },
+        { id: 'REQ-LINE-006', unspscCode: '43222619', unspscDescription: 'Wireless access points', description: 'WiFi access points', quantity: 20, unitOfMeasure: 'Unit', amount: 3000, currency: 'USD', procurementOfficial: 'Michael Chen' },
+        { id: 'REQ-LINE-007', unspscCode: '81111812', unspscDescription: 'Network installation & configuration service', description: 'Network installation services', quantity: 1, unitOfMeasure: 'Service', amount: 5000, currency: 'USD', procurementOfficial: 'Emma Wilson' },
+        { id: 'REQ-LINE-008', unspscCode: '43211515', unspscDescription: 'Desktop computers', description: 'Desktop workstations', quantity: 25, unitOfMeasure: 'Unit', amount: 30000, currency: 'USD', procurementOfficial: 'John Smith' },
+        { id: 'REQ-LINE-009', unspscCode: '43212105', unspscDescription: 'Computer monitors', description: '27-inch monitors', quantity: 50, unitOfMeasure: 'Unit', amount: 15000, currency: 'USD', procurementOfficial: 'Sarah Johnson' },
+        { id: 'REQ-LINE-010', unspscCode: '43211706', unspscDescription: 'Computer keyboards', description: 'Wireless keyboards', quantity: 75, unitOfMeasure: 'Unit', amount: 3750, currency: 'USD', procurementOfficial: 'Michael Chen' },
+        { id: 'REQ-LINE-011', unspscCode: '43211707', unspscDescription: 'Computer mice', description: 'Wireless mice', quantity: 75, unitOfMeasure: 'Unit', amount: 2250, currency: 'USD', procurementOfficial: 'Michael Chen' },
+        { id: 'REQ-LINE-012', unspscCode: '72151500', unspscDescription: 'Building cleaning services', description: 'Office cleaning services', quantity: 12, unitOfMeasure: 'Month', amount: 24000, currency: 'USD', procurementOfficial: 'Emma Wilson' },
+        { id: 'REQ-LINE-013', unspscCode: '78111800', unspscDescription: 'Passenger transport', description: 'Staff transportation services', quantity: 1, unitOfMeasure: 'Service', amount: 18000, currency: 'USD', procurementOfficial: 'Emma Wilson' },
+      ];
       
       // Product Requirements (per UNSPSC code)
       let productRequirements = {}; // { unspscCode: { requirementType: 'attributes'|'description', attributes: [{name, value}], description: '' } }
@@ -7795,98 +7812,8 @@
       
       // Initialize sample requisition lines (simulating ERP data)
       function initializeRequisitionLines() {
-        requisitionLines = [
-          {
-            id: 'REQ-LINE-001',
-            unspscCode: '43000000',
-            unspscDescription: 'Information Technology Broadcasting and Telecommunications',
-            description: 'IT Equipment and Services',
-            quantity: 1,
-            unitOfMeasure: 'Lot',
-            amount: 50000,
-            currency: 'USD',
-          },
-          {
-            id: 'REQ-LINE-002',
-            unspscCode: '43211503',
-            unspscDescription: 'Laptop computers',
-            description: 'Laptop computers for office use',
-            quantity: 50,
-            unitOfMeasure: 'Unit',
-            amount: 25000,
-            currency: 'USD',
-          },
-          {
-            id: 'REQ-LINE-003',
-            unspscCode: '43211602',
-            unspscDescription: 'Docking stations',
-            description: 'Docking stations for laptops',
-            quantity: 50,
-            unitOfMeasure: 'Unit',
-            amount: 10000,
-            currency: 'USD',
-          },
-          {
-            id: 'REQ-LINE-004',
-            unspscCode: '43211708',
-            unspscDescription: 'Laptop bags',
-            description: 'Laptop carrying bags',
-            quantity: 50,
-            unitOfMeasure: 'Unit',
-            amount: 2500,
-            currency: 'USD',
-          },
-          {
-            id: 'REQ-LINE-005',
-            unspscCode: '43222609',
-            unspscDescription: 'Network switches',
-            description: 'Network switches for office setup',
-            quantity: 10,
-            unitOfMeasure: 'Unit',
-            amount: 5000,
-            currency: 'USD',
-          },
-          {
-            id: 'REQ-LINE-006',
-            unspscCode: '43222619',
-            unspscDescription: 'Wireless access points',
-            description: 'WiFi access points',
-            quantity: 20,
-            unitOfMeasure: 'Unit',
-            amount: 3000,
-            currency: 'USD',
-          },
-          {
-            id: 'REQ-LINE-007',
-            unspscCode: '81111812',
-            unspscDescription: 'Network installation & configuration service',
-            description: 'Network installation services',
-            quantity: 1,
-            unitOfMeasure: 'Service',
-            amount: 5000,
-            currency: 'USD',
-          },
-          {
-            id: 'REQ-LINE-008',
-            unspscCode: '44101503',
-            unspscDescription: 'Laser printers',
-            description: 'Laser printers for office',
-            quantity: 5,
-            unitOfMeasure: 'Unit',
-            amount: 2500,
-            currency: 'USD',
-          },
-          {
-            id: 'REQ-LINE-009',
-            unspscCode: '44103103',
-            unspscDescription: 'Toner cartridges',
-            description: 'Toner cartridges for printers',
-            quantity: 20,
-            unitOfMeasure: 'Unit',
-            amount: 2000,
-            currency: 'USD',
-          },
-        ];
+        // Start with empty requisition lines - user will add requisitions or new products
+        requisitionLines = [];
       }
 
       // Available templates
@@ -9326,18 +9253,16 @@
 
       // ===== REQUISITION LINES & LOTS FUNCTIONS =====
       function renderRequisitionLotsSection(block, section, sectionIndex, isFirst) {
-        // Initialize requisition lines if not already done
-        if (requisitionLines.length === 0) {
-          initializeRequisitionLines();
-        }
+        // requisitionLines starts empty - user adds items via modal
         
         // Get unique UNSPSC codes from requisition lines for reference
         const requisitionUnspscCodes = [...new Set(requisitionLines.map(line => line.unspscCode))];
         const totalValue = requisitionLines.reduce((sum, line) => sum + line.amount, 0);
         const totalProducts = lots.reduce((sum, lot) => sum + lot.unspscCodes.length, 0);
         
-        // Determine if lots section should be visible
+        // Determine section visibility based on partial quotations
         const showLotsSection = allowPartialQuotations === 'Yes';
+        const showProductsSection = allowPartialQuotations === 'No';
         
         return `
           <div class="general-info-container">
@@ -9362,57 +9287,7 @@
                 </div>
               </div>
               
-              <!-- Requisition Lines - Collapsible (collapsed by default) -->
-              <div class="collapsible-section collapsed" id="req-lines-section">
-                <div class="collapsible-header" onclick="toggleCollapsibleSection('req-lines-section')">
-                  <div class="collapsible-header-left">
-                    <span class="collapsible-header-title">Requisition Lines</span>
-                    <span class="badge badge-info" style="margin-left: 6px; font-size: 10px;">${requisitionLines.length}</span>
-                    ${renderSectionProgress('req-lines', requisitionLines)}
-                  </div>
-                  <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
-                    <button class="btn btn-secondary" onclick="event.stopPropagation(); openAddReqLineModal()"><i class="pi pi-plus"></i> Add Line</button>
-                    <div class="collapsible-toggle">▼</div>
-                  </div>
-                </div>
-                <div class="collapsible-body">
-                  <div style="overflow-x: auto;">
-                    <table class="req-table">
-                    <thead>
-                      <tr>
-                        <th>ID</th>
-                          <th>UNSPSC</th>
-                        <th>Description</th>
-                          <th>Qty</th>
-                          <th>UoM</th>
-                        <th>Amount</th>
-                          <th style="width: 60px;">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      ${requisitionLines.map(line => `
-                        <tr data-line-id="${line.id}">
-                            <td><span class="req-id">${line.id}</span></td>
-                          <td>
-                              <div class="req-unspsc">${line.unspscCode}</div>
-                              <div class="req-unspsc-desc">${line.unspscDescription}</div>
-                          </td>
-                            <td style="max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${line.description}">${line.description}</td>
-                            <td>${line.quantity}</td>
-                            <td>${line.unitOfMeasure}</td>
-                            <td><span class="req-amount">${line.currency} ${line.amount.toLocaleString()}</span></td>
-                            <td>
-                              <button class="req-remove-btn" onclick="removeRequisitionLine('${line.id}')" title="Remove line">🗑️</button>
-                            </td>
-                        </tr>
-                      `).join('')}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-                </div>
-              
-              <!-- Partial Quotations/Bids/Proposals - Collapsible -->
+              <!-- Partial Quotations/Bids/Proposals - Collapsible (FIRST SECTION) -->
               <div class="collapsible-section" id="partial-quotations-section">
                 <div class="collapsible-header" onclick="toggleCollapsibleSection('partial-quotations-section')">
                   <div class="collapsible-header-left">
@@ -9436,27 +9311,75 @@
                     </div>
                   </div>
                   
-                  <!-- UNSPSC Customization Info Message -->
-                  <div style="margin-top: var(--spacing-md); padding: var(--spacing-md); background: linear-gradient(135deg, var(--info-50) 0%, var(--primary-50) 100%); border: 1px solid var(--info-200); border-left: 4px solid var(--primary-500); border-radius: var(--radius-md);">
-                    <div style="display: flex; align-items: flex-start; gap: var(--spacing-sm);">
-                      <span style="font-size: 18px; flex-shrink: 0;">💡</span>
-                      <div>
-                        <div style="font-weight: 600; color: var(--primary-700); margin-bottom: 4px; font-size: 13px;">Customize Your UNSPSC Codes for Market</div>
-                        <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.5;">
-                          Want to refine which products or services go to market? You can customize the UNSPSC codes in the <strong>Lots section below</strong>. This allows you to:
-                          <ul style="margin: 8px 0 0 0; padding-left: 18px;">
-                            <li>Group related items into logical lots for supplier bidding</li>
-                            <li>Add or remove specific UNSPSC codes from each lot</li>
-                            <li>Create a tailored procurement package that matches your market strategy</li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </div>
+              
+              <!-- Products and Services - Collapsible (only shown when partial quotations = No) -->
+              ${showProductsSection ? `
+              <div class="collapsible-section" id="req-lines-section" style="margin-top: var(--spacing-md);">
+                <div class="collapsible-header" onclick="toggleCollapsibleSection('req-lines-section')">
+                  <div class="collapsible-header-left">
+                    <span class="collapsible-header-title">Products and Services</span>
+                    <span class="badge badge-info" style="margin-left: 6px; font-size: 10px;">${requisitionLines.length}</span>
+                    ${renderSectionProgress('req-lines', requisitionLines)}
+                  </div>
+                  <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                    <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); openAddProductsServicesModal()"><i class="pi pi-plus"></i> Add Products and Services</button>
+                    <div class="collapsible-toggle">▼</div>
+                  </div>
+                </div>
+                <div class="collapsible-body">
+                  ${requisitionLines.length === 0 ? `
+                  <div style="text-align: center; padding: var(--spacing-xl); color: var(--text-muted);">
+                    <div style="font-size: 40px; margin-bottom: var(--spacing-md);">📦</div>
+                    <div style="font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: var(--spacing-sm);">No Products or Services Added</div>
+                    <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--spacing-md);">Click "Add Products and Services" to add requisitions or create new products.</div>
+                    <button class="btn btn-primary btn-sm" onclick="openAddProductsServicesModal()">
+                      <i class="pi pi-plus"></i> Add Products and Services
+                    </button>
+                  </div>
+                  ` : `
+                  <div style="overflow-x: auto;">
+                    <table class="req-table">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                          <th>UNSPSC</th>
+                        <th>Description</th>
+                          <th>Procurement Official</th>
+                          <th>Qty</th>
+                          <th>UoM</th>
+                        <th>Amount</th>
+                          <th style="width: 60px;">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      ${requisitionLines.map(line => `
+                        <tr data-line-id="${line.id}">
+                            <td><span class="req-id">${line.id}</span></td>
+                          <td>
+                              <div class="req-unspsc">${line.unspscCode}</div>
+                              <div class="req-unspsc-desc">${line.unspscDescription}</div>
+                          </td>
+                            <td style="max-width: 180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${line.description}">${line.description}</td>
+                            <td style="font-size: 11px; color: var(--text-secondary);">${line.procurementOfficial || 'Not assigned'}</td>
+                            <td>${line.quantity}</td>
+                            <td>${line.unitOfMeasure}</td>
+                            <td><span class="req-amount">${line.currency} ${line.amount.toLocaleString()}</span></td>
+                            <td>
+                              <button class="req-remove-btn" onclick="removeRequisitionLine('${line.id}')" title="Remove line">🗑️</button>
+                            </td>
+                        </tr>
+                      `).join('')}
+                    </tbody>
+                  </table>
+                </div>
+                  `}
+              </div>
+                </div>
+              ` : ''}
                 
-              <!-- Lots Management - Collapsible (only shown when partial quotations allowed) -->
+              <!-- Lots Management - Collapsible (only shown when partial quotations = Yes) -->
               ${showLotsSection ? `
               <div class="collapsible-section collapsed" id="lots-section">
                 <div class="collapsible-header" onclick="toggleCollapsibleSection('lots-section')">
@@ -9466,8 +9389,6 @@
                     ${renderSectionProgress('lots', lots)}
                   </div>
                   <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
-                    <button class="btn btn-secondary" onclick="event.stopPropagation(); createLotPerRequisitionLine()" title="Create one lot for each requisition line"><i class="pi pi-copy"></i> 1 Lot per Req Line</button>
-                    <button class="btn btn-secondary" onclick="event.stopPropagation(); addAllReqToOneLot()" title="Add all requisition lines to a single lot"><i class="pi pi-box"></i> Add all req to 1 lot</button>
                     <button class="btn btn-secondary" onclick="event.stopPropagation(); downloadLotsTemplate()" title="Download Excel template for bulk import"><i class="pi pi-download"></i> Template</button>
                     <button class="btn btn-secondary" onclick="event.stopPropagation(); document.getElementById('lots-upload-input').click()" title="Upload Excel file to bulk import lots"><i class="pi pi-upload"></i> Upload</button>
                     <input type="file" id="lots-upload-input" accept=".xlsx,.xls,.csv" style="display: none;" onchange="handleLotsUpload(event)" />
@@ -9543,15 +9464,7 @@
                 `}
               </div>
                 </div>
-              ` : `
-              <!-- Lots Section Hidden - show info message -->
-              <div class="info-alert" style="margin-top: var(--spacing-md); background: var(--surface-50); border-color: var(--surface-200);">
-                <div class="info-alert-text" style="color: var(--text-muted);">
-                  <i class="pi pi-info-circle" style="margin-right: 6px;"></i>
-                  Lots management is disabled. To enable lots, select <strong>"Yes"</strong> in the "Partial Quotations/Bids/Proposals" section above.
-                </div>
-              </div>
-              `}
+              ` : ''}
             </div>
           </div>
         `;
@@ -9882,22 +9795,26 @@
         const lot = lots.find(l => l.id === lotId);
         if (!lot) return;
         
-        // Populate requisition lines options
+        // Populate requisition lines options from centralized available lines
         const reqLinesBody = document.getElementById('add-product-req-lines');
         if (reqLinesBody) {
+          // Filter out lines already added to this lot (by UNSPSC code)
           const existingCodes = lot.unspscCodes.map(u => u.code);
-          const availableLines = requisitionLines.filter(line => !existingCodes.includes(line.unspscCode));
+          const linesToShow = availableRequisitionLines.filter(line => !existingCodes.includes(line.unspscCode));
           
-          if (availableLines.length === 0) {
-            reqLinesBody.innerHTML = '<div style="text-align: center; padding: var(--spacing-lg); color: var(--text-muted); font-size: 12px;">All requisition lines have already been added to this lot.</div>';
+          if (linesToShow.length === 0) {
+            reqLinesBody.innerHTML = '<div style="text-align: center; padding: var(--spacing-lg); color: var(--text-muted); font-size: 12px;">All available requisition lines have already been added to this lot.</div>';
           } else {
-            reqLinesBody.innerHTML = availableLines.map(line => `
-              <div class="req-line-option" onclick="toggleReqLineForProduct('${line.unspscCode}', this)">
+            reqLinesBody.innerHTML = linesToShow.map(line => `
+              <div class="req-line-option" onclick="toggleReqLineForProduct('${line.unspscCode}', this)" data-line='${JSON.stringify(line).replace(/'/g, "&#39;")}'>
                 <input type="checkbox" id="req-${line.unspscCode}" />
                 <div class="req-line-details">
                   <div class="req-line-code">${line.unspscCode}</div>
                   <div class="req-line-desc">${line.unspscDescription}</div>
                   <div style="font-size: 10px; color: var(--text-muted); margin-top: 4px;">${line.quantity} ${line.unitOfMeasure} • ${line.currency} ${line.amount.toLocaleString()}</div>
+                  <div style="font-size: 10px; color: var(--primary-600); margin-top: 2px; display: flex; align-items: center; gap: 4px;">
+                    <i class="pi pi-user" style="font-size: 10px;"></i> ${line.procurementOfficial || 'Not assigned'}
+                  </div>
                 </div>
               </div>
             `).join('');
@@ -9917,10 +9834,10 @@
         if (uomSelect) uomSelect.value = 'Unit';
         if (valueInput) valueInput.value = '';
         
-        // Populate linked requisition dropdown
+        // Populate linked requisition dropdown from centralized available lines
         if (linkedReqSelect) {
           linkedReqSelect.innerHTML = '<option value="">-- None (No link) --</option>' +
-            requisitionLines.map(line => `
+            availableRequisitionLines.map(line => `
               <option value="${line.id}" data-unspsc="${line.unspscCode}" data-desc="${line.unspscDescription}" data-qty="${line.quantity}" data-value="${line.amount}">
                 ${line.id} - ${line.unspscCode} (${line.unspscDescription.substring(0, 30)}${line.unspscDescription.length > 30 ? '...' : ''})
               </option>
@@ -9992,19 +9909,24 @@
         if (!lot) return;
         
         selectedReqLinesForProduct.forEach(unspscCode => {
-          const line = requisitionLines.find(l => l.unspscCode === unspscCode);
+          // Look in availableRequisitionLines (centralized source)
+          const line = availableRequisitionLines.find(l => l.unspscCode === unspscCode);
           if (line && !lot.unspscCodes.some(u => u.code === unspscCode)) {
               lot.unspscCodes.push({ 
               code: line.unspscCode,
               description: line.unspscDescription,
               quantity: line.quantity,
-              estimatedValue: line.amount
+              unitOfMeasure: line.unitOfMeasure,
+              estimatedValue: line.amount,
+              procurementOfficial: line.procurementOfficial,
+              linkedRequisitionId: line.id
               });
             }
         });
         
         closeAddProductModal();
         renderCurrentBlock();
+        showNotification(`Added ${selectedReqLinesForProduct.length} product(s) to lot`, 'success');
       }
       
       window.addNewProduct = function() {
@@ -10021,26 +9943,37 @@
         const linkedReqId = document.getElementById('new-product-linked-req').value || null;
         
         if (!unspsc) {
-          alert('Please enter a UNSPSC code.');
+          showNotification('Please enter a UNSPSC code.', 'warning');
           return;
         }
         
         if (lot.unspscCodes.some(u => u.code === unspsc)) {
-          alert('This UNSPSC code is already in the lot.');
+          showNotification('This UNSPSC code is already in the lot.', 'warning');
           return;
         }
         
-              lot.unspscCodes.push({ 
+        // Get procurement official from linked requisition if selected
+        let procurementOfficial = 'Not assigned';
+        if (linkedReqId) {
+          const linkedLine = availableRequisitionLines.find(l => l.id === linkedReqId);
+          if (linkedLine && linkedLine.procurementOfficial) {
+            procurementOfficial = linkedLine.procurementOfficial;
+          }
+        }
+        
+        lot.unspscCodes.push({ 
           code: unspsc,
           description: desc,
           quantity: qty,
           unitOfMeasure: uom,
           estimatedValue: value,
+          procurementOfficial: procurementOfficial,
           linkedRequisitionId: linkedReqId
         });
         
         closeAddProductModal();
         renderCurrentBlock();
+        showNotification(`Added "${desc || unspsc}" to lot`, 'success');
       }
       
       // Edit Lot Modal
@@ -10899,21 +10832,11 @@
       
       // ===== SCOPE & REQUIREMENTS BLOCK =====
       function renderScopeRequirementsBlock(block) {
-        // Initialize requisition lines if not already done
-        if (requisitionLines.length === 0) {
-          initializeRequisitionLines();
-        }
-        
-        // Get all UNSPSC codes for Product Requirements
+        // Get all UNSPSC codes based on partial quotations selection
         let unspscCodesToShow = [];
-        if (lots.length === 0) {
-          unspscCodesToShow = requisitionLines.map(line => ({
-            code: line.unspscCode,
-            description: line.unspscDescription,
-            source: 'requisition',
-            sourceId: line.id,
-          }));
-        } else {
+        
+        if (allowPartialQuotations === 'Yes') {
+          // YES: Show products from Lots
           lots.forEach(lot => {
             lot.unspscCodes.forEach(unspsc => {
               unspscCodesToShow.push({
@@ -10925,7 +10848,16 @@
               });
             });
           });
+        } else if (allowPartialQuotations === 'No') {
+          // NO: Show products from Products and Services
+          unspscCodesToShow = requisitionLines.map(line => ({
+            code: line.unspscCode,
+            description: line.unspscDescription,
+            source: 'requisition',
+            sourceId: line.id,
+          }));
         }
+        // If not selected yet, show nothing
         
         // Remove duplicates
         const uniqueUnspscCodes = [];
@@ -11344,16 +11276,11 @@
           if (section) {
             const body = section.querySelector('.collapsible-body');
             if (body) {
-              // Re-render product requirements content
+              // Re-render product requirements content based on partial quotations selection
               let unspscCodesToShow = [];
-              if (lots.length === 0) {
-                unspscCodesToShow = requisitionLines.map(line => ({
-                  code: line.unspscCode,
-                  description: line.unspscDescription,
-                  source: 'requisition',
-                  sourceId: line.id,
-                }));
-              } else {
+              
+              if (allowPartialQuotations === 'Yes') {
+                // YES: Show products from Lots
                 lots.forEach(lot => {
                   lot.unspscCodes.forEach(unspsc => {
                     unspscCodesToShow.push({
@@ -11365,6 +11292,14 @@
                     });
                   });
                 });
+              } else if (allowPartialQuotations === 'No') {
+                // NO: Show products from Products and Services
+                unspscCodesToShow = requisitionLines.map(line => ({
+                  code: line.unspscCode,
+                  description: line.unspscDescription,
+                  source: 'requisition',
+                  sourceId: line.id,
+                }));
               }
               
               const uniqueUnspscCodes = [];
@@ -11479,24 +11414,11 @@
       
       // ===== PRODUCT REQUIREMENTS FUNCTIONS =====
       function renderProductRequirementsSection(block, section, sectionIndex, isFirst) {
-        // Initialize requisition lines if not already done
-        if (requisitionLines.length === 0) {
-          initializeRequisitionLines();
-        }
-        
-        // Get all UNSPSC codes that need requirements
+        // Get all UNSPSC codes based on partial quotations selection
         let unspscCodesToShow = [];
         
-        if (lots.length === 0) {
-          // No lots: show requirements per requisition line UNSPSC
-          unspscCodesToShow = requisitionLines.map(line => ({
-            code: line.unspscCode,
-            description: line.unspscDescription,
-            source: 'requisition',
-            sourceId: line.id,
-          }));
-        } else {
-          // Has lots: show requirements per lot line UNSPSC (UNSPSC inside lots)
+        if (allowPartialQuotations === 'Yes') {
+          // YES: Show products from Lots
           lots.forEach(lot => {
             lot.unspscCodes.forEach(unspsc => {
               unspscCodesToShow.push({
@@ -11508,7 +11430,16 @@
               });
             });
           });
+        } else if (allowPartialQuotations === 'No') {
+          // NO: Show products from Products and Services
+          unspscCodesToShow = requisitionLines.map(line => ({
+            code: line.unspscCode,
+            description: line.unspscDescription,
+            source: 'requisition',
+            sourceId: line.id,
+          }));
         }
+        // If not selected yet, show nothing
         
         // Remove duplicates (same UNSPSC code)
         const uniqueUnspscCodes = [];
@@ -14034,19 +13965,11 @@
           return '';
         }
         
-        // Initialize requisition lines if not already done
-        if (requisitionLines.length === 0) {
-          initializeRequisitionLines();
-        }
-        
-        // Get all UNSPSC codes
+        // Get all UNSPSC codes based on partial quotations selection
         let unspscCodesToShow = [];
-        if (lots.length === 0) {
-          unspscCodesToShow = requisitionLines.map(line => ({
-            code: line.unspscCode,
-            description: line.unspscDescription,
-          }));
-        } else {
+        
+        if (allowPartialQuotations === 'Yes') {
+          // YES: Show products from Lots
           lots.forEach(lot => {
             lot.unspscCodes.forEach(unspsc => {
               unspscCodesToShow.push({
@@ -14056,7 +13979,14 @@
               });
             });
           });
+        } else if (allowPartialQuotations === 'No') {
+          // NO: Show products from Products and Services
+          unspscCodesToShow = requisitionLines.map(line => ({
+            code: line.unspscCode,
+            description: line.unspscDescription,
+          }));
         }
+        // If not selected yet, show nothing
         
         // Remove duplicates
         const uniqueUnspscCodes = [];
@@ -14373,7 +14303,6 @@
                           <div class="submission-form-icon">${form.icon}</div>
                           <div class="submission-form-name">${form.name}</div>
                           <div class="submission-form-description">${form.description}</div>
-                          ${form.required ? '<div class="submission-form-required-badge">Required</div>' : ''}
                           ${!form.added ? '<div class="submission-form-overlay"><span>Click + to add</span></div>' : ''}
                         </div>
                       `;}).join('')}
@@ -14536,7 +14465,7 @@
 
       // ===== AUTHORING FUNCTIONS =====
       function initAuthoring() {
-        initializeRequisitionLines(); // Initialize sample data
+        // requisitionLines starts empty - user adds items via modal
         renderBlockTabs();
         renderCurrentBlock();
         updateProgressSteps();
@@ -16191,25 +16120,191 @@
       
       // ===== REQUISITION LINE & LOT MODAL FUNCTIONS =====
       let selectedReqLines = [];
+      let selectedProductsServicesLines = [];
+      
+      // ===== ADD PRODUCTS AND SERVICES MODAL =====
+      window.openAddProductsServicesModal = function() {
+        selectedProductsServicesLines = [];
+        
+        // Populate requisition lines options from centralized available lines
+        const reqLinesBody = document.getElementById('add-products-services-req-lines');
+        if (reqLinesBody) {
+          // Filter out lines already added to Products and Services
+          const existingIds = requisitionLines.map(l => l.id);
+          const linesToShow = availableRequisitionLines.filter(l => !existingIds.includes(l.id));
+          
+          if (linesToShow.length === 0) {
+            reqLinesBody.innerHTML = '<div style="text-align: center; padding: var(--spacing-lg); color: var(--text-muted); font-size: 12px;">All available requisition lines have been added.</div>';
+          } else {
+            reqLinesBody.innerHTML = linesToShow.map(line => `
+              <div class="req-line-option" onclick="toggleProductsServicesLineSelection('${line.id}', this)" data-line='${JSON.stringify(line).replace(/'/g, "&#39;")}'>
+                <input type="checkbox" id="ps-req-${line.id}" />
+                <div class="req-line-details">
+                  <div class="req-line-code">${line.unspscCode}</div>
+                  <div class="req-line-desc">${line.unspscDescription}</div>
+                  <div style="font-size: 10px; color: var(--text-muted); margin-top: 4px;">
+                    ${line.quantity} ${line.unitOfMeasure} • ${line.currency} ${line.amount.toLocaleString()}
+                  </div>
+                  <div style="font-size: 10px; color: var(--primary-600); margin-top: 2px; display: flex; align-items: center; gap: 4px;">
+                    <i class="pi pi-user" style="font-size: 10px;"></i> ${line.procurementOfficial}
+                  </div>
+                </div>
+              </div>
+            `).join('');
+          }
+        }
+        
+        // Clear new product form
+        const unspscInput = document.getElementById('new-ps-unspsc');
+        const descInput = document.getElementById('new-ps-desc');
+        const qtyInput = document.getElementById('new-ps-qty');
+        const uomSelect = document.getElementById('new-ps-uom');
+        const valueInput = document.getElementById('new-ps-value');
+        const linkedReqSelect = document.getElementById('new-ps-linked-req');
+        if (unspscInput) unspscInput.value = '';
+        if (descInput) descInput.value = '';
+        if (qtyInput) qtyInput.value = '1';
+        if (uomSelect) uomSelect.value = 'Unit';
+        if (valueInput) valueInput.value = '';
+        
+        // Populate linked requisition dropdown from centralized available lines
+        if (linkedReqSelect) {
+          linkedReqSelect.innerHTML = '<option value="">-- Select requisition line --</option>' +
+            availableRequisitionLines.map(line => `
+              <option value="${line.id}" data-official="${line.procurementOfficial || ''}">
+                ${line.id} - ${line.unspscCode} (${line.unspscDescription.substring(0, 30)}${line.unspscDescription.length > 30 ? '...' : ''})
+              </option>
+            `).join('');
+        }
+        
+        // Reset to first tab
+        switchProductsServicesModalTab('from-requisition');
+        
+        // Show modal
+        document.getElementById('add-products-services-modal').style.display = 'flex';
+      }
+      
+      window.closeAddProductsServicesModal = function() {
+        document.getElementById('add-products-services-modal').style.display = 'none';
+        selectedProductsServicesLines = [];
+      }
+      
+      window.switchProductsServicesModalTab = function(tabId) {
+        document.querySelectorAll('#add-products-services-modal .product-modal-tab').forEach(tab => {
+          tab.classList.toggle('active', tab.dataset.tab === tabId);
+        });
+        document.querySelectorAll('#add-products-services-modal .product-modal-tab-content').forEach(content => {
+          content.classList.toggle('active', content.id === 'ps-tab-' + tabId);
+        });
+        
+        // Update button based on tab
+        const confirmBtn = document.getElementById('add-ps-confirm-btn');
+        if (confirmBtn) {
+          if (tabId === 'from-requisition') {
+            confirmBtn.textContent = 'Add Selected';
+            confirmBtn.onclick = addProductsServicesFromRequisition;
+          } else {
+            confirmBtn.textContent = 'Create Product';
+            confirmBtn.onclick = addNewProductService;
+          }
+        }
+      }
+      
+      window.toggleProductsServicesLineSelection = function(lineId, element) {
+        const checkbox = document.getElementById(`ps-req-${lineId}`);
+        const lineData = JSON.parse(element.dataset.line.replace(/&#39;/g, "'"));
+        
+        const existingIndex = selectedProductsServicesLines.findIndex(l => l.id === lineId);
+        if (existingIndex >= 0) {
+          selectedProductsServicesLines.splice(existingIndex, 1);
+          element.classList.remove('selected');
+          checkbox.checked = false;
+        } else {
+          selectedProductsServicesLines.push(lineData);
+          element.classList.add('selected');
+          checkbox.checked = true;
+        }
+      }
+      
+      window.addProductsServicesFromRequisition = function() {
+        if (selectedProductsServicesLines.length === 0) {
+          showNotification('Please select at least one item to add.', 'warning');
+          return;
+        }
+        
+        requisitionLines = [...requisitionLines, ...selectedProductsServicesLines];
+        
+        closeAddProductsServicesModal();
+        renderCurrentBlock();
+        showNotification(`Added ${selectedProductsServicesLines.length} product(s)/service(s)`, 'success');
+      }
+      
+      window.addNewProductService = function() {
+        const unspsc = document.getElementById('new-ps-unspsc').value.trim();
+        const desc = document.getElementById('new-ps-desc').value.trim();
+        const qty = parseInt(document.getElementById('new-ps-qty').value) || 1;
+        const uom = document.getElementById('new-ps-uom').value;
+        const value = parseFloat(document.getElementById('new-ps-value').value) || 0;
+        const linkedReqSelect = document.getElementById('new-ps-linked-req');
+        const linkedReqId = linkedReqSelect ? linkedReqSelect.value : '';
+        
+        // Validate linked requisition is selected (mandatory)
+        if (!linkedReqId) {
+          showNotification('Please select a Linked Requisition. This field is mandatory.', 'warning');
+          return;
+        }
+        
+        // Get procurement official from linked requisition (from centralized available lines)
+        let procurementOfficial = 'Not assigned';
+        const linkedLine = availableRequisitionLines.find(l => l.id === linkedReqId);
+        if (linkedLine && linkedLine.procurementOfficial) {
+          procurementOfficial = linkedLine.procurementOfficial;
+        }
+        
+        if (!unspsc || !desc) {
+          showNotification('Please enter UNSPSC code and description.', 'warning');
+          return;
+        }
+        
+        if (unspsc.length !== 8 || !/^\d+$/.test(unspsc)) {
+          showNotification('UNSPSC code must be 8 digits.', 'warning');
+          return;
+        }
+        
+        // Generate unique product ID (PROD-XXX format)
+        const existingProdIds = requisitionLines.filter(l => l.id.startsWith('PROD-')).length;
+        const newProdId = 'PROD-' + String(existingProdIds + 1).padStart(3, '0');
+        
+        const newLine = {
+          id: newProdId,
+          unspscCode: unspsc,
+          unspscDescription: desc,
+          description: desc,
+          quantity: qty,
+          unitOfMeasure: uom,
+          amount: value,
+          currency: 'USD',
+          procurementOfficial: procurementOfficial,
+          linkedRequisitionId: linkedReqId,
+        };
+        
+        requisitionLines.push(newLine);
+        
+        closeAddProductsServicesModal();
+        renderCurrentBlock();
+        showNotification(`Added new product/service: ${desc}`, 'success');
+      }
       
       window.openAddReqLineModal = function() {
         const modal = document.getElementById('add-req-line-modal');
         const body = document.getElementById('add-req-line-body');
         selectedReqLines = [];
         
-        // Available sample requisition lines to add
-        const availableLines = [
-          { id: 'REQ-LINE-008', unspscCode: '43211515', unspscDescription: 'Desktop computers', description: 'Desktop workstations', quantity: 25, unitOfMeasure: 'Unit', amount: 30000, currency: 'USD' },
-          { id: 'REQ-LINE-009', unspscCode: '43212105', unspscDescription: 'Computer monitors', description: '27-inch monitors', quantity: 50, unitOfMeasure: 'Unit', amount: 15000, currency: 'USD' },
-          { id: 'REQ-LINE-010', unspscCode: '43211706', unspscDescription: 'Computer keyboards', description: 'Wireless keyboards', quantity: 75, unitOfMeasure: 'Unit', amount: 3750, currency: 'USD' },
-          { id: 'REQ-LINE-011', unspscCode: '43211707', unspscDescription: 'Computer mice', description: 'Wireless mice', quantity: 75, unitOfMeasure: 'Unit', amount: 2250, currency: 'USD' },
-        ];
-        
-        // Filter out lines already added
+        // Filter out lines already added to Products and Services
         const existingIds = requisitionLines.map(l => l.id);
-        const newLines = availableLines.filter(l => !existingIds.includes(l.id));
+        const linesToShow = availableRequisitionLines.filter(l => !existingIds.includes(l.id));
         
-        if (newLines.length === 0) {
+        if (linesToShow.length === 0) {
           body.innerHTML = `
             <div style="text-align: center; padding: var(--spacing-xl); color: var(--text-muted);">
               <div style="font-size: 28px; margin-bottom: var(--spacing-sm);">✅</div>
@@ -16217,7 +16312,7 @@
             </div>
           `;
         } else {
-          body.innerHTML = newLines.map(line => `
+          body.innerHTML = linesToShow.map(line => `
             <div class="req-option" data-line-id="${line.id}" onclick="toggleReqLineSelection('${line.id}')">
               <input type="checkbox" class="req-option-checkbox" id="req-cb-${line.id}" />
               <div class="req-option-details">
@@ -16261,15 +16356,8 @@
           return;
         }
         
-        // Sample data - in real app, this would come from the selection
-        const availableLines = [
-          { id: 'REQ-LINE-008', unspscCode: '43211515', unspscDescription: 'Desktop computers', description: 'Desktop workstations', quantity: 25, unitOfMeasure: 'Unit', amount: 30000, currency: 'USD' },
-          { id: 'REQ-LINE-009', unspscCode: '43212105', unspscDescription: 'Computer monitors', description: '27-inch monitors', quantity: 50, unitOfMeasure: 'Unit', amount: 15000, currency: 'USD' },
-          { id: 'REQ-LINE-010', unspscCode: '43211706', unspscDescription: 'Computer keyboards', description: 'Wireless keyboards', quantity: 75, unitOfMeasure: 'Unit', amount: 3750, currency: 'USD' },
-          { id: 'REQ-LINE-011', unspscCode: '43211707', unspscDescription: 'Computer mice', description: 'Wireless mice', quantity: 75, unitOfMeasure: 'Unit', amount: 2250, currency: 'USD' },
-        ];
-        
-        const linesToAdd = availableLines.filter(l => selectedReqLines.includes(l.id));
+        // Get lines from centralized available requisition lines
+        const linesToAdd = availableRequisitionLines.filter(l => selectedReqLines.includes(l.id));
         requisitionLines = [...requisitionLines, ...linesToAdd];
         
         closeAddReqLineModal();
@@ -16986,6 +17074,83 @@
         <div class="req-modal-footer">
           <button class="btn btn-ghost btn-sm" onclick="closeAddReqLineModal()">Cancel</button>
           <button class="btn btn-primary btn-sm" onclick="addSelectedReqLines()">Add Selected</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Products and Services Modal -->
+    <div class="req-modal" id="add-products-services-modal" onclick="if(event.target === this) closeAddProductsServicesModal()">
+      <div class="req-modal-content" style="max-width: 550px;">
+        <div class="req-modal-header">
+          <span class="req-modal-title">📦 Add Products and Services</span>
+          <button class="modal-close-btn" onclick="closeAddProductsServicesModal()">✕</button>
+        </div>
+        <div class="req-modal-body" style="padding: 0;">
+          <div class="product-modal-tabs">
+            <button class="product-modal-tab active" data-tab="from-requisition" onclick="switchProductsServicesModalTab('from-requisition')">From Requisition Lines</button>
+            <button class="product-modal-tab" data-tab="new-product" onclick="switchProductsServicesModalTab('new-product')">Create New</button>
+          </div>
+          
+          <!-- From Requisition Lines Tab -->
+          <div class="product-modal-tab-content active" id="ps-tab-from-requisition" style="padding: var(--spacing-md); max-height: 400px; overflow-y: auto;">
+            <div id="add-products-services-req-lines">
+              <!-- Requisition lines will be populated here -->
+            </div>
+          </div>
+          
+          <!-- Create New Product/Service Tab -->
+          <div class="product-modal-tab-content" id="ps-tab-new-product" style="padding: var(--spacing-md);">
+            <div class="new-product-form">
+              <div class="form-group">
+                <label class="form-label">UNSPSC Code <span class="required">*</span></label>
+                <input type="text" id="new-ps-unspsc" class="form-input" placeholder="e.g., 43211503" maxlength="8" style="font-size: 13px; font-family: 'Courier New', monospace;" />
+                <span class="help-text">8-digit UNSPSC code</span>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Description <span class="required">*</span></label>
+                <input type="text" id="new-ps-desc" class="form-input" placeholder="e.g., Laptop computers" style="font-size: 13px;" />
+              </div>
+              <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-md);">
+                <div class="form-group">
+                  <label class="form-label">Quantity</label>
+                  <input type="number" id="new-ps-qty" class="form-input" value="1" min="1" style="font-size: 13px;" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Unit of Measure</label>
+                  <select id="new-ps-uom" class="form-select" style="font-size: 13px;">
+                    <option value="Unit">Unit</option>
+                    <option value="Lot">Lot</option>
+                    <option value="Service">Service</option>
+                    <option value="Pack">Pack</option>
+                    <option value="Box">Box</option>
+                    <option value="Set">Set</option>
+                    <option value="Piece">Piece</option>
+                    <option value="Month">Month</option>
+                    <option value="Year">Year</option>
+                    <option value="Kg">Kg</option>
+                    <option value="Liter">Liter</option>
+                    <option value="Meter">Meter</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Estimated Value (USD)</label>
+                <input type="number" id="new-ps-value" class="form-input" placeholder="0.00" min="0" step="0.01" style="font-size: 13px;" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Linked Requisition <span class="required">*</span></label>
+                <select id="new-ps-linked-req" class="form-select" style="font-size: 13px;" required>
+                  <option value="">-- Select requisition line --</option>
+                  <!-- Options will be populated dynamically -->
+                </select>
+                <span class="help-text">Select the requisition line this product is linked to</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="req-modal-footer">
+          <button class="btn btn-ghost btn-sm" onclick="closeAddProductsServicesModal()">Cancel</button>
+          <button class="btn btn-primary btn-sm" id="add-ps-confirm-btn" onclick="addProductsServicesFromRequisition()">Add Selected</button>
         </div>
       </div>
     </div>
