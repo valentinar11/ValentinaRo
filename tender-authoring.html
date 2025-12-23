@@ -7422,7 +7422,8 @@
       let addedForms = {}; // Store added forms by block and section: { blockId: { sectionIndex: [forms] } }
       
       // Requisition & Lots Management
-      let requisitionLines = []; // Products added to Products and Services section (when NO is selected)
+      let requisitionLines = []; // Requisition lines from ERP (left container)
+      let productsAndServices = []; // Refined products/services for suppliers (right container)
       let lots = []; // Created lots: [{ id, name, unspscCodes: [{ code, description }] }]
       let allowPartialQuotations = ''; // 'Yes' or 'No' - determines if lots section is visible
       
@@ -9253,16 +9254,18 @@
 
       // ===== REQUISITION LINES & LOTS FUNCTIONS =====
       function renderRequisitionLotsSection(block, section, sectionIndex, isFirst) {
-        // requisitionLines starts empty - user adds items via modal
-        
-        // Get unique UNSPSC codes from requisition lines for reference
-        const requisitionUnspscCodes = [...new Set(requisitionLines.map(line => line.unspscCode))];
-        const totalValue = requisitionLines.reduce((sum, line) => sum + line.amount, 0);
+        // Calculate totals
+        const reqLinesValue = requisitionLines.reduce((sum, line) => sum + line.amount, 0);
+        const psValue = productsAndServices.reduce((sum, item) => sum + item.amount, 0);
         const totalProducts = lots.reduce((sum, lot) => sum + lot.unspscCodes.length, 0);
         
         // Determine section visibility based on partial quotations
         const showLotsSection = allowPartialQuotations === 'Yes';
-        const showProductsSection = allowPartialQuotations === 'No';
+        
+        // Calculate pending assignments for lot-based tenders
+        const allAssignedCodes = lots.flatMap(l => l.unspscCodes.map(u => u.code));
+        const pendingCount = productsAndServices.filter(p => !allAssignedCodes.includes(p.unspscCode)).length;
+        const isLotComplete = productsAndServices.length > 0 && pendingCount === 0;
         
         return `
           <div class="general-info-container">
@@ -9273,16 +9276,16 @@
                   <div class="stat-value">${requisitionLines.length}</div>
                   <div class="stat-label">Req. Lines</div>
               </div>
+                <div class="stat-item">
+                  <div class="stat-value">${productsAndServices.length}</div>
+                  <div class="stat-label">Products/Svc</div>
+                </div>
                 <div class="stat-item" style="${showLotsSection ? '' : 'opacity: 0.4;'}">
                   <div class="stat-value">${lots.length}</div>
                   <div class="stat-label">Lots</div>
-            </div>
-                <div class="stat-item" style="${showLotsSection ? '' : 'opacity: 0.4;'}">
-                  <div class="stat-value">${totalProducts}</div>
-                  <div class="stat-label">Products</div>
                 </div>
                 <div class="stat-item">
-                  <div class="stat-value">$${(totalValue/1000).toFixed(0)}K</div>
+                  <div class="stat-value">$${((reqLinesValue)/1000).toFixed(0)}K</div>
                   <div class="stat-label">Total Value</div>
                 </div>
               </div>
@@ -9310,98 +9313,156 @@
                       <span class="help-text">If Yes, suppliers can submit bids for individual lots. If No, suppliers must bid on all items.</span>
                     </div>
                   </div>
-                  
                 </div>
               </div>
               
-              <!-- Products and Services - Collapsible (only shown when partial quotations = No) -->
-              ${showProductsSection ? `
-              <div class="collapsible-section" id="req-lines-section" style="margin-top: var(--spacing-md);">
+              <!-- Two-Column Grid: Requisition Lines & Products and Services -->
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-md); margin-top: var(--spacing-md);">
+                
+                <!-- LEFT COLUMN: Requisition Lines -->
+                <div class="collapsible-section" id="req-lines-section" style="margin-top: 0;">
                 <div class="collapsible-header" onclick="toggleCollapsibleSection('req-lines-section')">
                   <div class="collapsible-header-left">
-                    <span class="collapsible-header-title">Products and Services</span>
+                      <span class="collapsible-header-title"><i class="pi pi-list" style="margin-right: 6px;"></i>Requisition Lines</span>
                     <span class="badge badge-info" style="margin-left: 6px; font-size: 10px;">${requisitionLines.length}</span>
-                    ${renderSectionProgress('req-lines', requisitionLines)}
                   </div>
                   <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
-                    <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); openAddProductsServicesModal()"><i class="pi pi-plus"></i> Add Products and Services</button>
+                      <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); openAddRequisitionLinesModal()"><i class="pi pi-plus"></i> Add</button>
                     <div class="collapsible-toggle">▼</div>
                   </div>
                 </div>
-                <div class="collapsible-body">
+                  <div class="collapsible-body" style="min-height: 200px; max-height: 400px; overflow-y: auto;">
+                    <div style="padding: 0 var(--spacing-sm) var(--spacing-sm); font-size: 11px; color: var(--text-muted); font-style: italic; border-bottom: 1px dashed var(--surface-200); margin-bottom: var(--spacing-sm);">
+                      Add requisition lines from ERP. These are your source items.
+                    </div>
                   ${requisitionLines.length === 0 ? `
-                  <div style="text-align: center; padding: var(--spacing-xl); color: var(--text-muted);">
-                    <div style="font-size: 40px; margin-bottom: var(--spacing-md);">📦</div>
-                    <div style="font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: var(--spacing-sm);">No Products or Services Added</div>
-                    <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--spacing-md);">Click "Add Products and Services" to add requisitions or create new products.</div>
-                    <button class="btn btn-primary btn-sm" onclick="openAddProductsServicesModal()">
-                      <i class="pi pi-plus"></i> Add Products and Services
+                    <div style="text-align: center; padding: var(--spacing-lg); color: var(--text-muted);">
+                      <i class="pi pi-inbox" style="font-size: 32px; color: var(--surface-400); margin-bottom: var(--spacing-sm); display: block;"></i>
+                      <div style="font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: var(--spacing-xs);">No Requisition Lines</div>
+                      <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: var(--spacing-md);">Add requisition lines from ERP system</div>
+                      <button class="btn btn-primary btn-sm" onclick="openAddRequisitionLinesModal()">
+                        <i class="pi pi-plus"></i> Add Requisition Lines
                     </button>
                   </div>
                   ` : `
-                  <div style="overflow-x: auto;">
-                    <table class="req-table">
-                    <thead>
-                      <tr>
-                        <th>ID</th>
-                          <th>UNSPSC</th>
-                        <th>Description</th>
-                          <th>Procurement Official</th>
-                          <th>Qty</th>
-                          <th>UoM</th>
-                        <th>Amount</th>
-                          <th style="width: 60px;">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
+                    <div id="req-lines-container" style="display: flex; flex-direction: column; gap: var(--spacing-xs);">
                       ${requisitionLines.map(line => `
-                        <tr data-line-id="${line.id}">
-                            <td><span class="req-id">${line.id}</span></td>
-                          <td>
-                              <div class="req-unspsc">${line.unspscCode}</div>
-                              <div class="req-unspsc-desc">${line.unspscDescription}</div>
-                          </td>
-                            <td style="max-width: 180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${line.description}">${line.description}</td>
-                            <td style="font-size: 11px; color: var(--text-secondary);">${line.procurementOfficial || 'Not assigned'}</td>
-                            <td>${line.quantity}</td>
-                            <td>${line.unitOfMeasure}</td>
-                            <td><span class="req-amount">${line.currency} ${line.amount.toLocaleString()}</span></td>
-                            <td>
-                              <button class="req-remove-btn" onclick="removeRequisitionLine('${line.id}')" title="Remove line">🗑️</button>
-                            </td>
-                        </tr>
+                        <div class="req-line-card" draggable="true" ondragstart="dragReqLine(event, '${line.id}')" data-line-id="${line.id}" style="padding: var(--spacing-sm); background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-sm); cursor: grab; transition: all 0.2s;">
+                          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                            <div style="flex: 1;">
+                              <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 2px;">
+                                <span style="font-family: monospace; font-size: 11px; color: var(--primary-600); font-weight: 600;">${line.unspscCode}</span>
+                                <span style="font-size: 10px; color: var(--text-muted);">${line.id}</span>
+                              </div>
+                              <div style="font-size: 12px; color: var(--text-primary); font-weight: 500; margin-bottom: 2px;">${line.unspscDescription}</div>
+                              <div style="font-size: 10px; color: var(--text-muted);">${line.quantity} ${line.unitOfMeasure} • ${line.currency} ${line.amount.toLocaleString()}</div>
+                            </div>
+                            <div style="display: flex; gap: 4px;">
+                              <button class="btn btn-ghost btn-sm" onclick="addReqLineToProductsServices('${line.id}')" title="Add to Products & Services" style="padding: 2px 6px; font-size: 10px;"><i class="pi pi-arrow-right" style="font-size: 10px;"></i></button>
+                              <button class="btn btn-ghost btn-sm" onclick="removeRequisitionLine('${line.id}')" title="Remove" style="padding: 2px 6px; font-size: 10px;"><i class="pi pi-trash" style="font-size: 10px; color: var(--danger-500);"></i></button>
+                            </div>
+                          </div>
+                        </div>
                       `).join('')}
-                    </tbody>
-                  </table>
                 </div>
                   `}
               </div>
                 </div>
-              ` : ''}
+                
+                <!-- RIGHT COLUMN: Products and Services -->
+                <div class="collapsible-section" id="products-services-section" style="margin-top: 0;">
+                  <div class="collapsible-header" onclick="toggleCollapsibleSection('products-services-section')">
+                    <div class="collapsible-header-left">
+                      <span class="collapsible-header-title"><i class="pi pi-shopping-cart" style="margin-right: 6px;"></i>Products and Services</span>
+                      <span class="badge badge-success" style="margin-left: 6px; font-size: 10px;">${productsAndServices.length}</span>
+                      ${showLotsSection && productsAndServices.length > 0 ? (pendingCount > 0 
+                        ? `<span class="badge badge-warning" style="margin-left: 4px; font-size: 9px;" title="${pendingCount} item(s) pending lot assignment">${pendingCount} pending</span>` 
+                        : `<span class="badge badge-success" style="margin-left: 4px; font-size: 9px;"><i class="pi pi-check" style="font-size: 8px;"></i> All assigned</span>`) : ''}
+                    </div>
+                    <div style="display: flex; align-items: center; gap: var(--spacing-xs);">
+                      <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); downloadProductsServicesTemplate()" title="Download template"><i class="pi pi-download"></i></button>
+                      <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); document.getElementById('ps-upload-input').click()" title="Upload from template"><i class="pi pi-upload"></i></button>
+                      <input type="file" id="ps-upload-input" accept=".xlsx,.xls,.csv" style="display: none;" onchange="handleProductsServicesUpload(event)" />
+                      <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); openAddProductsServicesModal()"><i class="pi pi-plus"></i> Add</button>
+                      <div class="collapsible-toggle">▼</div>
+                    </div>
+                  </div>
+                  <div class="collapsible-body" style="min-height: 200px; max-height: 400px; overflow-y: auto;" ondragover="allowDropToPS(event)" ondragleave="event.currentTarget.style.backgroundColor=''" ondrop="dropToProductsServices(event)">
+                    <div style="padding: 0 var(--spacing-sm) var(--spacing-sm); font-size: 11px; color: var(--text-muted); font-style: italic; border-bottom: 1px dashed var(--surface-200); margin-bottom: var(--spacing-sm);">
+                      <strong>Supplier-facing items.</strong> Refine your codes here for going to market. Drag from Requisition Lines or create new.
+                    </div>
+                    ${productsAndServices.length === 0 ? `
+                    <div style="text-align: center; padding: var(--spacing-lg); color: var(--text-muted); border: 2px dashed var(--surface-300); border-radius: var(--radius-md); margin: var(--spacing-sm);">
+                      <i class="pi pi-shopping-cart" style="font-size: 32px; color: var(--surface-400); margin-bottom: var(--spacing-sm); display: block;"></i>
+                      <div style="font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: var(--spacing-xs);">No Products or Services</div>
+                      <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: var(--spacing-md);">Drag from Requisition Lines, pick from list, or create new products</div>
+                      <button class="btn btn-primary btn-sm" onclick="openAddProductsServicesModal()">
+                        <i class="pi pi-plus"></i> Add Products/Services
+                      </button>
+                    </div>
+                    ` : `
+                    <div id="products-services-container" style="display: flex; flex-direction: column; gap: var(--spacing-xs);">
+                      ${productsAndServices.map(item => {
+                        const isAssigned = allAssignedCodes.includes(item.unspscCode);
+                        const leftBorderColor = showLotsSection ? (isAssigned ? 'var(--success-500)' : 'var(--warning-500)') : 'var(--success-500)';
+                        return `
+                        <div class="ps-item-card" data-item-id="${item.id}" style="padding: var(--spacing-sm); background: var(--surface-0); border: 1px solid var(--surface-200); border-left: 4px solid ${leftBorderColor}; border-radius: var(--radius-sm); transition: all 0.2s;">
+                          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                            <div style="flex: 1;">
+                              <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 2px; flex-wrap: wrap;">
+                                <span style="font-family: monospace; font-size: 11px; color: var(--primary-600); font-weight: 600;">${item.unspscCode}</span>
+                                ${item.linkedRequisitionId ? `<span style="font-size: 9px; padding: 1px 4px; background: var(--primary-100); color: var(--primary-700); border-radius: 3px;" title="Linked to requisition ${item.linkedRequisitionId}"><i class="pi pi-link" style="font-size: 8px;"></i> ${item.linkedRequisitionId}</span>` : `<span style="font-size: 9px; padding: 1px 4px; background: var(--info-100); color: var(--info-700); border-radius: 3px;"><i class="pi pi-star" style="font-size: 8px;"></i> New</span>`}
+                                ${showLotsSection ? (isAssigned 
+                                  ? `<span style="font-size: 9px; padding: 1px 4px; background: var(--success-100); color: var(--success-700); border-radius: 3px;"><i class="pi pi-check" style="font-size: 8px;"></i> In Lot</span>`
+                                  : `<span style="font-size: 9px; padding: 1px 4px; background: var(--warning-100); color: var(--warning-700); border-radius: 3px;"><i class="pi pi-exclamation-triangle" style="font-size: 8px;"></i> Pending</span>`) : ''}
+                              </div>
+                              <div style="font-size: 12px; color: var(--text-primary); font-weight: 500; margin-bottom: 2px;">${item.unspscDescription}</div>
+                              <div style="font-size: 10px; color: var(--text-muted);">${item.quantity} ${item.unitOfMeasure} • ${item.currency} ${item.amount.toLocaleString()}</div>
+                            </div>
+                            <button class="btn btn-ghost btn-sm" onclick="removeProductService('${item.id}')" title="Remove" style="padding: 2px 6px; font-size: 10px;"><i class="pi pi-trash" style="font-size: 10px; color: var(--danger-500);"></i></button>
+                          </div>
+                        </div>
+                      `}).join('')}
+                    </div>
+                    `}
+                  </div>
+                </div>
+              </div>
                 
               <!-- Lots Management - Collapsible (only shown when partial quotations = Yes) -->
               ${showLotsSection ? `
-              <div class="collapsible-section collapsed" id="lots-section">
+              <div class="collapsible-section" id="lots-section" style="margin-top: var(--spacing-md);">
                 <div class="collapsible-header" onclick="toggleCollapsibleSection('lots-section')">
                   <div class="collapsible-header-left">
-                    <span class="collapsible-header-title">Lots</span>
+                    <span class="collapsible-header-title"><i class="pi pi-th-large" style="margin-right: 6px;"></i>Lots</span>
                     <span class="badge badge-info" style="margin-left: 6px; font-size: 10px;">${lots.length}</span>
-                    ${renderSectionProgress('lots', lots)}
+                    ${productsAndServices.length > 0 ? (isLotComplete 
+                      ? `<span class="badge badge-success" style="margin-left: 4px; font-size: 9px;"><i class="pi pi-check" style="font-size: 8px;"></i> Complete</span>`
+                      : `<span class="badge badge-warning" style="margin-left: 4px; font-size: 9px;">${pendingCount} pending</span>`) : ''}
                   </div>
                   <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
-                    <button class="btn btn-secondary" onclick="event.stopPropagation(); downloadLotsTemplate()" title="Download Excel template for bulk import"><i class="pi pi-download"></i> Template</button>
-                    <button class="btn btn-secondary" onclick="event.stopPropagation(); document.getElementById('lots-upload-input').click()" title="Upload Excel file to bulk import lots"><i class="pi pi-upload"></i> Upload</button>
-                    <input type="file" id="lots-upload-input" accept=".xlsx,.xls,.csv" style="display: none;" onchange="handleLotsUpload(event)" />
-                    <button class="btn btn-primary" onclick="event.stopPropagation(); openCreateLotModal()"><i class="pi pi-plus"></i> Create Lot</button>
+                    <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); createLotPerProductService()" title="Create one lot for each product/service"><i class="pi pi-copy"></i> 1 Product = 1 Lot</button>
+                    <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); createMultipleEmptyLots()" title="Create several empty lots"><i class="pi pi-th-large"></i> Create Several</button>
+                    <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); openCreateLotModal()"><i class="pi pi-plus"></i> New Lot</button>
                     <div class="collapsible-toggle">▼</div>
                   </div>
                 </div>
                 <div class="collapsible-body">
+                  ${pendingCount > 0 ? `
+                  <div style="padding: var(--spacing-sm); margin-bottom: var(--spacing-sm); background: var(--warning-50); border: 1px solid var(--warning-200); border-radius: var(--radius-sm); font-size: 11px; color: var(--warning-700); display: flex; align-items: center; gap: 8px;">
+                    <i class="pi pi-exclamation-triangle"></i>
+                    <span><strong>${pendingCount} item(s)</strong> from Products and Services not yet assigned to lots. All items must be assigned for lot-based bidding.</span>
+                  </div>
+                  ` : ''}
                   ${lots.length === 0 ? `
-                    <div class="lot-empty-state" style="padding: var(--spacing-lg);">
-                      <div style="font-size: 28px; margin-bottom: var(--spacing-xs);">📦</div>
+                    <div class="lot-empty-state" style="padding: var(--spacing-lg); text-align: center;">
+                      <i class="pi pi-th-large" style="font-size: 32px; color: var(--surface-400); margin-bottom: var(--spacing-sm); display: block;"></i>
                       <div style="font-weight: 600; font-size: 13px; margin-bottom: var(--spacing-xs);">No lots created yet</div>
-                      <div style="color: var(--text-muted); font-size: 11px;">Create lots to organize products using the buttons above</div>
+                      <div style="color: var(--text-muted); font-size: 11px; margin-bottom: var(--spacing-md);">Create lots to organize products and services</div>
+                      <div style="display: flex; gap: var(--spacing-sm); justify-content: center;">
+                        <button class="btn btn-secondary btn-sm" onclick="createLotPerProductService()"><i class="pi pi-copy"></i> 1 Product = 1 Lot</button>
+                        <button class="btn btn-primary btn-sm" onclick="openCreateLotModal()"><i class="pi pi-plus"></i> Create Lot</button>
+                      </div>
                         </div>
                   ` : `
                     <div style="overflow-x: auto;">
@@ -9578,15 +9639,345 @@
         renderCurrentBlock();
       }
       
-      // Remove Requisition Line
+      // Remove Requisition Line (with cascade delete)
       window.removeRequisitionLine = function(lineId) {
-        if (!confirm('Are you sure you want to remove this requisition line?')) {
+        // Find all products/services linked to this requisition line
+        const linkedProducts = productsAndServices.filter(p => p.linkedRequisitionId === lineId);
+        const linkedCount = linkedProducts.length;
+        
+        // Build confirmation message
+        let confirmMsg = 'Are you sure you want to remove this requisition line?';
+        if (linkedCount > 0) {
+          confirmMsg += `\n\nThis will also remove ${linkedCount} linked product(s) from Products and Services and any lot assignments.`;
+        }
+        
+        if (!confirm(confirmMsg)) {
           return;
         }
         
+        // Get UNSPSC codes of linked products to remove from lots
+        const unspscCodesToRemove = linkedProducts.map(p => p.unspscCode);
+        
+        // Remove these products from all lots
+        lots.forEach(lot => {
+          lot.unspscCodes = lot.unspscCodes.filter(u => !unspscCodesToRemove.includes(u.code));
+        });
+        
+        // Remove empty lots
+        lots = lots.filter(l => l.unspscCodes.length > 0);
+        
+        // Remove linked products from Products and Services
+        productsAndServices = productsAndServices.filter(p => p.linkedRequisitionId !== lineId);
+        
+        // Remove the requisition line itself
         requisitionLines = requisitionLines.filter(l => l.id !== lineId);
+        
         renderCurrentBlock();
-        showNotification('Requisition line removed', 'success');
+        
+        if (linkedCount > 0) {
+          showNotification(`Requisition line and ${linkedCount} linked product(s) removed`, 'success');
+        } else {
+          showNotification('Requisition line removed', 'success');
+        }
+      }
+      
+      // ===== PRODUCTS AND SERVICES FUNCTIONS =====
+      
+      // Add Requisition Line to Products and Services
+      window.addReqLineToProductsServices = function(lineId) {
+        const reqLine = requisitionLines.find(l => l.id === lineId);
+        if (!reqLine) return;
+        
+        // Check if already in Products and Services
+        if (productsAndServices.some(p => p.id === lineId || (p.linkedRequisitionId === lineId))) {
+          showNotification('This item is already in Products and Services', 'info');
+          return;
+        }
+        
+        // Create a new product/service entry linked to this requisition line
+        const newItem = {
+          ...reqLine,
+          id: 'ps-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5),
+          linkedRequisitionId: lineId
+        };
+        
+        productsAndServices.push(newItem);
+        renderCurrentBlock();
+        showNotification('Added to Products and Services', 'success');
+      }
+      
+      // Remove Product/Service
+      window.removeProductService = function(itemId) {
+        if (!confirm('Are you sure you want to remove this item from Products and Services?')) {
+          return;
+        }
+        
+        // Also remove from any lots
+        const item = productsAndServices.find(p => p.id === itemId);
+        if (item) {
+          lots.forEach(lot => {
+            lot.unspscCodes = lot.unspscCodes.filter(u => u.code !== item.unspscCode);
+          });
+          // Remove empty lots
+          lots = lots.filter(l => l.unspscCodes.length > 0);
+        }
+        
+        productsAndServices = productsAndServices.filter(p => p.id !== itemId);
+        renderCurrentBlock();
+        showNotification('Removed from Products and Services', 'success');
+      }
+      
+      // Drag and Drop Functions
+      window.dragReqLine = function(event, lineId) {
+        event.dataTransfer.setData('text/plain', lineId);
+        event.dataTransfer.effectAllowed = 'copy';
+      }
+      
+      window.allowDropToPS = function(event) {
+        event.preventDefault();
+        event.dataTransfer.dropEffect = 'copy';
+        event.currentTarget.style.backgroundColor = 'var(--primary-50)';
+      }
+      
+      window.dropToProductsServices = function(event) {
+        event.preventDefault();
+        event.currentTarget.style.backgroundColor = '';
+        const lineId = event.dataTransfer.getData('text/plain');
+        if (lineId) {
+          addReqLineToProductsServices(lineId);
+        }
+      }
+      
+      // ===== ADD REQUISITION LINES MODAL =====
+      let selectedReqLinesForAdd = [];
+      let reqLinesAvailableToShow = []; // Store all available lines for filtering
+      
+      window.openAddRequisitionLinesModal = function() {
+        selectedReqLinesForAdd = [];
+        
+        // Get IDs of requisition lines already added
+        const existingIds = requisitionLines.map(l => l.id);
+        
+        // Filter available lines and store for filtering
+        reqLinesAvailableToShow = availableRequisitionLines.filter(l => !existingIds.includes(l.id));
+        
+        // Reset filter input
+        const filterInput = document.getElementById('req-lines-filter-input');
+        if (filterInput) filterInput.value = '';
+        
+        // Render the list
+        renderReqLinesModalList(reqLinesAvailableToShow);
+        updateReqLinesSelectAllCheckbox();
+        updateReqLinesSelectedCount();
+        
+        // Update total count
+        const totalCountEl = document.getElementById('req-lines-total-count');
+        if (totalCountEl) {
+          totalCountEl.textContent = `${reqLinesAvailableToShow.length} available line(s)`;
+        }
+        
+        document.getElementById('add-req-line-modal').style.display = 'flex';
+      }
+      
+      // Render the list of requisition lines in the modal
+      window.renderReqLinesModalList = function(linesToShow) {
+        const modalBody = document.getElementById('add-req-line-body');
+        if (!modalBody) return;
+        
+        if (linesToShow.length === 0) {
+          modalBody.innerHTML = '<div style="text-align: center; padding: var(--spacing-lg); color: var(--text-muted); font-size: 12px;"><i class="pi pi-search" style="font-size: 20px; display: block; margin-bottom: 8px;"></i>No matching requisition lines found.</div>';
+        } else {
+          modalBody.innerHTML = linesToShow.map(line => {
+            const isSelected = selectedReqLinesForAdd.some(l => l.id === line.id);
+            return `
+            <div class="req-line-option ${isSelected ? 'selected' : ''}" data-line-id="${line.id}" data-line='${JSON.stringify(line).replace(/'/g, "&#39;")}'>
+              <input type="checkbox" id="req-add-${line.id}" ${isSelected ? 'checked' : ''} onclick="event.stopPropagation(); toggleReqLineForAdd('${line.id}')" />
+              <div class="req-line-details" onclick="toggleReqLineForAdd('${line.id}')">
+                <div class="req-line-code">${line.unspscCode}</div>
+                <div class="req-line-desc">${line.unspscDescription}</div>
+                <div style="font-size: 10px; color: var(--text-muted); margin-top: 4px;">
+                  <strong>${line.id}</strong> • ${line.quantity} ${line.unitOfMeasure} • ${line.currency} ${line.amount.toLocaleString()}
+                </div>
+                <div style="font-size: 10px; color: var(--text-muted); margin-top: 2px;">
+                  <strong>Work Package:</strong> ${line.workPackageGLA || 'N/A'} • <strong>Donor:</strong> ${line.donorFundingSourceGLA || 'N/A'}
+                </div>
+                <div style="font-size: 10px; color: var(--primary-600); margin-top: 2px;">
+                  <i class="pi pi-user" style="font-size: 10px;"></i> ${line.procurementOfficial || 'Not assigned'}
+                </div>
+              </div>
+            </div>
+          `}).join('');
+        }
+      }
+      
+      // Toggle selection via row or checkbox click
+      window.toggleReqLineForAdd = function(lineId) {
+        const element = document.querySelector(`.req-line-option[data-line-id="${lineId}"]`);
+        if (!element) return;
+        
+        const checkbox = document.getElementById(`req-add-${lineId}`);
+        const lineData = JSON.parse(element.dataset.line.replace(/&#39;/g, "'"));
+        
+        const existingIndex = selectedReqLinesForAdd.findIndex(l => l.id === lineId);
+        if (existingIndex >= 0) {
+          selectedReqLinesForAdd.splice(existingIndex, 1);
+          element.classList.remove('selected');
+          if (checkbox) checkbox.checked = false;
+        } else {
+          selectedReqLinesForAdd.push(lineData);
+          element.classList.add('selected');
+          if (checkbox) checkbox.checked = true;
+        }
+        updateReqLinesSelectAllCheckbox();
+        updateReqLinesSelectedCount();
+      }
+      
+      // Filter requisition lines in modal
+      window.filterReqLinesModal = function(searchText) {
+        const text = searchText.toLowerCase().trim();
+        const existingIds = requisitionLines.map(l => l.id);
+        let filtered = availableRequisitionLines.filter(l => !existingIds.includes(l.id));
+        
+        if (text) {
+          filtered = filtered.filter(line => 
+            line.id.toLowerCase().includes(text) ||
+            line.unspscCode.toLowerCase().includes(text) ||
+            line.unspscDescription.toLowerCase().includes(text) ||
+            (line.description && line.description.toLowerCase().includes(text)) ||
+            (line.procurementOfficial && line.procurementOfficial.toLowerCase().includes(text)) ||
+            (line.workPackageGLA && line.workPackageGLA.toLowerCase().includes(text)) ||
+            (line.donorFundingSourceGLA && line.donorFundingSourceGLA.toLowerCase().includes(text))
+          );
+        }
+        
+        reqLinesAvailableToShow = filtered;
+        renderReqLinesModalList(filtered);
+        updateReqLinesSelectAllCheckbox();
+      }
+      
+      // Select All / Deselect All for visible items
+      window.toggleReqLinesSelectAll = function(selectAll) {
+        if (selectAll) {
+          // Add all visible items to selection
+          reqLinesAvailableToShow.forEach(line => {
+            if (!selectedReqLinesForAdd.some(l => l.id === line.id)) {
+              selectedReqLinesForAdd.push(line);
+            }
+          });
+        } else {
+          // Remove all visible items from selection
+          reqLinesAvailableToShow.forEach(line => {
+            const idx = selectedReqLinesForAdd.findIndex(l => l.id === line.id);
+            if (idx >= 0) selectedReqLinesForAdd.splice(idx, 1);
+          });
+        }
+        renderReqLinesModalList(reqLinesAvailableToShow);
+        updateReqLinesSelectAllCheckbox();
+        updateReqLinesSelectedCount();
+      }
+      
+      // Update select all checkbox state
+      window.updateReqLinesSelectAllCheckbox = function() {
+        const selectAllCheckbox = document.getElementById('req-lines-select-all');
+        if (selectAllCheckbox && reqLinesAvailableToShow.length > 0) {
+          const allSelected = reqLinesAvailableToShow.every(line => selectedReqLinesForAdd.some(l => l.id === line.id));
+          const someSelected = reqLinesAvailableToShow.some(line => selectedReqLinesForAdd.some(l => l.id === line.id));
+          selectAllCheckbox.checked = allSelected;
+          selectAllCheckbox.indeterminate = someSelected && !allSelected;
+        } else if (selectAllCheckbox) {
+          selectAllCheckbox.checked = false;
+          selectAllCheckbox.indeterminate = false;
+        }
+      }
+      
+      // Update selected count display
+      window.updateReqLinesSelectedCount = function() {
+        const countEl = document.getElementById('req-lines-selected-count');
+        if (countEl) {
+          countEl.textContent = selectedReqLinesForAdd.length > 0 ? `${selectedReqLinesForAdd.length} selected` : '';
+        }
+      }
+      
+      window.closeAddRequisitionLinesModal = function() {
+        document.getElementById('add-req-line-modal').style.display = 'none';
+        selectedReqLinesForAdd = [];
+        reqLinesAvailableToShow = [];
+      }
+      
+      window.addSelectedRequisitionLines = function() {
+        if (selectedReqLinesForAdd.length === 0) {
+          showNotification('Please select at least one requisition line', 'warning');
+          return;
+        }
+        
+        requisitionLines = [...requisitionLines, ...selectedReqLinesForAdd];
+        closeAddRequisitionLinesModal();
+        renderCurrentBlock();
+        showNotification(`Added ${selectedReqLinesForAdd.length} requisition line(s)`, 'success');
+      }
+      
+      // ===== LOT CREATION FUNCTIONS =====
+      
+      // Create 1 Lot per Product/Service
+      window.createLotPerProductService = function() {
+        if (productsAndServices.length === 0) {
+          showNotification('No products/services available. Add items to Products and Services first.', 'warning');
+          return;
+        }
+        
+        // Get products not yet assigned to any lot
+        const allAssignedCodes = lots.flatMap(l => l.unspscCodes.map(u => u.code));
+        const unassignedProducts = productsAndServices.filter(p => !allAssignedCodes.includes(p.unspscCode));
+        
+        if (unassignedProducts.length === 0) {
+          showNotification('All products/services are already assigned to lots.', 'info');
+          return;
+        }
+        
+        // Create one lot per unassigned product
+        unassignedProducts.forEach((product, index) => {
+          const lotNumber = lots.length + index + 1;
+          lots.push({
+            id: 'lot-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5),
+            name: `Lot ${lotNumber}`,
+            description: product.unspscDescription,
+            unspscCodes: [{
+              code: product.unspscCode,
+              description: product.unspscDescription
+            }]
+          });
+        });
+        
+        renderCurrentBlock();
+        showNotification(`Created ${unassignedProducts.length} lot(s)`, 'success');
+      }
+      
+      // Create Multiple Empty Lots
+      window.createMultipleEmptyLots = function() {
+        const count = prompt('How many empty lots would you like to create?', '3');
+        if (!count || isNaN(parseInt(count)) || parseInt(count) <= 0) {
+          return;
+        }
+        
+        const numLots = parseInt(count);
+        for (let i = 0; i < numLots; i++) {
+          const lotNumber = lots.length + i + 1;
+          lots.push({
+            id: 'lot-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5) + i,
+            name: `Lot ${lotNumber}`,
+            description: '',
+            unspscCodes: []
+          });
+        }
+        
+        renderCurrentBlock();
+        showNotification(`Created ${numLots} empty lot(s)`, 'success');
+      }
+      
+      // ===== LEGACY FUNCTION UPDATED =====
+      window.createLotPerRequisitionLine = function() {
+        // Redirect to new function
+        createLotPerProductService();
       }
       
       // Download Lots Template
@@ -9755,6 +10146,174 @@
         showNotification(`Successfully imported ${pendingLotsUpload.length} lot(s)!`, 'success');
       }
       
+      // ===== PRODUCTS AND SERVICES TEMPLATE DOWNLOAD/UPLOAD =====
+      
+      // Download Products and Services Template
+      window.downloadProductsServicesTemplate = function() {
+        // Create CSV template content
+        const templateHeaders = ['UNSPSC Code', 'UNSPSC Description', 'Description', 'Quantity', 'Unit of Measure', 'Currency', 'Unit Price', 'Amount', 'Work Package (GLA)', 'Donor/Funding Source (GLA)', 'Procurement Official'];
+        const exampleRows = [
+          ['43211503', 'Laptop computers', 'Laptop computers for office use', '50', 'Unit', 'USD', '500', '25000', 'WP-2024-IT-001', 'UNDP Core Funds', 'John Smith'],
+          ['43212105', 'Computer monitors', '27-inch monitors for office', '50', 'Unit', 'USD', '300', '15000', 'WP-2024-IT-002', 'USAID Grant', 'Sarah Johnson'],
+          ['81111812', 'Network installation service', 'Network installation and configuration', '1', 'Service', 'USD', '5000', '5000', 'WP-2024-SVC-001', 'Multi-Donor Fund', 'Emma Wilson'],
+        ];
+        
+        // Build CSV content
+        let csvContent = templateHeaders.join(',') + '\n';
+        csvContent += '# Instructions: Fill in the rows below. Each row represents one product or service.\n';
+        csvContent += '# UNSPSC Code and UNSPSC Description are required fields.\n';
+        csvContent += '# Amount should equal Quantity x Unit Price.\n';
+        csvContent += '# Delete these instruction lines before uploading.\n';
+        exampleRows.forEach(row => {
+          csvContent += row.map(cell => `"${cell}"`).join(',') + '\n';
+        });
+        
+        // Create and trigger download
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', 'products_services_template.csv');
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        showNotification('Template downloaded! Fill it out and upload to bulk import products and services.', 'success');
+      }
+      
+      // Handle Products and Services Upload
+      window.handleProductsServicesUpload = function(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          try {
+            const content = e.target.result;
+            const lines = content.split('\n').filter(line => line.trim() && !line.startsWith('#'));
+            
+            if (lines.length < 2) {
+              alert('The file appears to be empty or invalid. Please use the template format.');
+              return;
+            }
+            
+            // Skip header row
+            const dataLines = lines.slice(1);
+            const productsToImport = [];
+            
+            dataLines.forEach((line, index) => {
+              // Parse CSV line (handle quoted values)
+              const values = line.match(/("([^"]*)"|[^,]+)/g);
+              if (!values || values.length < 2) return;
+              
+              // Clean values (remove quotes)
+              const cleanValues = values.map(v => v.replace(/^"|"$/g, '').trim());
+              
+              const [unspscCode, unspscDescription, description, quantity, unitOfMeasure, currency, unitPrice, amount, workPackageGLA, donorFundingSourceGLA, procurementOfficial] = cleanValues;
+              
+              if (!unspscCode || !unspscDescription) return;
+              
+              productsToImport.push({
+                id: 'IMPORT-' + Date.now() + '-' + index,
+                unspscCode: unspscCode,
+                unspscDescription: unspscDescription,
+                description: description || unspscDescription,
+                quantity: parseInt(quantity) || 1,
+                unitOfMeasure: unitOfMeasure || 'Unit',
+                currency: currency || 'USD',
+                unitPrice: parseFloat(unitPrice) || 0,
+                amount: parseFloat(amount) || (parseInt(quantity) || 1) * (parseFloat(unitPrice) || 0),
+                workPackageGLA: workPackageGLA || '',
+                donorFundingSourceGLA: donorFundingSourceGLA || '',
+                procurementOfficial: procurementOfficial || 'Not assigned'
+              });
+            });
+            
+            if (productsToImport.length === 0) {
+              alert('No valid products found in the file. Please check the format.');
+              return;
+            }
+            
+            // Show preview modal
+            openProductsServicesUploadPreviewModal(productsToImport);
+            
+          } catch (error) {
+            console.error('Error parsing file:', error);
+            alert('Error reading the file. Please make sure it is a valid CSV file.');
+          }
+        };
+        
+        reader.readAsText(file);
+        
+        // Reset the input so the same file can be uploaded again
+        event.target.value = '';
+      }
+      
+      // Products and Services Upload Preview Modal
+      let pendingProductsServicesUpload = [];
+      
+      window.openProductsServicesUploadPreviewModal = function(productsData) {
+        pendingProductsServicesUpload = productsData;
+        
+        const modal = document.getElementById('products-services-upload-preview-modal');
+        const body = document.getElementById('products-services-upload-preview-body');
+        
+        let totalValue = productsData.reduce((sum, p) => sum + (p.amount || 0), 0);
+        
+        body.innerHTML = `
+          <div style="margin-bottom: var(--spacing-md); padding: var(--spacing-md); background: var(--info-50); border-radius: var(--radius-sm); font-size: 12px;">
+            <strong>Summary:</strong> ${productsData.length} product(s)/service(s), $${totalValue.toLocaleString()} total value
+          </div>
+          <div style="max-height: 300px; overflow-y: auto;">
+            <table class="req-table" style="font-size: 11px;">
+              <thead>
+                <tr>
+                  <th>UNSPSC</th>
+                  <th>Description</th>
+                  <th>Qty</th>
+                  <th>UoM</th>
+                  <th>Amount</th>
+                  <th>Work Package</th>
+                  <th>Donor/Funding</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${productsData.map(p => `
+                  <tr>
+                    <td><span style="font-family: monospace; color: var(--primary-600); font-weight: 600;">${p.unspscCode}</span></td>
+                    <td style="max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${p.unspscDescription}">${p.unspscDescription}</td>
+                    <td>${p.quantity}</td>
+                    <td>${p.unitOfMeasure}</td>
+                    <td>${p.currency} ${p.amount.toLocaleString()}</td>
+                    <td style="font-size: 10px;">${p.workPackageGLA || '-'}</td>
+                    <td style="font-size: 10px;">${p.donorFundingSourceGLA || '-'}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        `;
+        
+        modal.style.display = 'flex';
+      }
+      
+      window.closeProductsServicesUploadPreviewModal = function() {
+        document.getElementById('products-services-upload-preview-modal').style.display = 'none';
+        pendingProductsServicesUpload = [];
+      }
+      
+      window.confirmProductsServicesUpload = function() {
+        if (pendingProductsServicesUpload.length === 0) return;
+        
+        // Add all uploaded products to requisitionLines
+        requisitionLines = [...requisitionLines, ...pendingProductsServicesUpload];
+        
+        closeProductsServicesUploadPreviewModal();
+        renderCurrentBlock();
+        showNotification(`Successfully imported ${pendingProductsServicesUpload.length} product(s)/service(s)!`, 'success');
+      }
+      
       // Lot actions menu toggle
       window.toggleLotActionsMenu = function(lotId) {
         // Close all other menus first
@@ -9795,67 +10354,36 @@
         const lot = lots.find(l => l.id === lotId);
         if (!lot) return;
         
-        // Populate requisition lines options from centralized available lines
+        // Populate product options from Products and Services section
         const reqLinesBody = document.getElementById('add-product-req-lines');
         if (reqLinesBody) {
-          // Filter out lines already added to this lot (by UNSPSC code)
-          const existingCodes = lot.unspscCodes.map(u => u.code);
-          const linesToShow = availableRequisitionLines.filter(line => !existingCodes.includes(line.unspscCode));
+          // Filter out items already assigned to ANY lot (not just this one)
+          const allAssignedCodes = lots.flatMap(l => l.unspscCodes.map(u => u.code));
+          const linesToShow = productsAndServices.filter(item => !allAssignedCodes.includes(item.unspscCode));
           
-          if (linesToShow.length === 0) {
-            reqLinesBody.innerHTML = '<div style="text-align: center; padding: var(--spacing-lg); color: var(--text-muted); font-size: 12px;">All available requisition lines have already been added to this lot.</div>';
+          if (productsAndServices.length === 0) {
+            reqLinesBody.innerHTML = '<div style="text-align: center; padding: var(--spacing-lg); color: var(--text-muted); font-size: 12px;"><i class="pi pi-info-circle" style="font-size: 20px; display: block; margin-bottom: 8px;"></i>No products available. Please add products to the Products and Services section first.</div>';
+          } else if (linesToShow.length === 0) {
+            reqLinesBody.innerHTML = '<div style="text-align: center; padding: var(--spacing-lg); color: var(--text-muted); font-size: 12px;"><i class="pi pi-check-circle" style="font-size: 20px; display: block; margin-bottom: 8px; color: var(--success-500);"></i>All products from Products and Services have been assigned to lots.</div>';
           } else {
-            reqLinesBody.innerHTML = linesToShow.map(line => `
-              <div class="req-line-option" onclick="toggleReqLineForProduct('${line.unspscCode}', this)" data-line='${JSON.stringify(line).replace(/'/g, "&#39;")}'>
-                <input type="checkbox" id="req-${line.unspscCode}" />
+            reqLinesBody.innerHTML = linesToShow.map(item => `
+              <div class="req-line-option" onclick="toggleReqLineForProduct('${item.unspscCode}', this)" data-line='${JSON.stringify(item).replace(/'/g, "&#39;")}'>
+                <input type="checkbox" id="req-${item.unspscCode}" onclick="event.stopPropagation(); toggleReqLineForProduct('${item.unspscCode}', this.closest('.req-line-option'))" />
                 <div class="req-line-details">
-                  <div class="req-line-code">${line.unspscCode}</div>
-                  <div class="req-line-desc">${line.unspscDescription}</div>
-                  <div style="font-size: 10px; color: var(--text-muted); margin-top: 4px;">${line.quantity} ${line.unitOfMeasure} • ${line.currency} ${line.amount.toLocaleString()}</div>
-                  <div style="font-size: 10px; color: var(--text-muted); margin-top: 2px; display: flex; flex-wrap: wrap; gap: 8px;">
-                    <span><strong>Currency:</strong> ${line.currency}</span>
-                    <span><strong>Unit Price:</strong> ${line.currency} ${line.unitPrice ? line.unitPrice.toLocaleString() : (line.amount / line.quantity).toLocaleString()}</span>
+                  <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                    <span class="req-line-code">${item.unspscCode}</span>
+                    ${item.linkedRequisitionId ? `<span style="font-size: 9px; padding: 1px 4px; background: var(--primary-100); color: var(--primary-700); border-radius: 3px;"><i class="pi pi-link" style="font-size: 8px;"></i> ${item.linkedRequisitionId}</span>` : `<span style="font-size: 9px; padding: 1px 4px; background: var(--info-100); color: var(--info-700); border-radius: 3px;"><i class="pi pi-star" style="font-size: 8px;"></i> New</span>`}
                   </div>
-                  <div style="font-size: 10px; color: var(--text-muted); margin-top: 2px; display: flex; flex-wrap: wrap; gap: 8px;">
-                    <span><strong>Work Package (GLA):</strong> ${line.workPackageGLA || 'N/A'}</span>
-                  </div>
-                  <div style="font-size: 10px; color: var(--text-muted); margin-top: 2px;">
-                    <span><strong>Donor/Funding Source (GLA):</strong> ${line.donorFundingSourceGLA || 'N/A'}</span>
-                  </div>
-                  <div style="font-size: 10px; color: var(--primary-600); margin-top: 2px; display: flex; align-items: center; gap: 4px;">
-                    <i class="pi pi-user" style="font-size: 10px;"></i> ${line.procurementOfficial || 'Not assigned'}
+                  <div class="req-line-desc">${item.unspscDescription}</div>
+                  <div style="font-size: 10px; color: var(--text-muted); margin-top: 4px;">${item.quantity} ${item.unitOfMeasure} • ${item.currency} ${item.amount.toLocaleString()}</div>
+                  <div style="font-size: 10px; color: var(--primary-600); margin-top: 2px;">
+                    <i class="pi pi-user" style="font-size: 10px;"></i> ${item.procurementOfficial || 'Not assigned'}
                   </div>
                 </div>
               </div>
             `).join('');
           }
         }
-        
-        // Clear new product form
-        const unspscInput = document.getElementById('new-product-unspsc');
-        const descInput = document.getElementById('new-product-desc');
-        const qtyInput = document.getElementById('new-product-qty');
-        const uomSelect = document.getElementById('new-product-uom');
-        const valueInput = document.getElementById('new-product-value');
-        const linkedReqSelect = document.getElementById('new-product-linked-req');
-        if (unspscInput) unspscInput.value = '';
-        if (descInput) descInput.value = '';
-        if (qtyInput) qtyInput.value = '1';
-        if (uomSelect) uomSelect.value = 'Unit';
-        if (valueInput) valueInput.value = '';
-        
-        // Populate linked requisition dropdown from centralized available lines
-        if (linkedReqSelect) {
-          linkedReqSelect.innerHTML = '<option value="">-- None (No link) --</option>' +
-            availableRequisitionLines.map(line => `
-              <option value="${line.id}" data-unspsc="${line.unspscCode}" data-desc="${line.unspscDescription}" data-qty="${line.quantity}" data-value="${line.amount}">
-                ${line.id} - ${line.unspscCode} (${line.unspscDescription.substring(0, 30)}${line.unspscDescription.length > 30 ? '...' : ''})
-              </option>
-            `).join('');
-        }
-        
-        // Reset to first tab
-        switchProductModalTab('from-requisition');
         
         // Show modal
         document.getElementById('add-product-modal').style.display = 'flex';
@@ -9911,32 +10439,34 @@
       
       window.addProductsFromRequisition = function() {
         if (!currentLotIdForProduct || selectedReqLinesForProduct.length === 0) {
-          alert('Please select at least one requisition line.');
+          alert('Please select at least one product.');
           return;
         }
         
         const lot = lots.find(l => l.id === currentLotIdForProduct);
         if (!lot) return;
         
+        let addedCount = 0;
         selectedReqLinesForProduct.forEach(unspscCode => {
-          // Look in availableRequisitionLines (centralized source)
-          const line = availableRequisitionLines.find(l => l.unspscCode === unspscCode);
-          if (line && !lot.unspscCodes.some(u => u.code === unspscCode)) {
-              lot.unspscCodes.push({ 
-              code: line.unspscCode,
-              description: line.unspscDescription,
-              quantity: line.quantity,
-              unitOfMeasure: line.unitOfMeasure,
-              estimatedValue: line.amount,
-              procurementOfficial: line.procurementOfficial,
-              linkedRequisitionId: line.id
-              });
-            }
+          // Look in productsAndServices (the right column container)
+          const item = productsAndServices.find(p => p.unspscCode === unspscCode);
+          if (item && !lot.unspscCodes.some(u => u.code === unspscCode)) {
+            lot.unspscCodes.push({ 
+              code: item.unspscCode,
+              description: item.unspscDescription,
+              quantity: item.quantity,
+              unitOfMeasure: item.unitOfMeasure,
+              estimatedValue: item.amount,
+              procurementOfficial: item.procurementOfficial,
+              linkedRequisitionId: item.linkedRequisitionId || item.id
+            });
+            addedCount++;
+          }
         });
         
         closeAddProductModal();
         renderCurrentBlock();
-        showNotification(`Added ${selectedReqLinesForProduct.length} product(s) to lot`, 'success');
+        showNotification(`Added ${addedCount} product(s) to lot`, 'success');
       }
       
       window.addNewProduct = function() {
@@ -16133,46 +16663,23 @@
       let selectedProductsServicesLines = [];
       
       // ===== ADD PRODUCTS AND SERVICES MODAL =====
+      let psReqLinesAvailable = []; // Store available lines for filtering
+      
       window.openAddProductsServicesModal = function() {
         selectedProductsServicesLines = [];
         
-        // Populate requisition lines options from centralized available lines
-        const reqLinesBody = document.getElementById('add-products-services-req-lines');
-        if (reqLinesBody) {
-          // Filter out lines already added to Products and Services
-          const existingIds = requisitionLines.map(l => l.id);
-          const linesToShow = availableRequisitionLines.filter(l => !existingIds.includes(l.id));
-          
-          if (linesToShow.length === 0) {
-            reqLinesBody.innerHTML = '<div style="text-align: center; padding: var(--spacing-lg); color: var(--text-muted); font-size: 12px;">All available requisition lines have been added.</div>';
-          } else {
-            reqLinesBody.innerHTML = linesToShow.map(line => `
-              <div class="req-line-option" onclick="toggleProductsServicesLineSelection('${line.id}', this)" data-line='${JSON.stringify(line).replace(/'/g, "&#39;")}'>
-                <input type="checkbox" id="ps-req-${line.id}" />
-                <div class="req-line-details">
-                  <div class="req-line-code">${line.unspscCode}</div>
-                  <div class="req-line-desc">${line.unspscDescription}</div>
-                  <div style="font-size: 10px; color: var(--text-muted); margin-top: 4px;">
-                    ${line.quantity} ${line.unitOfMeasure} • ${line.currency} ${line.amount.toLocaleString()}
-                  </div>
-                  <div style="font-size: 10px; color: var(--text-muted); margin-top: 2px; display: flex; flex-wrap: wrap; gap: 8px;">
-                    <span><strong>Currency:</strong> ${line.currency}</span>
-                    <span><strong>Unit Price:</strong> ${line.currency} ${line.unitPrice ? line.unitPrice.toLocaleString() : (line.amount / line.quantity).toLocaleString()}</span>
-                  </div>
-                  <div style="font-size: 10px; color: var(--text-muted); margin-top: 2px; display: flex; flex-wrap: wrap; gap: 8px;">
-                    <span><strong>Work Package (GLA):</strong> ${line.workPackageGLA || 'N/A'}</span>
-                  </div>
-                  <div style="font-size: 10px; color: var(--text-muted); margin-top: 2px;">
-                    <span><strong>Donor/Funding Source (GLA):</strong> ${line.donorFundingSourceGLA || 'N/A'}</span>
-                  </div>
-                  <div style="font-size: 10px; color: var(--primary-600); margin-top: 2px; display: flex; align-items: center; gap: 4px;">
-                    <i class="pi pi-user" style="font-size: 10px;"></i> ${line.procurementOfficial}
-                  </div>
-                </div>
-              </div>
-            `).join('');
-          }
-        }
+        // Filter out items already in Products and Services (by linked ID)
+        const existingLinkedIds = productsAndServices.filter(p => p.linkedRequisitionId).map(p => p.linkedRequisitionId);
+        psReqLinesAvailable = requisitionLines.filter(l => !existingLinkedIds.includes(l.id));
+        
+        // Reset filter input
+        const filterInput = document.getElementById('ps-req-filter-input');
+        if (filterInput) filterInput.value = '';
+        
+        // Render the list
+        renderPSReqLinesList(psReqLinesAvailable);
+        updatePSReqSelectAllCheckbox();
+        updatePSReqSelectedCount();
         
         // Clear new product form
         const unspscInput = document.getElementById('new-ps-unspsc');
@@ -16187,10 +16694,10 @@
         if (uomSelect) uomSelect.value = 'Unit';
         if (valueInput) valueInput.value = '';
         
-        // Populate linked requisition dropdown from centralized available lines
+        // Populate linked requisition dropdown from requisitionLines (left column)
         if (linkedReqSelect) {
-          linkedReqSelect.innerHTML = '<option value="">-- Select requisition line --</option>' +
-            availableRequisitionLines.map(line => `
+          linkedReqSelect.innerHTML = '<option value="">-- None (New Product) --</option>' +
+            requisitionLines.map(line => `
               <option value="${line.id}" data-official="${line.procurementOfficial || ''}">
                 ${line.id} - ${line.unspscCode} (${line.unspscDescription.substring(0, 30)}${line.unspscDescription.length > 30 ? '...' : ''})
               </option>
@@ -16204,9 +16711,107 @@
         document.getElementById('add-products-services-modal').style.display = 'flex';
       }
       
+      // Render the list of requisition lines in the PS modal
+      window.renderPSReqLinesList = function(linesToShow) {
+        const reqLinesBody = document.getElementById('add-products-services-req-lines');
+        if (!reqLinesBody) return;
+        
+        if (requisitionLines.length === 0) {
+          reqLinesBody.innerHTML = '<div style="text-align: center; padding: var(--spacing-lg); color: var(--text-muted); font-size: 12px;"><i class="pi pi-info-circle" style="font-size: 20px; display: block; margin-bottom: 8px;"></i>No requisition lines available. Add requisition lines first from the left panel.</div>';
+        } else if (linesToShow.length === 0) {
+          reqLinesBody.innerHTML = '<div style="text-align: center; padding: var(--spacing-lg); color: var(--text-muted); font-size: 12px;"><i class="pi pi-search" style="font-size: 20px; display: block; margin-bottom: 8px;"></i>No matching requisition lines found.</div>';
+        } else {
+          reqLinesBody.innerHTML = linesToShow.map(line => {
+            const isSelected = selectedProductsServicesLines.some(l => l.id === line.id);
+            return `
+            <div class="req-line-option ${isSelected ? 'selected' : ''}" data-line-id="${line.id}" data-line='${JSON.stringify(line).replace(/'/g, "&#39;")}'>
+              <input type="checkbox" id="ps-req-${line.id}" ${isSelected ? 'checked' : ''} onclick="event.stopPropagation(); toggleProductsServicesLineSelection('${line.id}')" />
+              <div class="req-line-details" onclick="toggleProductsServicesLineSelection('${line.id}')">
+                <div class="req-line-code">${line.unspscCode}</div>
+                <div class="req-line-desc">${line.unspscDescription}</div>
+                <div style="font-size: 10px; color: var(--text-muted); margin-top: 4px;">
+                  <strong>${line.id}</strong> • ${line.quantity} ${line.unitOfMeasure} • ${line.currency} ${line.amount.toLocaleString()}
+                </div>
+                <div style="font-size: 10px; color: var(--text-muted); margin-top: 2px;">
+                  <strong>Work Package:</strong> ${line.workPackageGLA || 'N/A'} • <strong>Donor:</strong> ${line.donorFundingSourceGLA || 'N/A'}
+                </div>
+                <div style="font-size: 10px; color: var(--primary-600); margin-top: 2px;">
+                  <i class="pi pi-user" style="font-size: 10px;"></i> ${line.procurementOfficial || 'Not assigned'}
+                </div>
+              </div>
+            </div>
+          `}).join('');
+        }
+      }
+      
+      // Filter requisition lines in PS modal
+      window.filterPSReqLinesModal = function(searchText) {
+        const text = searchText.toLowerCase().trim();
+        const existingLinkedIds = productsAndServices.filter(p => p.linkedRequisitionId).map(p => p.linkedRequisitionId);
+        let filtered = requisitionLines.filter(l => !existingLinkedIds.includes(l.id));
+        
+        if (text) {
+          filtered = filtered.filter(line => 
+            line.id.toLowerCase().includes(text) ||
+            line.unspscCode.toLowerCase().includes(text) ||
+            line.unspscDescription.toLowerCase().includes(text) ||
+            (line.description && line.description.toLowerCase().includes(text)) ||
+            (line.procurementOfficial && line.procurementOfficial.toLowerCase().includes(text)) ||
+            (line.workPackageGLA && line.workPackageGLA.toLowerCase().includes(text)) ||
+            (line.donorFundingSourceGLA && line.donorFundingSourceGLA.toLowerCase().includes(text))
+          );
+        }
+        
+        psReqLinesAvailable = filtered;
+        renderPSReqLinesList(filtered);
+        updatePSReqSelectAllCheckbox();
+      }
+      
+      // Select All / Deselect All for PS modal
+      window.togglePSReqSelectAll = function(selectAll) {
+        if (selectAll) {
+          psReqLinesAvailable.forEach(line => {
+            if (!selectedProductsServicesLines.some(l => l.id === line.id)) {
+              selectedProductsServicesLines.push(line);
+            }
+          });
+        } else {
+          psReqLinesAvailable.forEach(line => {
+            const idx = selectedProductsServicesLines.findIndex(l => l.id === line.id);
+            if (idx >= 0) selectedProductsServicesLines.splice(idx, 1);
+          });
+        }
+        renderPSReqLinesList(psReqLinesAvailable);
+        updatePSReqSelectAllCheckbox();
+        updatePSReqSelectedCount();
+      }
+      
+      // Update select all checkbox state for PS modal
+      window.updatePSReqSelectAllCheckbox = function() {
+        const selectAllCheckbox = document.getElementById('ps-req-select-all');
+        if (selectAllCheckbox && psReqLinesAvailable.length > 0) {
+          const allSelected = psReqLinesAvailable.every(line => selectedProductsServicesLines.some(l => l.id === line.id));
+          const someSelected = psReqLinesAvailable.some(line => selectedProductsServicesLines.some(l => l.id === line.id));
+          selectAllCheckbox.checked = allSelected;
+          selectAllCheckbox.indeterminate = someSelected && !allSelected;
+        } else if (selectAllCheckbox) {
+          selectAllCheckbox.checked = false;
+          selectAllCheckbox.indeterminate = false;
+        }
+      }
+      
+      // Update selected count for PS modal
+      window.updatePSReqSelectedCount = function() {
+        const countEl = document.getElementById('ps-req-selected-count');
+        if (countEl) {
+          countEl.textContent = selectedProductsServicesLines.length > 0 ? `${selectedProductsServicesLines.length} selected` : '';
+        }
+      }
+      
       window.closeAddProductsServicesModal = function() {
         document.getElementById('add-products-services-modal').style.display = 'none';
         selectedProductsServicesLines = [];
+        psReqLinesAvailable = [];
       }
       
       window.switchProductsServicesModalTab = function(tabId) {
@@ -16230,7 +16835,11 @@
         }
       }
       
-      window.toggleProductsServicesLineSelection = function(lineId, element) {
+      // Toggle selection via row or checkbox click for PS modal
+      window.toggleProductsServicesLineSelection = function(lineId) {
+        const element = document.querySelector(`#add-products-services-req-lines .req-line-option[data-line-id="${lineId}"]`);
+        if (!element) return;
+        
         const checkbox = document.getElementById(`ps-req-${lineId}`);
         const lineData = JSON.parse(element.dataset.line.replace(/&#39;/g, "'"));
         
@@ -16238,12 +16847,14 @@
         if (existingIndex >= 0) {
           selectedProductsServicesLines.splice(existingIndex, 1);
           element.classList.remove('selected');
-          checkbox.checked = false;
+          if (checkbox) checkbox.checked = false;
         } else {
           selectedProductsServicesLines.push(lineData);
           element.classList.add('selected');
-          checkbox.checked = true;
+          if (checkbox) checkbox.checked = true;
         }
+        updatePSReqSelectAllCheckbox();
+        updatePSReqSelectedCount();
       }
       
       window.addProductsServicesFromRequisition = function() {
@@ -16252,7 +16863,14 @@
           return;
         }
         
-        requisitionLines = [...requisitionLines, ...selectedProductsServicesLines];
+        // Add selected items to Products and Services with link to requisition
+        selectedProductsServicesLines.forEach(line => {
+          productsAndServices.push({
+            ...line,
+            id: 'ps-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5),
+            linkedRequisitionId: line.id
+          });
+        });
         
         closeAddProductsServicesModal();
         renderCurrentBlock();
@@ -16268,17 +16886,13 @@
         const linkedReqSelect = document.getElementById('new-ps-linked-req');
         const linkedReqId = linkedReqSelect ? linkedReqSelect.value : '';
         
-        // Validate linked requisition is selected (mandatory)
-        if (!linkedReqId) {
-          showNotification('Please select a Linked Requisition. This field is mandatory.', 'warning');
-          return;
-        }
-        
-        // Get procurement official from linked requisition (from centralized available lines)
+        // Get procurement official from linked requisition if selected
         let procurementOfficial = 'Not assigned';
-        const linkedLine = availableRequisitionLines.find(l => l.id === linkedReqId);
+        if (linkedReqId) {
+          const linkedLine = requisitionLines.find(l => l.id === linkedReqId);
         if (linkedLine && linkedLine.procurementOfficial) {
           procurementOfficial = linkedLine.procurementOfficial;
+          }
         }
         
         if (!unspsc || !desc) {
@@ -16291,11 +16905,10 @@
           return;
         }
         
-        // Generate unique product ID (PROD-XXX format)
-        const existingProdIds = requisitionLines.filter(l => l.id.startsWith('PROD-')).length;
-        const newProdId = 'PROD-' + String(existingProdIds + 1).padStart(3, '0');
+        // Generate unique product ID for Products and Services
+        const newProdId = 'ps-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5);
         
-        const newLine = {
+        const newItem = {
           id: newProdId,
           unspscCode: unspsc,
           unspscDescription: desc,
@@ -16305,10 +16918,10 @@
           amount: value,
           currency: 'USD',
           procurementOfficial: procurementOfficial,
-          linkedRequisitionId: linkedReqId,
+          linkedRequisitionId: linkedReqId || null,
         };
         
-        requisitionLines.push(newLine);
+        productsAndServices.push(newItem);
         
         closeAddProductsServicesModal();
         renderCurrentBlock();
@@ -17081,39 +17694,82 @@
       </div>
     </div>
 
-    <!-- Add Requisition Line Modal -->
-    <div class="req-modal" id="add-req-line-modal" onclick="if(event.target === this) closeAddReqLineModal()">
-      <div class="req-modal-content">
+    <!-- Add Requisition Line Modal (for left container) -->
+    <div class="req-modal" id="add-req-line-modal" onclick="if(event.target === this) closeAddRequisitionLinesModal()">
+      <div class="req-modal-content" style="max-width: 600px;">
         <div class="req-modal-header">
-          <span class="req-modal-title">📋 Add Requisition Line</span>
-          <button class="modal-close-btn" onclick="closeAddReqLineModal()">✕</button>
+          <span class="req-modal-title"><i class="pi pi-list" style="margin-right: 6px;"></i>Add Requisition Lines</span>
+          <button class="modal-close-btn" onclick="closeAddRequisitionLinesModal()">✕</button>
         </div>
-        <div class="req-modal-body" id="add-req-line-body">
+        <div class="req-modal-body" style="padding: 0;">
+          <!-- Info Banner -->
+          <div style="padding: var(--spacing-sm) var(--spacing-md); background: var(--info-50); border-bottom: 1px solid var(--info-200); font-size: 11px; color: var(--info-700);">
+            <i class="pi pi-info-circle" style="margin-right: 4px;"></i>
+            Select requisition lines from ERP to add to your tender. These will appear in the left "Requisition Lines" panel.
+          </div>
+          <!-- Filter and Select All Row -->
+          <div style="padding: var(--spacing-sm) var(--spacing-md); background: var(--surface-50); border-bottom: 1px solid var(--surface-200); display: flex; gap: var(--spacing-md); align-items: center;">
+            <div style="flex: 1; position: relative;">
+              <i class="pi pi-search" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 12px;"></i>
+              <input type="text" id="req-lines-filter-input" placeholder="Search by ID, code, description, official..." 
+                style="width: 100%; padding: 6px 10px 6px 30px; border: 1px solid var(--surface-300); border-radius: var(--radius-sm); font-size: 12px;"
+                oninput="filterReqLinesModal(this.value)" />
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px; white-space: nowrap;">
+              <input type="checkbox" id="req-lines-select-all" onchange="toggleReqLinesSelectAll(this.checked)" style="cursor: pointer;" />
+              <label for="req-lines-select-all" style="font-size: 11px; color: var(--text-secondary); cursor: pointer;">Select All</label>
+            </div>
+            <span id="req-lines-selected-count" style="font-size: 10px; color: var(--primary-600); font-weight: 600; min-width: 60px;"></span>
+          </div>
+          <!-- Requisition Lines List -->
+          <div id="add-req-line-body" style="max-height: 350px; overflow-y: auto; padding: var(--spacing-sm) var(--spacing-md);">
           <!-- Options will be populated here -->
         </div>
-        <div class="req-modal-footer">
-          <button class="btn btn-ghost btn-sm" onclick="closeAddReqLineModal()">Cancel</button>
-          <button class="btn btn-primary btn-sm" onclick="addSelectedReqLines()">Add Selected</button>
+        </div>
+        <div class="req-modal-footer" style="display: flex; justify-content: space-between; align-items: center;">
+          <span id="req-lines-total-count" style="font-size: 11px; color: var(--text-muted);"></span>
+          <div style="display: flex; gap: var(--spacing-sm);">
+            <button class="btn btn-ghost btn-sm" onclick="closeAddRequisitionLinesModal()">Cancel</button>
+            <button class="btn btn-primary btn-sm" onclick="addSelectedRequisitionLines()"><i class="pi pi-plus" style="margin-right: 4px;"></i>Add Selected</button>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- Add Products and Services Modal -->
     <div class="req-modal" id="add-products-services-modal" onclick="if(event.target === this) closeAddProductsServicesModal()">
-      <div class="req-modal-content" style="max-width: 550px;">
+      <div class="req-modal-content" style="max-width: 600px;">
         <div class="req-modal-header">
-          <span class="req-modal-title">📦 Add Products and Services</span>
+          <span class="req-modal-title"><i class="pi pi-shopping-cart" style="margin-right: 6px;"></i>Add Products and Services</span>
           <button class="modal-close-btn" onclick="closeAddProductsServicesModal()">✕</button>
         </div>
         <div class="req-modal-body" style="padding: 0;">
+          <div style="padding: var(--spacing-sm) var(--spacing-md); background: var(--info-50); border-bottom: 1px solid var(--info-200); font-size: 11px; color: var(--info-700);">
+            <i class="pi pi-info-circle" style="margin-right: 4px;"></i>
+            Items added here will be visible to suppliers. Pick from Requisition Lines or create new products.
+          </div>
           <div class="product-modal-tabs">
-            <button class="product-modal-tab active" data-tab="from-requisition" onclick="switchProductsServicesModalTab('from-requisition')">From Requisition Lines</button>
-            <button class="product-modal-tab" data-tab="new-product" onclick="switchProductsServicesModalTab('new-product')">Create New</button>
+            <button class="product-modal-tab active" data-tab="from-requisition" onclick="switchProductsServicesModalTab('from-requisition')"><i class="pi pi-list" style="margin-right: 4px;"></i>From Requisition Lines</button>
+            <button class="product-modal-tab" data-tab="new-product" onclick="switchProductsServicesModalTab('new-product')"><i class="pi pi-plus" style="margin-right: 4px;"></i>Create New</button>
           </div>
           
           <!-- From Requisition Lines Tab -->
-          <div class="product-modal-tab-content active" id="ps-tab-from-requisition" style="padding: var(--spacing-md); max-height: 400px; overflow-y: auto;">
-            <div id="add-products-services-req-lines">
+          <div class="product-modal-tab-content active" id="ps-tab-from-requisition" style="padding: 0;">
+            <!-- Filter and Select All Row -->
+            <div style="padding: var(--spacing-sm) var(--spacing-md); background: var(--surface-50); border-bottom: 1px solid var(--surface-200); display: flex; gap: var(--spacing-md); align-items: center;">
+              <div style="flex: 1; position: relative;">
+                <i class="pi pi-search" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 12px;"></i>
+                <input type="text" id="ps-req-filter-input" placeholder="Search by ID, code, description..." 
+                  style="width: 100%; padding: 6px 10px 6px 30px; border: 1px solid var(--surface-300); border-radius: var(--radius-sm); font-size: 12px;"
+                  oninput="filterPSReqLinesModal(this.value)" />
+              </div>
+              <div style="display: flex; align-items: center; gap: 6px; white-space: nowrap;">
+                <input type="checkbox" id="ps-req-select-all" onchange="togglePSReqSelectAll(this.checked)" style="cursor: pointer;" />
+                <label for="ps-req-select-all" style="font-size: 11px; color: var(--text-secondary); cursor: pointer;">Select All</label>
+              </div>
+              <span id="ps-req-selected-count" style="font-size: 10px; color: var(--primary-600); font-weight: 600; min-width: 60px;"></span>
+            </div>
+            <div id="add-products-services-req-lines" style="max-height: 350px; overflow-y: auto; padding: var(--spacing-md);">
               <!-- Requisition lines will be populated here -->
             </div>
           </div>
@@ -17179,7 +17835,7 @@
     <div class="req-modal" id="create-lot-modal" onclick="if(event.target === this) closeCreateLotModal()">
       <div class="req-modal-content" style="max-width: 400px;">
         <div class="req-modal-header">
-          <span class="req-modal-title">📦 Create New Lot</span>
+          <span class="req-modal-title"><i class="pi pi-th-large" style="margin-right: 6px;"></i>Create New Lot</span>
           <button class="modal-close-btn" onclick="closeCreateLotModal()">✕</button>
         </div>
         <div class="req-modal-body" style="padding: var(--spacing-md);">
@@ -17203,69 +17859,16 @@
     <div class="req-modal" id="add-product-modal" onclick="if(event.target === this) closeAddProductModal()">
       <div class="req-modal-content" style="max-width: 500px;">
         <div class="req-modal-header">
-          <span class="req-modal-title">➕ Add Products to Lot</span>
+          <span class="req-modal-title"><i class="pi pi-plus" style="margin-right: 6px;"></i>Add Products to Lot</span>
           <button class="modal-close-btn" onclick="closeAddProductModal()">✕</button>
         </div>
-        <div class="req-modal-body" style="padding: 0;">
-          <div class="product-modal-tabs">
-            <button class="product-modal-tab active" data-tab="from-requisition" onclick="switchProductModalTab('from-requisition')">From Requisition Lines</button>
-            <button class="product-modal-tab" data-tab="new-product" onclick="switchProductModalTab('new-product')">Create New</button>
+        <div class="req-modal-body" style="padding: var(--spacing-md);">
+          <div style="padding: var(--spacing-sm); margin-bottom: var(--spacing-md); background: var(--info-50); border: 1px solid var(--info-200); border-radius: var(--radius-sm); font-size: 11px; color: var(--info-700);">
+            <i class="pi pi-info-circle" style="margin-right: 4px;"></i>
+            Select products from Products and Services to add to this lot. Only unassigned items are shown.
           </div>
-          
-          <!-- From Requisition Lines Tab -->
-          <div class="product-modal-tab-content active" id="tab-from-requisition" style="padding: var(--spacing-md); max-height: 350px; overflow-y: auto;">
-            <div id="add-product-req-lines">
-              <!-- Requisition lines will be populated here -->
-            </div>
-          </div>
-          
-          <!-- Create New Product Tab -->
-          <div class="product-modal-tab-content" id="tab-new-product" style="padding: var(--spacing-md);">
-            <div class="new-product-form">
-              <div class="form-group">
-                <label class="form-label">UNSPSC Code <span class="required">*</span></label>
-                <input type="text" id="new-product-unspsc" class="form-input" placeholder="e.g., 43211503" maxlength="8" style="font-size: 13px; font-family: 'Courier New', monospace;" />
-                <span class="help-text">8-digit UNSPSC code</span>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Description <span class="required">*</span></label>
-                <input type="text" id="new-product-desc" class="form-input" placeholder="e.g., Laptop computers" style="font-size: 13px;" />
-              </div>
-              <div class="form-row">
-                <div class="form-group">
-                  <label class="form-label">Quantity</label>
-                  <input type="number" id="new-product-qty" class="form-input" value="1" min="1" style="font-size: 13px;" />
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Unit of Measure</label>
-                  <select id="new-product-uom" class="form-select" style="font-size: 13px;">
-                    <option value="Unit">Unit</option>
-                    <option value="Lot">Lot</option>
-                    <option value="Service">Service</option>
-                    <option value="Pack">Pack</option>
-                    <option value="Box">Box</option>
-                    <option value="Set">Set</option>
-                    <option value="Piece">Piece</option>
-                    <option value="Kg">Kg</option>
-                    <option value="Liter">Liter</option>
-                    <option value="Meter">Meter</option>
-                  </select>
-                </div>
-              </div>
-              <div class="form-row">
-                <div class="form-group">
-                  <label class="form-label">Estimated Value (USD)</label>
-                  <input type="number" id="new-product-value" class="form-input" placeholder="0.00" min="0" step="0.01" style="font-size: 13px;" />
-                </div>
-              </div>
-              <div class="form-group" style="margin-top: var(--spacing-sm);">
-                <label class="form-label">Linked Requisition</label>
-                <select id="new-product-linked-req" class="form-select" style="font-size: 13px;" onchange="populateFromLinkedRequisition(this.value)">
-                  <option value="">-- Select requisition line --</option>
-                  <!-- Options will be populated dynamically -->
-                </select>
-              </div>
-            </div>
+          <div id="add-product-req-lines" style="max-height: 350px; overflow-y: auto;">
+            <!-- Products from Products and Services will be populated here -->
           </div>
         </div>
         <div class="req-modal-footer">
@@ -17279,7 +17882,7 @@
     <div class="req-modal" id="edit-lot-modal" onclick="if(event.target === this) closeEditLotModal()">
       <div class="req-modal-content" style="max-width: 400px;">
         <div class="req-modal-header">
-          <span class="req-modal-title">✏️ Edit Lot</span>
+          <span class="req-modal-title"><i class="pi pi-pencil" style="margin-right: 6px;"></i>Edit Lot</span>
           <button class="modal-close-btn" onclick="closeEditLotModal()">✕</button>
         </div>
         <div class="req-modal-body" style="padding: var(--spacing-md);">
@@ -17382,7 +17985,7 @@
     <div class="req-modal" id="lots-upload-preview-modal" onclick="if(event.target === this) closeLotsUploadPreviewModal()">
       <div class="req-modal-content" style="max-width: 600px;">
         <div class="req-modal-header">
-          <span class="req-modal-title">📦 Import Lots Preview</span>
+          <span class="req-modal-title"><i class="pi pi-upload" style="margin-right: 6px;"></i>Import Lots Preview</span>
           <button class="modal-close-btn" onclick="closeLotsUploadPreviewModal()">✕</button>
         </div>
         <div class="req-modal-body" id="lots-upload-preview-body" style="padding: var(--spacing-md);">
@@ -17391,6 +17994,23 @@
         <div class="req-modal-footer">
           <button class="btn btn-ghost btn-sm" onclick="closeLotsUploadPreviewModal()">Cancel</button>
           <button class="btn btn-primary btn-sm" onclick="confirmLotsUpload()">Import All Lots</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Products and Services Upload Preview Modal -->
+    <div class="req-modal" id="products-services-upload-preview-modal" onclick="if(event.target === this) closeProductsServicesUploadPreviewModal()">
+      <div class="req-modal-content" style="max-width: 800px;">
+        <div class="req-modal-header">
+          <span class="req-modal-title"><i class="pi pi-upload" style="margin-right: 6px;"></i>Import Products & Services Preview</span>
+          <button class="modal-close-btn" onclick="closeProductsServicesUploadPreviewModal()">✕</button>
+        </div>
+        <div class="req-modal-body" id="products-services-upload-preview-body" style="padding: var(--spacing-md);">
+          <!-- Preview content will be populated here -->
+        </div>
+        <div class="req-modal-footer">
+          <button class="btn btn-ghost btn-sm" onclick="closeProductsServicesUploadPreviewModal()">Cancel</button>
+          <button class="btn btn-primary btn-sm" onclick="confirmProductsServicesUpload()">Import All Products & Services</button>
         </div>
       </div>
     </div>
