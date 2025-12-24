@@ -1,0 +1,1905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UNOPS PDJ · Translation Management</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/primeicons@6.0.1/primeicons.css">
+<style>
+:root {
+--primary-50: #e6f7ff;
+--primary-100: #bae7ff;
+--primary-200: #7dd3fc;
+--primary-300: #38bdf8;
+--primary-400: #0ea5e9;
+--primary-500: #0092D1;
+--primary-600: #0284c7;
+--primary-700: #0369a1;
+--primary-800: #003a56;
+--surface-0: #ffffff;
+--surface-50: #f5f8fb;
+--surface-100: #ebf1f8;
+--surface-200: #dde8f2;
+--surface-300: #cfdfec;
+--surface-400: #b8c9d9;
+--surface-600: #95a7ba;
+--surface-800: #596170;
+--surface-900: #3b3e4a;
+--success-500: #4c9f38;
+--success-50: #d2e7cd;
+--info-400: #0092d1;
+--info-50: #bfe4f4;
+--warning-500: #e85c0e;
+--warning-50: #f9d6c3;
+--danger-500: #da291c;
+--danger-50: #f6cac6;
+--purple-500: #9333ea;
+--purple-50: #f3e8ff;
+--text-primary: var(--surface-900);
+--text-secondary: var(--surface-800);
+--text-muted: var(--surface-600);
+--spacing-xs: 6px;
+--spacing-sm: 12px;
+--spacing-md: 20px;
+--spacing-lg: 28px;
+--spacing-xl: 36px;
+--spacing-2xl: 48px;
+--radius-sm: 4px;
+--radius-md: 6px;
+--radius-lg: 8px;
+--radius-xl: 16px;
+--shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+--shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+--shadow-md: 0 4px 6px rgba(0, 0, 0, 0.08);
+--shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+--shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+font-family: 'Lato', 'Noto Sans', system-ui, sans-serif;
+background: var(--surface-50);
+color: var(--text-primary);
+line-height: 1.5;
+min-height: 100vh;
+}
+
+/* Header */
+.header {
+background: var(--surface-0);
+border-bottom: 1px solid var(--surface-200);
+position: sticky;
+top: 0;
+z-index: 100;
+}
+.header-top {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: var(--spacing-md) var(--spacing-xl);
+}
+.logo-container {
+display: flex;
+align-items: center;
+gap: var(--spacing-md);
+}
+.logo {
+font-weight: 700;
+font-size: 20px;
+letter-spacing: 0.12em;
+color: var(--primary-500);
+}
+.portal-badge {
+background: var(--primary-500);
+color: white;
+font-size: 12px;
+font-weight: 600;
+padding: 4px 12px;
+border-radius: 4px;
+text-transform: uppercase;
+letter-spacing: 0.05em;
+}
+.header-actions {
+display: flex;
+align-items: center;
+gap: var(--spacing-md);
+margin-left: auto;
+margin-right: var(--spacing-lg);
+}
+.header-action-btn {
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 8px;
+background: transparent;
+border: none;
+border-radius: var(--radius-md);
+cursor: pointer;
+transition: all 0.2s ease;
+position: relative;
+}
+.header-action-btn:hover {
+background: var(--surface-100);
+transform: scale(1.05);
+}
+.header-action-btn i {
+font-size: 20px;
+color: var(--text-muted);
+transition: color 0.2s ease;
+}
+.header-action-btn:hover i { color: var(--primary-500); }
+.notification-badge {
+position: absolute;
+top: -4px;
+right: -4px;
+background: var(--danger-500);
+color: white;
+font-size: 10px;
+font-weight: 700;
+min-width: 18px;
+height: 18px;
+border-radius: 9px;
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 0 5px;
+border: 2px solid white;
+}
+.ai-icon-wrapper {
+width: 24px;
+height: 24px;
+background: linear-gradient(135deg, #8b5cf6, #6366f1);
+border-radius: 6px;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+.ai-icon-wrapper i { font-size: 14px; color: white !important; }
+.user-menu {
+display: flex;
+align-items: center;
+gap: var(--spacing-md);
+}
+.user-info { text-align: right; }
+.user-role { font-size: 12px; color: var(--text-muted); }
+.user-name { font-size: 14px; font-weight: 500; color: var(--text-primary); }
+.user-avatar {
+width: 36px;
+height: 36px;
+border-radius: 50%;
+background: var(--primary-100);
+display: flex;
+align-items: center;
+justify-content: center;
+font-weight: 600;
+color: var(--primary-600);
+cursor: pointer;
+}
+
+/* App Container */
+.app-container {
+display: flex;
+min-height: calc(100vh - 65px);
+}
+
+/* Sidebar */
+.sidebar {
+width: 280px;
+min-width: 280px;
+background-color: #0192D1;
+color: white;
+display: flex;
+flex-direction: column;
+}
+.sidebar-menu {
+flex: 1;
+padding: 20px 0;
+}
+.menu-section { margin-bottom: var(--spacing-lg); }
+.menu-section-title {
+padding: 0 20px 15px 20px;
+font-size: 20px;
+font-weight: bold;
+color: white;
+font-family: 'Lato', sans-serif;
+margin-bottom: var(--spacing-sm);
+border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+.menu-item {
+display: flex;
+align-items: center;
+gap: 12px;
+padding: 12px 20px;
+color: white;
+text-decoration: none;
+font-size: 16px;
+font-weight: normal;
+font-family: 'Lato', sans-serif;
+transition: all 0.2s ease;
+cursor: pointer;
+margin: 0 10px;
+border-radius: 5px;
+}
+.menu-item:hover { background-color: rgba(255, 255, 255, 0.1); }
+.menu-item.active { background-color: #006599; }
+.menu-icon {
+font-size: 18px;
+width: 20px;
+text-align: center;
+flex-shrink: 0;
+}
+.sidebar-footer {
+padding: 20px;
+border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+.sidebar-footer-link {
+display: flex;
+align-items: center;
+gap: 12px;
+color: rgba(255, 255, 255, 0.8);
+font-size: 14px;
+text-decoration: none;
+padding: 8px 0;
+transition: color 0.2s;
+cursor: pointer;
+}
+.sidebar-footer-link:hover { color: white; }
+
+/* Main Content */
+.main-content {
+flex: 1;
+padding: var(--spacing-xl);
+overflow-y: auto;
+background: var(--surface-50);
+}
+
+/* Page Header */
+.page-header {
+display: flex;
+align-items: flex-start;
+justify-content: space-between;
+margin-bottom: var(--spacing-xl);
+}
+.page-title {
+font-size: 28px;
+font-weight: 600;
+color: var(--text-primary);
+margin-bottom: var(--spacing-xs);
+}
+.page-subtitle {
+font-size: 14px;
+color: var(--text-secondary);
+}
+.page-actions {
+display: flex;
+gap: var(--spacing-sm);
+}
+
+/* Language Selector Card */
+.language-selector-card {
+background: var(--surface-0);
+border-radius: var(--radius-lg);
+border: 1px solid var(--surface-200);
+box-shadow: var(--shadow-card);
+padding: var(--spacing-lg);
+margin-bottom: var(--spacing-xl);
+display: flex;
+align-items: center;
+gap: var(--spacing-xl);
+flex-wrap: wrap;
+}
+.language-selector-group {
+display: flex;
+align-items: center;
+gap: var(--spacing-md);
+}
+.language-selector-label {
+font-size: 14px;
+font-weight: 500;
+color: var(--text-secondary);
+}
+.language-select {
+padding: 10px 40px 10px 14px;
+border: 1px solid var(--surface-200);
+border-radius: var(--radius-sm);
+font-size: 14px;
+font-family: inherit;
+background: var(--surface-0);
+cursor: pointer;
+min-width: 200px;
+appearance: none;
+background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23596170' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+background-repeat: no-repeat;
+background-position: right 14px center;
+}
+.language-select:focus {
+outline: none;
+border-color: var(--primary-500);
+box-shadow: 0 0 0 3px var(--primary-50);
+}
+.language-flag {
+font-size: 24px;
+}
+.progress-indicator {
+display: flex;
+align-items: center;
+gap: var(--spacing-md);
+margin-left: auto;
+}
+.progress-bar-container {
+width: 200px;
+height: 8px;
+background: var(--surface-200);
+border-radius: 4px;
+overflow: hidden;
+}
+.progress-bar-fill {
+height: 100%;
+background: var(--success-500);
+border-radius: 4px;
+transition: width 0.3s ease;
+}
+.progress-text {
+font-size: 14px;
+font-weight: 600;
+color: var(--text-primary);
+}
+.progress-label {
+font-size: 12px;
+color: var(--text-muted);
+}
+
+/* Content Layout */
+.content-layout {
+display: grid;
+grid-template-columns: 280px 1fr;
+gap: var(--spacing-xl);
+}
+@media (max-width: 1100px) {
+.content-layout { grid-template-columns: 1fr; }
+}
+
+/* Categories Sidebar */
+.categories-card {
+background: var(--surface-0);
+border-radius: var(--radius-lg);
+border: 1px solid var(--surface-200);
+box-shadow: var(--shadow-card);
+height: fit-content;
+position: sticky;
+top: 100px;
+}
+.categories-header {
+padding: var(--spacing-md) var(--spacing-lg);
+border-bottom: 1px solid var(--surface-200);
+font-size: 14px;
+font-weight: 600;
+color: var(--text-primary);
+}
+.categories-list {
+padding: var(--spacing-sm);
+}
+.category-item {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: var(--spacing-sm) var(--spacing-md);
+border-radius: var(--radius-sm);
+cursor: pointer;
+transition: all 0.2s;
+margin-bottom: 2px;
+}
+.category-item:hover {
+background: var(--surface-50);
+}
+.category-item.active {
+background: var(--primary-50);
+color: var(--primary-600);
+}
+.category-item-left {
+display: flex;
+align-items: center;
+gap: var(--spacing-sm);
+}
+.category-item i {
+font-size: 16px;
+width: 20px;
+}
+.category-item span {
+font-size: 14px;
+}
+.category-progress {
+display: flex;
+align-items: center;
+gap: 6px;
+}
+.category-progress-bar {
+width: 40px;
+height: 4px;
+background: var(--surface-200);
+border-radius: 2px;
+overflow: hidden;
+}
+.category-progress-fill {
+height: 100%;
+border-radius: 2px;
+}
+.category-progress-text {
+font-size: 11px;
+color: var(--text-muted);
+min-width: 32px;
+text-align: right;
+}
+
+/* Translation Panel */
+.translation-panel {
+background: var(--surface-0);
+border-radius: var(--radius-lg);
+border: 1px solid var(--surface-200);
+box-shadow: var(--shadow-card);
+}
+.translation-panel-header {
+padding: var(--spacing-lg);
+border-bottom: 1px solid var(--surface-200);
+display: flex;
+align-items: center;
+justify-content: space-between;
+flex-wrap: wrap;
+gap: var(--spacing-md);
+}
+.translation-panel-title {
+font-size: 18px;
+font-weight: 600;
+color: var(--text-primary);
+display: flex;
+align-items: center;
+gap: var(--spacing-sm);
+}
+.translation-panel-title i {
+color: var(--primary-500);
+}
+.translation-filters {
+display: flex;
+align-items: center;
+gap: var(--spacing-sm);
+}
+.search-box {
+position: relative;
+}
+.search-box i {
+position: absolute;
+left: 12px;
+top: 50%;
+transform: translateY(-50%);
+color: var(--text-muted);
+font-size: 14px;
+}
+.search-box input {
+padding: 8px 12px 8px 36px;
+border: 1px solid var(--surface-200);
+border-radius: var(--radius-sm);
+font-size: 13px;
+width: 220px;
+}
+.search-box input:focus {
+outline: none;
+border-color: var(--primary-500);
+}
+.filter-select {
+padding: 8px 12px;
+border: 1px solid var(--surface-200);
+border-radius: var(--radius-sm);
+font-size: 13px;
+background: var(--surface-0);
+cursor: pointer;
+}
+
+/* Translation List */
+.translation-list {
+max-height: calc(100vh - 380px);
+overflow-y: auto;
+}
+.translation-item {
+padding: var(--spacing-lg);
+border-bottom: 1px solid var(--surface-100);
+transition: background 0.2s;
+}
+.translation-item:hover {
+background: var(--surface-50);
+}
+.translation-item:last-child {
+border-bottom: none;
+}
+.translation-item-header {
+display: flex;
+align-items: flex-start;
+justify-content: space-between;
+margin-bottom: var(--spacing-sm);
+}
+.translation-key {
+font-size: 12px;
+font-family: 'Consolas', 'Monaco', monospace;
+color: var(--text-muted);
+background: var(--surface-100);
+padding: 2px 8px;
+border-radius: var(--radius-sm);
+}
+.translation-status {
+display: flex;
+align-items: center;
+gap: var(--spacing-xs);
+}
+.status-dot {
+width: 8px;
+height: 8px;
+border-radius: 50%;
+}
+.status-dot.translated { background: var(--success-500); }
+.status-dot.pending { background: var(--warning-500); }
+.status-dot.empty { background: var(--surface-400); }
+.status-text {
+font-size: 11px;
+color: var(--text-muted);
+}
+.translation-content {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: var(--spacing-lg);
+}
+@media (max-width: 900px) {
+.translation-content { grid-template-columns: 1fr; }
+}
+.translation-source, .translation-target {
+}
+.translation-label {
+font-size: 12px;
+font-weight: 500;
+color: var(--text-muted);
+margin-bottom: 6px;
+display: flex;
+align-items: center;
+gap: 6px;
+}
+.translation-label .flag {
+font-size: 14px;
+}
+.translation-source-text {
+font-size: 14px;
+color: var(--text-primary);
+padding: 10px 14px;
+background: var(--surface-50);
+border-radius: var(--radius-sm);
+border: 1px solid var(--surface-200);
+min-height: 44px;
+}
+.translation-input-wrapper {
+position: relative;
+}
+.translation-input {
+width: 100%;
+padding: 10px 14px;
+border: 1px solid var(--surface-200);
+border-radius: var(--radius-sm);
+font-size: 14px;
+font-family: inherit;
+resize: none;
+min-height: 44px;
+transition: all 0.2s;
+}
+.translation-input:focus {
+outline: none;
+border-color: var(--primary-500);
+box-shadow: 0 0 0 3px var(--primary-50);
+}
+.translation-input.has-suggestion {
+border-color: var(--purple-500);
+background: var(--purple-50);
+}
+.translation-actions {
+display: flex;
+align-items: center;
+gap: var(--spacing-xs);
+margin-top: var(--spacing-sm);
+}
+.ai-suggest-btn {
+display: inline-flex;
+align-items: center;
+gap: 6px;
+padding: 6px 12px;
+background: linear-gradient(135deg, #8b5cf6, #6366f1);
+color: white;
+border: none;
+border-radius: var(--radius-sm);
+font-size: 12px;
+font-weight: 500;
+cursor: pointer;
+transition: all 0.2s;
+}
+.ai-suggest-btn:hover {
+transform: translateY(-1px);
+box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+}
+.ai-suggest-btn:disabled {
+opacity: 0.5;
+cursor: not-allowed;
+transform: none;
+box-shadow: none;
+}
+.action-btn {
+padding: 6px 10px;
+border: 1px solid var(--surface-200);
+background: var(--surface-0);
+border-radius: var(--radius-sm);
+font-size: 12px;
+cursor: pointer;
+transition: all 0.2s;
+display: inline-flex;
+align-items: center;
+gap: 4px;
+}
+.action-btn:hover {
+background: var(--surface-100);
+}
+.action-btn.accept {
+border-color: var(--success-500);
+color: var(--success-500);
+}
+.action-btn.accept:hover {
+background: var(--success-50);
+}
+.action-btn.reject {
+border-color: var(--danger-500);
+color: var(--danger-500);
+}
+.action-btn.reject:hover {
+background: var(--danger-50);
+}
+
+/* AI Suggestion Box */
+.ai-suggestion-box {
+margin-top: var(--spacing-sm);
+padding: var(--spacing-md);
+background: linear-gradient(135deg, rgba(139, 92, 246, 0.05), rgba(99, 102, 241, 0.05));
+border: 1px solid rgba(139, 92, 246, 0.2);
+border-radius: var(--radius-md);
+display: none;
+}
+.ai-suggestion-box.show {
+display: block;
+animation: fadeIn 0.3s ease;
+}
+.ai-suggestion-header {
+display: flex;
+align-items: center;
+gap: var(--spacing-sm);
+margin-bottom: var(--spacing-sm);
+}
+.ai-suggestion-badge {
+display: inline-flex;
+align-items: center;
+gap: 4px;
+padding: 3px 8px;
+background: linear-gradient(135deg, #8b5cf6, #6366f1);
+color: white;
+border-radius: var(--radius-sm);
+font-size: 11px;
+font-weight: 600;
+}
+.ai-suggestion-text {
+font-size: 14px;
+color: var(--text-primary);
+padding: 10px 14px;
+background: white;
+border-radius: var(--radius-sm);
+border: 1px dashed rgba(139, 92, 246, 0.3);
+margin-bottom: var(--spacing-sm);
+}
+.ai-suggestion-actions {
+display: flex;
+gap: var(--spacing-sm);
+}
+.ai-suggestion-note {
+font-size: 11px;
+color: var(--text-muted);
+margin-top: var(--spacing-sm);
+display: flex;
+align-items: center;
+gap: 4px;
+}
+
+/* Buttons */
+.btn {
+display: inline-flex;
+align-items: center;
+gap: 6px;
+padding: 10px 16px;
+border-radius: var(--radius-sm);
+font-size: 14px;
+font-weight: 500;
+font-family: inherit;
+cursor: pointer;
+border: none;
+transition: all 0.2s;
+text-decoration: none;
+}
+.btn-primary { background: var(--primary-500); color: white; }
+.btn-primary:hover { background: var(--primary-600); }
+.btn-secondary {
+background: var(--surface-100);
+color: var(--text-primary);
+border: 1px solid var(--surface-200);
+}
+.btn-secondary:hover { background: var(--surface-200); }
+.btn-ghost { background: transparent; color: var(--text-secondary); }
+.btn-ghost:hover { background: var(--surface-100); }
+.btn-success { background: var(--success-500); color: white; }
+.btn-success:hover { background: #3d8a2e; }
+.btn-sm { padding: 6px 12px; font-size: 13px; }
+.btn i { font-size: 14px; }
+
+/* Modal */
+.modal-overlay {
+position: fixed;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background: rgba(0, 0, 0, 0.5);
+display: flex;
+align-items: center;
+justify-content: center;
+z-index: 300;
+opacity: 0;
+visibility: hidden;
+transition: all 0.3s ease;
+}
+.modal-overlay.open {
+opacity: 1;
+visibility: visible;
+}
+.modal {
+background: var(--surface-0);
+border-radius: var(--radius-lg);
+box-shadow: var(--shadow-xl);
+width: 100%;
+max-width: 560px;
+max-height: 90vh;
+overflow: hidden;
+transform: translateY(20px) scale(0.95);
+transition: transform 0.3s ease;
+}
+.modal-overlay.open .modal {
+transform: translateY(0) scale(1);
+}
+.modal-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: var(--spacing-lg);
+border-bottom: 1px solid var(--surface-200);
+background: var(--surface-50);
+}
+.modal-title {
+font-size: 18px;
+font-weight: 600;
+color: var(--text-primary);
+display: flex;
+align-items: center;
+gap: var(--spacing-sm);
+}
+.modal-title i { color: var(--primary-500); }
+.modal-close {
+width: 32px;
+height: 32px;
+border: none;
+background: transparent;
+border-radius: var(--radius-sm);
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+color: var(--text-muted);
+transition: all 0.2s;
+}
+.modal-close:hover {
+background: var(--surface-200);
+color: var(--text-primary);
+}
+.modal-body {
+padding: var(--spacing-lg);
+overflow-y: auto;
+max-height: calc(90vh - 140px);
+}
+.modal-footer {
+display: flex;
+align-items: center;
+justify-content: flex-end;
+gap: var(--spacing-sm);
+padding: var(--spacing-lg);
+border-top: 1px solid var(--surface-200);
+background: var(--surface-50);
+}
+
+/* Form Elements */
+.form-group { margin-bottom: var(--spacing-lg); }
+.form-group:last-child { margin-bottom: 0; }
+.form-label {
+display: block;
+font-size: 13px;
+font-weight: 500;
+color: var(--text-secondary);
+margin-bottom: 6px;
+}
+.form-input {
+width: 100%;
+padding: 10px 14px;
+border: 1px solid var(--surface-200);
+border-radius: var(--radius-sm);
+font-size: 14px;
+font-family: inherit;
+transition: all 0.2s;
+}
+.form-input:focus {
+outline: none;
+border-color: var(--primary-500);
+box-shadow: 0 0 0 3px var(--primary-50);
+}
+.form-hint {
+font-size: 12px;
+color: var(--text-muted);
+margin-top: 4px;
+}
+
+/* Upload Zone */
+.upload-zone {
+border: 2px dashed var(--surface-300);
+border-radius: var(--radius-lg);
+padding: var(--spacing-2xl);
+text-align: center;
+transition: all 0.2s;
+cursor: pointer;
+}
+.upload-zone:hover {
+border-color: var(--primary-400);
+background: var(--primary-50);
+}
+.upload-zone.dragover {
+border-color: var(--primary-500);
+background: var(--primary-50);
+}
+.upload-zone i {
+font-size: 48px;
+color: var(--surface-400);
+margin-bottom: var(--spacing-md);
+}
+.upload-zone-text {
+font-size: 14px;
+color: var(--text-secondary);
+margin-bottom: var(--spacing-sm);
+}
+.upload-zone-hint {
+font-size: 12px;
+color: var(--text-muted);
+}
+
+/* Alert Box */
+.alert-box {
+display: flex;
+align-items: flex-start;
+gap: var(--spacing-md);
+padding: var(--spacing-md);
+border-radius: var(--radius-md);
+margin-bottom: var(--spacing-lg);
+}
+.alert-box.info {
+background: var(--info-50);
+border: 1px solid var(--info-400);
+}
+.alert-box.warning {
+background: var(--warning-50);
+border: 1px solid var(--warning-500);
+}
+.alert-box i {
+font-size: 18px;
+flex-shrink: 0;
+}
+.alert-box.info i { color: var(--info-400); }
+.alert-box.warning i { color: var(--warning-500); }
+.alert-box-content {
+flex: 1;
+font-size: 13px;
+color: var(--text-secondary);
+line-height: 1.5;
+}
+.alert-box-title {
+font-weight: 600;
+color: var(--text-primary);
+margin-bottom: 2px;
+}
+
+/* Toast */
+.toast {
+position: fixed;
+bottom: 24px;
+right: 24px;
+background: var(--surface-900);
+color: white;
+padding: 16px 24px;
+border-radius: var(--radius-md);
+box-shadow: var(--shadow-lg);
+display: flex;
+align-items: center;
+gap: 12px;
+z-index: 400;
+transform: translateY(100px);
+opacity: 0;
+transition: all 0.3s ease;
+}
+.toast.show {
+transform: translateY(0);
+opacity: 1;
+}
+.toast i { font-size: 20px; }
+.toast.success i { color: var(--success-500); }
+.toast.error i { color: var(--danger-500); }
+
+/* Pagination */
+.translation-panel-footer {
+padding: var(--spacing-md) var(--spacing-lg);
+border-top: 1px solid var(--surface-200);
+display: flex;
+align-items: center;
+justify-content: space-between;
+background: var(--surface-50);
+}
+.pagination-info {
+font-size: 13px;
+color: var(--text-muted);
+}
+.pagination-controls {
+display: flex;
+align-items: center;
+gap: 4px;
+}
+.pagination-btn {
+width: 32px;
+height: 32px;
+border: 1px solid var(--surface-200);
+background: var(--surface-0);
+border-radius: var(--radius-sm);
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+color: var(--text-secondary);
+font-size: 13px;
+transition: all 0.2s;
+}
+.pagination-btn:hover:not(:disabled) {
+border-color: var(--primary-500);
+color: var(--primary-500);
+}
+.pagination-btn.active {
+background: var(--primary-500);
+border-color: var(--primary-500);
+color: white;
+}
+.pagination-btn:disabled {
+opacity: 0.5;
+cursor: not-allowed;
+}
+
+/* Animations */
+@keyframes fadeIn {
+from { opacity: 0; transform: translateY(-10px); }
+to { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadeIn 0.3s ease-out; }
+
+@keyframes pulse {
+0%, 100% { opacity: 1; }
+50% { opacity: 0.5; }
+}
+.loading { animation: pulse 1.5s infinite; }
+
+/* Status Badge */
+.status-badge {
+display: inline-flex;
+align-items: center;
+gap: 4px;
+padding: 4px 10px;
+border-radius: 999px;
+font-size: 12px;
+font-weight: 500;
+}
+.status-badge.success { background: var(--success-50); color: var(--success-500); }
+.status-badge.warning { background: var(--warning-50); color: var(--warning-500); }
+.status-badge.info { background: var(--info-50); color: var(--info-400); }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+<div class="header-top">
+<div class="logo-container">
+<span class="logo">UNOPS</span>
+<span class="portal-badge">Admin</span>
+</div>
+<div class="header-actions">
+<button class="header-action-btn" title="AI Assistant">
+<div class="ai-icon-wrapper">
+<i class="pi pi-sparkles"></i>
+</div>
+</button>
+<button class="header-action-btn" title="Notifications">
+<i class="pi pi-bell"></i>
+<span class="notification-badge">2</span>
+</button>
+<button class="header-action-btn" title="Help & Support">
+<i class="pi pi-question-circle"></i>
+</button>
+<button class="header-action-btn" title="Language">
+<span style="font-size: 16px;">🇬🇧</span>
+</button>
+</div>
+<div class="user-menu">
+<div class="user-info">
+<div class="user-role">System Administrator</div>
+<div class="user-name">Admin User</div>
+</div>
+<div class="user-avatar">AU</div>
+</div>
+</div>
+</header>
+
+<!-- App Container -->
+<div class="app-container">
+<!-- Sidebar -->
+<aside class="sidebar">
+<nav class="sidebar-menu">
+<div class="menu-section">
+<div class="menu-section-title">Administration</div>
+<a class="menu-item" href="#">
+<i class="pi pi-home menu-icon"></i>
+<span>Dashboard</span>
+</a>
+<a class="menu-item" href="#">
+<i class="pi pi-users menu-icon"></i>
+<span>User Management</span>
+</a>
+<a class="menu-item" href="#">
+<i class="pi pi-sitemap menu-icon"></i>
+<span>Roles & Permissions</span>
+</a>
+</div>
+<div class="menu-section">
+<div class="menu-section-title">System Settings</div>
+<a class="menu-item" href="#">
+<i class="pi pi-cog menu-icon"></i>
+<span>General Settings</span>
+</a>
+<a class="menu-item active">
+<i class="pi pi-language menu-icon"></i>
+<span>Translation</span>
+</a>
+<a class="menu-item" href="#">
+<i class="pi pi-palette menu-icon"></i>
+<span>Branding</span>
+</a>
+<a class="menu-item" href="#">
+<i class="pi pi-envelope menu-icon"></i>
+<span>Email Templates</span>
+</a>
+<a class="menu-item" href="#">
+<i class="pi pi-lock menu-icon"></i>
+<span>Security</span>
+</a>
+</div>
+<div class="menu-section">
+<div class="menu-section-title">Data Management</div>
+<a class="menu-item" href="#">
+<i class="pi pi-database menu-icon"></i>
+<span>Master Data</span>
+</a>
+<a class="menu-item" href="#">
+<i class="pi pi-history menu-icon"></i>
+<span>Audit Logs</span>
+</a>
+</div>
+</nav>
+<div class="sidebar-footer">
+<a class="sidebar-footer-link" href="#">
+<i class="pi pi-arrow-left"></i>
+<span>Back to Portal</span>
+</a>
+</div>
+</aside>
+
+<!-- Main Content -->
+<main class="main-content">
+<!-- Page Header -->
+<div class="page-header fade-in">
+<div>
+<h1 class="page-title">Translation Management</h1>
+<p class="page-subtitle">Manage translations for the procurement system. All translations require manual review for legal accuracy.</p>
+</div>
+<div class="page-actions">
+<button class="btn btn-secondary" onclick="openModal('downloadModal')">
+<i class="pi pi-download"></i> Download Template
+</button>
+<button class="btn btn-secondary" onclick="openModal('uploadModal')">
+<i class="pi pi-upload"></i> Upload Translations
+</button>
+<button class="btn btn-primary" onclick="publishTranslations()">
+<i class="pi pi-check"></i> Publish Changes
+</button>
+</div>
+</div>
+
+<!-- Language Selector -->
+<div class="language-selector-card fade-in">
+<div class="language-selector-group">
+<span class="language-flag">🇬🇧</span>
+<div>
+<div class="language-selector-label">Source Language</div>
+<div style="font-weight: 600;">English (Default)</div>
+</div>
+</div>
+<div style="font-size: 24px; color: var(--surface-400);"><i class="pi pi-arrow-right"></i></div>
+<div class="language-selector-group">
+<span class="language-flag" id="targetFlag">🇫🇷</span>
+<div>
+<div class="language-selector-label">Target Language</div>
+<select class="language-select" id="targetLanguage" onchange="changeTargetLanguage()">
+<option value="fr" data-flag="🇫🇷">French (Français)</option>
+<option value="es" data-flag="🇪🇸">Spanish (Español)</option>
+<option value="ar" data-flag="🇸🇦">Arabic (العربية)</option>
+<option value="pt" data-flag="🇵🇹">Portuguese (Português)</option>
+<option value="zh" data-flag="🇨🇳">Chinese (中文)</option>
+<option value="ru" data-flag="🇷🇺">Russian (Русский)</option>
+</select>
+</div>
+</div>
+<div class="progress-indicator">
+<div>
+<div class="progress-text"><span id="progressPercent">68</span>% Complete</div>
+<div class="progress-label"><span id="translatedCount">245</span> of <span id="totalCount">360</span> strings</div>
+</div>
+<div class="progress-bar-container">
+<div class="progress-bar-fill" id="progressBar" style="width: 68%;"></div>
+</div>
+</div>
+</div>
+
+<!-- Content Layout -->
+<div class="content-layout">
+<!-- Categories Sidebar -->
+<div class="categories-card fade-in">
+<div class="categories-header">Categories</div>
+<div class="categories-list">
+<div class="category-item active" onclick="selectCategory(this, 'common')" data-category="common">
+<div class="category-item-left">
+<i class="pi pi-globe"></i>
+<span>Common Labels</span>
+</div>
+<div class="category-progress">
+<div class="category-progress-bar"><div class="category-progress-fill" style="width: 85%; background: var(--success-500);"></div></div>
+<span class="category-progress-text">85%</span>
+</div>
+</div>
+<div class="category-item" onclick="selectCategory(this, 'navigation')" data-category="navigation">
+<div class="category-item-left">
+<i class="pi pi-compass"></i>
+<span>Navigation</span>
+</div>
+<div class="category-progress">
+<div class="category-progress-bar"><div class="category-progress-fill" style="width: 100%; background: var(--success-500);"></div></div>
+<span class="category-progress-text">100%</span>
+</div>
+</div>
+<div class="category-item" onclick="selectCategory(this, 'tender')" data-category="tender">
+<div class="category-item-left">
+<i class="pi pi-file-edit"></i>
+<span>Tender Management</span>
+</div>
+<div class="category-progress">
+<div class="category-progress-bar"><div class="category-progress-fill" style="width: 72%; background: var(--warning-500);"></div></div>
+<span class="category-progress-text">72%</span>
+</div>
+</div>
+<div class="category-item" onclick="selectCategory(this, 'supplier')" data-category="supplier">
+<div class="category-item-left">
+<i class="pi pi-users"></i>
+<span>Supplier Portal</span>
+</div>
+<div class="category-progress">
+<div class="category-progress-bar"><div class="category-progress-fill" style="width: 65%; background: var(--warning-500);"></div></div>
+<span class="category-progress-text">65%</span>
+</div>
+</div>
+<div class="category-item" onclick="selectCategory(this, 'evaluation')" data-category="evaluation">
+<div class="category-item-left">
+<i class="pi pi-chart-bar"></i>
+<span>Evaluation</span>
+</div>
+<div class="category-progress">
+<div class="category-progress-bar"><div class="category-progress-fill" style="width: 58%; background: var(--warning-500);"></div></div>
+<span class="category-progress-text">58%</span>
+</div>
+</div>
+<div class="category-item" onclick="selectCategory(this, 'contracts')" data-category="contracts">
+<div class="category-item-left">
+<i class="pi pi-file"></i>
+<span>Contracts</span>
+</div>
+<div class="category-progress">
+<div class="category-progress-bar"><div class="category-progress-fill" style="width: 45%; background: var(--danger-500);"></div></div>
+<span class="category-progress-text">45%</span>
+</div>
+</div>
+<div class="category-item" onclick="selectCategory(this, 'legal')" data-category="legal">
+<div class="category-item-left">
+<i class="pi pi-briefcase"></i>
+<span>Legal Terms</span>
+</div>
+<div class="category-progress">
+<div class="category-progress-bar"><div class="category-progress-fill" style="width: 30%; background: var(--danger-500);"></div></div>
+<span class="category-progress-text">30%</span>
+</div>
+</div>
+<div class="category-item" onclick="selectCategory(this, 'notifications')" data-category="notifications">
+<div class="category-item-left">
+<i class="pi pi-bell"></i>
+<span>Notifications</span>
+</div>
+<div class="category-progress">
+<div class="category-progress-bar"><div class="category-progress-fill" style="width: 80%; background: var(--success-500);"></div></div>
+<span class="category-progress-text">80%</span>
+</div>
+</div>
+<div class="category-item" onclick="selectCategory(this, 'errors')" data-category="errors">
+<div class="category-item-left">
+<i class="pi pi-exclamation-triangle"></i>
+<span>Error Messages</span>
+</div>
+<div class="category-progress">
+<div class="category-progress-bar"><div class="category-progress-fill" style="width: 55%; background: var(--warning-500);"></div></div>
+<span class="category-progress-text">55%</span>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Translation Panel -->
+<div class="translation-panel fade-in">
+<div class="translation-panel-header">
+<div class="translation-panel-title">
+<i class="pi pi-globe"></i>
+<span id="currentCategoryTitle">Common Labels</span>
+<span class="status-badge info" id="categoryCount">42 strings</span>
+</div>
+<div class="translation-filters">
+<div class="search-box">
+<i class="pi pi-search"></i>
+<input type="text" placeholder="Search translations..." id="searchInput" oninput="filterTranslations()">
+</div>
+<select class="filter-select" id="statusFilter" onchange="filterTranslations()">
+<option value="all">All Status</option>
+<option value="translated">Translated</option>
+<option value="pending">Pending Review</option>
+<option value="empty">Not Translated</option>
+</select>
+<button class="btn btn-sm btn-ghost" onclick="suggestAllAI()" title="Get AI suggestions for empty fields">
+<i class="pi pi-sparkles"></i> AI Suggest All
+</button>
+</div>
+</div>
+
+<div class="translation-list" id="translationList">
+<!-- Translation Item 1 - Translated -->
+<div class="translation-item" data-status="translated" data-key="btn.submit">
+<div class="translation-item-header">
+<span class="translation-key">btn.submit</span>
+<div class="translation-status">
+<span class="status-dot translated"></span>
+<span class="status-text">Translated</span>
+</div>
+</div>
+<div class="translation-content">
+<div class="translation-source">
+<div class="translation-label"><span class="flag">🇬🇧</span> English (Source)</div>
+<div class="translation-source-text">Submit</div>
+</div>
+<div class="translation-target">
+<div class="translation-label"><span class="flag">🇫🇷</span> French (Target)</div>
+<div class="translation-input-wrapper">
+<input type="text" class="translation-input" value="Soumettre" onchange="markAsModified(this)">
+</div>
+</div>
+</div>
+</div>
+
+<!-- Translation Item 2 - Translated -->
+<div class="translation-item" data-status="translated" data-key="btn.cancel">
+<div class="translation-item-header">
+<span class="translation-key">btn.cancel</span>
+<div class="translation-status">
+<span class="status-dot translated"></span>
+<span class="status-text">Translated</span>
+</div>
+</div>
+<div class="translation-content">
+<div class="translation-source">
+<div class="translation-label"><span class="flag">🇬🇧</span> English (Source)</div>
+<div class="translation-source-text">Cancel</div>
+</div>
+<div class="translation-target">
+<div class="translation-label"><span class="flag">🇫🇷</span> French (Target)</div>
+<div class="translation-input-wrapper">
+<input type="text" class="translation-input" value="Annuler" onchange="markAsModified(this)">
+</div>
+</div>
+</div>
+</div>
+
+<!-- Translation Item 3 - Pending AI Review -->
+<div class="translation-item" data-status="pending" data-key="btn.save_draft">
+<div class="translation-item-header">
+<span class="translation-key">btn.save_draft</span>
+<div class="translation-status">
+<span class="status-dot pending"></span>
+<span class="status-text">Pending Review</span>
+</div>
+</div>
+<div class="translation-content">
+<div class="translation-source">
+<div class="translation-label"><span class="flag">🇬🇧</span> English (Source)</div>
+<div class="translation-source-text">Save as Draft</div>
+</div>
+<div class="translation-target">
+<div class="translation-label"><span class="flag">🇫🇷</span> French (Target)</div>
+<div class="translation-input-wrapper">
+<input type="text" class="translation-input has-suggestion" value="Enregistrer comme brouillon" onchange="markAsModified(this)">
+</div>
+<div class="ai-suggestion-box show" id="suggestion-3">
+<div class="ai-suggestion-header">
+<span class="ai-suggestion-badge"><i class="pi pi-sparkles"></i> AI Suggestion</span>
+</div>
+<div class="ai-suggestion-text">Enregistrer comme brouillon</div>
+<div class="ai-suggestion-actions">
+<button class="action-btn accept" onclick="acceptSuggestion('3')"><i class="pi pi-check"></i> Accept</button>
+<button class="action-btn reject" onclick="rejectSuggestion('3')"><i class="pi pi-times"></i> Reject</button>
+<button class="action-btn" onclick="editSuggestion('3')"><i class="pi pi-pencil"></i> Edit</button>
+</div>
+<div class="ai-suggestion-note">
+<i class="pi pi-info-circle"></i> Review carefully - legal terms require human verification
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Translation Item 4 - Empty -->
+<div class="translation-item" data-status="empty" data-key="label.tender_reference">
+<div class="translation-item-header">
+<span class="translation-key">label.tender_reference</span>
+<div class="translation-status">
+<span class="status-dot empty"></span>
+<span class="status-text">Not Translated</span>
+</div>
+</div>
+<div class="translation-content">
+<div class="translation-source">
+<div class="translation-label"><span class="flag">🇬🇧</span> English (Source)</div>
+<div class="translation-source-text">Tender Reference Number</div>
+</div>
+<div class="translation-target">
+<div class="translation-label"><span class="flag">🇫🇷</span> French (Target)</div>
+<div class="translation-input-wrapper">
+<input type="text" class="translation-input" placeholder="Enter translation..." onchange="markAsModified(this)">
+</div>
+<div class="translation-actions">
+<button class="ai-suggest-btn" onclick="getAISuggestion(this, 'Tender Reference Number', '4')">
+<i class="pi pi-sparkles"></i> Get AI Suggestion
+</button>
+</div>
+<div class="ai-suggestion-box" id="suggestion-4"></div>
+</div>
+</div>
+</div>
+
+<!-- Translation Item 5 - Empty -->
+<div class="translation-item" data-status="empty" data-key="label.submission_deadline">
+<div class="translation-item-header">
+<span class="translation-key">label.submission_deadline</span>
+<div class="translation-status">
+<span class="status-dot empty"></span>
+<span class="status-text">Not Translated</span>
+</div>
+</div>
+<div class="translation-content">
+<div class="translation-source">
+<div class="translation-label"><span class="flag">🇬🇧</span> English (Source)</div>
+<div class="translation-source-text">Submission Deadline</div>
+</div>
+<div class="translation-target">
+<div class="translation-label"><span class="flag">🇫🇷</span> French (Target)</div>
+<div class="translation-input-wrapper">
+<input type="text" class="translation-input" placeholder="Enter translation..." onchange="markAsModified(this)">
+</div>
+<div class="translation-actions">
+<button class="ai-suggest-btn" onclick="getAISuggestion(this, 'Submission Deadline', '5')">
+<i class="pi pi-sparkles"></i> Get AI Suggestion
+</button>
+</div>
+<div class="ai-suggestion-box" id="suggestion-5"></div>
+</div>
+</div>
+</div>
+
+<!-- Translation Item 6 - Translated -->
+<div class="translation-item" data-status="translated" data-key="label.status">
+<div class="translation-item-header">
+<span class="translation-key">label.status</span>
+<div class="translation-status">
+<span class="status-dot translated"></span>
+<span class="status-text">Translated</span>
+</div>
+</div>
+<div class="translation-content">
+<div class="translation-source">
+<div class="translation-label"><span class="flag">🇬🇧</span> English (Source)</div>
+<div class="translation-source-text">Status</div>
+</div>
+<div class="translation-target">
+<div class="translation-label"><span class="flag">🇫🇷</span> French (Target)</div>
+<div class="translation-input-wrapper">
+<input type="text" class="translation-input" value="Statut" onchange="markAsModified(this)">
+</div>
+</div>
+</div>
+</div>
+
+<!-- Translation Item 7 - Empty (Legal) -->
+<div class="translation-item" data-status="empty" data-key="legal.terms_conditions">
+<div class="translation-item-header">
+<span class="translation-key">legal.terms_conditions</span>
+<div class="translation-status">
+<span class="status-dot empty"></span>
+<span class="status-text">Not Translated</span>
+</div>
+</div>
+<div class="translation-content">
+<div class="translation-source">
+<div class="translation-label"><span class="flag">🇬🇧</span> English (Source)</div>
+<div class="translation-source-text">Terms and Conditions</div>
+</div>
+<div class="translation-target">
+<div class="translation-label"><span class="flag">🇫🇷</span> French (Target)</div>
+<div class="translation-input-wrapper">
+<input type="text" class="translation-input" placeholder="Enter translation..." onchange="markAsModified(this)">
+</div>
+<div class="translation-actions">
+<button class="ai-suggest-btn" onclick="getAISuggestion(this, 'Terms and Conditions', '7')">
+<i class="pi pi-sparkles"></i> Get AI Suggestion
+</button>
+</div>
+<div class="ai-suggestion-box" id="suggestion-7"></div>
+</div>
+</div>
+</div>
+
+<!-- Translation Item 8 - Pending -->
+<div class="translation-item" data-status="pending" data-key="msg.confirm_submission">
+<div class="translation-item-header">
+<span class="translation-key">msg.confirm_submission</span>
+<div class="translation-status">
+<span class="status-dot pending"></span>
+<span class="status-text">Pending Review</span>
+</div>
+</div>
+<div class="translation-content">
+<div class="translation-source">
+<div class="translation-label"><span class="flag">🇬🇧</span> English (Source)</div>
+<div class="translation-source-text">Are you sure you want to submit this bid? This action cannot be undone.</div>
+</div>
+<div class="translation-target">
+<div class="translation-label"><span class="flag">🇫🇷</span> French (Target)</div>
+<div class="translation-input-wrapper">
+<textarea class="translation-input has-suggestion" rows="2" onchange="markAsModified(this)">Êtes-vous sûr de vouloir soumettre cette offre ? Cette action ne peut pas être annulée.</textarea>
+</div>
+<div class="ai-suggestion-box show" id="suggestion-8">
+<div class="ai-suggestion-header">
+<span class="ai-suggestion-badge"><i class="pi pi-sparkles"></i> AI Suggestion</span>
+</div>
+<div class="ai-suggestion-text">Êtes-vous sûr de vouloir soumettre cette offre ? Cette action ne peut pas être annulée.</div>
+<div class="ai-suggestion-actions">
+<button class="action-btn accept" onclick="acceptSuggestion('8')"><i class="pi pi-check"></i> Accept</button>
+<button class="action-btn reject" onclick="rejectSuggestion('8')"><i class="pi pi-times"></i> Reject</button>
+<button class="action-btn" onclick="editSuggestion('8')"><i class="pi pi-pencil"></i> Edit</button>
+</div>
+<div class="ai-suggestion-note">
+<i class="pi pi-info-circle"></i> Review carefully - legal terms require human verification
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="translation-panel-footer">
+<div class="pagination-info">Showing 1-8 of 42 strings</div>
+<div class="pagination-controls">
+<button class="pagination-btn" disabled><i class="pi pi-chevron-left"></i></button>
+<button class="pagination-btn active">1</button>
+<button class="pagination-btn">2</button>
+<button class="pagination-btn">3</button>
+<button class="pagination-btn">4</button>
+<button class="pagination-btn">5</button>
+<button class="pagination-btn"><i class="pi pi-chevron-right"></i></button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+
+<!-- Download Template Modal -->
+<div class="modal-overlay" id="downloadModal">
+<div class="modal">
+<div class="modal-header">
+<h3 class="modal-title"><i class="pi pi-download"></i> Download Translation Template</h3>
+<button class="modal-close" onclick="closeModal('downloadModal')"><i class="pi pi-times"></i></button>
+</div>
+<div class="modal-body">
+<div class="alert-box info">
+<i class="pi pi-info-circle"></i>
+<div class="alert-box-content">
+<div class="alert-box-title">Translation Template</div>
+Download a template file containing all translatable strings. Fill in the translations and upload the completed file.
+</div>
+</div>
+<div class="form-group">
+<label class="form-label">Select Language</label>
+<select class="form-input" id="downloadLanguage">
+<option value="fr">French (Français)</option>
+<option value="es">Spanish (Español)</option>
+<option value="ar">Arabic (العربية)</option>
+<option value="pt">Portuguese (Português)</option>
+<option value="zh">Chinese (中文)</option>
+<option value="ru">Russian (Русский)</option>
+</select>
+</div>
+<div class="form-group">
+<label class="form-label">File Format</label>
+<select class="form-input" id="downloadFormat">
+<option value="xlsx">Excel (.xlsx)</option>
+<option value="csv">CSV (.csv)</option>
+<option value="json">JSON (.json)</option>
+</select>
+</div>
+<div class="form-group">
+<label class="form-label">Include</label>
+<div style="display: flex; flex-direction: column; gap: 8px; margin-top: 8px;">
+<label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+<input type="checkbox" checked> All strings
+</label>
+<label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+<input type="checkbox"> Only untranslated strings
+</label>
+<label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+<input type="checkbox" checked> Include existing translations
+</label>
+</div>
+</div>
+</div>
+<div class="modal-footer">
+<button class="btn btn-secondary" onclick="closeModal('downloadModal')">Cancel</button>
+<button class="btn btn-primary" onclick="downloadTemplate()"><i class="pi pi-download"></i> Download Template</button>
+</div>
+</div>
+</div>
+
+<!-- Upload Translations Modal -->
+<div class="modal-overlay" id="uploadModal">
+<div class="modal">
+<div class="modal-header">
+<h3 class="modal-title"><i class="pi pi-upload"></i> Upload Translations</h3>
+<button class="modal-close" onclick="closeModal('uploadModal')"><i class="pi pi-times"></i></button>
+</div>
+<div class="modal-body">
+<div class="alert-box warning">
+<i class="pi pi-exclamation-triangle"></i>
+<div class="alert-box-content">
+<div class="alert-box-title">Review Required</div>
+Uploaded translations will be marked as "Pending Review". All translations must be reviewed before publishing.
+</div>
+</div>
+<div class="form-group">
+<label class="form-label">Target Language</label>
+<select class="form-input" id="uploadLanguage">
+<option value="fr">French (Français)</option>
+<option value="es">Spanish (Español)</option>
+<option value="ar">Arabic (العربية)</option>
+<option value="pt">Portuguese (Português)</option>
+<option value="zh">Chinese (中文)</option>
+<option value="ru">Russian (Русский)</option>
+</select>
+</div>
+<div class="form-group">
+<label class="form-label">Upload File</label>
+<div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+<i class="pi pi-cloud-upload"></i>
+<div class="upload-zone-text">Drag and drop your file here, or click to browse</div>
+<div class="upload-zone-hint">Supported formats: .xlsx, .csv, .json (Max 10MB)</div>
+</div>
+<input type="file" id="fileInput" style="display: none;" accept=".xlsx,.csv,.json" onchange="handleFileSelect(this)">
+</div>
+<div id="uploadedFileInfo" style="display: none; padding: var(--spacing-md); background: var(--surface-50); border-radius: var(--radius-md); margin-top: var(--spacing-md);">
+<div style="display: flex; align-items: center; gap: var(--spacing-md);">
+<i class="pi pi-file-excel" style="font-size: 24px; color: var(--success-500);"></i>
+<div style="flex: 1;">
+<div style="font-weight: 500;" id="uploadedFileName">translations_fr.xlsx</div>
+<div style="font-size: 12px; color: var(--text-muted);" id="uploadedFileSize">245 KB</div>
+</div>
+<button class="btn btn-ghost btn-sm" onclick="removeFile()"><i class="pi pi-times"></i></button>
+</div>
+</div>
+</div>
+<div class="modal-footer">
+<button class="btn btn-secondary" onclick="closeModal('uploadModal')">Cancel</button>
+<button class="btn btn-primary" id="uploadBtn" disabled onclick="uploadTranslations()"><i class="pi pi-upload"></i> Upload & Import</button>
+</div>
+</div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+<i class="pi pi-check-circle"></i>
+<span id="toastMessage">Action completed</span>
+</div>
+
+<script>
+// Modal Functions
+function openModal(modalId) {
+document.getElementById(modalId).classList.add('open');
+}
+
+function closeModal(modalId) {
+document.getElementById(modalId).classList.remove('open');
+}
+
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+overlay.addEventListener('click', function(e) {
+if (e.target === this) {
+this.classList.remove('open');
+}
+});
+});
+
+// Toast
+function showToast(message, type = 'success') {
+const toast = document.getElementById('toast');
+const icon = toast.querySelector('i');
+document.getElementById('toastMessage').textContent = message;
+toast.className = 'toast ' + type;
+icon.className = type === 'success' ? 'pi pi-check-circle' : 'pi pi-times-circle';
+toast.classList.add('show');
+setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// Change Target Language
+function changeTargetLanguage() {
+const select = document.getElementById('targetLanguage');
+const flag = select.options[select.selectedIndex].getAttribute('data-flag');
+document.getElementById('targetFlag').textContent = flag;
+showToast('Language changed to ' + select.options[select.selectedIndex].text, 'success');
+// Update all flag indicators
+document.querySelectorAll('.translation-target .flag').forEach(f => f.textContent = flag);
+}
+
+// Select Category
+function selectCategory(element, category) {
+document.querySelectorAll('.category-item').forEach(item => item.classList.remove('active'));
+element.classList.add('active');
+document.getElementById('currentCategoryTitle').textContent = element.querySelector('span').textContent;
+showToast('Loaded ' + element.querySelector('span').textContent, 'success');
+}
+
+// Filter Translations
+function filterTranslations() {
+const search = document.getElementById('searchInput').value.toLowerCase();
+const status = document.getElementById('statusFilter').value;
+document.querySelectorAll('.translation-item').forEach(item => {
+const key = item.getAttribute('data-key').toLowerCase();
+const itemStatus = item.getAttribute('data-status');
+const text = item.textContent.toLowerCase();
+const matchesSearch = key.includes(search) || text.includes(search);
+const matchesStatus = status === 'all' || itemStatus === status;
+item.style.display = matchesSearch && matchesStatus ? '' : 'none';
+});
+}
+
+// AI Suggestion
+const aiSuggestions = {
+'Tender Reference Number': 'Numéro de référence de l\'appel d\'offres',
+'Submission Deadline': 'Date limite de soumission',
+'Terms and Conditions': 'Conditions générales'
+};
+
+function getAISuggestion(btn, sourceText, id) {
+btn.disabled = true;
+btn.innerHTML = '<i class="pi pi-spin pi-spinner"></i> Generating...';
+setTimeout(() => {
+const suggestion = aiSuggestions[sourceText] || 'Translation suggestion';
+const suggestionBox = document.getElementById('suggestion-' + id);
+suggestionBox.innerHTML = `
+<div class="ai-suggestion-header">
+<span class="ai-suggestion-badge"><i class="pi pi-sparkles"></i> AI Suggestion</span>
+</div>
+<div class="ai-suggestion-text">${suggestion}</div>
+<div class="ai-suggestion-actions">
+<button class="action-btn accept" onclick="acceptSuggestion('${id}')"><i class="pi pi-check"></i> Accept</button>
+<button class="action-btn reject" onclick="rejectSuggestion('${id}')"><i class="pi pi-times"></i> Reject</button>
+<button class="action-btn" onclick="editSuggestion('${id}')"><i class="pi pi-pencil"></i> Edit</button>
+</div>
+<div class="ai-suggestion-note">
+<i class="pi pi-info-circle"></i> Review carefully - legal terms require human verification
+</div>
+`;
+suggestionBox.classList.add('show');
+btn.innerHTML = '<i class="pi pi-sparkles"></i> Get AI Suggestion';
+btn.disabled = false;
+// Update input
+const item = btn.closest('.translation-item');
+const input = item.querySelector('.translation-input');
+input.value = suggestion;
+input.classList.add('has-suggestion');
+// Update status
+item.setAttribute('data-status', 'pending');
+const statusDot = item.querySelector('.status-dot');
+const statusText = item.querySelector('.status-text');
+statusDot.className = 'status-dot pending';
+statusText.textContent = 'Pending Review';
+}, 1500);
+}
+
+function acceptSuggestion(id) {
+const item = document.querySelector(`[data-key] #suggestion-${id}`).closest('.translation-item') || 
+              document.querySelectorAll('.translation-item')[parseInt(id) - 1];
+if (item) {
+item.setAttribute('data-status', 'translated');
+const statusDot = item.querySelector('.status-dot');
+const statusText = item.querySelector('.status-text');
+statusDot.className = 'status-dot translated';
+statusText.textContent = 'Translated';
+const input = item.querySelector('.translation-input');
+input.classList.remove('has-suggestion');
+const suggestionBox = item.querySelector('.ai-suggestion-box');
+if (suggestionBox) suggestionBox.classList.remove('show');
+}
+showToast('Translation accepted', 'success');
+updateProgress();
+}
+
+function rejectSuggestion(id) {
+const suggestionBox = document.getElementById('suggestion-' + id);
+if (suggestionBox) {
+suggestionBox.classList.remove('show');
+const item = suggestionBox.closest('.translation-item');
+if (item) {
+const input = item.querySelector('.translation-input');
+input.value = '';
+input.classList.remove('has-suggestion');
+item.setAttribute('data-status', 'empty');
+const statusDot = item.querySelector('.status-dot');
+const statusText = item.querySelector('.status-text');
+statusDot.className = 'status-dot empty';
+statusText.textContent = 'Not Translated';
+}
+}
+showToast('Suggestion rejected', 'success');
+}
+
+function editSuggestion(id) {
+const item = document.querySelectorAll('.translation-item')[parseInt(id) - 1];
+if (item) {
+const input = item.querySelector('.translation-input');
+input.focus();
+}
+}
+
+function markAsModified(input) {
+const item = input.closest('.translation-item');
+if (input.value.trim()) {
+item.setAttribute('data-status', 'translated');
+item.querySelector('.status-dot').className = 'status-dot translated';
+item.querySelector('.status-text').textContent = 'Translated';
+} else {
+item.setAttribute('data-status', 'empty');
+item.querySelector('.status-dot').className = 'status-dot empty';
+item.querySelector('.status-text').textContent = 'Not Translated';
+}
+updateProgress();
+}
+
+function updateProgress() {
+const total = document.querySelectorAll('.translation-item').length;
+const translated = document.querySelectorAll('.translation-item[data-status="translated"]').length;
+const percent = Math.round((translated / total) * 100);
+document.getElementById('progressPercent').textContent = percent;
+document.getElementById('translatedCount').textContent = translated;
+document.getElementById('totalCount').textContent = total;
+document.getElementById('progressBar').style.width = percent + '%';
+}
+
+function suggestAllAI() {
+showToast('Generating AI suggestions for empty fields...', 'success');
+document.querySelectorAll('.translation-item[data-status="empty"] .ai-suggest-btn').forEach((btn, i) => {
+setTimeout(() => btn.click(), i * 500);
+});
+}
+
+// Download Template
+function downloadTemplate() {
+closeModal('downloadModal');
+showToast('Template downloaded successfully', 'success');
+}
+
+// Upload Translations
+function handleFileSelect(input) {
+if (input.files && input.files[0]) {
+const file = input.files[0];
+document.getElementById('uploadedFileName').textContent = file.name;
+document.getElementById('uploadedFileSize').textContent = (file.size / 1024).toFixed(1) + ' KB';
+document.getElementById('uploadedFileInfo').style.display = 'block';
+document.getElementById('uploadBtn').disabled = false;
+}
+}
+
+function removeFile() {
+document.getElementById('fileInput').value = '';
+document.getElementById('uploadedFileInfo').style.display = 'none';
+document.getElementById('uploadBtn').disabled = true;
+}
+
+function uploadTranslations() {
+closeModal('uploadModal');
+showToast('Translations imported successfully. Please review pending items.', 'success');
+removeFile();
+}
+
+// Publish
+function publishTranslations() {
+showToast('Translations published successfully!', 'success');
+}
+
+// Drag and drop
+const uploadZone = document.getElementById('uploadZone');
+uploadZone.addEventListener('dragover', (e) => {
+e.preventDefault();
+uploadZone.classList.add('dragover');
+});
+uploadZone.addEventListener('dragleave', () => {
+uploadZone.classList.remove('dragover');
+});
+uploadZone.addEventListener('drop', (e) => {
+e.preventDefault();
+uploadZone.classList.remove('dragover');
+const files = e.dataTransfer.files;
+if (files.length) {
+document.getElementById('fileInput').files = files;
+handleFileSelect(document.getElementById('fileInput'));
+}
+});
+
+// Initialize
+updateProgress();
+</script>
+
+</body>
+</html>
+
