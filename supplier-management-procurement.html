@@ -1,0 +1,2809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UNOPS PDJ · Supplier Management</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/primeicons@6.0.1/primeicons.css">
+<style>
+:root {
+--primary-50: #e6f7ff;
+--primary-100: #bae7ff;
+--primary-200: #7dd3fc;
+--primary-300: #38bdf8;
+--primary-400: #0ea5e9;
+--primary-500: #0092D1;
+--primary-600: #0284c7;
+--primary-700: #0369a1;
+--primary-800: #003a56;
+--surface-0: #ffffff;
+--surface-50: #f5f8fb;
+--surface-100: #ebf1f8;
+--surface-200: #dde8f2;
+--surface-300: #cfdfec;
+--surface-400: #b8c9d9;
+--surface-600: #95a7ba;
+--surface-800: #596170;
+--surface-900: #3b3e4a;
+--success-500: #4c9f38;
+--success-50: #d2e7cd;
+--info-400: #0092d1;
+--info-50: #bfe4f4;
+--warning-500: #e85c0e;
+--warning-50: #f9d6c3;
+--danger-500: #da291c;
+--danger-50: #f6cac6;
+--purple-500: #9333ea;
+--purple-50: #f3e8ff;
+--text-primary: var(--surface-900);
+--text-secondary: var(--surface-800);
+--text-muted: var(--surface-600);
+--spacing-xs: 6px;
+--spacing-sm: 12px;
+--spacing-md: 20px;
+--spacing-lg: 28px;
+--spacing-xl: 36px;
+--spacing-2xl: 48px;
+--radius-sm: 4px;
+--radius-md: 6px;
+--radius-lg: 8px;
+--radius-xl: 16px;
+--shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+--shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+--shadow-md: 0 4px 6px rgba(0, 0, 0, 0.08);
+--shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+--shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+font-family: 'Lato', 'Noto Sans', system-ui, sans-serif;
+background: var(--surface-50);
+color: var(--text-primary);
+line-height: 1.5;
+min-height: 100vh;
+}
+
+/* Header */
+.header {
+background: var(--surface-0);
+border-bottom: 1px solid var(--surface-200);
+position: sticky;
+top: 0;
+z-index: 100;
+}
+.header-top {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: var(--spacing-md) var(--spacing-xl);
+}
+.logo-container {
+display: flex;
+align-items: center;
+gap: var(--spacing-md);
+}
+.logo {
+font-weight: 700;
+font-size: 20px;
+letter-spacing: 0.12em;
+color: var(--primary-500);
+}
+.portal-badge {
+background: var(--primary-500);
+color: white;
+font-size: 12px;
+font-weight: 600;
+padding: 4px 12px;
+border-radius: 4px;
+text-transform: uppercase;
+letter-spacing: 0.05em;
+}
+.header-actions {
+display: flex;
+align-items: center;
+gap: var(--spacing-md);
+margin-left: auto;
+margin-right: var(--spacing-lg);
+}
+.header-action-btn {
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 8px;
+background: transparent;
+border: none;
+border-radius: var(--radius-md);
+cursor: pointer;
+transition: all 0.2s ease;
+position: relative;
+}
+.header-action-btn:hover {
+background: var(--surface-100);
+transform: scale(1.05);
+}
+.header-action-btn i {
+font-size: 20px;
+color: var(--text-muted);
+transition: color 0.2s ease;
+}
+.header-action-btn:hover i { color: var(--primary-500); }
+.notification-badge {
+position: absolute;
+top: -4px;
+right: -4px;
+background: var(--danger-500);
+color: white;
+font-size: 10px;
+font-weight: 700;
+min-width: 18px;
+height: 18px;
+border-radius: 9px;
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 0 5px;
+border: 2px solid white;
+}
+.ai-icon-wrapper {
+width: 24px;
+height: 24px;
+background: linear-gradient(135deg, #8b5cf6, #6366f1);
+border-radius: 6px;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+.ai-icon-wrapper i { font-size: 14px; color: white !important; }
+.user-menu {
+display: flex;
+align-items: center;
+gap: var(--spacing-md);
+}
+.user-info { text-align: right; }
+.user-role { font-size: 12px; color: var(--text-muted); }
+.user-name { font-size: 14px; font-weight: 500; color: var(--text-primary); }
+.user-avatar {
+width: 36px;
+height: 36px;
+border-radius: 50%;
+background: var(--primary-100);
+display: flex;
+align-items: center;
+justify-content: center;
+font-weight: 600;
+color: var(--primary-600);
+cursor: pointer;
+transition: all 0.2s;
+}
+.user-avatar:hover {
+background: var(--primary-200);
+transform: scale(1.05);
+}
+
+/* App Container */
+.app-container {
+display: flex;
+min-height: calc(100vh - 65px);
+}
+
+/* Sidebar */
+.sidebar {
+width: 280px;
+min-width: 280px;
+background-color: #0192D1;
+color: white;
+display: flex;
+flex-direction: column;
+}
+.sidebar-menu {
+flex: 1;
+padding: 20px 0;
+}
+.menu-section { margin-bottom: var(--spacing-lg); }
+.menu-section-title {
+padding: 0 20px 15px 20px;
+font-size: 20px;
+font-weight: bold;
+color: white;
+font-family: 'Lato', sans-serif;
+margin-bottom: var(--spacing-sm);
+border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+.menu-item {
+display: flex;
+align-items: center;
+gap: 12px;
+padding: 12px 20px;
+color: white;
+text-decoration: none;
+font-size: 16px;
+font-weight: normal;
+font-family: 'Lato', sans-serif;
+transition: all 0.2s ease;
+cursor: pointer;
+margin: 0 10px;
+border-radius: 5px;
+}
+.menu-item:hover { background-color: rgba(255, 255, 255, 0.1); }
+.menu-item.active { background-color: #006599; }
+.menu-icon {
+font-size: 18px;
+width: 20px;
+text-align: center;
+flex-shrink: 0;
+}
+.menu-badge {
+margin-left: auto;
+padding: 2px 8px;
+background: var(--danger-500);
+color: white;
+font-size: 11px;
+font-weight: 600;
+border-radius: 999px;
+}
+.menu-badge.success { background: var(--success-500); }
+.menu-badge.warning { background: var(--warning-500); }
+.sidebar-footer {
+padding: 20px;
+border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+.sidebar-footer-link {
+display: flex;
+align-items: center;
+gap: 12px;
+color: rgba(255, 255, 255, 0.8);
+font-size: 14px;
+text-decoration: none;
+padding: 8px 0;
+transition: color 0.2s;
+}
+.sidebar-footer-link:hover { color: white; }
+
+/* Main Content */
+.main-content {
+flex: 1;
+padding: var(--spacing-xl);
+overflow-y: auto;
+background: var(--surface-50);
+}
+
+/* Page Header */
+.page-header {
+display: flex;
+align-items: flex-start;
+justify-content: space-between;
+margin-bottom: var(--spacing-xl);
+}
+.page-title {
+font-size: 28px;
+font-weight: 600;
+color: var(--text-primary);
+margin-bottom: var(--spacing-xs);
+}
+.page-subtitle {
+font-size: 14px;
+color: var(--text-secondary);
+}
+.page-actions {
+display: flex;
+gap: var(--spacing-sm);
+}
+
+/* Stats Cards */
+.stats-grid {
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+gap: var(--spacing-lg);
+margin-bottom: var(--spacing-xl);
+}
+@media (max-width: 1200px) {
+.stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
+.stat-card {
+background: var(--surface-0);
+border-radius: var(--radius-lg);
+padding: var(--spacing-lg);
+border: 1px solid var(--surface-200);
+box-shadow: var(--shadow-card);
+display: flex;
+align-items: center;
+gap: var(--spacing-md);
+}
+.stat-icon {
+width: 56px;
+height: 56px;
+border-radius: var(--radius-lg);
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 24px;
+flex-shrink: 0;
+}
+.stat-icon.blue { background: var(--info-50); color: var(--info-400); }
+.stat-icon.green { background: var(--success-50); color: var(--success-500); }
+.stat-icon.orange { background: var(--warning-50); color: var(--warning-500); }
+.stat-icon.purple { background: var(--purple-50); color: var(--purple-500); }
+.stat-content { flex: 1; }
+.stat-value {
+font-size: 28px;
+font-weight: 700;
+color: var(--text-primary);
+line-height: 1;
+margin-bottom: 4px;
+}
+.stat-label {
+font-size: 13px;
+color: var(--text-muted);
+}
+.stat-change {
+font-size: 12px;
+display: flex;
+align-items: center;
+gap: 4px;
+margin-top: 4px;
+}
+.stat-change.up { color: var(--success-500); }
+.stat-change.down { color: var(--danger-500); }
+
+/* Filter Bar */
+.filter-bar {
+background: var(--surface-0);
+border-radius: var(--radius-lg);
+padding: var(--spacing-md) var(--spacing-lg);
+border: 1px solid var(--surface-200);
+box-shadow: var(--shadow-card);
+margin-bottom: var(--spacing-lg);
+display: flex;
+align-items: center;
+gap: var(--spacing-md);
+flex-wrap: wrap;
+}
+.search-box {
+flex: 1;
+min-width: 280px;
+position: relative;
+}
+.search-box i {
+position: absolute;
+left: 14px;
+top: 50%;
+transform: translateY(-50%);
+color: var(--text-muted);
+font-size: 16px;
+}
+.search-box input {
+width: 100%;
+padding: 10px 14px 10px 42px;
+border: 1px solid var(--surface-200);
+border-radius: var(--radius-sm);
+font-size: 14px;
+font-family: inherit;
+transition: all 0.2s;
+}
+.search-box input:focus {
+outline: none;
+border-color: var(--primary-500);
+box-shadow: 0 0 0 3px var(--primary-50);
+}
+.filter-group {
+display: flex;
+align-items: center;
+gap: var(--spacing-sm);
+}
+.filter-select {
+padding: 10px 14px;
+border: 1px solid var(--surface-200);
+border-radius: var(--radius-sm);
+font-size: 14px;
+font-family: inherit;
+background: var(--surface-0);
+cursor: pointer;
+min-width: 160px;
+}
+.filter-select:focus {
+outline: none;
+border-color: var(--primary-500);
+}
+.filter-divider {
+width: 1px;
+height: 32px;
+background: var(--surface-200);
+}
+
+/* Buttons */
+.btn {
+display: inline-flex;
+align-items: center;
+gap: 6px;
+padding: 10px 16px;
+border-radius: var(--radius-sm);
+font-size: 14px;
+font-weight: 500;
+font-family: inherit;
+cursor: pointer;
+border: none;
+transition: all 0.2s;
+text-decoration: none;
+}
+.btn-primary { background: var(--primary-500); color: white; }
+.btn-primary:hover { background: var(--primary-600); }
+.btn-secondary {
+background: var(--surface-100);
+color: var(--text-primary);
+border: 1px solid var(--surface-200);
+}
+.btn-secondary:hover { background: var(--surface-200); }
+.btn-ghost { background: transparent; color: var(--text-secondary); }
+.btn-ghost:hover { background: var(--surface-100); color: var(--text-primary); }
+.btn-success { background: var(--success-500); color: white; }
+.btn-success:hover { background: #3d8a2e; }
+.btn-sm { padding: 6px 12px; font-size: 13px; }
+.btn-icon {
+width: 36px;
+height: 36px;
+padding: 0;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+.btn i { font-size: 14px; }
+
+/* View Toggle */
+.view-toggle {
+display: flex;
+background: var(--surface-100);
+border-radius: var(--radius-sm);
+padding: 2px;
+}
+.view-toggle-btn {
+padding: 8px 12px;
+border: none;
+background: transparent;
+border-radius: var(--radius-sm);
+cursor: pointer;
+color: var(--text-muted);
+transition: all 0.2s;
+}
+.view-toggle-btn.active {
+background: var(--surface-0);
+color: var(--primary-500);
+box-shadow: var(--shadow-sm);
+}
+.view-toggle-btn:hover:not(.active) { color: var(--text-primary); }
+
+/* Supplier Table */
+.supplier-table-container {
+background: var(--surface-0);
+border-radius: var(--radius-lg);
+border: 1px solid var(--surface-200);
+box-shadow: var(--shadow-card);
+overflow: hidden;
+}
+.supplier-table {
+width: 100%;
+border-collapse: collapse;
+}
+.supplier-table th {
+background: var(--surface-50);
+padding: 14px 16px;
+text-align: left;
+font-size: 12px;
+font-weight: 600;
+color: var(--text-secondary);
+text-transform: uppercase;
+letter-spacing: 0.05em;
+border-bottom: 1px solid var(--surface-200);
+}
+.supplier-table th.sortable {
+cursor: pointer;
+user-select: none;
+}
+.supplier-table th.sortable:hover { color: var(--primary-500); }
+.supplier-table th i { margin-left: 6px; font-size: 10px; }
+.supplier-table td {
+padding: 16px;
+border-bottom: 1px solid var(--surface-100);
+font-size: 14px;
+vertical-align: middle;
+}
+.supplier-table tbody tr {
+transition: background 0.2s;
+cursor: pointer;
+}
+.supplier-table tbody tr:hover { background: var(--surface-50); }
+.supplier-table tbody tr:last-child td { border-bottom: none; }
+
+/* Supplier Info Cell */
+.supplier-info {
+display: flex;
+align-items: center;
+gap: var(--spacing-md);
+}
+.supplier-logo {
+width: 44px;
+height: 44px;
+border-radius: var(--radius-md);
+display: flex;
+align-items: center;
+justify-content: center;
+font-weight: 600;
+font-size: 14px;
+flex-shrink: 0;
+}
+.supplier-name {
+font-weight: 600;
+color: var(--text-primary);
+margin-bottom: 2px;
+}
+.supplier-id {
+font-size: 12px;
+color: var(--text-muted);
+}
+
+/* Status Badges */
+.status-badge {
+display: inline-flex;
+align-items: center;
+gap: 4px;
+padding: 4px 10px;
+border-radius: 999px;
+font-size: 12px;
+font-weight: 500;
+}
+.status-badge.active { background: var(--success-50); color: var(--success-500); }
+.status-badge.pending { background: var(--warning-50); color: var(--warning-500); }
+.status-badge.inactive { background: var(--surface-200); color: var(--text-muted); }
+.status-badge.verified { background: var(--info-50); color: var(--info-400); }
+.status-badge.new { background: var(--purple-50); color: var(--purple-500); }
+
+/* Risk Badge */
+.risk-badge {
+display: inline-flex;
+align-items: center;
+gap: 4px;
+padding: 4px 10px;
+border-radius: var(--radius-sm);
+font-size: 12px;
+font-weight: 500;
+}
+.risk-badge.low { background: var(--success-50); color: var(--success-500); }
+.risk-badge.medium { background: var(--warning-50); color: var(--warning-500); }
+.risk-badge.high { background: var(--danger-50); color: var(--danger-500); }
+
+/* Category Tags */
+.category-tags {
+display: flex;
+flex-wrap: wrap;
+gap: 4px;
+}
+.category-tag {
+font-size: 11px;
+padding: 3px 8px;
+background: var(--surface-100);
+color: var(--text-secondary);
+border-radius: var(--radius-sm);
+}
+
+/* Table Actions */
+.table-actions {
+display: flex;
+align-items: center;
+gap: 4px;
+}
+.table-action-btn {
+width: 32px;
+height: 32px;
+border: none;
+background: transparent;
+border-radius: var(--radius-sm);
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+color: var(--text-muted);
+transition: all 0.2s;
+}
+.table-action-btn:hover {
+background: var(--surface-100);
+color: var(--primary-500);
+}
+
+/* Pagination */
+.pagination {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: var(--spacing-md) var(--spacing-lg);
+border-top: 1px solid var(--surface-200);
+background: var(--surface-50);
+}
+.pagination-info {
+font-size: 13px;
+color: var(--text-muted);
+}
+.pagination-controls {
+display: flex;
+align-items: center;
+gap: var(--spacing-xs);
+}
+.pagination-btn {
+width: 32px;
+height: 32px;
+border: 1px solid var(--surface-200);
+background: var(--surface-0);
+border-radius: var(--radius-sm);
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+color: var(--text-secondary);
+font-size: 13px;
+transition: all 0.2s;
+}
+.pagination-btn:hover:not(:disabled) {
+border-color: var(--primary-500);
+color: var(--primary-500);
+}
+.pagination-btn:disabled {
+opacity: 0.5;
+cursor: not-allowed;
+}
+.pagination-btn.active {
+background: var(--primary-500);
+border-color: var(--primary-500);
+color: white;
+}
+
+/* Supplier Detail Panel */
+.detail-panel-overlay {
+position: fixed;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background: rgba(0, 0, 0, 0.3);
+z-index: 200;
+opacity: 0;
+visibility: hidden;
+transition: all 0.3s ease;
+}
+.detail-panel-overlay.open {
+opacity: 1;
+visibility: visible;
+}
+.detail-panel {
+position: fixed;
+top: 0;
+right: 0;
+width: 600px;
+max-width: 100%;
+height: 100vh;
+background: var(--surface-0);
+box-shadow: var(--shadow-xl);
+z-index: 201;
+transform: translateX(100%);
+transition: transform 0.3s ease;
+display: flex;
+flex-direction: column;
+}
+.detail-panel-overlay.open .detail-panel {
+transform: translateX(0);
+}
+.detail-panel-header {
+padding: var(--spacing-lg);
+border-bottom: 1px solid var(--surface-200);
+display: flex;
+align-items: center;
+justify-content: space-between;
+background: var(--surface-50);
+}
+.detail-panel-title {
+font-size: 18px;
+font-weight: 600;
+color: var(--text-primary);
+}
+.detail-panel-close {
+width: 36px;
+height: 36px;
+border: none;
+background: transparent;
+border-radius: var(--radius-sm);
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+color: var(--text-muted);
+transition: all 0.2s;
+}
+.detail-panel-close:hover {
+background: var(--surface-200);
+color: var(--text-primary);
+}
+.detail-panel-body {
+flex: 1;
+overflow-y: auto;
+padding: var(--spacing-lg);
+}
+.detail-panel-footer {
+padding: var(--spacing-lg);
+border-top: 1px solid var(--surface-200);
+display: flex;
+gap: var(--spacing-sm);
+justify-content: flex-end;
+background: var(--surface-50);
+}
+
+/* Supplier Profile in Panel */
+.supplier-profile-header {
+display: flex;
+align-items: flex-start;
+gap: var(--spacing-lg);
+margin-bottom: var(--spacing-xl);
+padding-bottom: var(--spacing-lg);
+border-bottom: 1px solid var(--surface-200);
+}
+.supplier-profile-logo {
+width: 80px;
+height: 80px;
+border-radius: var(--radius-lg);
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 28px;
+font-weight: 700;
+flex-shrink: 0;
+}
+.supplier-profile-info { flex: 1; }
+.supplier-profile-name {
+font-size: 22px;
+font-weight: 600;
+color: var(--text-primary);
+margin-bottom: 4px;
+}
+.supplier-profile-company-id {
+font-size: 13px;
+color: var(--text-muted);
+margin-bottom: var(--spacing-sm);
+}
+.supplier-profile-badges {
+display: flex;
+flex-wrap: wrap;
+gap: var(--spacing-xs);
+}
+
+/* Detail Sections */
+.detail-section {
+margin-bottom: var(--spacing-xl);
+}
+.detail-section-title {
+font-size: 14px;
+font-weight: 600;
+color: var(--text-primary);
+margin-bottom: var(--spacing-md);
+display: flex;
+align-items: center;
+gap: var(--spacing-sm);
+}
+.detail-section-title i { color: var(--primary-500); }
+.detail-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: var(--spacing-md);
+}
+.detail-item { }
+.detail-label {
+font-size: 12px;
+color: var(--text-muted);
+margin-bottom: 4px;
+}
+.detail-value {
+font-size: 14px;
+color: var(--text-primary);
+font-weight: 500;
+}
+.detail-value a {
+color: var(--primary-500);
+text-decoration: none;
+}
+.detail-value a:hover { text-decoration: underline; }
+
+/* Verification Card */
+.verification-card {
+background: var(--surface-50);
+border: 1px solid var(--surface-200);
+border-radius: var(--radius-md);
+padding: var(--spacing-md);
+margin-bottom: var(--spacing-sm);
+display: flex;
+align-items: center;
+gap: var(--spacing-md);
+}
+.verification-icon {
+width: 40px;
+height: 40px;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+flex-shrink: 0;
+}
+.verification-icon.verified { background: var(--success-50); color: var(--success-500); }
+.verification-icon.pending { background: var(--warning-50); color: var(--warning-500); }
+.verification-icon.not-verified { background: var(--surface-200); color: var(--text-muted); }
+.verification-info { flex: 1; }
+.verification-title {
+font-size: 14px;
+font-weight: 500;
+color: var(--text-primary);
+}
+.verification-detail {
+font-size: 12px;
+color: var(--text-muted);
+}
+
+/* Quick Actions Panel */
+.quick-actions-grid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: var(--spacing-sm);
+margin-top: var(--spacing-md);
+}
+.quick-action-btn {
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 6px;
+padding: var(--spacing-md);
+background: var(--surface-50);
+border: 1px solid var(--surface-200);
+border-radius: var(--radius-md);
+cursor: pointer;
+transition: all 0.2s;
+}
+.quick-action-btn:hover {
+background: var(--primary-50);
+border-color: var(--primary-200);
+}
+.quick-action-btn i {
+font-size: 20px;
+color: var(--primary-500);
+}
+.quick-action-btn span {
+font-size: 12px;
+color: var(--text-secondary);
+text-align: center;
+}
+
+/* Contact Card */
+.contact-card {
+display: flex;
+align-items: center;
+gap: var(--spacing-md);
+padding: var(--spacing-md);
+background: var(--surface-50);
+border: 1px solid var(--surface-200);
+border-radius: var(--radius-md);
+margin-bottom: var(--spacing-sm);
+}
+.contact-avatar {
+width: 44px;
+height: 44px;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+font-weight: 600;
+font-size: 14px;
+flex-shrink: 0;
+}
+.contact-info { flex: 1; }
+.contact-name {
+font-size: 14px;
+font-weight: 500;
+color: var(--text-primary);
+}
+.contact-role {
+font-size: 12px;
+color: var(--text-muted);
+}
+.contact-actions {
+display: flex;
+gap: 4px;
+}
+
+/* Modal */
+.modal-overlay {
+position: fixed;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background: rgba(0, 0, 0, 0.5);
+display: flex;
+align-items: center;
+justify-content: center;
+z-index: 300;
+opacity: 0;
+visibility: hidden;
+transition: all 0.3s ease;
+}
+.modal-overlay.open {
+opacity: 1;
+visibility: visible;
+}
+.modal {
+background: var(--surface-0);
+border-radius: var(--radius-lg);
+box-shadow: var(--shadow-xl);
+width: 100%;
+max-width: 520px;
+max-height: 90vh;
+overflow: hidden;
+transform: translateY(20px) scale(0.95);
+transition: transform 0.3s ease;
+}
+.modal-overlay.open .modal {
+transform: translateY(0) scale(1);
+}
+.modal-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: var(--spacing-lg);
+border-bottom: 1px solid var(--surface-200);
+background: var(--surface-50);
+}
+.modal-title {
+font-size: 18px;
+font-weight: 600;
+color: var(--text-primary);
+display: flex;
+align-items: center;
+gap: var(--spacing-sm);
+}
+.modal-title i { color: var(--primary-500); }
+.modal-close {
+width: 32px;
+height: 32px;
+border: none;
+background: transparent;
+border-radius: var(--radius-sm);
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+color: var(--text-muted);
+transition: all 0.2s;
+}
+.modal-close:hover {
+background: var(--surface-200);
+color: var(--text-primary);
+}
+.modal-body {
+padding: var(--spacing-lg);
+overflow-y: auto;
+max-height: calc(90vh - 140px);
+}
+.modal-footer {
+display: flex;
+align-items: center;
+justify-content: flex-end;
+gap: var(--spacing-sm);
+padding: var(--spacing-lg);
+border-top: 1px solid var(--surface-200);
+background: var(--surface-50);
+}
+
+/* Form Elements */
+.form-group { margin-bottom: var(--spacing-lg); }
+.form-group:last-child { margin-bottom: 0; }
+.form-label {
+display: block;
+font-size: 13px;
+font-weight: 500;
+color: var(--text-secondary);
+margin-bottom: 6px;
+}
+.form-input {
+width: 100%;
+padding: 10px 14px;
+border: 1px solid var(--surface-200);
+border-radius: var(--radius-sm);
+font-size: 14px;
+font-family: inherit;
+transition: all 0.2s;
+}
+.form-input:focus {
+outline: none;
+border-color: var(--primary-500);
+box-shadow: 0 0 0 3px var(--primary-50);
+}
+.form-row {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: var(--spacing-md);
+}
+.form-hint {
+font-size: 12px;
+color: var(--text-muted);
+margin-top: 4px;
+}
+
+/* Alert Box */
+.alert-box {
+display: flex;
+align-items: flex-start;
+gap: var(--spacing-md);
+padding: var(--spacing-md);
+border-radius: var(--radius-md);
+margin-bottom: var(--spacing-lg);
+}
+.alert-box.info {
+background: var(--info-50);
+border: 1px solid var(--info-400);
+}
+.alert-box.success {
+background: var(--success-50);
+border: 1px solid var(--success-500);
+}
+.alert-box i {
+font-size: 18px;
+flex-shrink: 0;
+}
+.alert-box.info i { color: var(--info-400); }
+.alert-box.success i { color: var(--success-500); }
+.alert-box-content {
+flex: 1;
+font-size: 13px;
+color: var(--text-secondary);
+line-height: 1.5;
+}
+.alert-box-title {
+font-weight: 600;
+color: var(--text-primary);
+margin-bottom: 2px;
+}
+
+/* Activity Timeline */
+.activity-timeline { }
+.activity-item {
+display: flex;
+gap: var(--spacing-md);
+padding-bottom: var(--spacing-md);
+margin-bottom: var(--spacing-md);
+border-bottom: 1px solid var(--surface-100);
+}
+.activity-item:last-child {
+border-bottom: none;
+margin-bottom: 0;
+padding-bottom: 0;
+}
+.activity-dot {
+width: 10px;
+height: 10px;
+border-radius: 50%;
+background: var(--primary-500);
+margin-top: 6px;
+flex-shrink: 0;
+}
+.activity-content { flex: 1; }
+.activity-title {
+font-size: 14px;
+color: var(--text-primary);
+margin-bottom: 2px;
+}
+.activity-meta {
+font-size: 12px;
+color: var(--text-muted);
+}
+
+/* Toast */
+.toast {
+position: fixed;
+bottom: 24px;
+right: 24px;
+background: var(--surface-900);
+color: white;
+padding: 16px 24px;
+border-radius: var(--radius-md);
+box-shadow: var(--shadow-lg);
+display: flex;
+align-items: center;
+gap: 12px;
+z-index: 400;
+transform: translateY(100px);
+opacity: 0;
+transition: all 0.3s ease;
+}
+.toast.show {
+transform: translateY(0);
+opacity: 1;
+}
+.toast i {
+font-size: 20px;
+}
+.toast.success i { color: var(--success-500); }
+.toast.error i { color: var(--danger-500); }
+
+/* Empty State */
+.empty-state {
+text-align: center;
+padding: var(--spacing-2xl);
+}
+.empty-state i {
+font-size: 48px;
+color: var(--surface-400);
+margin-bottom: var(--spacing-md);
+}
+.empty-state-title {
+font-size: 18px;
+font-weight: 600;
+color: var(--text-primary);
+margin-bottom: var(--spacing-xs);
+}
+.empty-state-desc {
+font-size: 14px;
+color: var(--text-muted);
+margin-bottom: var(--spacing-lg);
+}
+
+/* Tabs */
+.tabs {
+display: flex;
+gap: 4px;
+border-bottom: 1px solid var(--surface-200);
+margin-bottom: var(--spacing-lg);
+}
+.tab-btn {
+padding: 12px 16px;
+border: none;
+background: transparent;
+font-size: 14px;
+font-weight: 500;
+color: var(--text-muted);
+cursor: pointer;
+border-bottom: 2px solid transparent;
+margin-bottom: -1px;
+transition: all 0.2s;
+}
+.tab-btn:hover { color: var(--text-primary); }
+.tab-btn.active {
+color: var(--primary-500);
+border-bottom-color: var(--primary-500);
+}
+
+/* Sustainability Score */
+.sustainability-score {
+display: flex;
+align-items: center;
+gap: 8px;
+}
+.score-bar {
+width: 60px;
+height: 8px;
+background: var(--surface-200);
+border-radius: 4px;
+overflow: hidden;
+}
+.score-fill {
+height: 100%;
+border-radius: 4px;
+transition: width 0.3s ease;
+}
+.score-value {
+font-size: 13px;
+font-weight: 600;
+min-width: 24px;
+}
+
+/* Performance Rating */
+.performance-rating {
+display: flex;
+align-items: center;
+gap: 4px;
+font-size: 13px;
+}
+.performance-rating i {
+font-size: 14px;
+}
+.performance-rating span:first-of-type {
+font-weight: 600;
+color: var(--text-primary);
+}
+.text-muted {
+color: var(--text-muted);
+font-size: 12px;
+}
+
+/* Bulk Actions Bar */
+.bulk-actions-bar {
+display: none;
+align-items: center;
+gap: var(--spacing-md);
+padding: var(--spacing-md) var(--spacing-lg);
+background: var(--primary-50);
+border: 1px solid var(--primary-200);
+border-radius: var(--radius-lg);
+margin-bottom: var(--spacing-lg);
+}
+.bulk-actions-bar.show {
+display: flex;
+}
+.bulk-actions-count {
+font-size: 14px;
+font-weight: 500;
+color: var(--primary-700);
+}
+.bulk-actions-buttons {
+display: flex;
+gap: var(--spacing-sm);
+margin-left: auto;
+}
+
+/* Full Page Supplier View */
+.supplier-full-page {
+display: none;
+}
+.supplier-full-page.active {
+display: block;
+}
+.supplier-list-view {
+display: block;
+}
+.supplier-list-view.hidden {
+display: none;
+}
+
+/* Back Button */
+.back-btn {
+display: inline-flex;
+align-items: center;
+gap: 8px;
+padding: 8px 16px;
+background: var(--surface-100);
+border: 1px solid var(--surface-200);
+border-radius: var(--radius-sm);
+font-size: 14px;
+color: var(--text-secondary);
+cursor: pointer;
+transition: all 0.2s;
+margin-bottom: var(--spacing-lg);
+}
+.back-btn:hover {
+background: var(--surface-200);
+color: var(--text-primary);
+}
+
+/* Supplier Full Profile Header */
+.supplier-full-header {
+background: var(--surface-0);
+border-radius: var(--radius-lg);
+border: 1px solid var(--surface-200);
+padding: var(--spacing-xl);
+margin-bottom: var(--spacing-xl);
+box-shadow: var(--shadow-card);
+}
+.supplier-full-header-top {
+display: flex;
+align-items: flex-start;
+gap: var(--spacing-xl);
+}
+.supplier-full-logo {
+width: 100px;
+height: 100px;
+border-radius: var(--radius-lg);
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 36px;
+font-weight: 700;
+flex-shrink: 0;
+}
+.supplier-full-info {
+flex: 1;
+}
+.supplier-full-name {
+font-size: 28px;
+font-weight: 600;
+color: var(--text-primary);
+margin-bottom: 4px;
+}
+.supplier-full-meta {
+font-size: 14px;
+color: var(--text-muted);
+margin-bottom: var(--spacing-md);
+}
+.supplier-full-badges {
+display: flex;
+flex-wrap: wrap;
+gap: var(--spacing-sm);
+}
+.supplier-full-actions {
+display: flex;
+flex-direction: column;
+gap: var(--spacing-sm);
+}
+
+/* Supplier Stats Row */
+.supplier-stats-row {
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+gap: var(--spacing-lg);
+margin-top: var(--spacing-xl);
+padding-top: var(--spacing-xl);
+border-top: 1px solid var(--surface-200);
+}
+.supplier-stat-item {
+text-align: center;
+}
+.supplier-stat-value {
+font-size: 24px;
+font-weight: 700;
+color: var(--text-primary);
+margin-bottom: 4px;
+}
+.supplier-stat-label {
+font-size: 13px;
+color: var(--text-muted);
+}
+
+/* Content Grid */
+.content-grid {
+display: grid;
+grid-template-columns: 2fr 1fr;
+gap: var(--spacing-xl);
+}
+@media (max-width: 1200px) {
+.content-grid { grid-template-columns: 1fr; }
+}
+
+/* Section Card */
+.section-card {
+background: var(--surface-0);
+border-radius: var(--radius-lg);
+border: 1px solid var(--surface-200);
+box-shadow: var(--shadow-card);
+margin-bottom: var(--spacing-lg);
+}
+.section-card-header {
+padding: var(--spacing-lg);
+border-bottom: 1px solid var(--surface-200);
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
+.section-card-title {
+font-size: 16px;
+font-weight: 600;
+color: var(--text-primary);
+display: flex;
+align-items: center;
+gap: var(--spacing-sm);
+}
+.section-card-title i { color: var(--primary-500); }
+.section-card-body {
+padding: var(--spacing-lg);
+}
+
+/* Contract Item */
+.contract-item {
+display: flex;
+align-items: center;
+gap: var(--spacing-md);
+padding: var(--spacing-md);
+border: 1px solid var(--surface-200);
+border-radius: var(--radius-md);
+margin-bottom: var(--spacing-sm);
+transition: all 0.2s;
+cursor: pointer;
+}
+.contract-item:hover {
+background: var(--surface-50);
+border-color: var(--primary-200);
+}
+.contract-item:last-child { margin-bottom: 0; }
+.contract-icon {
+width: 44px;
+height: 44px;
+border-radius: var(--radius-md);
+display: flex;
+align-items: center;
+justify-content: center;
+flex-shrink: 0;
+}
+.contract-icon.active { background: var(--success-50); color: var(--success-500); }
+.contract-icon.completed { background: var(--surface-200); color: var(--text-muted); }
+.contract-icon.pending { background: var(--warning-50); color: var(--warning-500); }
+.contract-info { flex: 1; }
+.contract-title {
+font-size: 14px;
+font-weight: 500;
+color: var(--text-primary);
+margin-bottom: 2px;
+}
+.contract-meta {
+font-size: 12px;
+color: var(--text-muted);
+}
+.contract-value {
+text-align: right;
+}
+.contract-amount {
+font-size: 14px;
+font-weight: 600;
+color: var(--text-primary);
+}
+.contract-status {
+font-size: 11px;
+}
+
+/* Tender Item */
+.tender-item {
+display: flex;
+align-items: center;
+gap: var(--spacing-md);
+padding: var(--spacing-md);
+border: 1px solid var(--surface-200);
+border-radius: var(--radius-md);
+margin-bottom: var(--spacing-sm);
+transition: all 0.2s;
+cursor: pointer;
+}
+.tender-item:hover {
+background: var(--surface-50);
+border-color: var(--primary-200);
+}
+.tender-item:last-child { margin-bottom: 0; }
+.tender-result {
+width: 44px;
+height: 44px;
+border-radius: var(--radius-md);
+display: flex;
+align-items: center;
+justify-content: center;
+flex-shrink: 0;
+font-size: 18px;
+}
+.tender-result.awarded { background: var(--success-50); color: var(--success-500); }
+.tender-result.not-awarded { background: var(--surface-200); color: var(--text-muted); }
+.tender-result.submitted { background: var(--info-50); color: var(--info-400); }
+.tender-result.disqualified { background: var(--danger-50); color: var(--danger-500); }
+.tender-info { flex: 1; }
+.tender-title {
+font-size: 14px;
+font-weight: 500;
+color: var(--text-primary);
+margin-bottom: 2px;
+}
+.tender-meta {
+font-size: 12px;
+color: var(--text-muted);
+}
+
+/* Performance Metrics */
+.performance-metrics {
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+gap: var(--spacing-md);
+}
+.performance-metric {
+padding: var(--spacing-md);
+background: var(--surface-50);
+border-radius: var(--radius-md);
+text-align: center;
+}
+.metric-value {
+font-size: 24px;
+font-weight: 700;
+margin-bottom: 4px;
+}
+.metric-label {
+font-size: 12px;
+color: var(--text-muted);
+}
+.metric-bar {
+width: 100%;
+height: 6px;
+background: var(--surface-200);
+border-radius: 3px;
+margin-top: 8px;
+overflow: hidden;
+}
+.metric-fill {
+height: 100%;
+border-radius: 3px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+from { opacity: 0; transform: translateY(10px); }
+to { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadeIn 0.3s ease-out; }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+<div class="header-top">
+<div class="logo-container">
+<span class="logo">UNOPS</span>
+<span class="portal-badge">Procurement</span>
+</div>
+<div class="header-actions">
+<button class="header-action-btn" title="AI Assistant">
+<div class="ai-icon-wrapper">
+<i class="pi pi-sparkles"></i>
+</div>
+</button>
+<button class="header-action-btn" title="Notifications">
+<i class="pi pi-bell"></i>
+<span class="notification-badge">3</span>
+</button>
+<button class="header-action-btn" title="Help & Support">
+<i class="pi pi-question-circle"></i>
+</button>
+<button class="header-action-btn" title="Language">
+<span style="font-size: 16px;">🇬🇧</span>
+</button>
+</div>
+<div class="user-menu">
+<div class="user-info">
+<div class="user-role">Procurement Officer</div>
+<div class="user-name">Maria Santos</div>
+</div>
+<div class="user-avatar">MS</div>
+</div>
+</div>
+</header>
+
+<!-- App Container -->
+<div class="app-container">
+<!-- Sidebar -->
+<aside class="sidebar">
+<nav class="sidebar-menu">
+<div class="menu-section">
+<div class="menu-section-title">Procurement</div>
+<a class="menu-item" href="#">
+<i class="pi pi-home menu-icon"></i>
+<span>Dashboard</span>
+</a>
+<a class="menu-item" href="#">
+<i class="pi pi-file-edit menu-icon"></i>
+<span>eTendering</span>
+<span class="menu-badge">5</span>
+</a>
+<a class="menu-item active">
+<i class="pi pi-users menu-icon"></i>
+<span>Supplier Management</span>
+</a>
+<a class="menu-item" href="#">
+<i class="pi pi-verified menu-icon"></i>
+<span>DRiVE</span>
+<span class="menu-badge warning">2</span>
+</a>
+</div>
+<div class="menu-section">
+<div class="menu-section-title">Sourcing</div>
+<a class="menu-item" href="#">
+<i class="pi pi-search menu-icon"></i>
+<span>Market Research</span>
+</a>
+<a class="menu-item" href="#">
+<i class="pi pi-chart-bar menu-icon"></i>
+<span>Analytics</span>
+</a>
+<a class="menu-item" href="#">
+<i class="pi pi-file menu-icon"></i>
+<span>Contracts</span>
+</a>
+</div>
+<div class="menu-section">
+<div class="menu-section-title">Administration</div>
+<a class="menu-item" href="#">
+<i class="pi pi-cog menu-icon"></i>
+<span>Settings</span>
+</a>
+<a class="menu-item" href="#">
+<i class="pi pi-users menu-icon"></i>
+<span>User Management</span>
+</a>
+</div>
+</nav>
+<div class="sidebar-footer">
+<a class="sidebar-footer-link" href="#">
+<i class="pi pi-question-circle"></i>
+<span>Help Center</span>
+</a>
+<a class="sidebar-footer-link" href="#">
+<i class="pi pi-sign-out"></i>
+<span>Sign Out</span>
+</a>
+</div>
+</aside>
+
+<!-- Main Content -->
+<main class="main-content">
+<!-- Page Header -->
+<div class="page-header fade-in">
+<div>
+<h1 class="page-title">Supplier Management</h1>
+<p class="page-subtitle">Manage supplier relationships, view profiles, and monitor compliance</p>
+</div>
+<div class="page-actions">
+<button class="btn btn-secondary" onclick="openModal('createListModal')">
+<i class="pi pi-list"></i> Create Supplier List
+</button>
+<button class="btn btn-secondary" onclick="openModal('importModal')">
+<i class="pi pi-upload"></i> Import Suppliers
+</button>
+<button class="btn btn-primary" onclick="openModal('inviteModal')">
+<i class="pi pi-user-plus"></i> Invite Supplier
+</button>
+</div>
+</div>
+
+<!-- Stats Grid -->
+<div class="stats-grid fade-in" style="grid-template-columns: repeat(3, 1fr);">
+<div class="stat-card">
+<div class="stat-icon blue">
+<i class="pi pi-users"></i>
+</div>
+<div class="stat-content">
+<div class="stat-value">1,248</div>
+<div class="stat-label">Total Suppliers</div>
+<div class="stat-change up"><i class="pi pi-arrow-up"></i> 12% this month</div>
+</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon green">
+<i class="pi pi-verified"></i>
+</div>
+<div class="stat-content">
+<div class="stat-value">892</div>
+<div class="stat-label">Verified Suppliers</div>
+<div class="stat-change up"><i class="pi pi-arrow-up"></i> 8% this month</div>
+</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon orange">
+<i class="pi pi-clock"></i>
+</div>
+<div class="stat-content">
+<div class="stat-value">156</div>
+<div class="stat-label">Pending Verification</div>
+<div class="stat-change down"><i class="pi pi-arrow-down"></i> 5% this month</div>
+</div>
+</div>
+</div>
+
+<!-- Bulk Actions Bar -->
+<div class="bulk-actions-bar" id="bulkActionsBar">
+<span class="bulk-actions-count"><span id="selectedCount">0</span> suppliers selected</span>
+<div class="bulk-actions-buttons">
+<button class="btn btn-secondary btn-sm" onclick="addSelectedToList()"><i class="pi pi-list"></i> Add to List</button>
+<button class="btn btn-secondary btn-sm" onclick="exportSelected()"><i class="pi pi-download"></i> Export</button>
+<button class="btn btn-secondary btn-sm" onclick="inviteSelectedToTender()"><i class="pi pi-file-edit"></i> Invite to Tender</button>
+<button class="btn btn-ghost btn-sm" onclick="clearSelection()"><i class="pi pi-times"></i> Clear</button>
+</div>
+</div>
+
+<!-- Filter Bar -->
+<div class="filter-bar fade-in">
+<div class="search-box">
+<i class="pi pi-search"></i>
+<input type="text" placeholder="Search suppliers by name, ID, or category..." id="searchInput" oninput="filterSuppliers()">
+</div>
+<div class="filter-divider"></div>
+<div class="filter-group">
+<select class="filter-select" id="statusFilter" onchange="filterSuppliers()">
+<option value="">All Statuses</option>
+<option value="active">Active</option>
+<option value="pending">Pending</option>
+<option value="inactive">Inactive</option>
+</select>
+</div>
+<div class="filter-group">
+<select class="filter-select" id="categoryFilter" onchange="filterSuppliers()">
+<option value="">All Categories</option>
+<option value="it">IT & Software</option>
+<option value="construction">Construction</option>
+<option value="logistics">Logistics</option>
+<option value="consulting">Consulting</option>
+<option value="supplies">Office Supplies</option>
+</select>
+</div>
+<div class="filter-group">
+<select class="filter-select" id="riskFilter" onchange="filterSuppliers()">
+<option value="">All Risk Levels</option>
+<option value="low">Low Risk</option>
+<option value="medium">Medium Risk</option>
+<option value="high">High Risk</option>
+</select>
+</div>
+<div class="filter-divider"></div>
+<div class="view-toggle">
+<button class="view-toggle-btn active" title="Table View"><i class="pi pi-list"></i></button>
+<button class="view-toggle-btn" title="Card View"><i class="pi pi-th-large"></i></button>
+</div>
+</div>
+
+<!-- Supplier Table -->
+<div class="supplier-table-container fade-in">
+<table class="supplier-table">
+<thead>
+<tr>
+<th style="width: 40px;"><input type="checkbox" id="selectAll" onclick="toggleSelectAll()"></th>
+<th class="sortable">Supplier <i class="pi pi-sort-alt"></i></th>
+<th class="sortable">Category <i class="pi pi-sort-alt"></i></th>
+<th class="sortable">Status <i class="pi pi-sort-alt"></i></th>
+<th class="sortable">Sustainability <i class="pi pi-sort-alt"></i></th>
+<th class="sortable">Performance <i class="pi pi-sort-alt"></i></th>
+<th class="sortable">Last Activity <i class="pi pi-sort-alt"></i></th>
+<th>Actions</th>
+</tr>
+</thead>
+<tbody id="supplierTableBody">
+<tr onclick="goToSupplierPage('1')">
+<td onclick="event.stopPropagation()"><input type="checkbox" class="supplier-checkbox" data-id="1"></td>
+<td>
+<div class="supplier-info">
+<div class="supplier-logo" style="background: var(--primary-100); color: var(--primary-600);">GT</div>
+<div>
+<div class="supplier-name">Global Tech Solutions Ltd.</div>
+<div class="supplier-id">UNGM-2024-78543</div>
+</div>
+</div>
+</td>
+<td>
+<div class="category-tags">
+<span class="category-tag">IT Services</span>
+<span class="category-tag">Software</span>
+</div>
+</td>
+<td><span class="status-badge active"><i class="pi pi-check-circle"></i> Active</span></td>
+<td>
+<div class="sustainability-score">
+<div class="score-bar"><div class="score-fill" style="width: 85%; background: var(--success-500);"></div></div>
+<span class="score-value" style="color: var(--success-500);">85</span>
+</div>
+</td>
+<td>
+<div class="performance-rating">
+<i class="pi pi-star-fill" style="color: #f59e0b;"></i>
+<span>4.8</span>
+<span class="text-muted">(24)</span>
+</div>
+</td>
+<td>2 days ago</td>
+<td>
+<div class="table-actions" onclick="event.stopPropagation()">
+<button class="table-action-btn" title="Quick View" onclick="openSupplierDetail('1')"><i class="pi pi-eye"></i></button>
+<button class="table-action-btn" title="Full Profile" onclick="goToSupplierPage('1')"><i class="pi pi-external-link"></i></button>
+<button class="table-action-btn" title="Send Message" onclick="openMessageModal('Global Tech Solutions Ltd.')"><i class="pi pi-envelope"></i></button>
+</div>
+</td>
+</tr>
+<tr onclick="goToSupplierPage('2')">
+<td onclick="event.stopPropagation()"><input type="checkbox" class="supplier-checkbox" data-id="2"></td>
+<td>
+<div class="supplier-info">
+<div class="supplier-logo" style="background: var(--success-50); color: var(--success-500);">AC</div>
+<div>
+<div class="supplier-name">Apex Construction Group</div>
+<div class="supplier-id">UNGM-2024-65421</div>
+</div>
+</div>
+</td>
+<td>
+<div class="category-tags">
+<span class="category-tag">Construction</span>
+<span class="category-tag">Engineering</span>
+</div>
+</td>
+<td><span class="status-badge active"><i class="pi pi-check-circle"></i> Active</span></td>
+<td>
+<div class="sustainability-score">
+<div class="score-bar"><div class="score-fill" style="width: 62%; background: var(--warning-500);"></div></div>
+<span class="score-value" style="color: var(--warning-500);">62</span>
+</div>
+</td>
+<td>
+<div class="performance-rating">
+<i class="pi pi-star-fill" style="color: #f59e0b;"></i>
+<span>4.2</span>
+<span class="text-muted">(18)</span>
+</div>
+</td>
+<td>1 week ago</td>
+<td>
+<div class="table-actions" onclick="event.stopPropagation()">
+<button class="table-action-btn" title="Quick View" onclick="openSupplierDetail('2')"><i class="pi pi-eye"></i></button>
+<button class="table-action-btn" title="Full Profile" onclick="goToSupplierPage('2')"><i class="pi pi-external-link"></i></button>
+<button class="table-action-btn" title="Send Message" onclick="openMessageModal('Apex Construction Group')"><i class="pi pi-envelope"></i></button>
+</div>
+</td>
+</tr>
+<tr onclick="goToSupplierPage('3')">
+<td onclick="event.stopPropagation()"><input type="checkbox" class="supplier-checkbox" data-id="3"></td>
+<td>
+<div class="supplier-info">
+<div class="supplier-logo" style="background: var(--purple-50); color: var(--purple-500);">LS</div>
+<div>
+<div class="supplier-name">Logistics Solutions International</div>
+<div class="supplier-id">UNGM-2024-89012</div>
+</div>
+</div>
+</td>
+<td>
+<div class="category-tags">
+<span class="category-tag">Logistics</span>
+<span class="category-tag">Transport</span>
+</div>
+</td>
+<td><span class="status-badge pending"><i class="pi pi-clock"></i> Pending</span></td>
+<td>
+<div class="sustainability-score">
+<div class="score-bar"><div class="score-fill" style="width: 78%; background: var(--success-500);"></div></div>
+<span class="score-value" style="color: var(--success-500);">78</span>
+</div>
+</td>
+<td>
+<div class="performance-rating">
+<i class="pi pi-star-fill" style="color: #f59e0b;"></i>
+<span>4.5</span>
+<span class="text-muted">(12)</span>
+</div>
+</td>
+<td>3 days ago</td>
+<td>
+<div class="table-actions" onclick="event.stopPropagation()">
+<button class="table-action-btn" title="Quick View" onclick="openSupplierDetail('3')"><i class="pi pi-eye"></i></button>
+<button class="table-action-btn" title="Full Profile" onclick="goToSupplierPage('3')"><i class="pi pi-external-link"></i></button>
+<button class="table-action-btn" title="Send Message" onclick="openMessageModal('Logistics Solutions International')"><i class="pi pi-envelope"></i></button>
+</div>
+</td>
+</tr>
+<tr onclick="goToSupplierPage('4')">
+<td onclick="event.stopPropagation()"><input type="checkbox" class="supplier-checkbox" data-id="4"></td>
+<td>
+<div class="supplier-info">
+<div class="supplier-logo" style="background: var(--warning-50); color: var(--warning-500);">MC</div>
+<div>
+<div class="supplier-name">Meridian Consulting Partners</div>
+<div class="supplier-id">UNGM-2024-34567</div>
+</div>
+</div>
+</td>
+<td>
+<div class="category-tags">
+<span class="category-tag">Consulting</span>
+<span class="category-tag">Advisory</span>
+</div>
+</td>
+<td><span class="status-badge active"><i class="pi pi-check-circle"></i> Active</span></td>
+<td>
+<div class="sustainability-score">
+<div class="score-bar"><div class="score-fill" style="width: 92%; background: var(--success-500);"></div></div>
+<span class="score-value" style="color: var(--success-500);">92</span>
+</div>
+</td>
+<td>
+<div class="performance-rating">
+<i class="pi pi-star-fill" style="color: #f59e0b;"></i>
+<span>4.9</span>
+<span class="text-muted">(31)</span>
+</div>
+</td>
+<td>Today</td>
+<td>
+<div class="table-actions" onclick="event.stopPropagation()">
+<button class="table-action-btn" title="Quick View" onclick="openSupplierDetail('4')"><i class="pi pi-eye"></i></button>
+<button class="table-action-btn" title="Full Profile" onclick="goToSupplierPage('4')"><i class="pi pi-external-link"></i></button>
+<button class="table-action-btn" title="Send Message" onclick="openMessageModal('Meridian Consulting Partners')"><i class="pi pi-envelope"></i></button>
+</div>
+</td>
+</tr>
+<tr onclick="goToSupplierPage('5')">
+<td onclick="event.stopPropagation()"><input type="checkbox" class="supplier-checkbox" data-id="5"></td>
+<td>
+<div class="supplier-info">
+<div class="supplier-logo" style="background: var(--danger-50); color: var(--danger-500);">OS</div>
+<div>
+<div class="supplier-name">Office Supplies Direct</div>
+<div class="supplier-id">UNGM-2024-11223</div>
+</div>
+</div>
+</td>
+<td>
+<div class="category-tags">
+<span class="category-tag">Office Supplies</span>
+</div>
+</td>
+<td><span class="status-badge inactive"><i class="pi pi-minus-circle"></i> Inactive</span></td>
+<td>
+<div class="sustainability-score">
+<div class="score-bar"><div class="score-fill" style="width: 35%; background: var(--danger-500);"></div></div>
+<span class="score-value" style="color: var(--danger-500);">35</span>
+</div>
+</td>
+<td>
+<div class="performance-rating">
+<i class="pi pi-star-fill" style="color: #f59e0b;"></i>
+<span>2.8</span>
+<span class="text-muted">(8)</span>
+</div>
+</td>
+<td>2 months ago</td>
+<td>
+<div class="table-actions" onclick="event.stopPropagation()">
+<button class="table-action-btn" title="Quick View" onclick="openSupplierDetail('5')"><i class="pi pi-eye"></i></button>
+<button class="table-action-btn" title="Full Profile" onclick="goToSupplierPage('5')"><i class="pi pi-external-link"></i></button>
+<button class="table-action-btn" title="Send Message" onclick="openMessageModal('Office Supplies Direct')"><i class="pi pi-envelope"></i></button>
+</div>
+</td>
+</tr>
+<tr onclick="goToSupplierPage('6')">
+<td onclick="event.stopPropagation()"><input type="checkbox" class="supplier-checkbox" data-id="6"></td>
+<td>
+<div class="supplier-info">
+<div class="supplier-logo" style="background: var(--info-50); color: var(--info-400);">TI</div>
+<div>
+<div class="supplier-name">TechInnovate Systems</div>
+<div class="supplier-id">UNGM-2024-99887</div>
+</div>
+</div>
+</td>
+<td>
+<div class="category-tags">
+<span class="category-tag">IT Hardware</span>
+<span class="category-tag">Networking</span>
+</div>
+</td>
+<td><span class="status-badge new"><i class="pi pi-star"></i> New</span></td>
+<td>
+<div class="sustainability-score">
+<div class="score-bar"><div class="score-fill" style="width: 70%; background: var(--success-500);"></div></div>
+<span class="score-value" style="color: var(--success-500);">70</span>
+</div>
+</td>
+<td>
+<div class="performance-rating">
+<span class="text-muted">No ratings yet</span>
+</div>
+</td>
+<td>Yesterday</td>
+<td>
+<div class="table-actions" onclick="event.stopPropagation()">
+<button class="table-action-btn" title="Quick View" onclick="openSupplierDetail('6')"><i class="pi pi-eye"></i></button>
+<button class="table-action-btn" title="Full Profile" onclick="goToSupplierPage('6')"><i class="pi pi-external-link"></i></button>
+<button class="table-action-btn" title="Send Message" onclick="openMessageModal('TechInnovate Systems')"><i class="pi pi-envelope"></i></button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="pagination">
+<div class="pagination-info">Showing 1-6 of 1,248 suppliers</div>
+<div class="pagination-controls">
+<button class="pagination-btn" disabled><i class="pi pi-chevron-left"></i></button>
+<button class="pagination-btn active">1</button>
+<button class="pagination-btn">2</button>
+<button class="pagination-btn">3</button>
+<button class="pagination-btn">...</button>
+<button class="pagination-btn">208</button>
+<button class="pagination-btn"><i class="pi pi-chevron-right"></i></button>
+</div>
+</div>
+</div>
+</main>
+</div>
+
+<!-- Supplier Detail Panel -->
+<div class="detail-panel-overlay" id="supplierDetailPanel">
+<div class="detail-panel">
+<div class="detail-panel-header">
+<span class="detail-panel-title">Supplier Profile</span>
+<button class="detail-panel-close" onclick="closeDetailPanel()"><i class="pi pi-times"></i></button>
+</div>
+<div class="detail-panel-body">
+<!-- Supplier Profile Header -->
+<div class="supplier-profile-header">
+<div class="supplier-profile-logo" style="background: var(--primary-100); color: var(--primary-600);">GT</div>
+<div class="supplier-profile-info">
+<div class="supplier-profile-name">Global Tech Solutions Ltd.</div>
+<div class="supplier-profile-company-id">UNGM-2024-78543 · San Francisco, USA</div>
+<div class="supplier-profile-badges">
+<span class="status-badge active"><i class="pi pi-check-circle"></i> Active</span>
+<span class="status-badge verified"><i class="pi pi-verified"></i> Level 2</span>
+<span class="risk-badge low"><i class="pi pi-shield"></i> Low Risk</span>
+</div>
+</div>
+</div>
+
+<!-- Quick Actions -->
+<div class="detail-section">
+<div class="detail-section-title"><i class="pi pi-bolt"></i> Quick Actions</div>
+<div class="quick-actions-grid">
+<button class="quick-action-btn" onclick="openMessageModal('Global Tech Solutions Ltd.')">
+<i class="pi pi-envelope"></i>
+<span>Send Message</span>
+</button>
+<button class="quick-action-btn" onclick="showToast('Tender invitation sent', 'success')">
+<i class="pi pi-file-edit"></i>
+<span>Invite to Tender</span>
+</button>
+<button class="quick-action-btn" onclick="showToast('DRiVE assessment requested', 'success')">
+<i class="pi pi-verified"></i>
+<span>Request DRiVE</span>
+</button>
+<button class="quick-action-btn">
+<i class="pi pi-star"></i>
+<span>Add to Favorites</span>
+</button>
+<button class="quick-action-btn">
+<i class="pi pi-history"></i>
+<span>View History</span>
+</button>
+<button class="quick-action-btn">
+<i class="pi pi-file-pdf"></i>
+<span>Export Profile</span>
+</button>
+</div>
+</div>
+
+<!-- Tabs -->
+<div class="tabs">
+<button class="tab-btn active" onclick="switchTab(this, 'overview')">Overview</button>
+<button class="tab-btn" onclick="switchTab(this, 'contracts')">Contracts</button>
+<button class="tab-btn" onclick="switchTab(this, 'tenders')">Tenders</button>
+<button class="tab-btn" onclick="switchTab(this, 'performance')">Performance</button>
+<button class="tab-btn" onclick="switchTab(this, 'contacts')">Contacts</button>
+</div>
+
+<!-- Overview Tab -->
+<div class="tab-content" id="tab-overview">
+<div class="detail-section">
+<div class="detail-section-title"><i class="pi pi-building"></i> Company Information</div>
+<div class="detail-grid">
+<div class="detail-item">
+<div class="detail-label">Legal Name</div>
+<div class="detail-value">Global Tech Solutions Ltd.</div>
+</div>
+<div class="detail-item">
+<div class="detail-label">DUNS Number</div>
+<div class="detail-value">12-345-6789</div>
+</div>
+<div class="detail-item">
+<div class="detail-label">Year Established</div>
+<div class="detail-value">2008</div>
+</div>
+<div class="detail-item">
+<div class="detail-label">Employees</div>
+<div class="detail-value">250-500</div>
+</div>
+<div class="detail-item">
+<div class="detail-label">Annual Revenue</div>
+<div class="detail-value">$50M - $100M</div>
+</div>
+<div class="detail-item">
+<div class="detail-label">Country</div>
+<div class="detail-value">United States</div>
+</div>
+</div>
+</div>
+
+<div class="detail-section">
+<div class="detail-section-title"><i class="pi pi-tag"></i> Categories & Capabilities</div>
+<div class="category-tags" style="gap: 8px;">
+<span class="category-tag" style="padding: 6px 12px;">IT Services</span>
+<span class="category-tag" style="padding: 6px 12px;">Software Development</span>
+<span class="category-tag" style="padding: 6px 12px;">Cloud Solutions</span>
+<span class="category-tag" style="padding: 6px 12px;">Cybersecurity</span>
+<span class="category-tag" style="padding: 6px 12px;">Data Analytics</span>
+</div>
+</div>
+
+<div class="detail-section">
+<div class="detail-section-title"><i class="pi pi-map-marker"></i> Address</div>
+<div class="detail-value">
+1234 Innovation Drive, Suite 500<br>
+San Francisco, CA 94105<br>
+United States
+</div>
+</div>
+
+<div class="detail-section">
+<div class="detail-section-title"><i class="pi pi-link"></i> Website & Social</div>
+<div class="detail-value">
+<a href="#">www.globaltechsolutions.com</a>
+</div>
+</div>
+</div>
+
+<!-- Contacts Tab -->
+<div class="tab-content" id="tab-contacts" style="display: none;">
+<div class="detail-section">
+<div class="detail-section-title"><i class="pi pi-users"></i> Key Contacts</div>
+<div class="contact-card">
+<div class="contact-avatar" style="background: var(--primary-100); color: var(--primary-600);">JA</div>
+<div class="contact-info">
+<div class="contact-name">John Anderson</div>
+<div class="contact-role">Procurement Manager · john.anderson@globaltech.com</div>
+</div>
+<div class="contact-actions">
+<button class="table-action-btn" title="Send Email" onclick="showToast('Opening email client...', 'success')"><i class="pi pi-envelope"></i></button>
+<button class="table-action-btn" title="Call"><i class="pi pi-phone"></i></button>
+</div>
+</div>
+<div class="contact-card">
+<div class="contact-avatar" style="background: var(--success-50); color: var(--success-500);">SA</div>
+<div class="contact-info">
+<div class="contact-name">Sarah Adams</div>
+<div class="contact-role">Bid Manager · sarah.adams@globaltech.com</div>
+</div>
+<div class="contact-actions">
+<button class="table-action-btn" title="Send Email" onclick="showToast('Opening email client...', 'success')"><i class="pi pi-envelope"></i></button>
+<button class="table-action-btn" title="Call"><i class="pi pi-phone"></i></button>
+</div>
+</div>
+<div class="contact-card">
+<div class="contact-avatar" style="background: var(--purple-50); color: var(--purple-500);">RJ</div>
+<div class="contact-info">
+<div class="contact-name">Robert Johnson</div>
+<div class="contact-role">CEO · robert.johnson@globaltech.com</div>
+</div>
+<div class="contact-actions">
+<button class="table-action-btn" title="Send Email" onclick="showToast('Opening email client...', 'success')"><i class="pi pi-envelope"></i></button>
+<button class="table-action-btn" title="Call"><i class="pi pi-phone"></i></button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Contracts Tab -->
+<div class="tab-content" id="tab-contracts" style="display: none;">
+<div class="detail-section">
+<div class="detail-section-title"><i class="pi pi-file"></i> Active Contracts</div>
+<div class="contract-item">
+<div class="contract-icon active"><i class="pi pi-file"></i></div>
+<div class="contract-info">
+<div class="contract-title">LTA-2024-IT-0045</div>
+<div class="contract-meta">IT Equipment & Services · Expires: Dec 2025</div>
+</div>
+<div class="contract-value">
+<div class="contract-amount">$450,000</div>
+<span class="status-badge active">Active</span>
+</div>
+</div>
+<div class="contract-item">
+<div class="contract-icon active"><i class="pi pi-file"></i></div>
+<div class="contract-info">
+<div class="contract-title">PO-2024-00892</div>
+<div class="contract-meta">Software Licenses · Expires: Jun 2025</div>
+</div>
+<div class="contract-value">
+<div class="contract-amount">$125,000</div>
+<span class="status-badge active">Active</span>
+</div>
+</div>
+</div>
+<div class="detail-section">
+<div class="detail-section-title"><i class="pi pi-history"></i> Past Contracts</div>
+<div class="contract-item">
+<div class="contract-icon completed"><i class="pi pi-check"></i></div>
+<div class="contract-info">
+<div class="contract-title">PO-2023-00456</div>
+<div class="contract-meta">Hardware Procurement · Completed</div>
+</div>
+<div class="contract-value">
+<div class="contract-amount">$89,500</div>
+<span class="status-badge" style="background: var(--surface-200); color: var(--text-muted);">Completed</span>
+</div>
+</div>
+<div class="contract-item">
+<div class="contract-icon completed"><i class="pi pi-check"></i></div>
+<div class="contract-info">
+<div class="contract-title">LTA-2022-IT-0012</div>
+<div class="contract-meta">Support Services · Completed</div>
+</div>
+<div class="contract-value">
+<div class="contract-amount">$320,000</div>
+<span class="status-badge" style="background: var(--surface-200); color: var(--text-muted);">Completed</span>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Tenders Tab -->
+<div class="tab-content" id="tab-tenders" style="display: none;">
+<div class="detail-section">
+<div class="detail-section-title"><i class="pi pi-trophy"></i> Awarded Tenders</div>
+<div class="tender-item">
+<div class="tender-result awarded"><i class="pi pi-trophy"></i></div>
+<div class="tender-info">
+<div class="tender-title">ITB-2024-00756 - Office Supplies</div>
+<div class="tender-meta">Awarded Dec 2024 · Value: $125,000</div>
+</div>
+<span class="status-badge active">Awarded</span>
+</div>
+<div class="tender-item">
+<div class="tender-result awarded"><i class="pi pi-trophy"></i></div>
+<div class="tender-info">
+<div class="tender-title">RFQ-2023-00421 - IT Equipment</div>
+<div class="tender-meta">Awarded Aug 2023 · Value: $89,500</div>
+</div>
+<span class="status-badge active">Awarded</span>
+</div>
+</div>
+<div class="detail-section">
+<div class="detail-section-title"><i class="pi pi-clock"></i> Active Participations</div>
+<div class="tender-item">
+<div class="tender-result submitted"><i class="pi pi-send"></i></div>
+<div class="tender-info">
+<div class="tender-title">RFQ-2024-00892 - IT Equipment Supply</div>
+<div class="tender-meta">Submitted 2 days ago · Under evaluation</div>
+</div>
+<span class="status-badge info">Submitted</span>
+</div>
+</div>
+<div class="detail-section">
+<div class="detail-section-title"><i class="pi pi-times-circle"></i> Not Awarded</div>
+<div class="tender-item">
+<div class="tender-result not-awarded"><i class="pi pi-minus"></i></div>
+<div class="tender-info">
+<div class="tender-title">ITB-2024-00612 - Network Infrastructure</div>
+<div class="tender-meta">Not awarded · Oct 2024</div>
+</div>
+<span class="status-badge" style="background: var(--surface-200); color: var(--text-muted);">Not Awarded</span>
+</div>
+</div>
+</div>
+
+<!-- Performance Tab -->
+<div class="tab-content" id="tab-performance" style="display: none;">
+<div class="detail-section">
+<div class="detail-section-title"><i class="pi pi-chart-bar"></i> Performance Metrics</div>
+<div class="performance-metrics">
+<div class="performance-metric">
+<div class="metric-value" style="color: var(--success-500);">4.8</div>
+<div class="metric-label">Overall Rating</div>
+<div class="metric-bar"><div class="metric-fill" style="width: 96%; background: var(--success-500);"></div></div>
+</div>
+<div class="performance-metric">
+<div class="metric-value" style="color: var(--success-500);">98%</div>
+<div class="metric-label">On-Time Delivery</div>
+<div class="metric-bar"><div class="metric-fill" style="width: 98%; background: var(--success-500);"></div></div>
+</div>
+<div class="performance-metric">
+<div class="metric-value" style="color: var(--success-500);">95%</div>
+<div class="metric-label">Quality Score</div>
+<div class="metric-bar"><div class="metric-fill" style="width: 95%; background: var(--success-500);"></div></div>
+</div>
+<div class="performance-metric">
+<div class="metric-value" style="color: var(--info-400);">85</div>
+<div class="metric-label">Sustainability</div>
+<div class="metric-bar"><div class="metric-fill" style="width: 85%; background: var(--info-400);"></div></div>
+</div>
+</div>
+</div>
+<div class="detail-section">
+<div class="detail-section-title"><i class="pi pi-comments"></i> Recent Evaluations</div>
+<div class="activity-timeline">
+<div class="activity-item">
+<div class="activity-dot" style="background: var(--success-500);"></div>
+<div class="activity-content">
+<div class="activity-title">Excellent delivery performance</div>
+<div class="activity-meta">PO-2024-00892 · Maria Santos · Dec 2024</div>
+</div>
+</div>
+<div class="activity-item">
+<div class="activity-dot" style="background: var(--success-500);"></div>
+<div class="activity-content">
+<div class="activity-title">High quality products received</div>
+<div class="activity-meta">LTA-2024-IT-0045 · John Doe · Nov 2024</div>
+</div>
+</div>
+<div class="activity-item">
+<div class="activity-dot" style="background: var(--warning-500);"></div>
+<div class="activity-content">
+<div class="activity-title">Minor delay in documentation</div>
+<div class="activity-meta">PO-2024-00756 · Jane Smith · Oct 2024</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Contacts Tab -->
+<div class="tab-content" id="tab-contacts" style="display: none;">
+<div class="detail-section">
+<div class="detail-section-title"><i class="pi pi-users"></i> Key Contacts</div>
+<div class="contact-card">
+<div class="contact-avatar" style="background: var(--primary-100); color: var(--primary-600);">JA</div>
+<div class="contact-info">
+<div class="contact-name">John Anderson</div>
+<div class="contact-role">Procurement Manager · john.anderson@globaltech.com</div>
+</div>
+<div class="contact-actions">
+<button class="table-action-btn" title="Send Email" onclick="showToast('Opening email client...', 'success')"><i class="pi pi-envelope"></i></button>
+<button class="table-action-btn" title="Call"><i class="pi pi-phone"></i></button>
+</div>
+</div>
+<div class="contact-card">
+<div class="contact-avatar" style="background: var(--success-50); color: var(--success-500);">SA</div>
+<div class="contact-info">
+<div class="contact-name">Sarah Adams</div>
+<div class="contact-role">Bid Manager · sarah.adams@globaltech.com</div>
+</div>
+<div class="contact-actions">
+<button class="table-action-btn" title="Send Email" onclick="showToast('Opening email client...', 'success')"><i class="pi pi-envelope"></i></button>
+<button class="table-action-btn" title="Call"><i class="pi pi-phone"></i></button>
+</div>
+</div>
+<div class="contact-card">
+<div class="contact-avatar" style="background: var(--purple-50); color: var(--purple-500);">RJ</div>
+<div class="contact-info">
+<div class="contact-name">Robert Johnson</div>
+<div class="contact-role">CEO · robert.johnson@globaltech.com</div>
+</div>
+<div class="contact-actions">
+<button class="table-action-btn" title="Send Email" onclick="showToast('Opening email client...', 'success')"><i class="pi pi-envelope"></i></button>
+<button class="table-action-btn" title="Call"><i class="pi pi-phone"></i></button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="detail-panel-footer">
+<button class="btn btn-ghost" onclick="closeDetailPanel()">Close</button>
+<button class="btn btn-secondary" onclick="closeDetailPanel(); showToast('Opening full profile page...', 'success');"><i class="pi pi-external-link"></i> View Full Profile</button>
+<button class="btn btn-primary" onclick="openMessageModal('Global Tech Solutions Ltd.')"><i class="pi pi-envelope"></i> Contact Supplier</button>
+</div>
+</div>
+</div>
+
+<!-- Invite Supplier Modal -->
+<div class="modal-overlay" id="inviteModal">
+<div class="modal">
+<div class="modal-header">
+<h3 class="modal-title"><i class="pi pi-user-plus"></i> Invite Supplier</h3>
+<button class="modal-close" onclick="closeModal('inviteModal')"><i class="pi pi-times"></i></button>
+</div>
+<div class="modal-body">
+<div class="alert-box info">
+<i class="pi pi-info-circle"></i>
+<div class="alert-box-content">
+<div class="alert-box-title">Supplier Invitation</div>
+An invitation will be sent to the supplier's email address. They will need to register on UNGM (if not already) to complete the onboarding process.
+</div>
+</div>
+<div class="form-group">
+<label class="form-label">Company Name <span style="color: var(--danger-500);">*</span></label>
+<input type="text" class="form-input" placeholder="Enter company name">
+</div>
+<div class="form-row">
+<div class="form-group">
+<label class="form-label">Contact First Name <span style="color: var(--danger-500);">*</span></label>
+<input type="text" class="form-input" placeholder="First name">
+</div>
+<div class="form-group">
+<label class="form-label">Contact Last Name <span style="color: var(--danger-500);">*</span></label>
+<input type="text" class="form-input" placeholder="Last name">
+</div>
+</div>
+<div class="form-group">
+<label class="form-label">Email Address <span style="color: var(--danger-500);">*</span></label>
+<input type="email" class="form-input" placeholder="contact@company.com">
+</div>
+<div class="form-group">
+<label class="form-label">Category</label>
+<select class="form-input">
+<option value="">Select category...</option>
+<option value="it">IT & Software</option>
+<option value="construction">Construction</option>
+<option value="logistics">Logistics</option>
+<option value="consulting">Consulting</option>
+<option value="supplies">Office Supplies</option>
+</select>
+</div>
+<div class="form-group">
+<label class="form-label">Message (Optional)</label>
+<textarea class="form-input" rows="3" placeholder="Add a personal message to the invitation..."></textarea>
+</div>
+</div>
+<div class="modal-footer">
+<button class="btn btn-secondary" onclick="closeModal('inviteModal')">Cancel</button>
+<button class="btn btn-primary" onclick="sendInvitation()"><i class="pi pi-send"></i> Send Invitation</button>
+</div>
+</div>
+</div>
+
+<!-- Import Suppliers Modal -->
+<div class="modal-overlay" id="importModal">
+<div class="modal">
+<div class="modal-header">
+<h3 class="modal-title"><i class="pi pi-upload"></i> Import Suppliers</h3>
+<button class="modal-close" onclick="closeModal('importModal')"><i class="pi pi-times"></i></button>
+</div>
+<div class="modal-body">
+<div class="alert-box info">
+<i class="pi pi-info-circle"></i>
+<div class="alert-box-content">
+Upload a CSV or Excel file with supplier information. Download our template for the correct format.
+</div>
+</div>
+<div style="border: 2px dashed var(--surface-300); border-radius: var(--radius-lg); padding: var(--spacing-2xl); text-align: center; margin-bottom: var(--spacing-lg);">
+<i class="pi pi-cloud-upload" style="font-size: 48px; color: var(--surface-400); margin-bottom: var(--spacing-md); display: block;"></i>
+<p style="font-size: 14px; color: var(--text-secondary); margin-bottom: var(--spacing-md);">Drag and drop your file here, or</p>
+<button class="btn btn-secondary"><i class="pi pi-folder-open"></i> Browse Files</button>
+<p style="font-size: 12px; color: var(--text-muted); margin-top: var(--spacing-md);">Supported formats: .csv, .xlsx (Max 10MB)</p>
+</div>
+<a href="#" style="font-size: 13px; color: var(--primary-500); text-decoration: none; display: flex; align-items: center; gap: 6px;">
+<i class="pi pi-download"></i> Download import template
+</a>
+</div>
+<div class="modal-footer">
+<button class="btn btn-secondary" onclick="closeModal('importModal')">Cancel</button>
+<button class="btn btn-primary" disabled><i class="pi pi-upload"></i> Import</button>
+</div>
+</div>
+</div>
+
+<!-- Message Modal -->
+<div class="modal-overlay" id="messageModal">
+<div class="modal">
+<div class="modal-header">
+<h3 class="modal-title"><i class="pi pi-envelope"></i> Send Message</h3>
+<button class="modal-close" onclick="closeModal('messageModal')"><i class="pi pi-times"></i></button>
+</div>
+<div class="modal-body">
+<div class="form-group">
+<label class="form-label">To</label>
+<input type="text" class="form-input" id="messageRecipient" disabled>
+</div>
+<div class="form-group">
+<label class="form-label">Subject <span style="color: var(--danger-500);">*</span></label>
+<input type="text" class="form-input" placeholder="Enter subject...">
+</div>
+<div class="form-group">
+<label class="form-label">Message <span style="color: var(--danger-500);">*</span></label>
+<textarea class="form-input" rows="6" placeholder="Type your message..."></textarea>
+</div>
+<div class="form-group">
+<label class="form-label">Attachments</label>
+<button class="btn btn-secondary btn-sm"><i class="pi pi-paperclip"></i> Add Attachment</button>
+</div>
+</div>
+<div class="modal-footer">
+<button class="btn btn-secondary" onclick="closeModal('messageModal')">Cancel</button>
+<button class="btn btn-primary" onclick="sendMessage()"><i class="pi pi-send"></i> Send Message</button>
+</div>
+</div>
+</div>
+
+<!-- Create Supplier List Modal -->
+<div class="modal-overlay" id="createListModal">
+<div class="modal">
+<div class="modal-header">
+<h3 class="modal-title"><i class="pi pi-list"></i> Create Supplier List</h3>
+<button class="modal-close" onclick="closeModal('createListModal')"><i class="pi pi-times"></i></button>
+</div>
+<div class="modal-body">
+<div class="alert-box info">
+<i class="pi pi-info-circle"></i>
+<div class="alert-box-content">
+Create a custom list to organize suppliers for specific tenders, projects, or categories. You can add suppliers to this list from the supplier table.
+</div>
+</div>
+<div class="form-group">
+<label class="form-label">List Name <span style="color: var(--danger-500);">*</span></label>
+<input type="text" class="form-input" id="listName" placeholder="e.g., IT Suppliers 2025, Project ABC Vendors">
+</div>
+<div class="form-group">
+<label class="form-label">Description</label>
+<textarea class="form-input" rows="3" placeholder="Optional description for this list..."></textarea>
+</div>
+<div class="form-group">
+<label class="form-label">Category</label>
+<select class="form-input">
+<option value="">Select category...</option>
+<option value="tender">Tender Shortlist</option>
+<option value="project">Project Suppliers</option>
+<option value="preferred">Preferred Suppliers</option>
+<option value="watch">Watch List</option>
+<option value="custom">Custom</option>
+</select>
+</div>
+<div class="form-group">
+<label class="form-label">Visibility</label>
+<div style="display: flex; gap: var(--spacing-md); margin-top: 8px;">
+<label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+<input type="radio" name="visibility" value="private" checked> Private (Only me)
+</label>
+<label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+<input type="radio" name="visibility" value="team"> Team
+</label>
+<label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+<input type="radio" name="visibility" value="public"> All Users
+</label>
+</div>
+</div>
+</div>
+<div class="modal-footer">
+<button class="btn btn-secondary" onclick="closeModal('createListModal')">Cancel</button>
+<button class="btn btn-primary" onclick="createSupplierList()"><i class="pi pi-check"></i> Create List</button>
+</div>
+</div>
+</div>
+
+<!-- Add to List Modal -->
+<div class="modal-overlay" id="addToListModal">
+<div class="modal">
+<div class="modal-header">
+<h3 class="modal-title"><i class="pi pi-list"></i> Add to Supplier List</h3>
+<button class="modal-close" onclick="closeModal('addToListModal')"><i class="pi pi-times"></i></button>
+</div>
+<div class="modal-body">
+<div class="form-group">
+<label class="form-label">Select List</label>
+<div style="display: flex; flex-direction: column; gap: var(--spacing-sm); margin-top: 8px;">
+<label class="contract-item" style="cursor: pointer;">
+<input type="radio" name="targetList" value="1" style="margin-right: 12px;">
+<div class="contract-info">
+<div class="contract-title">IT Suppliers 2025</div>
+<div class="contract-meta">12 suppliers · Tender Shortlist</div>
+</div>
+</label>
+<label class="contract-item" style="cursor: pointer;">
+<input type="radio" name="targetList" value="2" style="margin-right: 12px;">
+<div class="contract-info">
+<div class="contract-title">Project ATLAS Vendors</div>
+<div class="contract-meta">8 suppliers · Project Suppliers</div>
+</div>
+</label>
+<label class="contract-item" style="cursor: pointer;">
+<input type="radio" name="targetList" value="3" style="margin-right: 12px;">
+<div class="contract-info">
+<div class="contract-title">Preferred Logistics Partners</div>
+<div class="contract-meta">5 suppliers · Preferred Suppliers</div>
+</div>
+</label>
+</div>
+</div>
+<div style="text-align: center; margin-top: var(--spacing-md);">
+<button class="btn btn-ghost btn-sm" onclick="closeModal('addToListModal'); openModal('createListModal');">
+<i class="pi pi-plus"></i> Create New List
+</button>
+</div>
+</div>
+<div class="modal-footer">
+<button class="btn btn-secondary" onclick="closeModal('addToListModal')">Cancel</button>
+<button class="btn btn-primary" onclick="addToList()"><i class="pi pi-check"></i> Add to List</button>
+</div>
+</div>
+</div>
+
+<!-- Toast Notification -->
+<div class="toast" id="toast">
+<i class="pi pi-check-circle"></i>
+<span id="toastMessage">Action completed successfully</span>
+</div>
+
+<script>
+// Modal Functions
+function openModal(modalId) {
+document.getElementById(modalId).classList.add('open');
+document.body.style.overflow = 'hidden';
+}
+
+function closeModal(modalId) {
+document.getElementById(modalId).classList.remove('open');
+document.body.style.overflow = '';
+}
+
+// Close modal on overlay click
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+overlay.addEventListener('click', function(e) {
+if (e.target === this) {
+this.classList.remove('open');
+document.body.style.overflow = '';
+}
+});
+});
+
+// Detail Panel (Quick View)
+function openSupplierDetail(supplierId) {
+document.getElementById('supplierDetailPanel').classList.add('open');
+document.body.style.overflow = 'hidden';
+// Reset to first tab
+document.querySelectorAll('.tab-btn').forEach((b, i) => {
+b.classList.toggle('active', i === 0);
+});
+document.querySelectorAll('.tab-content').forEach((c, i) => {
+c.style.display = i === 0 ? 'block' : 'none';
+});
+}
+
+function closeDetailPanel() {
+document.getElementById('supplierDetailPanel').classList.remove('open');
+document.body.style.overflow = '';
+}
+
+// Close panel on overlay click
+document.getElementById('supplierDetailPanel').addEventListener('click', function(e) {
+if (e.target === this) {
+closeDetailPanel();
+}
+});
+
+// Go to Full Supplier Page
+function goToSupplierPage(supplierId) {
+// In a real app, this would navigate to a new page
+// For demo, show an alert
+showToast('Opening full supplier profile...', 'success');
+// Simulate navigation delay then open detail panel as demo
+setTimeout(() => {
+openSupplierDetail(supplierId);
+}, 500);
+}
+
+// Tab Switching
+function switchTab(btn, tabId) {
+document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+btn.classList.add('active');
+document.getElementById('tab-' + tabId).style.display = 'block';
+}
+
+// Message Modal
+function openMessageModal(supplierName) {
+document.getElementById('messageRecipient').value = supplierName;
+openModal('messageModal');
+}
+
+function sendMessage() {
+closeModal('messageModal');
+showToast('Message sent successfully', 'success');
+}
+
+// Send Invitation
+function sendInvitation() {
+closeModal('inviteModal');
+showToast('Invitation sent successfully', 'success');
+}
+
+// ========== SELECTION & BULK ACTIONS ==========
+
+function toggleSelectAll() {
+const selectAll = document.getElementById('selectAll');
+const checkboxes = document.querySelectorAll('.supplier-checkbox');
+checkboxes.forEach(cb => cb.checked = selectAll.checked);
+updateBulkActions();
+}
+
+function updateBulkActions() {
+const checkboxes = document.querySelectorAll('.supplier-checkbox:checked');
+const count = checkboxes.length;
+const bulkBar = document.getElementById('bulkActionsBar');
+const countEl = document.getElementById('selectedCount');
+
+if (count > 0) {
+bulkBar.classList.add('show');
+countEl.textContent = count;
+} else {
+bulkBar.classList.remove('show');
+}
+}
+
+function clearSelection() {
+document.querySelectorAll('.supplier-checkbox').forEach(cb => cb.checked = false);
+document.getElementById('selectAll').checked = false;
+updateBulkActions();
+}
+
+// Add event listeners to checkboxes
+document.querySelectorAll('.supplier-checkbox').forEach(cb => {
+cb.addEventListener('change', updateBulkActions);
+});
+
+function addSelectedToList() {
+openModal('addToListModal');
+}
+
+function exportSelected() {
+const count = document.querySelectorAll('.supplier-checkbox:checked').length;
+showToast(`Exporting ${count} suppliers...`, 'success');
+clearSelection();
+}
+
+function inviteSelectedToTender() {
+const count = document.querySelectorAll('.supplier-checkbox:checked').length;
+showToast(`${count} suppliers invited to tender`, 'success');
+clearSelection();
+}
+
+// ========== SUPPLIER LISTS ==========
+
+function createSupplierList() {
+const name = document.getElementById('listName').value.trim();
+if (!name) {
+showToast('Please enter a list name', 'error');
+return;
+}
+closeModal('createListModal');
+showToast(`List "${name}" created successfully`, 'success');
+document.getElementById('listName').value = '';
+}
+
+function addToList() {
+const selected = document.querySelector('input[name="targetList"]:checked');
+if (!selected) {
+showToast('Please select a list', 'error');
+return;
+}
+const count = document.querySelectorAll('.supplier-checkbox:checked').length || 1;
+closeModal('addToListModal');
+showToast(`${count} supplier(s) added to list`, 'success');
+clearSelection();
+}
+
+// Filter Suppliers (mock)
+function filterSuppliers() {
+const search = document.getElementById('searchInput').value.toLowerCase();
+const status = document.getElementById('statusFilter').value;
+const category = document.getElementById('categoryFilter').value;
+const risk = document.getElementById('riskFilter').value;
+
+const rows = document.querySelectorAll('#supplierTableBody tr');
+rows.forEach(row => {
+const text = row.textContent.toLowerCase();
+const matchesSearch = text.includes(search);
+// For demo, show all rows that match search
+row.style.display = matchesSearch ? '' : 'none';
+});
+}
+
+// Toast Notification
+function showToast(message, type = 'success') {
+const toast = document.getElementById('toast');
+const icon = toast.querySelector('i');
+document.getElementById('toastMessage').textContent = message;
+
+toast.className = 'toast ' + type;
+if (type === 'success') {
+icon.className = 'pi pi-check-circle';
+} else if (type === 'error') {
+icon.className = 'pi pi-times-circle';
+}
+
+toast.classList.add('show');
+setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// View Toggle (mock)
+document.querySelectorAll('.view-toggle-btn').forEach(btn => {
+btn.addEventListener('click', function() {
+document.querySelectorAll('.view-toggle-btn').forEach(b => b.classList.remove('active'));
+this.classList.add('active');
+});
+});
+
+// Pagination (mock)
+document.querySelectorAll('.pagination-btn:not(:disabled)').forEach(btn => {
+btn.addEventListener('click', function() {
+if (!this.querySelector('i')) {
+document.querySelectorAll('.pagination-btn').forEach(b => b.classList.remove('active'));
+this.classList.add('active');
+}
+});
+});
+</script>
+
+</body>
+</html>
+
