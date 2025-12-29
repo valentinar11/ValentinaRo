@@ -220,6 +220,22 @@
             display: none;
         }
 
+        .sidebar.collapsed .menu-group-header span,
+        .sidebar.collapsed .menu-group-header i:last-child,
+        .sidebar.collapsed .menu-divider {
+            display: none;
+        }
+
+        .sidebar.collapsed .menu-group-header {
+            padding: 10px;
+            justify-content: center;
+        }
+
+        .sidebar.collapsed .menu-group-items .menu-item {
+            padding: 10px;
+            justify-content: center;
+        }
+
         .sidebar-menu {
             flex: 1;
             padding: 20px 0;
@@ -230,15 +246,14 @@
         }
 
         .menu-section-title {
-            padding: 0 20px 15px 20px;
-            font-size: 20px;
-            font-weight: bold;
-            text-transform: none;
-            letter-spacing: 0;
-            color: white;
+            padding: 10px 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: rgba(255, 255, 255, 0.7);
             font-family: 'Lato', sans-serif;
-            margin-bottom: var(--spacing-sm);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: var(--spacing-xs);
         }
 
         .menu-item {
@@ -283,6 +298,71 @@
             font-size: 11px;
             font-weight: 600;
             border-radius: 999px;
+        }
+
+        /* Menu Groups - Collapsible */
+        .menu-group {
+            margin: 0 10px var(--spacing-xs) 10px;
+        }
+
+        .menu-group-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 12px;
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.2s ease;
+        }
+
+        .menu-group-header:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .menu-group-header span {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .menu-group-header i:last-child {
+            font-size: 12px;
+            transition: transform 0.2s ease;
+        }
+
+        .menu-group.collapsed .menu-group-header i:last-child {
+            transform: rotate(-90deg);
+        }
+
+        .menu-group-items {
+            max-height: 500px;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .menu-group.collapsed .menu-group-items {
+            max-height: 0;
+        }
+
+        .menu-group-items .menu-item {
+            padding: 10px 20px 10px 36px;
+            font-size: 14px;
+            margin: 2px 0;
+        }
+
+        .menu-item.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .menu-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.15);
+            margin: var(--spacing-md) 20px;
         }
 
         /* Main Content */
@@ -2924,49 +3004,143 @@
                 <i class="pi pi-chevron-left"></i>
             </div>
             <nav class="sidebar-menu">
-                <!-- Tendering Section -->
+                <!-- Administrative Applications -->
                 <div class="menu-section">
-                    <div class="menu-section-title">Tendering</div>
-                    <a class="menu-item active" id="menu-tendering-overview" href="javascript:void(0)" onclick="showDashboard(this); return false;">
-                        <span class="menu-icon">📊</span>
-                        <span>Overview</span>
-                    </a>
-                    <a class="menu-item" id="menu-tendering-tenders" href="javascript:void(0)" onclick="showTendersList(this); return false;">
-                        <span class="menu-icon">📋</span>
-                        <span>Tenders</span>
-                        <span class="menu-badge">13</span>
-                    </a>
-                    <a class="menu-item" id="menu-tendering-templates" href="javascript:void(0)">
-                        <span class="menu-icon">📁</span>
-                        <span>Templates</span>
-                    </a>
+                    <div class="menu-section-title">Administrative Applications</div>
+                    
+                    <!-- System Settings -->
+                    <div class="menu-group collapsed">
+                        <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                            <span><i class="pi pi-cog"></i> System Settings</span>
+                            <i class="pi pi-chevron-down"></i>
+                        </div>
+                        <div class="menu-group-items">
+                            <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-users"></i></span><span>User Role Management</span></a>
+                            <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-id-card"></i></span><span>Role Management</span></a>
+                            <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-sliders-h"></i></span><span>Attribute Management</span></a>
+                            <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-database"></i></span><span>Data Management</span></a>
+                        </div>
+                    </div>
+                    
+                    <!-- Components -->
+                    <div class="menu-group collapsed">
+                        <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                            <span><i class="pi pi-box"></i> Components</span>
+                            <i class="pi pi-chevron-down"></i>
+                        </div>
+                        <div class="menu-group-items">
+                            <a class="menu-item" id="menu-criteria" href="https://valentinar11.github.io/ValentinaRo/components-library.html"><span class="menu-icon"><i class="pi pi-list"></i></span><span>Evaluation Criteria Library</span></a>
+                            <a class="menu-item" id="menu-specifications" onclick="switchView('specifications')"><span class="menu-icon"><i class="pi pi-cog"></i></span><span>Specifications Library</span></a>
+                        </div>
+                    </div>
+                    
+                    <!-- Forms -->
+                    <div class="menu-group collapsed">
+                        <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                            <span><i class="pi pi-file-edit"></i> Forms</span>
+                            <i class="pi pi-chevron-down"></i>
+                        </div>
+                        <div class="menu-group-items">
+                            <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-folder"></i></span><span>Forms Library</span></a>
+                            <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-pencil"></i></span><span>Form Builder</span></a>
+                        </div>
+                    </div>
+                    
+                    <!-- Processes -->
+                    <div class="menu-group collapsed">
+                        <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                            <span><i class="pi pi-sitemap"></i> Processes</span>
+                            <i class="pi pi-chevron-down"></i>
+                        </div>
+                        <div class="menu-group-items">
+                            <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-list"></i></span><span>Process Library</span></a>
+                        </div>
+                    </div>
+                    
+                    <!-- Templates -->
+                    <div class="menu-group collapsed">
+                        <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                            <span><i class="pi pi-copy"></i> Templates</span>
+                            <i class="pi pi-chevron-down"></i>
+                        </div>
+                        <div class="menu-group-items">
+                            <a class="menu-item" href="template-library.html"><span class="menu-icon"><i class="pi pi-folder"></i></span><span>Templates Library</span></a>
+                            <a class="menu-item" href="template-builder-workspace.html"><span class="menu-icon"><i class="pi pi-pencil"></i></span><span>Template Builder</span></a>
+                        </div>
+                    </div>
                 </div>
-
-                <!-- Award & Review (CPC) Section -->
+                
+                <div class="menu-divider"></div>
+                
+                <!-- Business Applications -->
                 <div class="menu-section">
-                    <div class="menu-section-title">Award & Review</div>
-                    <a class="menu-item" id="menu-cpc-overview" href="javascript:void(0)" onclick="showCPCDashboard(this); return false;">
-                        <span class="menu-icon">📊</span>
-                        <span>Overview</span>
-                        <span class="menu-badge" style="background: #f59e0b;">3</span>
-                    </a>
-                    <a class="menu-item" id="menu-cpc-cases" href="javascript:void(0)" onclick="showCPCCases(this); return false;">
-                        <span class="menu-icon">📂</span>
-                        <span>Cases</span>
-                    </a>
-                    <a class="menu-item" id="menu-cpc-meetings" href="javascript:void(0)" onclick="showCPCMeetings(this); return false;">
-                        <span class="menu-icon">📅</span>
-                        <span>Meetings</span>
-                    </a>
-                    <a class="menu-item" id="menu-cpc-pool" href="javascript:void(0)" onclick="showCPCPoolManagement(this); return false;">
-                        <span class="menu-icon">👥</span>
-                        <span>Pool Management</span>
-                    </a>
-                    <a class="menu-item" id="menu-cpc-qa" href="javascript:void(0)" onclick="showCPCQA(this); return false;">
-                        <span class="menu-icon">💬</span>
-                        <span>Q&A</span>
-                        <span class="menu-badge" style="background: #ef4444;">5</span>
-                    </a>
+                    <div class="menu-section-title">Business Applications</div>
+                    
+                    <!-- eTendering -->
+                    <div class="menu-group">
+                        <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                            <span><i class="pi pi-briefcase"></i> eTendering</span>
+                            <i class="pi pi-chevron-down"></i>
+                        </div>
+                        <div class="menu-group-items">
+                            <a class="menu-item active" id="menu-tendering-overview" href="javascript:void(0)" onclick="showDashboard(this); return false;"><span class="menu-icon"><i class="pi pi-chart-bar"></i></span><span>Overview</span></a>
+                            <a class="menu-item" id="menu-tendering-tenders" href="javascript:void(0)" onclick="showTendersList(this); return false;"><span class="menu-icon"><i class="pi pi-folder-open"></i></span><span>Tenders</span><span class="menu-badge">13</span></a>
+                            <a class="menu-item" href="tender-authoring.html"><span class="menu-icon"><i class="pi pi-plus"></i></span><span>Create Tender</span></a>
+                        </div>
+                    </div>
+                    
+                    <!-- Award & Review (CPC) -->
+                    <div class="menu-group collapsed">
+                        <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                            <span><i class="pi pi-check-square"></i> Award & Review</span>
+                            <i class="pi pi-chevron-down"></i>
+                        </div>
+                        <div class="menu-group-items">
+                            <a class="menu-item" id="menu-cpc-overview" href="https://valentinar11.github.io/ValentinaRo/CPC.html"><span class="menu-icon"><i class="pi pi-chart-bar"></i></span><span>Overview</span><span class="menu-badge" style="background: #f59e0b;">3</span></a>
+                            <a class="menu-item" id="menu-cpc-cases" href="javascript:void(0)" onclick="showCPCCases(this); return false;"><span class="menu-icon"><i class="pi pi-folder"></i></span><span>Cases</span></a>
+                            <a class="menu-item" id="menu-cpc-meetings" href="javascript:void(0)" onclick="showCPCMeetings(this); return false;"><span class="menu-icon"><i class="pi pi-calendar"></i></span><span>Meetings</span></a>
+                            <a class="menu-item" id="menu-cpc-pool" href="javascript:void(0)" onclick="showCPCPoolManagement(this); return false;"><span class="menu-icon"><i class="pi pi-users"></i></span><span>Pool Management</span></a>
+                            <a class="menu-item" id="menu-cpc-qa" href="javascript:void(0)" onclick="showCPCQA(this); return false;"><span class="menu-icon"><i class="pi pi-comments"></i></span><span>Q&A</span><span class="menu-badge" style="background: #ef4444;">5</span></a>
+                        </div>
+                    </div>
+                    
+                    <!-- DRiVE -->
+                    <div class="menu-group collapsed">
+                        <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                            <span><i class="pi pi-shield"></i> DRiVE</span>
+                            <i class="pi pi-chevron-down"></i>
+                        </div>
+                        <div class="menu-group-items">
+                            <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-chart-bar"></i></span><span>Overview</span></a>
+                            <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-inbox"></i></span><span>Response Library</span></a>
+                            <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-check-circle"></i></span><span>Verification</span></a>
+                            <a class="menu-item" href="capa-interactive-mockup.html"><span class="menu-icon"><i class="pi pi-exclamation-triangle"></i></span><span>CAPA</span></a>
+                            <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-question-circle"></i></span><span>Questionnaire Management</span></a>
+                            <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-chart-line"></i></span><span>Risk Management</span></a>
+                        </div>
+                    </div>
+                    
+                    <!-- Contracts -->
+                    <div class="menu-group collapsed">
+                        <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                            <span><i class="pi pi-file"></i> Contracts</span>
+                            <i class="pi pi-chevron-down"></i>
+                        </div>
+                        <div class="menu-group-items">
+                            <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-list"></i></span><span>Contract Management</span></a>
+                        </div>
+                    </div>
+                    
+                    <!-- Supplier Management -->
+                    <div class="menu-group collapsed">
+                        <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                            <span><i class="pi pi-truck"></i> Supplier Management</span>
+                            <i class="pi pi-chevron-down"></i>
+                        </div>
+                        <div class="menu-group-items">
+                            <a class="menu-item" href="supplier-management-procurement.html"><span class="menu-icon"><i class="pi pi-building"></i></span><span>Suppliers</span></a>
+                        </div>
+                    </div>
                 </div>
             </nav>
         </aside>
@@ -9654,6 +9828,18 @@
         function toggleSidebar() {
             const sidebar = document.getElementById('mainSidebar');
             sidebar.classList.toggle('collapsed');
+        }
+
+        // ==================== MENU GROUP TOGGLE ====================
+        function toggleMenuGroup(header) {
+            const menuGroup = header.parentElement;
+            menuGroup.classList.toggle('collapsed');
+        }
+
+        // ==================== VIEW SWITCHING ====================
+        function switchView(viewName) {
+            // Placeholder for switching views (criteria, specifications, etc.)
+            showToast('📋 ' + viewName.charAt(0).toUpperCase() + viewName.slice(1) + ' view coming soon...');
         }
 
         // ==================== HEADER ACTIONS FUNCTIONS ====================
