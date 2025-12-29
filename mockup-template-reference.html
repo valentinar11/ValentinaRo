@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UNOPS PDJ · [Page Title]</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/primeicons@6.0.1/primeicons.css">
+<style>
+/* ==========================================================================
+   CSS VARIABLES - UNOPS Design System
+   ========================================================================== */
+:root {
+    /* Primary Colors */
+    --primary-50: #e6f7ff;
+    --primary-100: #bae7ff;
+    --primary-200: #7dd3fc;
+    --primary-300: #38bdf8;
+    --primary-400: #0ea5e9;
+    --primary-500: #0092D1;
+    --primary-600: #0284c7;
+    --primary-700: #0369a1;
+    --primary-800: #003a56;
+    
+    /* Surface Colors */
+    --surface-0: #ffffff;
+    --surface-50: #f5f8fb;
+    --surface-100: #ebf1f8;
+    --surface-200: #dde8f2;
+    --surface-300: #cfdfec;
+    --surface-400: #b8c9d9;
+    --surface-600: #95a7ba;
+    --surface-800: #596170;
+    --surface-900: #3b3e4a;
+    
+    /* Semantic Colors */
+    --success-500: #4c9f38;
+    --success-50: #d2e7cd;
+    --success-100: #dcf5d5;
+    --success-600: #3d8a2e;
+    --info-400: #0092d1;
+    --info-50: #bfe4f4;
+    --info-500: #0092d1;
+    --info-600: #0077a8;
+    --warning-500: #e85c0e;
+    --warning-50: #f9d6c3;
+    --danger-500: #da291c;
+    --danger-50: #f6cac6;
+    --purple-500: #9333ea;
+    --purple-50: #f3e8ff;
+    
+    /* Text Colors */
+    --text-primary: var(--surface-900);
+    --text-secondary: var(--surface-800);
+    --text-muted: var(--surface-600);
+    
+    /* Spacing */
+    --spacing-xs: 6px;
+    --spacing-sm: 12px;
+    --spacing-md: 20px;
+    --spacing-lg: 28px;
+    --spacing-xl: 36px;
+    --spacing-2xl: 48px;
+    
+    /* Border Radius */
+    --radius-sm: 4px;
+    --radius-md: 6px;
+    --radius-lg: 8px;
+    --radius-xl: 16px;
+    
+    /* Shadows */
+    --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* ==========================================================================
+   BASE STYLES
+   ========================================================================== */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    font-family: 'Lato', 'Noto Sans', system-ui, sans-serif;
+    background: var(--surface-50);
+    color: var(--text-primary);
+    line-height: 1.5;
+    min-height: 100vh;
+}
+
+/* ==========================================================================
+   HEADER
+   ========================================================================== */
+.header {
+    background: var(--surface-0);
+    border-bottom: 1px solid var(--surface-200);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+.header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-md) var(--spacing-xl);
+}
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+.logo {
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 0.12em;
+    color: var(--primary-500);
+}
+.portal-badge {
+    background: var(--primary-500);
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin-left: auto;
+    margin-right: var(--spacing-lg);
+}
+.header-action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    font-size: 13px;
+}
+.header-action-btn:hover {
+    background: var(--surface-100);
+    transform: scale(1.1);
+}
+.header-action-btn:focus {
+    outline: 2px solid var(--primary-400);
+    outline-offset: 2px;
+}
+.header-action-btn i {
+    font-size: 20px;
+    color: var(--text-muted);
+    transition: color 0.2s ease;
+}
+.header-action-btn:hover i { color: var(--primary-500); }
+.header-action-label { display: none; }
+.notification-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: var(--danger-500);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 5px;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.ai-assistant-btn { background: transparent; }
+.ai-assistant-btn:hover { background: rgba(139, 92, 246, 0.1); }
+.ai-assistant-btn:hover .ai-icon-wrapper {
+    transform: scale(1.1);
+    box-shadow: 0 2px 8px rgba(139, 92, 246, 0.4);
+}
+.ai-icon-wrapper {
+    width: 24px;
+    height: 24px;
+    background: linear-gradient(135deg, #8b5cf6, #6366f1);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+.ai-icon-wrapper i { font-size: 14px; color: white !important; }
+.ai-badge {
+    position: absolute;
+    top: -4px;
+    right: -8px;
+    background: linear-gradient(135deg, #f59e0b, #ef4444);
+    color: white;
+    font-size: 8px;
+    font-weight: 700;
+    padding: 2px 5px;
+    border-radius: 6px;
+    text-transform: uppercase;
+}
+.language-selector { display: flex; align-items: center; gap: 4px; }
+.lang-flag { font-size: 16px; }
+.notification-btn i { color: var(--text-muted); }
+.notification-btn:hover i { color: var(--primary-500); }
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+.user-info { text-align: right; }
+.user-role { font-size: 12px; color: var(--text-muted); }
+.user-name { font-size: 14px; font-weight: 500; color: var(--text-primary); }
+.user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--primary-100);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: var(--primary-600);
+    cursor: pointer;
+}
+
+/* ==========================================================================
+   APP CONTAINER
+   ========================================================================== */
+.app-container {
+    display: flex;
+    min-height: calc(100vh - 65px);
+    overflow: hidden;
+}
+
+/* ==========================================================================
+   SIDEBAR (COLLAPSIBLE)
+   ========================================================================== */
+.sidebar {
+    width: 300px;
+    min-width: 300px;
+    max-width: 300px;
+    background-color: #0192D1;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    transition: width 0.3s ease, min-width 0.3s ease, max-width 0.3s ease;
+    position: relative;
+    z-index: 50;
+}
+.sidebar.collapsed {
+    width: 60px;
+    min-width: 60px;
+    max-width: 60px;
+}
+.sidebar-toggle {
+    position: absolute;
+    top: 10px;
+    right: -15px;
+    width: 30px;
+    height: 30px;
+    background: var(--primary-400);
+    border: 2px solid white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1000;
+    color: white;
+    font-size: 14px;
+    transition: transform 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.sidebar.collapsed .sidebar-toggle {
+    transform: rotate(180deg);
+}
+.sidebar.collapsed .menu-section-title,
+.sidebar.collapsed .menu-item span:not(.menu-icon),
+.sidebar.collapsed .menu-group-header span:first-child,
+.sidebar.collapsed .menu-group-header i.pi-chevron-down {
+    display: none;
+}
+.sidebar.collapsed .menu-group-header {
+    justify-content: center;
+    padding: 8px;
+}
+.sidebar.collapsed .menu-item {
+    justify-content: center;
+    padding: 12px;
+}
+.sidebar-menu { flex: 1; padding: 16px 0; overflow-y: auto; }
+.menu-section { margin-bottom: var(--spacing-sm); }
+.menu-section-title {
+    padding: 8px 20px 12px 20px;
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.5);
+    font-family: 'Lato', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    font-size: 14px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    border-left: 3px solid transparent;
+}
+.menu-item:hover { background: rgba(255,255,255,0.1); }
+.menu-item.active {
+    background: rgba(255,255,255,0.15);
+    border-left-color: white;
+    font-weight: 600;
+}
+.menu-item.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+.menu-icon { font-size: 16px; opacity: 0.9; width: 20px; text-align: center; }
+.menu-group {
+    margin-bottom: var(--spacing-xs);
+}
+.menu-group-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.7);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.menu-group-header:hover {
+    color: white;
+    background: rgba(255,255,255,0.05);
+}
+.menu-group-header i {
+    font-size: 12px;
+    transition: transform 0.2s;
+}
+.menu-group.collapsed .menu-group-header i.pi-chevron-down {
+    transform: rotate(-90deg);
+}
+.menu-group.collapsed .menu-group-items {
+    display: none;
+}
+.menu-group-items {
+    padding-left: 12px;
+}
+.menu-group-items .menu-item {
+    padding: 10px 20px 10px 28px;
+    font-size: 13px;
+    border-left: none;
+}
+.menu-group-items .menu-item.active {
+    background: rgba(255,255,255,0.15);
+    border-left: none;
+    border-radius: 0 4px 4px 0;
+    margin-right: 8px;
+}
+.menu-divider {
+    height: 1px;
+    background: rgba(255,255,255,0.15);
+    margin: var(--spacing-md) 0;
+}
+
+/* ==========================================================================
+   MAIN CONTENT
+   ========================================================================== */
+.main-content {
+    flex: 1;
+    padding: var(--spacing-xl);
+    overflow-y: auto;
+    background: var(--surface-50);
+    position: relative;
+    z-index: 1;
+}
+
+/* ==========================================================================
+   PAGE HEADER
+   ========================================================================== */
+.page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-xl);
+}
+.page-title {
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-xs);
+}
+.page-subtitle {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+.page-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+/* ==========================================================================
+   BUTTONS
+   ========================================================================== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    text-decoration: none;
+}
+.btn-primary { background: var(--primary-500); color: white; }
+.btn-primary:hover { background: var(--primary-600); }
+.btn-secondary {
+    background: var(--surface-100);
+    color: var(--text-primary);
+    border: 1px solid var(--surface-200);
+}
+.btn-secondary:hover { background: var(--surface-200); }
+.btn-ghost { background: transparent; color: var(--text-secondary); }
+.btn-ghost:hover { background: var(--surface-100); }
+.btn-success { background: var(--success-500); color: white; }
+.btn-success:hover { background: #3d8a2e; }
+.btn-danger { background: var(--danger-500); color: white; }
+.btn-danger:hover { background: #c42418; }
+.btn-sm { padding: 6px 12px; font-size: 13px; }
+.btn-lg { padding: 12px 24px; font-size: 16px; }
+.btn i { font-size: 14px; }
+
+/* ==========================================================================
+   CARDS
+   ========================================================================== */
+.card {
+    background: var(--surface-0);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--surface-200);
+    box-shadow: var(--shadow-card);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+}
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--surface-200);
+}
+.card-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* ==========================================================================
+   FORM ELEMENTS
+   ========================================================================== */
+.form-group { margin-bottom: var(--spacing-lg); }
+.form-group:last-child { margin-bottom: 0; }
+.form-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+}
+.form-input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--surface-200);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-family: inherit;
+    transition: all 0.2s;
+}
+.form-input:focus {
+    outline: none;
+    border-color: var(--primary-500);
+    box-shadow: 0 0 0 3px var(--primary-50);
+}
+.form-hint {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+/* ==========================================================================
+   STATUS BADGES
+   ========================================================================== */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+}
+.status-badge.success { background: var(--success-50); color: var(--success-500); }
+.status-badge.warning { background: var(--warning-50); color: var(--warning-500); }
+.status-badge.danger { background: var(--danger-50); color: var(--danger-500); }
+.status-badge.info { background: var(--info-50); color: var(--info-400); }
+.status-badge.neutral { background: var(--surface-200); color: var(--text-secondary); }
+
+/* ==========================================================================
+   MODAL
+   ========================================================================== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 300;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+.modal-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+.modal {
+    background: var(--surface-0);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl);
+    width: 100%;
+    max-width: 560px;
+    max-height: 90vh;
+    overflow: hidden;
+    transform: translateY(20px) scale(0.95);
+    transition: transform 0.3s ease;
+}
+.modal-overlay.open .modal {
+    transform: translateY(0) scale(1);
+}
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-lg);
+    border-bottom: 1px solid var(--surface-200);
+    background: var(--surface-50);
+}
+.modal-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+.modal-title i { color: var(--primary-500); }
+.modal-close {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: transparent;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    transition: all 0.2s;
+}
+.modal-close:hover {
+    background: var(--surface-200);
+    color: var(--text-primary);
+}
+.modal-body {
+    padding: var(--spacing-lg);
+    overflow-y: auto;
+    max-height: calc(90vh - 140px);
+}
+.modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-lg);
+    border-top: 1px solid var(--surface-200);
+    background: var(--surface-50);
+}
+
+/* ==========================================================================
+   TOAST NOTIFICATIONS
+   ========================================================================== */
+.toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--surface-900);
+    color: white;
+    padding: 16px 24px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 400;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+.toast.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+.toast i { font-size: 20px; }
+.toast.success i { color: var(--success-500); }
+.toast.error i { color: var(--danger-500); }
+
+/* ==========================================================================
+   TABLES
+   ========================================================================== */
+.table-container {
+    background: var(--surface-0);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--surface-200);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+}
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.data-table th {
+    background: var(--surface-50);
+    padding: var(--spacing-md);
+    text-align: left;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--surface-200);
+}
+.data-table td {
+    padding: var(--spacing-md);
+    border-bottom: 1px solid var(--surface-100);
+    font-size: 14px;
+    color: var(--text-primary);
+}
+.data-table tr:hover {
+    background: var(--surface-50);
+}
+.data-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* ==========================================================================
+   ALERT BOXES
+   ========================================================================== */
+.alert-box {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacing-lg);
+}
+.alert-box.info {
+    background: var(--info-50);
+    border: 1px solid var(--info-400);
+}
+.alert-box.warning {
+    background: var(--warning-50);
+    border: 1px solid var(--warning-500);
+}
+.alert-box.success {
+    background: var(--success-50);
+    border: 1px solid var(--success-500);
+}
+.alert-box.danger {
+    background: var(--danger-50);
+    border: 1px solid var(--danger-500);
+}
+.alert-box i {
+    font-size: 18px;
+    flex-shrink: 0;
+}
+.alert-box.info i { color: var(--info-400); }
+.alert-box.warning i { color: var(--warning-500); }
+.alert-box.success i { color: var(--success-500); }
+.alert-box.danger i { color: var(--danger-500); }
+.alert-box-content {
+    flex: 1;
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+.alert-box-title {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+}
+
+/* ==========================================================================
+   ACCESSIBILITY PANEL
+   ========================================================================== */
+.accessibility-panel {
+    position: fixed;
+    top: 70px;
+    right: 20px;
+    width: 320px;
+    background: var(--surface-0);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    z-index: 10000;
+    display: none;
+    border: 1px solid var(--surface-200);
+}
+.accessibility-panel.open { display: block; }
+.accessibility-panel-header {
+    padding: var(--spacing-lg);
+    background: var(--surface-50);
+    border-bottom: 1px solid var(--surface-200);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+.accessibility-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-md);
+    border-bottom: 1px solid var(--surface-100);
+}
+.accessibility-toggle {
+    width: 44px;
+    height: 24px;
+    background: var(--surface-300);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+    position: relative;
+}
+.accessibility-toggle::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    background: white;
+    border-radius: 50%;
+    transition: transform 0.2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.accessibility-toggle.active {
+    background: var(--primary-500);
+}
+.accessibility-toggle.active::after {
+    transform: translateX(20px);
+}
+
+/* ==========================================================================
+   ANIMATIONS
+   ========================================================================== */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadeIn 0.3s ease-out; }
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+.loading { animation: pulse 1.5s infinite; }
+
+/* ==========================================================================
+   UTILITIES
+   ========================================================================== */
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-muted { color: var(--text-muted); }
+.text-success { color: var(--success-500); }
+.text-warning { color: var(--warning-500); }
+.text-danger { color: var(--danger-500); }
+.mb-sm { margin-bottom: var(--spacing-sm); }
+.mb-md { margin-bottom: var(--spacing-md); }
+.mb-lg { margin-bottom: var(--spacing-lg); }
+.mt-sm { margin-top: var(--spacing-sm); }
+.mt-md { margin-top: var(--spacing-md); }
+.mt-lg { margin-top: var(--spacing-lg); }
+.flex { display: flex; }
+.flex-wrap { flex-wrap: wrap; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.gap-sm { gap: var(--spacing-sm); }
+.gap-md { gap: var(--spacing-md); }
+.gap-lg { gap: var(--spacing-lg); }
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+@media (max-width: 768px) {
+    .header-actions { gap: 4px; }
+    .header-action-label { display: none; }
+    .header-action-btn { padding: 8px; }
+}
+</style>
+</head>
+<body>
+
+<!-- =========================================================================
+     HEADER
+     ========================================================================= -->
+<header class="header">
+    <div class="header-top">
+        <div class="logo-container">
+            <span class="logo">UNOPS</span>
+            <span class="portal-badge">PROCUREMENT</span>
+            <!-- Dynamic Module Name - Change based on active menu -->
+            <span style="color: var(--surface-400); margin: 0 8px; font-size: 18px;">|</span>
+            <span id="currentModuleName" style="color: var(--primary-500); font-weight: 600; font-size: 14px;">eTendering</span>
+        </div>
+        
+        <!-- Header Actions -->
+        <div class="header-actions">
+            <!-- Accessibility Button -->
+            <div class="header-action-btn" onclick="openAccessibilityPanel()" title="Accessibility Options" aria-label="Accessibility Options">
+                <i class="pi pi-eye" aria-hidden="true"></i>
+                <span class="header-action-label">Accessibility</span>
+            </div>
+            
+            <!-- Language Selector -->
+            <div class="header-action-btn language-selector" onclick="openLanguageSelector()" title="Change Language" aria-label="Change Language">
+                <span class="lang-flag">🌐</span>
+                <span class="header-action-label" id="currentLang">EN</span>
+                <i class="pi pi-chevron-down" style="font-size: 10px; margin-left: 2px;" aria-hidden="true"></i>
+            </div>
+
+            <!-- AI Assistant -->
+            <div class="header-action-btn ai-assistant-btn" onclick="openAIAssistant()" title="AI Assistant" aria-label="AI Procurement Assistant">
+                <div class="ai-icon-wrapper">
+                    <i class="pi pi-bolt" aria-hidden="true"></i>
+                </div>
+                <span class="header-action-label">AI Help</span>
+                <span class="ai-badge">NEW</span>
+            </div>
+
+            <!-- Help/Questions -->
+            <div class="header-action-btn" onclick="openHelpCenter()" title="Help Center" aria-label="Help Center and Documentation">
+                <i class="pi pi-question-circle" aria-hidden="true"></i>
+                <span class="header-action-label">Help</span>
+            </div>
+
+            <!-- Notifications -->
+            <div class="header-action-btn notification-btn" onclick="openNotificationsPanel()" title="Notifications" aria-label="View Notifications">
+                <i class="pi pi-bell" aria-hidden="true"></i>
+                <span class="notification-badge" id="notificationCount">7</span>
+            </div>
+        </div>
+
+        <div class="user-menu">
+            <div class="user-info">
+                <div class="user-role">System Administrator</div>
+                <div class="user-name">Admin User</div>
+            </div>
+            <div class="user-avatar">AU</div>
+        </div>
+    </div>
+</header>
+
+<!-- =========================================================================
+     APP CONTAINER
+     ========================================================================= -->
+<div class="app-container">
+    <!-- =====================================================================
+         SIDEBAR (COLLAPSIBLE)
+         ===================================================================== -->
+    <aside class="sidebar" id="mainSidebar">
+        <div class="sidebar-toggle" onclick="toggleSidebar()">
+            <i class="pi pi-chevron-left"></i>
+        </div>
+        <nav class="sidebar-menu">
+            <!-- Administrative Applications -->
+            <div class="menu-section">
+                <div class="menu-section-title">Administrative Applications</div>
+                
+                <!-- System Settings -->
+                <div class="menu-group collapsed">
+                    <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                        <span><i class="pi pi-cog"></i> System Settings</span>
+                        <i class="pi pi-chevron-down"></i>
+                    </div>
+                    <div class="menu-group-items">
+                        <a class="menu-item disabled" href="#" data-module="System Settings"><span class="menu-icon"><i class="pi pi-users"></i></span><span>User Role Management</span></a>
+                        <a class="menu-item disabled" href="#" data-module="System Settings"><span class="menu-icon"><i class="pi pi-id-card"></i></span><span>Role Management</span></a>
+                        <a class="menu-item disabled" href="#" data-module="System Settings"><span class="menu-icon"><i class="pi pi-sliders-h"></i></span><span>Attribute Management</span></a>
+                        <a class="menu-item disabled" href="#" data-module="System Settings"><span class="menu-icon"><i class="pi pi-database"></i></span><span>Data Management</span></a>
+                        <a class="menu-item" href="translation-management.html" data-module="System Settings"><span class="menu-icon"><i class="pi pi-language"></i></span><span>Translations</span></a>
+                    </div>
+                </div>
+                
+                <!-- Components -->
+                <div class="menu-group collapsed">
+                    <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                        <span><i class="pi pi-box"></i> Components</span>
+                        <i class="pi pi-chevron-down"></i>
+                    </div>
+                    <div class="menu-group-items">
+                        <a class="menu-item" href="components-library.html" data-module="Components"><span class="menu-icon"><i class="pi pi-list"></i></span><span>Evaluation Criteria Library</span></a>
+                        <a class="menu-item disabled" href="#" data-module="Components"><span class="menu-icon"><i class="pi pi-cog"></i></span><span>Specifications Library</span></a>
+                    </div>
+                </div>
+                
+                <!-- Forms -->
+                <div class="menu-group collapsed">
+                    <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                        <span><i class="pi pi-file-edit"></i> Forms</span>
+                        <i class="pi pi-chevron-down"></i>
+                    </div>
+                    <div class="menu-group-items">
+                        <a class="menu-item disabled" href="#" data-module="Forms"><span class="menu-icon"><i class="pi pi-folder"></i></span><span>Forms Library</span></a>
+                        <a class="menu-item disabled" href="#" data-module="Forms"><span class="menu-icon"><i class="pi pi-pencil"></i></span><span>Form Builder</span></a>
+                    </div>
+                </div>
+                
+                <!-- Processes -->
+                <div class="menu-group collapsed">
+                    <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                        <span><i class="pi pi-sitemap"></i> Processes</span>
+                        <i class="pi pi-chevron-down"></i>
+                    </div>
+                    <div class="menu-group-items">
+                        <a class="menu-item disabled" href="#" data-module="Processes"><span class="menu-icon"><i class="pi pi-list"></i></span><span>Process Library</span></a>
+                    </div>
+                </div>
+                
+                <!-- Templates -->
+                <div class="menu-group collapsed">
+                    <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                        <span><i class="pi pi-copy"></i> Templates</span>
+                        <i class="pi pi-chevron-down"></i>
+                    </div>
+                    <div class="menu-group-items">
+                        <a class="menu-item" href="template-library.html" data-module="Templates"><span class="menu-icon"><i class="pi pi-folder"></i></span><span>Templates Library</span></a>
+                        <a class="menu-item" href="template-builder-workspace.html" data-module="Templates"><span class="menu-icon"><i class="pi pi-pencil"></i></span><span>Template Builder</span></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-divider"></div>
+            
+            <!-- Business Applications -->
+            <div class="menu-section">
+                <div class="menu-section-title">Business Applications</div>
+                
+                <!-- eTendering -->
+                <div class="menu-group collapsed">
+                    <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                        <span><i class="pi pi-briefcase"></i> eTendering</span>
+                        <i class="pi pi-chevron-down"></i>
+                    </div>
+                    <div class="menu-group-items">
+                        <a class="menu-item active" href="tender-dashboard-complete.html" data-module="eTendering"><span class="menu-icon"><i class="pi pi-chart-bar"></i></span><span>Overview</span></a>
+                        <a class="menu-item" href="tender-dashboard-complete.html" data-module="eTendering"><span class="menu-icon"><i class="pi pi-folder-open"></i></span><span>Tenders</span></a>
+                        <a class="menu-item" href="tender-authoring.html" data-module="eTendering"><span class="menu-icon"><i class="pi pi-plus"></i></span><span>Create Tender</span></a>
+                    </div>
+                </div>
+                
+                <!-- Award & Review -->
+                <div class="menu-group collapsed">
+                    <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                        <span><i class="pi pi-check-square"></i> Award & Review</span>
+                        <i class="pi pi-chevron-down"></i>
+                    </div>
+                    <div class="menu-group-items">
+                        <a class="menu-item" href="CPC.html" data-module="Award & Review"><span class="menu-icon"><i class="pi pi-chart-bar"></i></span><span>Overview</span></a>
+                        <a class="menu-item disabled" href="#" data-module="Award & Review"><span class="menu-icon"><i class="pi pi-folder"></i></span><span>Cases</span></a>
+                        <a class="menu-item disabled" href="#" data-module="Award & Review"><span class="menu-icon"><i class="pi pi-calendar"></i></span><span>Meetings</span></a>
+                        <a class="menu-item disabled" href="#" data-module="Award & Review"><span class="menu-icon"><i class="pi pi-users"></i></span><span>Pool Management</span></a>
+                        <a class="menu-item disabled" href="#" data-module="Award & Review"><span class="menu-icon"><i class="pi pi-comments"></i></span><span>Q&A</span></a>
+                    </div>
+                </div>
+                
+                <!-- DRiVE -->
+                <div class="menu-group collapsed">
+                    <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                        <span><i class="pi pi-shield"></i> DRiVE</span>
+                        <i class="pi pi-chevron-down"></i>
+                    </div>
+                    <div class="menu-group-items">
+                        <a class="menu-item disabled" href="#" data-module="DRiVE"><span class="menu-icon"><i class="pi pi-chart-bar"></i></span><span>Overview</span></a>
+                        <a class="menu-item disabled" href="#" data-module="DRiVE"><span class="menu-icon"><i class="pi pi-inbox"></i></span><span>Response Library</span></a>
+                        <a class="menu-item disabled" href="#" data-module="DRiVE"><span class="menu-icon"><i class="pi pi-check-circle"></i></span><span>Verification</span></a>
+                        <a class="menu-item" href="capa-interactive-mockup.html" data-module="DRiVE"><span class="menu-icon"><i class="pi pi-exclamation-triangle"></i></span><span>CAPA</span></a>
+                        <a class="menu-item disabled" href="#" data-module="DRiVE"><span class="menu-icon"><i class="pi pi-question-circle"></i></span><span>Questionnaire Management</span></a>
+                        <a class="menu-item disabled" href="#" data-module="DRiVE"><span class="menu-icon"><i class="pi pi-chart-line"></i></span><span>Risk Management</span></a>
+                    </div>
+                </div>
+                
+                <!-- Contracts -->
+                <div class="menu-group collapsed">
+                    <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                        <span><i class="pi pi-file"></i> Contracts</span>
+                        <i class="pi pi-chevron-down"></i>
+                    </div>
+                    <div class="menu-group-items">
+                        <a class="menu-item disabled" href="#" data-module="Contracts"><span class="menu-icon"><i class="pi pi-list"></i></span><span>Contract Management</span></a>
+                    </div>
+                </div>
+                
+                <!-- Supplier Management -->
+                <div class="menu-group collapsed">
+                    <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                        <span><i class="pi pi-truck"></i> Supplier Management</span>
+                        <i class="pi pi-chevron-down"></i>
+                    </div>
+                    <div class="menu-group-items">
+                        <a class="menu-item" href="supplier-management-procurement.html" data-module="Supplier Management"><span class="menu-icon"><i class="pi pi-building"></i></span><span>Suppliers</span></a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- =====================================================================
+         MAIN CONTENT
+         ===================================================================== -->
+    <main class="main-content">
+        <!-- Page Header -->
+        <div class="page-header fade-in">
+            <div>
+                <h1 class="page-title">[Page Title]</h1>
+                <p class="page-subtitle">[Page description goes here]</p>
+            </div>
+            <div class="page-actions">
+                <button class="btn btn-secondary">
+                    <i class="pi pi-download"></i> Secondary Action
+                </button>
+                <button class="btn btn-primary">
+                    <i class="pi pi-plus"></i> Primary Action
+                </button>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             YOUR CONTENT GOES HERE
+             ============================================================ -->
+        <div class="card fade-in">
+            <div class="card-header">
+                <h2 class="card-title">Card Title</h2>
+            </div>
+            <p>Your content goes here. Replace this with your mockup content.</p>
+        </div>
+
+    </main>
+</div>
+
+<!-- =========================================================================
+     TOAST NOTIFICATION
+     ========================================================================= -->
+<div class="toast" id="toast">
+    <i class="pi pi-check-circle"></i>
+    <span id="toastMessage">Action completed</span>
+</div>
+
+<!-- =========================================================================
+     JAVASCRIPT
+     ========================================================================= -->
+<script>
+// ==================== SIDEBAR FUNCTIONS ====================
+
+// Toggle Sidebar Collapsed/Expanded
+function toggleSidebar() {
+    const sidebar = document.getElementById('mainSidebar');
+    sidebar.classList.toggle('collapsed');
+}
+
+// Toggle Menu Group Function
+function toggleMenuGroup(header) {
+    const group = header.parentElement;
+    group.classList.toggle('collapsed');
+}
+
+// ==================== MODAL FUNCTIONS ====================
+
+function openModal(modalId) {
+    document.getElementById(modalId).classList.add('open');
+}
+
+function closeModal(modalId) {
+    document.getElementById(modalId).classList.remove('open');
+}
+
+// Close modal on overlay click
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', function(e) {
+        if (e.target === this) {
+            this.classList.remove('open');
+        }
+    });
+});
+
+// ==================== TOAST NOTIFICATION ====================
+
+function showToast(message, type = 'success') {
+    const toast = document.getElementById('toast');
+    const icon = toast.querySelector('i');
+    document.getElementById('toastMessage').textContent = message;
+    toast.className = 'toast ' + type;
+    icon.className = type === 'success' ? 'pi pi-check-circle' : 'pi pi-times-circle';
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// ==================== HEADER ACTIONS FUNCTIONS ====================
+
+// Accessibility Panel
+function openAccessibilityPanel() {
+    const existing = document.getElementById('accessibilityPanel');
+    if (existing) {
+        existing.remove();
+        return;
+    }
+
+    const panelHtml = `
+        <div id="accessibilityPanel" class="accessibility-panel open" role="dialog" aria-labelledby="a11y-title" aria-modal="true">
+            <div class="accessibility-panel-header">
+                <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                    <i class="pi pi-eye" style="color: var(--primary-500);"></i>
+                    <span id="a11y-title" style="font-weight: 600;">Accessibility Options</span>
+                </div>
+                <button onclick="document.getElementById('accessibilityPanel').remove()" style="background: none; border: none; cursor: pointer;" aria-label="Close accessibility panel">
+                    <i class="pi pi-times"></i>
+                </button>
+            </div>
+            <div style="padding: var(--spacing-md);">
+                <div class="accessibility-option">
+                    <div>
+                        <div style="font-weight: 500; font-size: 13px;">High Contrast</div>
+                        <div style="font-size: 11px; color: var(--text-muted);">Increase color contrast for better visibility</div>
+                    </div>
+                    <div class="accessibility-toggle ${document.body.classList.contains('high-contrast') ? 'active' : ''}" 
+                         onclick="toggleAccessibility('high-contrast', this)"
+                         role="switch"
+                         tabindex="0"></div>
+                </div>
+                <div class="accessibility-option">
+                    <div>
+                        <div style="font-weight: 500; font-size: 13px;">Large Text</div>
+                        <div style="font-size: 11px; color: var(--text-muted);">Increase text size throughout the app</div>
+                    </div>
+                    <div class="accessibility-toggle ${document.body.classList.contains('large-text') ? 'active' : ''}" 
+                         onclick="toggleAccessibility('large-text', this)"
+                         role="switch"
+                         tabindex="0"></div>
+                </div>
+                <div class="accessibility-option">
+                    <div>
+                        <div style="font-weight: 500; font-size: 13px;">Reduced Motion</div>
+                        <div style="font-size: 11px; color: var(--text-muted);">Minimize animations and transitions</div>
+                    </div>
+                    <div class="accessibility-toggle ${document.body.classList.contains('reduced-motion') ? 'active' : ''}" 
+                         onclick="toggleAccessibility('reduced-motion', this)"
+                         role="switch"
+                         tabindex="0"></div>
+                </div>
+                <div class="accessibility-option">
+                    <div>
+                        <div style="font-weight: 500; font-size: 13px;">Color Blind Mode</div>
+                        <div style="font-size: 11px; color: var(--text-muted);">Add patterns to color-coded elements</div>
+                    </div>
+                    <div class="accessibility-toggle ${document.body.classList.contains('colorblind-mode') ? 'active' : ''}" 
+                         onclick="toggleAccessibility('colorblind-mode', this)"
+                         role="switch"
+                         tabindex="0"></div>
+                </div>
+                <div style="padding: var(--spacing-md); background: var(--info-50); border-radius: var(--radius-sm); margin-top: var(--spacing-sm);">
+                    <div style="font-size: 11px; color: var(--info-600);">
+                        <strong>Keyboard Shortcuts:</strong><br>
+                        <span style="font-family: monospace;">Alt + 1</span> - Dashboard<br>
+                        <span style="font-family: monospace;">Alt + H</span> - Help<br>
+                        <span style="font-family: monospace;">Esc</span> - Close panels
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', panelHtml);
+}
+
+function toggleAccessibility(mode, element) {
+    document.body.classList.toggle(mode);
+    element.classList.toggle('active');
+    showToast(mode.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase()) + (document.body.classList.contains(mode) ? ' enabled' : ' disabled'));
+}
+
+// Language Selector
+function openLanguageSelector() {
+    const existing = document.getElementById('languagePanel');
+    if (existing) {
+        existing.remove();
+        return;
+    }
+
+    const languages = [
+        { code: 'EN', name: 'English', flag: '🇬🇧' },
+        { code: 'FR', name: 'Français', flag: '🇫🇷' },
+        { code: 'ES', name: 'Español', flag: '🇪🇸' },
+        { code: 'AR', name: 'العربية', flag: '🇸🇦', rtl: true },
+        { code: 'PT', name: 'Português', flag: '🇵🇹' },
+        { code: 'RU', name: 'Русский', flag: '🇷🇺' }
+    ];
+
+    const panelHtml = `
+        <div id="languagePanel" style="position: fixed; top: 70px; right: 200px; width: 220px; background: var(--surface-0); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); z-index: 10000; border: 1px solid var(--surface-200);" role="dialog" aria-label="Language selection">
+            <div style="padding: var(--spacing-md); border-bottom: 1px solid var(--surface-200); display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-weight: 600; font-size: 13px;">🌐 Select Language</span>
+                <button onclick="document.getElementById('languagePanel').remove()" style="background: none; border: none; cursor: pointer;" aria-label="Close">
+                    <i class="pi pi-times"></i>
+                </button>
+            </div>
+            <div style="padding: var(--spacing-sm);">
+                ${languages.map(lang => `
+                    <div onclick="selectLanguage('${lang.code}', '${lang.name}')" 
+                         style="display: flex; align-items: center; gap: var(--spacing-sm); padding: var(--spacing-sm); border-radius: var(--radius-sm); cursor: pointer; transition: background 0.2s;"
+                         onmouseover="this.style.background='var(--primary-50)'"
+                         onmouseout="this.style.background='transparent'"
+                         role="button"
+                         tabindex="0">
+                        <span style="font-size: 18px;">${lang.flag}</span>
+                        <span style="font-size: 13px; ${lang.rtl ? 'direction: rtl;' : ''}">${lang.name}</span>
+                        ${lang.code === 'EN' ? '<i class="pi pi-check" style="margin-left: auto; color: var(--success-500);"></i>' : ''}
+                    </div>
+                `).join('')}
+            </div>
+            <div style="padding: var(--spacing-sm); background: var(--surface-50); border-top: 1px solid var(--surface-200); border-radius: 0 0 var(--radius-lg) var(--radius-lg);">
+                <div style="font-size: 10px; color: var(--text-muted); text-align: center;">
+                    🔄 Auto-detect based on browser settings
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', panelHtml);
+}
+
+function selectLanguage(code, name) {
+    document.getElementById('currentLang').textContent = code;
+    document.getElementById('languagePanel').remove();
+    showToast('🌐 Language changed to ' + name);
+}
+
+// AI Assistant
+function openAIAssistant() {
+    const existing = document.getElementById('aiAssistantPanel');
+    if (existing) {
+        existing.remove();
+        return;
+    }
+
+    const panelHtml = `
+        <div id="aiAssistantPanel" style="position: fixed; top: 70px; right: 120px; width: 400px; max-height: 500px; background: var(--surface-0); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); z-index: 10000; border: 1px solid var(--surface-200); display: flex; flex-direction: column;" role="dialog" aria-labelledby="ai-title">
+            <div style="padding: var(--spacing-lg); background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%); border-radius: var(--radius-lg) var(--radius-lg) 0 0; color: white;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                        <div style="width: 36px; height: 36px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                            <i class="pi pi-bolt" style="font-size: 18px;"></i>
+                        </div>
+                        <div>
+                            <div id="ai-title" style="font-weight: 600; font-size: 14px;">AI Procurement Assistant</div>
+                            <div style="font-size: 11px; opacity: 0.8;">Powered by UNOPS AI</div>
+                        </div>
+                    </div>
+                    <button onclick="document.getElementById('aiAssistantPanel').remove()" style="background: rgba(255,255,255,0.2); border: none; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; color: white;" aria-label="Close AI assistant">
+                        <i class="pi pi-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div style="flex: 1; padding: var(--spacing-md); overflow-y: auto; max-height: 300px;">
+                <div style="background: var(--surface-50); padding: var(--spacing-md); border-radius: var(--radius-md); margin-bottom: var(--spacing-md);">
+                    <div style="font-size: 12px; color: var(--text-primary);">
+                        👋 Hello! I'm your AI assistant. I can help you with:
+                    </div>
+                    <ul style="margin: 8px 0 0 16px; padding: 0; font-size: 12px; color: var(--text-secondary);">
+                        <li>Understanding evaluation criteria</li>
+                        <li>Drafting clarification responses</li>
+                        <li>Explaining procurement policies</li>
+                        <li>Comparing supplier offers</li>
+                    </ul>
+                </div>
+                <div style="display: grid; gap: var(--spacing-sm);">
+                    <button onclick="askAI('How do I evaluate this tender?')" style="text-align: left; padding: var(--spacing-sm); background: var(--primary-50); border: 1px solid var(--primary-200); border-radius: var(--radius-sm); cursor: pointer; font-size: 12px;">
+                        💡 How do I evaluate this tender?
+                    </button>
+                    <button onclick="askAI('Draft a clarification response')" style="text-align: left; padding: var(--spacing-sm); background: var(--primary-50); border: 1px solid var(--primary-200); border-radius: var(--radius-sm); cursor: pointer; font-size: 12px;">
+                        ✍️ Help me draft a clarification response
+                    </button>
+                    <button onclick="askAI('Explain the evaluation steps')" style="text-align: left; padding: var(--spacing-sm); background: var(--primary-50); border: 1px solid var(--primary-200); border-radius: var(--radius-sm); cursor: pointer; font-size: 12px;">
+                        📋 Explain the evaluation steps
+                    </button>
+                </div>
+            </div>
+            <div style="padding: var(--spacing-md); border-top: 1px solid var(--surface-200);">
+                <div style="display: flex; gap: var(--spacing-sm);">
+                    <input type="text" id="aiInput" placeholder="Ask me anything about procurement..." style="flex: 1; padding: var(--spacing-sm); border: 1px solid var(--surface-300); border-radius: var(--radius-sm); font-size: 12px;" aria-label="Ask AI a question">
+                    <button onclick="askAI(document.getElementById('aiInput').value)" style="background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%); color: white; border: none; padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--radius-sm); cursor: pointer;">
+                        <i class="pi pi-send"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', panelHtml);
+}
+
+function askAI(question) {
+    if (!question || !question.trim()) return;
+    showToast('🤖 AI is thinking... (Feature coming soon)');
+    const input = document.getElementById('aiInput');
+    if (input) input.value = '';
+}
+
+// Help Center
+function openHelpCenter() {
+    const existing = document.getElementById('helpPanel');
+    if (existing) {
+        existing.remove();
+        return;
+    }
+
+    const panelHtml = `
+        <div id="helpPanel" style="position: fixed; top: 70px; right: 80px; width: 350px; background: var(--surface-0); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); z-index: 10000; border: 1px solid var(--surface-200);" role="dialog" aria-labelledby="help-title">
+            <div style="padding: var(--spacing-lg); border-bottom: 1px solid var(--surface-200);">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                        <i class="pi pi-question-circle" style="font-size: 20px; color: var(--primary-500);"></i>
+                        <span id="help-title" style="font-weight: 600;">Help Center</span>
+                    </div>
+                    <button onclick="document.getElementById('helpPanel').remove()" style="background: none; border: none; cursor: pointer;" aria-label="Close help">
+                        <i class="pi pi-times"></i>
+                    </button>
+                </div>
+                <input type="text" placeholder="Search help articles..." style="width: 100%; padding: var(--spacing-sm); border: 1px solid var(--surface-300); border-radius: var(--radius-sm); margin-top: var(--spacing-md); font-size: 13px;" aria-label="Search help">
+            </div>
+            <div style="padding: var(--spacing-md); max-height: 350px; overflow-y: auto;">
+                <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-bottom: var(--spacing-sm);">Quick Links</div>
+                <div style="display: grid; gap: var(--spacing-sm);">
+                    <a href="#" onclick="event.preventDefault(); showToast('📖 Opening documentation...')" style="display: flex; align-items: center; gap: var(--spacing-sm); padding: var(--spacing-sm); background: var(--surface-50); border-radius: var(--radius-sm); text-decoration: none; color: var(--text-primary); font-size: 13px;">
+                        <i class="pi pi-book" style="color: var(--primary-500);"></i>
+                        <span>User Guide</span>
+                    </a>
+                    <a href="#" onclick="event.preventDefault(); showToast('🎥 Opening video tutorials...')" style="display: flex; align-items: center; gap: var(--spacing-sm); padding: var(--spacing-sm); background: var(--surface-50); border-radius: var(--radius-sm); text-decoration: none; color: var(--text-primary); font-size: 13px;">
+                        <i class="pi pi-video" style="color: var(--success-500);"></i>
+                        <span>Video Tutorials</span>
+                    </a>
+                    <a href="#" onclick="event.preventDefault(); showToast('❓ Opening FAQ...')" style="display: flex; align-items: center; gap: var(--spacing-sm); padding: var(--spacing-sm); background: var(--surface-50); border-radius: var(--radius-sm); text-decoration: none; color: var(--text-primary); font-size: 13px;">
+                        <i class="pi pi-list" style="color: var(--warning-500);"></i>
+                        <span>Frequently Asked Questions</span>
+                    </a>
+                    <a href="#" onclick="event.preventDefault(); showToast('📧 Contact support modal...')" style="display: flex; align-items: center; gap: var(--spacing-sm); padding: var(--spacing-sm); background: var(--surface-50); border-radius: var(--radius-sm); text-decoration: none; color: var(--text-primary); font-size: 13px;">
+                        <i class="pi pi-envelope" style="color: var(--info-500);"></i>
+                        <span>Contact Support</span>
+                    </a>
+                </div>
+                <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin: var(--spacing-lg) 0 var(--spacing-sm) 0;">Popular Topics</div>
+                <div style="display: flex; flex-wrap: wrap; gap: var(--spacing-xs);">
+                    <span style="padding: 4px 10px; background: var(--primary-50); color: var(--primary-600); border-radius: var(--radius-sm); font-size: 11px; cursor: pointer;">Evaluation Process</span>
+                    <span style="padding: 4px 10px; background: var(--primary-50); color: var(--primary-600); border-radius: var(--radius-sm); font-size: 11px; cursor: pointer;">Amendments</span>
+                    <span style="padding: 4px 10px; background: var(--primary-50); color: var(--primary-600); border-radius: var(--radius-sm); font-size: 11px; cursor: pointer;">Clarifications</span>
+                    <span style="padding: 4px 10px; background: var(--primary-50); color: var(--primary-600); border-radius: var(--radius-sm); font-size: 11px; cursor: pointer;">Bid Opening</span>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', panelHtml);
+}
+
+// Notifications Panel
+function openNotificationsPanel() {
+    const existing = document.getElementById('notificationsPanel');
+    if (existing) {
+        existing.remove();
+        return;
+    }
+
+    const notifications = [
+        { type: 'urgent', icon: '🔴', title: 'Evaluation deadline approaching', desc: 'ITB/2024/089 evaluation due in 2 hours', time: '5 min ago' },
+        { type: 'info', icon: '💬', title: 'New clarification received', desc: 'MedSupply Ltd. asked about Form D requirements', time: '15 min ago' },
+        { type: 'success', icon: '✅', title: 'Bid opening completed', desc: 'RFP/2024/067 bid opening has been finalized', time: '1 hour ago' },
+        { type: 'warning', icon: '⚠️', title: 'Amendment requires approval', desc: 'ITB/2024/034 amendment pending TME sign-off', time: '2 hours ago' },
+        { type: 'info', icon: '📨', title: 'New bid submission', desc: 'EuroMed Supplies submitted bid for RFQ/2024/112', time: '3 hours ago' },
+        { type: 'info', icon: '👥', title: 'Team member added', desc: 'Ahmed Hassan joined evaluation panel', time: 'Yesterday' },
+        { type: 'success', icon: '📋', title: 'Report signed', desc: 'Award recommendation approved by PR', time: 'Yesterday' }
+    ];
+
+    const panelHtml = `
+        <div id="notificationsPanel" style="position: fixed; top: 70px; right: 20px; width: 380px; background: var(--surface-0); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); z-index: 10000; border: 1px solid var(--surface-200);" role="dialog" aria-labelledby="notif-title">
+            <div style="padding: var(--spacing-lg); border-bottom: 1px solid var(--surface-200); display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                    <i class="pi pi-bell" style="font-size: 18px; color: var(--primary-500);"></i>
+                    <span id="notif-title" style="font-weight: 600;">Notifications</span>
+                    <span style="background: var(--danger-500); color: white; font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 600;">7 new</span>
+                </div>
+                <button onclick="document.getElementById('notificationsPanel').remove()" style="background: none; border: none; cursor: pointer;" aria-label="Close notifications">
+                    <i class="pi pi-times"></i>
+                </button>
+            </div>
+            <div style="max-height: 400px; overflow-y: auto;">
+                ${notifications.map((notif, i) => `
+                    <div style="padding: var(--spacing-md); border-bottom: 1px solid var(--surface-100); cursor: pointer; transition: background 0.2s; ${i < 3 ? 'background: var(--primary-50);' : ''}"
+                         onmouseover="this.style.background='var(--surface-50)'"
+                         onmouseout="this.style.background='${i < 3 ? 'var(--primary-50)' : 'transparent'}'"
+                         role="button"
+                         tabindex="0">
+                        <div style="display: flex; gap: var(--spacing-sm);">
+                            <span style="font-size: 18px;">${notif.icon}</span>
+                            <div style="flex: 1;">
+                                <div style="font-weight: 600; font-size: 13px; color: var(--text-primary);">${notif.title}</div>
+                                <div style="font-size: 12px; color: var(--text-secondary); margin-top: 2px;">${notif.desc}</div>
+                                <div style="font-size: 10px; color: var(--text-muted); margin-top: 4px;">${notif.time}</div>
+                            </div>
+                            ${i < 3 ? '<div style="width: 8px; height: 8px; background: var(--primary-500); border-radius: 50%; flex-shrink: 0;"></div>' : ''}
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+            <div style="padding: var(--spacing-md); border-top: 1px solid var(--surface-200); text-align: center;">
+                <button onclick="showToast('📬 Viewing all notifications...'); document.getElementById('notificationsPanel').remove();" style="background: none; border: none; color: var(--primary-500); font-size: 13px; font-weight: 600; cursor: pointer;">
+                    View All Notifications
+                </button>
+            </div>
+        </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', panelHtml);
+}
+
+// ==================== MENU ITEM CLICK HANDLERS ====================
+
+// Set active menu item and update module name in header
+function setActiveMenuItem(menuItem) {
+    // Remove active from all
+    document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
+    // Set new active
+    menuItem.classList.add('active');
+    // Update module name in header
+    const moduleName = menuItem.getAttribute('data-module');
+    if (moduleName) {
+        document.getElementById('currentModuleName').textContent = moduleName;
+    }
+    // Expand parent group if collapsed
+    const parentGroup = menuItem.closest('.menu-group');
+    if (parentGroup && parentGroup.classList.contains('collapsed')) {
+        parentGroup.classList.remove('collapsed');
+    }
+}
+
+// Add click handlers to menu items
+document.querySelectorAll('.menu-item').forEach(item => {
+    item.addEventListener('click', function(e) {
+        if (this.classList.contains('disabled')) {
+            e.preventDefault();
+            return;
+        }
+        setActiveMenuItem(this);
+    });
+});
+
+// ==================== INITIALIZE ====================
+
+// Expand any menu group containing an active item on load
+document.querySelectorAll('.menu-item.active').forEach(item => {
+    const parentGroup = item.closest('.menu-group');
+    if (parentGroup) {
+        parentGroup.classList.remove('collapsed');
+    }
+    // Set initial module name
+    const moduleName = item.getAttribute('data-module');
+    if (moduleName) {
+        document.getElementById('currentModuleName').textContent = moduleName;
+    }
+});
+
+// Close panels when clicking outside
+document.addEventListener('click', function(e) {
+    const panels = ['accessibilityPanel', 'languagePanel', 'aiAssistantPanel', 'helpPanel', 'notificationsPanel'];
+    panels.forEach(panelId => {
+        const panel = document.getElementById(panelId);
+        if (panel && !panel.contains(e.target) && !e.target.closest('.header-action-btn')) {
+            panel.remove();
+        }
+    });
+});
+</script>
+
+</body>
+</html>
