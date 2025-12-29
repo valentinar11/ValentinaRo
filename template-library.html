@@ -7,9 +7,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Lato:wght@400;700&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="https://unpkg.com/primeicons/primeicons.css" />
     <style>
       :root {
         /* Primary Colors - UNOPS Design System */
@@ -167,63 +168,98 @@
         min-height: calc(100vh - 73px);
       }
 
-      /* Left Rail Navigation */
-      .rail {
-        width: 64px;
-        background: var(--primary-600);
-        color: #b7cee1;
+      /* Sidebar Navigation */
+      .sidebar {
+        width: 300px;
+        min-width: 300px;
+        max-width: 300px;
+        background-color: #0192D1;
+        color: white;
         display: flex;
         flex-direction: column;
-        align-items: center;
-        gap: var(--spacing-lg);
-        padding: var(--spacing-lg) 0;
-        transition: width 0.2s ease;
+        flex-shrink: 0;
+        overflow-y: auto;
       }
-
-      .rail:hover {
-        width: 250px;
+      .sidebar-menu { flex: 1; padding: 16px 0; }
+      .menu-section { margin-bottom: var(--spacing-sm); }
+      .menu-section-title {
+        padding: 8px 20px 12px 20px;
+        font-size: 11px;
+        font-weight: 700;
+        color: rgba(255,255,255,0.5);
+        font-family: 'Lato', sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
       }
-
-      .rail button {
-        width: 44px;
-        height: 44px;
-        border-radius: var(--radius-sm);
-        border: none;
-        background: transparent;
-        color: inherit;
-        font-size: 20px;
-        cursor: pointer;
-        transition: all 0.2s ease;
+      .menu-item {
         display: flex;
         align-items: center;
-        justify-content: center;
-      }
-
-      .rail:hover button {
-        width: 100%;
-        padding: 0 var(--spacing-md);
-        justify-content: flex-start;
-        gap: var(--spacing-md);
-      }
-
-      .rail button .rail-label {
-        display: none;
+        gap: 12px;
+        padding: 12px 20px;
         font-size: 14px;
-        font-weight: 500;
-        white-space: nowrap;
+        color: white;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-decoration: none;
+        border-left: 3px solid transparent;
       }
-
-      .rail:hover button .rail-label {
-        display: block;
+      .menu-item:hover { background: rgba(255,255,255,0.1); }
+      .menu-item.active {
+        background: rgba(255,255,255,0.15);
+        border-left-color: white;
+        font-weight: 600;
       }
-
-      .rail button.active {
-        background: rgba(255, 255, 255, 0.15);
-        color: #fff;
+      .menu-item.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
       }
-
-      .rail button:hover {
-        background: rgba(255, 255, 255, 0.1);
+      .menu-icon { font-size: 16px; opacity: 0.9; width: 20px; text-align: center; }
+      .menu-group {
+        margin-bottom: var(--spacing-xs);
+      }
+      .menu-group-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 20px;
+        font-size: 13px;
+        font-weight: 600;
+        color: rgba(255,255,255,0.7);
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .menu-group-header:hover {
+        color: white;
+        background: rgba(255,255,255,0.05);
+      }
+      .menu-group-header i {
+        font-size: 12px;
+        transition: transform 0.2s;
+      }
+      .menu-group.collapsed .menu-group-header i.pi-chevron-down {
+        transform: rotate(-90deg);
+      }
+      .menu-group.collapsed .menu-group-items {
+        display: none;
+      }
+      .menu-group-items {
+        padding-left: 12px;
+      }
+      .menu-group-items .menu-item {
+        padding: 10px 20px 10px 28px;
+        font-size: 13px;
+        border-left: none;
+      }
+      .menu-group-items .menu-item.active {
+        background: rgba(255,255,255,0.15);
+        border-left: none;
+        border-radius: 0 4px 4px 0;
+        margin-right: 8px;
+      }
+      .menu-divider {
+        height: 1px;
+        background: rgba(255,255,255,0.15);
+        margin: var(--spacing-md) 0;
       }
 
       /* Main Content */
@@ -530,21 +566,149 @@
 
       <!-- Workspace -->
       <div class="workspace">
-        <!-- Left Rail Navigation -->
-        <nav class="rail" aria-label="Primary navigation">
-          <button title="Template Builder" onclick="window.location.href='template-builder-workspace.html'">
-            <span>🧱</span>
-            <span class="rail-label">Template Builder</span>
-          </button>
-          <button class="active" title="Library">
-            <span>📚</span>
-            <span class="rail-label">Library</span>
-          </button>
-          <button title="Settings">
-            <span>⚙️</span>
-            <span class="rail-label">Settings</span>
-          </button>
-        </nav>
+        <!-- Sidebar -->
+        <aside class="sidebar">
+          <nav class="sidebar-menu">
+            <!-- Administrative Applications -->
+            <div class="menu-section">
+              <div class="menu-section-title">Administrative Applications</div>
+              
+              <!-- System Settings -->
+              <div class="menu-group collapsed">
+                <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                  <span><i class="pi pi-cog"></i> System Settings</span>
+                  <i class="pi pi-chevron-down"></i>
+                </div>
+                <div class="menu-group-items">
+                  <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-users"></i></span><span>User Role Management</span></a>
+                  <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-id-card"></i></span><span>Role Management</span></a>
+                  <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-sliders-h"></i></span><span>Attribute Management</span></a>
+                  <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-database"></i></span><span>Data Management</span></a>
+                </div>
+              </div>
+              
+              <!-- Components -->
+              <div class="menu-group collapsed">
+                <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                  <span><i class="pi pi-box"></i> Components</span>
+                  <i class="pi pi-chevron-down"></i>
+                </div>
+                <div class="menu-group-items">
+                  <a class="menu-item" href="https://valentinar11.github.io/ValentinaRo/components-library.html"><span class="menu-icon"><i class="pi pi-list"></i></span><span>Evaluation Criteria Library</span></a>
+                  <a class="menu-item"><span class="menu-icon"><i class="pi pi-cog"></i></span><span>Specifications Library</span></a>
+                </div>
+              </div>
+              
+              <!-- Forms -->
+              <div class="menu-group collapsed">
+                <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                  <span><i class="pi pi-file-edit"></i> Forms</span>
+                  <i class="pi pi-chevron-down"></i>
+                </div>
+                <div class="menu-group-items">
+                  <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-folder"></i></span><span>Forms Library</span></a>
+                  <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-pencil"></i></span><span>Form Builder</span></a>
+                </div>
+              </div>
+              
+              <!-- Processes -->
+              <div class="menu-group collapsed">
+                <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                  <span><i class="pi pi-sitemap"></i> Processes</span>
+                  <i class="pi pi-chevron-down"></i>
+                </div>
+                <div class="menu-group-items">
+                  <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-list"></i></span><span>Process Library</span></a>
+                </div>
+              </div>
+              
+              <!-- Templates -->
+              <div class="menu-group">
+                <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                  <span><i class="pi pi-copy"></i> Templates</span>
+                  <i class="pi pi-chevron-down"></i>
+                </div>
+                <div class="menu-group-items">
+                  <a class="menu-item active" href="template-library.html"><span class="menu-icon"><i class="pi pi-folder"></i></span><span>Templates Library</span></a>
+                  <a class="menu-item" href="template-builder-workspace.html"><span class="menu-icon"><i class="pi pi-pencil"></i></span><span>Template Builder</span></a>
+                </div>
+              </div>
+            </div>
+            
+            <div class="menu-divider"></div>
+            
+            <!-- Business Applications -->
+            <div class="menu-section">
+              <div class="menu-section-title">Business Applications</div>
+              
+              <!-- eTendering -->
+              <div class="menu-group collapsed">
+                <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                  <span><i class="pi pi-briefcase"></i> eTendering</span>
+                  <i class="pi pi-chevron-down"></i>
+                </div>
+                <div class="menu-group-items">
+                  <a class="menu-item" href="tender-dashboard-complete.html"><span class="menu-icon"><i class="pi pi-chart-bar"></i></span><span>Overview</span></a>
+                  <a class="menu-item" href="tender-dashboard-complete.html"><span class="menu-icon"><i class="pi pi-folder-open"></i></span><span>Tenders</span></a>
+                  <a class="menu-item" href="tender-authoring.html"><span class="menu-icon"><i class="pi pi-plus"></i></span><span>Create Tender</span></a>
+                </div>
+              </div>
+              
+              <!-- Award & Review -->
+              <div class="menu-group collapsed">
+                <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                  <span><i class="pi pi-check-square"></i> Award & Review</span>
+                  <i class="pi pi-chevron-down"></i>
+                </div>
+                <div class="menu-group-items">
+                  <a class="menu-item" href="CPC.html"><span class="menu-icon"><i class="pi pi-chart-bar"></i></span><span>Overview</span></a>
+                  <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-folder"></i></span><span>Cases</span></a>
+                  <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-calendar"></i></span><span>Meetings</span></a>
+                  <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-users"></i></span><span>Pool Management</span></a>
+                  <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-comments"></i></span><span>Q&A</span></a>
+                </div>
+              </div>
+              
+              <!-- DRiVE -->
+              <div class="menu-group collapsed">
+                <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                  <span><i class="pi pi-shield"></i> DRiVE</span>
+                  <i class="pi pi-chevron-down"></i>
+                </div>
+                <div class="menu-group-items">
+                  <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-chart-bar"></i></span><span>Overview</span></a>
+                  <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-inbox"></i></span><span>Response Library</span></a>
+                  <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-check-circle"></i></span><span>Verification</span></a>
+                  <a class="menu-item" href="capa-interactive-mockup.html"><span class="menu-icon"><i class="pi pi-exclamation-triangle"></i></span><span>CAPA</span></a>
+                  <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-question-circle"></i></span><span>Questionnaire Management</span></a>
+                  <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-chart-line"></i></span><span>Risk Management</span></a>
+                </div>
+              </div>
+              
+              <!-- Contracts -->
+              <div class="menu-group collapsed">
+                <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                  <span><i class="pi pi-file"></i> Contracts</span>
+                  <i class="pi pi-chevron-down"></i>
+                </div>
+                <div class="menu-group-items">
+                  <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-list"></i></span><span>Contract Management</span></a>
+                </div>
+              </div>
+              
+              <!-- Supplier Management -->
+              <div class="menu-group collapsed">
+                <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                  <span><i class="pi pi-truck"></i> Supplier Management</span>
+                  <i class="pi pi-chevron-down"></i>
+                </div>
+                <div class="menu-group-items">
+                  <a class="menu-item" href="supplier-management-procurement.html"><span class="menu-icon"><i class="pi pi-building"></i></span><span>Suppliers</span></a>
+                </div>
+              </div>
+            </div>
+          </nav>
+        </aside>
 
         <!-- Main Content -->
         <div class="main-content">
@@ -706,5 +870,12 @@
         <div class="logo">UNOPS</div>
       </div>
     </div>
+
+    <script>
+      function toggleMenuGroup(header) {
+        const group = header.parentElement;
+        group.classList.toggle('collapsed');
+      }
+    </script>
   </body>
 </html>
