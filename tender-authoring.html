@@ -7302,10 +7302,11 @@
             {
               title: 'Project Information',
               fields: [
-                { id: 'workPackage', label: 'Work Package (GLA)', type: 'search', required: true, value: '', placeholder: 'Search from oneUNOPS (requisition)', source: 'oneUNOPS' },
+                { id: 'projectId', label: 'Project ID', type: 'project-search', required: true, value: '', placeholder: 'Search from oneUNOPS Project', source: 'oneUNOPS Project', onchange: 'updateProjectFromId' },
+                { id: 'projectName', label: 'Project Name', type: 'text', required: true, value: '', readonly: true, source: 'oneUNOPS Project (auto-populated)' },
+                { id: 'implementationEndDate', label: 'Implementation End Date', type: 'date', required: false, value: '', readonly: true, source: 'oneUNOPS Project (auto-populated)' },
                 { id: 'donorFundingSource', label: 'Donor / Funding Source (GLA)', type: 'search', required: false, value: '', placeholder: 'Search from oneUNOPS', source: 'oneUNOPS' },
-                { id: 'projectName', label: 'Project Name', type: 'text', required: true, value: '', source: 'oneUNOPS project' },
-                { id: 'implementationEndDate', label: 'Implementation End Date', type: 'date', required: false, value: '', source: 'oneUNOPS project' },
+                { id: 'donorFundingSourceComment', label: 'Donor / Funding Source Comment', type: 'textarea', required: false, value: '', placeholder: 'Enter comments about the donor/funding source...' },
               ],
             },
             {
@@ -7442,6 +7443,20 @@
         { id: 'REQ-LINE-011', unspscCode: '43211707', unspscDescription: 'Computer mice', description: 'Wireless mice', quantity: 75, unitOfMeasure: 'Unit', amount: 2250, currency: 'USD', unitPrice: 30, workPackageGLA: 'WP-2024-IT-004', donorFundingSourceGLA: 'EU Contribution', procurementOfficial: 'Michael Chen' },
         { id: 'REQ-LINE-012', unspscCode: '72151500', unspscDescription: 'Building cleaning services', description: 'Office cleaning services', quantity: 12, unitOfMeasure: 'Month', amount: 24000, currency: 'USD', unitPrice: 2000, workPackageGLA: 'WP-2024-FAC-001', donorFundingSourceGLA: 'UNDP Core Funds', procurementOfficial: 'Emma Wilson' },
         { id: 'REQ-LINE-013', unspscCode: '78111800', unspscDescription: 'Passenger transport', description: 'Staff transportation services', quantity: 1, unitOfMeasure: 'Service', amount: 18000, currency: 'USD', unitPrice: 18000, workPackageGLA: 'WP-2024-TRN-001', donorFundingSourceGLA: 'Japan Trust Fund', procurementOfficial: 'Emma Wilson' },
+      ];
+      
+      // Available oneUNOPS Projects (mock data for Project ID search and auto-population)
+      const availableOneUNOPSProjects = [
+        { id: 'PROJ-2024-001', name: 'Health Facilities Upgrade Project', implementationEndDate: '2025-12-31', country: 'Kenya', region: 'Africa' },
+        { id: 'PROJ-2024-002', name: 'School Infrastructure Development', implementationEndDate: '2026-06-30', country: 'Uganda', region: 'Africa' },
+        { id: 'PROJ-2024-003', name: 'Office Operations 2025', implementationEndDate: '2025-12-31', country: 'Denmark', region: 'Europe' },
+        { id: 'PROJ-2024-004', name: 'IT Infrastructure Modernization', implementationEndDate: '2025-09-30', country: 'Global', region: 'Global' },
+        { id: 'PROJ-2024-005', name: 'Multi-Country Development Initiative', implementationEndDate: '2027-03-31', country: 'Multiple', region: 'Global' },
+        { id: 'PROJ-2024-006', name: 'Water and Sanitation Program', implementationEndDate: '2026-12-31', country: 'Ethiopia', region: 'Africa' },
+        { id: 'PROJ-2024-007', name: 'Emergency Response Capacity Building', implementationEndDate: '2025-06-30', country: 'Haiti', region: 'Americas' },
+        { id: 'PROJ-2024-008', name: 'Renewable Energy Access Initiative', implementationEndDate: '2027-12-31', country: 'India', region: 'Asia' },
+        { id: 'PROJ-2024-009', name: 'Urban Infrastructure Rehabilitation', implementationEndDate: '2026-09-30', country: 'Iraq', region: 'Middle East' },
+        { id: 'PROJ-2024-010', name: 'Sustainable Agriculture Support', implementationEndDate: '2025-12-31', country: 'Myanmar', region: 'Asia' },
       ];
       
       // Product Requirements (per UNSPSC code)
@@ -14219,6 +14234,92 @@
         renderCurrentBlock();
       }
       
+      // ===== PROJECT INFORMATION - AUTO-POPULATION FROM oneUNOPS PROJECT =====
+      let selectedProjectInfo = {
+        projectId: '',
+        projectName: '',
+        implementationEndDate: ''
+      };
+      
+      window.updateProjectFromId = function(projectId) {
+        // Find the project from availableOneUNOPSProjects
+        const project = availableOneUNOPSProjects.find(p => p.id === projectId);
+        
+        if (project) {
+          selectedProjectInfo.projectId = project.id;
+          selectedProjectInfo.projectName = project.name;
+          selectedProjectInfo.implementationEndDate = project.implementationEndDate;
+          
+          // Update the Project Name field
+          const projectNameInput = document.querySelector('input[data-field-id="projectName"]');
+          if (projectNameInput) {
+            projectNameInput.value = project.name;
+          }
+          
+          // Update the Implementation End Date field
+          const implEndDateInput = document.querySelector('input[data-field-id="implementationEndDate"]');
+          if (implEndDateInput) {
+            implEndDateInput.value = project.implementationEndDate;
+          }
+          
+          showNotification('Project Loaded', `Project "${project.name}" selected. Implementation End Date: ${project.implementationEndDate}`);
+        }
+      }
+      
+      window.searchOneUNOPSProjects = function(searchText, dropdownId) {
+        const dropdown = document.getElementById(dropdownId);
+        if (!dropdown) return;
+        
+        const searchLower = searchText.toLowerCase();
+        const matchingProjects = availableOneUNOPSProjects.filter(p => 
+          p.id.toLowerCase().includes(searchLower) ||
+          p.name.toLowerCase().includes(searchLower) ||
+          p.country.toLowerCase().includes(searchLower)
+        );
+        
+        if (searchText.length < 1) {
+          dropdown.style.display = 'none';
+          return;
+        }
+        
+        dropdown.innerHTML = matchingProjects.map(project => `
+          <div class="project-search-result" onclick="selectOneUNOPSProject('${project.id}', '${dropdownId}')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid var(--border-color); transition: background 0.15s;">
+            <div style="font-weight: 600; color: var(--text-primary); font-size: 13px;">${project.id}</div>
+            <div style="color: var(--text-secondary); font-size: 12px; margin-top: 2px;">${project.name}</div>
+            <div style="color: var(--text-muted); font-size: 11px; margin-top: 2px;">
+              <span><i class="pi pi-map-marker" style="font-size: 10px;"></i> ${project.country}</span>
+              <span style="margin-left: 10px;"><i class="pi pi-calendar" style="font-size: 10px;"></i> End: ${project.implementationEndDate}</span>
+            </div>
+          </div>
+        `).join('') || '<div style="padding: 12px; color: var(--text-muted); text-align: center;">No projects found</div>';
+        
+        dropdown.style.display = 'block';
+        
+        // Add hover effect
+        dropdown.querySelectorAll('.project-search-result').forEach(item => {
+          item.addEventListener('mouseenter', () => item.style.background = 'var(--hover-bg)');
+          item.addEventListener('mouseleave', () => item.style.background = 'transparent');
+        });
+      }
+      
+      window.selectOneUNOPSProject = function(projectId, dropdownId) {
+        const project = availableOneUNOPSProjects.find(p => p.id === projectId);
+        if (!project) return;
+        
+        // Update the search input with the project ID
+        const dropdown = document.getElementById(dropdownId);
+        if (dropdown) {
+          const input = dropdown.previousElementSibling?.querySelector('input') || dropdown.parentElement.querySelector('input');
+          if (input) {
+            input.value = `${project.id} - ${project.name}`;
+          }
+          dropdown.style.display = 'none';
+        }
+        
+        // Auto-populate related fields
+        updateProjectFromId(projectId);
+      }
+      
       window.openLifecycleTrackerSearch = function() {
         // Open lifecycle tracker search modal/dialog
         showNotification('Lifecycle Tracker Search', 'Opening lifecycle tracker to link previous process...');
@@ -16223,14 +16324,30 @@
                         ${section.fields.map((field) => {
                           if (!shouldShowField(field)) return '';
                           const onchangeAttr = field.onchange ? `onchange="${field.onchange}(this.value)"` : '';
-                          if (field.type === 'search') {
+                          const dropdownId = 'project-search-dropdown-' + (field.id || Math.random().toString(36).substr(2, 9));
+                          
+                          if (field.type === 'project-search') {
                             return `
                               <div class="form-group">
                                 <label class="form-label">
                                   ${field.label} ${field.required ? '<span class="required">*</span>' : ''}
                                 </label>
                                 <div style="position: relative;">
-                                  <input type="text" class="form-input" value="${field.value || ''}" placeholder="${field.placeholder || 'Search...'}" ${field.required ? 'required' : ''} ${field.readonly ? 'readonly' : ''} style="padding-left: 36px;" />
+                                  <input type="text" class="form-input" data-field-id="${field.id}" value="${selectedProjectInfo.projectId ? selectedProjectInfo.projectId + ' - ' + selectedProjectInfo.projectName : (field.value || '')}" placeholder="${field.placeholder || 'Search...'}" ${field.required ? 'required' : ''} ${field.readonly ? 'readonly' : ''} style="padding-left: 36px;" oninput="searchOneUNOPSProjects(this.value, '${dropdownId}')" onfocus="searchOneUNOPSProjects(this.value || '', '${dropdownId}')" />
+                                  <span style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 13px;">🔍</span>
+                                  <div id="${dropdownId}" class="project-search-dropdown" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--surface-card); border: 1px solid var(--border-color); border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); max-height: 250px; overflow-y: auto; z-index: 1000; margin-top: 4px;"></div>
+                                </div>
+                                ${field.source ? '<span class="help-text">Source: ' + field.source + '</span>' : ''}
+                              </div>
+                            `;
+                          } else if (field.type === 'search') {
+                            return `
+                              <div class="form-group">
+                                <label class="form-label">
+                                  ${field.label} ${field.required ? '<span class="required">*</span>' : ''}
+                                </label>
+                                <div style="position: relative;">
+                                  <input type="text" class="form-input" data-field-id="${field.id}" value="${field.value || ''}" placeholder="${field.placeholder || 'Search...'}" ${field.required ? 'required' : ''} ${field.readonly ? 'readonly' : ''} style="padding-left: 36px;" />
                                   <span style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 13px;">🔍</span>
                                 </div>
                                 ${field.source ? '<span class="help-text">Source: ' + field.source + '</span>' : ''}
@@ -16242,7 +16359,17 @@
                                 <label class="form-label">
                                   ${field.label} ${field.required ? '<span class="required">*</span>' : ''}
                                 </label>
-                                <input type="date" class="form-input" value="${field.value || ''}" ${field.required ? 'required' : ''} ${field.readonly ? 'readonly' : ''} ${onchangeAttr} />
+                                <input type="date" class="form-input" data-field-id="${field.id}" value="${field.id === 'implementationEndDate' && selectedProjectInfo.implementationEndDate ? selectedProjectInfo.implementationEndDate : (field.value || '')}" ${field.required ? 'required' : ''} ${field.readonly ? 'readonly' : ''} ${onchangeAttr} />
+                                ${field.source ? '<span class="help-text">Source: ' + field.source + '</span>' : ''}
+                              </div>
+                            `;
+                          } else if (field.type === 'textarea') {
+                            return `
+                              <div class="form-group full-width">
+                                <label class="form-label">
+                                  ${field.label} ${field.required ? '<span class="required">*</span>' : ''}
+                                </label>
+                                <textarea class="form-textarea" data-field-id="${field.id}" placeholder="${field.placeholder || ''}" ${field.required ? 'required' : ''} ${field.readonly ? 'readonly' : ''} style="min-height: 80px; resize: vertical;">${field.value || ''}</textarea>
                                 ${field.source ? '<span class="help-text">Source: ' + field.source + '</span>' : ''}
                               </div>
                             `;
@@ -16252,7 +16379,7 @@
                                 <label class="form-label">
                                   ${field.label} ${field.required ? '<span class="required">*</span>' : ''}
                                 </label>
-                                <input type="text" class="form-input" value="${field.value || ''}" placeholder="${field.placeholder || ''}" ${field.required ? 'required' : ''} ${field.readonly ? 'readonly' : ''} ${onchangeAttr} />
+                                <input type="text" class="form-input" data-field-id="${field.id}" value="${field.id === 'projectName' && selectedProjectInfo.projectName ? selectedProjectInfo.projectName : (field.value || '')}" placeholder="${field.placeholder || ''}" ${field.required ? 'required' : ''} ${field.readonly ? 'readonly' : ''} ${onchangeAttr} />
                                 ${field.source ? '<span class="help-text">Source: ' + field.source + '</span>' : ''}
                               </div>
                             `;
@@ -17644,6 +17771,17 @@
         if (hasData && wizardData.title) {
           showSuccessMessage();
         }
+        
+        // Close project search dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+          const dropdowns = document.querySelectorAll('.project-search-dropdown');
+          dropdowns.forEach(dropdown => {
+            const parentGroup = dropdown.closest('.form-group');
+            if (parentGroup && !parentGroup.contains(event.target)) {
+              dropdown.style.display = 'none';
+            }
+          });
+        });
         
         console.log('Tender authoring page initialized');
       });
