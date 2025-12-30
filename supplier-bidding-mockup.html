@@ -117,7 +117,7 @@ gap: var(--spacing-md);
 text-align: right;
 }
 
-.user-company {
+.user-role {
 font-size: 12px;
 color: var(--text-muted);
 }
@@ -268,28 +268,28 @@ box-shadow: 0 2px 8px rgba(139, 92, 246, 0.4);
 }
 
 .ai-icon-wrapper {
-width: 20px;
-height: 20px;
-background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%);
-border-radius: 50%;
-display: flex;
-align-items: center;
-justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: linear-gradient(135deg, #8b5cf6, #6366f1);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
 }
-
-.ai-icon-wrapper i {
-font-size: 11px;
-color: white;
-}
+.ai-icon-wrapper i { font-size: 14px; color: white !important; }
 
 .ai-badge {
-font-size: 8px;
-background: var(--success-500);
-color: white;
-padding: 2px 4px;
-border-radius: 3px;
-font-weight: 700;
-margin-left: 4px;
+    position: absolute;
+    top: -4px;
+    right: -8px;
+    background: linear-gradient(135deg, #f59e0b, #ef4444);
+    color: white;
+    font-size: 8px;
+    font-weight: 700;
+    padding: 2px 5px;
+    border-radius: 6px;
+    text-transform: uppercase;
 }
 
 .language-selector {
@@ -385,83 +385,152 @@ display: flex;
 min-height: calc(100vh - 65px);
 }
 
+/* ==========================================================================
+   SIDEBAR (COLLAPSIBLE) - SUPPLIER THEME
+   ========================================================================== */
 .sidebar {
-width: 280px;
-background-color: #0192D1;
-color: white;
-display: flex;
-flex-direction: column;
-border-right: none;
+    width: 280px;
+    min-width: 280px;
+    max-width: 280px;
+    background-color: #0192D1;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    transition: width 0.3s ease, min-width 0.3s ease, max-width 0.3s ease;
+    position: relative;
+    z-index: 50;
 }
-
-.sidebar-menu {
-flex: 1;
-padding: 20px 0;
+.sidebar.collapsed {
+    width: 60px;
+    min-width: 60px;
+    max-width: 60px;
 }
-
-.menu-section {
-margin-bottom: var(--spacing-lg);
+.sidebar-toggle {
+    position: absolute;
+    top: 10px;
+    right: -15px;
+    width: 30px;
+    height: 30px;
+    background: var(--primary-400);
+    border: 2px solid white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1000;
+    color: white;
+    font-size: 14px;
+    transition: transform 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
-
+.sidebar.collapsed .sidebar-toggle {
+    transform: rotate(180deg);
+}
+.sidebar.collapsed .menu-section-title,
+.sidebar.collapsed .menu-item span:not(.menu-icon),
+.sidebar.collapsed .menu-group-header span:first-child,
+.sidebar.collapsed .menu-group-header i.pi-chevron-down {
+    display: none;
+}
+.sidebar.collapsed .menu-group-header {
+    justify-content: center;
+    padding: 8px;
+}
+.sidebar.collapsed .menu-item {
+    justify-content: center;
+    padding: 12px;
+}
+.sidebar-menu { flex: 1; padding: 16px 0; overflow-y: auto; }
+.menu-section { margin-bottom: var(--spacing-sm); }
 .menu-section-title {
-padding: 0 20px 15px 20px;
-font-size: 20px;
-font-weight: bold;
-text-transform: none;
-letter-spacing: 0;
-color: white;
-font-family: 'Lato', sans-serif;
-margin-bottom: var(--spacing-sm);
-border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 8px 20px 12px 20px;
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.5);
+    font-family: 'Lato', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
 }
-
 .menu-item {
-display: flex;
-align-items: center;
-gap: 12px;
-padding: 12px 20px;
-color: white;
-text-decoration: none;
-font-size: 16px;
-font-weight: normal;
-font-family: 'Lato', sans-serif;
-transition: background-color 0.2s ease;
-border-left: none;
-cursor: pointer;
-margin: 0 10px;
-border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    font-size: 14px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    border-left: 3px solid transparent;
 }
-
-.menu-item:hover {
-background-color: rgba(255, 255, 255, 0.1);
-color: white;
-}
-
+.menu-item:hover { background: rgba(255,255,255,0.1); }
 .menu-item.active {
-background-color: #006599;
-color: white;
+    background: rgba(255,255,255,0.15);
+    border-left-color: white;
+    font-weight: 600;
 }
-
-.menu-icon {
-font-size: 18px;
-width: 20px;
-text-align: center;
-flex-shrink: 0;
+.menu-item.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
-
-.menu-icon i {
-font-size: 18px;
-color: white;
+.menu-icon { font-size: 16px; opacity: 0.9; width: 20px; text-align: center; }
+.menu-group {
+    margin-bottom: var(--spacing-xs);
 }
-
+.menu-group-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.7);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.menu-group-header:hover {
+    color: white;
+    background: rgba(255,255,255,0.05);
+}
+.menu-group-header i {
+    font-size: 14px;
+    transition: transform 0.2s;
+}
+.menu-group.collapsed .menu-group-header i.pi-chevron-down {
+    transform: rotate(-90deg);
+}
+.menu-group.collapsed .menu-group-items {
+    display: none;
+}
+.menu-group-items {
+    padding-left: 12px;
+}
+.menu-group-items .menu-item {
+    padding: 10px 20px 10px 28px;
+    font-size: 13px;
+    border-left: none;
+}
+.menu-group-items .menu-item.active {
+    background: rgba(255,255,255,0.15);
+    border-left: none;
+    border-radius: 0 4px 4px 0;
+    margin-right: 8px;
+}
+.menu-divider {
+    height: 1px;
+    background: rgba(255,255,255,0.15);
+    margin: var(--spacing-md) 0;
+}
 .menu-badge {
-margin-left: auto;
-padding: 2px 8px;
-background: var(--danger-500);
-color: white;
-font-size: 11px;
-font-weight: 600;
-border-radius: 999px;
+    margin-left: auto;
+    padding: 2px 8px;
+    background: var(--danger-500);
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 999px;
 }
 
 .main-area {
@@ -3369,22 +3438,32 @@ position: relative;
 top: 0;
 }
 
+/* Sidebar collapses on smaller screens */
 .sidebar {
-width: 60px;
+    width: 60px;
+    min-width: 60px;
+    max-width: 60px;
 }
 
-.menu-section-title,
-.menu-item span:not(.menu-icon) {
-display: none;
+.sidebar .menu-section-title,
+.sidebar .menu-item span:not(.menu-icon),
+.sidebar .menu-group-header span:first-child,
+.sidebar .menu-group-header i.pi-chevron-down {
+    display: none;
 }
 
-.sidebar:hover {
-width: 280px;
+.sidebar .menu-group-header {
+    justify-content: center;
+    padding: 8px;
 }
 
-.sidebar:hover .menu-section-title,
-.sidebar:hover .menu-item span:not(.menu-icon) {
-display: block;
+.sidebar .menu-item {
+    justify-content: center;
+    padding: 12px;
+}
+
+.sidebar .sidebar-toggle {
+    display: none;
 }
 
 .sidebar-panel {
@@ -3460,78 +3539,122 @@ width: 100%;
 </head>
 <body>
 <header class="header" role="banner">
-<div class="header-top">
-<div class="logo-container">
-<div class="logo">UNOPS</div>
-<span class="portal-badge">Supplier</span>
-<span style="color: var(--surface-600); margin: 0 8px; font-size: 18px;">|</span>
-<span style="color: var(--primary-500); font-weight: 600; font-size: 14px;">eTendering</span>
-</div>
+    <div class="header-top">
+        <div class="logo-container">
+            <span class="logo">UNOPS</span>
+            <span class="portal-badge">SUPPLIER</span>
+            <!-- Dynamic Module Name - Change based on active menu -->
+            <span style="color: var(--surface-400); margin: 0 8px; font-size: 18px;">|</span>
+            <span id="currentModuleName" style="color: var(--primary-500); font-weight: 600; font-size: 14px;">eTendering</span>
+        </div>
+        
+        <!-- Header Actions -->
+        <div class="header-actions">
+            <!-- Accessibility Button -->
+            <div class="header-action-btn" onclick="openAccessibilityPanel()" title="Accessibility Options" aria-label="Accessibility Options">
+                <i class="pi pi-eye" aria-hidden="true"></i>
+                <span class="header-action-label">Accessibility</span>
+            </div>
+            
+            <!-- Language Selector -->
+            <div class="header-action-btn language-selector" onclick="openLanguageSelector()" title="Change Language" aria-label="Change Language">
+                <span class="lang-flag">🌐</span>
+                <span class="header-action-label" id="currentLang">EN</span>
+                <i class="pi pi-chevron-down" style="font-size: 10px; margin-left: 2px;" aria-hidden="true"></i>
+            </div>
 
-<!-- Header Actions: Notifications, Help, AI, Accessibility -->
-<div class="header-actions">
-<!-- Accessibility Button -->
-<div class="header-action-btn" onclick="openAccessibilityPanel()" title="Accessibility Options" aria-label="Accessibility Options">
-<i class="pi pi-eye" aria-hidden="true"></i>
-<span class="header-action-label">Accessibility</span>
-</div>
+            <!-- AI Assistant -->
+            <div class="header-action-btn ai-assistant-btn" onclick="openAIAssistant()" title="AI Assistant" aria-label="AI Supplier Assistant">
+                <div class="ai-icon-wrapper">
+                    <i class="pi pi-bolt" aria-hidden="true"></i>
+                </div>
+                <span class="header-action-label">AI Help</span>
+                <span class="ai-badge">NEW</span>
+            </div>
 
-<!-- Language Selector -->
-<div class="header-action-btn language-selector" onclick="openLanguageSelector()" title="Change Language" aria-label="Change Language">
-<span class="lang-flag">🌐</span>
-<span class="header-action-label" id="currentLang">EN</span>
-<i class="pi pi-chevron-down" style="font-size: 10px; margin-left: 2px;" aria-hidden="true"></i>
-</div>
+            <!-- Help/Questions -->
+            <div class="header-action-btn" onclick="openHelpCenter()" title="Help Center" aria-label="Help Center and Documentation">
+                <i class="pi pi-question-circle" aria-hidden="true"></i>
+                <span class="header-action-label">Help</span>
+            </div>
 
-<!-- AI Assistant -->
-<div class="header-action-btn ai-assistant-btn" onclick="openAIAssistant()" title="AI Assistant" aria-label="AI Supplier Assistant">
-<div class="ai-icon-wrapper">
-<i class="pi pi-bolt" aria-hidden="true"></i>
-</div>
-<span class="header-action-label">AI Help</span>
-<span class="ai-badge">NEW</span>
-</div>
+            <!-- Notifications -->
+            <div class="header-action-btn notification-btn" onclick="openNotificationsPanel()" title="Notifications" aria-label="View Notifications">
+                <i class="pi pi-bell" aria-hidden="true"></i>
+                <span class="notification-badge" id="notificationCount">3</span>
+            </div>
+        </div>
 
-<!-- Help/Questions -->
-<div class="header-action-btn" onclick="openHelpCenter()" title="Help Center" aria-label="Help Center and Documentation">
-<i class="pi pi-question-circle" aria-hidden="true"></i>
-<span class="header-action-label">Help</span>
-</div>
-
-<!-- Notifications -->
-<div class="header-action-btn notification-btn" onclick="openNotificationsPanel()" title="Notifications" aria-label="View Notifications">
-<i class="pi pi-bell" aria-hidden="true"></i>
-<span class="notification-badge" id="notificationCount">7</span>
-</div>
-</div>
-
-<div class="user-menu">
-<div class="user-info">
-<div class="user-company">Acme Corporation Ltd.</div>
-<div class="user-name">John Doe</div>
-</div>
-<div class="user-avatar" aria-label="User menu">JD</div>
-</div>
-</div>
+        <div class="user-menu">
+            <div class="user-info">
+                <div class="user-role">Supplier</div>
+                <div class="user-name">Acme Corporation</div>
+            </div>
+            <div class="user-avatar">AC</div>
+        </div>
+    </div>
 </header>
 
 <div class="app-container">
-<aside class="sidebar">
-<nav class="sidebar-menu">
-<div class="menu-section">
-<div class="menu-section-title">Tendering</div>
-<a class="menu-item active" data-view="dashboard">
-<span class="menu-icon"><i class="pi pi-home"></i></span>
-<span>Overview</span>
-</a>
-<a class="menu-item" data-view="my-tenders">
-<span class="menu-icon"><i class="pi pi-file-edit"></i></span>
-<span>Tenders</span>
-<span class="menu-badge">5</span>
-</a>
-</div>
-</nav>
-</aside>
+    <!-- =====================================================================
+         SIDEBAR (COLLAPSIBLE)
+         ===================================================================== -->
+    <aside class="sidebar" id="mainSidebar">
+        <div class="sidebar-toggle" onclick="toggleSidebar()">
+            <i class="pi pi-chevron-left"></i>
+        </div>
+        <nav class="sidebar-menu">
+            <!-- Supplier Portal -->
+            <div class="menu-section">
+                <div class="menu-section-title">Supplier Portal</div>
+                
+                <a class="menu-item" href="https://valentinar11.github.io/ValentinaRo/supplier-portal-landing.html" data-module="Home">
+                    <span class="menu-icon"><i class="pi pi-home"></i></span>
+                    <span>Home</span>
+                </a>
+                <a class="menu-item disabled" href="#" data-module="My Profile">
+                    <span class="menu-icon"><i class="pi pi-user"></i></span>
+                    <span>My Profile</span>
+                </a>
+                <a class="menu-item disabled" href="#" data-module="Form Responses">
+                    <span class="menu-icon"><i class="pi pi-file-edit"></i></span>
+                    <span>Form Responses</span>
+                </a>
+            </div>
+            
+            <div class="menu-divider"></div>
+            
+            <!-- Applications -->
+            <div class="menu-section">
+                <div class="menu-section-title">Applications</div>
+                
+                <!-- eTendering -->
+                <div class="menu-group">
+                    <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                        <span><i class="pi pi-briefcase"></i> eTendering</span>
+                        <i class="pi pi-chevron-down"></i>
+                    </div>
+                    <div class="menu-group-items">
+                        <a class="menu-item active" href="https://valentinar11.github.io/ValentinaRo/supplier-bidding-mockup.html" data-module="eTendering" data-view="dashboard"><span class="menu-icon"><i class="pi pi-chart-bar"></i></span><span>Overview</span></a>
+                        <a class="menu-item disabled" href="#" data-module="eTendering" data-view="my-tenders"><span class="menu-icon"><i class="pi pi-folder-open"></i></span><span>My Tenders</span></a>
+                    </div>
+                </div>
+                
+                <!-- DRiVE -->
+                <div class="menu-group collapsed">
+                    <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                        <span><i class="pi pi-shield"></i> DRiVE</span>
+                        <i class="pi pi-chevron-down"></i>
+                    </div>
+                    <div class="menu-group-items">
+                        <a class="menu-item disabled" href="#" data-module="DRiVE"><span class="menu-icon"><i class="pi pi-chart-bar"></i></span><span>Overview</span></a>
+                        <a class="menu-item disabled" href="#" data-module="DRiVE"><span class="menu-icon"><i class="pi pi-check-circle"></i></span><span>Verification</span></a>
+                        <a class="menu-item" href="https://valentinar11.github.io/ValentinaRo/capa-supplier-mockup.html" data-module="DRiVE"><span class="menu-icon"><i class="pi pi-exclamation-triangle"></i></span><span>CAPA</span></a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </aside>
 
 <main class="main-area">
 <!-- Quick Actions Bar -->
@@ -6465,9 +6588,60 @@ Submission Requirements
 let currentView = 'dashboard';
 let currentSection = 'submission';
 
+// ==================== SIDEBAR FUNCTIONS ====================
+
+// Toggle Sidebar Collapsed/Expanded
+function toggleSidebar() {
+    const sidebar = document.getElementById('mainSidebar');
+    sidebar.classList.toggle('collapsed');
+}
+
+// Toggle Menu Group Function
+function toggleMenuGroup(header) {
+    const group = header.parentElement;
+    group.classList.toggle('collapsed');
+}
+
+// Set active menu item and update module name in header
+function setActiveMenuItem(menuItem) {
+    // Remove active from all
+    document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
+    // Set new active
+    menuItem.classList.add('active');
+    // Update module name in header
+    const moduleName = menuItem.getAttribute('data-module');
+    if (moduleName) {
+        const moduleNameEl = document.getElementById('currentModuleName');
+        if (moduleNameEl) {
+            moduleNameEl.textContent = moduleName;
+        }
+    }
+    // Expand parent group if collapsed
+    const parentGroup = menuItem.closest('.menu-group');
+    if (parentGroup && parentGroup.classList.contains('collapsed')) {
+        parentGroup.classList.remove('collapsed');
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
 attachMenuListeners();
 attachSectionNavListeners();
+
+// Expand any menu group containing an active item on load
+document.querySelectorAll('.menu-item.active').forEach(item => {
+    const parentGroup = item.closest('.menu-group');
+    if (parentGroup) {
+        parentGroup.classList.remove('collapsed');
+    }
+    // Set initial module name
+    const moduleName = item.getAttribute('data-module');
+    if (moduleName) {
+        const moduleNameEl = document.getElementById('currentModuleName');
+        if (moduleNameEl) {
+            moduleNameEl.textContent = moduleName;
+        }
+    }
+});
 });
 
 // Toast Notification Function
