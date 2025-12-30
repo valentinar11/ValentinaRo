@@ -1367,9 +1367,7 @@
         }
 
         .tender-overview-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: var(--spacing-xl);
+            display: block;
             margin-bottom: var(--spacing-xl);
         }
 
@@ -1891,9 +1889,7 @@
 
         /* Responsive */
         @media (max-width: 1024px) {
-            .tender-overview-grid {
-                grid-template-columns: 1fr;
-            }
+            /* tender-overview-grid is now display: block */
         }
 
         @media (max-width: 768px) {
@@ -2933,6 +2929,819 @@
                 width: 100%;
             }
         }
+
+        /* ===== TENDER TIMELINE BANNER ===== */
+        .tender-timeline-banner {
+            background: var(--surface-0);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+            border: 1px solid var(--surface-200);
+            box-shadow: var(--shadow-xs);
+        }
+
+        .timeline-banner-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .timeline-header-right {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .timeline-banner-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .timeline-status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--success-500);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.2); }
+        }
+
+        .timeline-status-text {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--success-600);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .timeline-remaining {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--warning-50);
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--warning-100);
+        }
+
+        .timeline-remaining i {
+            color: var(--warning-600);
+            font-size: 14px;
+        }
+
+        .timeline-remaining-text {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--warning-700);
+        }
+
+        /* Horizontal Timeline */
+        .horizontal-timeline {
+            position: relative;
+            padding: 0 10px;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .timeline-track {
+            position: relative;
+            height: 4px;
+            background: var(--surface-200);
+            border-radius: 2px;
+            margin: 30px 0 35px;
+        }
+
+        .timeline-progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-400), var(--primary-500));
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        .timeline-today-marker {
+            position: absolute;
+            top: -8px;
+            transform: translateX(-50%);
+            z-index: 3;
+        }
+
+        .today-marker-dot {
+            width: 20px;
+            height: 20px;
+            background: var(--primary-500);
+            border: 3px solid var(--surface-0);
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(0, 146, 209, 0.4);
+            position: relative;
+        }
+
+        .today-marker-label {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--primary-600);
+            background: var(--primary-50);
+            padding: 2px 6px;
+            border-radius: 3px;
+            white-space: nowrap;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .timeline-points {
+            display: flex;
+            justify-content: space-between;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+        }
+
+        .timeline-point {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .timeline-point-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--surface-0);
+            border: 2px solid var(--surface-300);
+            position: absolute;
+            top: -4px;
+            transform: translateX(-50%);
+            left: 50%;
+            z-index: 2;
+            transition: all 0.2s ease;
+        }
+
+        .timeline-point.completed .timeline-point-dot {
+            background: var(--primary-500);
+            border-color: var(--primary-500);
+        }
+
+        .timeline-point.completed .timeline-point-dot::after {
+            content: '✓';
+            font-size: 7px;
+            color: white;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .timeline-point.active .timeline-point-dot {
+            background: var(--warning-500);
+            border-color: var(--warning-500);
+            box-shadow: 0 0 0 4px var(--warning-100);
+        }
+
+        .timeline-point.future .timeline-point-dot {
+            background: var(--surface-100);
+            border-color: var(--surface-300);
+        }
+
+        .timeline-point-content {
+            position: absolute;
+            top: 18px;
+            text-align: center;
+            width: 80px;
+            transform: translateX(-50%);
+            left: 50%;
+        }
+
+        .timeline-point:first-child .timeline-point-content {
+            left: 0;
+            transform: none;
+            text-align: left;
+        }
+
+        .timeline-point:last-child .timeline-point-content {
+            left: auto;
+            right: 0;
+            transform: none;
+            text-align: right;
+        }
+
+        .timeline-point-label {
+            font-size: 9px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            margin-bottom: 2px;
+            white-space: nowrap;
+        }
+
+        .timeline-point-date {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-primary);
+            white-space: nowrap;
+        }
+
+        .timeline-point.active .timeline-point-label {
+            color: var(--warning-600);
+        }
+
+        .timeline-point.active .timeline-point-date {
+            color: var(--warning-700);
+        }
+
+        /* ===== TENDER TABS ===== */
+        .tender-tabs-container {
+            background: var(--surface-0);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--surface-200);
+            overflow: hidden;
+        }
+
+        .tender-tabs-nav {
+            display: flex;
+            background: var(--surface-50);
+            border-bottom: 1px solid var(--surface-200);
+            overflow-x: auto;
+            gap: 0;
+        }
+
+        .tender-tabs-nav::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .tender-tabs-nav::-webkit-scrollbar-thumb {
+            background: var(--surface-300);
+            border-radius: 2px;
+        }
+
+        .tender-tab-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 20px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-family: 'Lato', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+            cursor: pointer;
+            white-space: nowrap;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .tender-tab-btn:hover {
+            background: var(--surface-100);
+            color: var(--text-primary);
+        }
+
+        .tender-tab-btn.active {
+            color: var(--primary-600);
+            background: var(--surface-0);
+            border-bottom-color: var(--primary-500);
+            font-weight: 600;
+        }
+
+        .tender-tab-btn i {
+            font-size: 15px;
+            opacity: 0.85;
+        }
+
+        .tender-tab-btn.active i {
+            opacity: 1;
+        }
+
+        .tender-tab-btn .tab-badge {
+            font-family: 'Lato', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 10px;
+            background: var(--surface-200);
+            color: var(--text-muted);
+            margin-left: 2px;
+        }
+
+        .tender-tab-btn.active .tab-badge {
+            background: var(--primary-100);
+            color: var(--primary-600);
+        }
+
+        .tender-tab-panel {
+            display: none;
+            padding: var(--spacing-lg);
+            background: var(--surface-0);
+            width: 100%;
+            box-sizing: border-box;
+            min-height: 150px;
+        }
+
+        .tender-tab-panel.active {
+            display: block;
+        }
+
+        .tender-tab-panel .info-grid-2col {
+            background: transparent;
+        }
+
+        .tender-tab-panel .info-description-box {
+            background: var(--surface-50);
+            border-radius: var(--radius-sm);
+            padding: var(--spacing-md);
+        }
+
+        /* ===== TENDER STATISTICS BANNER ===== */
+        .tender-statistics-banner {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-md);
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: var(--surface-50);
+            border-radius: var(--radius-sm);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border: 1px solid var(--surface-200);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .stat-card-icon {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .stat-card-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .stat-card-label {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* Particulars Grid Styles */
+        .particulars-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-sm);
+        }
+
+        .particular-item {
+            background: var(--surface-50);
+            padding: var(--spacing-sm);
+            border-radius: var(--radius-sm);
+        }
+
+        .particular-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .particular-value {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            flex-wrap: wrap;
+        }
+
+        .particular-status {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: var(--radius-sm);
+        }
+
+        .particular-status.required {
+            background: var(--warning-50);
+            color: var(--warning-600);
+        }
+
+        .particular-status.allowed {
+            background: var(--success-50);
+            color: var(--success-600);
+        }
+
+        .particular-status.applicable {
+            background: var(--info-50);
+            color: var(--info-500);
+        }
+
+        .particular-status.optional {
+            background: var(--surface-200);
+            color: var(--text-secondary);
+        }
+
+        .particular-status.not-required {
+            background: var(--surface-100);
+            color: var(--text-muted);
+        }
+
+        .particular-amount {
+            font-size: 12px;
+            color: var(--text-primary);
+        }
+
+        /* Amendment card styles for tabs */
+        .amendment-card {
+            background: var(--surface-50);
+            border-radius: var(--radius-sm);
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-sm);
+            border-left: 3px solid var(--warning-500);
+        }
+
+        .amendment-header-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .amendment-badge {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--warning-600);
+            background: var(--warning-50);
+            padding: 2px 8px;
+            border-radius: var(--radius-sm);
+        }
+
+        .amendment-date-card {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .amendment-title {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .amendment-description {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .amendment-actions {
+            display: flex;
+            gap: var(--spacing-xs);
+        }
+
+        /* Country tags */
+        .country-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .country-tag {
+            background: var(--primary-50);
+            color: var(--primary-600);
+            padding: 4px 10px;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .particulars-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ===== TEAM UI STYLES ===== */
+        .team-member-card {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm) var(--spacing-md);
+            background: var(--surface-50);
+            border: 1px solid var(--surface-200);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .team-member-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .team-member-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .team-member-name {
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--text-primary);
+        }
+
+        .team-member-email {
+            font-size: 11px;
+            color: var(--text-muted);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .team-member-role {
+            font-size: 11px;
+            color: var(--text-secondary);
+            background: var(--surface-100);
+            padding: 2px 8px;
+            border-radius: 12px;
+            white-space: nowrap;
+        }
+
+        .team-roles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--spacing-md);
+        }
+
+        .team-role-card {
+            background: var(--surface-0);
+            border: 1px solid var(--surface-200);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+        }
+
+        .team-role-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-sm);
+            padding-bottom: var(--spacing-sm);
+            border-bottom: 1px solid var(--surface-100);
+        }
+
+        .team-role-icon {
+            font-size: 18px;
+            color: var(--primary-500);
+        }
+
+        .team-role-title {
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--text-primary);
+        }
+
+        .team-role-content {
+            min-height: 50px;
+        }
+
+        .team-add-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-xs);
+            padding: var(--spacing-md);
+            background: var(--surface-50);
+            border: 2px dashed var(--surface-300);
+            border-radius: var(--radius-md);
+            color: var(--text-muted);
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .team-add-placeholder:hover {
+            border-color: var(--primary-400);
+            background: var(--primary-50);
+            color: var(--primary-600);
+        }
+
+        .team-subsection {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .team-subsection-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .team-subsection-title {
+            font-weight: 600;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .team-members-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xs);
+        }
+
+        /* ===== EVALUATION CRITERIA STYLES ===== */
+        .evaluation-method-summary {
+            background: var(--surface-50);
+            border: 1px solid var(--surface-200);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .evaluation-method-row {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            padding: var(--spacing-sm) 0;
+            border-bottom: 1px solid var(--surface-100);
+        }
+
+        .evaluation-method-row:last-child {
+            border-bottom: none;
+        }
+
+        .evaluation-method-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            min-width: 120px;
+        }
+
+        .evaluation-method-value {
+            font-size: 13px;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .evaluation-criteria-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            background: var(--surface-0);
+            border: 1px solid var(--surface-200);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .evaluation-criteria-table thead {
+            background: var(--surface-50);
+        }
+
+        .evaluation-criteria-table th {
+            padding: 10px 12px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-secondary);
+            border-bottom: 2px solid var(--surface-200);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        .evaluation-criteria-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--surface-100);
+            vertical-align: top;
+        }
+
+        .evaluation-criteria-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .evaluation-criteria-table tbody tr:nth-child(even) {
+            background: var(--surface-50);
+        }
+
+        .criterion-id {
+            font-weight: 600;
+            color: var(--primary-600);
+            font-size: 10px;
+        }
+
+        .criterion-type-badge {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 9px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        .criterion-type-eligibility {
+            background: var(--primary-50);
+            color: var(--primary-600);
+        }
+
+        .criterion-type-qualification {
+            background: var(--success-50);
+            color: var(--success-600);
+        }
+
+        .criterion-type-technical {
+            background: var(--warning-50);
+            color: var(--warning-700);
+        }
+
+        .criterion-type-financial {
+            background: var(--info-50);
+            color: var(--info-600);
+        }
+
+        .criterion-name {
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+
+        .criterion-description {
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 1.3;
+            max-width: 280px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .criterion-method-badge {
+            background: var(--surface-100);
+            color: var(--text-secondary);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        .criterion-source {
+            font-size: 9px;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        .evaluation-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .evaluation-section-title {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .evaluation-criteria-summary {
+            font-size: 11px;
+            color: var(--text-muted);
+            display: flex;
+            gap: var(--spacing-md);
+        }
+
+        .evaluation-criteria-summary span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .evaluation-criteria-count {
+            font-weight: 700;
+            color: var(--text-primary);
+        }
     </style>
 </head>
 <body>
@@ -3945,36 +4754,62 @@
 
             <!-- Tender Details View -->
             <div class="view-section" id="view-tender-details">
-                <!-- Tender Info Banner -->
+                <!-- Tender Info Banner (with integrated statistics) -->
                 <div class="tender-info-banner">
-                    <div class="tender-banner-ref" id="details-tender-id">Reference: RFQ/2024/001</div>
-                    <h2 class="tender-banner-title" id="details-tender-title">Supply and Delivery of Medical Equipment and Supplies</h2>
-                    <div class="tender-banner-meta">
-                        <div class="banner-meta-item">
-                            <span class="banner-meta-label">Type</span>
-                            <span class="banner-meta-value">ITB</span>
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: var(--spacing-md);">
+                        <div style="flex: 1; min-width: 300px;">
+                            <div class="tender-banner-ref" id="details-tender-id">Reference: RFQ/2024/001</div>
+                            <h2 class="tender-banner-title" id="details-tender-title">Supply and Delivery of Medical Equipment and Supplies</h2>
+                            <div class="tender-banner-meta">
+                                <div class="banner-meta-item">
+                                    <span class="banner-meta-label">Type</span>
+                                    <span class="banner-meta-value">ITB</span>
+                                </div>
+                                <div class="banner-meta-item">
+                                    <span class="banner-meta-label">Category</span>
+                                    <span class="banner-meta-value">Goods</span>
+                                </div>
+                                <div class="banner-meta-item">
+                                    <span class="banner-meta-label">Value</span>
+                                    <span class="banner-meta-value">$250,000 USD</span>
+                                </div>
+                                <div class="banner-meta-item">
+                                    <span class="banner-meta-label">Deadline</span>
+                                    <span class="banner-meta-value">15 Jan 2025</span>
+                                </div>
+                                <div class="banner-meta-item">
+                                    <span class="banner-meta-label">Status</span>
+                                    <span class="banner-meta-value" id="details-tender-status">Open</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="banner-meta-item">
-                            <span class="banner-meta-label">Category</span>
-                            <span class="banner-meta-value">Goods</span>
-                        </div>
-                        <div class="banner-meta-item">
-                            <span class="banner-meta-label">Value</span>
-                            <span class="banner-meta-value">$250,000 USD</span>
-                        </div>
-                        <div class="banner-meta-item">
-                            <span class="banner-meta-label">Deadline</span>
-                            <span class="banner-meta-value">15 Jan 2025</span>
-                        </div>
-                        <div class="banner-meta-item">
-                            <span class="banner-meta-label">Status</span>
-                            <span class="banner-meta-value" id="details-tender-status">Open</span>
+                        <!-- Integrated Statistics -->
+                        <div style="display: flex; gap: var(--spacing-lg); background: rgba(255,255,255,0.15); padding: var(--spacing-sm) var(--spacing-lg); border-radius: var(--radius-md);">
+                            <div style="text-align: center;">
+                                <div style="font-size: 20px; font-weight: 700; color: white;">12</div>
+                                <div style="font-size: 9px; color: rgba(255,255,255,0.8); text-transform: uppercase; letter-spacing: 0.05em;">Interested</div>
+                            </div>
+                            <div style="width: 1px; background: rgba(255,255,255,0.3);"></div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 20px; font-weight: 700; color: white;">3</div>
+                                <div style="font-size: 9px; color: rgba(255,255,255,0.8); text-transform: uppercase; letter-spacing: 0.05em;">Bids</div>
+                            </div>
+                            <div style="width: 1px; background: rgba(255,255,255,0.3);"></div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 20px; font-weight: 700; color: white;">5</div>
+                                <div style="font-size: 9px; color: rgba(255,255,255,0.8); text-transform: uppercase; letter-spacing: 0.05em;">Questions</div>
+                            </div>
+                            <div style="width: 1px; background: rgba(255,255,255,0.3);"></div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 20px; font-weight: 700; color: white;">2</div>
+                                <div style="font-size: 9px; color: rgba(255,255,255,0.8); text-transform: uppercase; letter-spacing: 0.05em;">Amendments</div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Action Buttons -->
-                <div style="display: flex; gap: var(--spacing-md); margin-bottom: var(--spacing-xl); flex-wrap: wrap;">
+                <div style="display: flex; gap: var(--spacing-md); margin-bottom: var(--spacing-md); flex-wrap: wrap;">
                     <button class="btn btn-secondary" onclick="showDashboard()">
                         <i class="pi pi-arrow-left"></i> Back to Dashboard
                     </button>
@@ -3992,81 +4827,295 @@
                     </div>
                 </div>
 
-                <div class="deadline-warning">
-                    <div class="deadline-icon">⏰</div>
-                    <div class="deadline-text">
-                        <strong>5 days, 14 hours remaining</strong> until bid submission deadline.
-                    </div>
-                </div>
-
-                <div class="tender-overview-grid">
-                    <div class="overview-main">
-                        <!-- General Information - Collapsible -->
-                        <div class="overview-section-collapsible">
-                            <div class="overview-section-header" onclick="toggleOverviewSection(this)">
-                                <h3>
-                                    <span class="overview-section-icon">📋</span>
-                                    General Information
-                                </h3>
-                                <span class="section-toggle-icon">▼</span>
+                <!-- Tender Timeline Banner -->
+                <div class="tender-timeline-banner">
+                    <div class="timeline-banner-header">
+                        <div class="timeline-banner-status">
+                            <span class="timeline-status-dot"></span>
+                            <span class="timeline-status-text">Open for Bidding</span>
+                        </div>
+                        <div class="timeline-header-right">
+                            <div class="timeline-remaining">
+                                <i class="pi pi-clock"></i>
+                                <span class="timeline-remaining-text">5 days, 14 hours to submission</span>
                             </div>
-                            <div class="overview-section-body">
-                                <div class="info-row">
-                                    <div class="info-label">Method</div>
-                                    <div class="info-value">ITB - Invitation to Bid</div>
+                        </div>
+                    </div>
+                    <div class="horizontal-timeline">
+                        <div class="timeline-track">
+                            <div class="timeline-progress" style="width: 72%;"></div>
+                            <div class="timeline-today-marker" style="left: 72%;">
+                                <div class="today-marker-label">Today</div>
+                                <div class="today-marker-dot"></div>
+                            </div>
+                            <div class="timeline-points">
+                                <div class="timeline-point completed" style="left: 0%;">
+                                    <div class="timeline-point-dot"></div>
+                                    <div class="timeline-point-content">
+                                        <div class="timeline-point-label">Published</div>
+                                        <div class="timeline-point-date">5 Dec</div>
+                                    </div>
                                 </div>
-                                <div class="info-row">
-                                    <div class="info-label">Category</div>
-                                    <div class="info-value">Goods</div>
+                                <div class="timeline-point completed" style="left: 18%;">
+                                    <div class="timeline-point-dot"></div>
+                                    <div class="timeline-point-content">
+                                        <div class="timeline-point-label">Site Visit</div>
+                                        <div class="timeline-point-date">15 Dec</div>
+                                    </div>
                                 </div>
-                                <div class="info-row">
-                                    <div class="info-label">Countries</div>
-                                    <div class="info-value">Afghanistan, Bangladesh, Ethiopia</div>
+                                <div class="timeline-point completed" style="left: 55%;">
+                                    <div class="timeline-point-dot"></div>
+                                    <div class="timeline-point-content">
+                                        <div class="timeline-point-label">Clarifications</div>
+                                        <div class="timeline-point-date">10 Jan</div>
+                                    </div>
                                 </div>
-                                <div class="info-row">
-                                    <div class="info-label">Bid Validity</div>
-                                    <div class="info-value">90 days</div>
+                                <div class="timeline-point active" style="left: 80%;">
+                                    <div class="timeline-point-dot"></div>
+                                    <div class="timeline-point-content">
+                                        <div class="timeline-point-label">Submission</div>
+                                        <div class="timeline-point-date">15 Jan</div>
+                                    </div>
+                                </div>
+                                <div class="timeline-point future" style="left: 88%;">
+                                    <div class="timeline-point-dot"></div>
+                                    <div class="timeline-point-content">
+                                        <div class="timeline-point-label">Bid Opening</div>
+                                        <div class="timeline-point-date">16 Jan</div>
+                                    </div>
+                                </div>
+                                <div class="timeline-point future" style="left: 100%;">
+                                    <div class="timeline-point-dot"></div>
+                                    <div class="timeline-point-content">
+                                        <div class="timeline-point-label">Award</div>
+                                        <div class="timeline-point-date">15 Feb</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
 
-                        <!-- Scope & Objectives - Collapsible -->
-                        <div class="overview-section-collapsible">
-                            <div class="overview-section-header" onclick="toggleOverviewSection(this)">
-                                <h3>
-                                    <span class="overview-section-icon">🎯</span>
-                                    Scope & Objectives
-                                </h3>
-                                <span class="section-toggle-icon">▼</span>
+                <!-- Tabs section -->
+                <div class="tender-overview-grid">
+                    <div class="tender-tabs-container">
+                        <div class="tender-tabs-nav">
+                            <button class="tender-tab-btn active" onclick="switchTab('tab-general', this)">
+                                <i class="pi pi-file"></i> General
+                            </button>
+                            <button class="tender-tab-btn" onclick="switchTab('tab-project', this)">
+                                <i class="pi pi-briefcase"></i> Project
+                            </button>
+                            <button class="tender-tab-btn" onclick="switchTab('tab-scope', this)">
+                                <i class="pi pi-check-square"></i> Scope
+                            </button>
+                            <button class="tender-tab-btn" onclick="switchTab('tab-evaluation', this)">
+                                <i class="pi pi-chart-bar"></i> Evaluation
+                            </button>
+                            <button class="tender-tab-btn" onclick="switchTab('tab-competition', this)">
+                                <i class="pi pi-users"></i> Competition
+                            </button>
+                            <button class="tender-tab-btn" onclick="switchTab('tab-content', this)">
+                                <i class="pi pi-folder-open"></i> Content
+                            </button>
+                            <button class="tender-tab-btn" onclick="switchTab('tab-submission', this)">
+                                <i class="pi pi-upload"></i> Submission <span class="tab-badge">3</span>
+                            </button>
+                            <button class="tender-tab-btn" onclick="switchTab('tab-team', this)">
+                                <i class="pi pi-users"></i> Team
+                            </button>
+                            <button class="tender-tab-btn" onclick="switchTab('tab-amendments', this)">
+                                <i class="pi pi-pencil"></i> Amendments <span class="tab-badge">2</span>
+                            </button>
+                            <button class="tender-tab-btn" onclick="switchTab('tab-clarifications', this)">
+                                <i class="pi pi-comments"></i> Clarifications <span class="tab-badge">5</span>
+                            </button>
+                        </div>
+
+                        <!-- Tab Panel: General Information -->
+                        <div id="tab-general" class="tender-tab-panel active">
+                            <div class="info-grid-2col">
+                                <div class="info-row">
+                                    <div class="info-label">Reference</div>
+                                    <div class="info-value">UNOPS/ITB/2025/001</div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">Title</div>
+                                    <div class="info-value">Supply and Delivery of Medical Equipment and Supplies</div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">Sourcing Type</div>
+                                    <div class="info-value"><span class="status-badge status-info">Solicitation</span></div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">Event Type</div>
+                                    <div class="info-value">ITB - Invitation to Bid</div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">Process Type</div>
+                                    <div class="info-value">Standard solicitation</div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">Type of Requirement</div>
+                                    <div class="info-value"><span class="status-badge status-neutral">Goods</span></div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">Beneficiary Countries</div>
+                                    <div class="info-value">
+                                        <div class="country-tags">
+                                            <span class="country-tag">Afghanistan</span>
+                                            <span class="country-tag">Bangladesh</span>
+                                            <span class="country-tag">Ethiopia</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">Modality of Bid Receipt</div>
+                                    <div class="info-value">Online Only</div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">EPP (Emergency Procurement)</div>
+                                    <div class="info-value">No</div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">Medicine / Medical Equipment</div>
+                                    <div class="info-value">Yes</div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">UN Collaboration</div>
+                                    <div class="info-value">No</div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">Bid Validity Period</div>
+                                    <div class="info-value">90 days</div>
+                                </div>
                             </div>
-                            <div class="overview-section-body">
+                            <div class="info-description-box" style="margin-top: var(--spacing-md);">
+                                <div class="info-label" style="margin-bottom: var(--spacing-xs);">Description</div>
                                 <p style="line-height: 1.6; color: var(--text-secondary); margin: 0;">
-                                    UNOPS requires the supply and delivery of medical equipment for healthcare facilities. Equipment must meet international standards and include installation and training services.
+                                    UNOPS requires the supply and delivery of medical equipment for healthcare facilities in three countries. The procurement includes diagnostic equipment, patient monitoring systems, surgical lighting, and anesthesia machines. All equipment must meet international quality standards (ISO 13485, CE marking) and include installation, commissioning, and training services.
                                 </p>
                             </div>
                         </div>
 
-                        <!-- Items & Specifications - Collapsible -->
-                        <div class="overview-section-collapsible">
-                            <div class="overview-section-header" onclick="toggleOverviewSection(this)">
-                                <h3>
-                                    <span class="overview-section-icon">📦</span>
-                                    Items & Specifications
-                                    <span style="font-size: 12px; color: var(--text-muted); font-weight: 400; margin-left: var(--spacing-sm);">4 items</span>
-                                </h3>
-                                <span class="section-toggle-icon">▼</span>
+                        <!-- Tab Panel: Project & Tender Details -->
+                        <div id="tab-project" class="tender-tab-panel">
+                            <div style="font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 6px;">Project Information</div>
+                            <div class="info-grid-2col">
+                                <div class="info-row">
+                                    <div class="info-label">Work Package (GLA)</div>
+                                    <div class="info-value">WP-2025-MED-001</div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">Donor / Funding Source</div>
+                                    <div class="info-value">Global Fund for Health Infrastructure</div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">Project Name</div>
+                                    <div class="info-value">Healthcare Capacity Building Initiative - Phase II</div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">Implementation End Date</div>
+                                    <div class="info-value">31 December 2026</div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">Organizational Unit</div>
+                                    <div class="info-value">UNOPS Myanmar Multi-Country Office</div>
+                                </div>
                             </div>
-                            <div class="overview-section-body">
-                            <p style="line-height: 1.6; color: var(--text-muted); margin-bottom: var(--spacing-md); font-size: 14px;">
-                                The following items are being procured. Click on each item to view detailed specifications.
+
+                            <div style="font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em; margin: var(--spacing-md) 0 6px;">Tender Particulars</div>
+                            <div class="particulars-grid">
+                                <div class="particular-item">
+                                    <div class="particular-label">Bid Security</div>
+                                    <div class="particular-value">
+                                        <span class="particular-status required">Required</span>
+                                        <span class="particular-amount">$5,000 USD</span>
+                                    </div>
+                                </div>
+                                <div class="particular-item">
+                                    <div class="particular-label">Performance Security</div>
+                                    <div class="particular-value">
+                                        <span class="particular-status required">Required</span>
+                                        <span class="particular-amount">10% of contract value</span>
+                                    </div>
+                                </div>
+                                <div class="particular-item">
+                                    <div class="particular-label">Advance Payment</div>
+                                    <div class="particular-value">
+                                        <span class="particular-status allowed">Allowed</span>
+                                        <span class="particular-amount">Up to 20%</span>
+                                    </div>
+                                </div>
+                                <div class="particular-item">
+                                    <div class="particular-label">Advance Payment Security</div>
+                                    <div class="particular-value">
+                                        <span class="particular-status required">Required</span>
+                                        <span class="particular-amount">Bank guarantee for full amount</span>
+                                    </div>
+                                </div>
+                                <div class="particular-item">
+                                    <div class="particular-label">Liquidated Damages</div>
+                                    <div class="particular-value">
+                                        <span class="particular-status applicable">Applicable</span>
+                                        <span class="particular-amount">0.5% per week, max 10%</span>
+                                    </div>
+                                </div>
+                                <div class="particular-item">
+                                    <div class="particular-label">Alternative Offers</div>
+                                    <div class="particular-value">
+                                        <span class="particular-status allowed">Allowed</span>
+                                    </div>
+                                </div>
+                                <div class="particular-item">
+                                    <div class="particular-label">Partial Quotations / Lots</div>
+                                    <div class="particular-value">
+                                        <span class="particular-status allowed">Allowed</span>
+                                        <span class="particular-amount">3 Lots available</span>
+                                    </div>
+                                </div>
+                                <div class="particular-item">
+                                    <div class="particular-label">Site Visit</div>
+                                    <div class="particular-value">
+                                        <span class="particular-status not-required">Not Required</span>
+                                    </div>
+                                </div>
+                                <div class="particular-item">
+                                    <div class="particular-label">Pre-Bid Meeting</div>
+                                    <div class="particular-value">
+                                        <span class="particular-status optional">Optional</span>
+                                        <span class="particular-amount">20 Dec 2024, 10:00 AM UTC (Virtual)</span>
+                                    </div>
+                                </div>
+                                <div class="particular-item">
+                                    <div class="particular-label">Clarification Period</div>
+                                    <div class="particular-value">
+                                        <span class="particular-amount">Until 10 January 2025, 23:59 UTC</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tab Panel: Scope & Requirements -->
+                        <div id="tab-scope" class="tender-tab-panel">
+                            <div style="font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 6px;">Scope and Objectives</div>
+                            <div class="info-description-box" style="margin-bottom: var(--spacing-md);">
+                                <p style="line-height: 1.6; color: var(--text-secondary); margin: 0;">
+                                    The objective of this solicitation is to procure high-quality medical equipment for healthcare facilities in Afghanistan, Bangladesh, and Ethiopia as part of the Healthcare Capacity Building Initiative. The supplier shall provide complete solutions including equipment delivery, installation, commissioning, user training, and warranty services. All products must be manufactured in accordance with international standards and obtain necessary certifications for medical devices.
+                                </p>
+                            </div>
+
+                            <div style="font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 6px;">Product Requirements & Specifications</div>
+                            <p style="font-size: 11px; color: var(--text-muted); margin-bottom: var(--spacing-sm);">
+                                Click on each item to view detailed requirements including attributes and descriptions.
                             </p>
 
                             <!-- Item 1: Ultrasound Machines -->
                             <div class="collapsible-item-card">
                                 <div class="collapsible-item-header" onclick="toggleItemCard(this, event)">
                                     <div style="flex: 1;">
-                                        <div style="font-weight: 600; font-size: 15px; margin-bottom: 4px;">Ultrasound Machines</div>
-                                        <div style="font-size: 12px; color: var(--text-muted);">UNSPSC: 42182104 • Quantity: 5 Units</div>
+                                        <div style="font-weight: 600; font-size: 15px; margin-bottom: 4px;">Ultrasound Machines - Portable Systems</div>
+                                        <div style="font-size: 12px; color: var(--text-muted);">UNSPSC: 42182104 • Quantity: 5 Units • Lot 1</div>
                                     </div>
                                     <span class="collapsible-arrow">▼</span>
                                 </div>
@@ -4102,8 +5151,8 @@
                             <div class="collapsible-item-card">
                                 <div class="collapsible-item-header" onclick="toggleItemCard(this, event)">
                                     <div style="flex: 1;">
-                                        <div style="font-weight: 600; font-size: 15px; margin-bottom: 4px;">Patient Monitors</div>
-                                        <div style="font-size: 12px; color: var(--text-muted);">UNSPSC: 42182108 • Quantity: 20 Units</div>
+                                        <div style="font-weight: 600; font-size: 15px; margin-bottom: 4px;">Multi-Parameter Patient Monitors</div>
+                                        <div style="font-size: 12px; color: var(--text-muted);">UNSPSC: 42182108 • Quantity: 20 Units • Lot 1</div>
                                     </div>
                                     <span class="collapsible-arrow">▼</span>
                                 </div>
@@ -4118,23 +5167,15 @@
                                     </div>
                                     <div class="spec-detail-row">
                                         <span class="spec-detail-label">Parameters:</span>
-                                        <span class="spec-detail-value">ECG (3/5/12 lead), SpO2, NIBP, Temperature, Respiration Rate, IBP (optional)</span>
+                                        <span class="spec-detail-value">ECG (3/5/12 lead), SpO2, NIBP, Temperature, Respiration Rate</span>
                                     </div>
                                     <div class="spec-detail-row">
                                         <span class="spec-detail-label">Battery:</span>
                                         <span class="spec-detail-value">Built-in rechargeable, minimum 4 hours runtime</span>
                                     </div>
                                     <div class="spec-detail-row">
-                                        <span class="spec-detail-label">Alarms:</span>
-                                        <span class="spec-detail-value">Visual and audible with adjustable limits</span>
-                                    </div>
-                                    <div class="spec-detail-row">
                                         <span class="spec-detail-label">Warranty:</span>
                                         <span class="spec-detail-value">Minimum 2 years parts and labor</span>
-                                    </div>
-                                    <div class="spec-detail-row">
-                                        <span class="spec-detail-label">Delivery:</span>
-                                        <span class="spec-detail-value">Within 60 days of contract signing</span>
                                     </div>
                                 </div>
                             </div>
@@ -4143,8 +5184,8 @@
                             <div class="collapsible-item-card">
                                 <div class="collapsible-item-header" onclick="toggleItemCard(this, event)">
                                     <div style="flex: 1;">
-                                        <div style="font-weight: 600; font-size: 15px; margin-bottom: 4px;">Surgical Lights</div>
-                                        <div style="font-size: 12px; color: var(--text-muted);">UNSPSC: 42192201 • Quantity: 8 Units</div>
+                                        <div style="font-weight: 600; font-size: 15px; margin-bottom: 4px;">LED Surgical Operating Lights</div>
+                                        <div style="font-size: 12px; color: var(--text-muted);">UNSPSC: 42192201 • Quantity: 8 Units • Lot 2</div>
                                     </div>
                                     <span class="collapsible-arrow">▼</span>
                                 </div>
@@ -4162,20 +5203,8 @@
                                         <span class="spec-detail-value">4000-5000K, adjustable</span>
                                     </div>
                                     <div class="spec-detail-row">
-                                        <span class="spec-detail-label">LED Lifespan:</span>
-                                        <span class="spec-detail-value">Minimum 50,000 hours</span>
-                                    </div>
-                                    <div class="spec-detail-row">
-                                        <span class="spec-detail-label">Mobility:</span>
-                                        <span class="spec-detail-value">Floor mounted with wheels, brake system, 360° rotation</span>
-                                    </div>
-                                    <div class="spec-detail-row">
                                         <span class="spec-detail-label">Warranty:</span>
                                         <span class="spec-detail-value">Minimum 3 years parts and labor</span>
-                                    </div>
-                                    <div class="spec-detail-row">
-                                        <span class="spec-detail-label">Delivery:</span>
-                                        <span class="spec-detail-value">Within 75 days of contract signing</span>
                                     </div>
                                 </div>
                             </div>
@@ -4184,8 +5213,8 @@
                             <div class="collapsible-item-card">
                                 <div class="collapsible-item-header" onclick="toggleItemCard(this, event)">
                                     <div style="flex: 1;">
-                                        <div style="font-weight: 600; font-size: 15px; margin-bottom: 4px;">Anesthesia Machines</div>
-                                        <div style="font-size: 12px; color: var(--text-muted);">UNSPSC: 42182101 • Quantity: 3 Units</div>
+                                        <div style="font-weight: 600; font-size: 15px; margin-bottom: 4px;">Advanced Anesthesia Workstations</div>
+                                        <div style="font-size: 12px; color: var(--text-muted);">UNSPSC: 42182101 • Quantity: 3 Units • Lot 3</div>
                                     </div>
                                     <span class="collapsible-arrow">▼</span>
                                 </div>
@@ -4200,15 +5229,7 @@
                                     </div>
                                     <div class="spec-detail-row">
                                         <span class="spec-detail-label">Vaporizers:</span>
-                                        <span class="spec-detail-value">Minimum 2 agent-specific vaporizers (Sevoflurane, Isoflurane)</span>
-                                    </div>
-                                    <div class="spec-detail-row">
-                                        <span class="spec-detail-label">Monitoring:</span>
-                                        <span class="spec-detail-value">Integrated patient monitoring (O2, CO2, agent concentration, pressure, flow)</span>
-                                    </div>
-                                    <div class="spec-detail-row">
-                                        <span class="spec-detail-label">Display:</span>
-                                        <span class="spec-detail-value">15" color touchscreen with waveform display</span>
+                                        <span class="spec-detail-value">Minimum 2 agent-specific vaporizers</span>
                                     </div>
                                     <div class="spec-detail-row">
                                         <span class="spec-detail-label">Standards:</span>
@@ -4218,403 +5239,781 @@
                                         <span class="spec-detail-label">Warranty:</span>
                                         <span class="spec-detail-value">Minimum 2 years parts and labor</span>
                                     </div>
-                                    <div class="spec-detail-row">
-                                        <span class="spec-detail-label">Delivery:</span>
-                                        <span class="spec-detail-value">Within 120 days of contract signing</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tab Panel: Evaluation -->
+                        <div id="tab-evaluation" class="tender-tab-panel">
+                            <!-- Evaluation Method Section - Collapsible -->
+                            <div class="collapsible-section" id="evaluation-method-section">
+                                <div class="collapsible-header" onclick="toggleCollapsibleSection('evaluation-method-section')">
+                                    <div class="collapsible-header-left">
+                                        <span class="collapsible-header-title"><i class="pi pi-sliders-h" style="margin-right: 6px;"></i>Evaluation Method</span>
+                                    </div>
+                                    <div class="collapsible-toggle">▼</div>
+                                </div>
+                                <div class="collapsible-body" onclick="event.stopPropagation()">
+                                    <div class="evaluation-method-summary">
+                                        <div class="evaluation-method-row">
+                                            <div class="evaluation-method-label">Method</div>
+                                            <div class="evaluation-method-value">Lowest Price</div>
+                                        </div>
+                                        <div class="evaluation-method-row">
+                                            <div class="evaluation-method-label">Methodology</div>
+                                            <div class="evaluation-method-value">Lowest Evaluated Substantially Responsive Bid</div>
+                                        </div>
+                                        <div class="evaluation-method-row">
+                                            <div class="evaluation-method-label">Details</div>
+                                            <div class="evaluation-method-value" style="color: var(--text-secondary); font-weight: 400;">
+                                                Technical evaluation (pass/fail) followed by financial comparison of compliant bids. Bidders must meet all mandatory requirements to be considered for financial evaluation.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                </div>
+                            </div>
+
+                            <!-- Evaluation Criteria Section - Collapsible -->
+                            <div class="collapsible-section collapsed" id="evaluation-criteria-section" style="margin-top: var(--spacing-md);">
+                                <div class="collapsible-header" onclick="toggleCollapsibleSection('evaluation-criteria-section')">
+                                    <div class="collapsible-header-left">
+                                        <span class="collapsible-header-title"><i class="pi pi-list-check" style="margin-right: 6px;"></i>Evaluation Criteria</span>
+                                        <span style="font-size: 10px; color: var(--text-muted); margin-left: 8px;">(12 criteria)</span>
+                                    </div>
+                                    <div class="collapsible-toggle">▼</div>
+                                </div>
+                                <div class="collapsible-body" onclick="event.stopPropagation()">
+                                    <!-- Criteria Summary -->
+                                    <div class="evaluation-criteria-summary" style="margin-bottom: var(--spacing-md);">
+                                        <span><span class="evaluation-criteria-count">7</span> predefined</span>
+                                        <span><span class="evaluation-criteria-count">5</span> custom</span>
+                                    </div>
+                                    
+                                    <!-- Evaluation Criteria Table -->
+                                    <table class="evaluation-criteria-table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 60px;">ID</th>
+                                                <th style="width: 100px;">Type</th>
+                                                <th>Criteria</th>
+                                                <th style="width: 80px; text-align: center;">Method</th>
+                                                <th style="width: 60px; text-align: center;">Source</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Eligibility & Formal Criteria (Predefined) -->
+                                            <tr>
+                                                <td><span class="criterion-id">EF-001</span></td>
+                                                <td><span class="criterion-type-badge criterion-type-eligibility">Eligibility</span></td>
+                                                <td>
+                                                    <div class="criterion-name">Completed & Signed Offer Form (Form A)</div>
+                                                    <div class="criterion-description" title="Supplier has submitted signed Offer Form (Form A)">Supplier has submitted signed Offer Form (Form A)</div>
+                                                </td>
+                                                <td style="text-align: center;"><span class="criterion-method-badge">Pass/Fail</span></td>
+                                                <td class="criterion-source">System</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="criterion-id">EF-002</span></td>
+                                                <td><span class="criterion-type-badge criterion-type-eligibility">Eligibility</span></td>
+                                                <td>
+                                                    <div class="criterion-name">Supplier Profile Form (Form B)</div>
+                                                    <div class="criterion-description" title="Supplier has submitted completed Supplier Profile Form">Supplier has submitted completed Supplier Profile Form</div>
+                                                </td>
+                                                <td style="text-align: center;"><span class="criterion-method-badge">Pass/Fail</span></td>
+                                                <td class="criterion-source">System</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="criterion-id">EF-003</span></td>
+                                                <td><span class="criterion-type-badge criterion-type-eligibility">Eligibility</span></td>
+                                                <td>
+                                                    <div class="criterion-name">Valid Business Registration</div>
+                                                    <div class="criterion-description" title="Certificate of incorporation or business registration">Certificate of incorporation or business registration</div>
+                                                </td>
+                                                <td style="text-align: center;"><span class="criterion-method-badge">Pass/Fail</span></td>
+                                                <td class="criterion-source">System</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="criterion-id">EF-004</span></td>
+                                                <td><span class="criterion-type-badge criterion-type-eligibility">Eligibility</span></td>
+                                                <td>
+                                                    <div class="criterion-name">Not on UN/UNOPS Ineligibility List</div>
+                                                    <div class="criterion-description" title="Supplier is not sanctioned by UN Security Council or on UNOPS ineligibility list">Supplier is not sanctioned by UN Security Council</div>
+                                                </td>
+                                                <td style="text-align: center;"><span class="criterion-method-badge">Pass/Fail</span></td>
+                                                <td class="criterion-source">System</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="criterion-id">EF-005</span></td>
+                                                <td><span class="criterion-type-badge criterion-type-eligibility">Eligibility</span></td>
+                                                <td>
+                                                    <div class="criterion-name">UN Global Compact/Supplier Code of Conduct</div>
+                                                    <div class="criterion-description" title="Supplier has signed UN Global Compact or accepted UNOPS Supplier Code">Supplier has signed UN Global Compact or accepted Code</div>
+                                                </td>
+                                                <td style="text-align: center;"><span class="criterion-method-badge">Pass/Fail</span></td>
+                                                <td class="criterion-source">System</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="criterion-id">EF-006</span></td>
+                                                <td><span class="criterion-type-badge criterion-type-eligibility">Eligibility</span></td>
+                                                <td>
+                                                    <div class="criterion-name">Valid Price Schedule (Form C)</div>
+                                                    <div class="criterion-description" title="Supplier has submitted completed Price Schedule with all required items priced">Completed Price Schedule with all required items priced</div>
+                                                </td>
+                                                <td style="text-align: center;"><span class="criterion-method-badge">Pass/Fail</span></td>
+                                                <td class="criterion-source">System</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="criterion-id">EF-007</span></td>
+                                                <td><span class="criterion-type-badge criterion-type-eligibility">Eligibility</span></td>
+                                                <td>
+                                                    <div class="criterion-name">Bid Security/Guarantee</div>
+                                                    <div class="criterion-description" title="Valid bid security in acceptable format and amount (if required)">Valid bid security in acceptable format and amount</div>
+                                                </td>
+                                                <td style="text-align: center;"><span class="criterion-method-badge">Pass/Fail</span></td>
+                                                <td class="criterion-source">System</td>
+                                            </tr>
+                                            
+                                            <!-- Qualification Criteria (Custom) -->
+                                            <tr>
+                                                <td><span class="criterion-id" style="color: var(--text-primary);">QC-001</span></td>
+                                                <td><span class="criterion-type-badge criterion-type-qualification">Qualification</span></td>
+                                                <td>
+                                                    <div class="criterion-name">Minimum 3 Years Experience</div>
+                                                    <div class="criterion-description" title="Supplier must demonstrate minimum 3 years experience in supply of similar goods">Min. 3 years in supply of similar goods</div>
+                                                </td>
+                                                <td style="text-align: center;"><span class="criterion-method-badge">Pass/Fail</span></td>
+                                                <td class="criterion-source">Custom</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="criterion-id" style="color: var(--text-primary);">QC-002</span></td>
+                                                <td><span class="criterion-type-badge criterion-type-qualification">Qualification</span></td>
+                                                <td>
+                                                    <div class="criterion-name">Similar Contract References</div>
+                                                    <div class="criterion-description" title="At least 2 contracts of similar nature and value completed in last 5 years">At least 2 contracts of similar nature in last 5 years</div>
+                                                </td>
+                                                <td style="text-align: center;"><span class="criterion-method-badge">Pass/Fail</span></td>
+                                                <td class="criterion-source">Custom</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="criterion-id" style="color: var(--text-primary);">QC-003</span></td>
+                                                <td><span class="criterion-type-badge criterion-type-qualification">Qualification</span></td>
+                                                <td>
+                                                    <div class="criterion-name">Financial Capacity</div>
+                                                    <div class="criterion-description" title="Average annual turnover of at least USD 500,000 over the last 3 years">Average turnover ≥ USD 500,000 over last 3 years</div>
+                                                </td>
+                                                <td style="text-align: center;"><span class="criterion-method-badge">Pass/Fail</span></td>
+                                                <td class="criterion-source">Custom</td>
+                                            </tr>
+                                            
+                                            <!-- Technical Criteria (Custom) -->
+                                            <tr>
+                                                <td><span class="criterion-id" style="color: var(--text-primary);">TC-001</span></td>
+                                                <td><span class="criterion-type-badge criterion-type-technical">Technical</span></td>
+                                                <td>
+                                                    <div class="criterion-name">Technical Specifications Compliance</div>
+                                                    <div class="criterion-description" title="Offered goods/services must fully comply with technical specifications">Full compliance with technical specifications</div>
+                                                </td>
+                                                <td style="text-align: center;"><span class="criterion-method-badge">Pass/Fail</span></td>
+                                                <td class="criterion-source">Custom</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="criterion-id" style="color: var(--text-primary);">TC-002</span></td>
+                                                <td><span class="criterion-type-badge criterion-type-technical">Technical</span></td>
+                                                <td>
+                                                    <div class="criterion-name">Delivery Timeline</div>
+                                                    <div class="criterion-description" title="Proposed delivery schedule meets or exceeds requirements">Delivery schedule meets or exceeds requirements</div>
+                                                </td>
+                                                <td style="text-align: center;"><span class="criterion-method-badge">Pass/Fail</span></td>
+                                                <td class="criterion-source">Custom</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    
+                                    <div style="font-size: 10px; color: var(--text-muted); margin-top: var(--spacing-sm); display: flex; align-items: center; gap: 4px;">
+                                        <i class="pi pi-info-circle"></i> 
+                                        Predefined criteria (System) are always included. Custom criteria are tender-specific.
                                     </div>
                                 </div>
                             </div>
+                        </div>
+
+                        <!-- Tab Panel: Competition -->
+                        <div id="tab-competition" class="tender-tab-panel">
+                            <!-- Competition Type Section - Collapsible -->
+                            <div class="collapsible-section" id="competition-type-section">
+                                <div class="collapsible-header" onclick="toggleCollapsibleSection('competition-type-section')">
+                                    <div class="collapsible-header-left">
+                                        <span class="collapsible-header-title"><i class="pi pi-flag" style="margin-right: 6px;"></i>Competition Type</span>
+                                    </div>
+                                    <div class="collapsible-toggle">▼</div>
+                                </div>
+                                <div class="collapsible-body" onclick="event.stopPropagation()">
+                                    <div class="evaluation-method-summary">
+                                        <div class="evaluation-method-row">
+                                            <div class="evaluation-method-label">Type</div>
+                                            <div class="evaluation-method-value">
+                                                <span class="criterion-type-badge criterion-type-qualification" style="font-size: 11px; padding: 4px 10px;">Open Competition</span>
+                                            </div>
+                                        </div>
+                                        <div class="evaluation-method-row">
+                                            <div class="evaluation-method-label">Description</div>
+                                            <div class="evaluation-method-value" style="color: var(--text-secondary); font-weight: 400;">
+                                                This tender is open to all qualified suppliers who meet the eligibility requirements. The invitation will be published on UNGM and other public platforms.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Vendor Notification Section - Collapsible -->
+                            <div class="collapsible-section collapsed" id="vendor-notification-section" style="margin-top: var(--spacing-md);">
+                                <div class="collapsible-header" onclick="toggleCollapsibleSection('vendor-notification-section')">
+                                    <div class="collapsible-header-left">
+                                        <span class="collapsible-header-title"><i class="pi pi-send" style="margin-right: 6px;"></i>Vendor Notification</span>
+                                        <span style="font-size: 10px; color: var(--text-muted); margin-left: 8px;">(5 vendors notified)</span>
+                                    </div>
+                                    <div class="collapsible-toggle">▼</div>
+                                </div>
+                                <div class="collapsible-body" onclick="event.stopPropagation()">
+                                    <div style="font-size: 11px; color: var(--text-muted); margin-bottom: var(--spacing-md);">
+                                        The following vendors have been directly notified about this tender opportunity.
+                                    </div>
+                                    
+                                    <!-- Notified Vendors Table -->
+                                    <table class="evaluation-criteria-table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 40px;"></th>
+                                                <th>Vendor Name</th>
+                                                <th style="width: 140px;">Source</th>
+                                                <th style="width: 100px;">Status</th>
+                                                <th style="width: 100px; text-align: center;">Notified</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><i class="pi pi-building" style="color: var(--primary-500);"></i></td>
+                                                <td>
+                                                    <div class="criterion-name">Global Medical Supplies Ltd</div>
+                                                    <div class="criterion-description">contact@globalmedical.com</div>
+                                                </td>
+                                                <td><span class="criterion-type-badge criterion-type-eligibility" style="font-size: 9px;">UNGM Registered</span></td>
+                                                <td><span style="color: var(--success-600); font-size: 11px; font-weight: 500;"><i class="pi pi-check-circle" style="margin-right: 3px;"></i>Viewed</span></td>
+                                                <td style="text-align: center; font-size: 11px; color: var(--text-muted);">5 Dec 2024</td>
+                                            </tr>
+                                            <tr>
+                                                <td><i class="pi pi-building" style="color: var(--primary-500);"></i></td>
+                                                <td>
+                                                    <div class="criterion-name">MedEquip International</div>
+                                                    <div class="criterion-description">procurement@medequip.com</div>
+                                                </td>
+                                                <td><span class="criterion-type-badge criterion-type-eligibility" style="font-size: 9px;">UNGM Registered</span></td>
+                                                <td><span style="color: var(--success-600); font-size: 11px; font-weight: 500;"><i class="pi pi-check-circle" style="margin-right: 3px;"></i>Submitted</span></td>
+                                                <td style="text-align: center; font-size: 11px; color: var(--text-muted);">5 Dec 2024</td>
+                                            </tr>
+                                            <tr>
+                                                <td><i class="pi pi-building" style="color: var(--primary-500);"></i></td>
+                                                <td>
+                                                    <div class="criterion-name">Healthcare Solutions AG</div>
+                                                    <div class="criterion-description">bids@healthcaresolutions.ch</div>
+                                                </td>
+                                                <td><span class="criterion-type-badge criterion-type-eligibility" style="font-size: 9px;">UNGM Registered</span></td>
+                                                <td><span style="color: var(--warning-600); font-size: 11px; font-weight: 500;"><i class="pi pi-clock" style="margin-right: 3px;"></i>Pending</span></td>
+                                                <td style="text-align: center; font-size: 11px; color: var(--text-muted);">5 Dec 2024</td>
+                                            </tr>
+                                            <tr>
+                                                <td><i class="pi pi-envelope" style="color: var(--info-500);"></i></td>
+                                                <td>
+                                                    <div class="criterion-name">African Medical Distributors</div>
+                                                    <div class="criterion-description">sales@africanmed.co.ke</div>
+                                                </td>
+                                                <td><span class="criterion-type-badge criterion-type-technical" style="font-size: 9px;">Manual Invite</span></td>
+                                                <td><span style="color: var(--success-600); font-size: 11px; font-weight: 500;"><i class="pi pi-check-circle" style="margin-right: 3px;"></i>Viewed</span></td>
+                                                <td style="text-align: center; font-size: 11px; color: var(--text-muted);">6 Dec 2024</td>
+                                            </tr>
+                                            <tr>
+                                                <td><i class="pi pi-envelope" style="color: var(--info-500);"></i></td>
+                                                <td>
+                                                    <div class="criterion-name">Pacific Health Corp</div>
+                                                    <div class="criterion-description">tender@pacifichealth.com</div>
+                                                </td>
+                                                <td><span class="criterion-type-badge criterion-type-technical" style="font-size: 9px;">Manual Invite</span></td>
+                                                <td><span style="color: var(--danger-600); font-size: 11px; font-weight: 500;"><i class="pi pi-times-circle" style="margin-right: 3px;"></i>Declined</span></td>
+                                                <td style="text-align: center; font-size: 11px; color: var(--text-muted);">6 Dec 2024</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: var(--spacing-md); padding-top: var(--spacing-md); border-top: 1px solid var(--surface-200);">
+                                        <div style="font-size: 11px; color: var(--text-muted);">
+                                            <span style="font-weight: 600; color: var(--text-primary);">3</span> viewed • 
+                                            <span style="font-weight: 600; color: var(--success-600);">1</span> submitted • 
+                                            <span style="font-weight: 600; color: var(--warning-600);">1</span> pending
+                                        </div>
+                                        <div style="display: flex; gap: var(--spacing-sm);">
+                                            <button class="btn btn-secondary btn-sm"><i class="pi pi-download"></i> Export List</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Market Research & Outreach Section - Collapsible -->
+                            <div class="collapsible-section collapsed" id="market-research-section" style="margin-top: var(--spacing-md);">
+                                <div class="collapsible-header" onclick="toggleCollapsibleSection('market-research-section')">
+                                    <div class="collapsible-header-left">
+                                        <span class="collapsible-header-title"><i class="pi pi-search" style="margin-right: 6px;"></i>Market Research & Outreach</span>
+                                    </div>
+                                    <div class="collapsible-toggle">▼</div>
+                                </div>
+                                <div class="collapsible-body" onclick="event.stopPropagation()">
+                                    <div class="evaluation-method-summary">
+                                        <div class="evaluation-method-row">
+                                            <div class="evaluation-method-label">Market Research</div>
+                                            <div class="evaluation-method-value" style="color: var(--text-secondary); font-weight: 400; line-height: 1.5;">
+                                                Market research conducted through UNGM database analysis and previous contract references. Identified 47 potential suppliers globally with capability to supply medical equipment. Primary markets include Europe, North America, and East Africa.
+                                            </div>
+                                        </div>
+                                        <div class="evaluation-method-row">
+                                            <div class="evaluation-method-label">Outreach Strategy</div>
+                                            <div class="evaluation-method-value" style="color: var(--text-secondary); font-weight: 400; line-height: 1.5;">
+                                                Tender published on UNGM, UNOPS website, and DevBusiness. Direct notifications sent to vendors from existing rosters and previous successful bidders. Social media promotion through LinkedIn and relevant industry networks.
+                                            </div>
+                                        </div>
+                                        <div class="evaluation-method-row">
+                                            <div class="evaluation-method-label">Competition Strategy</div>
+                                            <div class="evaluation-method-value" style="color: var(--text-secondary); font-weight: 400; line-height: 1.5;">
+                                                Effective competition ensured through wide publication, extended deadline for international suppliers, and provision of comprehensive technical specifications. Pre-bid conference scheduled to address supplier queries.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Key Statistics -->
+                                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--spacing-md); margin-top: var(--spacing-md);">
+                                        <div style="background: var(--surface-50); padding: var(--spacing-md); border-radius: var(--radius-sm); text-align: center; border: 1px solid var(--surface-200);">
+                                            <div style="font-size: 20px; font-weight: 700; color: var(--primary-500);">47</div>
+                                            <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.02em;">Potential Suppliers</div>
+                                        </div>
+                                        <div style="background: var(--surface-50); padding: var(--spacing-md); border-radius: var(--radius-sm); text-align: center; border: 1px solid var(--surface-200);">
+                                            <div style="font-size: 20px; font-weight: 700; color: var(--info-500);">12</div>
+                                            <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.02em;">Countries Targeted</div>
+                                        </div>
+                                        <div style="background: var(--surface-50); padding: var(--spacing-md); border-radius: var(--radius-sm); text-align: center; border: 1px solid var(--surface-200);">
+                                            <div style="font-size: 20px; font-weight: 700; color: var(--success-500);">5</div>
+                                            <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.02em;">Direct Notifications</div>
+                                        </div>
+                                        <div style="background: var(--surface-50); padding: var(--spacing-md); border-radius: var(--radius-sm); text-align: center; border: 1px solid var(--surface-200);">
+                                            <div style="font-size: 20px; font-weight: 700; color: var(--warning-500);">3</div>
+                                            <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.02em;">Publication Channels</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Publication Channels Section - Collapsible -->
+                            <div class="collapsible-section collapsed" id="publication-channels-section" style="margin-top: var(--spacing-md);">
+                                <div class="collapsible-header" onclick="toggleCollapsibleSection('publication-channels-section')">
+                                    <div class="collapsible-header-left">
+                                        <span class="collapsible-header-title"><i class="pi pi-globe" style="margin-right: 6px;"></i>Publication Channels</span>
+                                    </div>
+                                    <div class="collapsible-toggle">▼</div>
+                                </div>
+                                <div class="collapsible-body" onclick="event.stopPropagation()">
+                                    <div style="display: grid; gap: var(--spacing-sm);">
+                                        <div style="background: var(--surface-50); padding: var(--spacing-md); border-radius: var(--radius-sm); display: flex; justify-content: space-between; align-items: center; border-left: 3px solid var(--success-500);">
+                                            <div style="display: flex; align-items: center; gap: var(--spacing-md);">
+                                                <i class="pi pi-check-circle" style="font-size: 18px; color: var(--success-500);"></i>
+                                                <div>
+                                                    <div style="font-weight: 600; font-size: 13px;">UNGM (United Nations Global Marketplace)</div>
+                                                    <div style="font-size: 11px; color: var(--text-muted);">Published on 5 Dec 2024 • Reference: UNGM-2024-78543</div>
+                                                </div>
+                                            </div>
+                                            <a href="#" style="font-size: 11px; color: var(--primary-500); text-decoration: none;"><i class="pi pi-external-link" style="margin-right: 3px;"></i>View</a>
+                                        </div>
+                                        <div style="background: var(--surface-50); padding: var(--spacing-md); border-radius: var(--radius-sm); display: flex; justify-content: space-between; align-items: center; border-left: 3px solid var(--success-500);">
+                                            <div style="display: flex; align-items: center; gap: var(--spacing-md);">
+                                                <i class="pi pi-check-circle" style="font-size: 18px; color: var(--success-500);"></i>
+                                                <div>
+                                                    <div style="font-weight: 600; font-size: 13px;">UNOPS Website</div>
+                                                    <div style="font-size: 11px; color: var(--text-muted);">Published on 5 Dec 2024 • Procurement Notices Section</div>
+                                                </div>
+                                            </div>
+                                            <a href="#" style="font-size: 11px; color: var(--primary-500); text-decoration: none;"><i class="pi pi-external-link" style="margin-right: 3px;"></i>View</a>
+                                        </div>
+                                        <div style="background: var(--surface-50); padding: var(--spacing-md); border-radius: var(--radius-sm); display: flex; justify-content: space-between; align-items: center; border-left: 3px solid var(--success-500);">
+                                            <div style="display: flex; align-items: center; gap: var(--spacing-md);">
+                                                <i class="pi pi-check-circle" style="font-size: 18px; color: var(--success-500);"></i>
+                                                <div>
+                                                    <div style="font-weight: 600; font-size: 13px;">DevBusiness</div>
+                                                    <div style="font-size: 11px; color: var(--text-muted);">Published on 6 Dec 2024 • International Development Opportunities</div>
+                                                </div>
+                                            </div>
+                                            <a href="#" style="font-size: 11px; color: var(--primary-500); text-decoration: none;"><i class="pi pi-external-link" style="margin-right: 3px;"></i>View</a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Tender Particulars - Collapsible -->
-                        <div class="overview-section-collapsible">
-                            <div class="overview-section-header" onclick="toggleOverviewSection(this)">
-                                <h3>
-                                    <span class="overview-section-icon">⚙️</span>
-                                    Tender Particulars
-                                </h3>
-                                <span class="section-toggle-icon">▼</span>
-                            </div>
-                            <div class="overview-section-body">
-                            <div class="info-row">
-                                <div class="info-label">Bid Security</div>
-                                <div class="info-value">Required - $5,000 USD</div>
-                            </div>
-                            <div class="info-row">
-                                <div class="info-label">Performance Security</div>
-                                <div class="info-value">10% of contract value</div>
-                            </div>
-                            <div class="info-row">
-                                <div class="info-label">Advance Payment</div>
-                                <div class="info-value">Allowed - Up to 20%</div>
-                            </div>
-                            <div class="info-row">
-                                <div class="info-label">Advance Payment Security</div>
-                                <div class="info-value">Required - Bank guarantee for full amount</div>
-                            </div>
-                            <div class="info-row">
-                                <div class="info-label">Liquidated Damages</div>
-                                <div class="info-value">0.5% per week of delay, maximum 10%</div>
-                            </div>
-                            <div class="info-row">
-                                <div class="info-label">Alternative Offers</div>
-                                <div class="info-value">Allowed</div>
-                            </div>
-                            <div class="info-row">
-                                <div class="info-label">Site Visit</div>
-                                <div class="info-value">Not required</div>
-                            </div>
-                            <div class="info-row">
-                                <div class="info-label">Pre-Bid Meeting</div>
-                                <div class="info-value">Optional - 20 December 2024, 10:00 AM UTC (Virtual)</div>
-                            </div>
-                            </div>
-                        </div>
-
-                        <!-- Evaluation Criteria - Collapsible -->
-                        <div class="overview-section-collapsible">
-                            <div class="overview-section-header" onclick="toggleOverviewSection(this)">
-                                <h3>
-                                    <span class="overview-section-icon">📊</span>
-                                    Evaluation Criteria
-                                </h3>
-                                <span class="section-toggle-icon">▼</span>
-                            </div>
-                            <div class="overview-section-body">
-                            <div class="info-box">
-                                <strong>Method:</strong> Lowest Evaluated Substantially Responsive Bid
-                            </div>
-                            <p style="margin-top: var(--spacing-md); line-height: 1.6; color: var(--text-secondary); margin-bottom: 0;">
-                                Technical evaluation (pass/fail) followed by financial comparison of compliant bids.
+                        <!-- Tab Panel: Content -->
+                        <div id="tab-content" class="tender-tab-panel">
+                            <div style="font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 6px;">Tender Documents</div>
+                            <p style="font-size: 11px; color: var(--text-muted); margin-bottom: var(--spacing-md);">
+                                Download the complete tender package or individual documents below.
                             </p>
-                            </div>
-                        </div>
 
-                        <!-- Clarifications - Collapsible -->
-                        <div class="overview-section-collapsible">
-                            <div class="overview-section-header" onclick="toggleOverviewSection(this)">
-                                <h3>
-                                    <span class="overview-section-icon">💬</span>
-                                    Clarifications
-                                    <span style="font-size: 12px; color: var(--text-muted); font-weight: 400; margin-left: var(--spacing-sm);">5 questions</span>
-                                </h3>
-                                <span class="section-toggle-icon">▼</span>
-                            </div>
-                            <div class="overview-section-body">
-                                <!-- Clarification Stats -->
-                                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-md); margin-bottom: var(--spacing-lg);">
-                                    <div style="background: var(--success-50); padding: var(--spacing-md); border-radius: var(--radius-sm); text-align: center;">
-                                        <div style="font-size: 20px; font-weight: 700; color: var(--success-500);">3</div>
-                                        <div style="font-size: 11px; color: var(--text-muted);">Answered</div>
+                            <div style="display: grid; gap: var(--spacing-sm);">
+                                <div style="background: var(--surface-50); padding: var(--spacing-md); border-radius: var(--radius-sm); display: flex; justify-content: space-between; align-items: center;">
+                                    <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                                        <i class="pi pi-file-pdf" style="font-size: 20px; color: var(--danger-500);"></i>
+                                        <div>
+                                            <div style="font-weight: 600; font-size: 13px;">Invitation to Bid Document</div>
+                                            <div style="font-size: 11px; color: var(--text-muted);">PDF • 2.4 MB • Uploaded 5 Dec 2024</div>
+                                        </div>
                                     </div>
-                                    <div style="background: var(--warning-50); padding: var(--spacing-md); border-radius: var(--radius-sm); text-align: center;">
-                                        <div style="font-size: 20px; font-weight: 700; color: var(--warning-500);">2</div>
-                                        <div style="font-size: 11px; color: var(--text-muted);">Pending</div>
-                                    </div>
-                                    <div style="background: var(--info-50); padding: var(--spacing-md); border-radius: var(--radius-sm); text-align: center;">
-                                        <div style="font-size: 20px; font-weight: 700; color: var(--info-500);">1</div>
-                                        <div style="font-size: 11px; color: var(--text-muted);">Groups</div>
-                                    </div>
+                                    <button class="btn btn-secondary btn-sm"><i class="pi pi-download"></i> Download</button>
                                 </div>
-
-                                <!-- Recent Clarifications -->
-                                <div style="margin-bottom: var(--spacing-md);">
-                                    <div style="font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--spacing-sm);">
-                                        Recent Questions
+                                <div style="background: var(--surface-50); padding: var(--spacing-md); border-radius: var(--radius-sm); display: flex; justify-content: space-between; align-items: center;">
+                                    <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                                        <i class="pi pi-file-pdf" style="font-size: 20px; color: var(--danger-500);"></i>
+                                        <div>
+                                            <div style="font-weight: 600; font-size: 13px;">Technical Specifications</div>
+                                            <div style="font-size: 11px; color: var(--text-muted);">PDF • 1.8 MB • Uploaded 5 Dec 2024</div>
+                                        </div>
                                     </div>
-                                    
-                                    <!-- Question 1 -->
-                                    <div style="background: var(--surface-50); padding: var(--spacing-md); border-radius: var(--radius-sm); margin-bottom: var(--spacing-sm); border-left: 3px solid var(--success-500);">
-                                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--spacing-xs);">
-                                            <span style="font-weight: 600; font-size: 13px;">Q#001</span>
-                                            <div style="display: flex; gap: var(--spacing-xs);">
-                                                <span class="visibility-badge public">🌐 Public</span>
-                                                <span class="status-badge" style="background: var(--success-50); color: var(--success-500); font-size: 10px;">Answered</span>
-                                            </div>
-                                        </div>
-                                        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--spacing-xs);">
-                                            Can alternative brands be proposed for ultrasound probes?
-                                        </div>
-                                        <div style="font-size: 10px; color: var(--text-muted);">Supplier A • 5 Dec 2024</div>
-                                    </div>
-                                    
-                                    <!-- Question 2 - Grouped -->
-                                    <div style="background: var(--surface-50); padding: var(--spacing-md); border-radius: var(--radius-sm); margin-bottom: var(--spacing-sm); border-left: 3px solid var(--success-500);">
-                                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--spacing-xs);">
-                                            <div style="display: flex; align-items: center; gap: var(--spacing-xs);">
-                                                <span style="font-weight: 600; font-size: 13px;">Q#002, Q#003</span>
-                                                <span class="question-group-badge">📎 Grouped</span>
-                                            </div>
-                                            <div style="display: flex; gap: var(--spacing-xs);">
-                                                <span class="visibility-badge public">🌐 Public</span>
-                                                <span class="status-badge" style="background: var(--success-50); color: var(--success-500); font-size: 10px;">Answered</span>
-                                            </div>
-                                        </div>
-                                        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--spacing-xs);">
-                                            Questions about delivery timeline and partial delivery options...
-                                        </div>
-                                        <div style="font-size: 10px; color: var(--text-muted);">Supplier B, Supplier C • 6-7 Dec 2024</div>
-                                    </div>
-                                    
-                                    <!-- Question 4 - Private/Evaluation -->
-                                    <div style="background: var(--surface-50); padding: var(--spacing-md); border-radius: var(--radius-sm); margin-bottom: var(--spacing-sm); border-left: 3px solid var(--warning-500);">
-                                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--spacing-xs);">
-                                            <span style="font-weight: 600; font-size: 13px;">Q#004</span>
-                                            <div style="display: flex; gap: var(--spacing-xs);">
-                                                <span class="visibility-badge private">🔒 Private</span>
-                                                <span class="status-badge" style="background: var(--warning-50); color: var(--warning-500); font-size: 10px;">Pending</span>
-                                            </div>
-                                        </div>
-                                        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--spacing-xs);">
-                                            Clarification on technical specifications deviation...
-                                        </div>
-                                        <div style="font-size: 10px; color: var(--text-muted);">Supplier A • 10 Dec 2024 • Evaluation Phase</div>
-                                    </div>
-                                    
-                                    <!-- Question 5 - Pending -->
-                                    <div style="background: var(--surface-50); padding: var(--spacing-md); border-radius: var(--radius-sm); border-left: 3px solid var(--warning-500);">
-                                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--spacing-xs);">
-                                            <span style="font-weight: 600; font-size: 13px;">Q#005</span>
-                                            <div style="display: flex; gap: var(--spacing-xs);">
-                                                <span class="visibility-badge public">🌐 Public</span>
-                                                <span class="status-badge" style="background: var(--warning-50); color: var(--warning-500); font-size: 10px;">Pending</span>
-                                            </div>
-                                        </div>
-                                        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--spacing-xs);">
-                                            What is the warranty requirement for anesthesia machines?
-                                        </div>
-                                        <div style="font-size: 10px; color: var(--text-muted);">Supplier D • 11 Dec 2024</div>
-                                    </div>
+                                    <button class="btn btn-secondary btn-sm"><i class="pi pi-download"></i> Download</button>
                                 </div>
+                                <div style="background: var(--surface-50); padding: var(--spacing-md); border-radius: var(--radius-sm); display: flex; justify-content: space-between; align-items: center;">
+                                    <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                                        <i class="pi pi-file-excel" style="font-size: 20px; color: var(--success-500);"></i>
+                                        <div>
+                                            <div style="font-weight: 600; font-size: 13px;">Price Schedule Template</div>
+                                            <div style="font-size: 11px; color: var(--text-muted);">XLSX • 156 KB • Uploaded 5 Dec 2024</div>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-secondary btn-sm"><i class="pi pi-download"></i> Download</button>
+                                </div>
+                                <div style="background: var(--surface-50); padding: var(--spacing-md); border-radius: var(--radius-sm); display: flex; justify-content: space-between; align-items: center;">
+                                    <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                                        <i class="pi pi-file-word" style="font-size: 20px; color: var(--primary-500);"></i>
+                                        <div>
+                                            <div style="font-weight: 600; font-size: 13px;">General Conditions of Contract</div>
+                                            <div style="font-size: 11px; color: var(--text-muted);">DOCX • 890 KB • Uploaded 5 Dec 2024</div>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-secondary btn-sm"><i class="pi pi-download"></i> Download</button>
+                                </div>
+                            </div>
 
-                                <button class="btn btn-primary" style="width: 100%;" onclick="openClarificationsModalAdvanced()">
-                                    <i class="pi pi-comments"></i> Manage All Clarifications
+                            <div style="margin-top: var(--spacing-lg);">
+                                <button class="btn btn-primary" style="width: 100%;">
+                                    <i class="pi pi-download"></i> Download Complete Package (ZIP)
                                 </button>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Sidebar -->
-                    <div class="overview-sidebar-section">
-                        <!-- Key Dates -->
-                        <div class="overview-section">
-                            <h3 class="overview-section-title">
-                                <span class="overview-section-icon">📅</span>
-                                Key Dates
-                            </h3>
-                            <div class="timeline">
-                                <div class="timeline-item">
-                                    <div class="timeline-date">5 Dec 2024</div>
-                                    <div class="timeline-content">Published</div>
+                        <!-- Tab Panel: Submission -->
+                        <div id="tab-submission" class="tender-tab-panel">
+                            <div style="font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 6px;">Bid Submissions</div>
+                            <p style="font-size: 11px; color: var(--text-muted); margin-bottom: var(--spacing-md);">
+                                Overview of received submissions. Full details available after bid opening.
+                            </p>
+
+                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-md); margin-bottom: var(--spacing-lg);">
+                                <div style="background: var(--surface-50); padding: var(--spacing-md); border-radius: var(--radius-sm); text-align: center;">
+                                    <div style="font-size: 24px; font-weight: 700; color: var(--primary-500);">3</div>
+                                    <div style="font-size: 11px; color: var(--text-muted);">Bids Submitted</div>
                                 </div>
-                                <div class="timeline-item">
-                                    <div class="timeline-date">10 Jan 2025</div>
-                                    <div class="timeline-content">Clarification Deadline</div>
+                                <div style="background: var(--surface-50); padding: var(--spacing-md); border-radius: var(--radius-sm); text-align: center;">
+                                    <div style="font-size: 24px; font-weight: 700; color: var(--warning-500);">12</div>
+                                    <div style="font-size: 11px; color: var(--text-muted);">Interested Suppliers</div>
                                 </div>
-                                <div class="timeline-item">
-                                    <div class="timeline-date">15 Jan 2025</div>
-                                    <div class="timeline-content">Submission Deadline</div>
+                                <div style="background: var(--surface-50); padding: var(--spacing-md); border-radius: var(--radius-sm); text-align: center;">
+                                    <div style="font-size: 24px; font-weight: 700; color: var(--text-muted);">🔒</div>
+                                    <div style="font-size: 11px; color: var(--text-muted);">Sealed Until Opening</div>
+                                </div>
+                            </div>
+
+                            <div style="background: var(--info-50); padding: var(--spacing-md); border-radius: var(--radius-sm); border-left: 3px solid var(--info-400);">
+                                <div style="font-weight: 600; font-size: 13px; margin-bottom: 4px;">📅 Bid Opening Scheduled</div>
+                                <div style="font-size: 12px; color: var(--text-secondary);">16 January 2025, 10:00 AM UTC</div>
+                            </div>
+                        </div>
+
+                        <!-- Tab Panel: Team -->
+                        <div id="tab-team" class="tender-tab-panel">
+                            <!-- Procurement Roles Section -->
+                            <div class="team-subsection">
+                                <div class="team-subsection-header">
+                                    <span class="team-subsection-title">Procurement Roles</span>
+                                </div>
+                                <div class="team-roles-grid">
+                                    <!-- Process Author -->
+                                    <div class="team-role-card">
+                                        <div class="team-role-header">
+                                            <i class="pi pi-user team-role-icon"></i>
+                                            <div class="team-role-title">Process Author</div>
+                                        </div>
+                                        <div class="team-role-content">
+                                            <div class="team-member-card">
+                                                <div class="team-member-avatar" style="background: var(--primary-500);">JD</div>
+                                                <div class="team-member-info">
+                                                    <div class="team-member-name">Jane Doe</div>
+                                                    <div class="team-member-email">jane.doe@unops.org</div>
+                                                </div>
+                                                <div class="team-member-role">Author</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Procurement Reviewer -->
+                                    <div class="team-role-card">
+                                        <div class="team-role-header">
+                                            <i class="pi pi-check-circle team-role-icon"></i>
+                                            <div class="team-role-title">Procurement Reviewer</div>
+                                        </div>
+                                        <div class="team-role-content">
+                                            <div class="team-member-card">
+                                                <div class="team-member-avatar" style="background: var(--info-500);">SW</div>
+                                                <div class="team-member-info">
+                                                    <div class="team-member-name">Sarah Williams</div>
+                                                    <div class="team-member-email">sarah.williams@unops.org</div>
+                                                </div>
+                                                <div class="team-member-role">Reviewer</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Procurement Authority -->
+                                    <div class="team-role-card">
+                                        <div class="team-role-header">
+                                            <i class="pi pi-verified team-role-icon"></i>
+                                            <div class="team-role-title">Procurement Authority</div>
+                                        </div>
+                                        <div class="team-role-content">
+                                            <div class="team-member-card">
+                                                <div class="team-member-avatar" style="background: var(--success-500);">DM</div>
+                                                <div class="team-member-info">
+                                                    <div class="team-member-name">David Martinez</div>
+                                                    <div class="team-member-email">david.martinez@unops.org</div>
+                                                </div>
+                                                <div class="team-member-role">Authority</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Technical Expert -->
+                                    <div class="team-role-card">
+                                        <div class="team-role-header">
+                                            <i class="pi pi-cog team-role-icon"></i>
+                                            <div class="team-role-title">Technical Expert (TME)</div>
+                                        </div>
+                                        <div class="team-role-content">
+                                            <div class="team-member-card">
+                                                <div class="team-member-avatar" style="background: var(--warning-500);">MC</div>
+                                                <div class="team-member-info">
+                                                    <div class="team-member-name">Michael Chen</div>
+                                                    <div class="team-member-email">michael.chen@unops.org</div>
+                                                </div>
+                                                <div class="team-member-role">Expert</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Evaluation Assignment Subsection -->
+                            <div style="border-top: 1px solid var(--surface-200); padding-top: var(--spacing-lg); margin-top: var(--spacing-md);">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-md);">
+                                    <div class="team-subsection-title">Evaluation Assignment</div>
+                                    <div style="display: flex; gap: var(--spacing-xs);">
+                                        <button class="btn btn-secondary btn-sm" onclick="openAssignmentConfigModal()" style="font-size: 10px; padding: 4px 8px;">
+                                            <i class="pi pi-cog"></i> Configure
+                                        </button>
+                                        <button class="btn btn-primary btn-sm" onclick="openEvaluationTeamModal()" style="font-size: 10px; padding: 4px 8px;">
+                                            <i class="pi pi-users"></i> Manage
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Assignment Mode Indicator -->
+                                <div style="background: var(--info-50); padding: var(--spacing-sm); border-radius: var(--radius-sm); margin-bottom: var(--spacing-md); border-left: 3px solid var(--info-400);">
+                                    <div style="font-size: 11px; color: var(--info-600);">
+                                        <strong>Assignment Mode:</strong> Split by Lot
+                                    </div>
+                                </div>
+
+                                <!-- Stage Assignments Summary -->
+                                <div style="display: grid; gap: var(--spacing-xs); margin-bottom: var(--spacing-md);">
+                                    <div style="background: var(--surface-50); padding: var(--spacing-xs) var(--spacing-sm); border-radius: var(--radius-xs); border-left: 3px solid var(--success-500); display: flex; justify-content: space-between; align-items: center;">
+                                        <span style="font-size: 11px;"><i class="pi pi-check" style="color: var(--success-500); margin-right: 4px;"></i> Eligibility & Formal</span>
+                                        <span style="font-size: 10px; color: var(--text-muted);">2 assigned</span>
+                                    </div>
+                                    <div style="background: var(--surface-50); padding: var(--spacing-xs) var(--spacing-sm); border-radius: var(--radius-xs); border-left: 3px solid var(--success-500); display: flex; justify-content: space-between; align-items: center;">
+                                        <span style="font-size: 11px;"><i class="pi pi-check" style="color: var(--success-500); margin-right: 4px;"></i> Qualification</span>
+                                        <span style="font-size: 10px; color: var(--text-muted);">2 assigned</span>
+                                    </div>
+                                    <div style="background: var(--surface-50); padding: var(--spacing-xs) var(--spacing-sm); border-radius: var(--radius-xs); border-left: 3px solid var(--primary-400); display: flex; justify-content: space-between; align-items: center;">
+                                        <span style="font-size: 11px;"><i class="pi pi-clock" style="color: var(--primary-400); margin-right: 4px;"></i> Technical</span>
+                                        <span style="font-size: 10px; color: var(--text-muted);">By Lot</span>
+                                    </div>
+                                    <div style="background: var(--surface-50); padding: var(--spacing-xs) var(--spacing-sm); border-radius: var(--radius-xs); border-left: 3px solid var(--surface-300); display: flex; justify-content: space-between; align-items: center;">
+                                        <span style="font-size: 11px;"><i class="pi pi-minus-circle" style="color: var(--text-muted); margin-right: 4px;"></i> Financial</span>
+                                        <span style="font-size: 10px; color: var(--text-muted);">Not assigned</span>
+                                    </div>
+                                </div>
+
+                                <!-- Lot Assignments -->
+                                <div class="team-subsection-title" style="margin-bottom: var(--spacing-xs);">Lot Assignments</div>
+                                <div style="display: grid; gap: var(--spacing-xs);">
+                                    <div style="background: var(--surface-50); padding: var(--spacing-sm); border-radius: var(--radius-xs);">
+                                        <div style="font-weight: 600; font-size: 11px; margin-bottom: 2px;"><i class="pi pi-box" style="margin-right: 4px;"></i> Lot 1: Diagnostic Equipment</div>
+                                        <div style="font-size: 10px; color: var(--text-muted);">John Smith, Maria Garcia</div>
+                                    </div>
+                                    <div style="background: var(--surface-50); padding: var(--spacing-sm); border-radius: var(--radius-xs);">
+                                        <div style="font-weight: 600; font-size: 11px; margin-bottom: 2px;"><i class="pi pi-box" style="margin-right: 4px;"></i> Lot 2: Surgical Equipment</div>
+                                        <div style="font-size: 10px; color: var(--text-muted);">Sarah Johnson, David Lee</div>
+                                    </div>
+                                    <div style="background: var(--surface-50); padding: var(--spacing-sm); border-radius: var(--radius-xs);">
+                                        <div style="font-weight: 600; font-size: 11px; margin-bottom: 2px;"><i class="pi pi-box" style="margin-right: 4px;"></i> Lot 3: Anesthesia Equipment</div>
+                                        <div style="font-size: 10px; color: var(--text-muted);">Michael Chen</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Statistics -->
-                        <div class="overview-section">
-                            <h3 class="overview-section-title">
-                                <span class="overview-section-icon">📈</span>
-                                Tender Statistics
-                            </h3>
-                            <div class="info-row">
-                                <div class="info-label">Suppliers Interested</div>
-                                <div class="info-value">12</div>
+                        <!-- Tab Panel: Amendments -->
+                        <div id="tab-amendments" class="tender-tab-panel">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-md);">
+                                <div style="font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em;">Tender Amendments</div>
+                                <button class="btn btn-primary btn-sm" onclick="openAmendModalFromDetails()">
+                                    <i class="pi pi-plus"></i> Create Amendment
+                                </button>
                             </div>
-                            <div class="info-row">
-                                <div class="info-label">Bids Submitted</div>
-                                <div class="info-value">3</div>
+
+                            <div class="amendment-card">
+                                <div class="amendment-header-card">
+                                    <span class="amendment-badge"><i class="pi pi-pencil" style="font-size: 9px; margin-right: 4px;"></i>Amendment #2</span>
+                                    <span class="amendment-date-card">18 Dec 2024</span>
+                                </div>
+                                <div class="amendment-title">Clarification Deadline Extension</div>
+                                <p class="amendment-description">The clarification deadline has been extended from 5 January 2025 to 10 January 2025 to allow additional time for supplier queries.</p>
+                                <div class="amendment-actions">
+                                    <button class="btn btn-link btn-sm"><i class="pi pi-file" style="font-size: 11px;"></i> View Notice</button>
+                                    <button class="btn btn-link btn-sm"><i class="pi pi-pencil" style="font-size: 11px;"></i> Edit</button>
+                                </div>
                             </div>
-                            <div class="info-row">
-                                <div class="info-label">Clarifications</div>
-                                <div class="info-value">5 questions</div>
-                            </div>
-                            <div class="info-row">
-                                <div class="info-label">Documents</div>
-                                <div class="info-value">8 files</div>
+
+                            <div class="amendment-card">
+                                <div class="amendment-header-card">
+                                    <span class="amendment-badge"><i class="pi pi-pencil" style="font-size: 9px; margin-right: 4px;"></i>Amendment #1</span>
+                                    <span class="amendment-date-card">12 Dec 2024</span>
+                                </div>
+                                <div class="amendment-title">Technical Specification Update</div>
+                                <p class="amendment-description">Updated specifications for Patient Monitors (Item 2) - IBP monitoring is now optional instead of required.</p>
+                                <div class="amendment-actions">
+                                    <button class="btn btn-link btn-sm"><i class="pi pi-file" style="font-size: 11px;"></i> View Notice</button>
+                                    <button class="btn btn-link btn-sm"><i class="pi pi-list" style="font-size: 11px;"></i> View Changes</button>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Team - Collapsible -->
-                        <div class="overview-section-collapsible">
-                            <div class="overview-section-header" onclick="toggleOverviewSection(this)">
-                                <h3>
-                                    <span class="overview-section-icon">👥</span>
-                                    Team & Evaluation Assignment
-                                </h3>
-                                <span class="section-toggle-icon">▼</span>
-                            </div>
-                            <div class="overview-section-body">
-                                <!-- Team Members Subsection -->
-                                <div style="margin-bottom: var(--spacing-lg);">
-                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-sm);">
-                                        <div style="font-size: 13px; font-weight: 600; color: var(--text-primary);">Team Members</div>
-                                    </div>
-                            
-                                    <!-- Team Member 1: Tender Author -->
-                                    <div class="collapsible-item-card" style="margin-bottom: var(--spacing-sm);">
-                                        <div class="collapsible-item-header" onclick="toggleItemCard(this, event)" style="padding: var(--spacing-sm);">
-                                            <div style="flex: 1;">
-                                                <div style="font-weight: 600; font-size: 13px; margin-bottom: 2px;">Jane Doe</div>
-                                                <div style="font-size: 11px; color: var(--text-muted);">Tender Author</div>
-                                            </div>
-                                            <span class="collapsible-arrow">▼</span>
-                                        </div>
-                                        <div class="collapsible-item-content">
-                                            <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.6;">
-                                                <div style="margin-bottom: var(--spacing-xs);"><strong>Email:</strong> jane.doe@unops.org</div>
-                                                <div style="margin-bottom: var(--spacing-xs);"><strong>Unit:</strong> Procurement Services</div>
-                                                <div><strong>Status:</strong> <span style="color: var(--success-500);">● Active</span></div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Team Member 2: TME -->
-                                    <div class="collapsible-item-card" style="margin-bottom: var(--spacing-sm);">
-                                        <div class="collapsible-item-header" onclick="toggleItemCard(this, event)" style="padding: var(--spacing-sm);">
-                                            <div style="flex: 1;">
-                                                <div style="font-weight: 600; font-size: 13px; margin-bottom: 2px;">Michael Chen</div>
-                                                <div style="font-size: 11px; color: var(--text-muted);">TME</div>
-                                            </div>
-                                            <span class="collapsible-arrow">▼</span>
-                                        </div>
-                                        <div class="collapsible-item-content">
-                                            <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.6;">
-                                                <div style="margin-bottom: var(--spacing-xs);"><strong>Email:</strong> michael.chen@unops.org</div>
-                                                <div style="margin-bottom: var(--spacing-xs);"><strong>Unit:</strong> Technical Advisory</div>
-                                                <div><strong>Status:</strong> <span style="color: var(--success-500);">● Active</span></div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Team Member 3: PR -->
-                                    <div class="collapsible-item-card" style="margin-bottom: var(--spacing-sm);">
-                                        <div class="collapsible-item-header" onclick="toggleItemCard(this, event)" style="padding: var(--spacing-sm);">
-                                            <div style="flex: 1;">
-                                                <div style="font-weight: 600; font-size: 13px; margin-bottom: 2px;">Sarah Williams</div>
-                                                <div style="font-size: 11px; color: var(--text-muted);">Procurement Reviewer</div>
-                                            </div>
-                                            <span class="collapsible-arrow">▼</span>
-                                        </div>
-                                        <div class="collapsible-item-content">
-                                            <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.6;">
-                                                <div style="margin-bottom: var(--spacing-xs);"><strong>Email:</strong> sarah.williams@unops.org</div>
-                                                <div style="margin-bottom: var(--spacing-xs);"><strong>Unit:</strong> Procurement Review</div>
-                                                <div><strong>Status:</strong> <span style="color: var(--success-500);">● Active</span></div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Team Member 4: PA -->
-                                    <div class="collapsible-item-card">
-                                        <div class="collapsible-item-header" onclick="toggleItemCard(this, event)" style="padding: var(--spacing-sm);">
-                                            <div style="flex: 1;">
-                                                <div style="font-weight: 600; font-size: 13px; margin-bottom: 2px;">David Martinez</div>
-                                                <div style="font-size: 11px; color: var(--text-muted);">Procurement Authority</div>
-                                            </div>
-                                            <span class="collapsible-arrow">▼</span>
-                                        </div>
-                                        <div class="collapsible-item-content">
-                                            <div style="font-size: 11px; color: var(--text-secondary); line-height: 1.6;">
-                                                <div style="margin-bottom: var(--spacing-xs);"><strong>Email:</strong> david.martinez@unops.org</div>
-                                                <div style="margin-bottom: var(--spacing-xs);"><strong>Unit:</strong> Procurement Authority</div>
-                                                <div><strong>Status:</strong> <span style="color: var(--success-500);">● Active</span></div>
-                                            </div>
-                                        </div>
-                                    </div>
+                        <!-- Tab Panel: Clarifications -->
+                        <div id="tab-clarifications" class="tender-tab-panel">
+                            <!-- Clarification Stats -->
+                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-md); margin-bottom: var(--spacing-lg);">
+                                <div style="background: var(--success-50); padding: var(--spacing-md); border-radius: var(--radius-sm); text-align: center;">
+                                    <div style="font-size: 20px; font-weight: 700; color: var(--success-500);">3</div>
+                                    <div style="font-size: 11px; color: var(--text-muted);">Answered</div>
                                 </div>
+                                <div style="background: var(--warning-50); padding: var(--spacing-md); border-radius: var(--radius-sm); text-align: center;">
+                                    <div style="font-size: 20px; font-weight: 700; color: var(--warning-500);">2</div>
+                                    <div style="font-size: 11px; color: var(--text-muted);">Pending</div>
+                                </div>
+                                <div style="background: var(--info-50); padding: var(--spacing-md); border-radius: var(--radius-sm); text-align: center;">
+                                    <div style="font-size: 20px; font-weight: 700; color: var(--info-500);">1</div>
+                                    <div style="font-size: 11px; color: var(--text-muted);">Groups</div>
+                                </div>
+                            </div>
 
-                                <!-- Evaluation Assignment Subsection -->
-                                <div style="border-top: 1px solid var(--surface-200); padding-top: var(--spacing-lg);">
-                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-md);">
-                                        <div style="font-size: 13px; font-weight: 600; color: var(--text-primary);">🎯 Evaluation Assignment</div>
+                            <!-- Recent Clarifications -->
+                            <div style="margin-bottom: var(--spacing-md);">
+                                <div style="font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--spacing-sm);">
+                                    Recent Questions
+                                </div>
+                                
+                                <!-- Question 1 -->
+                                <div style="background: var(--surface-50); padding: var(--spacing-md); border-radius: var(--radius-sm); margin-bottom: var(--spacing-sm); border-left: 3px solid var(--success-500);">
+                                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--spacing-xs);">
+                                        <span style="font-weight: 600; font-size: 13px;">Q#001</span>
                                         <div style="display: flex; gap: var(--spacing-xs);">
-                                            <button class="btn btn-secondary btn-sm" onclick="openAssignmentConfigModal()" style="font-size: 10px; padding: 4px 8px;">
-                                                ⚙️ Configure
-                                            </button>
-                                            <button class="btn btn-primary btn-sm" onclick="openEvaluationTeamModal()" style="font-size: 10px; padding: 4px 8px;">
-                                                <i class="pi pi-plus"></i> Manage
-                                            </button>
+                                            <span class="visibility-badge public">🌐 Public</span>
+                                            <span class="status-badge" style="background: var(--success-50); color: var(--success-500); font-size: 10px;">Answered</span>
                                         </div>
                                     </div>
-
-                                    <!-- Assignment Mode Indicator -->
-                                    <div style="background: var(--info-50); padding: var(--spacing-sm); border-radius: var(--radius-sm); margin-bottom: var(--spacing-md); border-left: 3px solid var(--info-400);">
-                                        <div style="font-size: 11px; color: var(--info-600);">
-                                            <strong>Assignment Mode:</strong> Split by Lot
+                                    <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--spacing-xs);">
+                                        Can alternative brands be proposed for ultrasound probes?
+                                    </div>
+                                    <div style="font-size: 10px; color: var(--text-muted);">Supplier A • 5 Dec 2024</div>
+                                </div>
+                                
+                                <!-- Question 2 - Grouped -->
+                                <div style="background: var(--surface-50); padding: var(--spacing-md); border-radius: var(--radius-sm); margin-bottom: var(--spacing-sm); border-left: 3px solid var(--success-500);">
+                                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--spacing-xs);">
+                                        <div style="display: flex; align-items: center; gap: var(--spacing-xs);">
+                                            <span style="font-weight: 600; font-size: 13px;">Q#002, Q#003</span>
+                                            <span class="question-group-badge">📎 Grouped</span>
+                                        </div>
+                                        <div style="display: flex; gap: var(--spacing-xs);">
+                                            <span class="visibility-badge public">🌐 Public</span>
+                                            <span class="status-badge" style="background: var(--success-50); color: var(--success-500); font-size: 10px;">Answered</span>
                                         </div>
                                     </div>
-
-                                    <!-- Stage Assignments Summary -->
-                                    <div style="margin-bottom: var(--spacing-md);">
-                                        <div style="font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--spacing-xs);">
-                                            Stage Assignments
-                                        </div>
-                                        
-                                        <div style="display: grid; gap: var(--spacing-xs);">
-                                            <div style="background: var(--surface-50); padding: var(--spacing-xs) var(--spacing-sm); border-radius: var(--radius-xs); border-left: 3px solid var(--success-500); display: flex; justify-content: space-between; align-items: center;">
-                                                <span style="font-size: 11px;">✅ Eligibility & Formal</span>
-                                                <span style="font-size: 10px; color: var(--text-muted);">2 assigned</span>
-                                            </div>
-                                            <div style="background: var(--surface-50); padding: var(--spacing-xs) var(--spacing-sm); border-radius: var(--radius-xs); border-left: 3px solid var(--success-500); display: flex; justify-content: space-between; align-items: center;">
-                                                <span style="font-size: 11px;">✅ Qualification</span>
-                                                <span style="font-size: 10px; color: var(--text-muted);">2 assigned</span>
-                                            </div>
-                                            <div style="background: var(--surface-50); padding: var(--spacing-xs) var(--spacing-sm); border-radius: var(--radius-xs); border-left: 3px solid var(--primary-400); display: flex; justify-content: space-between; align-items: center;">
-                                                <span style="font-size: 11px;">⏳ Technical</span>
-                                                <span style="font-size: 10px; color: var(--text-muted);">By Lot</span>
-                                            </div>
-                                            <div style="background: var(--surface-50); padding: var(--spacing-xs) var(--spacing-sm); border-radius: var(--radius-xs); border-left: 3px solid var(--surface-300); display: flex; justify-content: space-between; align-items: center;">
-                                                <span style="font-size: 11px;">⊘ Financial</span>
-                                                <span style="font-size: 10px; color: var(--text-muted);">Not assigned</span>
-                                            </div>
+                                    <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--spacing-xs);">
+                                        Questions about delivery timeline and partial delivery options...
+                                    </div>
+                                    <div style="font-size: 10px; color: var(--text-muted);">Supplier B, Supplier C • 6-7 Dec 2024</div>
+                                </div>
+                                
+                                <!-- Question 4 - Private/Evaluation -->
+                                <div style="background: var(--surface-50); padding: var(--spacing-md); border-radius: var(--radius-sm); margin-bottom: var(--spacing-sm); border-left: 3px solid var(--warning-500);">
+                                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--spacing-xs);">
+                                        <span style="font-weight: 600; font-size: 13px;">Q#004</span>
+                                        <div style="display: flex; gap: var(--spacing-xs);">
+                                            <span class="visibility-badge private">🔒 Private</span>
+                                            <span class="status-badge" style="background: var(--warning-50); color: var(--warning-500); font-size: 10px;">Pending</span>
                                         </div>
                                     </div>
-
-                                    <!-- Lot/Supplier Assignments -->
-                                    <div style="font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--spacing-xs);">
-                                        Lot Assignments
+                                    <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--spacing-xs);">
+                                        Clarification on technical specifications deviation...
                                     </div>
-                                    <div style="display: grid; gap: var(--spacing-xs);">
-                                        <div style="background: var(--surface-50); padding: var(--spacing-sm); border-radius: var(--radius-xs);">
-                                            <div style="font-weight: 600; font-size: 11px; margin-bottom: 2px;">📦 Lot 1: PPE</div>
-                                            <div style="font-size: 10px; color: var(--text-muted);">John Smith, Maria Garcia</div>
-                                        </div>
-                                        <div style="background: var(--surface-50); padding: var(--spacing-sm); border-radius: var(--radius-xs);">
-                                            <div style="font-weight: 600; font-size: 11px; margin-bottom: 2px;">📦 Lot 2: Medical Consumables</div>
-                                            <div style="font-size: 10px; color: var(--text-muted);">Sarah Johnson, David Lee</div>
+                                    <div style="font-size: 10px; color: var(--text-muted);">Supplier A • 10 Dec 2024 • Evaluation Phase</div>
+                                </div>
+                                
+                                <!-- Question 5 - Pending -->
+                                <div style="background: var(--surface-50); padding: var(--spacing-md); border-radius: var(--radius-sm); border-left: 3px solid var(--warning-500);">
+                                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--spacing-xs);">
+                                        <span style="font-weight: 600; font-size: 13px;">Q#005</span>
+                                        <div style="display: flex; gap: var(--spacing-xs);">
+                                            <span class="visibility-badge public">🌐 Public</span>
+                                            <span class="status-badge" style="background: var(--warning-50); color: var(--warning-500); font-size: 10px;">Pending</span>
                                         </div>
                                     </div>
+                                    <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--spacing-xs);">
+                                        What is the warranty requirement for anesthesia machines?
+                                    </div>
+                                    <div style="font-size: 10px; color: var(--text-muted);">Supplier D • 11 Dec 2024</div>
                                 </div>
                             </div>
+
+                            <button class="btn btn-primary" style="width: 100%;" onclick="openClarificationsModalAdvanced()">
+                                <i class="pi pi-comments"></i> Manage All Clarifications
+                            </button>
                         </div>
 
-                        <!-- Quick Actions -->
-                        <div class="overview-section">
-                            <h3 class="overview-section-title">
-                                <span class="overview-section-icon">⚡</span>
-                                Quick Actions
-                            </h3>
-                            <button class="btn btn-secondary" style="width: 100%; margin-bottom: var(--spacing-sm);">
-                                <i class="pi pi-download"></i> Download Package
-                            </button>
-                            <button class="btn btn-secondary" style="width: 100%; margin-bottom: var(--spacing-sm);">
-                                <i class="pi pi-users"></i> View Participants
-                            </button>
-                            <button class="btn btn-secondary" style="width: 100%;">
-                                <i class="pi pi-history"></i> View History
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                    </div> <!-- End tender-tabs-container -->
+                </div> <!-- End tender-overview-grid -->
             </div>
             <!-- End Tender Details View -->
 
@@ -8288,6 +9687,28 @@
         let currentAmendmentStep = 1;
         let selectedCategories = [];
         let highestTier = 1;
+
+        // Tab switching for tender details
+        function switchTab(tabId, btnElement) {
+            // Hide all tab panels
+            const panels = document.querySelectorAll('.tender-tab-panel');
+            panels.forEach(panel => panel.classList.remove('active'));
+            
+            // Remove active class from all tab buttons
+            const buttons = document.querySelectorAll('.tender-tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            // Show the selected tab panel
+            const targetPanel = document.getElementById(tabId);
+            if (targetPanel) {
+                targetPanel.classList.add('active');
+            }
+            
+            // Add active class to clicked button
+            if (btnElement) {
+                btnElement.classList.add('active');
+            }
+        }
 
         // View Management
         function showDashboard(menuItem) {
