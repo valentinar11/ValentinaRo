@@ -9,478 +9,618 @@
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/primeicons@6.0.1/primeicons.css">
 <style>
+/* ==========================================================================
+   CSS VARIABLES - UNOPS Design System
+   ========================================================================== */
 :root {
---primary-50: #e6f7ff;
---primary-100: #bae7ff;
---primary-200: #7dd3fc;
---primary-300: #38bdf8;
---primary-400: #0ea5e9;
---primary-500: #0092D1;
---primary-600: #0284c7;
---primary-700: #0369a1;
---primary-800: #003a56;
---surface-0: #ffffff;
---surface-50: #f5f8fb;
---surface-100: #ebf1f8;
---surface-200: #dde8f2;
---surface-300: #cfdfec;
---surface-400: #b8c9d9;
---surface-600: #95a7ba;
---surface-800: #596170;
---surface-900: #3b3e4a;
---success-500: #4c9f38;
---success-50: #d2e7cd;
---info-400: #0092d1;
---info-50: #bfe4f4;
---warning-500: #e85c0e;
---warning-50: #f9d6c3;
---danger-500: #da291c;
---danger-50: #f6cac6;
---purple-500: #9333ea;
---purple-50: #f3e8ff;
---text-primary: var(--surface-900);
---text-secondary: var(--surface-800);
---text-muted: var(--surface-600);
---spacing-xs: 6px;
---spacing-sm: 12px;
---spacing-md: 20px;
---spacing-lg: 28px;
---spacing-xl: 36px;
---spacing-2xl: 48px;
---radius-sm: 4px;
---radius-md: 6px;
---radius-lg: 8px;
---radius-xl: 16px;
---shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
---shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
---shadow-md: 0 4px 6px rgba(0, 0, 0, 0.08);
---shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
---shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    /* Primary Colors */
+    --primary-50: #e6f7ff;
+    --primary-100: #bae7ff;
+    --primary-200: #7dd3fc;
+    --primary-300: #38bdf8;
+    --primary-400: #0ea5e9;
+    --primary-500: #0092D1;
+    --primary-600: #0284c7;
+    --primary-700: #0369a1;
+    --primary-800: #003a56;
+    
+    /* Surface Colors */
+    --surface-0: #ffffff;
+    --surface-50: #f5f8fb;
+    --surface-100: #ebf1f8;
+    --surface-200: #dde8f2;
+    --surface-300: #cfdfec;
+    --surface-400: #b8c9d9;
+    --surface-600: #95a7ba;
+    --surface-800: #596170;
+    --surface-900: #3b3e4a;
+    
+    /* Semantic Colors */
+    --success-500: #4c9f38;
+    --success-50: #d2e7cd;
+    --success-100: #dcf5d5;
+    --success-600: #3d8a2e;
+    --info-400: #0092d1;
+    --info-50: #bfe4f4;
+    --info-500: #0092d1;
+    --info-600: #0077a8;
+    --warning-500: #e85c0e;
+    --warning-50: #f9d6c3;
+    --danger-500: #da291c;
+    --danger-50: #f6cac6;
+    --purple-500: #9333ea;
+    --purple-50: #f3e8ff;
+    
+    /* Text Colors */
+    --text-primary: var(--surface-900);
+    --text-secondary: var(--surface-800);
+    --text-muted: var(--surface-600);
+    
+    /* Spacing */
+    --spacing-xs: 6px;
+    --spacing-sm: 12px;
+    --spacing-md: 20px;
+    --spacing-lg: 28px;
+    --spacing-xl: 36px;
+    --spacing-2xl: 48px;
+    
+    /* Border Radius */
+    --radius-sm: 4px;
+    --radius-md: 6px;
+    --radius-lg: 8px;
+    --radius-xl: 16px;
+    
+    /* Shadows */
+    --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
 }
+
+/* ==========================================================================
+   BASE STYLES
+   ========================================================================== */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
-font-family: 'Lato', 'Noto Sans', system-ui, sans-serif;
-background: var(--surface-50);
-color: var(--text-primary);
-line-height: 1.5;
-min-height: 100vh;
+    font-family: 'Lato', 'Noto Sans', system-ui, sans-serif;
+    background: var(--surface-50);
+    color: var(--text-primary);
+    line-height: 1.5;
+    min-height: 100vh;
 }
-/* Header */
+
+/* ==========================================================================
+   HEADER
+   ========================================================================== */
 .header {
-background: var(--surface-0);
-border-bottom: 1px solid var(--surface-200);
-position: sticky;
-top: 0;
-z-index: 100;
+    background: var(--surface-0);
+    border-bottom: 1px solid var(--surface-200);
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 .header-top {
-display: flex;
-align-items: center;
-justify-content: space-between;
-padding: var(--spacing-md) var(--spacing-xl);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-md) var(--spacing-xl);
 }
 .logo-container {
-display: flex;
-align-items: center;
-gap: var(--spacing-md);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
 }
 .logo {
-font-weight: 700;
-font-size: 20px;
-letter-spacing: 0.12em;
-color: var(--primary-500);
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 0.12em;
+    color: var(--primary-500);
 }
 .portal-badge {
-background: var(--primary-500);
-color: white;
-font-size: 12px;
-font-weight: 600;
-padding: 4px 12px;
-border-radius: 4px;
-text-transform: uppercase;
-letter-spacing: 0.05em;
+    background: var(--primary-500);
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 .header-actions {
-display: flex;
-align-items: center;
-gap: var(--spacing-md);
-margin-left: auto;
-margin-right: var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin-left: auto;
+    margin-right: var(--spacing-lg);
 }
 .header-action-btn {
-display: flex;
-align-items: center;
-justify-content: center;
-padding: 8px;
-background: transparent;
-border: none;
-border-radius: var(--radius-md);
-cursor: pointer;
-transition: all 0.2s ease;
-position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    font-size: 13px;
 }
 .header-action-btn:hover {
-background: var(--surface-100);
-transform: scale(1.05);
+    background: var(--surface-100);
+    transform: scale(1.1);
+}
+.header-action-btn:focus {
+    outline: 2px solid var(--primary-400);
+    outline-offset: 2px;
 }
 .header-action-btn i {
-font-size: 20px;
-color: var(--text-muted);
-transition: color 0.2s ease;
+    font-size: 20px;
+    color: var(--text-muted);
+    transition: color 0.2s ease;
 }
 .header-action-btn:hover i { color: var(--primary-500); }
+.header-action-label { display: none; }
 .notification-badge {
-position: absolute;
-top: -4px;
-right: -4px;
-background: var(--danger-500);
-color: white;
-font-size: 10px;
-font-weight: 700;
-min-width: 18px;
-height: 18px;
-border-radius: 9px;
-display: flex;
-align-items: center;
-justify-content: center;
-padding: 0 5px;
-border: 2px solid white;
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: var(--danger-500);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 5px;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.ai-assistant-btn { background: transparent; }
+.ai-assistant-btn:hover { background: rgba(139, 92, 246, 0.1); }
+.ai-assistant-btn:hover .ai-icon-wrapper {
+    transform: scale(1.1);
+    box-shadow: 0 2px 8px rgba(139, 92, 246, 0.4);
 }
 .ai-icon-wrapper {
-width: 24px;
-height: 24px;
-background: linear-gradient(135deg, #8b5cf6, #6366f1);
-border-radius: 6px;
-display: flex;
-align-items: center;
-justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: linear-gradient(135deg, #8b5cf6, #6366f1);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
 }
 .ai-icon-wrapper i { font-size: 14px; color: white !important; }
+.ai-badge {
+    position: absolute;
+    top: -4px;
+    right: -8px;
+    background: linear-gradient(135deg, #f59e0b, #ef4444);
+    color: white;
+    font-size: 8px;
+    font-weight: 700;
+    padding: 2px 5px;
+    border-radius: 6px;
+    text-transform: uppercase;
+}
+.language-selector { display: flex; align-items: center; gap: 4px; }
+.lang-flag { font-size: 16px; }
+.notification-btn i { color: var(--text-muted); }
+.notification-btn:hover i { color: var(--primary-500); }
 .user-menu {
-display: flex;
-align-items: center;
-gap: var(--spacing-md);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
 }
 .user-info { text-align: right; }
-.user-company { font-size: 12px; color: var(--text-muted); }
+.user-role { font-size: 12px; color: var(--text-muted); }
 .user-name { font-size: 14px; font-weight: 500; color: var(--text-primary); }
 .user-avatar {
-width: 36px;
-height: 36px;
-border-radius: 50%;
-background: var(--primary-100);
-display: flex;
-align-items: center;
-justify-content: center;
-font-weight: 600;
-color: var(--primary-600);
-cursor: pointer;
-transition: all 0.2s;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--primary-100);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: var(--primary-600);
+    cursor: pointer;
 }
-.user-avatar:hover {
-background: var(--primary-200);
-transform: scale(1.05);
-}
-/* App Container */
+
+/* ==========================================================================
+   APP CONTAINER
+   ========================================================================== */
 .app-container {
-display: flex;
-min-height: calc(100vh - 65px);
+    display: flex;
+    min-height: calc(100vh - 65px);
+    overflow: hidden;
 }
-/* Sidebar */
+
+/* ==========================================================================
+   SIDEBAR (COLLAPSIBLE) - SUPPLIER THEME
+   ========================================================================== */
 .sidebar {
-width: 280px;
-min-width: 280px;
-background-color: #0192D1;
-color: white;
-display: flex;
-flex-direction: column;
+    width: 280px;
+    min-width: 280px;
+    max-width: 280px;
+    background-color: #0192D1;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    transition: width 0.3s ease, min-width 0.3s ease, max-width 0.3s ease;
+    position: relative;
+    z-index: 50;
 }
-.sidebar-menu {
-flex: 1;
-padding: 20px 0;
+.sidebar.collapsed {
+    width: 60px;
+    min-width: 60px;
+    max-width: 60px;
 }
-.menu-section { margin-bottom: var(--spacing-lg); }
+.sidebar-toggle {
+    position: absolute;
+    top: 10px;
+    right: -15px;
+    width: 30px;
+    height: 30px;
+    background: var(--primary-400);
+    border: 2px solid white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1000;
+    color: white;
+    font-size: 14px;
+    transition: transform 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.sidebar.collapsed .sidebar-toggle {
+    transform: rotate(180deg);
+}
+.sidebar.collapsed .menu-section-title,
+.sidebar.collapsed .menu-item span:not(.menu-icon),
+.sidebar.collapsed .menu-group-header span:first-child,
+.sidebar.collapsed .menu-group-header i.pi-chevron-down {
+    display: none;
+}
+.sidebar.collapsed .menu-group-header {
+    justify-content: center;
+    padding: 8px;
+}
+.sidebar.collapsed .menu-item {
+    justify-content: center;
+    padding: 12px;
+}
+.sidebar-menu { flex: 1; padding: 16px 0; overflow-y: auto; }
+.menu-section { margin-bottom: var(--spacing-sm); }
 .menu-section-title {
-padding: 0 20px 15px 20px;
-font-size: 20px;
-font-weight: bold;
-color: white;
-font-family: 'Lato', sans-serif;
-margin-bottom: var(--spacing-sm);
-border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 8px 20px 12px 20px;
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.5);
+    font-family: 'Lato', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
 }
 .menu-item {
-display: flex;
-align-items: center;
-gap: 12px;
-padding: 12px 20px;
-color: white;
-text-decoration: none;
-font-size: 16px;
-font-weight: normal;
-font-family: 'Lato', sans-serif;
-transition: all 0.2s ease;
-cursor: pointer;
-margin: 0 10px;
-border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    font-size: 14px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    border-left: 3px solid transparent;
 }
-.menu-item:hover { background-color: rgba(255, 255, 255, 0.1); }
-.menu-item.active { background-color: #006599; }
-.menu-icon {
-font-size: 18px;
-width: 20px;
-text-align: center;
-flex-shrink: 0;
+.menu-item:hover { background: rgba(255,255,255,0.1); }
+.menu-item.active {
+    background: rgba(255,255,255,0.15);
+    border-left-color: white;
+    font-weight: 600;
 }
-.menu-badge {
-margin-left: auto;
-padding: 2px 8px;
-background: var(--danger-500);
-color: white;
-font-size: 11px;
-font-weight: 600;
-border-radius: 999px;
+.menu-item.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
-.menu-badge.success { background: var(--success-500); }
-.menu-badge.warning { background: var(--warning-500); }
-.sidebar-footer {
-padding: 20px;
-border-top: 1px solid rgba(255, 255, 255, 0.2);
+.menu-icon { font-size: 16px; opacity: 0.9; width: 20px; text-align: center; }
+.menu-group {
+    margin-bottom: var(--spacing-xs);
 }
-.sidebar-footer-link {
-display: flex;
-align-items: center;
-gap: 12px;
-color: rgba(255, 255, 255, 0.8);
-font-size: 14px;
-text-decoration: none;
-padding: 8px 0;
-transition: color 0.2s;
+.menu-group-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.7);
+    cursor: pointer;
+    transition: all 0.2s;
 }
-.sidebar-footer-link:hover { color: white; }
-/* Main Content */
+.menu-group-header:hover {
+    color: white;
+    background: rgba(255,255,255,0.05);
+}
+.menu-group-header i {
+    font-size: 14px;
+    transition: transform 0.2s;
+}
+.menu-group.collapsed .menu-group-header i.pi-chevron-down {
+    transform: rotate(-90deg);
+}
+.menu-group.collapsed .menu-group-items {
+    display: none;
+}
+.menu-group-items {
+    padding-left: 12px;
+}
+.menu-group-items .menu-item {
+    padding: 10px 20px 10px 28px;
+    font-size: 13px;
+    border-left: none;
+}
+.menu-group-items .menu-item.active {
+    background: rgba(255,255,255,0.15);
+    border-left: none;
+    border-radius: 0 4px 4px 0;
+    margin-right: 8px;
+}
+.menu-divider {
+    height: 1px;
+    background: rgba(255,255,255,0.15);
+    margin: var(--spacing-md) 0;
+}
+
+/* ==========================================================================
+   MAIN CONTENT
+   ========================================================================== */
 .main-content {
-flex: 1;
-padding: var(--spacing-xl);
-overflow-y: auto;
+    flex: 1;
+    padding: var(--spacing-xl);
+    overflow-y: auto;
+    background: var(--surface-50);
+    position: relative;
+    z-index: 1;
 }
-/* View Sections */
-.view-section { display: none; }
-.view-section.active { display: block; }
-/* Landing Page Styles */
+
+/* ==========================================================================
+   WELCOME BANNER
+   ========================================================================== */
 .welcome-banner {
-background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-700) 100%);
-border-radius: var(--radius-xl);
-padding: var(--spacing-2xl);
-color: white;
-margin-bottom: var(--spacing-xl);
-position: relative;
-overflow: hidden;
+    background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-800) 100%);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl);
+    color: white;
+    margin-bottom: var(--spacing-xl);
+    position: relative;
+    overflow: hidden;
 }
 .welcome-banner::before {
-content: '';
-position: absolute;
-top: -50%;
-right: -20%;
-width: 500px;
-height: 500px;
-background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-pointer-events: none;
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 300px;
+    height: 300px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
 }
-.welcome-title {
-font-size: 32px;
-font-weight: 700;
-margin-bottom: var(--spacing-sm);
+.welcome-banner h2 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: var(--spacing-xs);
 }
-.welcome-subtitle {
-font-size: 16px;
-opacity: 0.9;
-max-width: 600px;
-line-height: 1.6;
+.welcome-banner p {
+    font-size: 14px;
+    opacity: 0.9;
 }
-.welcome-stats {
-display: flex;
-gap: var(--spacing-2xl);
-margin-top: var(--spacing-xl);
+
+/* ==========================================================================
+   STATS GRID
+   ========================================================================== */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-xl);
 }
-.welcome-stat {
-text-align: center;
+.stat-card {
+    background: var(--surface-0);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--surface-200);
+    padding: var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
 }
-.welcome-stat-value {
-font-size: 36px;
-font-weight: 700;
-display: block;
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
 }
-.welcome-stat-label {
-font-size: 13px;
-opacity: 0.85;
-text-transform: uppercase;
-letter-spacing: 0.05em;
+.stat-icon.tenders { background: var(--info-50); color: var(--info-500); }
+.stat-icon.active { background: var(--success-50); color: var(--success-500); }
+.stat-icon.pending { background: var(--warning-50); color: var(--warning-500); }
+.stat-icon.completed { background: var(--purple-50); color: var(--purple-500); }
+.stat-content h3 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-primary);
 }
-/* Quick Access Grid */
+.stat-content p {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+/* ==========================================================================
+   SECTION HEADER
+   ========================================================================== */
 .section-header {
-display: flex;
-align-items: center;
-justify-content: space-between;
-margin-bottom: var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-lg);
 }
 .section-title {
-font-size: 20px;
-font-weight: 600;
-color: var(--text-primary);
-display: flex;
-align-items: center;
-gap: var(--spacing-sm);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
 }
 .section-title i { color: var(--primary-500); }
+
+/* ==========================================================================
+   QUICK ACCESS GRID
+   ========================================================================== */
 .quick-access-grid {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-gap: var(--spacing-lg);
-margin-bottom: var(--spacing-xl);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
 }
 .quick-access-card {
-background: var(--surface-0);
-border-radius: var(--radius-lg);
-padding: var(--spacing-xl);
-border: 1px solid var(--surface-200);
-box-shadow: var(--shadow-card);
-cursor: pointer;
-transition: all 0.3s ease;
-position: relative;
-overflow: hidden;
+    background: var(--surface-0);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl);
+    border: 1px solid var(--surface-200);
+    box-shadow: var(--shadow-card);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
 .quick-access-card:hover {
-transform: translateY(-4px);
-box-shadow: var(--shadow-lg);
-border-color: var(--primary-200);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-200);
 }
 .quick-access-card::before {
-content: '';
-position: absolute;
-top: 0;
-left: 0;
-right: 0;
-height: 4px;
-background: var(--card-accent, var(--primary-500));
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--card-accent, var(--primary-500));
 }
 .quick-access-card.drive { --card-accent: #4c9f38; }
 .quick-access-card.etendering { --card-accent: #0092d1; }
 .quick-access-card.profile { --card-accent: #9333ea; }
 .quick-access-card.ungm { --card-accent: #e85c0e; }
 .quick-access-icon {
-width: 56px;
-height: 56px;
-border-radius: var(--radius-lg);
-display: flex;
-align-items: center;
-justify-content: center;
-margin-bottom: var(--spacing-md);
-font-size: 24px;
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--spacing-md);
+    font-size: 24px;
 }
 .quick-access-card.drive .quick-access-icon {
-background: var(--success-50);
-color: var(--success-500);
+    background: var(--success-50);
+    color: var(--success-500);
 }
 .quick-access-card.etendering .quick-access-icon {
-background: var(--info-50);
-color: var(--info-400);
+    background: var(--info-50);
+    color: var(--info-400);
 }
 .quick-access-card.profile .quick-access-icon {
-background: var(--purple-50);
-color: var(--purple-500);
+    background: var(--purple-50);
+    color: var(--purple-500);
 }
 .quick-access-card.ungm .quick-access-icon {
-background: var(--warning-50);
-color: var(--warning-500);
+    background: var(--warning-50);
+    color: var(--warning-500);
 }
 .quick-access-title {
-font-size: 18px;
-font-weight: 600;
-color: var(--text-primary);
-margin-bottom: var(--spacing-xs);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-xs);
 }
 .quick-access-desc {
-font-size: 14px;
-color: var(--text-secondary);
-line-height: 1.5;
-margin-bottom: var(--spacing-md);
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: var(--spacing-md);
 }
 .quick-access-stats {
-display: flex;
-gap: var(--spacing-lg);
-padding-top: var(--spacing-md);
-border-top: 1px solid var(--surface-200);
+    display: flex;
+    gap: var(--spacing-lg);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--surface-200);
 }
 .quick-access-stat {
-font-size: 13px;
-color: var(--text-muted);
+    font-size: 13px;
+    color: var(--text-muted);
 }
 .quick-access-stat strong {
-color: var(--text-primary);
-font-weight: 600;
+    color: var(--text-primary);
+    font-weight: 600;
 }
 .quick-access-arrow {
-position: absolute;
-top: var(--spacing-lg);
-right: var(--spacing-lg);
-color: var(--surface-400);
-font-size: 18px;
-transition: all 0.3s;
+    position: absolute;
+    top: var(--spacing-lg);
+    right: var(--spacing-lg);
+    color: var(--surface-400);
+    font-size: 18px;
+    transition: all 0.3s;
 }
 .quick-access-card:hover .quick-access-arrow {
-color: var(--primary-500);
-transform: translateX(4px);
+    color: var(--primary-500);
+    transform: translateX(4px);
 }
-/* Activity & Notifications */
+
+/* ==========================================================================
+   DASHBOARD GRID
+   ========================================================================== */
 .dashboard-grid {
-display: grid;
-grid-template-columns: 2fr 1fr;
-gap: var(--spacing-lg);
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--spacing-lg);
 }
 @media (max-width: 1200px) {
-.dashboard-grid { grid-template-columns: 1fr; }
+    .dashboard-grid { grid-template-columns: 1fr; }
 }
-.card {
-background: var(--surface-0);
-border-radius: var(--radius-lg);
-border: 1px solid var(--surface-200);
-box-shadow: var(--shadow-card);
-}
-.card-header {
-padding: var(--spacing-lg);
-border-bottom: 1px solid var(--surface-200);
-display: flex;
-align-items: center;
-justify-content: space-between;
-}
-.card-title {
-font-size: 16px;
-font-weight: 600;
-color: var(--text-primary);
-display: flex;
-align-items: center;
-gap: var(--spacing-sm);
-}
-.card-title i { color: var(--primary-500); }
-.card-body { padding: var(--spacing-lg); }
+
+/* ==========================================================================
+   ACTIVITY LIST
+   ========================================================================== */
 .activity-list { display: flex; flex-direction: column; gap: var(--spacing-md); }
 .activity-item {
-display: flex;
-gap: var(--spacing-md);
-padding: var(--spacing-md);
-border-radius: var(--radius-md);
-transition: background 0.2s;
+    display: flex;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    transition: background 0.2s;
 }
 .activity-item:hover { background: var(--surface-50); }
 .activity-icon {
-width: 40px;
-height: 40px;
-border-radius: 50%;
-display: flex;
-align-items: center;
-justify-content: center;
-flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
 }
 .activity-icon.tender { background: var(--info-50); color: var(--info-400); }
 .activity-icon.drive { background: var(--success-50); color: var(--success-500); }
@@ -488,2188 +628,954 @@ flex-shrink: 0;
 .activity-icon.award { background: var(--warning-50); color: var(--warning-500); }
 .activity-content { flex: 1; }
 .activity-title {
-font-size: 14px;
-font-weight: 500;
-color: var(--text-primary);
-margin-bottom: 2px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 2px;
 }
 .activity-desc {
-font-size: 13px;
-color: var(--text-secondary);
+    font-size: 13px;
+    color: var(--text-secondary);
 }
 .activity-time {
-font-size: 12px;
-color: var(--text-muted);
-white-space: nowrap;
+    font-size: 12px;
+    color: var(--text-muted);
+    white-space: nowrap;
 }
-/* Notifications Panel */
+
+/* ==========================================================================
+   NOTIFICATIONS PANEL
+   ========================================================================== */
 .notification-list { display: flex; flex-direction: column; }
 .notification-item {
-display: flex;
-align-items: flex-start;
-gap: var(--spacing-md);
-padding: var(--spacing-md);
-border-bottom: 1px solid var(--surface-100);
-transition: background 0.2s;
-cursor: pointer;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    border-bottom: 1px solid var(--surface-100);
+    transition: background 0.2s;
+    cursor: pointer;
 }
 .notification-item:last-child { border-bottom: none; }
 .notification-item:hover { background: var(--surface-50); }
 .notification-item.unread { background: var(--primary-50); }
 .notification-dot {
-width: 8px;
-height: 8px;
-border-radius: 50%;
-background: var(--primary-500);
-margin-top: 6px;
-flex-shrink: 0;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--primary-500);
+    margin-top: 6px;
+    flex-shrink: 0;
 }
 .notification-item:not(.unread) .notification-dot { background: var(--surface-300); }
 .notification-content { flex: 1; }
 .notification-title {
-font-size: 13px;
-font-weight: 500;
-color: var(--text-primary);
-margin-bottom: 2px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 2px;
 }
 .notification-text {
-font-size: 12px;
-color: var(--text-secondary);
-line-height: 1.4;
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.4;
 }
 .notification-time {
-font-size: 11px;
-color: var(--text-muted);
-margin-top: 4px;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 4px;
 }
-/* Quick Links */
+
+/* ==========================================================================
+   QUICK LINKS
+   ========================================================================== */
 .quick-links {
-display: flex;
-flex-wrap: wrap;
-gap: var(--spacing-sm);
-margin-top: var(--spacing-md);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-md);
 }
 .quick-link {
-display: inline-flex;
-align-items: center;
-gap: 6px;
-padding: 8px 14px;
-background: var(--surface-50);
-border: 1px solid var(--surface-200);
-border-radius: var(--radius-md);
-font-size: 13px;
-color: var(--text-secondary);
-text-decoration: none;
-transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    background: var(--surface-50);
+    border: 1px solid var(--surface-200);
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all 0.2s;
 }
 .quick-link:hover {
-background: var(--primary-50);
-border-color: var(--primary-200);
-color: var(--primary-600);
+    background: var(--primary-50);
+    border-color: var(--primary-200);
+    color: var(--primary-600);
 }
 .quick-link i { font-size: 14px; }
-/* Profile View Styles */
+
+/* ==========================================================================
+   CARDS
+   ========================================================================== */
+.card {
+    background: var(--surface-0);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--surface-200);
+    box-shadow: var(--shadow-card);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+}
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--surface-200);
+}
+.card-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+.card-body { padding: var(--spacing-lg); }
+
+/* ==========================================================================
+   TABLES
+   ========================================================================== */
+.table-container {
+    background: var(--surface-0);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--surface-200);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+}
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.data-table th {
+    background: var(--surface-50);
+    padding: var(--spacing-md);
+    text-align: left;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--surface-200);
+}
+.data-table td {
+    padding: var(--spacing-md);
+    border-bottom: 1px solid var(--surface-100);
+    font-size: 14px;
+    color: var(--text-primary);
+}
+.data-table tr:hover {
+    background: var(--surface-50);
+}
+.data-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* ==========================================================================
+   STATUS BADGES
+   ========================================================================== */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+}
+.status-badge.success { background: var(--success-50); color: var(--success-500); }
+.status-badge.warning { background: var(--warning-50); color: var(--warning-500); }
+.status-badge.danger { background: var(--danger-50); color: var(--danger-500); }
+.status-badge.info { background: var(--info-50); color: var(--info-400); }
+.status-badge.neutral { background: var(--surface-200); color: var(--text-secondary); }
+
+/* ==========================================================================
+   BUTTONS
+   ========================================================================== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    text-decoration: none;
+}
+.btn-primary { background: var(--primary-500); color: white; }
+.btn-primary:hover { background: var(--primary-600); }
+.btn-secondary {
+    background: var(--surface-100);
+    color: var(--text-primary);
+    border: 1px solid var(--surface-200);
+}
+.btn-secondary:hover { background: var(--surface-200); }
+.btn-ghost { background: transparent; color: var(--text-secondary); }
+.btn-ghost:hover { background: var(--surface-100); }
+.btn-sm { padding: 6px 12px; font-size: 13px; }
+
+/* ==========================================================================
+   ALERT BOXES
+   ========================================================================== */
+.alert-box {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacing-lg);
+}
+.alert-box.info {
+    background: var(--info-50);
+    border: 1px solid var(--info-400);
+}
+.alert-box.warning {
+    background: var(--warning-50);
+    border: 1px solid var(--warning-500);
+}
+.alert-box.success {
+    background: var(--success-50);
+    border: 1px solid var(--success-500);
+}
+.alert-box i {
+    font-size: 18px;
+    flex-shrink: 0;
+}
+.alert-box.info i { color: var(--info-400); }
+.alert-box.warning i { color: var(--warning-500); }
+.alert-box.success i { color: var(--success-500); }
+.alert-box-content {
+    flex: 1;
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+.alert-box-title {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+}
+
+/* ==========================================================================
+   TOAST NOTIFICATIONS
+   ========================================================================== */
+.toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--surface-900);
+    color: white;
+    padding: 16px 24px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 400;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+.toast.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+.toast i { font-size: 20px; }
+.toast.success i { color: var(--success-500); }
+.toast.error i { color: var(--danger-500); }
+
+/* ==========================================================================
+   VIEW SECTIONS
+   ========================================================================== */
+.view-section { display: none; }
+.view-section.active { display: block; }
+
+/* ==========================================================================
+   PROFILE STYLES
+   ========================================================================== */
 .profile-header-card {
-background: var(--surface-0);
-border-radius: var(--radius-lg);
-border: 1px solid var(--surface-200);
-box-shadow: var(--shadow-card);
-padding: var(--spacing-xl);
-margin-bottom: var(--spacing-xl);
-display: flex;
-align-items: center;
-gap: var(--spacing-xl);
+    background: var(--surface-0);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--surface-200);
+    box-shadow: var(--shadow-card);
+    padding: var(--spacing-xl);
+    margin-bottom: var(--spacing-xl);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xl);
 }
 .profile-avatar {
-width: 100px;
-height: 100px;
-border-radius: 50%;
-background: linear-gradient(135deg, var(--primary-400), var(--primary-600));
-display: flex;
-align-items: center;
-justify-content: center;
-font-size: 36px;
-font-weight: 700;
-color: white;
-flex-shrink: 0;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-400), var(--primary-600));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    font-weight: 700;
+    color: white;
+    flex-shrink: 0;
 }
 .profile-info { flex: 1; }
 .profile-name {
-font-size: 24px;
-font-weight: 600;
-color: var(--text-primary);
-margin-bottom: var(--spacing-xs);
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-xs);
 }
 .profile-company {
-font-size: 16px;
-color: var(--text-secondary);
-margin-bottom: var(--spacing-sm);
+    font-size: 16px;
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-sm);
 }
 .profile-badges {
-display: flex;
-gap: var(--spacing-sm);
-flex-wrap: wrap;
+    display: flex;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
 }
 .profile-badge {
-display: inline-flex;
-align-items: center;
-gap: 6px;
-padding: 6px 12px;
-border-radius: 999px;
-font-size: 12px;
-font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
 }
 .profile-badge.verified { background: var(--success-50); color: var(--success-500); }
 .profile-badge.ungm { background: var(--info-50); color: var(--info-400); }
 .profile-badge.mfa { background: var(--purple-50); color: var(--purple-500); }
 .profile-actions {
-display: flex;
-gap: var(--spacing-sm);
-}
-/* Profile Tabs */
-.profile-tabs {
-display: flex;
-gap: 4px;
-background: var(--surface-100);
-padding: 4px;
-border-radius: var(--radius-md);
-margin-bottom: var(--spacing-xl);
-}
-.profile-tab {
-padding: 10px 20px;
-border: none;
-background: transparent;
-border-radius: var(--radius-sm);
-font-size: 14px;
-font-weight: 500;
-color: var(--text-secondary);
-cursor: pointer;
-transition: all 0.2s;
-display: flex;
-align-items: center;
-gap: 8px;
-}
-.profile-tab:hover { color: var(--text-primary); }
-.profile-tab.active {
-background: var(--surface-0);
-color: var(--primary-500);
-box-shadow: var(--shadow-sm);
-}
-.profile-tab i { font-size: 16px; }
-/* Profile Content */
-.profile-content { display: none; }
-.profile-content.active { display: block; }
-.profile-grid {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-gap: var(--spacing-lg);
-}
-@media (max-width: 900px) {
-.profile-grid { grid-template-columns: 1fr; }
+    display: flex;
+    gap: var(--spacing-sm);
 }
 .form-section {
-background: var(--surface-0);
-border-radius: var(--radius-lg);
-border: 1px solid var(--surface-200);
-box-shadow: var(--shadow-card);
+    background: var(--surface-0);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--surface-200);
+    box-shadow: var(--shadow-card);
+    margin-bottom: var(--spacing-lg);
 }
 .form-section-header {
-padding: var(--spacing-lg);
-border-bottom: 1px solid var(--surface-200);
-display: flex;
-align-items: center;
-justify-content: space-between;
+    padding: var(--spacing-lg);
+    border-bottom: 1px solid var(--surface-200);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 .form-section-title {
-font-size: 16px;
-font-weight: 600;
-color: var(--text-primary);
-display: flex;
-align-items: center;
-gap: var(--spacing-sm);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
 }
 .form-section-title i { color: var(--primary-500); }
 .form-section-body { padding: var(--spacing-lg); }
-.form-group {
-margin-bottom: var(--spacing-lg);
-}
+.form-group { margin-bottom: var(--spacing-lg); }
 .form-group:last-child { margin-bottom: 0; }
 .form-label {
-display: block;
-font-size: 13px;
-font-weight: 500;
-color: var(--text-secondary);
-margin-bottom: 6px;
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
 }
 .form-input {
-width: 100%;
-padding: 10px 14px;
-border: 1px solid var(--surface-200);
-border-radius: var(--radius-sm);
-font-size: 14px;
-font-family: inherit;
-transition: all 0.2s;
-background: var(--surface-0);
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--surface-200);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-family: inherit;
+    transition: all 0.2s;
+    background: var(--surface-0);
 }
 .form-input:focus {
-outline: none;
-border-color: var(--primary-500);
-box-shadow: 0 0 0 3px var(--primary-50);
+    outline: none;
+    border-color: var(--primary-500);
+    box-shadow: 0 0 0 3px var(--primary-50);
 }
 .form-input:disabled {
-background: var(--surface-50);
-color: var(--text-secondary);
-cursor: not-allowed;
+    background: var(--surface-50);
+    color: var(--text-secondary);
+    cursor: not-allowed;
 }
-.form-input-group {
-display: flex;
-gap: var(--spacing-sm);
-}
-.form-input-group .form-input { flex: 1; }
 .form-row {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: var(--spacing-md);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-md);
 }
-@media (max-width: 600px) {
-.form-row { grid-template-columns: 1fr; }
+.profile-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: var(--spacing-lg);
 }
-.form-value {
-font-size: 14px;
-color: var(--text-primary);
-padding: 10px 0;
+@media (max-width: 900px) {
+    .profile-grid { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
 }
-.form-hint {
-font-size: 12px;
-color: var(--text-muted);
-margin-top: 4px;
-}
-/* Linked Accounts */
-.linked-account {
-display: flex;
-align-items: center;
-gap: var(--spacing-md);
-padding: var(--spacing-md);
-border: 1px solid var(--surface-200);
-border-radius: var(--radius-md);
-margin-bottom: var(--spacing-sm);
-transition: all 0.2s;
-}
-.linked-account:hover {
-background: var(--surface-50);
-border-color: var(--primary-200);
-}
-.linked-account-icon {
-width: 48px;
-height: 48px;
-border-radius: var(--radius-md);
-display: flex;
-align-items: center;
-justify-content: center;
-font-size: 20px;
-flex-shrink: 0;
-}
-.linked-account-icon.ungm { background: #1e3a5f; color: white; }
-.linked-account-icon.drive { background: var(--success-50); color: var(--success-500); }
-.linked-account-info { flex: 1; }
-.linked-account-name {
-font-size: 14px;
-font-weight: 600;
-color: var(--text-primary);
-}
-.linked-account-detail {
-font-size: 13px;
-color: var(--text-muted);
-}
-.linked-account-status {
-display: flex;
-align-items: center;
-gap: 6px;
-font-size: 12px;
-font-weight: 500;
-padding: 4px 10px;
-border-radius: 999px;
-}
-.linked-account-status.connected {
-background: var(--success-50);
-color: var(--success-500);
-}
-.linked-account-status.pending {
-background: var(--warning-50);
-color: var(--warning-500);
-}
-/* Roles & Permissions */
-.role-card {
-padding: var(--spacing-md);
-border: 1px solid var(--surface-200);
-border-radius: var(--radius-md);
-margin-bottom: var(--spacing-sm);
-}
-.role-card:last-child { margin-bottom: 0; }
-.role-header {
-display: flex;
-align-items: center;
-justify-content: space-between;
-margin-bottom: var(--spacing-sm);
-}
-.role-name {
-font-size: 14px;
-font-weight: 600;
-color: var(--text-primary);
-display: flex;
-align-items: center;
-gap: 8px;
-}
-.role-name i { color: var(--primary-500); }
-.role-badge {
-font-size: 11px;
-padding: 3px 8px;
-border-radius: 999px;
-font-weight: 500;
-}
-.role-badge.primary { background: var(--primary-50); color: var(--primary-600); }
-.role-badge.standard { background: var(--surface-100); color: var(--text-secondary); }
-.role-permissions {
-display: flex;
-flex-wrap: wrap;
-gap: 6px;
-}
-.permission-tag {
-font-size: 11px;
-padding: 4px 8px;
-background: var(--surface-100);
-border-radius: var(--radius-sm);
-color: var(--text-secondary);
-}
-/* Security Settings */
-.security-item {
-display: flex;
-align-items: center;
-justify-content: space-between;
-padding: var(--spacing-md);
-border: 1px solid var(--surface-200);
-border-radius: var(--radius-md);
-margin-bottom: var(--spacing-sm);
-}
-.security-item:last-child { margin-bottom: 0; }
-.security-info {
-display: flex;
-align-items: center;
-gap: var(--spacing-md);
-}
-.security-icon {
-width: 40px;
-height: 40px;
-border-radius: var(--radius-md);
-display: flex;
-align-items: center;
-justify-content: center;
-background: var(--surface-100);
-color: var(--text-secondary);
-}
-.security-icon.enabled { background: var(--success-50); color: var(--success-500); }
-.security-name {
-font-size: 14px;
-font-weight: 500;
-color: var(--text-primary);
-}
-.security-desc {
-font-size: 12px;
-color: var(--text-muted);
-}
-/* Toggle Switch */
-.toggle-switch {
-width: 44px;
-height: 24px;
-background: var(--surface-300);
-border-radius: 12px;
-position: relative;
-cursor: pointer;
-transition: background 0.2s;
-}
-.toggle-switch.active { background: var(--success-500); }
-.toggle-switch::after {
-content: '';
-position: absolute;
-top: 2px;
-left: 2px;
-width: 20px;
-height: 20px;
-background: white;
-border-radius: 50%;
-transition: transform 0.2s;
-box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-}
-.toggle-switch.active::after { transform: translateX(20px); }
-/* Buttons */
-.btn {
-display: inline-flex;
-align-items: center;
-gap: 6px;
-padding: 10px 16px;
-border-radius: var(--radius-sm);
-font-size: 14px;
-font-weight: 500;
-font-family: inherit;
-cursor: pointer;
-border: none;
-transition: all 0.2s;
-text-decoration: none;
-}
-.btn-primary {
-background: var(--primary-500);
-color: white;
-}
-.btn-primary:hover { background: var(--primary-600); }
-.btn-secondary {
-background: var(--surface-100);
-color: var(--text-primary);
-border: 1px solid var(--surface-200);
-}
-.btn-secondary:hover { background: var(--surface-200); }
-.btn-ghost {
-background: transparent;
-color: var(--text-secondary);
-}
-.btn-ghost:hover {
-background: var(--surface-100);
-color: var(--text-primary);
-}
-.btn-sm {
-padding: 6px 12px;
-font-size: 13px;
-}
-.btn-icon {
-width: 36px;
-height: 36px;
-padding: 0;
-display: flex;
-align-items: center;
-justify-content: center;
-}
-.btn i { font-size: 14px; }
-/* Status badges */
-.status-badge {
-display: inline-flex;
-align-items: center;
-gap: 4px;
-padding: 4px 10px;
-border-radius: 999px;
-font-size: 12px;
-font-weight: 500;
-}
-.status-badge.active { background: var(--success-50); color: var(--success-500); }
-.status-badge.pending { background: var(--warning-50); color: var(--warning-500); }
-.status-badge.info { background: var(--info-50); color: var(--info-400); }
-/* Empty State */
-.empty-state {
-text-align: center;
-padding: var(--spacing-2xl);
-color: var(--text-muted);
-}
-.empty-state i {
-font-size: 48px;
-margin-bottom: var(--spacing-md);
-opacity: 0.5;
-}
-.empty-state-title {
-font-size: 16px;
-font-weight: 500;
-color: var(--text-secondary);
-margin-bottom: var(--spacing-xs);
-}
-.empty-state-desc {
-font-size: 14px;
-}
-/* Utility */
-.text-muted { color: var(--text-muted); }
-.text-sm { font-size: 13px; }
-.mt-sm { margin-top: var(--spacing-sm); }
-.mt-md { margin-top: var(--spacing-md); }
-.mb-md { margin-bottom: var(--spacing-md); }
-.flex { display: flex; }
-.items-center { align-items: center; }
-.justify-between { justify-content: space-between; }
-.gap-sm { gap: var(--spacing-sm); }
-/* Animations */
+
+/* ==========================================================================
+   ANIMATIONS
+   ========================================================================== */
 @keyframes fadeIn {
-from { opacity: 0; transform: translateY(10px); }
-to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 .fade-in { animation: fadeIn 0.3s ease-out; }
-/* User Dropdown */
-.user-dropdown {
-position: relative;
-}
-.user-dropdown-menu {
-position: absolute;
-top: calc(100% + 8px);
-right: 0;
-width: 240px;
-background: var(--surface-0);
-border: 1px solid var(--surface-200);
-border-radius: var(--radius-lg);
-box-shadow: var(--shadow-lg);
-z-index: 1000;
-display: none;
-overflow: hidden;
-}
-.user-dropdown-menu.open { display: block; }
-.user-dropdown-header {
-padding: var(--spacing-md);
-border-bottom: 1px solid var(--surface-200);
-background: var(--surface-50);
-}
-.user-dropdown-name {
-font-size: 14px;
-font-weight: 600;
-color: var(--text-primary);
-}
-.user-dropdown-email {
-font-size: 12px;
-color: var(--text-muted);
-}
-.user-dropdown-item {
-display: flex;
-align-items: center;
-gap: var(--spacing-sm);
-padding: var(--spacing-md);
-color: var(--text-secondary);
-text-decoration: none;
-font-size: 14px;
-transition: all 0.2s;
-cursor: pointer;
-border: none;
-background: none;
-width: 100%;
-text-align: left;
-}
-.user-dropdown-item:hover {
-background: var(--surface-50);
-color: var(--text-primary);
-}
-.user-dropdown-item i { font-size: 16px; width: 20px; }
-.user-dropdown-divider {
-height: 1px;
-background: var(--surface-200);
-margin: 4px 0;
-}
-.user-dropdown-item.danger { color: var(--danger-500); }
-.user-dropdown-item.danger:hover { background: var(--danger-50); }
 
-/* Modal Styles */
-.modal-overlay {
-position: fixed;
-top: 0;
-left: 0;
-right: 0;
-bottom: 0;
-background: rgba(0, 0, 0, 0.5);
-display: flex;
-align-items: center;
-justify-content: center;
-z-index: 2000;
-opacity: 0;
-visibility: hidden;
-transition: all 0.3s ease;
-}
-.modal-overlay.open {
-opacity: 1;
-visibility: visible;
-}
-.modal {
-background: var(--surface-0);
-border-radius: var(--radius-lg);
-box-shadow: var(--shadow-xl);
-width: 100%;
-max-width: 560px;
-max-height: 90vh;
-overflow: hidden;
-transform: translateY(20px) scale(0.95);
-transition: transform 0.3s ease;
-}
-.modal-overlay.open .modal {
-transform: translateY(0) scale(1);
-}
-.modal-header {
-display: flex;
-align-items: center;
-justify-content: space-between;
-padding: var(--spacing-lg);
-border-bottom: 1px solid var(--surface-200);
-background: var(--surface-50);
-}
-.modal-title {
-font-size: 18px;
-font-weight: 600;
-color: var(--text-primary);
-display: flex;
-align-items: center;
-gap: var(--spacing-sm);
-}
-.modal-title i { color: var(--primary-500); }
-.modal-close {
-width: 32px;
-height: 32px;
-border: none;
-background: transparent;
-border-radius: var(--radius-sm);
-cursor: pointer;
-display: flex;
-align-items: center;
-justify-content: center;
-color: var(--text-muted);
-transition: all 0.2s;
-}
-.modal-close:hover {
-background: var(--surface-200);
-color: var(--text-primary);
-}
-.modal-body {
-padding: var(--spacing-lg);
-overflow-y: auto;
-max-height: calc(90vh - 140px);
-}
-.modal-footer {
-display: flex;
-align-items: center;
-justify-content: flex-end;
-gap: var(--spacing-sm);
-padding: var(--spacing-lg);
-border-top: 1px solid var(--surface-200);
-background: var(--surface-50);
-}
-
-/* Team Member Card Enhanced */
-.team-member-card {
-display: flex;
-align-items: center;
-gap: var(--spacing-md);
-padding: var(--spacing-md);
-border: 1px solid var(--surface-200);
-border-radius: var(--radius-md);
-margin-bottom: var(--spacing-sm);
-transition: all 0.2s;
-}
-.team-member-card:hover {
-background: var(--surface-50);
-border-color: var(--primary-200);
-}
-.team-member-card:last-child { margin-bottom: 0; }
-.team-member-avatar {
-width: 48px;
-height: 48px;
-border-radius: var(--radius-md);
-display: flex;
-align-items: center;
-justify-content: center;
-font-weight: 600;
-flex-shrink: 0;
-}
-.team-member-info { flex: 1; min-width: 0; }
-.team-member-name {
-font-size: 14px;
-font-weight: 600;
-color: var(--text-primary);
-margin-bottom: 2px;
-}
-.team-member-email {
-font-size: 13px;
-color: var(--text-muted);
-margin-bottom: 4px;
-}
-.team-member-roles {
-display: flex;
-flex-wrap: wrap;
-gap: 4px;
-}
-.team-member-role {
-font-size: 11px;
-padding: 2px 8px;
-background: var(--primary-50);
-color: var(--primary-600);
-border-radius: 999px;
-font-weight: 500;
-}
-.team-member-actions {
-display: flex;
-align-items: center;
-gap: var(--spacing-xs);
-}
-.team-member-actions .btn-icon {
-width: 32px;
-height: 32px;
-border-radius: var(--radius-sm);
-border: 1px solid var(--surface-200);
-background: var(--surface-0);
-color: var(--text-muted);
-cursor: pointer;
-display: flex;
-align-items: center;
-justify-content: center;
-transition: all 0.2s;
-}
-.team-member-actions .btn-icon:hover {
-background: var(--surface-100);
-color: var(--primary-500);
-border-color: var(--primary-200);
-}
-.team-member-actions .btn-icon.danger:hover {
-background: var(--danger-50);
-color: var(--danger-500);
-border-color: var(--danger-500);
-}
-
-/* Role Checkbox List */
-.role-checkbox-list {
-display: flex;
-flex-direction: column;
-gap: var(--spacing-sm);
-}
-.role-checkbox-item {
-display: flex;
-align-items: flex-start;
-gap: var(--spacing-md);
-padding: var(--spacing-md);
-border: 1px solid var(--surface-200);
-border-radius: var(--radius-md);
-cursor: pointer;
-transition: all 0.2s;
-}
-.role-checkbox-item:hover {
-background: var(--surface-50);
-border-color: var(--primary-200);
-}
-.role-checkbox-item.selected {
-background: var(--primary-50);
-border-color: var(--primary-400);
-}
-.role-checkbox {
-width: 20px;
-height: 20px;
-border: 2px solid var(--surface-300);
-border-radius: var(--radius-sm);
-display: flex;
-align-items: center;
-justify-content: center;
-flex-shrink: 0;
-transition: all 0.2s;
-margin-top: 2px;
-}
-.role-checkbox-item.selected .role-checkbox {
-background: var(--primary-500);
-border-color: var(--primary-500);
-}
-.role-checkbox i {
-font-size: 12px;
-color: white;
-opacity: 0;
-transition: opacity 0.2s;
-}
-.role-checkbox-item.selected .role-checkbox i {
-opacity: 1;
-}
-.role-checkbox-info { flex: 1; }
-.role-checkbox-name {
-font-size: 14px;
-font-weight: 600;
-color: var(--text-primary);
-margin-bottom: 2px;
-}
-.role-checkbox-desc {
-font-size: 12px;
-color: var(--text-muted);
-line-height: 1.4;
-}
-.role-checkbox-permissions {
-display: flex;
-flex-wrap: wrap;
-gap: 4px;
-margin-top: 6px;
-}
-
-/* Divider */
-.divider {
-height: 1px;
-background: var(--surface-200);
-margin: var(--spacing-lg) 0;
-}
-
-/* Alert Box */
-.alert-box {
-display: flex;
-align-items: flex-start;
-gap: var(--spacing-md);
-padding: var(--spacing-md);
-border-radius: var(--radius-md);
-margin-bottom: var(--spacing-lg);
-}
-.alert-box.info {
-background: var(--info-50);
-border: 1px solid var(--info-400);
-}
-.alert-box.warning {
-background: var(--warning-50);
-border: 1px solid var(--warning-500);
-}
-.alert-box i {
-font-size: 18px;
-flex-shrink: 0;
-margin-top: 2px;
-}
-.alert-box.info i { color: var(--info-400); }
-.alert-box.warning i { color: var(--warning-500); }
-.alert-box-content {
-flex: 1;
-font-size: 13px;
-color: var(--text-secondary);
-line-height: 1.5;
-}
-.alert-box-title {
-font-weight: 600;
-color: var(--text-primary);
-margin-bottom: 2px;
-}
-
-/* Confirmation Dialog */
-.confirm-actions {
-display: flex;
-flex-direction: column;
-gap: var(--spacing-sm);
-margin-top: var(--spacing-lg);
-}
-.confirm-user {
-display: flex;
-align-items: center;
-gap: var(--spacing-md);
-padding: var(--spacing-md);
-background: var(--surface-50);
-border-radius: var(--radius-md);
-margin-bottom: var(--spacing-md);
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+@media (max-width: 768px) {
+    .header-actions { gap: 4px; }
+    .header-action-label { display: none; }
+    .header-action-btn { padding: 8px; }
 }
 </style>
 </head>
 <body>
 
-<!-- Header -->
+<!-- =========================================================================
+     HEADER
+     ========================================================================= -->
 <header class="header">
-<div class="header-top">
-<div class="logo-container">
-<span class="logo">UNOPS</span>
-<span class="portal-badge">Supplier Portal</span>
-</div>
-<div class="header-actions">
-<button class="header-action-btn" title="AI Assistant">
-<div class="ai-icon-wrapper">
-<i class="pi pi-sparkles"></i>
-</div>
-</button>
-<button class="header-action-btn notification-btn" title="Notifications">
-<i class="pi pi-bell"></i>
-<span class="notification-badge">5</span>
-</button>
-<button class="header-action-btn" title="Help & Support">
-<i class="pi pi-question-circle"></i>
-</button>
-<button class="header-action-btn" title="Language">
-<span class="lang-flag">🇬🇧</span>
-</button>
-</div>
-<div class="user-menu">
-<div class="user-info">
-<div class="user-company">Global Tech Solutions Ltd.</div>
-<div class="user-name">John Anderson</div>
-</div>
-<div class="user-dropdown">
-<div class="user-avatar" onclick="toggleUserDropdown()">JA</div>
-<div class="user-dropdown-menu" id="userDropdown">
-<div class="user-dropdown-header">
-<div class="user-dropdown-name">John Anderson</div>
-<div class="user-dropdown-email">john.anderson@globaltech.com</div>
-</div>
-<button class="user-dropdown-item" onclick="showView('profile'); closeUserDropdown();">
-<i class="pi pi-user"></i> My Profile
-</button>
-<button class="user-dropdown-item" onclick="showView('profile'); setProfileTab('security'); closeUserDropdown();">
-<i class="pi pi-shield"></i> Security Settings
-</button>
-<button class="user-dropdown-item" onclick="showView('profile'); setProfileTab('account'); closeUserDropdown();">
-<i class="pi pi-cog"></i> Account Settings
-</button>
-<div class="user-dropdown-divider"></div>
-<a class="user-dropdown-item" href="https://www.ungm.org" target="_blank">
-<i class="pi pi-external-link"></i> Go to UNGM
-</a>
-<div class="user-dropdown-divider"></div>
-<button class="user-dropdown-item danger">
-<i class="pi pi-sign-out"></i> Sign Out
-</button>
-</div>
-</div>
-</div>
-</div>
+    <div class="header-top">
+        <div class="logo-container">
+            <span class="logo">UNOPS</span>
+            <span class="portal-badge">SUPPLIER</span>
+            <!-- Dynamic Module Name - Change based on active menu -->
+            <span style="color: var(--surface-400); margin: 0 8px; font-size: 18px;">|</span>
+            <span id="currentModuleName" style="color: var(--primary-500); font-weight: 600; font-size: 14px;">Home</span>
+        </div>
+        
+        <!-- Header Actions -->
+        <div class="header-actions">
+            <!-- Accessibility Button -->
+            <div class="header-action-btn" onclick="showToast('Accessibility options coming soon')" title="Accessibility Options" aria-label="Accessibility Options">
+                <i class="pi pi-eye" aria-hidden="true"></i>
+            </div>
+            
+            <!-- Language Selector -->
+            <div class="header-action-btn language-selector" onclick="showToast('Language selector coming soon')" title="Change Language" aria-label="Change Language">
+                <span class="lang-flag">🌐</span>
+                <span class="header-action-label" id="currentLang">EN</span>
+                <i class="pi pi-chevron-down" style="font-size: 10px; margin-left: 2px;" aria-hidden="true"></i>
+            </div>
+
+            <!-- AI Assistant -->
+            <div class="header-action-btn ai-assistant-btn" onclick="showToast('AI Assistant coming soon')" title="AI Assistant" aria-label="AI Supplier Assistant">
+                <div class="ai-icon-wrapper">
+                    <i class="pi pi-bolt" aria-hidden="true"></i>
+                </div>
+                <span class="ai-badge">NEW</span>
+            </div>
+
+            <!-- Help/Questions -->
+            <div class="header-action-btn" onclick="showToast('Help Center coming soon')" title="Help Center" aria-label="Help Center and Documentation">
+                <i class="pi pi-question-circle" aria-hidden="true"></i>
+            </div>
+
+            <!-- Notifications -->
+            <div class="header-action-btn notification-btn" onclick="showToast('Notifications panel coming soon')" title="Notifications" aria-label="View Notifications">
+                <i class="pi pi-bell" aria-hidden="true"></i>
+                <span class="notification-badge" id="notificationCount">3</span>
+            </div>
+        </div>
+
+        <div class="user-menu">
+            <div class="user-info">
+                <div class="user-role">Supplier</div>
+                <div class="user-name">Acme Corporation</div>
+            </div>
+            <div class="user-avatar">AC</div>
+        </div>
+    </div>
 </header>
 
-<!-- App Container -->
+<!-- =========================================================================
+     APP CONTAINER
+     ========================================================================= -->
 <div class="app-container">
-<!-- Sidebar -->
-<aside class="sidebar">
-<nav class="sidebar-menu">
-<div class="menu-section">
-<div class="menu-section-title">Supplier Portal</div>
-<a class="menu-item active" onclick="showView('landing')">
-<i class="pi pi-home menu-icon"></i>
-<span>Home</span>
-</a>
-<a class="menu-item" onclick="showView('profile')">
-<i class="pi pi-user menu-icon"></i>
-<span>My Profile</span>
-</a>
-</div>
-<div class="menu-section">
-<div class="menu-section-title">Applications</div>
-<a class="menu-item" onclick="alert('Navigating to eTendering...')">
-<i class="pi pi-file-edit menu-icon"></i>
-<span>eTendering</span>
-<span class="menu-badge">3</span>
-</a>
-<a class="menu-item" onclick="alert('Navigating to DRiVE...')">
-<i class="pi pi-verified menu-icon"></i>
-<span>DRiVE</span>
-<span class="menu-badge warning">1</span>
-</a>
-</div>
-<div class="menu-section">
-<div class="menu-section-title">Resources</div>
-<a class="menu-item" href="https://www.ungm.org" target="_blank">
-<i class="pi pi-globe menu-icon"></i>
-<span>UNGM</span>
-<i class="pi pi-external-link" style="margin-left:auto; font-size:12px; opacity:0.7;"></i>
-</a>
-<a class="menu-item">
-<i class="pi pi-book menu-icon"></i>
-<span>Resource Center</span>
-</a>
-<a class="menu-item">
-<i class="pi pi-question-circle menu-icon"></i>
-<span>Help & Support</span>
-</a>
-</div>
-</nav>
-<div class="sidebar-footer">
-<a class="sidebar-footer-link" href="#">
-<i class="pi pi-cog"></i>
-<span>Settings</span>
-</a>
-<a class="sidebar-footer-link" href="#">
-<i class="pi pi-sign-out"></i>
-<span>Sign Out</span>
-</a>
-</div>
-</aside>
+    <!-- =====================================================================
+         SIDEBAR (COLLAPSIBLE)
+         ===================================================================== -->
+    <aside class="sidebar" id="mainSidebar">
+        <div class="sidebar-toggle" onclick="toggleSidebar()">
+            <i class="pi pi-chevron-left"></i>
+        </div>
+        <nav class="sidebar-menu">
+            <!-- Supplier Portal -->
+            <div class="menu-section">
+                <div class="menu-section-title">Supplier Portal</div>
+                
+                <a class="menu-item active" onclick="showView('landing')" data-module="Home">
+                    <span class="menu-icon"><i class="pi pi-home"></i></span>
+                    <span>Home</span>
+                </a>
+                <a class="menu-item" onclick="showView('profile')" data-module="My Profile">
+                    <span class="menu-icon"><i class="pi pi-user"></i></span>
+                    <span>My Profile</span>
+                </a>
+                <a class="menu-item disabled" data-module="Form Responses">
+                    <span class="menu-icon"><i class="pi pi-file-edit"></i></span>
+                    <span>Form Responses</span>
+                </a>
+            </div>
+            
+            <div class="menu-divider"></div>
+            
+            <!-- Applications -->
+            <div class="menu-section">
+                <div class="menu-section-title">Applications</div>
+                
+                <!-- eTendering -->
+                <div class="menu-group collapsed">
+                    <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                        <span><i class="pi pi-briefcase"></i> eTendering</span>
+                        <i class="pi pi-chevron-down"></i>
+                    </div>
+                    <div class="menu-group-items">
+                        <a class="menu-item" href="https://valentinar11.github.io/ValentinaRo/supplier-bidding-mockup.html" data-module="eTendering">
+                            <span class="menu-icon"><i class="pi pi-chart-bar"></i></span>
+                            <span>Overview</span>
+                        </a>
+                        <a class="menu-item disabled" data-module="eTendering">
+                            <span class="menu-icon"><i class="pi pi-folder-open"></i></span>
+                            <span>My Tenders</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- DRiVE -->
+                <div class="menu-group collapsed">
+                    <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                        <span><i class="pi pi-shield"></i> DRiVE</span>
+                        <i class="pi pi-chevron-down"></i>
+                    </div>
+                    <div class="menu-group-items">
+                        <a class="menu-item disabled" data-module="DRiVE">
+                            <span class="menu-icon"><i class="pi pi-chart-bar"></i></span>
+                            <span>Overview</span>
+                        </a>
+                        <a class="menu-item disabled" data-module="DRiVE">
+                            <span class="menu-icon"><i class="pi pi-check-circle"></i></span>
+                            <span>Verification</span>
+                        </a>
+                        <a class="menu-item" onclick="showToast('Navigating to CAPA...')" data-module="DRiVE">
+                            <span class="menu-icon"><i class="pi pi-exclamation-triangle"></i></span>
+                            <span>CAPA</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </aside>
 
-<!-- Main Content -->
-<main class="main-content">
+    <!-- =====================================================================
+         MAIN CONTENT
+         ===================================================================== -->
+    <main class="main-content">
+        
+        <!-- Landing View -->
+        <section class="view-section active" id="view-landing">
+            <!-- Welcome Banner -->
+            <div class="welcome-banner fade-in">
+                <h2>Welcome back, Acme Corporation</h2>
+                <p>Manage your tenders, verification documents, and stay updated with UNOPS opportunities.</p>
+            </div>
 
-<!-- Landing View -->
-<section class="view-section active" id="view-landing">
-<!-- Welcome Banner -->
-<div class="welcome-banner fade-in">
-<h1 class="welcome-title">Welcome back, John!</h1>
-<p class="welcome-subtitle">
-Access all your UNOPS engagement tools from one place. Manage tenders, complete verification assessments, and keep your profile up to date.
-</p>
-<div class="welcome-stats">
-<div class="welcome-stat">
-<span class="welcome-stat-value">12</span>
-<span class="welcome-stat-label">Active Tenders</span>
-</div>
-<div class="welcome-stat">
-<span class="welcome-stat-value">3</span>
-<span class="welcome-stat-label">Pending Actions</span>
-</div>
-<div class="welcome-stat">
-<span class="welcome-stat-value">€2.4M</span>
-<span class="welcome-stat-label">Contract Value</span>
-</div>
-</div>
-</div>
+            <!-- Quick Access -->
+            <div class="section-header">
+                <h2 class="section-title"><i class="pi pi-th-large"></i> Quick Access</h2>
+            </div>
+            <div class="quick-access-grid">
+                <!-- eTendering Card -->
+                <div class="quick-access-card etendering" onclick="showToast('Navigating to eTendering...')">
+                    <i class="pi pi-arrow-right quick-access-arrow"></i>
+                    <div class="quick-access-icon">
+                        <i class="pi pi-file-edit"></i>
+                    </div>
+                    <h3 class="quick-access-title">eTendering</h3>
+                    <p class="quick-access-desc">
+                        Manage all your tendering activities - view opportunities, submit bids, and track your applications.
+                    </p>
+                    <div class="quick-access-stats">
+                        <span class="quick-access-stat"><strong>3</strong> Open tenders</span>
+                        <span class="quick-access-stat"><strong>2</strong> Drafts</span>
+                        <span class="quick-access-stat"><strong>7</strong> Submitted</span>
+                    </div>
+                </div>
 
-<!-- Quick Access -->
-<div class="section-header">
-<h2 class="section-title"><i class="pi pi-th-large"></i> Quick Access</h2>
-</div>
-<div class="quick-access-grid">
-<!-- eTendering Card -->
-<div class="quick-access-card etendering" onclick="alert('Navigating to eTendering...')">
-<i class="pi pi-arrow-right quick-access-arrow"></i>
-<div class="quick-access-icon">
-<i class="pi pi-file-edit"></i>
-</div>
-<h3 class="quick-access-title">eTendering</h3>
-<p class="quick-access-desc">
-Manage all your tendering activities - view opportunities, submit bids, and track your applications.
-</p>
-<div class="quick-access-stats">
-<span class="quick-access-stat"><strong>3</strong> Open tenders</span>
-<span class="quick-access-stat"><strong>2</strong> Drafts</span>
-<span class="quick-access-stat"><strong>7</strong> Submitted</span>
-</div>
-</div>
+                <!-- DRiVE Card -->
+                <div class="quick-access-card drive" onclick="showToast('Navigating to DRiVE...')">
+                    <i class="pi pi-arrow-right quick-access-arrow"></i>
+                    <div class="quick-access-icon">
+                        <i class="pi pi-verified"></i>
+                    </div>
+                    <h3 class="quick-access-title">DRiVE</h3>
+                    <p class="quick-access-desc">
+                        Complete self-assessments, respond to verification requests, and manage corrective action plans.
+                    </p>
+                    <div class="quick-access-stats">
+                        <span class="quick-access-stat"><strong>1</strong> Pending action</span>
+                        <span class="quick-access-stat"><strong>85%</strong> Complete</span>
+                    </div>
+                </div>
 
-<!-- DRiVE Card -->
-<div class="quick-access-card drive" onclick="alert('Navigating to DRiVE...')">
-<i class="pi pi-arrow-right quick-access-arrow"></i>
-<div class="quick-access-icon">
-<i class="pi pi-verified"></i>
-</div>
-<h3 class="quick-access-title">DRiVE</h3>
-<p class="quick-access-desc">
-Complete self-assessments, respond to verification requests, and manage corrective action plans.
-</p>
-<div class="quick-access-stats">
-<span class="quick-access-stat"><strong>1</strong> Pending action</span>
-<span class="quick-access-stat"><strong>85%</strong> Complete</span>
-</div>
-</div>
+                <!-- My Profile Card -->
+                <div class="quick-access-card profile" onclick="showView('profile')">
+                    <i class="pi pi-arrow-right quick-access-arrow"></i>
+                    <div class="quick-access-icon">
+                        <i class="pi pi-user"></i>
+                    </div>
+                    <h3 class="quick-access-title">My Profile</h3>
+                    <p class="quick-access-desc">
+                        Manage your account, linked services, roles, and personal information all in one place.
+                    </p>
+                    <div class="quick-access-stats">
+                        <span class="quick-access-stat"><strong>100%</strong> Profile complete</span>
+                        <span class="quick-access-stat"><i class="pi pi-check-circle" style="color:var(--success-500);"></i> Verified</span>
+                    </div>
+                </div>
 
-<!-- My Profile Card -->
-<div class="quick-access-card profile" onclick="showView('profile')">
-<i class="pi pi-arrow-right quick-access-arrow"></i>
-<div class="quick-access-icon">
-<i class="pi pi-user"></i>
-</div>
-<h3 class="quick-access-title">My Profile</h3>
-<p class="quick-access-desc">
-Manage your account, linked services, roles, and personal information all in one place.
-</p>
-<div class="quick-access-stats">
-<span class="quick-access-stat"><strong>100%</strong> Profile complete</span>
-<span class="quick-access-stat"><i class="pi pi-check-circle" style="color:var(--success-500);"></i> Verified</span>
-</div>
-</div>
+                <!-- UNGM Card -->
+                <div class="quick-access-card ungm" onclick="window.open('https://www.ungm.org', '_blank')">
+                    <i class="pi pi-arrow-right quick-access-arrow"></i>
+                    <div class="quick-access-icon">
+                        <i class="pi pi-globe"></i>
+                    </div>
+                    <h3 class="quick-access-title">UNGM</h3>
+                    <p class="quick-access-desc">
+                        Access UN business opportunities, contract awards, and manage your UNGM registration.
+                    </p>
+                    <div class="quick-access-stats">
+                        <span class="quick-access-stat"><strong>45</strong> Open opportunities</span>
+                        <span class="quick-access-stat"><i class="pi pi-external-link"></i> External</span>
+                    </div>
+                </div>
+            </div>
 
-<!-- UNGM Card -->
-<div class="quick-access-card ungm" onclick="window.open('https://www.ungm.org', '_blank')">
-<i class="pi pi-arrow-right quick-access-arrow"></i>
-<div class="quick-access-icon">
-<i class="pi pi-globe"></i>
-</div>
-<h3 class="quick-access-title">UNGM</h3>
-<p class="quick-access-desc">
-Access UN business opportunities, contract awards, and manage your UNGM registration.
-</p>
-<div class="quick-access-stats">
-<span class="quick-access-stat"><strong>45</strong> Open opportunities</span>
-<span class="quick-access-stat"><i class="pi pi-external-link"></i> External</span>
-</div>
-</div>
-</div>
+            <!-- Dashboard Grid -->
+            <div class="dashboard-grid">
+                <!-- Recent Activity -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="pi pi-history" style="color: var(--primary-500); margin-right: 8px;"></i> Recent Activity</h3>
+                        <button class="btn btn-ghost btn-sm">View All</button>
+                    </div>
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <div class="activity-icon tender">
+                                <i class="pi pi-file-edit"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">Bid submitted successfully</div>
+                                <div class="activity-desc">RFQ-2024-00892 - IT Equipment Supply</div>
+                            </div>
+                            <span class="activity-time">2 hours ago</span>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon drive">
+                                <i class="pi pi-verified"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">DRiVE assessment completed</div>
+                                <div class="activity-desc">Environmental compliance questionnaire</div>
+                            </div>
+                            <span class="activity-time">Yesterday</span>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon award">
+                                <i class="pi pi-trophy"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">Contract awarded</div>
+                                <div class="activity-desc">ITB-2024-00756 - Office Supplies</div>
+                            </div>
+                            <span class="activity-time">3 days ago</span>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon profile">
+                                <i class="pi pi-user"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">Profile updated</div>
+                                <div class="activity-desc">Contact information modified</div>
+                            </div>
+                            <span class="activity-time">5 days ago</span>
+                        </div>
+                    </div>
+                </div>
 
-<!-- Dashboard Grid -->
-<div class="dashboard-grid">
-<!-- Recent Activity -->
-<div class="card">
-<div class="card-header">
-<h3 class="card-title"><i class="pi pi-history"></i> Recent Activity</h3>
-<button class="btn btn-ghost btn-sm">View All</button>
-</div>
-<div class="card-body">
-<div class="activity-list">
-<div class="activity-item">
-<div class="activity-icon tender">
-<i class="pi pi-file-edit"></i>
-</div>
-<div class="activity-content">
-<div class="activity-title">Bid submitted successfully</div>
-<div class="activity-desc">RFQ-2024-00892 - IT Equipment Supply</div>
-</div>
-<span class="activity-time">2 hours ago</span>
-</div>
-<div class="activity-item">
-<div class="activity-icon drive">
-<i class="pi pi-verified"></i>
-</div>
-<div class="activity-content">
-<div class="activity-title">DRiVE assessment completed</div>
-<div class="activity-desc">Environmental compliance questionnaire</div>
-</div>
-<span class="activity-time">Yesterday</span>
-</div>
-<div class="activity-item">
-<div class="activity-icon award">
-<i class="pi pi-trophy"></i>
-</div>
-<div class="activity-content">
-<div class="activity-title">Contract awarded</div>
-<div class="activity-desc">ITB-2024-00756 - Office Supplies</div>
-</div>
-<span class="activity-time">3 days ago</span>
-</div>
-<div class="activity-item">
-<div class="activity-icon profile">
-<i class="pi pi-user"></i>
-</div>
-<div class="activity-content">
-<div class="activity-title">Profile updated</div>
-<div class="activity-desc">Contact information modified</div>
-</div>
-<span class="activity-time">5 days ago</span>
-</div>
-</div>
-</div>
-</div>
+                <!-- Notifications & Quick Links -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="pi pi-bell" style="color: var(--primary-500); margin-right: 8px;"></i> Notifications</h3>
+                        <span class="status-badge info">5 new</span>
+                    </div>
+                    <div class="notification-list">
+                        <div class="notification-item unread">
+                            <div class="notification-dot"></div>
+                            <div class="notification-content">
+                                <div class="notification-title">New tender matching your profile</div>
+                                <div class="notification-text">RFQ-2024-00923 - Software Development Services</div>
+                                <div class="notification-time">10 minutes ago</div>
+                            </div>
+                        </div>
+                        <div class="notification-item unread">
+                            <div class="notification-dot"></div>
+                            <div class="notification-content">
+                                <div class="notification-title">DRiVE action required</div>
+                                <div class="notification-text">Please complete the pending CAPA response</div>
+                                <div class="notification-time">2 hours ago</div>
+                            </div>
+                        </div>
+                        <div class="notification-item">
+                            <div class="notification-dot"></div>
+                            <div class="notification-content">
+                                <div class="notification-title">Tender deadline reminder</div>
+                                <div class="notification-text">ITB-2024-00834 closes in 3 days</div>
+                                <div class="notification-time">1 day ago</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="padding: var(--spacing-md); border-top: 1px solid var(--surface-200);">
+                        <div style="font-size: 13px; font-weight: 500; color: var(--text-secondary); margin-bottom: var(--spacing-sm);">Quick Links</div>
+                        <div class="quick-links">
+                            <a class="quick-link" href="#"><i class="pi pi-book"></i> User Guide</a>
+                            <a class="quick-link" href="#"><i class="pi pi-question-circle"></i> FAQs</a>
+                            <a class="quick-link" href="#"><i class="pi pi-phone"></i> Support</a>
+                            <a class="quick-link" href="#"><i class="pi pi-calendar"></i> UP Forum</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-<!-- Notifications & Quick Links -->
-<div class="card">
-<div class="card-header">
-<h3 class="card-title"><i class="pi pi-bell"></i> Notifications</h3>
-<span class="status-badge info">5 new</span>
-</div>
-<div class="card-body" style="padding: 0;">
-<div class="notification-list">
-<div class="notification-item unread">
-<div class="notification-dot"></div>
-<div class="notification-content">
-<div class="notification-title">New tender matching your profile</div>
-<div class="notification-text">RFQ-2024-00923 - Software Development Services</div>
-<div class="notification-time">10 minutes ago</div>
-</div>
-</div>
-<div class="notification-item unread">
-<div class="notification-dot"></div>
-<div class="notification-content">
-<div class="notification-title">DRiVE action required</div>
-<div class="notification-text">Please complete the pending CAPA response</div>
-<div class="notification-time">2 hours ago</div>
-</div>
-</div>
-<div class="notification-item">
-<div class="notification-dot"></div>
-<div class="notification-content">
-<div class="notification-title">Tender deadline reminder</div>
-<div class="notification-text">ITB-2024-00834 closes in 3 days</div>
-<div class="notification-time">1 day ago</div>
-</div>
-</div>
-</div>
-</div>
-<div class="card-body" style="border-top: 1px solid var(--surface-200);">
-<div style="font-size: 13px; font-weight: 500; color: var(--text-secondary); margin-bottom: var(--spacing-sm);">Quick Links</div>
-<div class="quick-links">
-<a class="quick-link" href="#"><i class="pi pi-book"></i> User Guide</a>
-<a class="quick-link" href="#"><i class="pi pi-question-circle"></i> FAQs</a>
-<a class="quick-link" href="#"><i class="pi pi-phone"></i> Support</a>
-<a class="quick-link" href="#"><i class="pi pi-calendar"></i> UP Forum</a>
-</div>
-</div>
-</div>
-</div>
-</section>
+        <!-- Profile View -->
+        <section class="view-section" id="view-profile">
+            <!-- Profile Header -->
+            <div class="profile-header-card fade-in">
+                <div class="profile-avatar">AC</div>
+                <div class="profile-info">
+                    <h1 class="profile-name">Acme Corporation</h1>
+                    <p class="profile-company">IT Solutions & Services</p>
+                    <div class="profile-badges">
+                        <span class="profile-badge verified"><i class="pi pi-check-circle"></i> UNGM Verified</span>
+                        <span class="profile-badge ungm"><i class="pi pi-globe"></i> Level 2 Registration</span>
+                        <span class="profile-badge mfa"><i class="pi pi-shield"></i> MFA Enabled</span>
+                    </div>
+                </div>
+                <div class="profile-actions">
+                    <button class="btn btn-secondary"><i class="pi pi-pencil"></i> Edit Profile</button>
+                    <button class="btn btn-primary"><i class="pi pi-download"></i> Export Data</button>
+                </div>
+            </div>
 
-<!-- Profile View -->
-<section class="view-section" id="view-profile">
-<!-- Profile Header -->
-<div class="profile-header-card fade-in">
-<div class="profile-avatar">JA</div>
-<div class="profile-info">
-<h1 class="profile-name">John Anderson</h1>
-<p class="profile-company">Global Tech Solutions Ltd.</p>
-<div class="profile-badges">
-<span class="profile-badge verified"><i class="pi pi-check-circle"></i> UNGM Verified</span>
-<span class="profile-badge ungm"><i class="pi pi-globe"></i> Level 2 Registration</span>
-<span class="profile-badge mfa"><i class="pi pi-shield"></i> MFA Enabled</span>
-</div>
-</div>
-<div class="profile-actions">
-<button class="btn btn-secondary"><i class="pi pi-pencil"></i> Edit Profile</button>
-<button class="btn btn-primary"><i class="pi pi-download"></i> Export Data</button>
-</div>
-</div>
+            <!-- Profile Content -->
+            <div class="profile-grid">
+                <div class="form-section">
+                    <div class="form-section-header">
+                        <h3 class="form-section-title"><i class="pi pi-building"></i> Company Information</h3>
+                        <button class="btn btn-ghost btn-sm"><i class="pi pi-pencil"></i> Edit</button>
+                    </div>
+                    <div class="form-section-body">
+                        <div class="form-group">
+                            <label class="form-label">Company Name</label>
+                            <input type="text" class="form-input" value="Acme Corporation" disabled>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">UNGM Vendor ID</label>
+                                <input type="text" class="form-input" value="UNGM-2024-54321" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">DUNS Number</label>
+                                <input type="text" class="form-input" value="98-765-4321" disabled>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Year Established</label>
+                                <input type="text" class="form-input" value="2005" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Number of Employees</label>
+                                <input type="text" class="form-input" value="100-250" disabled>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Business Type</label>
+                            <input type="text" class="form-input" value="Information Technology, Software Development, Consulting" disabled>
+                        </div>
+                    </div>
+                </div>
 
-<!-- Profile Tabs -->
-<div class="profile-tabs">
-<button class="profile-tab active" data-tab="personal" onclick="setProfileTab('personal')">
-<i class="pi pi-user"></i> Personal Info
-</button>
-<button class="profile-tab" data-tab="account" onclick="setProfileTab('account')">
-<i class="pi pi-link"></i> Linked Accounts
-</button>
-<button class="profile-tab" data-tab="roles" onclick="setProfileTab('roles')">
-<i class="pi pi-users"></i> Roles & Permissions
-</button>
-<button class="profile-tab" data-tab="security" onclick="setProfileTab('security')">
-<i class="pi pi-shield"></i> Security
-</button>
-<button class="profile-tab" data-tab="business" onclick="setProfileTab('business')">
-<i class="pi pi-building"></i> Business Info
-</button>
-</div>
+                <div class="form-section">
+                    <div class="form-section-header">
+                        <h3 class="form-section-title"><i class="pi pi-id-card"></i> Contact Information</h3>
+                        <button class="btn btn-ghost btn-sm"><i class="pi pi-pencil"></i> Edit</button>
+                    </div>
+                    <div class="form-section-body">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Primary Contact</label>
+                                <input type="text" class="form-input" value="John Smith" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Job Title</label>
+                                <input type="text" class="form-input" value="Sales Director" disabled>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" class="form-input" value="john.smith@acmecorp.com" disabled>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Phone Number</label>
+                                <input type="tel" class="form-input" value="+1 (555) 987-6543" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Mobile</label>
+                                <input type="tel" class="form-input" value="+1 (555) 123-4567" disabled>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Address</label>
+                            <input type="text" class="form-input" value="456 Tech Park Avenue, Suite 200, New York, NY 10001, USA" disabled>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-<!-- Personal Info Tab -->
-<div class="profile-content active" id="tab-personal">
-<div class="profile-grid">
-<div class="form-section">
-<div class="form-section-header">
-<h3 class="form-section-title"><i class="pi pi-id-card"></i> Contact Information</h3>
-<button class="btn btn-ghost btn-sm"><i class="pi pi-pencil"></i> Edit</button>
-</div>
-<div class="form-section-body">
-<div class="form-row">
-<div class="form-group">
-<label class="form-label">First Name</label>
-<input type="text" class="form-input" value="John" disabled>
-</div>
-<div class="form-group">
-<label class="form-label">Last Name</label>
-<input type="text" class="form-input" value="Anderson" disabled>
-</div>
-</div>
-<div class="form-group">
-<label class="form-label">Email Address</label>
-<input type="email" class="form-input" value="john.anderson@globaltech.com" disabled>
-<div class="form-hint"><i class="pi pi-info-circle"></i> Managed via UNGM account</div>
-</div>
-<div class="form-row">
-<div class="form-group">
-<label class="form-label">Phone Number</label>
-<input type="tel" class="form-input" value="+1 (555) 123-4567" disabled>
-</div>
-<div class="form-group">
-<label class="form-label">Mobile</label>
-<input type="tel" class="form-input" value="+1 (555) 987-6543" disabled>
-</div>
-</div>
-<div class="form-group">
-<label class="form-label">Job Title</label>
-<input type="text" class="form-input" value="Procurement Manager" disabled>
-</div>
-</div>
-</div>
-
-<div class="form-section">
-<div class="form-section-header">
-<h3 class="form-section-title"><i class="pi pi-map-marker"></i> Address</h3>
-<button class="btn btn-ghost btn-sm"><i class="pi pi-pencil"></i> Edit</button>
-</div>
-<div class="form-section-body">
-<div class="form-group">
-<label class="form-label">Street Address</label>
-<input type="text" class="form-input" value="1234 Innovation Drive, Suite 500" disabled>
-</div>
-<div class="form-row">
-<div class="form-group">
-<label class="form-label">City</label>
-<input type="text" class="form-input" value="San Francisco" disabled>
-</div>
-<div class="form-group">
-<label class="form-label">State/Province</label>
-<input type="text" class="form-input" value="California" disabled>
-</div>
-</div>
-<div class="form-row">
-<div class="form-group">
-<label class="form-label">Postal Code</label>
-<input type="text" class="form-input" value="94105" disabled>
-</div>
-<div class="form-group">
-<label class="form-label">Country</label>
-<input type="text" class="form-input" value="United States" disabled>
-</div>
-</div>
-</div>
-</div>
-</div>
+    </main>
 </div>
 
-<!-- Linked Accounts Tab -->
-<div class="profile-content" id="tab-account">
-<div class="profile-grid">
-<div class="form-section">
-<div class="form-section-header">
-<h3 class="form-section-title"><i class="pi pi-link"></i> Connected Services</h3>
-</div>
-<div class="form-section-body">
-<div class="linked-account">
-<div class="linked-account-icon ungm">
-<i class="pi pi-globe"></i>
-</div>
-<div class="linked-account-info">
-<div class="linked-account-name">UNGM Account</div>
-<div class="linked-account-detail">Vendor ID: UNGM-2024-78543 · Level 2</div>
-</div>
-<span class="linked-account-status connected"><i class="pi pi-check-circle"></i> Connected</span>
-</div>
-<div class="linked-account">
-<div class="linked-account-icon drive">
-<i class="pi pi-verified"></i>
-</div>
-<div class="linked-account-info">
-<div class="linked-account-name">DRiVE Module</div>
-<div class="linked-account-detail">Last assessment: Dec 15, 2024</div>
-</div>
-<span class="linked-account-status connected"><i class="pi pi-check-circle"></i> Active</span>
-</div>
-<div class="linked-account">
-<div class="linked-account-icon" style="background: var(--info-50); color: var(--info-400);">
-<i class="pi pi-shopping-cart"></i>
-</div>
-<div class="linked-account-info">
-<div class="linked-account-name">UN Web Buy Plus</div>
-<div class="linked-account-detail">LTA holder with active catalogue</div>
-</div>
-<span class="linked-account-status pending"><i class="pi pi-clock"></i> Pending Setup</span>
-</div>
-</div>
+<!-- =========================================================================
+     TOAST NOTIFICATION
+     ========================================================================= -->
+<div class="toast" id="toast">
+    <i class="pi pi-check-circle"></i>
+    <span id="toastMessage">Action completed</span>
 </div>
 
-<div class="form-section">
-<div class="form-section-header">
-<h3 class="form-section-title"><i class="pi pi-sync"></i> Single Sign-On (SSO)</h3>
-</div>
-<div class="form-section-body">
-<div style="display: flex; align-items: center; gap: var(--spacing-md); padding: var(--spacing-md); background: var(--success-50); border-radius: var(--radius-md); margin-bottom: var(--spacing-md);">
-<i class="pi pi-check-circle" style="font-size: 24px; color: var(--success-500);"></i>
-<div>
-<div style="font-weight: 600; color: var(--text-primary);">SSO Enabled</div>
-<div style="font-size: 13px; color: var(--text-secondary);">You are authenticated via your UNGM credentials</div>
-</div>
-</div>
-<p class="text-sm text-muted">
-Your login is managed through the United Nations Global Marketplace (UNGM). Changes to your credentials should be made directly on the UNGM platform.
-</p>
-<a href="https://www.ungm.org" target="_blank" class="btn btn-secondary mt-md">
-<i class="pi pi-external-link"></i> Manage on UNGM
-</a>
-</div>
-</div>
-</div>
-</div>
-
-<!-- Roles & Permissions Tab -->
-<div class="profile-content" id="tab-roles">
-<div class="profile-grid">
-<div class="form-section">
-<div class="form-section-header">
-<h3 class="form-section-title"><i class="pi pi-users"></i> Your Roles</h3>
-</div>
-<div class="form-section-body">
-<div class="role-card">
-<div class="role-header">
-<span class="role-name"><i class="pi pi-star"></i> Account Administrator</span>
-<span class="role-badge primary">Primary</span>
-</div>
-<div class="role-permissions">
-<span class="permission-tag">Manage Users</span>
-<span class="permission-tag">Submit Bids</span>
-<span class="permission-tag">View Reports</span>
-<span class="permission-tag">Edit Profile</span>
-<span class="permission-tag">DRiVE Access</span>
-</div>
-</div>
-<div class="role-card">
-<div class="role-header">
-<span class="role-name"><i class="pi pi-file-edit"></i> Bid Manager</span>
-<span class="role-badge standard">Standard</span>
-</div>
-<div class="role-permissions">
-<span class="permission-tag">Create Bids</span>
-<span class="permission-tag">Submit Bids</span>
-<span class="permission-tag">View Tenders</span>
-<span class="permission-tag">Upload Documents</span>
-</div>
-</div>
-</div>
-</div>
-
-<div class="form-section">
-<div class="form-section-header">
-<h3 class="form-section-title"><i class="pi pi-user-plus"></i> Team Members</h3>
-<button class="btn btn-primary btn-sm" onclick="openAddMemberModal()"><i class="pi pi-plus"></i> Add Member</button>
-</div>
-<div class="form-section-body" id="teamMembersList">
-<!-- Sarah Adams -->
-<div class="team-member-card" data-member-id="1">
-<div class="team-member-avatar" style="background: var(--primary-100); color: var(--primary-600);">SA</div>
-<div class="team-member-info">
-<div class="team-member-name">Sarah Adams</div>
-<div class="team-member-email">sarah.adams@globaltech.com</div>
-<div class="team-member-roles">
-<span class="team-member-role">Bid Manager</span>
-<span class="team-member-role">DRiVE Access</span>
-</div>
-</div>
-<span class="status-badge active">Active</span>
-<div class="team-member-actions">
-<button class="btn-icon" title="Manage Roles" onclick="openManageRolesModal('1', 'Sarah Adams', 'SA', ['bid-manager', 'drive-access'])">
-<i class="pi pi-shield"></i>
-</button>
-<button class="btn-icon" title="Edit Member" onclick="openEditMemberModal('1', 'Sarah', 'Adams', 'sarah.adams@globaltech.com')">
-<i class="pi pi-pencil"></i>
-</button>
-<button class="btn-icon danger" title="Remove Member" onclick="openRemoveMemberModal('1', 'Sarah Adams')">
-<i class="pi pi-trash"></i>
-</button>
-</div>
-</div>
-<!-- Mike Kim -->
-<div class="team-member-card" data-member-id="2">
-<div class="team-member-avatar" style="background: var(--purple-50); color: var(--purple-500);">MK</div>
-<div class="team-member-info">
-<div class="team-member-name">Mike Kim</div>
-<div class="team-member-email">mike.kim@globaltech.com</div>
-<div class="team-member-roles">
-<span class="team-member-role">Viewer</span>
-</div>
-</div>
-<span class="status-badge active">Active</span>
-<div class="team-member-actions">
-<button class="btn-icon" title="Manage Roles" onclick="openManageRolesModal('2', 'Mike Kim', 'MK', ['viewer'])">
-<i class="pi pi-shield"></i>
-</button>
-<button class="btn-icon" title="Edit Member" onclick="openEditMemberModal('2', 'Mike', 'Kim', 'mike.kim@globaltech.com')">
-<i class="pi pi-pencil"></i>
-</button>
-<button class="btn-icon danger" title="Remove Member" onclick="openRemoveMemberModal('2', 'Mike Kim')">
-<i class="pi pi-trash"></i>
-</button>
-</div>
-</div>
-<!-- Lisa Johnson -->
-<div class="team-member-card" data-member-id="3">
-<div class="team-member-avatar" style="background: var(--warning-50); color: var(--warning-500);">LJ</div>
-<div class="team-member-info">
-<div class="team-member-name">Lisa Johnson</div>
-<div class="team-member-email">lisa.johnson@globaltech.com</div>
-<div class="team-member-roles">
-<span class="team-member-role" style="background: var(--warning-50); color: var(--warning-500);">Pending Invite</span>
-</div>
-</div>
-<span class="status-badge pending">Pending</span>
-<div class="team-member-actions">
-<button class="btn-icon" title="Resend Invite" onclick="resendInvite('3', 'Lisa Johnson')">
-<i class="pi pi-send"></i>
-</button>
-<button class="btn-icon danger" title="Cancel Invite" onclick="openRemoveMemberModal('3', 'Lisa Johnson', true)">
-<i class="pi pi-times"></i>
-</button>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-
-<!-- Security Tab -->
-<div class="profile-content" id="tab-security">
-<div class="profile-grid">
-<div class="form-section">
-<div class="form-section-header">
-<h3 class="form-section-title"><i class="pi pi-shield"></i> Security Settings</h3>
-</div>
-<div class="form-section-body">
-<div class="security-item">
-<div class="security-info">
-<div class="security-icon enabled">
-<i class="pi pi-lock"></i>
-</div>
-<div>
-<div class="security-name">Multi-Factor Authentication (MFA)</div>
-<div class="security-desc">Add an extra layer of security to your account</div>
-</div>
-</div>
-<div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
-</div>
-<div class="security-item">
-<div class="security-info">
-<div class="security-icon enabled">
-<i class="pi pi-mobile"></i>
-</div>
-<div>
-<div class="security-name">Authenticator App</div>
-<div class="security-desc">Using Google Authenticator</div>
-</div>
-</div>
-<button class="btn btn-ghost btn-sm">Change</button>
-</div>
-<div class="security-item">
-<div class="security-info">
-<div class="security-icon">
-<i class="pi pi-envelope"></i>
-</div>
-<div>
-<div class="security-name">Email Notifications</div>
-<div class="security-desc">Get notified of security events</div>
-</div>
-</div>
-<div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
-</div>
-</div>
-</div>
-
-<div class="form-section">
-<div class="form-section-header">
-<h3 class="form-section-title"><i class="pi pi-clock"></i> Login History</h3>
-</div>
-<div class="form-section-body">
-<div class="activity-list">
-<div class="activity-item" style="padding: var(--spacing-sm);">
-<div class="activity-icon" style="background: var(--success-50); color: var(--success-500);">
-<i class="pi pi-check"></i>
-</div>
-<div class="activity-content">
-<div class="activity-title">Successful login</div>
-<div class="activity-desc">Chrome on Windows · San Francisco, US</div>
-</div>
-<span class="activity-time">Today, 9:15 AM</span>
-</div>
-<div class="activity-item" style="padding: var(--spacing-sm);">
-<div class="activity-icon" style="background: var(--success-50); color: var(--success-500);">
-<i class="pi pi-check"></i>
-</div>
-<div class="activity-content">
-<div class="activity-title">Successful login</div>
-<div class="activity-desc">Safari on iPhone · San Francisco, US</div>
-</div>
-<span class="activity-time">Dec 23, 3:45 PM</span>
-</div>
-<div class="activity-item" style="padding: var(--spacing-sm);">
-<div class="activity-icon" style="background: var(--danger-50); color: var(--danger-500);">
-<i class="pi pi-times"></i>
-</div>
-<div class="activity-content">
-<div class="activity-title">Failed login attempt</div>
-<div class="activity-desc">Unknown device · New York, US</div>
-</div>
-<span class="activity-time">Dec 22, 11:20 PM</span>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-
-<!-- Business Info Tab -->
-<div class="profile-content" id="tab-business">
-<div class="profile-grid">
-<div class="form-section">
-<div class="form-section-header">
-<h3 class="form-section-title"><i class="pi pi-building"></i> Company Information</h3>
-<button class="btn btn-ghost btn-sm"><i class="pi pi-external-link"></i> Edit on UNGM</button>
-</div>
-<div class="form-section-body">
-<div class="form-group">
-<label class="form-label">Company Name</label>
-<input type="text" class="form-input" value="Global Tech Solutions Ltd." disabled>
-</div>
-<div class="form-row">
-<div class="form-group">
-<label class="form-label">UNGM Vendor ID</label>
-<input type="text" class="form-input" value="UNGM-2024-78543" disabled>
-</div>
-<div class="form-group">
-<label class="form-label">DUNS Number</label>
-<input type="text" class="form-input" value="12-345-6789" disabled>
-</div>
-</div>
-<div class="form-row">
-<div class="form-group">
-<label class="form-label">Year Established</label>
-<input type="text" class="form-input" value="2008" disabled>
-</div>
-<div class="form-group">
-<label class="form-label">Number of Employees</label>
-<input type="text" class="form-input" value="250-500" disabled>
-</div>
-</div>
-<div class="form-group">
-<label class="form-label">Business Type</label>
-<input type="text" class="form-input" value="Information Technology Services, Software Development" disabled>
-</div>
-</div>
-</div>
-
-<div class="form-section">
-<div class="form-section-header">
-<h3 class="form-section-title"><i class="pi pi-chart-line"></i> Certifications & Compliance</h3>
-</div>
-<div class="form-section-body">
-<div class="linked-account">
-<div class="linked-account-icon" style="background: var(--success-50); color: var(--success-500);">
-<i class="pi pi-verified"></i>
-</div>
-<div class="linked-account-info">
-<div class="linked-account-name">ISO 9001:2015</div>
-<div class="linked-account-detail">Quality Management System</div>
-</div>
-<span class="status-badge active"><i class="pi pi-check"></i> Valid</span>
-</div>
-<div class="linked-account">
-<div class="linked-account-icon" style="background: var(--success-50); color: var(--success-500);">
-<i class="pi pi-verified"></i>
-</div>
-<div class="linked-account-info">
-<div class="linked-account-name">ISO 27001</div>
-<div class="linked-account-detail">Information Security Management</div>
-</div>
-<span class="status-badge active"><i class="pi pi-check"></i> Valid</span>
-</div>
-<div class="linked-account">
-<div class="linked-account-icon" style="background: var(--warning-50); color: var(--warning-500);">
-<i class="pi pi-exclamation-triangle"></i>
-</div>
-<div class="linked-account-info">
-<div class="linked-account-name">ISO 14001</div>
-<div class="linked-account-detail">Environmental Management</div>
-</div>
-<span class="status-badge pending"><i class="pi pi-clock"></i> Expiring Soon</span>
-</div>
-</div>
-</div>
-</div>
-</div>
-
-</section>
-
-</main>
-</div>
-
-<!-- Add Member Modal -->
-<div class="modal-overlay" id="addMemberModal">
-<div class="modal">
-<div class="modal-header">
-<h3 class="modal-title"><i class="pi pi-user-plus"></i> Add Team Member</h3>
-<button class="modal-close" onclick="closeModal('addMemberModal')"><i class="pi pi-times"></i></button>
-</div>
-<div class="modal-body">
-<div class="alert-box info">
-<i class="pi pi-info-circle"></i>
-<div class="alert-box-content">
-<div class="alert-box-title">Invite via Email</div>
-An invitation email will be sent to the new team member. They will need to accept the invitation and authenticate via UNGM to access the portal.
-</div>
-</div>
-<div class="form-row">
-<div class="form-group">
-<label class="form-label">First Name <span style="color: var(--danger-500);">*</span></label>
-<input type="text" class="form-input" id="newMemberFirstName" placeholder="Enter first name">
-</div>
-<div class="form-group">
-<label class="form-label">Last Name <span style="color: var(--danger-500);">*</span></label>
-<input type="text" class="form-input" id="newMemberLastName" placeholder="Enter last name">
-</div>
-</div>
-<div class="form-group">
-<label class="form-label">Email Address <span style="color: var(--danger-500);">*</span></label>
-<input type="email" class="form-input" id="newMemberEmail" placeholder="email@company.com">
-</div>
-<div class="divider"></div>
-<div class="form-group">
-<label class="form-label">Assign Roles</label>
-<div class="role-checkbox-list" id="newMemberRoles">
-<div class="role-checkbox-item" data-role="admin" onclick="toggleRoleCheckbox(this)">
-<div class="role-checkbox"><i class="pi pi-check"></i></div>
-<div class="role-checkbox-info">
-<div class="role-checkbox-name">Account Administrator</div>
-<div class="role-checkbox-desc">Full access to manage users, settings, and all portal features</div>
-<div class="role-checkbox-permissions">
-<span class="permission-tag">Manage Users</span>
-<span class="permission-tag">Edit Settings</span>
-<span class="permission-tag">Full Access</span>
-</div>
-</div>
-</div>
-<div class="role-checkbox-item selected" data-role="bid-manager" onclick="toggleRoleCheckbox(this)">
-<div class="role-checkbox"><i class="pi pi-check"></i></div>
-<div class="role-checkbox-info">
-<div class="role-checkbox-name">Bid Manager</div>
-<div class="role-checkbox-desc">Create, edit, and submit bids for tender opportunities</div>
-<div class="role-checkbox-permissions">
-<span class="permission-tag">Create Bids</span>
-<span class="permission-tag">Submit Bids</span>
-<span class="permission-tag">Upload Documents</span>
-</div>
-</div>
-</div>
-<div class="role-checkbox-item" data-role="drive-access" onclick="toggleRoleCheckbox(this)">
-<div class="role-checkbox"><i class="pi pi-check"></i></div>
-<div class="role-checkbox-info">
-<div class="role-checkbox-name">DRiVE Access</div>
-<div class="role-checkbox-desc">Complete assessments and respond to verification requests</div>
-<div class="role-checkbox-permissions">
-<span class="permission-tag">Self-Assessment</span>
-<span class="permission-tag">CAPA Response</span>
-</div>
-</div>
-</div>
-<div class="role-checkbox-item" data-role="viewer" onclick="toggleRoleCheckbox(this)">
-<div class="role-checkbox"><i class="pi pi-check"></i></div>
-<div class="role-checkbox-info">
-<div class="role-checkbox-name">Viewer</div>
-<div class="role-checkbox-desc">View-only access to tenders and company information</div>
-<div class="role-checkbox-permissions">
-<span class="permission-tag">View Tenders</span>
-<span class="permission-tag">View Reports</span>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="modal-footer">
-<button class="btn btn-secondary" onclick="closeModal('addMemberModal')">Cancel</button>
-<button class="btn btn-primary" onclick="addTeamMember()"><i class="pi pi-send"></i> Send Invitation</button>
-</div>
-</div>
-</div>
-
-<!-- Manage Roles Modal -->
-<div class="modal-overlay" id="manageRolesModal">
-<div class="modal">
-<div class="modal-header">
-<h3 class="modal-title"><i class="pi pi-shield"></i> Manage Roles</h3>
-<button class="modal-close" onclick="closeModal('manageRolesModal')"><i class="pi pi-times"></i></button>
-</div>
-<div class="modal-body">
-<div class="confirm-user">
-<div class="team-member-avatar" id="manageRolesAvatar" style="background: var(--primary-100); color: var(--primary-600);">SA</div>
-<div>
-<div class="team-member-name" id="manageRolesName">Sarah Adams</div>
-<div class="team-member-email" style="color: var(--text-muted);">Assign or remove roles for this team member</div>
-</div>
-</div>
-<div class="form-group">
-<label class="form-label">Assigned Roles</label>
-<div class="role-checkbox-list" id="memberRolesList">
-<div class="role-checkbox-item" data-role="admin" onclick="toggleRoleCheckbox(this)">
-<div class="role-checkbox"><i class="pi pi-check"></i></div>
-<div class="role-checkbox-info">
-<div class="role-checkbox-name">Account Administrator</div>
-<div class="role-checkbox-desc">Full access to manage users, settings, and all portal features</div>
-</div>
-</div>
-<div class="role-checkbox-item" data-role="bid-manager" onclick="toggleRoleCheckbox(this)">
-<div class="role-checkbox"><i class="pi pi-check"></i></div>
-<div class="role-checkbox-info">
-<div class="role-checkbox-name">Bid Manager</div>
-<div class="role-checkbox-desc">Create, edit, and submit bids for tender opportunities</div>
-</div>
-</div>
-<div class="role-checkbox-item" data-role="drive-access" onclick="toggleRoleCheckbox(this)">
-<div class="role-checkbox"><i class="pi pi-check"></i></div>
-<div class="role-checkbox-info">
-<div class="role-checkbox-name">DRiVE Access</div>
-<div class="role-checkbox-desc">Complete assessments and respond to verification requests</div>
-</div>
-</div>
-<div class="role-checkbox-item" data-role="viewer" onclick="toggleRoleCheckbox(this)">
-<div class="role-checkbox"><i class="pi pi-check"></i></div>
-<div class="role-checkbox-info">
-<div class="role-checkbox-name">Viewer</div>
-<div class="role-checkbox-desc">View-only access to tenders and company information</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="modal-footer">
-<button class="btn btn-secondary" onclick="closeModal('manageRolesModal')">Cancel</button>
-<button class="btn btn-primary" onclick="saveRoles()"><i class="pi pi-check"></i> Save Changes</button>
-</div>
-</div>
-</div>
-
-<!-- Edit Member Modal -->
-<div class="modal-overlay" id="editMemberModal">
-<div class="modal">
-<div class="modal-header">
-<h3 class="modal-title"><i class="pi pi-user-edit"></i> Edit Team Member</h3>
-<button class="modal-close" onclick="closeModal('editMemberModal')"><i class="pi pi-times"></i></button>
-</div>
-<div class="modal-body">
-<div class="form-row">
-<div class="form-group">
-<label class="form-label">First Name <span style="color: var(--danger-500);">*</span></label>
-<input type="text" class="form-input" id="editMemberFirstName">
-</div>
-<div class="form-group">
-<label class="form-label">Last Name <span style="color: var(--danger-500);">*</span></label>
-<input type="text" class="form-input" id="editMemberLastName">
-</div>
-</div>
-<div class="form-group">
-<label class="form-label">Email Address</label>
-<input type="email" class="form-input" id="editMemberEmail" disabled>
-<div class="form-hint"><i class="pi pi-info-circle"></i> Email is managed via UNGM and cannot be changed here</div>
-</div>
-<input type="hidden" id="editMemberId">
-</div>
-<div class="modal-footer">
-<button class="btn btn-secondary" onclick="closeModal('editMemberModal')">Cancel</button>
-<button class="btn btn-primary" onclick="saveEditMember()"><i class="pi pi-check"></i> Save Changes</button>
-</div>
-</div>
-</div>
-
-<!-- Remove Member Modal -->
-<div class="modal-overlay" id="removeMemberModal">
-<div class="modal" style="max-width: 440px;">
-<div class="modal-header">
-<h3 class="modal-title"><i class="pi pi-exclamation-triangle" style="color: var(--danger-500);"></i> <span id="removeModalTitle">Remove Team Member</span></h3>
-<button class="modal-close" onclick="closeModal('removeMemberModal')"><i class="pi pi-times"></i></button>
-</div>
-<div class="modal-body">
-<div class="alert-box warning">
-<i class="pi pi-exclamation-triangle"></i>
-<div class="alert-box-content" id="removeModalMessage">
-Are you sure you want to remove <strong id="removeMemberName">Sarah Adams</strong> from the team? They will lose access to all portal features immediately.
-</div>
-</div>
-<input type="hidden" id="removeMemberId">
-<input type="hidden" id="removeIsPending">
-</div>
-<div class="modal-footer">
-<button class="btn btn-secondary" onclick="closeModal('removeMemberModal')">Cancel</button>
-<button class="btn" style="background: var(--danger-500); color: white;" onclick="confirmRemoveMember()">
-<i class="pi pi-trash"></i> <span id="removeButtonText">Remove Member</span>
-</button>
-</div>
-</div>
-</div>
-
-<!-- Toast Notification -->
-<div id="toastNotification" style="position: fixed; bottom: 24px; right: 24px; background: var(--surface-900); color: white; padding: 16px 24px; border-radius: var(--radius-md); box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 12px; z-index: 3000; transform: translateY(100px); opacity: 0; transition: all 0.3s ease;">
-<i class="pi pi-check-circle" style="font-size: 20px; color: var(--success-500);"></i>
-<span id="toastMessage">Changes saved successfully</span>
-</div>
-
+<!-- =========================================================================
+     JAVASCRIPT
+     ========================================================================= -->
 <script>
-// View switching
+// ==================== SIDEBAR FUNCTIONS ====================
+
+// Toggle Sidebar Collapsed/Expanded
+function toggleSidebar() {
+    const sidebar = document.getElementById('mainSidebar');
+    sidebar.classList.toggle('collapsed');
+}
+
+// Toggle Menu Group Function
+function toggleMenuGroup(header) {
+    const group = header.parentElement;
+    group.classList.toggle('collapsed');
+}
+
+// ==================== VIEW SWITCHING ====================
+
 function showView(viewName) {
-document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
-document.getElementById('view-' + viewName).classList.add('active');
-document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
-if (viewName === 'landing') {
-document.querySelector('.menu-item:nth-child(1)').classList.add('active');
-} else if (viewName === 'profile') {
-document.querySelector('.menu-item:nth-child(2)').classList.add('active');
-}
-}
-
-// Profile tabs
-function setProfileTab(tabName) {
-document.querySelectorAll('.profile-tab').forEach(t => t.classList.remove('active'));
-document.querySelectorAll('.profile-content').forEach(c => c.classList.remove('active'));
-document.querySelector(`.profile-tab[data-tab="${tabName}"]`).classList.add('active');
-document.getElementById('tab-' + tabName).classList.add('active');
-}
-
-// User dropdown
-function toggleUserDropdown() {
-document.getElementById('userDropdown').classList.toggle('open');
-}
-
-function closeUserDropdown() {
-document.getElementById('userDropdown').classList.remove('open');
+    // Hide all view sections
+    document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
+    
+    // Show the target view
+    document.getElementById('view-' + viewName).classList.add('active');
+    
+    // Update active menu item
+    document.querySelectorAll('.sidebar-menu .menu-item').forEach(item => {
+        item.classList.remove('active');
+        const text = item.querySelector('span:last-child')?.textContent?.trim().toLowerCase();
+        if (viewName === 'landing' && text === 'home') {
+            item.classList.add('active');
+        } else if (viewName === 'profile' && text === 'my profile') {
+            item.classList.add('active');
+        }
+    });
+    
+    // Update module name in header
+    const moduleNames = {
+        'landing': 'Home',
+        'profile': 'My Profile'
+    };
+    document.getElementById('currentModuleName').textContent = moduleNames[viewName] || viewName;
 }
 
-// Close dropdown when clicking outside
-document.addEventListener('click', function(e) {
-if (!e.target.closest('.user-dropdown')) {
-closeUserDropdown();
-}
-});
-
-// Make menu items in sidebar work
-document.querySelectorAll('.menu-item').forEach((item, index) => {
-if (index === 0) {
-item.onclick = () => showView('landing');
-} else if (index === 1) {
-item.onclick = () => showView('profile');
-}
-});
-
-// ========== MODAL FUNCTIONS ==========
-
-// Open/Close Modal
-function openModal(modalId) {
-document.getElementById(modalId).classList.add('open');
-document.body.style.overflow = 'hidden';
-}
-
-function closeModal(modalId) {
-document.getElementById(modalId).classList.remove('open');
-document.body.style.overflow = '';
-}
-
-// Close modal on overlay click
-document.querySelectorAll('.modal-overlay').forEach(overlay => {
-overlay.addEventListener('click', function(e) {
-if (e.target === this) {
-this.classList.remove('open');
-document.body.style.overflow = '';
-}
-});
-});
-
-// Toggle role checkbox
-function toggleRoleCheckbox(element) {
-element.classList.toggle('selected');
-}
-
-// ========== ADD MEMBER ==========
-
-function openAddMemberModal() {
-// Reset form
-document.getElementById('newMemberFirstName').value = '';
-document.getElementById('newMemberLastName').value = '';
-document.getElementById('newMemberEmail').value = '';
-// Reset roles (only Bid Manager selected by default)
-document.querySelectorAll('#newMemberRoles .role-checkbox-item').forEach(item => {
-item.classList.remove('selected');
-if (item.dataset.role === 'bid-manager') {
-item.classList.add('selected');
-}
-});
-openModal('addMemberModal');
-}
-
-function addTeamMember() {
-const firstName = document.getElementById('newMemberFirstName').value.trim();
-const lastName = document.getElementById('newMemberLastName').value.trim();
-const email = document.getElementById('newMemberEmail').value.trim();
-
-if (!firstName || !lastName || !email) {
-showToast('Please fill in all required fields', 'error');
-return;
-}
-
-// Get selected roles
-const selectedRoles = [];
-document.querySelectorAll('#newMemberRoles .role-checkbox-item.selected').forEach(item => {
-selectedRoles.push(item.dataset.role);
-});
-
-if (selectedRoles.length === 0) {
-showToast('Please assign at least one role', 'error');
-return;
-}
-
-// Generate initials and random color
-const initials = firstName.charAt(0) + lastName.charAt(0);
-const colors = [
-{ bg: 'var(--primary-100)', color: 'var(--primary-600)' },
-{ bg: 'var(--purple-50)', color: 'var(--purple-500)' },
-{ bg: 'var(--success-50)', color: 'var(--success-500)' },
-{ bg: 'var(--info-50)', color: 'var(--info-400)' },
-];
-const randomColor = colors[Math.floor(Math.random() * colors.length)];
-
-// Create role badges HTML
-const roleLabels = {
-'admin': 'Administrator',
-'bid-manager': 'Bid Manager',
-'drive-access': 'DRiVE Access',
-'viewer': 'Viewer'
-};
-const roleBadges = selectedRoles.map(r => 
-`<span class="team-member-role" style="background: var(--warning-50); color: var(--warning-500);">Pending: ${roleLabels[r]}</span>`
-).join('');
-
-// Generate new ID
-const newId = Date.now();
-
-// Create new member card
-const newMemberHTML = `
-<div class="team-member-card" data-member-id="${newId}">
-<div class="team-member-avatar" style="background: ${randomColor.bg}; color: ${randomColor.color};">${initials}</div>
-<div class="team-member-info">
-<div class="team-member-name">${firstName} ${lastName}</div>
-<div class="team-member-email">${email}</div>
-<div class="team-member-roles">
-${roleBadges}
-</div>
-</div>
-<span class="status-badge pending">Pending</span>
-<div class="team-member-actions">
-<button class="btn-icon" title="Resend Invite" onclick="resendInvite('${newId}', '${firstName} ${lastName}')">
-<i class="pi pi-send"></i>
-</button>
-<button class="btn-icon danger" title="Cancel Invite" onclick="openRemoveMemberModal('${newId}', '${firstName} ${lastName}', true)">
-<i class="pi pi-times"></i>
-</button>
-</div>
-</div>
-`;
-
-document.getElementById('teamMembersList').insertAdjacentHTML('beforeend', newMemberHTML);
-closeModal('addMemberModal');
-showToast(`Invitation sent to ${email}`, 'success');
-}
-
-// ========== MANAGE ROLES ==========
-
-let currentMemberId = null;
-
-function openManageRolesModal(memberId, memberName, initials, currentRoles) {
-currentMemberId = memberId;
-document.getElementById('manageRolesName').textContent = memberName;
-document.getElementById('manageRolesAvatar').textContent = initials;
-
-// Reset and set current roles
-document.querySelectorAll('#memberRolesList .role-checkbox-item').forEach(item => {
-item.classList.remove('selected');
-if (currentRoles.includes(item.dataset.role)) {
-item.classList.add('selected');
-}
-});
-
-openModal('manageRolesModal');
-}
-
-function saveRoles() {
-// Get selected roles
-const selectedRoles = [];
-document.querySelectorAll('#memberRolesList .role-checkbox-item.selected').forEach(item => {
-selectedRoles.push(item.dataset.role);
-});
-
-if (selectedRoles.length === 0) {
-showToast('Please assign at least one role', 'error');
-return;
-}
-
-const roleLabels = {
-'admin': 'Administrator',
-'bid-manager': 'Bid Manager',
-'drive-access': 'DRiVE Access',
-'viewer': 'Viewer'
-};
-
-// Update the member card's roles
-const memberCard = document.querySelector(`.team-member-card[data-member-id="${currentMemberId}"]`);
-if (memberCard) {
-const rolesContainer = memberCard.querySelector('.team-member-roles');
-rolesContainer.innerHTML = selectedRoles.map(r => 
-`<span class="team-member-role">${roleLabels[r]}</span>`
-).join('');
-
-// Update the onclick handler with new roles
-const manageBtn = memberCard.querySelector('.btn-icon[title="Manage Roles"]');
-const memberName = memberCard.querySelector('.team-member-name').textContent;
-const avatar = memberCard.querySelector('.team-member-avatar').textContent;
-manageBtn.onclick = () => openManageRolesModal(currentMemberId, memberName, avatar, selectedRoles);
-}
-
-closeModal('manageRolesModal');
-showToast('Roles updated successfully', 'success');
-}
-
-// ========== EDIT MEMBER ==========
-
-function openEditMemberModal(memberId, firstName, lastName, email) {
-document.getElementById('editMemberId').value = memberId;
-document.getElementById('editMemberFirstName').value = firstName;
-document.getElementById('editMemberLastName').value = lastName;
-document.getElementById('editMemberEmail').value = email;
-openModal('editMemberModal');
-}
-
-function saveEditMember() {
-const memberId = document.getElementById('editMemberId').value;
-const firstName = document.getElementById('editMemberFirstName').value.trim();
-const lastName = document.getElementById('editMemberLastName').value.trim();
-
-if (!firstName || !lastName) {
-showToast('Please fill in all required fields', 'error');
-return;
-}
-
-const memberCard = document.querySelector(`.team-member-card[data-member-id="${memberId}"]`);
-if (memberCard) {
-memberCard.querySelector('.team-member-name').textContent = firstName + ' ' + lastName;
-memberCard.querySelector('.team-member-avatar').textContent = firstName.charAt(0) + lastName.charAt(0);
-
-// Update edit button onclick
-const editBtn = memberCard.querySelector('.btn-icon[title="Edit Member"]');
-const email = memberCard.querySelector('.team-member-email').textContent;
-editBtn.onclick = () => openEditMemberModal(memberId, firstName, lastName, email);
-}
-
-closeModal('editMemberModal');
-showToast('Member updated successfully', 'success');
-}
-
-// ========== REMOVE MEMBER ==========
-
-function openRemoveMemberModal(memberId, memberName, isPending = false) {
-document.getElementById('removeMemberId').value = memberId;
-document.getElementById('removeIsPending').value = isPending ? '1' : '0';
-document.getElementById('removeMemberName').textContent = memberName;
-
-if (isPending) {
-document.getElementById('removeModalTitle').textContent = 'Cancel Invitation';
-document.getElementById('removeButtonText').textContent = 'Cancel Invite';
-document.querySelector('#removeModalMessage').innerHTML = 
-`Are you sure you want to cancel the invitation for <strong>${memberName}</strong>? They will not receive access to the portal.`;
-} else {
-document.getElementById('removeModalTitle').textContent = 'Remove Team Member';
-document.getElementById('removeButtonText').textContent = 'Remove Member';
-document.querySelector('#removeModalMessage').innerHTML = 
-`Are you sure you want to remove <strong>${memberName}</strong> from the team? They will lose access to all portal features immediately.`;
-}
-
-openModal('removeMemberModal');
-}
-
-function confirmRemoveMember() {
-const memberId = document.getElementById('removeMemberId').value;
-const isPending = document.getElementById('removeIsPending').value === '1';
-const memberName = document.getElementById('removeMemberName').textContent;
-
-const memberCard = document.querySelector(`.team-member-card[data-member-id="${memberId}"]`);
-if (memberCard) {
-memberCard.style.transition = 'all 0.3s ease';
-memberCard.style.opacity = '0';
-memberCard.style.transform = 'translateX(20px)';
-setTimeout(() => memberCard.remove(), 300);
-}
-
-closeModal('removeMemberModal');
-showToast(isPending ? `Invitation for ${memberName} cancelled` : `${memberName} removed from team`, 'success');
-}
-
-// ========== RESEND INVITE ==========
-
-function resendInvite(memberId, memberName) {
-showToast(`Invitation resent to ${memberName}`, 'success');
-}
-
-// ========== TOAST NOTIFICATION ==========
+// ==================== TOAST NOTIFICATION ====================
 
 function showToast(message, type = 'success') {
-const toast = document.getElementById('toastNotification');
-const icon = toast.querySelector('i');
-document.getElementById('toastMessage').textContent = message;
-
-if (type === 'error') {
-icon.className = 'pi pi-times-circle';
-icon.style.color = 'var(--danger-500)';
-} else {
-icon.className = 'pi pi-check-circle';
-icon.style.color = 'var(--success-500)';
+    const toast = document.getElementById('toast');
+    const icon = toast.querySelector('i');
+    document.getElementById('toastMessage').textContent = message;
+    toast.className = 'toast ' + type;
+    icon.className = type === 'success' ? 'pi pi-check-circle' : 'pi pi-times-circle';
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
 }
 
-toast.style.transform = 'translateY(0)';
-toast.style.opacity = '1';
+// ==================== SET ACTIVE MENU ITEM ====================
 
-setTimeout(() => {
-toast.style.transform = 'translateY(100px)';
-toast.style.opacity = '0';
-}, 3000);
+function setActiveMenuItem(menuItem) {
+    // Remove active from all
+    document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
+    // Set new active
+    menuItem.classList.add('active');
+    // Update module name in header
+    const moduleName = menuItem.getAttribute('data-module');
+    if (moduleName) {
+        document.getElementById('currentModuleName').textContent = moduleName;
+    }
+    // Expand parent group if collapsed
+    const parentGroup = menuItem.closest('.menu-group');
+    if (parentGroup && parentGroup.classList.contains('collapsed')) {
+        parentGroup.classList.remove('collapsed');
+    }
 }
+
+// ==================== INITIALIZE ====================
+
+// Add click handlers to menu items
+document.querySelectorAll('.menu-item:not(.disabled)').forEach(item => {
+    item.addEventListener('click', function(e) {
+        setActiveMenuItem(this);
+    });
+});
+
+// Expand any menu group containing an active item on load
+document.querySelectorAll('.menu-item.active').forEach(item => {
+    const parentGroup = item.closest('.menu-group');
+    if (parentGroup) {
+        parentGroup.classList.remove('collapsed');
+    }
+    // Set initial module name
+    const moduleName = item.getAttribute('data-module');
+    if (moduleName) {
+        document.getElementById('currentModuleName').textContent = moduleName;
+    }
+});
 </script>
 
 </body>
 </html>
-
