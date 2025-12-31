@@ -809,6 +809,186 @@
       .success-rate.high { background: var(--success-50); color: var(--success-600); }
       .success-rate.medium { background: var(--warning-50); color: var(--warning-600); }
       .success-rate.low { background: var(--danger-50); color: var(--danger-600); }
+      
+      /* Smart Criteria Styles */
+      .tag-smart {
+        background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+        color: white;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-weight: 600;
+        position: relative;
+        overflow: hidden;
+      }
+      .tag-smart::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        animation: smartShimmer 2s infinite;
+      }
+      @keyframes smartShimmer {
+        0% { left: -100%; }
+        50%, 100% { left: 100%; }
+      }
+      .smart-badge-icon {
+        font-size: 10px;
+      }
+      .smart-rules-preview {
+        background: var(--surface-50);
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-md);
+        padding: var(--spacing-sm);
+        margin-top: var(--spacing-sm);
+        font-size: 12px;
+      }
+      .smart-rule-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 0;
+        border-bottom: 1px dashed var(--surface-200);
+      }
+      .smart-rule-item:last-child {
+        border-bottom: none;
+      }
+      .smart-rule-icon {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+      }
+      .smart-rule-icon.data { background: var(--info-50); color: var(--info-600); }
+      .smart-rule-icon.api { background: var(--purple-50); color: var(--purple-700); }
+      .smart-rule-icon.check { background: var(--success-50); color: var(--success-600); }
+      .smart-rule-icon.flag { background: var(--danger-50); color: var(--danger-600); }
+      .smart-rule-label {
+        font-weight: 500;
+        color: var(--text-secondary);
+        min-width: 100px;
+      }
+      .smart-rule-value {
+        color: var(--text-primary);
+        font-family: 'Consolas', 'Monaco', monospace;
+        background: var(--surface-100);
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-size: 11px;
+      }
+      .smart-config-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+      .smart-config-table th {
+        text-align: left;
+        padding: 10px 12px;
+        background: var(--surface-100);
+        border-bottom: 1px solid var(--surface-200);
+        font-weight: 600;
+        color: var(--text-secondary);
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .smart-config-table td {
+        padding: 12px;
+        border-bottom: 1px solid var(--surface-100);
+        vertical-align: top;
+      }
+      .smart-config-table tr:hover td {
+        background: var(--surface-50);
+      }
+      .rule-code {
+        font-family: 'Consolas', 'Monaco', monospace;
+        background: var(--surface-900);
+        color: #e2e8f0;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+      }
+      .rule-condition {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 4px 10px;
+        background: var(--info-50);
+        color: var(--info-600);
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 500;
+      }
+      .rule-action {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 500;
+      }
+      .rule-action.flag { background: var(--danger-50); color: var(--danger-600); }
+      .rule-action.pass { background: var(--success-50); color: var(--success-600); }
+      .smart-indicator {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 12px;
+        background: linear-gradient(135deg, rgba(5, 150, 105, 0.08) 0%, rgba(16, 185, 129, 0.08) 100%);
+        border: 1px solid rgba(16, 185, 129, 0.2);
+        border-radius: var(--radius-md);
+        margin-bottom: var(--spacing-sm);
+      }
+      .smart-indicator-icon {
+        width: 28px;
+        height: 28px;
+        background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 12px;
+      }
+      .smart-indicator-text {
+        font-size: 12px;
+        color: #059669;
+        font-weight: 500;
+      }
+      .filter-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        background: var(--surface-0);
+        border: 1px solid var(--surface-200);
+        border-radius: 20px;
+        font-size: 12px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .filter-chip:hover {
+        border-color: var(--primary-400);
+        background: var(--primary-50);
+      }
+      .filter-chip.active {
+        background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+        color: white;
+        border-color: transparent;
+      }
+      .filter-chip.active:hover {
+        background: linear-gradient(135deg, #047857 0%, #059669 100%);
+      }
+      .filter-chip i {
+        font-size: 11px;
+      }
     </style>
 </head>
 <body>
@@ -1011,6 +1191,9 @@
               <p class="page-subtitle">Manage predefined and custom evaluation criteria for tender processes</p>
             </div>
             <div style="display: flex; gap: var(--spacing-sm);">
+              <button class="btn btn-secondary" onclick="openSmartRulesModal()" style="background: linear-gradient(135deg, rgba(5, 150, 105, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%); border-color: rgba(16, 185, 129, 0.3); color: #059669;">
+                <i class="pi pi-bolt"></i> Smart Rules
+              </button>
               <button class="btn btn-secondary"><i class="pi pi-download"></i> Export</button>
               <button class="btn btn-secondary"><i class="pi pi-upload"></i> Import</button>
               <button class="btn btn-primary" onclick="openCriteriaModal()"><i class="pi pi-plus"></i> Add Criterion</button>
@@ -1028,8 +1211,10 @@
               <div class="stat-label">Predefined (System)</div>
             </div>
             <div class="stat-card">
-              <div class="stat-value">17</div>
-              <div class="stat-label">Custom Criteria</div>
+              <div class="stat-value" style="color: #059669;">7</div>
+              <div class="stat-label" style="display: flex; align-items: center; gap: 4px;">
+                <i class="pi pi-bolt" style="font-size: 11px; color: #10b981;"></i> Smart Criteria
+              </div>
             </div>
             <div class="stat-card">
               <div class="stat-value">89</div>
@@ -1067,6 +1252,10 @@
                 <option value="predefined">Predefined</option>
                 <option value="custom">Custom</option>
               </select>
+              <div class="filter-chip" id="smartFilterChip" onclick="toggleSmartFilter()">
+                <i class="pi pi-bolt"></i>
+                <span>Smart Criteria</span>
+              </div>
               <button class="btn btn-ghost btn-sm" onclick="resetCriteriaFilters()">Reset</button>
             </div>
 
@@ -1215,6 +1404,86 @@
                 <input type="checkbox" checked>
                 <span>Available for all tender templates</span>
               </label>
+              <label class="checkbox-item">
+                <input type="checkbox" id="smartCriteriaToggle" onchange="toggleSmartRulesConfig()">
+                <span style="display: flex; align-items: center; gap: 6px;">
+                  <i class="pi pi-bolt" style="color: #10b981;"></i>
+                  Enable as Smart Criterion (automated verification)
+                </span>
+              </label>
+            </div>
+          </div>
+          
+          <!-- Smart Rules Configuration (hidden by default) -->
+          <div class="form-group full-width" id="smartRulesConfig" style="display: none;">
+            <label class="form-label" style="display: flex; align-items: center; gap: 6px; color: #059669;">
+              <i class="pi pi-bolt"></i> Smart Verification Configuration
+            </label>
+            <div style="background: linear-gradient(135deg, rgba(5, 150, 105, 0.05) 0%, rgba(16, 185, 129, 0.05) 100%); border: 1px solid rgba(16, 185, 129, 0.2); padding: var(--spacing-md); border-radius: var(--radius-md);">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-md); margin-bottom: var(--spacing-md);">
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label class="form-label" style="font-size: 12px;">Check Type <span class="required">*</span></label>
+                  <select class="form-select" id="smartCheckType">
+                    <option value="">Select check type...</option>
+                    <option value="Nationality">Nationality Verification</option>
+                    <option value="Sanctions">Sanctions Check</option>
+                    <option value="Bid Validity">Bid Validity Check</option>
+                    <option value="GCC">General Conditions Acceptance</option>
+                    <option value="Document Completeness">Document Completeness</option>
+                    <option value="Document Validation">Document Validation</option>
+                    <option value="Past Performance">Past Performance Check</option>
+                    <option value="Custom">Custom Check</option>
+                  </select>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label class="form-label" style="font-size: 12px;">Data Source Type <span class="required">*</span></label>
+                  <select class="form-select" id="smartDataSourceType">
+                    <option value="">Select source...</option>
+                    <option value="Profile">Bidder Profile</option>
+                    <option value="Form">Submission Form</option>
+                    <option value="Submission">Submission Documents</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-md); margin-bottom: var(--spacing-md);">
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label class="form-label" style="font-size: 12px;">Data Source Field <span class="required">*</span></label>
+                  <input type="text" class="form-input" id="smartDataSourceField" placeholder="e.g., Country_Code, validity_days">
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label class="form-label" style="font-size: 12px;">Reference Type <span class="required">*</span></label>
+                  <select class="form-select" id="smartRefType">
+                    <option value="">Select reference...</option>
+                    <option value="Tender">Tender Configuration</option>
+                    <option value="API">External API</option>
+                    <option value="DB">Database Table</option>
+                    <option value="Constant">Constant Value</option>
+                    <option value="System">System Validator</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-md); margin-bottom: var(--spacing-md);">
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label class="form-label" style="font-size: 12px;">Reference Field/Value <span class="required">*</span></label>
+                  <input type="text" class="form-input" id="smartRefField" placeholder="e.g., Allowed_Countries, TRUE">
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label class="form-label" style="font-size: 12px;">Alert Condition <span class="required">*</span></label>
+                  <input type="text" class="form-input" id="smartCondition" placeholder="e.g., Value NOT IN List, Value < Required">
+                </div>
+              </div>
+              
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label" style="font-size: 12px;">Flag Label (on condition match) <span class="required">*</span></label>
+                <input type="text" class="form-input" id="smartFlagLabel" placeholder="e.g., Ineligible Nationality, Validity too short">
+              </div>
+              
+              <div class="alert alert-info" style="margin-top: var(--spacing-md); margin-bottom: 0;">
+                <i class="pi pi-lightbulb" style="font-size: 14px;"></i>
+                <span style="font-size: 12px;">When the condition is met, the system will automatically flag the bidder's submission with the specified label for evaluator review.</span>
+              </div>
             </div>
           </div>
         </div>
@@ -1316,6 +1585,49 @@
     </div>
   </div>
 
+  <!-- Smart Rules Management Modal -->
+  <div class="modal" id="smartRulesModal">
+    <div class="modal-content" style="max-width: 900px;">
+      <div class="modal-header">
+        <h2 class="modal-title" style="display: flex; align-items: center; gap: 8px;">
+          <span style="width: 28px; height: 28px; background: linear-gradient(135deg, #059669 0%, #10b981 100%); border-radius: 6px; display: flex; align-items: center; justify-content: center;">
+            <i class="pi pi-bolt" style="color: white; font-size: 14px;"></i>
+          </span>
+          Smart Criteria Overview
+        </h2>
+        <button class="modal-close" onclick="closeSmartRulesModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-info" style="margin-bottom: var(--spacing-lg);">
+          <i class="pi pi-info-circle"></i>
+          <div>
+            <strong>Smart Criteria</strong> are pre-configured to perform automated verification during the evaluation stage. 
+            Each criterion below has business logic rules that automatically check bidder submissions against defined conditions.
+          </div>
+        </div>
+        
+        <table class="smart-config-table" style="border: 1px solid var(--surface-200); border-radius: var(--radius-md); overflow: hidden;">
+          <thead>
+            <tr>
+              <th style="width: 130px;">Check Type</th>
+              <th>Data Source (Bidder)</th>
+              <th>Reference Data (Tender/System)</th>
+              <th>Condition for Alert</th>
+              <th>System Action</th>
+            </tr>
+          </thead>
+          <tbody id="smartRulesTableBody">
+            <!-- Dynamic content -->
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeSmartRulesModal()">Close</button>
+        <button class="btn btn-secondary"><i class="pi pi-download"></i> Export Rules</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     // Data - Evaluation Criteria (Predefined from tender-authoring.html)
     const evaluationCriteria = [
@@ -1327,7 +1639,15 @@
         evaluationMethod: 'Pass/Fail',
         appliesTo: 'entire',
         isPredefined: true,
-        usageCount: 134
+        usageCount: 134,
+        isSmart: true,
+        smartRules: {
+          checkType: 'Nationality',
+          dataSource: { type: 'Profile', field: 'Country_Code' },
+          referenceData: { type: 'Tender', field: 'Allowed_Countries' },
+          condition: 'Bidder Value NOT IN Allowed List',
+          systemAction: { type: 'flag', label: 'Ineligible Nationality' }
+        }
       },
       { 
         id: 'EF-002', 
@@ -1337,7 +1657,16 @@
         evaluationMethod: 'Pass/Fail',
         appliesTo: 'entire',
         isPredefined: true,
-        usageCount: 128
+        usageCount: 128,
+        isSmart: true,
+        smartRules: {
+          checkType: 'Bid Validity',
+          dataSource: { type: 'Form', field: 'validity_days' },
+          referenceData: { type: 'Tender', field: 'min_validity_days' },
+          condition: 'Bidder < Required',
+          conditionExample: '60 < 90',
+          systemAction: { type: 'flag', label: 'Validity too short' }
+        }
       },
       { 
         id: 'EF-003', 
@@ -1347,7 +1676,15 @@
         evaluationMethod: 'Pass/Fail',
         appliesTo: 'entire',
         isPredefined: true,
-        usageCount: 145
+        usageCount: 145,
+        isSmart: true,
+        smartRules: {
+          checkType: 'Sanctions',
+          dataSource: { type: 'Profile', field: 'UNGM_ID', note: 'All parties' },
+          referenceData: { type: 'API', field: 'Sanctions_List' },
+          condition: 'API returns "Match"',
+          systemAction: { type: 'flag', label: 'Sanctioned Entity' }
+        }
       },
       { 
         id: 'EF-004', 
@@ -1357,7 +1694,15 @@
         evaluationMethod: 'Pass/Fail',
         appliesTo: 'entire',
         isPredefined: true,
-        usageCount: 152
+        usageCount: 152,
+        isSmart: true,
+        smartRules: {
+          checkType: 'Document Completeness',
+          dataSource: { type: 'Submission', field: 'Document_List' },
+          referenceData: { type: 'Tender', field: 'Required_Documents' },
+          condition: 'Missing Required Documents',
+          systemAction: { type: 'flag', label: 'Incomplete Submission' }
+        }
       },
       { 
         id: 'EF-005', 
@@ -1367,7 +1712,15 @@
         evaluationMethod: 'Pass/Fail',
         appliesTo: 'entire',
         isPredefined: true,
-        usageCount: 139
+        usageCount: 139,
+        isSmart: true,
+        smartRules: {
+          checkType: 'Document Validation',
+          dataSource: { type: 'Submission', field: 'Attachments' },
+          referenceData: { type: 'System', field: 'File_Validator' },
+          condition: 'File is empty, corrupted, or unreadable',
+          systemAction: { type: 'flag', label: 'Invalid Document' }
+        }
       },
       { 
         id: 'EF-006', 
@@ -1377,7 +1730,15 @@
         evaluationMethod: 'Pass/Fail',
         appliesTo: 'entire',
         isPredefined: true,
-        usageCount: 98
+        usageCount: 98,
+        isSmart: true,
+        smartRules: {
+          checkType: 'Past Performance',
+          dataSource: { type: 'Profile', field: 'Vendor_ID' },
+          referenceData: { type: 'DB', field: 'Claims_Log' },
+          condition: 'ID exists in Log',
+          systemAction: { type: 'flag', label: 'Prior Claim History' }
+        }
       },
       { 
         id: 'EF-007', 
@@ -1387,7 +1748,15 @@
         evaluationMethod: 'Pass/Fail',
         appliesTo: 'entire',
         isPredefined: true,
-        usageCount: 156
+        usageCount: 156,
+        isSmart: true,
+        smartRules: {
+          checkType: 'GCC',
+          dataSource: { type: 'Form', field: 'accept_gcc' },
+          referenceData: { type: 'Constant', field: 'TRUE' },
+          condition: 'Bidder = FALSE',
+          systemAction: { type: 'flag', label: 'Conditions Rejected' }
+        }
       },
       // Custom criteria
       { 
@@ -1399,7 +1768,8 @@
         appliesTo: 'entire',
         isPredefined: false,
         usageCount: 67,
-        status: 'Published'
+        status: 'Published',
+        isSmart: false
       },
       { 
         id: 'FC-001', 
@@ -1411,7 +1781,8 @@
         appliesTo: 'entire',
         isPredefined: false,
         usageCount: 45,
-        status: 'Published'
+        status: 'Published',
+        isSmart: false
       },
       { 
         id: 'SC-001', 
@@ -1423,7 +1794,8 @@
         appliesTo: 'entire',
         isPredefined: false,
         usageCount: 38,
-        status: 'Published'
+        status: 'Published',
+        isSmart: false
       },
       { 
         id: 'TC-002', 
@@ -1435,7 +1807,8 @@
         appliesTo: 'entire',
         isPredefined: false,
         usageCount: 52,
-        status: 'Published'
+        status: 'Published',
+        isSmart: false
       },
       { 
         id: 'SC-002', 
@@ -1447,7 +1820,8 @@
         appliesTo: 'entire',
         isPredefined: false,
         usageCount: 0,
-        status: 'Pending Review'
+        status: 'Pending Review',
+        isSmart: false
       }
     ];
 
@@ -1593,6 +1967,7 @@
     // View mode state
     let criteriaViewMode = 'list';
     let specsViewMode = 'list';
+    let smartFilterActive = false;
 
     // Toggle menu group expand/collapse
     function toggleMenuGroup(headerElement) {
@@ -1656,7 +2031,13 @@
       
       if (criteriaViewMode === 'grid') {
         container.innerHTML = `<div class="criteria-grid">${criteria.map(c => `
-          <div class="criteria-grid-item">
+          <div class="criteria-grid-item ${c.isSmart ? 'smart-criteria' : ''}">
+            ${c.isSmart ? `
+              <div class="smart-indicator" style="margin-bottom: 12px;">
+                <div class="smart-indicator-icon"><i class="pi pi-bolt"></i></div>
+                <div class="smart-indicator-text">Automated Verification</div>
+              </div>
+            ` : ''}
             <div class="criteria-header" style="margin-bottom: 8px;">
               <div class="criteria-title-section">
                 <div class="criteria-title">${c.criteria}</div>
@@ -1671,6 +2052,7 @@
               <div class="criteria-tags">
                 <span class="tag tag-category">${c.type}</span>
                 <span class="tag tag-method">${c.evaluationMethod}</span>
+                ${c.isSmart ? `<span class="tag tag-smart"><i class="pi pi-bolt smart-badge-icon"></i> Smart</span>` : ''}
                 <span class="tag ${c.isPredefined ? 'tag-predefined' : 'tag-custom'}">${c.isPredefined ? '<i class="pi pi-lock" style="font-size: 10px;"></i> Predefined' : '<i class="pi pi-pencil" style="font-size: 10px;"></i> Custom'}</span>
               </div>
               <div class="usage-info" style="margin-top: 4px;">
@@ -1679,16 +2061,20 @@
             </div>
             <div style="margin-top: auto; padding-top: var(--spacing-sm); display: flex; gap: 6px;">
               <button class="btn btn-ghost btn-sm" style="flex: 1;" onclick="viewCriterion('${c.id}')"><i class="pi pi-eye"></i> View</button>
+              ${c.isSmart ? `<button class="btn btn-ghost btn-sm" onclick="viewSmartRules('${c.id}')" title="View Smart Rules"><i class="pi pi-cog"></i></button>` : ''}
               ${!c.isPredefined ? `<button class="btn btn-ghost btn-sm" onclick="editCriterion('${c.id}')"><i class="pi pi-pencil"></i></button>` : ''}
             </div>
           </div>
         `).join('')}</div>`;
       } else {
         container.innerHTML = criteria.map(c => `
-          <div class="criteria-item">
+          <div class="criteria-item ${c.isSmart ? 'smart-criteria' : ''}">
             <div class="criteria-header">
               <div class="criteria-title-section">
-                <div class="criteria-title">${c.criteria}</div>
+                <div class="criteria-title" style="display: flex; align-items: center; gap: 8px;">
+                  ${c.criteria}
+                  ${c.isSmart ? `<span class="tag tag-smart"><i class="pi pi-bolt smart-badge-icon"></i> Smart</span>` : ''}
+                </div>
                 <div class="criteria-meta">
                   <span>ID: ${c.id}</span>
                   <span>•</span>
@@ -1697,15 +2083,16 @@
                 </div>
               </div>
               <div style="display: flex; gap: 8px;">
+                ${c.isSmart ? `<button class="btn btn-ghost btn-sm" onclick="viewSmartRules('${c.id}')" title="View Smart Rules"><i class="pi pi-cog"></i> Rules</button>` : ''}
                 ${c.isPredefined ? '' : `
                   <button class="btn btn-ghost btn-sm" onclick="editCriterion('${c.id}')"><i class="pi pi-pencil"></i> Edit</button>
                   <button class="btn btn-ghost btn-sm"><i class="pi pi-copy"></i> Duplicate</button>
                 `}
-<button class="btn btn-ghost btn-sm" onclick="viewCriterion('${c.id}')"><i class="pi pi-eye"></i> View</button>
+                <button class="btn btn-ghost btn-sm" onclick="viewCriterion('${c.id}')"><i class="pi pi-eye"></i> View</button>
+              </div>
             </div>
-          </div>
           
-          <div class="criteria-description">${c.description}</div>
+            <div class="criteria-description">${c.description}</div>
             
             <div class="criteria-footer">
               <div class="criteria-tags">
@@ -1740,11 +2127,20 @@
         const matchesSource = !source || 
           (source === 'predefined' && c.isPredefined) || 
           (source === 'custom' && !c.isPredefined);
+        const matchesSmart = !smartFilterActive || c.isSmart === true;
         
-        return matchesSearch && matchesType && matchesMethod && matchesSource;
+        return matchesSearch && matchesType && matchesMethod && matchesSource && matchesSmart;
       });
       
       renderCriteriaList(filtered);
+    }
+
+    // Toggle Smart Filter
+    function toggleSmartFilter() {
+      smartFilterActive = !smartFilterActive;
+      const chip = document.getElementById('smartFilterChip');
+      chip.classList.toggle('active', smartFilterActive);
+      filterCriteria();
     }
 
     function resetCriteriaFilters() {
@@ -1752,6 +2148,8 @@
       document.getElementById('criteriaTypeFilter').value = '';
       document.getElementById('criteriaMethodFilter').value = '';
       document.getElementById('criteriaSourceFilter').value = '';
+      smartFilterActive = false;
+      document.getElementById('smartFilterChip').classList.remove('active');
       renderCriteriaList(evaluationCriteria);
     }
 
@@ -1996,9 +2394,12 @@
               <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 4px;">${criterion.criteria}</h3>
               <div style="font-size: 13px; color: var(--text-muted);">ID: ${criterion.id}</div>
             </div>
-            <span class="tag ${criterion.isPredefined ? 'tag-predefined' : 'tag-custom'}">
-              ${criterion.isPredefined ? '<i class="pi pi-lock" style="font-size: 10px;"></i> Predefined' : '<i class="pi pi-pencil" style="font-size: 10px;"></i> Custom'}
-            </span>
+            <div style="display: flex; gap: 6px;">
+              ${criterion.isSmart ? `<span class="tag tag-smart"><i class="pi pi-bolt smart-badge-icon"></i> Smart</span>` : ''}
+              <span class="tag ${criterion.isPredefined ? 'tag-predefined' : 'tag-custom'}">
+                ${criterion.isPredefined ? '<i class="pi pi-lock" style="font-size: 10px;"></i> Predefined' : '<i class="pi pi-pencil" style="font-size: 10px;"></i> Custom'}
+              </span>
+            </div>
           </div>
           
           <div style="display: flex; gap: var(--spacing-sm); flex-wrap: wrap;">
@@ -2015,6 +2416,52 @@
             </div>
           </div>
           
+          ${criterion.isSmart && criterion.smartRules ? `
+            <div>
+              <label style="font-size: 12px; font-weight: 600; color: #059669; text-transform: uppercase; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+                <i class="pi pi-bolt" style="font-size: 11px;"></i> Auto-Verification Configuration
+              </label>
+              <div style="background: linear-gradient(135deg, rgba(5, 150, 105, 0.05) 0%, rgba(16, 185, 129, 0.05) 100%); border: 1px solid rgba(16, 185, 129, 0.2); padding: var(--spacing-md); border-radius: var(--radius-md);">
+                <table class="smart-config-table">
+                  <tr>
+                    <th style="width: 140px;">Check Type</th>
+                    <td><strong>${criterion.smartRules.checkType}</strong></td>
+                  </tr>
+                  <tr>
+                    <th>Data Source</th>
+                    <td>
+                      <span class="rule-code">${criterion.smartRules.dataSource.type}</span>
+                      <span style="margin: 0 6px;">→</span>
+                      <span class="rule-code">${criterion.smartRules.dataSource.field}</span>
+                      ${criterion.smartRules.dataSource.note ? `<span style="font-size: 11px; color: var(--text-muted); margin-left: 8px;">(${criterion.smartRules.dataSource.note})</span>` : ''}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Reference Data</th>
+                    <td>
+                      <span class="rule-code">${criterion.smartRules.referenceData.type}</span>
+                      <span style="margin: 0 6px;">→</span>
+                      <span class="rule-code">${criterion.smartRules.referenceData.field}</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Condition</th>
+                    <td>
+                      <span class="rule-condition"><i class="pi pi-check-circle" style="font-size: 10px;"></i> ${criterion.smartRules.condition}</span>
+                      ${criterion.smartRules.conditionExample ? `<span style="font-size: 11px; color: var(--text-muted); margin-left: 8px;">(e.g., ${criterion.smartRules.conditionExample})</span>` : ''}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>System Action</th>
+                    <td>
+                      <span class="rule-action flag"><i class="pi pi-flag" style="font-size: 10px;"></i> Flag "${criterion.smartRules.systemAction.label}"</span>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          ` : ''}
+          
           <div style="display: flex; gap: var(--spacing-lg);">
             <div>
               <label style="font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Applies To</label>
@@ -2023,6 +2470,134 @@
             <div>
               <label style="font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Usage</label>
               <div style="font-size: 14px; margin-top: 4px;"><i class="pi pi-chart-bar" style="font-size: 12px;"></i> ${criterion.usageCount} tenders</div>
+            </div>
+          </div>
+        </div>
+      `;
+      document.getElementById('viewModal').classList.add('active');
+    }
+
+    // View Smart Rules Modal
+    function viewSmartRules(id) {
+      const criterion = evaluationCriteria.find(c => c.id === id);
+      if (!criterion || !criterion.isSmart) return;
+      
+      document.getElementById('viewModalTitle').textContent = 'Smart Verification Rules';
+      document.getElementById('viewModalBody').innerHTML = `
+        <div style="display: flex; flex-direction: column; gap: var(--spacing-lg);">
+          <!-- Header -->
+          <div class="smart-indicator">
+            <div class="smart-indicator-icon"><i class="pi pi-bolt"></i></div>
+            <div>
+              <div class="smart-indicator-text" style="font-size: 14px; font-weight: 600;">Automated Verification Enabled</div>
+              <div style="font-size: 12px; color: var(--text-muted);">This criterion is evaluated automatically without manual intervention</div>
+            </div>
+          </div>
+          
+          <!-- Criterion Info -->
+          <div style="background: var(--surface-50); padding: var(--spacing-md); border-radius: var(--radius-md);">
+            <div style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">${criterion.criteria}</div>
+            <div style="font-size: 12px; color: var(--text-muted);">ID: ${criterion.id} • Type: ${criterion.smartRules.checkType}</div>
+          </div>
+          
+          <!-- Rules Configuration -->
+          <div>
+            <label style="font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; margin-bottom: 12px; display: block;">
+              Business Logic Configuration
+            </label>
+            
+            <div style="display: flex; flex-direction: column; gap: var(--spacing-md);">
+              <!-- Data Source -->
+              <div style="background: var(--surface-0); border: 1px solid var(--surface-200); border-radius: var(--radius-md); padding: var(--spacing-md);">
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                  <div style="width: 32px; height: 32px; background: var(--info-50); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                    <i class="pi pi-database" style="color: var(--info-600);"></i>
+                  </div>
+                  <div>
+                    <div style="font-size: 13px; font-weight: 600;">Data Source (Bidder)</div>
+                    <div style="font-size: 11px; color: var(--text-muted);">Where to get the value from the bidder's submission</div>
+                  </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px; padding: 10px; background: var(--surface-50); border-radius: var(--radius-sm);">
+                  <span style="font-size: 12px; color: var(--text-muted);">Source:</span>
+                  <span class="rule-code">${criterion.smartRules.dataSource.type}</span>
+                  <i class="pi pi-arrow-right" style="font-size: 10px; color: var(--text-muted);"></i>
+                  <span class="rule-code">${criterion.smartRules.dataSource.field}</span>
+                  ${criterion.smartRules.dataSource.note ? `<span style="font-size: 11px; color: var(--text-muted); margin-left: auto;">${criterion.smartRules.dataSource.note}</span>` : ''}
+                </div>
+              </div>
+              
+              <!-- Reference Data -->
+              <div style="background: var(--surface-0); border: 1px solid var(--surface-200); border-radius: var(--radius-md); padding: var(--spacing-md);">
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                  <div style="width: 32px; height: 32px; background: var(--purple-50); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                    <i class="pi pi-server" style="color: var(--purple-700);"></i>
+                  </div>
+                  <div>
+                    <div style="font-size: 13px; font-weight: 600;">Reference Data (Tender/System)</div>
+                    <div style="font-size: 11px; color: var(--text-muted);">The benchmark or list to compare against</div>
+                  </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px; padding: 10px; background: var(--surface-50); border-radius: var(--radius-sm);">
+                  <span style="font-size: 12px; color: var(--text-muted);">Reference:</span>
+                  <span class="rule-code">${criterion.smartRules.referenceData.type}</span>
+                  <i class="pi pi-arrow-right" style="font-size: 10px; color: var(--text-muted);"></i>
+                  <span class="rule-code">${criterion.smartRules.referenceData.field}</span>
+                </div>
+              </div>
+              
+              <!-- Condition -->
+              <div style="background: var(--surface-0); border: 1px solid var(--surface-200); border-radius: var(--radius-md); padding: var(--spacing-md);">
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                  <div style="width: 32px; height: 32px; background: var(--success-50); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                    <i class="pi pi-check-circle" style="color: var(--success-600);"></i>
+                  </div>
+                  <div>
+                    <div style="font-size: 13px; font-weight: 600;">Condition for Alert</div>
+                    <div style="font-size: 11px; color: var(--text-muted);">When this condition is met, the system takes action</div>
+                  </div>
+                </div>
+                <div style="padding: 10px; background: var(--surface-50); border-radius: var(--radius-sm);">
+                  <span class="rule-condition" style="font-size: 13px;">
+                    <i class="pi pi-exclamation-circle" style="font-size: 11px;"></i>
+                    ${criterion.smartRules.condition}
+                  </span>
+                  ${criterion.smartRules.conditionExample ? `
+                    <div style="margin-top: 8px; font-size: 11px; color: var(--text-muted);">
+                      <i class="pi pi-info-circle" style="font-size: 10px;"></i> Example: ${criterion.smartRules.conditionExample}
+                    </div>
+                  ` : ''}
+                </div>
+              </div>
+              
+              <!-- System Action -->
+              <div style="background: var(--surface-0); border: 1px solid var(--surface-200); border-radius: var(--radius-md); padding: var(--spacing-md);">
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                  <div style="width: 32px; height: 32px; background: var(--danger-50); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                    <i class="pi pi-flag" style="color: var(--danger-600);"></i>
+                  </div>
+                  <div>
+                    <div style="font-size: 13px; font-weight: 600;">System Action</div>
+                    <div style="font-size: 11px; color: var(--text-muted);">What happens when condition is triggered</div>
+                  </div>
+                </div>
+                <div style="padding: 10px; background: var(--danger-50); border-radius: var(--radius-sm); border-left: 3px solid var(--danger-500);">
+                  <span class="rule-action flag" style="font-size: 13px;">
+                    <i class="pi pi-flag-fill" style="font-size: 11px;"></i>
+                    Flag: "${criterion.smartRules.systemAction.label}"
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Info Note -->
+          <div class="alert alert-info">
+            <i class="pi pi-info-circle"></i>
+            <div>
+              <strong>How it works:</strong> During evaluation, the system automatically retrieves the bidder's data, 
+              compares it against the reference, and flags any submissions that meet the alert condition. 
+              Evaluators can review flagged items but don't need to manually verify each criterion.
             </div>
           </div>
         </div>
@@ -2108,11 +2683,59 @@
       document.getElementById('viewModal').classList.remove('active');
     }
 
+    // Open Smart Rules Overview Modal
+    function openSmartRulesModal() {
+      const smartCriteria = evaluationCriteria.filter(c => c.isSmart);
+      const tbody = document.getElementById('smartRulesTableBody');
+      
+      tbody.innerHTML = smartCriteria.map(c => `
+        <tr>
+          <td>
+            <strong style="color: var(--text-primary);">${c.smartRules.checkType}</strong>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">${c.id}</div>
+          </td>
+          <td>
+            <span class="rule-code">${c.smartRules.dataSource.type}:</span>
+            <span class="rule-code" style="margin-left: 4px;">${c.smartRules.dataSource.field}</span>
+            ${c.smartRules.dataSource.note ? `<div style="font-size: 10px; color: var(--text-muted); margin-top: 2px;">(${c.smartRules.dataSource.note})</div>` : ''}
+          </td>
+          <td>
+            <span class="rule-code">${c.smartRules.referenceData.type}:</span>
+            <span class="rule-code" style="margin-left: 4px;">${c.smartRules.referenceData.field}</span>
+          </td>
+          <td>
+            <span class="rule-condition">${c.smartRules.condition}</span>
+            ${c.smartRules.conditionExample ? `<div style="font-size: 10px; color: var(--text-muted); margin-top: 2px;">e.g., ${c.smartRules.conditionExample}</div>` : ''}
+          </td>
+          <td>
+            <span class="rule-action flag">
+              <i class="pi pi-flag" style="font-size: 10px;"></i>
+              "${c.smartRules.systemAction.label}"
+            </span>
+          </td>
+        </tr>
+      `).join('');
+      
+      document.getElementById('smartRulesModal').classList.add('active');
+    }
+
+    // Close Smart Rules Modal
+    function closeSmartRulesModal() {
+      document.getElementById('smartRulesModal').classList.remove('active');
+    }
+
     function toggleSpecFields() {
       const type = document.getElementById('specTypeSelect').value;
       document.getElementById('attributesSection').style.display = type === 'attributes' ? 'block' : 'none';
       document.getElementById('descriptionSection').style.display = type === 'description' ? 'block' : 'none';
       document.getElementById('uploadSection').style.display = type === 'upload' ? 'block' : 'none';
+    }
+
+    // Toggle Smart Rules Configuration in Add Criterion modal
+    function toggleSmartRulesConfig() {
+      const checkbox = document.getElementById('smartCriteriaToggle');
+      const configSection = document.getElementById('smartRulesConfig');
+      configSection.style.display = checkbox.checked ? 'block' : 'none';
     }
 
     // Evaluation method handler
@@ -2136,6 +2759,13 @@
         document.querySelectorAll('.modal.active').forEach(modal => {
           modal.classList.remove('active');
         });
+      }
+    });
+
+    // Add smart rules modal to close handlers (after dynamic creation)
+    document.getElementById('smartRulesModal')?.addEventListener('click', function(e) {
+      if (e.target === this) {
+        this.classList.remove('active');
       }
     });
 
