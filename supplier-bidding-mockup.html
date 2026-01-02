@@ -6150,6 +6150,72 @@ Submission Requirements
         </div>
       </div>
 
+      <!-- Bidding For Selection -->
+      <div style="background: linear-gradient(135deg, var(--primary-50) 0%, var(--surface-100) 100%); padding: var(--spacing-sm); border: 1px solid var(--primary-200); border-radius: var(--radius-sm); margin-bottom: var(--spacing-md);">
+        <label style="font-weight: 600; color: var(--primary-700); margin-bottom: 6px; display: block; font-size: 12px;">
+          <i class="pi pi-list" style="margin-right: 6px; font-size: 12px;"></i> Bidding for <span style="color: var(--danger-500);">*</span>
+        </label>
+        <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 6px;">
+          <div style="display: flex; align-items: center; gap: 6px; padding: 8px 12px; background: white; border: 1px solid var(--primary-400); border-radius: var(--radius-sm); cursor: pointer; box-shadow: 0 1px 4px rgba(0, 118, 189, 0.1);">
+            <input type="radio" name="biddingFor" id="biddingForEntireTender" value="entire-tender" checked onchange="toggleBiddingForSelection(this)" style="width: 14px; height: 14px; accent-color: var(--primary-500);">
+            <label for="biddingForEntireTender" style="cursor: pointer; font-weight: 500; color: var(--primary-600); font-size: 12px; flex: 1;">
+              <i class="pi pi-check-circle" style="margin-right: 4px; font-size: 11px;"></i> Entire Tender
+            </label>
+          </div>
+          <div style="display: flex; align-items: center; gap: 6px; padding: 8px 12px; background: white; border: 1px solid var(--surface-300); border-radius: var(--radius-sm); cursor: pointer;">
+            <input type="checkbox" name="biddingForLot1" id="biddingForLot1" value="lot-1" onchange="toggleBiddingForSelection(this)" style="width: 14px; height: 14px; accent-color: var(--primary-500);">
+            <label for="biddingForLot1" style="cursor: pointer; font-weight: 500; color: var(--text-secondary); font-size: 12px; flex: 1;">
+              <i class="pi pi-box" style="margin-right: 4px; font-size: 11px;"></i> Lot 1: Diagnostic Equipment
+              <span style="color: var(--success-600); font-weight: 600; margin-left: 8px;">$100,000</span>
+            </label>
+          </div>
+          <div style="display: flex; align-items: center; gap: 6px; padding: 8px 12px; background: white; border: 1px solid var(--surface-300); border-radius: var(--radius-sm); cursor: pointer;">
+            <input type="checkbox" name="biddingForLot2" id="biddingForLot2" value="lot-2" onchange="toggleBiddingForSelection(this)" style="width: 14px; height: 14px; accent-color: var(--primary-500);">
+            <label for="biddingForLot2" style="cursor: pointer; font-weight: 500; color: var(--text-secondary); font-size: 12px; flex: 1;">
+              <i class="pi pi-box" style="margin-right: 4px; font-size: 11px;"></i> Lot 2: Surgical Supplies
+              <span style="color: var(--success-600); font-weight: 600; margin-left: 8px;">$150,000</span>
+            </label>
+          </div>
+        </div>
+        
+        <!-- Reason for not bidding all items (hidden by default) -->
+        <div id="notBiddingAllReason" style="display: none; margin-top: var(--spacing-sm); padding-top: var(--spacing-sm); border-top: 1px dashed var(--surface-300);">
+          <label style="font-weight: 600; color: var(--warning-600); margin-bottom: 6px; display: block; font-size: 12px;">
+            <i class="pi pi-info-circle" style="margin-right: 6px; font-size: 12px;"></i> Reason for not bidding on all items <span style="color: var(--danger-500);">*</span>
+          </label>
+          <select id="notBiddingReasonSelect" style="width: 100%; padding: 8px 12px; border: 1px solid var(--surface-300); border-radius: var(--radius-sm); font-size: 12px; background: white; color: var(--text-primary);">
+            <option value="">-- Select a reason --</option>
+            <option value="not-in-range">The requirements were not within our range of supply</option>
+            <option value="not-competitive">We are unable to submit a competitive offer for the requirements at the moment</option>
+            <option value="capacity-constraints">Current capacity constraints prevent us from fulfilling all requirements</option>
+            <option value="technical-limitations">Technical limitations for certain items/lots</option>
+            <option value="geographic-restrictions">Geographic or delivery restrictions for certain items/lots</option>
+            <option value="regulatory-compliance">Regulatory or compliance issues with certain items/lots</option>
+            <option value="other">Other (please specify)</option>
+          </select>
+          <div id="otherReasonContainer" style="display: none; margin-top: 8px;">
+            <textarea id="otherReasonText" placeholder="Please specify your reason..." rows="2" style="width: 100%; padding: 8px 12px; border: 1px solid var(--surface-300); border-radius: var(--radius-sm); font-size: 12px; resize: vertical;"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pre-bid Meeting Participation -->
+      <div style="background: linear-gradient(135deg, var(--info-50, #e3f2fd) 0%, var(--surface-100) 100%); padding: var(--spacing-sm); border: 1px solid var(--info-200, #90caf9); border-radius: var(--radius-sm); margin-bottom: var(--spacing-md);">
+        <label style="font-weight: 600; color: var(--info-700, #1565c0); margin-bottom: 6px; display: block; font-size: 12px;">
+          <i class="pi pi-calendar" style="margin-right: 6px; font-size: 12px;"></i> Pre-bid Meeting
+        </label>
+        <div style="display: flex; align-items: center; gap: 8px; margin-top: 6px; padding: 8px 12px; background: white; border: 1px solid var(--surface-300); border-radius: var(--radius-sm);">
+          <input type="checkbox" name="preBidMeeting" id="preBidMeetingParticipation" value="yes" style="width: 16px; height: 16px; accent-color: var(--primary-500);">
+          <label for="preBidMeetingParticipation" style="cursor: pointer; font-weight: 500; color: var(--text-secondary); font-size: 12px;">
+            <i class="pi pi-users" style="margin-right: 4px; font-size: 11px;"></i> I intend to participate in the pre-bid meeting
+          </label>
+        </div>
+        <p style="font-size: 11px; color: var(--text-muted); margin-top: 6px; margin-bottom: 0;">
+          <i class="pi pi-info-circle" style="margin-right: 4px;"></i> 
+          The pre-bid meeting allows bidders to ask questions and seek clarifications about the tender requirements.
+        </p>
+      </div>
+
       <!-- Bidding As Selection -->
 
 
@@ -6280,9 +6346,14 @@ Submission Requirements
 
 
       <!-- Item 1: Technical Specifications -->
-      <div style="background: var(--surface-50); padding: var(--spacing-sm); border-radius: var(--radius-sm); margin-bottom: var(--spacing-sm); border: 1px solid var(--surface-200);">
-        <div style="font-weight: 600; margin-bottom: var(--spacing-sm); color: var(--primary-700); background: var(--surface-100); padding: var(--spacing-xs) var(--spacing-sm); border-radius: var(--radius-sm); display: flex; align-items: center; gap: 6px; font-size: 12px;">
-          <i class="pi pi-tag" style="font-size: 11px;"></i> UNSPSC Code: 42182104 - Ultrasound Machines
+      <div class="product-technical-section" data-product-id="42182104" data-product-name="Ultrasound Machines" style="background: var(--surface-50); padding: var(--spacing-sm); border-radius: var(--radius-sm); margin-bottom: var(--spacing-sm); border: 1px solid var(--surface-200);">
+        <div style="font-weight: 600; margin-bottom: var(--spacing-sm); color: var(--primary-700); background: var(--surface-100); padding: var(--spacing-xs) var(--spacing-sm); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: space-between; font-size: 12px;">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <i class="pi pi-tag" style="font-size: 11px;"></i> UNSPSC Code: 42182104 - Ultrasound Machines
+          </div>
+          <button type="button" class="btn btn-secondary add-alternate-offer-btn" onclick="addAlternateOffer(this, '42182104', 'Ultrasound Machines')" style="padding: 4px 10px; font-size: 11px; display: flex; align-items: center; gap: 4px;">
+            <i class="pi pi-plus-circle" style="font-size: 10px;"></i> Add Alternate Offer
+          </button>
         </div>
 
         <div class="supplier-form-grid">
@@ -6401,6 +6472,9 @@ Submission Requirements
         </div>
       </div>
 
+      <!-- Alternate Offers Container for 42182104 -->
+      <div id="alternate-offers-container-42182104" class="alternate-offers-container"></div>
+
       <!-- Delivery Requirements -->
       <div class="supplier-subsection-header">
         <strong><i class="pi pi-truck"></i> Delivery Requirements</strong>
@@ -6498,7 +6572,7 @@ Submission Requirements
         <strong><i class="pi pi-shopping-cart"></i> Prices for Goods</strong>
       </div>
 
-      <table class="supplier-smart-table">
+      <table class="supplier-smart-table" id="prices-for-goods-table">
         <thead>
           <tr>
             <th style="width: 5%;">#</th>
@@ -6511,8 +6585,8 @@ Submission Requirements
             <th style="width: 13%;">Total</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
+        <tbody id="prices-for-goods-tbody">
+          <tr data-product-id="42182104" data-is-original="true">
             <td style="font-weight: 600;">1</td>
             <td><strong>Ultrasound Machines</strong><div style="font-size: 0.85em; color: var(--text-muted);">UNSPSC: 42182104</div></td>
             <td class="prefilled" style="text-align: center; font-weight: 600;">5</td>
@@ -6522,7 +6596,7 @@ Submission Requirements
             <td><input type="number" placeholder="0.00" step="0.01"></td>
             <td class="calculated">0.00</td>
           </tr>
-          <tr>
+          <tr data-product-id="42182108" data-is-original="true">
             <td style="font-weight: 600;">2</td>
             <td><strong>Patient Monitors</strong><div style="font-size: 0.85em; color: var(--text-muted);">UNSPSC: 42182108</div></td>
             <td class="prefilled" style="text-align: center; font-weight: 600;">20</td>
@@ -6532,7 +6606,7 @@ Submission Requirements
             <td><input type="number" placeholder="0.00" step="0.01"></td>
             <td class="calculated">0.00</td>
           </tr>
-          <tr>
+          <tr data-product-id="42192201" data-is-original="true">
             <td style="font-weight: 600;">3</td>
             <td><strong>Surgical Lights</strong><div style="font-size: 0.85em; color: var(--text-muted);">UNSPSC: 42192201</div></td>
             <td class="prefilled" style="text-align: center; font-weight: 600;">8</td>
@@ -6542,7 +6616,7 @@ Submission Requirements
             <td><input type="number" placeholder="0.00" step="0.01"></td>
             <td class="calculated">0.00</td>
           </tr>
-          <tr>
+          <tr data-product-id="42182101" data-is-original="true">
             <td style="font-weight: 600;">4</td>
             <td><strong>Anesthesia Machines</strong><div style="font-size: 0.85em; color: var(--text-muted);">UNSPSC: 42182101</div></td>
             <td class="prefilled" style="text-align: center; font-weight: 600;">3</td>
@@ -6552,7 +6626,7 @@ Submission Requirements
             <td><input type="number" placeholder="0.00" step="0.01"></td>
             <td class="calculated">0.00</td>
           </tr>
-          <tr style="background: var(--surface-100);">
+          <tr id="prices-for-goods-total-row" style="background: var(--surface-100);">
             <td colspan="7" style="text-align: right; font-weight: 600; padding-right: var(--spacing-md);">Total Price of Goods →</td>
             <td class="calculated" style="font-weight: 700;">0.00</td>
           </tr>
@@ -8806,6 +8880,317 @@ function toggleSupplierConsortium() {
 
     if (!isSingle && supplierPartnerCount === 0) {
         addSupplierPartner();
+    }
+}
+
+// Toggle Bidding For Selection - handles partial bidding reason visibility
+function toggleBiddingForSelection(clickedElement) {
+    const entireTender = document.getElementById('biddingForEntireTender');
+    const lot1 = document.getElementById('biddingForLot1');
+    const lot2 = document.getElementById('biddingForLot2');
+    const reasonContainer = document.getElementById('notBiddingAllReason');
+    
+    // Determine what was clicked
+    const clickedEntireTender = clickedElement && clickedElement.id === 'biddingForEntireTender';
+    const clickedLot = clickedElement && (clickedElement.id === 'biddingForLot1' || clickedElement.id === 'biddingForLot2');
+    
+    // If Entire Tender was clicked, uncheck individual lots
+    if (clickedEntireTender) {
+        if (lot1) lot1.checked = false;
+        if (lot2) lot2.checked = false;
+        entireTender.parentElement.style.border = '1px solid var(--primary-400)';
+        entireTender.parentElement.style.boxShadow = '0 1px 4px rgba(0, 118, 189, 0.1)';
+        entireTender.nextElementSibling.style.color = 'var(--primary-600)';
+        // Reset lot styling
+        if (lot1) {
+            lot1.parentElement.style.border = '1px solid var(--surface-300)';
+            lot1.parentElement.style.boxShadow = 'none';
+        }
+        if (lot2) {
+            lot2.parentElement.style.border = '1px solid var(--surface-300)';
+            lot2.parentElement.style.boxShadow = 'none';
+        }
+    }
+    
+    // If a lot was clicked, uncheck Entire Tender
+    if (clickedLot) {
+        if (entireTender) {
+            entireTender.checked = false;
+            entireTender.parentElement.style.border = '1px solid var(--surface-300)';
+            entireTender.parentElement.style.boxShadow = 'none';
+            entireTender.nextElementSibling.style.color = 'var(--text-secondary)';
+        }
+        // Update lot checkbox styling
+        if (lot1) {
+            if (lot1.checked) {
+                lot1.parentElement.style.border = '1px solid var(--primary-400)';
+                lot1.parentElement.style.boxShadow = '0 1px 4px rgba(0, 118, 189, 0.1)';
+            } else {
+                lot1.parentElement.style.border = '1px solid var(--surface-300)';
+                lot1.parentElement.style.boxShadow = 'none';
+            }
+        }
+        if (lot2) {
+            if (lot2.checked) {
+                lot2.parentElement.style.border = '1px solid var(--primary-400)';
+                lot2.parentElement.style.boxShadow = '0 1px 4px rgba(0, 118, 189, 0.1)';
+            } else {
+                lot2.parentElement.style.border = '1px solid var(--surface-300)';
+                lot2.parentElement.style.boxShadow = 'none';
+            }
+        }
+    }
+    
+    // Determine current state for reason display
+    const isFullBid = entireTender && entireTender.checked;
+    const lot1Checked = lot1 && lot1.checked;
+    const lot2Checked = lot2 && lot2.checked;
+    
+    // Show reason if only one lot is selected (partial bid)
+    const isPartialBid = !isFullBid && (lot1Checked || lot2Checked) && !(lot1Checked && lot2Checked);
+    if (reasonContainer) {
+        reasonContainer.style.display = isPartialBid ? 'block' : 'none';
+    }
+}
+
+// Handle "Other" reason selection
+document.addEventListener('DOMContentLoaded', function() {
+    const reasonSelect = document.getElementById('notBiddingReasonSelect');
+    const otherReasonContainer = document.getElementById('otherReasonContainer');
+    
+    if (reasonSelect) {
+        reasonSelect.addEventListener('change', function() {
+            if (otherReasonContainer) {
+                otherReasonContainer.style.display = this.value === 'other' ? 'block' : 'none';
+            }
+        });
+    }
+});
+
+// ========== ALTERNATE OFFER FUNCTIONALITY ==========
+let alternateOfferCounters = {};
+
+function addAlternateOffer(buttonElement, productId, productName) {
+    // Initialize counter for this product if not exists
+    if (!alternateOfferCounters[productId]) {
+        alternateOfferCounters[productId] = 0;
+    }
+    alternateOfferCounters[productId]++;
+    const alternateNumber = alternateOfferCounters[productId];
+    
+    // Create the alternate offer section in Technical Bid
+    createAlternateTechnicalSection(productId, productName, alternateNumber);
+    
+    // Add row to Financial Bid prices table
+    addAlternateFinancialRow(productId, productName, alternateNumber);
+}
+
+function createAlternateTechnicalSection(productId, productName, alternateNumber) {
+    const container = document.getElementById(`alternate-offers-container-${productId}`);
+    if (!container) return;
+    
+    const uniqueId = `${productId}-alt-${alternateNumber}`;
+    
+    const alternateSection = document.createElement('div');
+    alternateSection.className = 'alternate-offer-section';
+    alternateSection.id = `alternate-section-${uniqueId}`;
+    alternateSection.setAttribute('data-product-id', productId);
+    alternateSection.setAttribute('data-alternate-number', alternateNumber);
+    alternateSection.style.cssText = 'background: linear-gradient(135deg, var(--warning-50, #fff8e1) 0%, var(--surface-50) 100%); padding: var(--spacing-sm); border-radius: var(--radius-sm); margin-bottom: var(--spacing-sm); border: 2px solid var(--warning-300, #ffcc80);';
+    
+    alternateSection.innerHTML = `
+        <div style="font-weight: 600; margin-bottom: var(--spacing-sm); color: var(--warning-700, #f57c00); background: var(--warning-100, #ffe0b2); padding: var(--spacing-xs) var(--spacing-sm); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: space-between; font-size: 12px;">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <i class="pi pi-bookmark" style="font-size: 11px;"></i> 
+            <span style="background: var(--warning-500, #ff9800); color: white; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 700;">ALTERNATE OFFER #${alternateNumber}</span>
+            UNSPSC Code: ${productId} - ${productName}
+          </div>
+          <button type="button" class="btn btn-ghost" onclick="removeAlternateOffer('${uniqueId}', '${productId}')" style="padding: 4px 8px; font-size: 11px; color: var(--danger-500); display: flex; align-items: center; gap: 4px;">
+            <i class="pi pi-trash" style="font-size: 10px;"></i> Remove
+          </button>
+        </div>
+
+        <div class="supplier-form-grid">
+          <div class="supplier-form-field">
+            <label><i class="pi pi-box"></i> Model / Product Name <span style="color: var(--danger-500);">*</span></label>
+            <input type="text" placeholder="Enter alternate model name">
+          </div>
+
+          <div class="supplier-form-field">
+            <label><i class="pi pi-globe"></i> Country of Origin <span style="color: var(--danger-500);">*</span></label>
+            <input type="text" placeholder="Manufacturing country">
+          </div>
+
+          <div class="supplier-form-field">
+            <label><i class="pi pi-building"></i> Manufacturer <span style="color: var(--danger-500);">*</span></label>
+            <div style="display: flex; gap: 8px;">
+              <input type="text" placeholder="Manufacturer name" style="flex: 1;">
+              <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 12px;"><i class="pi pi-search"></i></button>
+            </div>
+          </div>
+
+          <div class="supplier-form-field">
+            <label><i class="pi pi-verified"></i> Manufacturer UNGM ID <span style="color: var(--text-muted); font-weight: 400;">(if available)</span></label>
+            <input type="text" placeholder="UNGM-XXXXXX">
+          </div>
+
+          <div class="supplier-form-field">
+            <label><i class="pi pi-map-marker"></i> Manufacturer Address</label>
+            <textarea placeholder="Full address" rows="2"></textarea>
+          </div>
+
+          <div class="supplier-form-field">
+            <label><i class="pi pi-link"></i> Product Documentation URL</label>
+            <input type="url" placeholder="https://manufacturer.com/product-specs">
+          </div>
+        </div>
+
+        <!-- Specification Compliance Table for Alternate -->
+        <div class="supplier-subsection-header" style="margin-top: var(--spacing-lg);">
+          <strong><i class="pi pi-list"></i> Specification Compliance (Alternate Offer)</strong>
+        </div>
+
+        <table class="supplier-smart-table">
+          <thead>
+            <tr>
+              <th style="width: 5%;">#</th>
+              <th style="width: 35%;">Item Specification (UNOPS Requirements)</th>
+              <th style="width: 15%;">Is quotation compliant?</th>
+              <th>Details of goods offered</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: center; font-weight: 600;">1</td>
+              <td class="prefilled">Portable ultrasound system with color Doppler capability</td>
+              <td>
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                  <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;"><input type="radio" name="altTechSpec1_${uniqueId}"> Yes</label>
+                  <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;"><input type="radio" name="altTechSpec1_${uniqueId}"> No</label>
+                </div>
+              </td>
+              <td><textarea placeholder="Describe your alternate product's specifications" rows="2"></textarea></td>
+            </tr>
+            <tr>
+              <td style="text-align: center; font-weight: 600;">2</td>
+              <td class="prefilled">15" or larger high-resolution LED display, minimum 1920x1080 pixels</td>
+              <td>
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                  <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;"><input type="radio" name="altTechSpec2_${uniqueId}"> Yes</label>
+                  <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;"><input type="radio" name="altTechSpec2_${uniqueId}"> No</label>
+                </div>
+              </td>
+              <td><textarea placeholder="Describe your alternate product's specifications" rows="2"></textarea></td>
+            </tr>
+            <tr>
+              <td style="text-align: center; font-weight: 600;">3</td>
+              <td class="prefilled">Minimum 3 probe connectors with simultaneous probe operation capability</td>
+              <td>
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                  <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;"><input type="radio" name="altTechSpec3_${uniqueId}"> Yes</label>
+                  <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;"><input type="radio" name="altTechSpec3_${uniqueId}"> No</label>
+                </div>
+              </td>
+              <td><textarea placeholder="Describe your alternate product's specifications" rows="2"></textarea></td>
+            </tr>
+            <tr>
+              <td style="text-align: center; font-weight: 600;">4</td>
+              <td class="prefilled">Built-in battery with minimum 60 minutes operation time</td>
+              <td>
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                  <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;"><input type="radio" name="altTechSpec4_${uniqueId}"> Yes</label>
+                  <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;"><input type="radio" name="altTechSpec4_${uniqueId}"> No</label>
+                </div>
+              </td>
+              <td><textarea placeholder="Describe your alternate product's specifications" rows="2"></textarea></td>
+            </tr>
+            <tr>
+              <td style="text-align: center; font-weight: 600;">5</td>
+              <td class="prefilled">CE and/or FDA approved medical device certification</td>
+              <td>
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                  <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;"><input type="radio" name="altTechSpec5_${uniqueId}"> Yes</label>
+                  <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;"><input type="radio" name="altTechSpec5_${uniqueId}"> No</label>
+                </div>
+              </td>
+              <td><textarea placeholder="Describe your alternate product's specifications" rows="2"></textarea></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="supplier-form-field" style="margin-top: var(--spacing-lg);">
+          <label><i class="pi pi-exclamation-circle" style="color: var(--warning-500);"></i> Any Deviations from Requirements? (Alternate Offer)</label>
+          <textarea placeholder="List any deviations or alternative specifications offered for this alternate product" rows="3"></textarea>
+        </div>
+        
+        <div class="supplier-form-field" style="margin-top: var(--spacing-sm);">
+          <label><i class="pi pi-info-circle" style="color: var(--info-500);"></i> Justification for Alternate Offer</label>
+          <textarea placeholder="Explain why this alternate offer should be considered (e.g., better value, enhanced features, improved delivery)" rows="2"></textarea>
+        </div>
+    `;
+    
+    container.appendChild(alternateSection);
+}
+
+function addAlternateFinancialRow(productId, productName, alternateNumber) {
+    const tbody = document.getElementById('prices-for-goods-tbody');
+    const totalRow = document.getElementById('prices-for-goods-total-row');
+    if (!tbody || !totalRow) return;
+    
+    const uniqueId = `${productId}-alt-${alternateNumber}`;
+    
+    // Find the original product row to insert after it (or after its other alternates)
+    let insertAfterRow = null;
+    const rows = tbody.querySelectorAll('tr');
+    for (let i = rows.length - 1; i >= 0; i--) {
+        const row = rows[i];
+        if (row.getAttribute('data-product-id') === productId) {
+            insertAfterRow = row;
+            break;
+        }
+    }
+    
+    const newRow = document.createElement('tr');
+    newRow.id = `financial-row-${uniqueId}`;
+    newRow.setAttribute('data-product-id', productId);
+    newRow.setAttribute('data-alternate-number', alternateNumber);
+    newRow.style.cssText = 'background: linear-gradient(135deg, var(--warning-50, #fff8e1) 0%, white 100%);';
+    
+    newRow.innerHTML = `
+        <td style="font-weight: 600; color: var(--warning-700, #f57c00);">ALT</td>
+        <td>
+            <div style="display: flex; align-items: center; gap: 6px;">
+                <span style="background: var(--warning-500, #ff9800); color: white; padding: 2px 6px; border-radius: 8px; font-size: 9px; font-weight: 700;">ALT #${alternateNumber}</span>
+                <strong>${productName}</strong>
+            </div>
+            <div style="font-size: 0.85em; color: var(--warning-600, #fb8c00);">UNSPSC: ${productId} • Alternate Offer</div>
+        </td>
+        <td class="prefilled" style="text-align: center; font-weight: 600;">5</td>
+        <td><select><option>USD</option><option>EUR</option></select></td>
+        <td><input type="number" placeholder="0.00" step="0.01"></td>
+        <td><input type="number" placeholder="0.00" step="0.01"></td>
+        <td><input type="number" placeholder="0.00" step="0.01"></td>
+        <td class="calculated">0.00</td>
+    `;
+    
+    if (insertAfterRow && insertAfterRow !== totalRow) {
+        insertAfterRow.parentNode.insertBefore(newRow, insertAfterRow.nextSibling);
+    } else {
+        tbody.insertBefore(newRow, totalRow);
+    }
+}
+
+function removeAlternateOffer(uniqueId, productId) {
+    // Remove technical section
+    const technicalSection = document.getElementById(`alternate-section-${uniqueId}`);
+    if (technicalSection) {
+        technicalSection.remove();
+    }
+    
+    // Remove financial row
+    const financialRow = document.getElementById(`financial-row-${uniqueId}`);
+    if (financialRow) {
+        financialRow.remove();
     }
 }
 
