@@ -7970,10 +7970,10 @@
                 { id: 'reference', label: 'Reference', type: 'text', required: true, value: 'Auto-generated', readonly: true },
                 { id: 'sourcingOrSolicitation', label: 'Sourcing or Solicitation', type: 'select', required: true, options: ['Select...', 'Sourcing', 'Solicitation'], onchange: 'updateSourcingOrSolicitation' },
                 { id: 'eventType', label: 'Event Type', type: 'select', required: false, options: ['Select...', 'RFQ', 'RFP', 'ITB', 'EOI', 'RFI', 'PQ'], onchange: 'updateEventType' },
-                { id: 'sourcingMethod', label: 'Sourcing Method', type: 'select', required: false, options: ['Select...', 'RFI', 'EOI', 'PQ', 'Ad-hoc shortlist'], conditionalVisibility: { field: 'sourcingOrSolicitation', value: 'Sourcing' } },
                 { id: 'processType', label: 'Process Type', type: 'select', required: false, options: ['Select...', 'Standard solicitation', 'Solicit offers against LTA/BPA', 'Secondary bidding against LTA/BPA', 'Direct contracting / Sole sourcing'], onchange: 'updateProcessTypeSelect', conditionalVisibility: { field: 'sourcingOrSolicitation', value: 'Solicitation' } },
                 { id: 'typeOfRequirement', label: 'Type of Requirement', type: 'select', required: true, options: ['Select...', 'Goods', 'Services', 'Works'], onchange: 'updateTypeOfRequirement' },
                 { id: 'description', label: 'Description', type: 'textarea', required: true, value: '' },
+                { id: 'organizationalUnit', label: 'Organizational Unit', type: 'search', required: false, value: '', placeholder: 'Search from oneUNOPS' },
                 { id: 'beneficiaryCountries', label: 'Beneficiary country(ies)', type: 'country-multiselect', required: false, multiple: true, options: ['Afghanistan', 'Albania', 'Algeria', 'Angola', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahrain', 'Bangladesh', 'Belarus', 'Belgium', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia and Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina Faso', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Central African Republic', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominican Republic', 'DR Congo', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Eswatini', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Lithuania', 'Luxembourg', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Mauritania', 'Mauritius', 'Mexico', 'Moldova', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar', 'Namibia', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'North Korea', 'North Macedonia', 'Norway', 'Oman', 'Pakistan', 'Palestine', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russia', 'Rwanda', 'Saudi Arabia', 'Senegal', 'Serbia', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Somalia', 'South Africa', 'South Korea', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Sweden', 'Switzerland', 'Syria', 'Tajikistan', 'Tanzania', 'Thailand', 'Timor-Leste', 'Togo', 'Trinidad and Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'] },
                 { id: 'modalityOfBidReceipt', label: 'Modality of Bid Receipt', type: 'select', required: true, options: ['Select...', 'Online Only', 'Email Submission', 'Physical Submission'], onchange: 'updateModalityOfBidReceipt' },
                 { id: 'waiverForBidReceipt', label: 'Waiver for Bid Receipt Modality', type: 'text', required: false, value: '', placeholder: 'Provide waiver link', conditionalVisibility: { field: 'modalityOfBidReceipt', values: ['Email Submission', 'Physical Submission'] } },
@@ -7981,10 +7981,10 @@
                 { id: 'eppAuthorizationLink', label: 'EPP Authorization (Jira Link)', type: 'text', required: false, value: '', placeholder: 'Enter Jira link', conditionalVisibility: { field: 'epp', value: 'Yes' } },
                 { id: 'eppAuthorizationEndDate', label: 'EPP Authorization End Date', type: 'date', required: false, value: '', conditionalVisibility: { field: 'epp', value: 'Yes' } },
                 { id: 'scopeOfEPPApproval', label: 'Scope of EPP Approval', type: 'select', required: false, options: ['Select...', 'Project', 'Org Unit', 'Specific procurement process', 'Other'], conditionalVisibility: { field: 'epp', value: 'Yes' } },
-                { id: 'medicineOrMedical', label: 'Medicine / Medical Equipment', type: 'select', required: false, options: ['Select...', 'Yes', 'No'], onchange: 'updateMedicineOrMedical' },
+                { id: 'medicineOrMedical', label: 'Medicine / Medical Equipment', type: 'select', required: false, options: ['Select...', 'Yes', 'No'], onchange: 'updateMedicineOrMedical', conditionalVisibility: { field: 'typeOfRequirement', values: ['Goods', 'Services', 'Select...', ''] } },
                 { id: 'policyExceptionLink', label: 'Policy Exception for Medicine/Medical Equipment Procurement (Annex 2 Jira Link)', type: 'text', required: false, value: '', placeholder: 'Enter Jira link', conditionalVisibility: { field: 'medicineOrMedical', value: 'Yes' } },
                 { id: 'contractAmendment', label: 'Contract Amendment', type: 'select', required: false, options: ['Select...', 'Yes', 'No'], conditionalVisibility: { field: 'processType', contains: 'Direct contracting / Sole sourcing' } },
-                { id: 'solicitationMethod', label: 'Solicitation Method', type: 'select', required: false, options: ['Select...', 'RFQ', 'ITB', 'RFP', 'e-reserve auctions'], conditionalVisibility: { field: 'sourcingOrSolicitation', value: 'Solicitation' } },
+
                 { id: 'procurementLifecycleTracker', label: 'Procurement Lifecycle & Related Processes', type: 'lifecycle-tracker', required: false, conditionalRequired: { field: 'isRetendering', value: true }, description: 'Link this process to related procurement events to maintain a complete audit trail' },
                 { id: 'isRetendering', label: 'Is this a Retender?', type: 'checkbox', required: false, onchange: 'updateIsRetendering' },
                 { id: 'lessonsLearned', label: 'Lessons Learned from Previous Process', type: 'textarea', required: true, value: '', placeholder: 'Document lessons learned from the previous process that will be applied...', conditionalVisibility: { field: 'isRetendering', value: true } },
@@ -7992,9 +7992,15 @@
                 { id: 'unCollaboration', label: 'UN Collaboration', type: 'select', required: false, options: ['Select...', 'Yes', 'No'], onchange: 'updateUNCollaboration' },
                 { id: 'unCollaborationType', label: 'UN Collaboration Type', type: 'select', required: false, options: ['Select...', 'Joint tendering process with other UN organizations', 'Secondary bidding using other UN agency\'s LTA', 'Re-use of solicitation results of another UN agency'], conditionalVisibility: { field: 'unCollaboration', value: 'Yes' } },
                 { id: 'unAgencies', label: 'UN Agencies', type: 'select', required: false, multiple: true, options: ['UNDP', 'UNICEF', 'UNHCR', 'WFP', 'WHO', 'FAO', 'ILO', 'UNESCO', 'UNIDO'], conditionalVisibility: { field: 'unCollaboration', value: 'Yes' } },
-                { id: 'organizationalUnit', label: 'Organizational Unit', type: 'search', required: false, value: '', placeholder: 'Search from oneUNOPS' },
+                { id: 'isProcurementOfInnovation', label: 'Is this Procurement of Innovation?', type: 'select', required: false, options: ['Select...', 'Yes', 'No'], onchange: 'updateIsProcurementOfInnovation' },
                 { id: 'isLease', label: 'Is this a Lease', type: 'select', required: false, options: ['Select...', 'Yes', 'No'], onchange: 'updateIsLease' },
                 { id: 'srmComplianceDocument', label: 'SRM Compliance Document', type: 'file', required: false, value: '', conditionalVisibility: { field: 'isLease', value: 'Yes' } },
+                { id: 'earlyMarketEngagement', label: 'Has there been early market engagement/pre-tender consultation?', type: 'select', required: false, options: ['Select...', 'Yes', 'No'], onchange: 'updateEarlyMarketEngagement' },
+                { id: 'vendorTrainingConducted', label: 'Was vendor training conducted prior to initiating this tender?', type: 'select', required: false, options: ['Select...', 'Yes', 'No'], onchange: 'updateVendorTrainingConducted' },
+                { id: 'vendorTrainingType', label: 'Type of Training', type: 'select', required: false, options: ['Select...', 'Physical Training', 'Online Training'], conditionalVisibility: { field: 'vendorTrainingConducted', value: 'Yes' } },
+                { id: 'vendorTrainingAttendees', label: 'Number of vendors that attended the training', type: 'number', required: false, value: '', placeholder: 'Enter number of vendors', conditionalVisibility: { field: 'vendorTrainingConducted', value: 'Yes' } },
+                { id: 'vendorTrainingComments', label: 'Comments on content of the training', type: 'textarea', required: false, value: '', placeholder: 'Describe the content and key topics covered in the training...', conditionalVisibility: { field: 'vendorTrainingConducted', value: 'Yes' } },
+                { id: 'vendorTrainingAttachment', label: 'Training Documentation (optional)', type: 'file', required: false, value: '', help: 'Attach any relevant training materials or documentation', conditionalVisibility: { field: 'vendorTrainingConducted', value: 'Yes' } },
               ],
             },
           ],
@@ -8037,7 +8043,7 @@
           id: 'scope',
           icon: '🎯',
           piIcon: 'pi-check-square',
-          name: 'Scope & Requirements',
+          name: 'Requirements',
           sections: [
             {
               title: 'Scope and objectives',
@@ -8201,7 +8207,7 @@
         alternateAuthors: [],
         procurementReviewer: null,
         procurementAuthority: null,
-        technicalExpert: null,
+        technicalExperts: [],
         bidOpeningPanel: [],
         evaluationTeam: [],
         collaborators: []
@@ -8395,7 +8401,6 @@
       let deliveryRequirementFields = [
         { id: 'dr1', label: 'Delivery Time', type: 'text', placeholder: 'e.g., Within 30 days', value: '' },
         { id: 'dr2', label: 'Delivery Place', type: 'text', placeholder: 'e.g., Warehouse, Copenhagen', value: '' },
-        { id: 'dr3', label: 'Allowed Incoterms', type: 'multi-select', placeholder: '', value: [] },
         { id: 'dr4', label: 'Consignee Details', type: 'textarea', placeholder: 'Enter consignee details', value: '' }
       ];
       
@@ -8652,7 +8657,10 @@
         unCollaboration: '',
         isLease: '',
         isRetendering: false,
-        beneficiaryCountries: []
+        beneficiaryCountries: [],
+        isProcurementOfInnovation: '',
+        earlyMarketEngagement: '',
+        vendorTrainingConducted: ''
       };
       
       // Particulars - Field Values for Conditional Visibility
@@ -11522,7 +11530,7 @@
           completed = 0;
           if (teamMembers.procurementReviewer) completed++;
           if (teamMembers.procurementAuthority) completed++;
-          if (teamMembers.technicalExpert) completed++;
+          if (teamMembers.technicalExperts && teamMembers.technicalExperts.length > 0) completed++;
         } else if (sectionType === 'team-evaluation') {
           total = 2;
           completed = 0;
@@ -12026,8 +12034,9 @@
       function renderTeamBlock(block) {
         const renderTeamMemberCard = (member, role, canRemove = false, removeFunc = null) => {
           if (!member) return '';
+          const hasQualification = member.technicalMatterExpertQualification && role === 'Expert';
           return `
-            <div class="team-member-card">
+            <div class="team-member-card" style="${hasQualification ? 'flex-wrap: wrap;' : ''}">
               <div class="team-member-avatar" style="background: ${role === 'Author' ? 'var(--primary-500)' : 'var(--info-500)'};">${member.avatar || member.name.split(' ').map(n => n[0]).join('')}</div>
               <div class="team-member-info">
                 <div class="team-member-name">${member.name}</div>
@@ -12035,6 +12044,12 @@
               </div>
               <div class="team-member-role">${role}</div>
               ${canRemove ? `<button class="team-member-remove" onclick="event.stopPropagation(); ${removeFunc}" title="Remove">×</button>` : ''}
+              ${hasQualification ? `
+                <div style="width: 100%; margin-top: var(--spacing-xs); padding-top: var(--spacing-xs); border-top: 1px dashed var(--surface-200);">
+                  <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 2px;">Technical Matter Expert Qualification:</div>
+                  <div style="font-size: 12px; color: var(--text-secondary); font-style: italic;">${member.technicalMatterExpertQualification}</div>
+                </div>
+              ` : ''}
             </div>
           `;
         };
@@ -12123,22 +12138,24 @@
                       <span class="help-text">Final approval authority for procurement</span>
                     </div>
                     
-                    <!-- Technical Expert -->
-                    <div class="team-role-card">
-                      <div class="team-role-header">
-                        <div class="team-role-icon">🔧</div>
-                        <div class="team-role-title">Technical Expert</div>
+                    <!-- Technical Experts -->
+                    <div class="team-role-card" style="grid-column: span 3;">
+                      <div class="team-role-header" style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                          <div class="team-role-icon">🔧</div>
+                          <div class="team-role-title">Technical Expert(s)</div>
+                        </div>
+                        <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); openAddTeamMemberModal('technicalExperts')">
+                          <i class="pi pi-plus"></i> Add Expert
+                        </button>
                       </div>
                       <div class="team-role-content">
-                        ${teamMembers.technicalExpert ? 
-                          renderTeamMemberCard(teamMembers.technicalExpert, 'Expert', true, 'removeTechnicalExpert()') :
-                          `<div class="team-add-placeholder" onclick="event.stopPropagation(); openAddTeamMemberModal('technicalExpert')">
-                            <i class="pi pi-plus"></i>
-                            <span>Assign Expert</span>
-                          </div>`
+                        ${teamMembers.technicalExperts && teamMembers.technicalExperts.length > 0 ? 
+                          teamMembers.technicalExperts.map((expert, idx) => renderTeamMemberCard(expert, 'Expert', true, `removeTechnicalExpert(${idx})`)).join('') :
+                          `<div class="team-empty-slot">No technical experts assigned</div>`
                         }
                       </div>
-                      <span class="help-text">Provides technical guidance and specifications</span>
+                      <span class="help-text">Provides technical guidance and specifications. You can add multiple technical experts.</span>
                     </div>
                     
                   </div>
@@ -12149,7 +12166,7 @@
               <div class="collapsible-section collapsed" id="team-evaluation-section" style="margin-top: var(--spacing-md);">
                 <div class="collapsible-header" onclick="toggleCollapsibleSection('team-evaluation-section')">
                   <div class="collapsible-header-left">
-                    <span class="collapsible-header-title">Evaluation Team</span>
+                    <span class="collapsible-header-title">Evaluation Panel</span>
                     ${renderSectionProgress('team-evaluation', null)}
                   </div>
                   <div class="collapsible-toggle">▼</div>
@@ -12172,7 +12189,7 @@
                     <!-- Evaluation Team Members -->
                     <div class="team-subsection" style="margin-top: var(--spacing-lg);">
                       <div class="team-subsection-header">
-                        <span class="team-subsection-title">📊 Evaluation Committee</span>
+                        <span class="team-subsection-title">📊 Evaluation Panel</span>
                         <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); openAddTeamMemberModal('evaluationTeam')"><i class="pi pi-plus"></i> Add Member</button>
                       </div>
                       <div class="team-members-list">
@@ -12223,6 +12240,12 @@
           { name: 'Emma Wilson', email: 'emma.wilson@unops.org', avatar: 'EW' },
         ];
         
+        // Special handling for Technical Experts - show modal with qualification field
+        if (role === 'technicalExperts') {
+          showTechnicalExpertModal(mockMembers);
+          return;
+        }
+        
         const randomMember = mockMembers[Math.floor(Math.random() * mockMembers.length)];
         
         if (['alternateAuthors', 'bidOpeningPanel', 'evaluationTeam', 'collaborators'].includes(role)) {
@@ -12233,6 +12256,82 @@
         
         renderCurrentBlock();
         showNotification(`${randomMember.name} added as ${role.replace(/([A-Z])/g, ' $1').toLowerCase()}`, 'success');
+      }
+      
+      // Show modal for adding Technical Expert with qualification field
+      window.showTechnicalExpertModal = function(mockMembers) {
+        const modalHtml = `
+          <div class="modal-overlay" id="technical-expert-modal" style="display: flex; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); z-index: 1000; align-items: center; justify-content: center;" onclick="closeTechnicalExpertModal(event)">
+            <div class="modal-container" style="max-width: 500px; background: white; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); overflow: hidden;" onclick="event.stopPropagation()">
+              <div class="modal-header" style="padding: 20px 24px; border-bottom: 1px solid #e5e7eb; background: #f9fafb;">
+                <h3 class="modal-title" style="margin: 0; font-size: 18px; font-weight: 600; color: #111827;">Add Technical Expert</h3>
+                <button class="modal-close" style="position: absolute; right: 16px; top: 16px; background: none; border: none; font-size: 24px; cursor: pointer; color: #6b7280;" onclick="closeTechnicalExpertModal()">&times;</button>
+              </div>
+              <div class="modal-body" style="padding: 24px;">
+                <div class="form-group">
+                  <label class="form-label" style="display: block; margin-bottom: 6px; font-weight: 500; color: #374151;">Select Team Member <span class="required" style="color: #ef4444;">*</span></label>
+                  <select class="form-select" id="technical-expert-select" style="width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; background: white;">
+                    <option value="">Select a team member...</option>
+                    ${mockMembers.map((m, idx) => `<option value="${idx}">${m.name} (${m.email})</option>`).join('')}
+                  </select>
+                </div>
+                <div class="form-group" style="margin-top: 16px;">
+                  <label class="form-label" style="display: block; margin-bottom: 6px; font-weight: 500; color: #374151;">Technical Matter Expert Qualification</label>
+                  <textarea 
+                    class="form-textarea" 
+                    id="technical-expert-qualification" 
+                    placeholder="Describe the technical qualifications, expertise areas, and relevant experience of the technical expert..."
+                    style="width: 100%; min-height: 100px; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; resize: vertical; font-family: inherit;"
+                  ></textarea>
+                  <span class="help-text" style="display: block; margin-top: 6px; font-size: 12px; color: #6b7280;">Provide details about the expert's technical background and qualifications relevant to this procurement</span>
+                </div>
+              </div>
+              <div class="modal-footer" style="padding: 16px 24px; border-top: 1px solid #e5e7eb; background: #f9fafb; display: flex; justify-content: flex-end; gap: 12px;">
+                <button class="btn btn-ghost" style="padding: 10px 20px; border: 1px solid #d1d5db; background: white; border-radius: 8px; cursor: pointer; font-size: 14px;" onclick="closeTechnicalExpertModal()">Cancel</button>
+                <button class="btn btn-primary" style="padding: 10px 20px; border: none; background: #2563eb; color: white; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500;" onclick="confirmAddTechnicalExpert()">Add Technical Expert</button>
+              </div>
+            </div>
+          </div>
+        `;
+        
+        // Store mock members for later use
+        window.technicalExpertMockMembers = mockMembers;
+        
+        // Add modal to DOM
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+      }
+      
+      window.closeTechnicalExpertModal = function(event) {
+        if (event && event.target !== event.currentTarget) return;
+        const modal = document.getElementById('technical-expert-modal');
+        if (modal) {
+          modal.remove();
+        }
+      }
+      
+      window.confirmAddTechnicalExpert = function() {
+        const selectEl = document.getElementById('technical-expert-select');
+        const qualificationEl = document.getElementById('technical-expert-qualification');
+        
+        if (!selectEl.value) {
+          showNotification('Please select a team member', 'error');
+          return;
+        }
+        
+        const memberIndex = parseInt(selectEl.value);
+        const selectedMember = { ...window.technicalExpertMockMembers[memberIndex] };
+        
+        // Add qualification if provided
+        if (qualificationEl.value.trim()) {
+          selectedMember.technicalMatterExpertQualification = qualificationEl.value.trim();
+        }
+        
+        // Add to array of technical experts
+        teamMembers.technicalExperts.push(selectedMember);
+        
+        closeTechnicalExpertModal();
+        renderCurrentBlock();
+        showNotification(`${selectedMember.name} added as Technical Expert`, 'success');
       }
       
       window.removeAlternateAuthor = function(index) {
@@ -12250,8 +12349,8 @@
         renderCurrentBlock();
       }
       
-      window.removeTechnicalExpert = function() {
-        teamMembers.technicalExpert = null;
+      window.removeTechnicalExpert = function(index) {
+        teamMembers.technicalExperts.splice(index, 1);
         renderCurrentBlock();
       }
       
@@ -12313,22 +12412,7 @@
           <div class="general-info-container">
             <div class="general-info-body">
               
-              <!-- Scope and Objectives Section - Collapsible -->
-              <div class="collapsible-section collapsed" id="scope-objectives-section">
-                <div class="collapsible-header" onclick="toggleCollapsibleSection('scope-objectives-section')">
-                  <div class="collapsible-header-left">
-                    <span class="collapsible-header-title">Scope and Objectives</span>
-                    ${renderSectionProgress('scope-objectives', null)}
-                  </div>
-                  <div class="collapsible-toggle">▼</div>
-                </div>
-                <div class="collapsible-body" onclick="event.stopPropagation()">
-                  <div class="form-group">
-                    <label class="form-label">Scope and objectives of sourcing or solicitation process <span class="required">*</span></label>
-                    <textarea class="form-textarea" placeholder="Describe the scope and objectives of this procurement process..." style="min-height: 120px;"></textarea>
-                  </div>
-                </div>
-              </div>
+              
               
               <!-- Product Requirements Section - Collapsible -->
               <div class="collapsible-section collapsed" id="product-requirements-section" style="margin-top: var(--spacing-md);">
@@ -16297,6 +16381,21 @@
       
       window.updateIsLease = function(value) {
         generalInfoValues.isLease = value;
+        renderCurrentBlock();
+      }
+      
+      window.updateIsProcurementOfInnovation = function(value) {
+        generalInfoValues.isProcurementOfInnovation = value;
+        renderCurrentBlock();
+      }
+      
+      window.updateEarlyMarketEngagement = function(value) {
+        generalInfoValues.earlyMarketEngagement = value;
+        renderCurrentBlock();
+      }
+      
+      window.updateVendorTrainingConducted = function(value) {
+        generalInfoValues.vendorTrainingConducted = value;
         renderCurrentBlock();
       }
       
