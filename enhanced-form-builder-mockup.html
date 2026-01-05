@@ -1,0 +1,2403 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UNOPS PDJ · Enhanced Technical Bid Form Builder</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/primeicons@6.0.1/primeicons.css" />
+    <style>
+      :root {
+        --primary-50: #e6f7ff;
+        --primary-100: #bae7ff;
+        --primary-200: #7dd3fc;
+        --primary-300: #38bdf8;
+        --primary-400: #0ea5e9;
+        --primary-500: #0092D1;
+        --primary-600: #0284c7;
+        --primary-700: #0369a1;
+        --primary-800: #003a56;
+        --primary-900: #001d2b;
+
+        --surface-0: #ffffff;
+        --surface-50: #f5f8fb;
+        --surface-100: #ebf1f8;
+        --surface-200: #dde8f2;
+        --surface-300: #cfdfec;
+        --surface-400: #a3a3a3;
+        --surface-600: #95a7ba;
+        --surface-800: #596170;
+        --surface-900: #3b3e4a;
+
+        --success-50: #d2e7cd;
+        --success-100: #e8f5e9;
+        --success-500: #4c9f38;
+        --success-600: #4c9f38;
+        
+        --info-50: #bfe4f4;
+        --info-100: #e3f2fd;
+        --info-400: #0092d1;
+        --info-500: #2196f3;
+        --info-600: #2563eb;
+        
+        --warning-50: #f9d6c3;
+        --warning-100: #fff3e0;
+        --warning-500: #e85c0e;
+        --warning-600: #d97706;
+        
+        --danger-50: #f6cac6;
+        --danger-100: #fee2e2;
+        --danger-500: #da291c;
+        --danger-600: #dc2626;
+
+        --purple-50: #f3e8ff;
+        --purple-100: #e9d5ff;
+        --purple-500: #9333ea;
+        --purple-700: #7c3aed;
+
+        --text-primary: var(--surface-900);
+        --text-secondary: var(--surface-800);
+        --text-muted: var(--surface-600);
+
+        --spacing-xs: 6px;
+        --spacing-sm: 12px;
+        --spacing-md: 20px;
+        --spacing-lg: 28px;
+        --spacing-xl: 36px;
+
+        --radius-sm: 4px;
+        --radius-md: 6px;
+        --radius-lg: 8px;
+        --radius-xl: 16px;
+
+        --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+        --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.08);
+        --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+        --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+      }
+
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+
+      body {
+        font-family: 'Lato', 'Noto Sans', system-ui, sans-serif;
+        background: var(--surface-50);
+        color: var(--text-primary);
+        line-height: 1.5;
+        min-height: 100vh;
+      }
+
+      /* ===== HEADER ===== */
+      .header {
+        background: var(--surface-0);
+        border-bottom: 1px solid var(--surface-200);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .header-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: var(--spacing-md) var(--spacing-xl);
+      }
+
+      .logo-container {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-md);
+      }
+
+      .logo {
+        font-weight: 700;
+        font-size: 20px;
+        letter-spacing: 0.12em;
+        color: var(--primary-400);
+      }
+
+      .portal-badge {
+        background: var(--primary-400);
+        color: white;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 4px 12px;
+        border-radius: 4px;
+        text-transform: uppercase;
+      }
+
+      .header-actions {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-md);
+        margin-left: auto;
+        margin-right: var(--spacing-lg);
+      }
+
+      .header-action-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px;
+        background: transparent;
+        border: none;
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        position: relative;
+      }
+
+      .header-action-btn:hover {
+        background: var(--surface-100);
+      }
+
+      .header-action-btn i {
+        font-size: 20px;
+        color: var(--text-muted);
+      }
+
+      .notification-badge {
+        position: absolute;
+        top: -4px;
+        right: -4px;
+        background: var(--danger-500);
+        color: white;
+        font-size: 10px;
+        font-weight: 700;
+        min-width: 18px;
+        height: 18px;
+        border-radius: 9px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid white;
+      }
+
+      .user-menu {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-md);
+      }
+
+      .user-info { text-align: right; }
+      .user-company { font-size: 12px; color: var(--text-muted); }
+      .user-name { font-size: 14px; font-weight: 500; }
+
+      .user-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--primary-100);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        color: var(--primary-600);
+        cursor: pointer;
+      }
+
+      /* ===== APP CONTAINER ===== */
+      .app-container {
+        display: flex;
+        min-height: calc(100vh - 65px);
+      }
+
+      /* ===== SIDEBAR ===== */
+      .sidebar {
+        width: 280px;
+        min-width: 280px;
+        background-color: #0192D1;
+        color: white;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .sidebar-menu { flex: 1; padding: 16px 0; }
+      .menu-section { margin-bottom: var(--spacing-sm); }
+
+      .menu-section-title {
+        padding: 8px 20px 12px 20px;
+        font-size: 11px;
+        font-weight: 700;
+        color: rgba(255,255,255,0.5);
+        text-transform: uppercase;
+      }
+
+      .menu-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 20px;
+        font-size: 14px;
+        color: white;
+        cursor: pointer;
+        border-left: 3px solid transparent;
+        text-decoration: none;
+      }
+
+      .menu-item:hover { background: rgba(255,255,255,0.1); }
+      .menu-item.active {
+        background: rgba(255,255,255,0.15);
+        border-left-color: white;
+        font-weight: 600;
+      }
+
+      .menu-icon { font-size: 16px; width: 20px; text-align: center; }
+
+      /* ===== MAIN CONTENT ===== */
+      .main-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      /* ===== FORM BUILDER HEADER ===== */
+      .form-builder-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 20px;
+        background: linear-gradient(135deg, #2b659a 0%, #1a4a7a 100%);
+        color: white;
+      }
+
+      .header-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .form-label { font-weight: 700; font-size: 15px; }
+      .form-name { font-size: 14px; opacity: 0.9; }
+
+      .form-status-tag {
+        background: rgba(255,255,255,0.2);
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+
+      .header-right {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .header-btn {
+        background: rgba(255,255,255,0.15);
+        border: 1px solid rgba(255,255,255,0.3);
+        color: white;
+        padding: 8px 12px;
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+      }
+
+      .header-btn:hover { background: rgba(255,255,255,0.25); }
+
+      .header-btn.primary {
+        background: white;
+        color: var(--primary-700);
+        font-weight: 600;
+      }
+
+      /* ===== FORM BUILDER LAYOUT ===== */
+      .form-builder-layout {
+        display: flex;
+        flex: 1;
+        overflow: hidden;
+      }
+
+      /* ===== COMPONENT PALETTE ===== */
+      .component-palette {
+        width: 320px;
+        min-width: 320px;
+        background: white;
+        border-right: 1px solid var(--surface-200);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .palette-tabs {
+        display: flex;
+        border-bottom: 2px solid var(--surface-200);
+      }
+
+      .palette-tab {
+        flex: 1;
+        padding: 14px 12px;
+        text-align: center;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-muted);
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -2px;
+        background: var(--surface-50);
+      }
+
+      .palette-tab:hover {
+        color: var(--primary-500);
+        background: white;
+      }
+
+      .palette-tab.active {
+        color: var(--primary-600);
+        border-bottom-color: var(--primary-500);
+        background: white;
+      }
+
+      .palette-content {
+        flex: 1;
+        overflow-y: auto;
+        padding: 16px;
+      }
+
+      .component-group { margin-bottom: 20px; }
+
+      .component-group-title {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        margin-bottom: 10px;
+        padding-bottom: 6px;
+        border-bottom: 1px solid var(--surface-200);
+      }
+
+      .component-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-md);
+        margin-bottom: 8px;
+        cursor: grab;
+        background: white;
+        transition: all 0.2s;
+      }
+
+      .component-item:hover {
+        border-color: var(--primary-300);
+        background: var(--primary-50);
+        transform: translateX(4px);
+      }
+
+      .component-item:active { cursor: grabbing; }
+
+      .component-item.dragging {
+        opacity: 0.5;
+        border-color: var(--primary-500);
+        box-shadow: var(--shadow-md);
+      }
+
+      .component-item i {
+        font-size: 16px;
+        color: var(--primary-500);
+        width: 24px;
+        text-align: center;
+      }
+
+      .component-item span {
+        font-size: 13px;
+        color: var(--text-primary);
+      }
+
+      .component-item .component-badge {
+        margin-left: auto;
+        font-size: 9px;
+        padding: 2px 6px;
+        background: var(--surface-100);
+        border-radius: 10px;
+        color: var(--text-muted);
+        white-space: nowrap;
+      }
+
+      .component-badge.level-product {
+        background: var(--blue-100);
+        color: var(--blue-700);
+      }
+
+      .component-badge.level-spec {
+        background: var(--purple-100);
+        color: var(--purple-700);
+      }
+
+      .component-badge.level-delivery {
+        background: var(--teal-100);
+        color: var(--teal-700);
+      }
+
+      .predefined-field-item {
+        background: linear-gradient(135deg, var(--surface-50) 0%, white 100%);
+        border-left: 3px solid var(--success-500);
+      }
+
+      .predefined-field-item i { color: var(--success-500); }
+
+      /* Drag Preview */
+      .drag-preview {
+        position: fixed;
+        pointer-events: none;
+        z-index: 9999;
+        padding: 10px 16px;
+        background: var(--primary-500);
+        color: white;
+        border-radius: var(--radius-md);
+        font-size: 13px;
+        font-weight: 500;
+        box-shadow: var(--shadow-lg);
+        display: none;
+      }
+
+      .drag-preview.visible { display: flex; align-items: center; gap: 8px; }
+
+      /* ===== FORM CANVAS ===== */
+      .form-canvas-container {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        background: var(--surface-50);
+        min-width: 0;
+      }
+
+      .canvas-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 20px;
+        background: white;
+        border-bottom: 1px solid var(--surface-200);
+      }
+
+      .canvas-title {
+        font-size: 16px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .canvas-title i { color: var(--primary-500); }
+
+      .canvas-actions { display: flex; gap: 8px; }
+
+      .canvas-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .canvas-btn.secondary {
+        background: var(--surface-100);
+        border: 1px solid var(--surface-200);
+        color: var(--text-primary);
+      }
+
+      .canvas-btn.secondary:hover { background: var(--surface-200); }
+
+      .form-canvas {
+        flex: 1;
+        overflow-y: auto;
+        padding: 24px;
+      }
+
+      .form-canvas-inner {
+        max-width: 1000px;
+        margin: 0 auto;
+        background: white;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-lg);
+        border: 2px dashed var(--surface-300);
+        min-height: 700px;
+        transition: border-color 0.2s;
+      }
+
+      .form-canvas-inner.drop-active {
+        border-color: var(--primary-400);
+        background: var(--primary-50);
+      }
+
+      /* Form Header */
+      .form-header-section {
+        background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-700) 100%);
+        color: white;
+        padding: 24px;
+        border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      }
+
+      .form-header-title {
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .form-header-desc { font-size: 14px; opacity: 0.9; }
+
+      /* Products Section */
+      .products-section {
+        padding: 20px 24px;
+      }
+
+      .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+      }
+
+      .section-title {
+        font-size: 16px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .section-title i { color: var(--primary-500); }
+
+      /* Product Card */
+      .product-card {
+        background: white;
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-lg);
+        margin-bottom: 16px;
+        overflow: hidden;
+      }
+
+      .product-card:hover { box-shadow: var(--shadow-md); }
+      .product-card.selected { border-color: var(--primary-400); box-shadow: 0 0 0 3px var(--primary-100); }
+
+      .product-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px;
+        background: linear-gradient(135deg, var(--surface-50) 0%, white 100%);
+        border-bottom: 1px solid var(--surface-200);
+        cursor: pointer;
+      }
+
+      .product-info { display: flex; align-items: center; gap: 12px; }
+
+      .product-name { font-weight: 600; font-size: 14px; margin-bottom: 2px; }
+
+      .product-code {
+        font-size: 12px;
+        color: var(--primary-600);
+        background: var(--primary-50);
+        padding: 2px 8px;
+        border-radius: 10px;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .product-actions { display: flex; gap: 6px; }
+
+      .product-action-btn {
+        width: 32px;
+        height: 32px;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--surface-200);
+        background: white;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .product-action-btn:hover { background: var(--surface-100); }
+      .product-action-btn i { font-size: 14px; color: var(--text-muted); }
+
+      .product-body { padding: 16px; }
+
+      /* Fields Level */
+      .fields-level { margin-bottom: 20px; }
+
+      .level-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid var(--surface-200);
+      }
+
+      .level-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-secondary);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .level-title i { font-size: 14px; }
+      .level-title.product i { color: var(--primary-500); }
+      .level-title.spec i { color: var(--warning-500); }
+      .level-title.delivery i { color: var(--success-500); }
+
+      .spec-type-badge {
+        font-size: 10px;
+        padding: 2px 6px;
+        border-radius: 8px;
+        background: var(--surface-100);
+        color: var(--text-muted);
+        margin-left: 6px;
+      }
+
+      .spec-type-badge.attributes { background: var(--info-100); color: var(--info-600); }
+
+      /* Drop Zone */
+      .drop-zone {
+        border: 2px dashed var(--surface-300);
+        border-radius: var(--radius-md);
+        padding: 16px;
+        min-height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-muted);
+        font-size: 13px;
+        transition: all 0.2s;
+        margin-bottom: 8px;
+      }
+
+      .drop-zone:hover,
+      .drop-zone.drag-over {
+        border-color: var(--primary-400);
+        background: var(--primary-50);
+        color: var(--primary-600);
+      }
+
+      .drop-zone i { margin-right: 8px; font-size: 16px; }
+
+      /* Field Row */
+      .field-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 12px;
+        background: var(--surface-50);
+        border-radius: var(--radius-md);
+        margin-bottom: 8px;
+        border: 2px solid transparent;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .field-row:hover {
+        border-color: var(--primary-200);
+        background: white;
+      }
+
+      .field-row.selected {
+        border-color: var(--primary-500);
+        background: var(--primary-50);
+        box-shadow: 0 0 0 3px var(--primary-100);
+      }
+
+      .field-drag-handle {
+        cursor: grab;
+        padding: 4px;
+        color: var(--text-muted);
+      }
+
+      .field-drag-handle:active { cursor: grabbing; }
+
+      .field-info { flex: 1; min-width: 0; }
+
+      .field-label-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 6px;
+        flex-wrap: wrap;
+      }
+
+      .field-type-icon {
+        width: 24px;
+        height: 24px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+      }
+
+      .field-type-icon.text { background: var(--info-100); color: var(--info-600); }
+      .field-type-icon.attachment { background: var(--warning-100); color: var(--warning-600); }
+      .field-type-icon.select { background: var(--purple-100); color: var(--purple-700); }
+      .field-type-icon.number { background: var(--success-100); color: var(--success-600); }
+      .field-type-icon.checkbox { background: var(--primary-100); color: var(--primary-600); }
+
+      .field-name { font-size: 13px; font-weight: 500; }
+      .field-required { color: var(--danger-500); font-weight: 600; }
+
+      .field-badge {
+        font-size: 10px;
+        padding: 2px 6px;
+        border-radius: 8px;
+        font-weight: 500;
+      }
+
+      .field-badge.predefined { background: var(--success-100); color: var(--success-600); }
+      .field-badge.custom { background: var(--info-100); color: var(--info-600); }
+
+      /* Scored Icon */
+      .scored-icon {
+        color: var(--purple-500);
+        font-size: 14px;
+        margin-left: auto;
+      }
+
+      .field-input-preview {
+        padding: 8px 12px;
+        background: white;
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-sm);
+        font-size: 12px;
+        color: var(--text-muted);
+        font-style: italic;
+      }
+
+      .field-actions { display: flex; gap: 4px; }
+
+      .field-action-btn {
+        width: 28px;
+        height: 28px;
+        border-radius: var(--radius-sm);
+        border: none;
+        background: var(--surface-100);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .field-action-btn:hover { background: var(--surface-200); }
+      .field-action-btn.delete:hover { background: var(--danger-100); }
+      .field-action-btn.delete:hover i { color: var(--danger-500); }
+      .field-action-btn i { font-size: 12px; color: var(--text-muted); }
+
+      /* Specification Columns Info */
+      .spec-columns-info {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 14px;
+        background: var(--info-50);
+        border: 1px solid var(--info-100);
+        border-radius: var(--radius-md);
+        margin-bottom: 12px;
+        font-size: 12px;
+        color: var(--info-600);
+      }
+
+      .spec-columns-info i { font-size: 14px; }
+
+      /* Specs Table Container */
+      .specs-table-container {
+        margin-top: 12px;
+      }
+
+      /* Column Drop Zone */
+      .column-drop-zone {
+        border: 2px dashed var(--surface-300);
+        border-radius: var(--radius-md);
+        padding: 12px 16px;
+        text-align: center;
+        color: var(--text-muted);
+        font-size: 12px;
+        margin-bottom: 12px;
+        transition: all 0.2s;
+        cursor: pointer;
+      }
+
+      .column-drop-zone:hover,
+      .column-drop-zone.drag-over {
+        border-color: var(--primary-400);
+        background: var(--primary-50);
+        color: var(--primary-600);
+      }
+
+      .column-drop-zone i {
+        margin-right: 6px;
+      }
+
+      /* Specs Table Wrapper */
+      .specs-table-wrapper {
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-md);
+        overflow-x: auto;
+      }
+
+      .specs-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+        min-width: 600px;
+      }
+
+      .specs-table th {
+        background: var(--surface-100);
+        padding: 0;
+        text-align: left;
+        font-weight: 600;
+        border-bottom: 2px solid var(--surface-200);
+        vertical-align: top;
+      }
+
+      .specs-table th.col-fixed {
+        background: var(--surface-50);
+        padding: 12px;
+      }
+
+      .specs-table th.col-number { width: 50px; text-align: center; }
+      .specs-table th.col-spec { min-width: 180px; }
+
+      /* Selectable Column Headers */
+      .specs-table th.col-field {
+        cursor: pointer;
+        transition: all 0.2s;
+        min-width: 140px;
+        position: relative;
+      }
+
+      .specs-table th.col-field:hover {
+        background: var(--surface-200);
+      }
+
+      .specs-table th.col-field.selected {
+        background: var(--primary-100);
+        box-shadow: inset 0 -3px 0 var(--primary-500);
+      }
+
+      .col-header-content {
+        padding: 10px 12px 6px 12px;
+      }
+
+      .col-name {
+        display: block;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 6px;
+      }
+
+      .col-badge {
+        display: inline-block;
+        font-size: 9px;
+        padding: 2px 6px;
+        border-radius: 8px;
+        font-weight: 500;
+        margin-right: 4px;
+      }
+
+      .col-badge.predefined {
+        background: var(--success-100);
+        color: var(--success-600);
+      }
+
+      .col-badge.custom {
+        background: var(--info-100);
+        color: var(--info-600);
+      }
+
+      .col-badge.scored {
+        background: var(--purple-100);
+        color: var(--purple-600);
+      }
+
+      .col-badge.scored i {
+        font-size: 9px;
+        margin-right: 2px;
+      }
+
+      .col-actions {
+        display: flex;
+        gap: 4px;
+        padding: 6px 12px 10px 12px;
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+
+      .specs-table th.col-field:hover .col-actions,
+      .specs-table th.col-field.selected .col-actions {
+        opacity: 1;
+      }
+
+      .col-action-btn {
+        width: 24px;
+        height: 24px;
+        border-radius: var(--radius-sm);
+        border: none;
+        background: white;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+      }
+
+      .col-action-btn:hover {
+        background: var(--surface-200);
+      }
+
+      .col-action-btn.delete:hover {
+        background: var(--danger-100);
+      }
+
+      .col-action-btn.delete:hover i {
+        color: var(--danger-500);
+      }
+
+      .col-action-btn i {
+        font-size: 11px;
+        color: var(--text-muted);
+      }
+
+      /* Add Column Button */
+      .specs-table th.col-add {
+        width: 50px;
+        text-align: center;
+        cursor: pointer;
+        background: var(--surface-50);
+        transition: all 0.2s;
+        padding: 12px;
+      }
+
+      .specs-table th.col-add:hover {
+        background: var(--primary-50);
+      }
+
+      .specs-table th.col-add i {
+        font-size: 16px;
+        color: var(--primary-500);
+      }
+
+      .col-add-cell {
+        background: var(--surface-50);
+        border-left: 1px dashed var(--surface-200);
+      }
+
+      /* Table Body */
+      .specs-table td {
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--surface-100);
+        vertical-align: middle;
+      }
+
+      .specs-table tr:last-child td { border-bottom: none; }
+      
+      .spec-number { 
+        font-weight: 600; 
+        color: var(--primary-600); 
+        text-align: center;
+        background: var(--surface-50);
+      }
+      
+      .spec-name { 
+        font-weight: 500;
+        background: var(--surface-50);
+      }
+
+      /* Cell Preview */
+      .cell-preview {
+        padding: 6px 10px;
+        background: white;
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-sm);
+        font-size: 11px;
+        color: var(--text-muted);
+        font-style: italic;
+      }
+
+      .cell-preview.checkbox {
+        text-align: center;
+      }
+
+      /* Table Legend */
+      .table-legend {
+        display: flex;
+        gap: 16px;
+        padding: 10px 12px;
+        font-size: 11px;
+        color: var(--text-muted);
+        border-top: 1px solid var(--surface-200);
+        background: var(--surface-50);
+        border-radius: 0 0 var(--radius-md) var(--radius-md);
+      }
+
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .legend-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+      }
+
+      .legend-dot.predefined {
+        background: var(--success-500);
+      }
+
+      .legend-dot.custom {
+        background: var(--info-500);
+      }
+
+      /* Context Indicator */
+      .context-indicator {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 12px;
+        background: var(--warning-50);
+        border: 1px solid var(--warning-100);
+        border-radius: var(--radius-md);
+        margin-bottom: 14px;
+        font-size: 11px;
+        color: var(--warning-600);
+      }
+
+      .context-indicator i {
+        font-size: 14px;
+      }
+
+      /* Delivery Section */
+      .delivery-section {
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 2px dashed var(--surface-200);
+      }
+
+      /* ===== PROPERTIES PANEL ===== */
+      .properties-panel {
+        width: 340px;
+        min-width: 340px;
+        background: white;
+        border-left: 1px solid var(--surface-200);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .properties-panel.hidden { display: none; }
+
+      .properties-header {
+        padding: 16px;
+        border-bottom: 1px solid var(--surface-200);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: var(--surface-50);
+      }
+
+      .properties-title {
+        font-size: 15px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .properties-title i { color: var(--primary-500); }
+
+      .properties-close-btn {
+        width: 28px;
+        height: 28px;
+        border-radius: var(--radius-sm);
+        border: none;
+        background: var(--surface-200);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .properties-close-btn:hover { background: var(--surface-300); }
+
+      .properties-content {
+        flex: 1;
+        overflow-y: auto;
+        padding: 16px;
+      }
+
+      .no-selection {
+        text-align: center;
+        padding: 40px 20px;
+        color: var(--text-muted);
+      }
+
+      .no-selection i { font-size: 48px; margin-bottom: 16px; opacity: 0.5; }
+      .no-selection h4 { font-size: 16px; margin-bottom: 8px; color: var(--text-primary); }
+      .no-selection p { font-size: 13px; line-height: 1.5; }
+
+      .property-group { margin-bottom: 20px; }
+
+      .property-group-title {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        margin-bottom: 12px;
+        padding-bottom: 6px;
+        border-bottom: 1px solid var(--surface-200);
+      }
+
+      .property-row { margin-bottom: 14px; }
+
+      .property-label {
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--text-secondary);
+        margin-bottom: 6px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .property-label .required { color: var(--danger-500); }
+
+      .property-input {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-sm);
+        font-size: 13px;
+      }
+
+      .property-input:focus {
+        outline: none;
+        border-color: var(--primary-400);
+      }
+
+      .property-input.error { border-color: var(--danger-500); }
+
+      .property-select {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-sm);
+        font-size: 13px;
+        background: white;
+      }
+
+      .property-textarea {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-sm);
+        font-size: 13px;
+        resize: vertical;
+        min-height: 80px;
+      }
+
+      .char-count {
+        font-size: 10px;
+        color: var(--text-muted);
+        text-align: right;
+        margin-top: 4px;
+      }
+
+      .property-checkbox-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+
+      .property-checkbox-row input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+      }
+
+      .property-checkbox-row label {
+        font-size: 13px;
+        cursor: pointer;
+      }
+
+      /* Radio Group */
+      .radio-group { display: flex; flex-direction: column; gap: 8px; }
+
+      .radio-option {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .radio-option:hover { border-color: var(--primary-300); background: var(--surface-50); }
+      .radio-option.selected { border-color: var(--primary-500); background: var(--primary-50); }
+      .radio-option input { margin: 0; }
+      .radio-option label { font-size: 12px; cursor: pointer; }
+
+      /* Select Button Group */
+      .select-button-group {
+        display: flex;
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-sm);
+        overflow: hidden;
+      }
+
+      .select-button {
+        flex: 1;
+        padding: 8px 12px;
+        border: none;
+        background: white;
+        font-size: 12px;
+        cursor: pointer;
+        border-right: 1px solid var(--surface-200);
+      }
+
+      .select-button:last-child { border-right: none; }
+      .select-button:hover { background: var(--surface-50); }
+      .select-button.active { background: var(--primary-500); color: white; }
+
+      /* Scoring Section */
+      .scoring-section {
+        background: linear-gradient(135deg, var(--purple-50) 0%, white 100%);
+        border: 1px solid var(--purple-100);
+        border-radius: var(--radius-md);
+        padding: 14px;
+        margin-bottom: 16px;
+      }
+
+      .scoring-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+      }
+
+      .scoring-toggle-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--purple-700);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .toggle-switch {
+        position: relative;
+        width: 44px;
+        height: 24px;
+        background: var(--surface-300);
+        border-radius: 12px;
+        cursor: pointer;
+      }
+
+      .toggle-switch.active { background: var(--purple-500); }
+
+      .toggle-switch::after {
+        content: '';
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background: white;
+        border-radius: 50%;
+        top: 2px;
+        left: 2px;
+        transition: left 0.2s;
+      }
+
+      .toggle-switch.active::after { left: 22px; }
+
+      .scoring-fields {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .scoring-field label {
+        font-size: 11px;
+        color: var(--text-muted);
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      .scoring-field input,
+      .scoring-field select {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-sm);
+        font-size: 12px;
+      }
+
+      /* Apply To Section */
+      .apply-to-section {
+        background: var(--surface-50);
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-md);
+        padding: 14px;
+      }
+
+      .apply-to-title {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text-secondary);
+        margin-bottom: 10px;
+      }
+
+      .apply-to-options { display: flex; flex-direction: column; gap: 8px; }
+
+      .apply-to-option {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 10px;
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        background: white;
+      }
+
+      .apply-to-option:hover { border-color: var(--primary-300); }
+      .apply-to-option.selected { border-color: var(--primary-500); background: var(--primary-50); }
+      .apply-to-option label { font-size: 12px; cursor: pointer; }
+
+      /* Toast */
+      .toast-container {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 2000;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .toast {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 18px;
+        background: white;
+        border-radius: var(--radius-md);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        animation: slideIn 0.3s ease;
+        min-width: 300px;
+      }
+
+      @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+      }
+
+      .toast.success { border-left: 4px solid var(--success-500); }
+
+      .toast-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .toast.success .toast-icon { background: var(--success-100); color: var(--success-600); }
+
+      .toast-content { flex: 1; }
+      .toast-title { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+      .toast-message { font-size: 12px; color: var(--text-muted); }
+
+      .toast-close {
+        background: none;
+        border: none;
+        color: var(--text-muted);
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="header-top">
+        <div class="logo-container">
+          <span class="logo">UNOPS</span>
+          <span class="portal-badge">Procurement Portal</span>
+        </div>
+        <div class="header-actions">
+          <button class="header-action-btn"><i class="pi pi-search"></i></button>
+          <button class="header-action-btn">
+            <i class="pi pi-bell"></i>
+            <span class="notification-badge">3</span>
+          </button>
+          <button class="header-action-btn"><i class="pi pi-question-circle"></i></button>
+        </div>
+        <div class="user-menu">
+          <div class="user-info">
+            <div class="user-company">UNOPS</div>
+            <div class="user-name">Sarah Mitchell</div>
+          </div>
+          <div class="user-avatar">SM</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- App Container -->
+    <div class="app-container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <nav class="sidebar-menu">
+          <div class="menu-section">
+            <div class="menu-section-title">Form Builder</div>
+            <a class="menu-item active" href="#"><i class="pi pi-file-edit menu-icon"></i><span>Technical Bid Form</span></a>
+            <a class="menu-item" href="#"><i class="pi pi-list menu-icon"></i><span>Form Templates</span></a>
+            <a class="menu-item" href="#"><i class="pi pi-history menu-icon"></i><span>Version History</span></a>
+          </div>
+          <div class="menu-section">
+            <div class="menu-section-title">Configuration</div>
+            <a class="menu-item" href="#"><i class="pi pi-cog menu-icon"></i><span>Form Settings</span></a>
+            <a class="menu-item" href="#"><i class="pi pi-chart-bar menu-icon"></i><span>Scoring Rules</span></a>
+            <a class="menu-item" href="#"><i class="pi pi-shield menu-icon"></i><span>Validation Rules</span></a>
+          </div>
+          <div class="menu-section">
+            <div class="menu-section-title">Preview</div>
+            <a class="menu-item" href="#"><i class="pi pi-eye menu-icon"></i><span>Supplier View</span></a>
+            <a class="menu-item" href="#"><i class="pi pi-print menu-icon"></i><span>Print Preview</span></a>
+          </div>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Form Builder Header -->
+        <div class="form-builder-header">
+          <div class="header-left">
+            <span class="form-label">Form Builder |</span>
+            <span class="form-name">Technical Bid - RFQ-2025-001</span>
+            <span class="form-status-tag">Draft</span>
+          </div>
+          <div class="header-right">
+            <button class="header-btn"><i class="pi pi-eye"></i> Preview</button>
+            <button class="header-btn"><i class="pi pi-cog"></i> Properties</button>
+            <button class="header-btn"><i class="pi pi-ellipsis-v"></i></button>
+            <button class="header-btn primary"><i class="pi pi-save"></i> Save</button>
+          </div>
+        </div>
+
+        <!-- Form Builder Layout -->
+        <div class="form-builder-layout">
+          <!-- Component Palette -->
+          <aside class="component-palette">
+            <div class="palette-tabs">
+              <div class="palette-tab" onclick="switchTab(this, 'custom')">Custom Fields</div>
+              <div class="palette-tab active" onclick="switchTab(this, 'predefined')">Predefined Fields</div>
+
+            </div>
+            
+            <div class="palette-content" id="predefined-tab">
+              <!-- Product Level Fields -->
+              <div class="component-item predefined-field-item" draggable="true" data-type="text" data-name="Model Name" data-level="product">
+                <i class="pi pi-box"></i><span>Model Name</span><span class="component-badge level-product">Product Level</span>
+              </div>
+              <div class="component-item predefined-field-item" draggable="true" data-type="text" data-name="Manufacturer" data-level="product">
+                <i class="pi pi-building"></i><span>Manufacturer</span><span class="component-badge level-product">Product Level</span>
+              </div>
+              <div class="component-item predefined-field-item" draggable="true" data-type="text" data-name="Country of Origin" data-level="product">
+                <i class="pi pi-globe"></i><span>Country of Origin</span><span class="component-badge level-product">Product Level</span>
+              </div>
+              <div class="component-item predefined-field-item" draggable="true" data-type="textarea" data-name="Deviations" data-level="product">
+                <i class="pi pi-exclamation-circle"></i><span>Deviations</span><span class="component-badge level-product">Product Level</span>
+              </div>
+              <!-- Specification Level Fields -->
+              <div class="component-item predefined-field-item" draggable="true" data-type="checkbox" data-name="Is Compliant?" data-level="specification">
+                <i class="pi pi-check-circle"></i><span>Is Compliant?</span><span class="component-badge level-spec">Spec Level</span>
+              </div>
+              <div class="component-item predefined-field-item" draggable="true" data-type="textarea" data-name="Details Offered" data-level="specification">
+                <i class="pi pi-align-left"></i><span>Details Offered</span><span class="component-badge level-spec">Spec Level</span>
+              </div>
+              <!-- Delivery Level Fields -->
+              <div class="component-item predefined-field-item" draggable="true" data-type="checkbox" data-name="Delivery Compliance" data-level="delivery">
+                <i class="pi pi-truck"></i><span>Delivery Compliance</span><span class="component-badge level-delivery">Delivery Level</span>
+              </div>
+              <div class="component-item predefined-field-item" draggable="true" data-type="date" data-name="Delivery Date" data-level="delivery">
+                <i class="pi pi-calendar"></i><span>Delivery Date</span><span class="component-badge level-delivery">Delivery Level</span>
+              </div>
+            </div>
+            
+            <div class="palette-content" id="custom-tab" style="display: none;">
+              <div class="component-group">
+                <div class="component-group-title">Input Fields</div>
+                <div class="component-item" draggable="true" data-type="text" data-name="Text Input">
+                  <i class="pi pi-align-left"></i><span>Text Input</span>
+                </div>
+                <div class="component-item" draggable="true" data-type="textarea" data-name="Text Area">
+                  <i class="pi pi-file-edit"></i><span>Text Area</span>
+                </div>
+                <div class="component-item" draggable="true" data-type="number" data-name="Number">
+                  <i class="pi pi-calculator"></i><span>Number</span>
+                </div>
+                <div class="component-item" draggable="true" data-type="date" data-name="Date Picker">
+                  <i class="pi pi-calendar"></i><span>Date Picker</span>
+                </div>
+                <div class="component-item" draggable="true" data-type="select" data-name="Dropdown">
+                  <i class="pi pi-list"></i><span>Dropdown</span>
+                </div>
+                <div class="component-item" draggable="true" data-type="checkbox" data-name="Checkbox">
+                  <i class="pi pi-check-square"></i><span>Checkbox</span>
+                </div>
+                <div class="component-item" draggable="true" data-type="radio" data-name="Radio Buttons">
+                  <i class="pi pi-circle"></i><span>Radio Buttons</span>
+                </div>
+                <div class="component-item" draggable="true" data-type="file" data-name="File Upload">
+                  <i class="pi pi-paperclip"></i><span>File Upload</span>
+                </div>
+                <div class="component-item" draggable="true" data-type="image" data-name="Image Upload">
+                  <i class="pi pi-image"></i><span>Image Upload</span>
+                </div>
+              </div>
+            </div>
+          </aside>
+
+          <!-- Form Canvas -->
+          <div class="form-canvas-container">
+            <div class="canvas-toolbar">
+              <div class="canvas-title"><i class="pi pi-th-large"></i>Form Canvas</div>
+              <div class="canvas-actions">
+                <button class="canvas-btn secondary"><i class="pi pi-undo"></i> Undo</button>
+                <button class="canvas-btn secondary"><i class="pi pi-refresh"></i> Redo</button>
+              </div>
+            </div>
+            
+            <div class="form-canvas">
+              <div class="form-canvas-inner" id="form-canvas">
+                <div class="form-header-section">
+                  <h1 class="form-header-title"><i class="pi pi-cog"></i>Technical Bid Form</h1>
+                  <p class="form-header-desc">Complete the technical specifications for each product/service.</p>
+                </div>
+
+                <div class="products-section">
+                  <div class="section-header">
+                    <div class="section-title"><i class="pi pi-tag"></i>Products / Services (4 UNSPSC Codes)</div>
+                  </div>
+
+                  <!-- Product 1 -->
+                  <div class="product-card selected" id="product-1">
+                    <div class="product-header" onclick="toggleProduct(this)">
+                      <div class="product-info">
+                        <div>
+                          <div class="product-name">Desktop Computers</div>
+                          <div class="product-code"><i class="pi pi-tag"></i> 43211500</div>
+                        </div>
+                      </div>
+                      <div class="product-actions">
+                        <button class="product-action-btn"><i class="pi pi-chevron-down"></i></button>
+                        <button class="product-action-btn"><i class="pi pi-cog"></i></button>
+                      </div>
+                    </div>
+                    <div class="product-body">
+                      <!-- Product Level Fields -->
+                      <div class="fields-level">
+                        <div class="level-header">
+                          <div class="level-title product"><i class="pi pi-box"></i>Product Level Fields</div>
+                        </div>
+                        
+                        <!-- Drop Zone for Product Level -->
+                        <div class="drop-zone" data-level="product" data-product="1">
+                          <i class="pi pi-plus-circle"></i>Drag fields here or click to add
+                        </div>
+
+                        <div class="field-row" onclick="selectField(this)" data-field-id="1">
+                          <div class="field-drag-handle"><i class="pi pi-bars"></i></div>
+                          <div class="field-info">
+                            <div class="field-label-row">
+                              <div class="field-type-icon text"><i class="pi pi-box"></i></div>
+                              <span class="field-name">Model (full name)<span class="field-required">*</span></span>
+                              <span class="field-badge predefined">Predefined</span>
+                              <i class="pi pi-star scored-icon" title="Scored field"></i>
+                            </div>
+                            <div class="field-input-preview">Insert model details...</div>
+                          </div>
+                          <div class="field-actions">
+                            <button class="field-action-btn delete"><i class="pi pi-trash"></i></button>
+                          </div>
+                        </div>
+
+                        <div class="field-row" onclick="selectField(this)" data-field-id="2">
+                          <div class="field-drag-handle"><i class="pi pi-bars"></i></div>
+                          <div class="field-info">
+                            <div class="field-label-row">
+                              <div class="field-type-icon text"><i class="pi pi-building"></i></div>
+                              <span class="field-name">Manufacturer<span class="field-required">*</span></span>
+                              <span class="field-badge predefined">Predefined</span>
+                            </div>
+                            <div class="field-input-preview">Full legal name | UNGM ID</div>
+                          </div>
+                          <div class="field-actions">
+                            <button class="field-action-btn delete"><i class="pi pi-trash"></i></button>
+                          </div>
+                        </div>
+
+                        <div class="field-row selected" onclick="selectField(this)" data-field-id="3">
+                          <div class="field-drag-handle"><i class="pi pi-bars"></i></div>
+                          <div class="field-info">
+                            <div class="field-label-row">
+                              <div class="field-type-icon attachment"><i class="pi pi-paperclip"></i></div>
+                              <span class="field-name">Technical Datasheet<span class="field-required">*</span></span>
+                              <span class="field-badge custom">Custom</span>
+                              <i class="pi pi-star scored-icon" title="Scored field"></i>
+                            </div>
+                            <div class="field-input-preview">Upload PDF/DOC (max 10MB)</div>
+                          </div>
+                          <div class="field-actions">
+                            <button class="field-action-btn delete"><i class="pi pi-trash"></i></button>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Specification Level Fields -->
+                      <div class="fields-level">
+                        <div class="level-header">
+                          <div class="level-title spec">
+                            <i class="pi pi-list"></i>Specification Level Fields
+                            <span class="spec-type-badge attributes">List of Attributes</span>
+                          </div>
+                        </div>
+
+                        <div class="spec-columns-info">
+                          <i class="pi pi-info-circle"></i>
+                          <span>Fields added here become <strong>columns</strong> in the specifications table</span>
+                        </div>
+
+                        <div class="specs-table-container" id="specs-table-1">
+                          <!-- Column Drop Zone -->
+                          <div class="column-drop-zone" data-level="specification" data-product="1">
+                            <i class="pi pi-plus"></i> Drop field here to add new column
+                          </div>
+
+                          <div class="specs-table-wrapper">
+                            <table class="specs-table">
+                              <thead>
+                                <tr>
+                                  <th class="col-fixed col-number">#</th>
+                                  <th class="col-fixed col-spec">Specification</th>
+                                  <th class="col-field" data-col-id="col-1" onclick="selectColumn(this, 'col-1')">
+                                    <div class="col-header-content">
+                                      <span class="col-name">Is Compliant?</span>
+                                      <span class="col-badge predefined">Predefined</span>
+                                    </div>
+                                    <div class="col-actions">
+                                      <button class="col-action-btn" title="Edit"><i class="pi pi-pencil"></i></button>
+                                      <button class="col-action-btn delete" title="Remove"><i class="pi pi-trash"></i></button>
+                                    </div>
+                                  </th>
+                                  <th class="col-field" data-col-id="col-2" onclick="selectColumn(this, 'col-2')">
+                                    <div class="col-header-content">
+                                      <span class="col-name">Details Offered</span>
+                                      <span class="col-badge predefined">Predefined</span>
+                                    </div>
+                                    <div class="col-actions">
+                                      <button class="col-action-btn" title="Edit"><i class="pi pi-pencil"></i></button>
+                                      <button class="col-action-btn delete" title="Remove"><i class="pi pi-trash"></i></button>
+                                    </div>
+                                  </th>
+                                  <th class="col-field selected" data-col-id="col-3" onclick="selectColumn(this, 'col-3')">
+                                    <div class="col-header-content">
+                                      <span class="col-name">Warranty Info</span>
+                                      <span class="col-badge custom">Custom</span>
+                                      <span class="col-badge scored"><i class="pi pi-star"></i> 5 pts</span>
+                                    </div>
+                                    <div class="col-actions">
+                                      <button class="col-action-btn" title="Edit"><i class="pi pi-pencil"></i></button>
+                                      <button class="col-action-btn delete" title="Remove"><i class="pi pi-trash"></i></button>
+                                    </div>
+                                  </th>
+                                  <th class="col-add" title="Add new column">
+                                    <i class="pi pi-plus"></i>
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td class="spec-number">1</td>
+                                  <td class="spec-name">PCR cabinet, tabletop</td>
+                                  <td><div class="cell-preview checkbox">☐ Yes / No</div></td>
+                                  <td><div class="cell-preview text">Enter details...</div></td>
+                                  <td><div class="cell-preview text">Enter warranty...</div></td>
+                                  <td class="col-add-cell"></td>
+                                </tr>
+                                <tr>
+                                  <td class="spec-number">2</td>
+                                  <td class="spec-name">UV lamp included</td>
+                                  <td><div class="cell-preview checkbox">☐ Yes / No</div></td>
+                                  <td><div class="cell-preview text">Enter details...</div></td>
+                                  <td><div class="cell-preview text">Enter warranty...</div></td>
+                                  <td class="col-add-cell"></td>
+                                </tr>
+                                <tr>
+                                  <td class="spec-number">3</td>
+                                  <td class="spec-name">Dimensions (W×D×H)</td>
+                                  <td><div class="cell-preview checkbox">☐ Yes / No</div></td>
+                                  <td><div class="cell-preview text">Enter details...</div></td>
+                                  <td><div class="cell-preview text">Enter warranty...</div></td>
+                                  <td class="col-add-cell"></td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+
+                          <div class="table-legend">
+                            <div class="legend-item"><span class="legend-dot predefined"></span> Predefined</div>
+                            <div class="legend-item"><span class="legend-dot custom"></span> Custom</div>
+                            <div class="legend-item"><i class="pi pi-star" style="color: var(--purple-500); font-size: 11px;"></i> Scored</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Product 2 -->
+                  <div class="product-card" id="product-2">
+                    <div class="product-header" onclick="toggleProduct(this)">
+                      <div class="product-info">
+                        <div>
+                          <div class="product-name">Laboratory Equipment</div>
+                          <div class="product-code"><i class="pi pi-tag"></i> 41115600</div>
+                        </div>
+                      </div>
+                      <div class="product-actions">
+                        <button class="product-action-btn"><i class="pi pi-chevron-right"></i></button>
+                        <button class="product-action-btn"><i class="pi pi-cog"></i></button>
+                      </div>
+                    </div>
+                    <div class="product-body" style="display: none;"></div>
+                  </div>
+
+                  <!-- Product 3 -->
+                  <div class="product-card" id="product-3">
+                    <div class="product-header" onclick="toggleProduct(this)">
+                      <div class="product-info">
+                        <div>
+                          <div class="product-name">Professional Services</div>
+                          <div class="product-code"><i class="pi pi-tag"></i> 80111600</div>
+                        </div>
+                      </div>
+                      <div class="product-actions">
+                        <button class="product-action-btn"><i class="pi pi-chevron-right"></i></button>
+                        <button class="product-action-btn"><i class="pi pi-cog"></i></button>
+                      </div>
+                    </div>
+                    <div class="product-body" style="display: none;"></div>
+                  </div>
+
+                  <!-- Product 4 -->
+                  <div class="product-card" id="product-4">
+                    <div class="product-header" onclick="toggleProduct(this)">
+                      <div class="product-info">
+                        <div>
+                          <div class="product-name">Transportation Equipment</div>
+                          <div class="product-code"><i class="pi pi-tag"></i> 25101500</div>
+                        </div>
+                      </div>
+                      <div class="product-actions">
+                        <button class="product-action-btn"><i class="pi pi-chevron-right"></i></button>
+                        <button class="product-action-btn"><i class="pi pi-cog"></i></button>
+                      </div>
+                    </div>
+                    <div class="product-body" style="display: none;"></div>
+                  </div>
+
+                  <!-- Delivery Requirements -->
+                  <div class="delivery-section">
+                    <div class="section-header">
+                      <div class="section-title"><i class="pi pi-truck"></i>Delivery Requirements</div>
+                    </div>
+
+                    <div class="drop-zone" data-level="delivery" data-product="all">
+                      <i class="pi pi-plus-circle"></i>Drag delivery fields here
+                    </div>
+
+                    <div class="field-row" onclick="selectField(this)" data-field-id="10">
+                      <div class="field-drag-handle"><i class="pi pi-bars"></i></div>
+                      <div class="field-info">
+                        <div class="field-label-row">
+                          <div class="field-type-icon checkbox"><i class="pi pi-check-circle"></i></div>
+                          <span class="field-name">Delivery Time Compliance<span class="field-required">*</span></span>
+                          <span class="field-badge predefined">Predefined</span>
+                          <i class="pi pi-star scored-icon" title="Scored field"></i>
+                        </div>
+                        <div class="field-input-preview">Within 60 days - Yes/No</div>
+                      </div>
+                      <div class="field-actions">
+                        <button class="field-action-btn delete"><i class="pi pi-trash"></i></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Properties Panel -->
+          <aside class="properties-panel" id="properties-panel">
+            <div class="properties-header">
+              <div class="properties-title"><i class="pi pi-sliders-h"></i>Component Properties</div>
+              <button class="properties-close-btn" onclick="closePropertiesPanel()"><i class="pi pi-times"></i></button>
+            </div>
+            
+            <div class="properties-content" id="properties-content">
+              <!-- No Selection State -->
+              <div class="no-selection" id="no-selection">
+                <i class="pi pi-info-circle"></i>
+                <h4>No Component Selected</h4>
+                <p>Select a field from the canvas or drag a new field from the palette to view and edit its properties.</p>
+              </div>
+
+              <!-- Field Properties (shown when a field is selected) -->
+              <div id="field-properties" style="display: none;">
+                <div class="property-group">
+                  <div class="property-group-title" id="properties-title">Field Properties</div>
+                  
+                  <!-- Context indicator for spec level -->
+                  <div class="context-indicator" id="context-indicator" style="display: none;">
+                    <i class="pi pi-table"></i>
+                    <span>This field will appear as a <strong>column</strong> in the specifications table</span>
+                  </div>
+                  
+                  <div class="property-row">
+                    <label class="property-label">Field Name <span class="required">*</span></label>
+                    <input type="text" class="property-input" id="prop-field-name" value="Technical Datasheet" placeholder="Enter field name">
+                    <div class="char-count"><span id="name-count">19</span>/200</div>
+                  </div>
+                  
+                  <div class="property-row">
+                    <label class="property-label">Field Type</label>
+                    <select class="property-select" id="prop-field-type">
+                      <option value="text">Text Input</option>
+                      <option value="textarea">Text Area</option>
+                      <option value="number">Number</option>
+                      <option value="select">Dropdown</option>
+                      <option value="checkbox">Checkbox</option>
+                      <option value="file" selected>File Upload</option>
+                      <option value="date">Date Picker</option>
+                    </select>
+                  </div>
+
+                  <div class="property-row">
+                    <label class="property-label">Placeholder</label>
+                    <input type="text" class="property-input" id="prop-placeholder" value="Upload PDF/DOC (max 10MB)" placeholder="Enter placeholder text">
+                    <div class="char-count"><span id="placeholder-count">24</span>/200</div>
+                  </div>
+
+                  <div class="property-row">
+                    <label class="property-label">Help Text</label>
+                    <textarea class="property-textarea" id="prop-help" placeholder="Enter help text for suppliers"></textarea>
+                    <div class="char-count"><span id="help-count">0</span>/1000</div>
+                  </div>
+
+                  <div class="property-checkbox-row">
+                    <input type="checkbox" id="prop-required" checked>
+                    <label for="prop-required">This field is mandatory</label>
+                  </div>
+                </div>
+
+                <!-- File Upload Properties -->
+                <div class="property-group" id="file-properties">
+                  <div class="property-group-title">File Upload Settings</div>
+                  
+                  <div class="property-row">
+                    <label class="property-label">Accepted File Types</label>
+                    <input type="text" class="property-input" value=".pdf, .doc, .docx" placeholder="e.g., .pdf, .doc">
+                  </div>
+                  
+                  <div class="property-row">
+                    <label class="property-label">Max File Size (MB)</label>
+                    <input type="number" class="property-input" value="10" min="1" max="50">
+                  </div>
+                </div>
+
+                <!-- Attachments Setting -->
+                <div class="property-group" id="attachment-settings" style="display: none;">
+                  <div class="property-group-title">Attachments</div>
+                  <div class="select-button-group">
+                    <button class="select-button active" onclick="setAttachment(this, 'none')">None</button>
+                    <button class="select-button" onclick="setAttachment(this, 'allow')">Allow</button>
+                    <button class="select-button" onclick="setAttachment(this, 'require')">Require</button>
+                  </div>
+                </div>
+
+                <!-- Scoring Section -->
+                <div class="scoring-section">
+                  <div class="scoring-toggle">
+                    <div class="scoring-toggle-label"><i class="pi pi-star"></i>Enable Scoring</div>
+                    <div class="toggle-switch active" id="scoring-toggle" onclick="toggleScoring()"></div>
+                  </div>
+                  
+                  <div id="scoring-config">
+                    <div class="scoring-fields">
+                      <div class="scoring-field">
+                        <label>Weight (Points)</label>
+                        <input type="number" value="15" min="0" max="100" id="prop-weight">
+                      </div>
+                      <div class="scoring-field">
+                        <label>Scoring Method</label>
+                        <select id="prop-scoring-method">
+                          <option value="binary">Binary (Pass/Fail)</option>
+                          <option value="scale" selected>Scale (1-5)</option>
+                          <option value="percentage">Percentage</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Apply To Section -->
+                <div class="apply-to-section">
+                  <div class="apply-to-title">Apply This Field To</div>
+                  <div class="apply-to-options">
+                    <div class="apply-to-option selected" onclick="selectApplyTo(this)">
+                      <input type="radio" name="applyTo" checked>
+                      <label>This product only</label>
+                    </div>
+                    <div class="apply-to-option" onclick="selectApplyTo(this)">
+                      <input type="radio" name="applyTo">
+                      <label>All products (4 items)</label>
+                    </div>
+                    <div class="apply-to-option" onclick="selectApplyTo(this)">
+                      <input type="radio" name="applyTo">
+                      <label>Selected products...</label>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Field Level -->
+                <div class="property-group" style="margin-top: 16px;">
+                  <div class="property-group-title">Field Level</div>
+                  <select class="property-select" id="prop-level">
+                    <option value="product" selected>Product Level</option>
+                    <option value="specification">Specification Level</option>
+                    <option value="delivery">Delivery Level</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </main>
+    </div>
+
+    <!-- Drag Preview -->
+    <div class="drag-preview" id="drag-preview"><i class="pi pi-plus"></i><span></span></div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script>
+      let draggedItem = null;
+      let selectedFieldId = null;
+      let selectedColumnId = null;
+
+      // Tab switching
+      function switchTab(tab, tabId) {
+        document.querySelectorAll('.palette-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById('predefined-tab').style.display = tabId === 'predefined' ? 'block' : 'none';
+        document.getElementById('custom-tab').style.display = tabId === 'custom' ? 'block' : 'none';
+      }
+
+      // Drag and Drop
+      document.querySelectorAll('.component-item').forEach(item => {
+        item.addEventListener('dragstart', handleDragStart);
+        item.addEventListener('dragend', handleDragEnd);
+      });
+
+      // Regular drop zones (product level, delivery level)
+      document.querySelectorAll('.drop-zone').forEach(zone => {
+        zone.addEventListener('dragover', handleDragOver);
+        zone.addEventListener('dragleave', handleDragLeave);
+        zone.addEventListener('drop', handleDrop);
+      });
+
+      // Column drop zones (specification level)
+      document.querySelectorAll('.column-drop-zone').forEach(zone => {
+        zone.addEventListener('dragover', handleDragOver);
+        zone.addEventListener('dragleave', handleDragLeave);
+        zone.addEventListener('drop', handleColumnDrop);
+      });
+
+      function handleDragStart(e) {
+        draggedItem = this;
+        this.classList.add('dragging');
+        
+        const preview = document.getElementById('drag-preview');
+        preview.querySelector('span').textContent = this.dataset.name;
+        preview.classList.add('visible');
+        
+        e.dataTransfer.effectAllowed = 'copy';
+        e.dataTransfer.setData('text/plain', JSON.stringify({
+          type: this.dataset.type,
+          name: this.dataset.name,
+          level: this.dataset.level || 'product'
+        }));
+        
+        // Highlight valid drop zones
+        document.querySelectorAll('.drop-zone').forEach(zone => {
+          zone.style.borderColor = 'var(--primary-400)';
+        });
+      }
+
+      function handleDragEnd(e) {
+        this.classList.remove('dragging');
+        document.getElementById('drag-preview').classList.remove('visible');
+        
+        document.querySelectorAll('.drop-zone').forEach(zone => {
+          zone.classList.remove('drag-over');
+          zone.style.borderColor = '';
+        });
+      }
+
+      function handleDragOver(e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'copy';
+        this.classList.add('drag-over');
+        
+        const preview = document.getElementById('drag-preview');
+        preview.style.left = (e.clientX + 15) + 'px';
+        preview.style.top = (e.clientY + 15) + 'px';
+      }
+
+      function handleDragLeave(e) {
+        this.classList.remove('drag-over');
+      }
+
+      function handleDrop(e) {
+        e.preventDefault();
+        this.classList.remove('drag-over');
+        
+        const data = JSON.parse(e.dataTransfer.getData('text/plain'));
+        const level = this.dataset.level;
+        const product = this.dataset.product;
+        
+        // Create new field and add to canvas
+        addFieldToCanvas(data, level, product, this);
+        
+        // Show properties panel for configuration
+        showPropertiesPanel(data);
+        
+        showToast('Field Added', `"${data.name}" added to ${level} level. Configure in the Properties Panel.`);
+      }
+
+      // Handle column drop for specification level
+      function handleColumnDrop(e) {
+        e.preventDefault();
+        this.classList.remove('drag-over');
+        
+        const data = JSON.parse(e.dataTransfer.getData('text/plain'));
+        const product = this.dataset.product;
+        
+        // Add as column to specification table
+        addColumnToTable(data, product);
+        
+        // Show properties panel for column configuration
+        showColumnPropertiesPanel(data);
+        
+        showToast('Column Added', `"${data.name}" added as a new column. Configure in the Properties Panel.`);
+      }
+
+      // Add column to specification table
+      function addColumnToTable(data, productId) {
+        const table = document.querySelector(`#specs-table-${productId} .specs-table`);
+        if (!table) return;
+
+        const colId = 'col-' + Date.now();
+        const isPredefined = draggedItem && draggedItem.classList.contains('predefined-field-item');
+        
+        // Add header column (before the + button)
+        const headerRow = table.querySelector('thead tr');
+        const addBtn = headerRow.querySelector('.col-add');
+        
+        const newHeader = document.createElement('th');
+        newHeader.className = 'col-field selected';
+        newHeader.dataset.colId = colId;
+        newHeader.onclick = function() { selectColumn(this, colId); };
+        newHeader.innerHTML = `
+          <div class="col-header-content">
+            <span class="col-name">${data.name}</span>
+            <span class="col-badge ${isPredefined ? 'predefined' : 'custom'}">${isPredefined ? 'Predefined' : 'Custom'}</span>
+          </div>
+          <div class="col-actions">
+            <button class="col-action-btn" title="Edit"><i class="pi pi-pencil"></i></button>
+            <button class="col-action-btn delete" title="Remove" onclick="event.stopPropagation(); removeColumn('${colId}')"><i class="pi pi-trash"></i></button>
+          </div>
+        `;
+        
+        headerRow.insertBefore(newHeader, addBtn);
+        
+        // Add cells to each body row
+        const bodyRows = table.querySelectorAll('tbody tr');
+        bodyRows.forEach(row => {
+          const addCell = row.querySelector('.col-add-cell');
+          const newCell = document.createElement('td');
+          newCell.innerHTML = `<div class="cell-preview ${data.type}">${getPlaceholderForType(data.type)}</div>`;
+          row.insertBefore(newCell, addCell);
+        });
+
+        // Deselect other columns and select new one
+        table.querySelectorAll('th.col-field').forEach(th => th.classList.remove('selected'));
+        newHeader.classList.add('selected');
+        selectedColumnId = colId;
+      }
+
+      function getPlaceholderForType(type) {
+        const placeholders = {
+          'text': 'Enter text...',
+          'textarea': 'Enter details...',
+          'number': '0',
+          'select': 'Select...',
+          'checkbox': '☐ Yes / No',
+          'date': 'Select date...',
+          'file': '📎 Upload...'
+        };
+        return placeholders[type] || 'Enter value...';
+      }
+
+      // Select column in specification table
+      function selectColumn(element, colId) {
+        // Deselect all columns
+        document.querySelectorAll('.specs-table th.col-field').forEach(th => th.classList.remove('selected'));
+        
+        // Deselect any selected fields
+        document.querySelectorAll('.field-row').forEach(f => f.classList.remove('selected'));
+        
+        // Select this column
+        element.classList.add('selected');
+        selectedColumnId = colId;
+        selectedFieldId = null;
+        
+        // Show properties panel for column
+        const colName = element.querySelector('.col-name').textContent;
+        showColumnPropertiesPanel({ name: colName, type: 'text' });
+      }
+
+      function showColumnPropertiesPanel(data) {
+        document.getElementById('no-selection').style.display = 'none';
+        document.getElementById('field-properties').style.display = 'block';
+        
+        // Update title and show context indicator
+        document.getElementById('properties-title').textContent = 'Column Properties';
+        document.getElementById('context-indicator').style.display = 'flex';
+        
+        document.getElementById('prop-field-name').value = data.name;
+        document.getElementById('prop-level').value = 'specification';
+        updateCharCount('name');
+      }
+
+      function removeColumn(colId) {
+        // Remove header
+        const header = document.querySelector(`th[data-col-id="${colId}"]`);
+        if (!header) return;
+        
+        const colName = header.querySelector('.col-name').textContent;
+        const colIndex = Array.from(header.parentNode.children).indexOf(header);
+        
+        header.remove();
+        
+        // Remove cells from each row at the same index
+        document.querySelectorAll('.specs-table tbody tr').forEach(row => {
+          const cell = row.children[colIndex];
+          if (cell && !cell.classList.contains('col-add-cell')) {
+            cell.remove();
+          }
+        });
+        
+        closePropertiesPanel();
+        showToast('Column Removed', `"${colName}" column has been removed.`);
+      }
+
+      function addFieldToCanvas(data, level, product, dropZone) {
+        const fieldId = 'field-' + Date.now();
+        const isPredefined = draggedItem && draggedItem.classList.contains('predefined-field-item');
+        
+        const fieldHtml = `
+          <div class="field-row selected" onclick="selectField(this)" data-field-id="${fieldId}">
+            <div class="field-drag-handle"><i class="pi pi-bars"></i></div>
+            <div class="field-info">
+              <div class="field-label-row">
+                <div class="field-type-icon ${data.type}"><i class="pi pi-${getIconForType(data.type)}"></i></div>
+                <span class="field-name">${data.name}</span>
+                <span class="field-badge ${isPredefined ? 'predefined' : 'custom'}">${isPredefined ? 'Predefined' : 'Custom'}</span>
+              </div>
+              <div class="field-input-preview">Configure in properties panel...</div>
+            </div>
+            <div class="field-actions">
+              <button class="field-action-btn delete" onclick="event.stopPropagation(); removeField(this)"><i class="pi pi-trash"></i></button>
+            </div>
+          </div>
+        `;
+        
+        dropZone.insertAdjacentHTML('afterend', fieldHtml);
+        
+        // Select the new field
+        document.querySelectorAll('.field-row').forEach(f => f.classList.remove('selected'));
+        const newField = dropZone.nextElementSibling;
+        newField.classList.add('selected');
+        selectedFieldId = fieldId;
+      }
+
+      function getIconForType(type) {
+        const icons = {
+          'text': 'align-left',
+          'textarea': 'file-edit',
+          'number': 'calculator',
+          'select': 'list',
+          'checkbox': 'check-square',
+          'radio': 'circle',
+          'file': 'paperclip',
+          'image': 'image',
+          'date': 'calendar'
+        };
+        return icons[type] || 'align-left';
+      }
+
+      function selectField(element) {
+        document.querySelectorAll('.field-row').forEach(f => f.classList.remove('selected'));
+        element.classList.add('selected');
+        selectedFieldId = element.dataset.fieldId;
+        
+        // Show properties panel with field data
+        const fieldName = element.querySelector('.field-name').textContent.replace('*', '').trim();
+        showPropertiesPanel({ name: fieldName, type: 'file' });
+      }
+
+      function showPropertiesPanel(data) {
+        document.getElementById('no-selection').style.display = 'none';
+        document.getElementById('field-properties').style.display = 'block';
+        
+        // Update title and hide context indicator for regular fields
+        document.getElementById('properties-title').textContent = 'Field Properties';
+        document.getElementById('context-indicator').style.display = 'none';
+        
+        // Update properties with field data
+        document.getElementById('prop-field-name').value = data.name;
+        updateCharCount('name');
+        
+        // Deselect any selected columns
+        document.querySelectorAll('.specs-table th.col-field').forEach(th => th.classList.remove('selected'));
+        selectedColumnId = null;
+      }
+
+      function closePropertiesPanel() {
+        document.getElementById('no-selection').style.display = 'block';
+        document.getElementById('field-properties').style.display = 'none';
+        document.getElementById('context-indicator').style.display = 'none';
+        document.getElementById('properties-title').textContent = 'Field Properties';
+        
+        document.querySelectorAll('.field-row').forEach(f => f.classList.remove('selected'));
+        document.querySelectorAll('.specs-table th.col-field').forEach(th => th.classList.remove('selected'));
+        selectedFieldId = null;
+        selectedColumnId = null;
+      }
+
+      function removeField(btn) {
+        const fieldRow = btn.closest('.field-row');
+        const fieldName = fieldRow.querySelector('.field-name').textContent;
+        fieldRow.remove();
+        closePropertiesPanel();
+        showToast('Field Removed', `"${fieldName}" has been removed.`);
+      }
+
+      // Properties Panel Functions
+      function updateCharCount(field) {
+        const input = document.getElementById('prop-' + (field === 'name' ? 'field-name' : field));
+        const count = document.getElementById(field + '-count');
+        if (input && count) {
+          count.textContent = input.value.length;
+        }
+      }
+
+      document.getElementById('prop-field-name')?.addEventListener('input', () => updateCharCount('name'));
+      document.getElementById('prop-placeholder')?.addEventListener('input', () => updateCharCount('placeholder'));
+      document.getElementById('prop-help')?.addEventListener('input', () => updateCharCount('help'));
+
+      function toggleScoring() {
+        const toggle = document.getElementById('scoring-toggle');
+        const config = document.getElementById('scoring-config');
+        toggle.classList.toggle('active');
+        config.style.display = toggle.classList.contains('active') ? 'block' : 'none';
+      }
+
+      function setAttachment(btn, value) {
+        btn.parentElement.querySelectorAll('.select-button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      }
+
+      function selectApplyTo(element) {
+        document.querySelectorAll('.apply-to-option').forEach(opt => opt.classList.remove('selected'));
+        element.classList.add('selected');
+        element.querySelector('input').checked = true;
+      }
+
+      // Product Card Toggle
+      function toggleProduct(header) {
+        const card = header.closest('.product-card');
+        const body = card.querySelector('.product-body');
+        const icon = header.querySelector('.product-action-btn i');
+        
+        if (body.style.display === 'none') {
+          body.style.display = 'block';
+          icon.className = 'pi pi-chevron-down';
+          card.classList.add('selected');
+        } else {
+          body.style.display = 'none';
+          icon.className = 'pi pi-chevron-right';
+          card.classList.remove('selected');
+        }
+      }
+
+      // Toast
+      function showToast(title, message) {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = 'toast success';
+        toast.innerHTML = `
+          <div class="toast-icon"><i class="pi pi-check"></i></div>
+          <div class="toast-content">
+            <div class="toast-title">${title}</div>
+            <div class="toast-message">${message}</div>
+          </div>
+          <button class="toast-close" onclick="this.parentElement.remove()"><i class="pi pi-times"></i></button>
+        `;
+        container.appendChild(toast);
+        setTimeout(() => toast.remove(), 4000);
+      }
+
+      // Initialize
+      document.addEventListener('DOMContentLoaded', function() {
+        // First product expanded
+        const firstProduct = document.querySelector('.product-card');
+        if (firstProduct) firstProduct.classList.add('selected');
+        
+        // Select first field to show properties panel
+        const firstField = document.querySelector('.field-row');
+        if (firstField) {
+          firstField.click();
+        }
+      });
+    </script>
+  </body>
+</html>
