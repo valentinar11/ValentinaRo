@@ -5574,6 +5574,51 @@
         color: var(--danger-600);
       }
 
+      /* Affidavit Status Styles */
+      .affidavit-status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 600;
+        margin-left: 8px;
+      }
+      .affidavit-status-badge.complete {
+        background: var(--success-100);
+        color: var(--success-700);
+      }
+      .affidavit-status-badge.partial {
+        background: var(--warning-100);
+        color: var(--warning-700);
+      }
+      .affidavit-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 2px 8px;
+        border-radius: 10px;
+        font-size: 10px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-left: 8px;
+      }
+      .affidavit-badge.signed {
+        background: var(--success-100);
+        color: var(--success-700);
+      }
+      .affidavit-badge.signed:hover {
+        background: var(--success-200);
+      }
+      .affidavit-badge.pending {
+        background: var(--warning-100);
+        color: var(--warning-700);
+      }
+      .affidavit-badge.pending:hover {
+        background: var(--warning-200);
+      }
+
       .team-subsection {
         margin-bottom: var(--spacing-md);
       }
@@ -5609,7 +5654,7 @@
 
       .team-roles-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        grid-template-columns: repeat(2, 1fr);
         gap: var(--spacing-md);
       }
 
@@ -8136,7 +8181,7 @@
       // Requisition & Lots Management
       let requisitionLines = []; // Requisition lines from ERP (left container)
       let productsAndServices = []; // Refined products/services for suppliers (right container)
-      let lots = []; // Created lots: [{ id, name, unspscCodes: [{ code, description }] }]
+      let lots = []; // Created lots: [{ id, description, unspscCodes: [{ code, description }] }]
       let allowPartialQuotations = ''; // 'Yes' or 'No' - determines if lots section is visible
       
       // Available requisition lines from ERP (centralized source for both Products and Services AND Lots)
@@ -8209,8 +8254,19 @@
         procurementAuthority: null,
         technicalExperts: [],
         bidOpeningPanel: [],
-        evaluationTeam: [],
+        evaluationTeam: [
+          { name: 'John Smith', email: 'john.smith@unops.org', avatar: 'JS' },
+          { name: 'Sarah Johnson', email: 'sarah.johnson@unops.org', avatar: 'SJ' },
+          { name: 'Michael Chen', email: 'michael.chen@unops.org', avatar: 'MC' },
+          { name: 'Emma Wilson', email: 'emma.wilson@unops.org', avatar: 'EW' }
+        ],
         collaborators: []
+      };
+      
+      // Affidavit signatures for evaluation team members
+      let evaluationAffidavits = {
+        'john.smith@unops.org': { signed: true, signedDate: '2026-01-05T14:30:00Z', comments: 'No conflicts to disclose.' },
+        'sarah.johnson@unops.org': { signed: true, signedDate: '2026-01-06T09:15:00Z', comments: '' }
       };
       
       // Tender Documents - Forms and attachments for the tender
@@ -10354,8 +10410,7 @@
                         <thead>
                           <tr>
                             <th style="width: 60px;">Lot</th>
-                            <th style="width: 150px;">Name</th>
-                            <th style="width: 180px;">Description</th>
+                            <th style="width: 250px;">Description</th>
                             <th>Products</th>
                             <th style="width: 50px;">Actions</th>
                           </tr>
@@ -10364,7 +10419,6 @@
                           ${lots.map((lot, lotIndex) => `
                             <tr data-lot-id="${lot.id}">
                               <td><span class="lot-number-badge">${lotIndex + 1}</span></td>
-                              <td><span class="lot-name-cell">${lot.name || 'Unnamed Lot'}</span></td>
                               <td><span class="lot-desc-cell" title="${lot.description || ''}">${lot.description || '-'}</span></td>
                               <td>
                                 <div class="lot-products-cell">
@@ -10423,12 +10477,12 @@
       }
       
       window.createNewLot = function() {
-        const lotName = prompt('Enter lot name:');
-        if (!lotName) return;
+        const lotDesc = prompt('Enter lot description:');
+        if (!lotDesc) return;
         
         const newLot = {
           id: 'lot-' + Date.now(),
-          name: lotName,
+          description: lotDesc,
           unspscCodes: [], // Array of { code, description }
         };
         
@@ -10476,12 +10530,11 @@
           return;
         }
         
-        // Prompt for lot name with default value
-        const existingLotCount = lots.length;
-        const defaultLotName = 'Lot ' + (existingLotCount + 1);
-        const lotName = prompt('Enter name for the consolidated lot:', defaultLotName);
+        // Prompt for lot description with default value
+        const defaultDesc = 'Consolidated lot containing all requisition lines (' + requisitionLines.length + ' items)';
+        const lotDesc = prompt('Enter description for the consolidated lot:', defaultDesc);
         
-        if (!lotName) return; // User cancelled
+        if (!lotDesc) return; // User cancelled
         
         // Calculate total estimated value from all requisition lines
         const totalValue = requisitionLines.reduce((sum, line) => sum + (line.amount || 0), 0);
@@ -10489,8 +10542,7 @@
         // Create a single lot with all requisition lines as products
         const newLot = {
           id: 'lot-' + Date.now(),
-          name: lotName,
-          description: 'Consolidated lot containing all requisition lines (' + requisitionLines.length + ' items)',
+          description: lotDesc,
           unspscCodes: requisitionLines.map(line => ({
             code: line.unspscCode,
             description: line.unspscDescription,
@@ -10504,13 +10556,13 @@
         lots.push(newLot);
         renderCurrentBlock();
         
-        showNotification('Lot "' + lotName + '" created with ' + requisitionLines.length + ' product(s) - Total value: $' + totalValue.toLocaleString(), 'success');
+        showNotification('Lot created with ' + requisitionLines.length + ' product(s) - Total value: $' + totalValue.toLocaleString(), 'success');
       }
       
-      window.updateLotName = function(lotId, newName) {
+      window.updateLotDescription = function(lotId, newDesc) {
         const lot = lots.find(l => l.id === lotId);
         if (lot) {
-          lot.name = newName;
+          lot.description = newDesc;
         }
       }
       
@@ -10867,18 +10919,18 @@
       // Download Lots Template
       window.downloadLotsTemplate = function() {
         // Create CSV template content
-        const templateHeaders = ['Lot Name', 'Lot Description', 'UNSPSC Code', 'Product Description', 'Quantity', 'Estimated Value (USD)'];
+        const templateHeaders = ['Lot Description', 'UNSPSC Code', 'Product Description', 'Quantity', 'Estimated Value (USD)'];
         const exampleRows = [
-          ['IT Equipment Lot', 'All IT hardware items', '43211503', 'Laptop computers', '50', '75000'],
-          ['IT Equipment Lot', 'All IT hardware items', '43212105', 'Computer monitors', '50', '15000'],
-          ['Office Supplies Lot', 'General office supplies', '44121700', 'Office supplies', '100', '5000'],
-          ['Furniture Lot', 'Office furniture items', '56101500', 'Office desks', '25', '12500'],
+          ['All IT hardware items', '43211503', 'Laptop computers', '50', '75000'],
+          ['All IT hardware items', '43212105', 'Computer monitors', '50', '15000'],
+          ['General office supplies', '44121700', 'Office supplies', '100', '5000'],
+          ['Office furniture items', '56101500', 'Office desks', '25', '12500'],
         ];
         
         // Build CSV content
         let csvContent = templateHeaders.join(',') + '\n';
         csvContent += '# Instructions: Fill in the rows below. Each row represents one product in a lot.\n';
-        csvContent += '# Products with the same Lot Name will be grouped into the same lot.\n';
+        csvContent += '# Products with the same Lot Description will be grouped into the same lot.\n';
         csvContent += '# Delete these instruction lines before uploading.\n';
         exampleRows.forEach(row => {
           csvContent += row.map(cell => `"${cell}"`).join(',') + '\n';
@@ -10916,30 +10968,29 @@
             
             // Skip header row
             const dataLines = lines.slice(1);
-            const lotsMap = new Map(); // Group by lot name
+            const lotsMap = new Map(); // Group by lot description
             
             dataLines.forEach(line => {
               // Parse CSV line (handle quoted values)
               const values = line.match(/("([^"]*)"|[^,]+)/g);
-              if (!values || values.length < 4) return;
+              if (!values || values.length < 3) return;
               
               // Clean values (remove quotes)
               const cleanValues = values.map(v => v.replace(/^"|"$/g, '').trim());
               
-              const [lotName, lotDesc, unspscCode, productDesc, quantity, estimatedValue] = cleanValues;
+              const [lotDesc, unspscCode, productDesc, quantity, estimatedValue] = cleanValues;
               
-              if (!lotName || !unspscCode) return;
+              if (!lotDesc || !unspscCode) return;
               
-              if (!lotsMap.has(lotName)) {
-                lotsMap.set(lotName, {
+              if (!lotsMap.has(lotDesc)) {
+                lotsMap.set(lotDesc, {
                   id: 'lot-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9),
-                  name: lotName,
-                  description: lotDesc || '',
+                  description: lotDesc,
                   unspscCodes: []
                 });
               }
               
-              const lot = lotsMap.get(lotName);
+              const lot = lotsMap.get(lotDesc);
               lot.unspscCodes.push({
                 code: unspscCode,
                 description: productDesc || '',
@@ -10990,8 +11041,7 @@
               <div style="border: 1px solid var(--surface-200); border-radius: var(--radius-sm); margin-bottom: var(--spacing-sm); overflow: hidden;">
                 <div style="background: var(--surface-50); padding: var(--spacing-sm) var(--spacing-md); border-bottom: 1px solid var(--surface-200); display: flex; justify-content: space-between; align-items: center;">
                   <div>
-                    <span style="font-weight: 600; font-size: 13px;">${lot.name}</span>
-                    ${lot.description ? `<span style="color: var(--text-muted); font-size: 11px; margin-left: 8px;">${lot.description}</span>` : ''}
+                    <span style="font-weight: 600; font-size: 13px;">${lot.description || 'No description'}</span>
                   </div>
                   <span style="font-size: 11px; color: var(--text-muted);">${lot.unspscCodes.length} product(s)</span>
                 </div>
@@ -11411,7 +11461,6 @@
         if (!lot) return;
         
         document.getElementById('edit-lot-id').value = lotId;
-        document.getElementById('edit-lot-name-input').value = lot.name || '';
         document.getElementById('edit-lot-desc-input').value = lot.description || '';
         
         document.getElementById('edit-lot-modal').style.display = 'flex';
@@ -11426,7 +11475,6 @@
         const lot = lots.find(l => l.id === lotId);
         if (!lot) return;
         
-        lot.name = document.getElementById('edit-lot-name-input').value.trim();
         lot.description = document.getElementById('edit-lot-desc-input').value.trim();
         
         closeEditLotModal();
@@ -11450,9 +11498,9 @@
         if (!lot) return;
         
         // In real app, would open a modal for editing
-        const newName = prompt('Enter new lot name:', lot.name);
-        if (newName && newName !== lot.name) {
-          lot.name = newName;
+        const newDesc = prompt('Enter new lot description:', lot.description);
+        if (newDesc && newDesc !== lot.description) {
+          lot.description = newDesc;
           renderCurrentBlock();
         }
       }
@@ -12059,6 +12107,59 @@
           return members.map((m, idx) => renderTeamMemberCard(m, role, true, `${removeFunc}(${idx})`)).join('');
         };
         
+        // Get affidavit counts for status badge
+        const getAffidavitCounts = () => {
+          const total = teamMembers.evaluationTeam.length;
+          let signed = 0;
+          teamMembers.evaluationTeam.forEach(m => {
+            if (evaluationAffidavits[m.email] && evaluationAffidavits[m.email].signed) signed++;
+          });
+          return { signed, total };
+        };
+        
+        // Render affidavit status badge for header
+        const renderAffidavitStatusBadge = () => {
+          const counts = getAffidavitCounts();
+          if (counts.total === 0) return '';
+          const isComplete = counts.signed === counts.total;
+          return '<span class="affidavit-status-badge ' + (isComplete ? 'complete' : 'partial') + '">' +
+            (isComplete ? '✓' : '⚠') + ' ' + counts.signed + '/' + counts.total + ' Signed</span>';
+        };
+        
+        // Render evaluation team member with affidavit
+        const renderEvalMemberWithAffidavit = (member, idx) => {
+          const aff = evaluationAffidavits[member.email] || { signed: false };
+          const safeEmail = member.email.replace(/'/g, "\\'");
+          const safeName = member.name.replace(/'/g, "\\'");
+          let signedInfo = '';
+          if (aff.signed && aff.signedDate) {
+            const d = new Date(aff.signedDate);
+            signedInfo = '<div style="font-size:10px;color:var(--success-600);margin-top:4px;">Signed: ' + 
+              d.toLocaleDateString('en-US', {month:'short',day:'numeric',year:'numeric'}) + '</div>';
+            if (aff.comments) {
+              signedInfo += '<div style="font-size:10px;color:var(--text-muted);margin-top:2px;font-style:italic;">Comments: ' + aff.comments + '</div>';
+            }
+          }
+          return '<div class="team-member-card" style="flex-wrap:wrap;">' +
+            '<div class="team-member-avatar" style="background:var(--info-500);">' + (member.avatar || member.name.split(' ').map(n => n[0]).join('')) + '</div>' +
+            '<div class="team-member-info"><div class="team-member-name">' + member.name + '</div><div class="team-member-email">' + (member.email || '') + '</div></div>' +
+            '<div class="team-member-role">Evaluator</div>' +
+            (aff.signed 
+              ? '<span class="affidavit-badge signed" onclick="event.stopPropagation();viewAffidavit(\'' + safeEmail + '\')" title="View signed affidavit">✓ Signed</span>'
+              : '<span class="affidavit-badge pending" onclick="event.stopPropagation();openSignAffidavitModal(\'' + safeEmail + '\',\'' + safeName + '\')" title="Sign affidavit">⏳ Pending</span>') +
+            '<button class="team-member-remove" onclick="event.stopPropagation();removeEvaluationTeamMember(' + idx + ')" title="Remove">×</button>' +
+            (aff.signed ? '<div style="width:100%;margin-top:var(--spacing-xs);padding-top:var(--spacing-xs);border-top:1px dashed var(--surface-200);">' + signedInfo + '</div>' : '') +
+            '</div>';
+        };
+        
+        // Render evaluation team list with affidavit
+        const renderEvalTeamWithAffidavit = () => {
+          if (!teamMembers.evaluationTeam || teamMembers.evaluationTeam.length === 0) {
+            return '<div class="team-empty-slot">No evaluation panel members assigned</div>';
+          }
+          return teamMembers.evaluationTeam.map((m, idx) => renderEvalMemberWithAffidavit(m, idx)).join('');
+        };
+        
         return `
           <div class="general-info-container">
             <div class="general-info-body">
@@ -12067,7 +12168,7 @@
               <div class="collapsible-section" id="team-author-section">
                 <div class="collapsible-header" onclick="toggleCollapsibleSection('team-author-section')">
                   <div class="collapsible-header-left">
-                    <span class="collapsible-header-title">Process Author</span>
+                    <span class="collapsible-header-title">Procurement Official</span>
                     <span class="badge badge-success" style="margin-left: 8px;">Active</span>
                   </div>
                   <div class="collapsible-toggle">▼</div>
@@ -12078,13 +12179,13 @@
                     
                     <div class="team-subsection" style="margin-top: var(--spacing-md);">
                       <div class="team-subsection-header">
-                        <span class="team-subsection-title">Alternate Authors</span>
+                        <span class="team-subsection-title">Alternate Procurement Officials</span>
                         <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); openAddTeamMemberModal('alternateAuthors')"><i class="pi pi-plus"></i> Add</button>
                       </div>
                       <div class="team-members-list">
-                        ${renderTeamMemberList(teamMembers.alternateAuthors, 'Alternate Author', 'removeAlternateAuthor')}
+                        ${renderTeamMemberList(teamMembers.alternateAuthors, 'Alternate Procurement Official', 'removeAlternateAuthor')}
                       </div>
-                      <span class="help-text">Alternate authors can edit the tender document</span>
+                      <span class="help-text">Alternate Procurement Officials can edit the tender document</span>
                     </div>
                   </div>
                 </div>
@@ -12094,7 +12195,7 @@
               <div class="collapsible-section collapsed" id="team-procurement-section" style="margin-top: var(--spacing-md);">
                 <div class="collapsible-header" onclick="toggleCollapsibleSection('team-procurement-section')">
                   <div class="collapsible-header-left">
-                    <span class="collapsible-header-title">Procurement Roles</span>
+                    <span class="collapsible-header-title">Review Roles</span>
                     ${renderSectionProgress('team-procurement', null)}
                   </div>
                   <div class="collapsible-toggle">▼</div>
@@ -12139,11 +12240,11 @@
                     </div>
                     
                     <!-- Technical Experts -->
-                    <div class="team-role-card" style="grid-column: span 3;">
+                    <div class="team-role-card">
                       <div class="team-role-header" style="display: flex; justify-content: space-between; align-items: center;">
                         <div style="display: flex; align-items: center; gap: 8px;">
                           <div class="team-role-icon">🔧</div>
-                          <div class="team-role-title">Technical Expert(s)</div>
+                          <div class="team-role-title">Technical Matter Expert(s)</div>
                         </div>
                         <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); openAddTeamMemberModal('technicalExperts')">
                           <i class="pi pi-plus"></i> Add Expert
@@ -12157,7 +12258,17 @@
                       </div>
                       <span class="help-text">Provides technical guidance and specifications. You can add multiple technical experts.</span>
                     </div>
-                    
+                    <!-- Bid Opening Panel -->
+                    <div class="team-role-card">
+                      <div class="team-role-header">
+                        <div class="team-role-icon">📂</div>
+                        <div class="team-role-title">Bid Opening Panel</div>
+                      </div>
+                      <div class="team-members-list">
+                        ${renderTeamMemberList(teamMembers.bidOpeningPanel, 'Panel Member', 'removeBidOpeningPanelMember')}
+                      </div>
+                      <span class="help-text">Required for public bid openings or offline tenders</span>
+                    </div> 
                   </div>
                 </div>
               </div>
@@ -12168,23 +12279,12 @@
                   <div class="collapsible-header-left">
                     <span class="collapsible-header-title">Evaluation Panel</span>
                     ${renderSectionProgress('team-evaluation', null)}
+                    ${renderAffidavitStatusBadge()}
                   </div>
                   <div class="collapsible-toggle">▼</div>
                 </div>
                 <div class="collapsible-body" onclick="event.stopPropagation()">
                   <div class="team-section-content">
-                    
-                    <!-- Bid Opening Panel -->
-                    <div class="team-subsection">
-                      <div class="team-subsection-header">
-                        <span class="team-subsection-title">📂 Bid Opening Panel</span>
-                        <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); openAddTeamMemberModal('bidOpeningPanel')"><i class="pi pi-plus"></i> Add Member</button>
-                      </div>
-                      <div class="team-members-list">
-                        ${renderTeamMemberList(teamMembers.bidOpeningPanel, 'Panel Member', 'removeBidOpeningPanelMember')}
-                      </div>
-                      <span class="help-text">Required for public bid openings or offline tenders</span>
-                    </div>
                     
                     <!-- Evaluation Team Members -->
                     <div class="team-subsection" style="margin-top: var(--spacing-lg);">
@@ -12193,9 +12293,9 @@
                         <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); openAddTeamMemberModal('evaluationTeam')"><i class="pi pi-plus"></i> Add Member</button>
                       </div>
                       <div class="team-members-list">
-                        ${renderTeamMemberList(teamMembers.evaluationTeam, 'Evaluator', 'removeEvaluationTeamMember')}
+                        ${renderEvalTeamWithAffidavit()}
                       </div>
-                      <span class="help-text">Procurement Official, Chair, Members, and Observers</span>
+                      <span class="help-text">Procurement Official, Chair, Members, and Observers. Each member must sign the Conflict of Interest affidavit.</span>
                     </div>
                     
                   </div>
@@ -12240,7 +12340,7 @@
           { name: 'Emma Wilson', email: 'emma.wilson@unops.org', avatar: 'EW' },
         ];
         
-        // Special handling for Technical Experts - show modal with qualification field
+        // Special handling for Technical Matter Experts - show modal with qualification field
         if (role === 'technicalExperts') {
           showTechnicalExpertModal(mockMembers);
           return;
@@ -12264,7 +12364,7 @@
           <div class="modal-overlay" id="technical-expert-modal" style="display: flex; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); z-index: 1000; align-items: center; justify-content: center;" onclick="closeTechnicalExpertModal(event)">
             <div class="modal-container" style="max-width: 500px; background: white; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); overflow: hidden;" onclick="event.stopPropagation()">
               <div class="modal-header" style="padding: 20px 24px; border-bottom: 1px solid #e5e7eb; background: #f9fafb;">
-                <h3 class="modal-title" style="margin: 0; font-size: 18px; font-weight: 600; color: #111827;">Add Technical Expert</h3>
+                <h3 class="modal-title" style="margin: 0; font-size: 18px; font-weight: 600; color: #111827;">Add Technical Matter Expert</h3>
                 <button class="modal-close" style="position: absolute; right: 16px; top: 16px; background: none; border: none; font-size: 24px; cursor: pointer; color: #6b7280;" onclick="closeTechnicalExpertModal()">&times;</button>
               </div>
               <div class="modal-body" style="padding: 24px;">
@@ -12288,7 +12388,7 @@
               </div>
               <div class="modal-footer" style="padding: 16px 24px; border-top: 1px solid #e5e7eb; background: #f9fafb; display: flex; justify-content: flex-end; gap: 12px;">
                 <button class="btn btn-ghost" style="padding: 10px 20px; border: 1px solid #d1d5db; background: white; border-radius: 8px; cursor: pointer; font-size: 14px;" onclick="closeTechnicalExpertModal()">Cancel</button>
-                <button class="btn btn-primary" style="padding: 10px 20px; border: none; background: #2563eb; color: white; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500;" onclick="confirmAddTechnicalExpert()">Add Technical Expert</button>
+                <button class="btn btn-primary" style="padding: 10px 20px; border: none; background: #2563eb; color: white; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500;" onclick="confirmAddTechnicalExpert()">Add Technical Matter Expert</button>
               </div>
             </div>
           </div>
@@ -12360,6 +12460,10 @@
       }
       
       window.removeEvaluationTeamMember = function(index) {
+        var member = teamMembers.evaluationTeam[index];
+        if (member && member.email && evaluationAffidavits[member.email]) {
+          delete evaluationAffidavits[member.email];
+        }
         teamMembers.evaluationTeam.splice(index, 1);
         renderCurrentBlock();
       }
@@ -12368,6 +12472,83 @@
         teamMembers.collaborators.splice(index, 1);
         renderCurrentBlock();
       }
+      
+      // ===== AFFIDAVIT FUNCTIONS =====
+      window.openSignAffidavitModal = function(email, name) {
+        var html = '<div id="affidavit-modal" style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:1000;display:flex;align-items:center;justify-content:center;" onclick="if(event.target===this)closeAffidavitModal()">' +
+          '<div style="background:white;border-radius:12px;max-width:550px;width:90%;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.3);" onclick="event.stopPropagation()">' +
+          '<div style="padding:20px 24px;border-bottom:1px solid #e5e7eb;background:linear-gradient(135deg,#f0fdf4 0%,#dcfce7 100%);">' +
+          '<h3 style="margin:0;font-size:18px;color:#166534;">📜 Conflict of Interest Affidavit</h3>' +
+          '<div style="font-size:12px;color:#15803d;margin-top:4px;">For: ' + name + '</div></div>' +
+          '<div style="padding:24px;">' +
+          '<div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:16px;font-size:13px;line-height:1.6;color:#374151;margin-bottom:16px;">' +
+          '<p style="margin:0 0 12px;font-weight:600;">Declaration:</p>' +
+          '<p style="margin:0 0 8px;">I, <strong>' + name + '</strong>, hereby declare that:</p>' +
+          '<ol style="margin:0;padding-left:20px;"><li style="margin-bottom:6px;">I have no conflict of interest with any bidders.</li>' +
+          '<li style="margin-bottom:6px;">I will not accept any gifts or benefits from bidders.</li>' +
+          '<li style="margin-bottom:6px;">I will maintain confidentiality of all bid information.</li>' +
+          '<li style="margin-bottom:6px;">I will disclose any conflicts that arise during evaluation.</li></ol></div>' +
+          '<div style="margin-bottom:16px;"><label style="display:block;margin-bottom:6px;font-weight:500;font-size:13px;">Comments (Optional)</label>' +
+          '<textarea id="affidavit-comments" rows="2" style="width:100%;padding:10px;border:1px solid #d1d5db;border-radius:6px;font-size:13px;resize:vertical;box-sizing:border-box;" placeholder="Add any disclosures or comments..."></textarea></div>' +
+          '<div style="display:flex;align-items:flex-start;gap:8px;padding:12px;background:#fef3c7;border:1px solid #fcd34d;border-radius:6px;">' +
+          '<input type="checkbox" id="affidavit-confirm" style="margin-top:3px;">' +
+          '<label for="affidavit-confirm" style="font-size:12px;color:#92400e;cursor:pointer;">I confirm I have read and agree to this declaration.</label></div></div>' +
+          '<div style="padding:16px 24px;border-top:1px solid #e5e7eb;background:#f9fafb;display:flex;justify-content:flex-end;gap:12px;">' +
+          '<button class="btn btn-secondary" onclick="closeAffidavitModal()">Cancel</button>' +
+          '<button class="btn btn-primary" onclick="signAffidavit(\'' + email.replace(/'/g, "\\'") + '\')" style="background:#16a34a;border-color:#16a34a;">Sign Affidavit</button></div></div></div>';
+        document.body.insertAdjacentHTML('beforeend', html);
+      };
+      
+      window.signAffidavit = function(email) {
+        var cb = document.getElementById('affidavit-confirm');
+        if (!cb || !cb.checked) {
+          showNotification('Please confirm you have read the declaration', 'error');
+          return;
+        }
+        var comments = document.getElementById('affidavit-comments');
+        evaluationAffidavits[email] = {
+          signed: true,
+          signedDate: new Date().toISOString(),
+          comments: comments ? comments.value.trim() : ''
+        };
+        closeAffidavitModal();
+        renderCurrentBlock();
+        showNotification('Affidavit signed successfully', 'success');
+      };
+      
+      window.viewAffidavit = function(email) {
+        var member = teamMembers.evaluationTeam.find(function(m) { return m.email === email; });
+        var aff = evaluationAffidavits[email];
+        if (!member || !aff) { showNotification('Affidavit not found', 'error'); return; }
+        var d = new Date(aff.signedDate);
+        var dateStr = d.toLocaleDateString('en-US', {weekday:'long',year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'});
+        var html = '<div id="affidavit-view-modal" style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:1000;display:flex;align-items:center;justify-content:center;" onclick="if(event.target===this)closeAffidavitViewModal()">' +
+          '<div style="background:white;border-radius:12px;max-width:550px;width:90%;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.3);" onclick="event.stopPropagation()">' +
+          '<div style="padding:20px 24px;border-bottom:1px solid #e5e7eb;background:linear-gradient(135deg,#f0fdf4 0%,#bbf7d0 100%);">' +
+          '<h3 style="margin:0;font-size:18px;color:#166534;">✓ Signed Affidavit</h3></div>' +
+          '<div style="padding:24px;">' +
+          '<div style="display:flex;align-items:center;gap:12px;padding:12px;background:#f9fafb;border-radius:8px;margin-bottom:16px;">' +
+          '<div style="width:40px;height:40px;background:#3b82f6;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:600;">' + (member.avatar || member.name.split(' ').map(function(n){return n[0];}).join('')) + '</div>' +
+          '<div><div style="font-weight:600;font-size:14px;">' + member.name + '</div><div style="font-size:12px;color:#6b7280;">' + member.email + '</div>' +
+          '<div style="font-size:11px;color:#16a34a;margin-top:2px;">✓ Signed on ' + dateStr + '</div></div></div>' +
+          '<div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:16px;font-size:13px;line-height:1.6;color:#374151;margin-bottom:16px;">' +
+          '<p style="margin:0 0 8px;font-weight:600;">Declaration confirmed:</p>' +
+          '<ol style="margin:0;padding-left:20px;font-size:12px;"><li>No conflict of interest with bidders</li><li>No gifts or benefits accepted</li><li>Confidentiality maintained</li><li>Will disclose any conflicts</li></ol></div>' +
+          (aff.comments ? '<div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:12px;"><div style="font-weight:600;font-size:12px;color:#1e40af;margin-bottom:4px;">Comments:</div><div style="font-size:13px;color:#1e3a8a;font-style:italic;">' + aff.comments + '</div></div>' : '<div style="text-align:center;color:#9ca3af;font-size:12px;font-style:italic;">No comments provided</div>') +
+          '</div><div style="padding:16px 24px;border-top:1px solid #e5e7eb;background:#f9fafb;display:flex;justify-content:flex-end;">' +
+          '<button class="btn btn-secondary" onclick="closeAffidavitViewModal()">Close</button></div></div></div>';
+        document.body.insertAdjacentHTML('beforeend', html);
+      };
+      
+      window.closeAffidavitModal = function() {
+        var m = document.getElementById('affidavit-modal');
+        if (m) m.remove();
+      };
+      
+      window.closeAffidavitViewModal = function() {
+        var m = document.getElementById('affidavit-view-modal');
+        if (m) m.remove();
+      };
       
       // ===== SCOPE & REQUIREMENTS BLOCK =====
       function renderScopeRequirementsBlock(block) {
@@ -12383,7 +12564,7 @@
                 description: unspsc.description,
                 source: 'lot',
                 sourceId: lot.id,
-                lotName: lot.name,
+                lotDescription: lot.description,
               });
             });
           });
@@ -12480,7 +12661,7 @@
                     <div class="product-req-info">
                       <span class="product-req-code">${unspsc.code}</span>
                       <span class="product-req-desc">${unspsc.description}</span>
-                      ${unspsc.lotName ? `<span class="product-req-lot">Lot: ${unspsc.lotName}</span>` : ''}
+                      ${unspsc.lotDescription ? `<span class="product-req-lot">Lot: ${unspsc.lotDescription}</span>` : ''}
                     </div>
                     <div class="product-req-status">
                       <span class="status-badge ${statusClass}">${statusText}</span>
@@ -12812,7 +12993,7 @@
                       description: unspsc.description,
                       source: 'lot',
                       sourceId: lot.id,
-                      lotName: lot.name,
+                      lotDescription: lot.description,
                     });
                   });
                 });
@@ -12950,7 +13131,7 @@
                 description: unspsc.description,
                 source: 'lot',
                 sourceId: lot.id,
-                lotName: lot.name,
+                lotDescription: lot.description,
               });
             });
           });
@@ -13019,7 +13200,7 @@
                           <div class="product-requirement-title">
                             <span class="unspsc-code-large">${unspsc.code}</span>
                             <span class="unspsc-description-large">${unspsc.description}</span>
-                            ${unspsc.lotName ? `<span class="lot-badge">Lot: ${unspsc.lotName}</span>` : ''}
+                            ${unspsc.lotDescription ? `<span class="lot-badge">Lot: ${unspsc.lotDescription}</span>` : ''}
                           </div>
                         </div>
                         
@@ -15644,7 +15825,7 @@
           lots.forEach(lot => {
             const opt = document.createElement('option');
             opt.value = lot.id;
-            opt.textContent = `${lot.name} (${lot.unspscCodes.length} products)`;
+            opt.textContent = `${lot.description || 'Lot'} (${lot.unspscCodes.length} products)`;
             lotOptGroup.appendChild(opt);
           });
           lotsSelect.appendChild(lotOptGroup);
@@ -16844,7 +17025,7 @@
               unspscCodesToShow.push({
                 code: unspsc.code,
                 description: unspsc.description,
-                lotName: lot.name,
+                lotDescription: lot.description,
               });
             });
           });
@@ -16924,7 +17105,7 @@
                     </h3>
                     <div style="background: var(--surface-50); padding: var(--spacing-md); border-radius: var(--radius-sm); margin-bottom: var(--spacing-lg);">
                       <strong style="font-size: 14px;">${unspsc.description}</strong>
-                      ${unspsc.lotName ? `<span style="font-size: 13px; color: var(--text-muted); display: block; margin-top: 4px;">Lot: ${unspsc.lotName}</span>` : ''}
+                      ${unspsc.lotDescription ? `<span style="font-size: 13px; color: var(--text-muted); display: block; margin-top: 4px;">Lot: ${unspsc.lotDescription}</span>` : ''}
                     </div>
                     
                     <div class="form-grid">
@@ -19375,9 +19556,8 @@
       
       window.openCreateLotModal = function() {
         document.getElementById('create-lot-modal').style.display = 'flex';
-        document.getElementById('new-lot-name-input').value = '';
         document.getElementById('new-lot-desc-input').value = '';
-        setTimeout(() => document.getElementById('new-lot-name-input').focus(), 100);
+        setTimeout(() => document.getElementById('new-lot-desc-input').focus(), 100);
       }
       
       window.closeCreateLotModal = function() {
@@ -19385,23 +19565,22 @@
       }
       
       window.createLotFromModal = function() {
-        const lotName = document.getElementById('new-lot-name-input').value.trim();
-        if (!lotName) {
-          alert('Please enter a lot name.');
+        const lotDesc = document.getElementById('new-lot-desc-input').value.trim();
+        if (!lotDesc) {
+          alert('Please enter a lot description.');
           return;
         }
         
         const newLot = {
           id: 'lot-' + Date.now(),
-          name: lotName,
-          description: document.getElementById('new-lot-desc-input').value.trim(),
+          description: lotDesc,
           unspscCodes: [],
         };
         
         lots.push(newLot);
         closeCreateLotModal();
         renderCurrentBlock();
-        showNotification(`Lot "${lotName}" created successfully`, 'success');
+        showNotification('Lot created successfully', 'success');
       }
       
       // ===== EVALUATION CRITERION MODAL FUNCTIONS =====
@@ -19481,7 +19660,7 @@
           lots.forEach(lot => {
             const option = document.createElement('option');
             option.value = `lot-${lot.id}`;
-            option.textContent = `📦 Lot: ${lot.name}`;
+            option.textContent = `📦 Lot: ${lot.description || 'No description'}`;
             lotsSelect.appendChild(option);
           });
         }
@@ -19602,7 +19781,7 @@
                 code: unspsc.code,
                 description: unspsc.description,
                 lotId: lot.id,
-                lotName: lot.name
+                lotDescription: lot.description
               });
             });
           });
@@ -20226,12 +20405,8 @@
         </div>
         <div class="req-modal-body" style="padding: var(--spacing-md);">
           <div class="form-group">
-            <label class="form-label">Lot Name <span class="required">*</span></label>
-            <input type="text" id="new-lot-name-input" class="form-input" placeholder="e.g., IT Equipment Lot" style="font-size: 13px;" />
-          </div>
-          <div class="form-group" style="margin-top: var(--spacing-md);">
-            <label class="form-label">Description (Optional)</label>
-            <textarea id="new-lot-desc-input" class="form-textarea" placeholder="Brief description of this lot..." style="min-height: 50px; font-size: 13px;"></textarea>
+            <label class="form-label">Description <span class="required">*</span></label>
+            <textarea id="new-lot-desc-input" class="form-textarea" placeholder="Brief description of this lot..." style="min-height: 80px; font-size: 13px;"></textarea>
           </div>
         </div>
         <div class="req-modal-footer">
@@ -20274,12 +20449,8 @@
         <div class="req-modal-body" style="padding: var(--spacing-md);">
           <input type="hidden" id="edit-lot-id" />
           <div class="form-group">
-            <label class="form-label">Lot Name <span class="required">*</span></label>
-            <input type="text" id="edit-lot-name-input" class="form-input" placeholder="e.g., IT Equipment Lot" style="font-size: 13px;" />
-          </div>
-          <div class="form-group" style="margin-top: var(--spacing-md);">
-            <label class="form-label">Description (Optional)</label>
-            <textarea id="edit-lot-desc-input" class="form-textarea" placeholder="Brief description of this lot..." style="min-height: 50px; font-size: 13px;"></textarea>
+            <label class="form-label">Description <span class="required">*</span></label>
+            <textarea id="edit-lot-desc-input" class="form-textarea" placeholder="Brief description of this lot..." style="min-height: 80px; font-size: 13px;"></textarea>
           </div>
         </div>
         <div class="req-modal-footer">
