@@ -5619,6 +5619,98 @@
         background: var(--warning-200);
       }
 
+      /* Searchable UNSPSC Dropdown */
+      .unspsc-search-container {
+        position: relative;
+      }
+      .unspsc-search-input {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid var(--surface-300);
+        border-radius: var(--radius-sm);
+        font-size: 13px;
+        box-sizing: border-box;
+      }
+      .unspsc-search-input:focus {
+        outline: none;
+        border-color: var(--primary-400);
+        box-shadow: 0 0 0 2px var(--primary-50);
+      }
+      .unspsc-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        max-height: 200px;
+        overflow-y: auto;
+        background: white;
+        border: 1px solid var(--surface-300);
+        border-top: none;
+        border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 1000;
+        display: none;
+      }
+      .unspsc-dropdown.show {
+        display: block;
+      }
+      .unspsc-option {
+        padding: 8px 12px;
+        cursor: pointer;
+        border-bottom: 1px solid var(--surface-100);
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      .unspsc-option:last-child {
+        border-bottom: none;
+      }
+      .unspsc-option:hover {
+        background: var(--primary-50);
+      }
+      .unspsc-option.selected {
+        background: var(--primary-100);
+      }
+      .unspsc-option-code {
+        font-family: 'Courier New', monospace;
+        font-weight: 600;
+        color: var(--primary-600);
+        font-size: 12px;
+        min-width: 75px;
+      }
+      .unspsc-option-desc {
+        color: var(--text-secondary);
+        font-size: 12px;
+        flex: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .unspsc-no-results {
+        padding: 12px;
+        text-align: center;
+        color: var(--text-muted);
+        font-size: 12px;
+      }
+      .unspsc-info-message {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        padding: 10px 12px;
+        background: var(--info-50);
+        border: 1px solid var(--info-200);
+        border-radius: var(--radius-sm);
+        margin-top: 8px;
+        font-size: 11px;
+        color: var(--info-700);
+        line-height: 1.4;
+      }
+      .unspsc-info-message i {
+        color: var(--info-500);
+        font-size: 14px;
+        margin-top: 1px;
+      }
+
       .team-subsection {
         margin-bottom: var(--spacing-md);
       }
@@ -8213,6 +8305,50 @@
         { id: 'PROJ-2024-008', name: 'Renewable Energy Access Initiative', implementationEndDate: '2027-12-31', country: 'India', region: 'Asia' },
         { id: 'PROJ-2024-009', name: 'Urban Infrastructure Rehabilitation', implementationEndDate: '2026-09-30', country: 'Iraq', region: 'Middle East' },
         { id: 'PROJ-2024-010', name: 'Sustainable Agriculture Support', implementationEndDate: '2025-12-31', country: 'Myanmar', region: 'Asia' },
+      ];
+      
+      // Master UNSPSC Codes List (from oneUNOPS master data)
+      const masterUnspscCodes = [
+        { code: '43000000', description: 'Information Technology Broadcasting and Telecommunications' },
+        { code: '43211503', description: 'Laptop computers' },
+        { code: '43211515', description: 'Desktop computers' },
+        { code: '43211602', description: 'Docking stations' },
+        { code: '43211706', description: 'Computer keyboards' },
+        { code: '43211707', description: 'Computer mice' },
+        { code: '43211708', description: 'Laptop bags' },
+        { code: '43212105', description: 'Computer monitors' },
+        { code: '43222609', description: 'Network switches' },
+        { code: '43222619', description: 'Wireless access points' },
+        { code: '43232100', description: 'Network security equipment' },
+        { code: '43233000', description: 'Data storage equipment' },
+        { code: '44121700', description: 'Office supplies' },
+        { code: '44111500', description: 'Office furniture' },
+        { code: '56101500', description: 'Office desks' },
+        { code: '56101600', description: 'Office chairs' },
+        { code: '72151500', description: 'Building cleaning services' },
+        { code: '78111800', description: 'Passenger transport' },
+        { code: '80111600', description: 'Temporary personnel services' },
+        { code: '81111500', description: 'Software development services' },
+        { code: '81111812', description: 'Network installation & configuration service' },
+        { code: '81112000', description: 'Data processing services' },
+        { code: '82101500', description: 'Advertising services' },
+        { code: '82111700', description: 'Public relations services' },
+        { code: '84111500', description: 'Accounting services' },
+        { code: '86101700', description: 'Training and educational facilities' },
+        { code: '90101600', description: 'Hotels and lodging' },
+        { code: '90111500', description: 'Restaurant services' },
+        { code: '25101500', description: 'Motor vehicles' },
+        { code: '25101600', description: 'Trucks and vans' },
+        { code: '26111700', description: 'Batteries' },
+        { code: '31162800', description: 'Fasteners' },
+        { code: '39121000', description: 'Lamps and light bulbs' },
+        { code: '40141700', description: 'Air handling equipment' },
+        { code: '41111500', description: 'Laboratory equipment' },
+        { code: '42131500', description: 'Medical instruments' },
+        { code: '46171500', description: 'Safety equipment' },
+        { code: '47131500', description: 'Cleaning equipment' },
+        { code: '48101500', description: 'Food service equipment' },
+        { code: '55101500', description: 'Printed publications' },
       ];
       
       // Product Requirements (per UNSPSC code)
@@ -19239,13 +19375,18 @@
         
         // Clear new product form
         const unspscInput = document.getElementById('new-ps-unspsc');
+        const unspscSearchInput = document.getElementById('new-ps-unspsc-search');
         const descInput = document.getElementById('new-ps-desc');
         const qtyInput = document.getElementById('new-ps-qty');
         const uomSelect = document.getElementById('new-ps-uom');
         const valueInput = document.getElementById('new-ps-value');
         const linkedReqSelect = document.getElementById('new-ps-linked-req');
         if (unspscInput) unspscInput.value = '';
+        if (unspscSearchInput) unspscSearchInput.value = '';
         if (descInput) descInput.value = '';
+        
+        // Initialize the UNSPSC dropdown
+        initUnspscDropdown();
         if (qtyInput) qtyInput.value = '1';
         if (uomSelect) uomSelect.value = 'Unit';
         if (valueInput) valueInput.value = '';
@@ -19433,6 +19574,87 @@
         showNotification(`Added ${selectedProductsServicesLines.length} product(s)/service(s)`, 'success');
       }
       
+      // ===== UNSPSC SEARCHABLE DROPDOWN =====
+      window.initUnspscDropdown = function() {
+        const searchInput = document.getElementById('new-ps-unspsc-search');
+        const dropdown = document.getElementById('unspsc-dropdown');
+        const hiddenInput = document.getElementById('new-ps-unspsc');
+        const descInput = document.getElementById('new-ps-desc');
+        
+        if (!searchInput || !dropdown) return;
+        
+        // Render all options initially
+        renderUnspscOptions(masterUnspscCodes);
+        
+        // Search input event
+        searchInput.addEventListener('input', function() {
+          const query = this.value.toLowerCase().trim();
+          const filtered = masterUnspscCodes.filter(item => 
+            item.code.toLowerCase().includes(query) || 
+            item.description.toLowerCase().includes(query)
+          );
+          renderUnspscOptions(filtered);
+          dropdown.classList.add('show');
+        });
+        
+        // Show dropdown on focus
+        searchInput.addEventListener('focus', function() {
+          const query = this.value.toLowerCase().trim();
+          const filtered = query ? masterUnspscCodes.filter(item => 
+            item.code.toLowerCase().includes(query) || 
+            item.description.toLowerCase().includes(query)
+          ) : masterUnspscCodes;
+          renderUnspscOptions(filtered);
+          dropdown.classList.add('show');
+        });
+        
+        // Hide dropdown on outside click
+        document.addEventListener('click', function(e) {
+          if (!e.target.closest('.unspsc-search-container')) {
+            dropdown.classList.remove('show');
+          }
+        });
+      };
+      
+      window.renderUnspscOptions = function(items) {
+        const dropdown = document.getElementById('unspsc-dropdown');
+        if (!dropdown) return;
+        
+        if (items.length === 0) {
+          dropdown.innerHTML = '<div class="unspsc-no-results">No matching UNSPSC codes found</div>';
+          return;
+        }
+        
+        dropdown.innerHTML = items.map(item => `
+          <div class="unspsc-option" onclick="selectUnspscCode('${item.code}', '${item.description.replace(/'/g, "\\'")}')">
+            <span class="unspsc-option-code">${item.code}</span>
+            <span class="unspsc-option-desc">${item.description}</span>
+          </div>
+        `).join('');
+      };
+      
+      window.selectUnspscCode = function(code, description) {
+        const searchInput = document.getElementById('new-ps-unspsc-search');
+        const hiddenInput = document.getElementById('new-ps-unspsc');
+        const descInput = document.getElementById('new-ps-desc');
+        const dropdown = document.getElementById('unspsc-dropdown');
+        
+        if (searchInput) searchInput.value = code + ' - ' + description;
+        if (hiddenInput) hiddenInput.value = code;
+        if (descInput) descInput.value = description;
+        if (dropdown) dropdown.classList.remove('show');
+      };
+      
+      window.clearUnspscSelection = function() {
+        const searchInput = document.getElementById('new-ps-unspsc-search');
+        const hiddenInput = document.getElementById('new-ps-unspsc');
+        const descInput = document.getElementById('new-ps-desc');
+        
+        if (searchInput) searchInput.value = '';
+        if (hiddenInput) hiddenInput.value = '';
+        if (descInput) descInput.value = '';
+      };
+      
       window.addNewProductService = function() {
         const unspsc = document.getElementById('new-ps-unspsc').value.trim();
         const desc = document.getElementById('new-ps-desc').value.trim();
@@ -19452,12 +19674,14 @@
         }
         
         if (!unspsc || !desc) {
-          showNotification('Please enter UNSPSC code and description.', 'warning');
+          showNotification('Please select a UNSPSC code from the dropdown list.', 'warning');
           return;
         }
         
-        if (unspsc.length !== 8 || !/^\d+$/.test(unspsc)) {
-          showNotification('UNSPSC code must be 8 digits.', 'warning');
+        // Validate that the UNSPSC code is from the master list
+        const isValidCode = masterUnspscCodes.some(item => item.code === unspsc);
+        if (!isValidCode) {
+          showNotification('Please select a valid UNSPSC code from the dropdown list.', 'warning');
           return;
         }
         
@@ -20344,12 +20568,21 @@
             <div class="new-product-form">
               <div class="form-group">
                 <label class="form-label">UNSPSC Code <span class="required">*</span></label>
-                <input type="text" id="new-ps-unspsc" class="form-input" placeholder="e.g., 43211503" maxlength="8" style="font-size: 13px; font-family: 'Courier New', monospace;" />
-                <span class="help-text">8-digit UNSPSC code</span>
+                <div class="unspsc-search-container">
+                  <input type="text" id="new-ps-unspsc-search" class="unspsc-search-input" placeholder="Search by code or description..." autocomplete="off" />
+                  <input type="hidden" id="new-ps-unspsc" />
+                  <div class="unspsc-dropdown" id="unspsc-dropdown">
+                    <!-- Options populated by JavaScript -->
+                  </div>
+                </div>
+                <div class="unspsc-info-message">
+                  <i class="pi pi-info-circle"></i>
+                  <span>Can't find the UNSPSC code you need? Please contact the <strong>Data and Analytics team</strong> to have the code added to the master data in oneUNOPS.</span>
+                </div>
               </div>
               <div class="form-group">
                 <label class="form-label">Description <span class="required">*</span></label>
-                <input type="text" id="new-ps-desc" class="form-input" placeholder="e.g., Laptop computers" style="font-size: 13px;" />
+                <input type="text" id="new-ps-desc" class="form-input" placeholder="Auto-filled from UNSPSC selection" style="font-size: 13px;" readonly />
               </div>
               <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-md);">
                 <div class="form-group">
