@@ -16745,29 +16745,60 @@
       }
       
       // ===== PROJECT INFORMATION - AUTO-POPULATION FROM oneUNOPS PROJECT =====
-      let selectedProjectInfo = {
-        projectId: '',
-        projectName: '',
-        implementationEndDate: ''
-      };
+      // Array to hold multiple projects
+      let selectedProjects = [
+        {
+          projectId: '',
+          projectName: '',
+          implementationEndDate: '',
+          donorFundingSourceComment: ''
+        }
+      ];
       
-      window.updateProjectFromId = function(projectId) {
+      // Helper to get empty project template
+      function getEmptyProject() {
+        return {
+          projectId: '',
+          projectName: '',
+          implementationEndDate: '',
+          donorFundingSourceComment: ''
+        };
+      }
+      
+      window.addProject = function() {
+        selectedProjects.push(getEmptyProject());
+        renderCurrentBlock();
+        showNotification('Project Added', `Project ${selectedProjects.length} added. Please select a project from oneUNOPS.`);
+      }
+      
+      window.removeProject = function(index) {
+        if (selectedProjects.length <= 1) {
+          showNotification('Cannot Remove', 'At least one project entry is required.', 'warning');
+          return;
+        }
+        const removedProject = selectedProjects[index];
+        selectedProjects.splice(index, 1);
+        renderCurrentBlock();
+        showNotification('Project Removed', removedProject.projectName ? `Project "${removedProject.projectName}" removed.` : `Project entry ${index + 1} removed.`);
+      }
+      
+      window.updateProjectFromId = function(projectId, projectIndex = 0) {
         // Find the project from availableOneUNOPSProjects
         const project = availableOneUNOPSProjects.find(p => p.id === projectId);
         
         if (project) {
-          selectedProjectInfo.projectId = project.id;
-          selectedProjectInfo.projectName = project.name;
-          selectedProjectInfo.implementationEndDate = project.implementationEndDate;
+          selectedProjects[projectIndex].projectId = project.id;
+          selectedProjects[projectIndex].projectName = project.name;
+          selectedProjects[projectIndex].implementationEndDate = project.implementationEndDate;
           
-          // Update the Project Name field
-          const projectNameInput = document.querySelector('input[data-field-id="projectName"]');
+          // Update the Project Name field for this project entry
+          const projectNameInput = document.querySelector(`input[data-field-id="projectName-${projectIndex}"]`);
           if (projectNameInput) {
             projectNameInput.value = project.name;
           }
           
-          // Update the Implementation End Date field
-          const implEndDateInput = document.querySelector('input[data-field-id="implementationEndDate"]');
+          // Update the Implementation End Date field for this project entry
+          const implEndDateInput = document.querySelector(`input[data-field-id="implementationEndDate-${projectIndex}"]`);
           if (implEndDateInput) {
             implEndDateInput.value = project.implementationEndDate;
           }
@@ -16776,7 +16807,13 @@
         }
       }
       
-      window.searchOneUNOPSProjects = function(searchText, dropdownId) {
+      window.updateDonorComment = function(value, projectIndex) {
+        if (selectedProjects[projectIndex]) {
+          selectedProjects[projectIndex].donorFundingSourceComment = value;
+        }
+      }
+      
+      window.searchOneUNOPSProjects = function(searchText, dropdownId, projectIndex = 0) {
         const dropdown = document.getElementById(dropdownId);
         if (!dropdown) return;
         
@@ -16793,7 +16830,7 @@
         }
         
         dropdown.innerHTML = matchingProjects.map(project => `
-          <div class="project-search-result" onclick="selectOneUNOPSProject('${project.id}', '${dropdownId}')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid var(--border-color); transition: background 0.15s;">
+          <div class="project-search-result" onclick="selectOneUNOPSProject('${project.id}', '${dropdownId}', ${projectIndex})" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid var(--border-color); transition: background 0.15s;">
             <div style="font-weight: 600; color: var(--text-primary); font-size: 13px;">${project.id}</div>
             <div style="color: var(--text-secondary); font-size: 12px; margin-top: 2px;">${project.name}</div>
             <div style="color: var(--text-muted); font-size: 11px; margin-top: 2px;">
@@ -16812,7 +16849,7 @@
         });
       }
       
-      window.selectOneUNOPSProject = function(projectId, dropdownId) {
+      window.selectOneUNOPSProject = function(projectId, dropdownId, projectIndex = 0) {
         const project = availableOneUNOPSProjects.find(p => p.id === projectId);
         if (!project) return;
         
@@ -16826,8 +16863,8 @@
           dropdown.style.display = 'none';
         }
         
-        // Auto-populate related fields
-        updateProjectFromId(projectId);
+        // Auto-populate related fields for this specific project entry
+        updateProjectFromId(projectId, projectIndex);
       }
       
       window.openLifecycleTrackerSearch = function() {
@@ -18861,76 +18898,79 @@
                     <div class="collapsible-header" onclick="toggleCollapsibleSection('project-info-section')">
                       <div class="collapsible-header-left">
                         <span class="collapsible-header-title">Project Information</span>
+                        <span style="margin-left: 8px; font-size: 12px; color: var(--text-muted);">(${selectedProjects.length} project${selectedProjects.length > 1 ? 's' : ''})</span>
                         ${renderSectionProgress('project-info', null)}
                       </div>
                       <div class="collapsible-toggle">▼</div>
                     </div>
                     <div class="collapsible-body" onclick="event.stopPropagation()">
-                      <div class="form-grid-3col">
-                        ${section.fields.map((field) => {
-                          if (!shouldShowField(field)) return '';
-                          const onchangeAttr = field.onchange ? `onchange="${field.onchange}(this.value)"` : '';
-                          const dropdownId = 'project-search-dropdown-' + (field.id || Math.random().toString(36).substr(2, 9));
-                          
-                          if (field.type === 'project-search') {
-                            return `
+                      ${selectedProjects.map((projectEntry, projectIndex) => {
+                        const dropdownId = 'project-search-dropdown-' + projectIndex;
+                        return `
+                          <div class="project-entry" style="background: var(--surface-ground); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; margin-bottom: 16px; position: relative;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                              <span style="font-weight: 600; font-size: 13px; color: var(--text-primary);">
+                                <i class="pi pi-briefcase" style="margin-right: 6px; color: var(--primary-color);"></i>
+                                Project ${projectIndex + 1}
+                                ${projectEntry.projectId ? `<span style="font-weight: 400; color: var(--text-secondary);"> - ${projectEntry.projectId}</span>` : ''}
+                              </span>
+                              ${selectedProjects.length > 1 ? `
+                                <button type="button" onclick="removeProject(${projectIndex})" class="btn-icon-danger" style="padding: 4px 8px; font-size: 12px; background: transparent; border: 1px solid var(--red-400); color: var(--red-500); border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 4px; transition: all 0.2s;" onmouseenter="this.style.background='var(--red-50)'" onmouseleave="this.style.background='transparent'">
+                                  <i class="pi pi-trash" style="font-size: 11px;"></i>
+                                  Remove
+                                </button>
+                              ` : ''}
+                            </div>
+                            <div class="form-grid-3col">
+                              <!-- Project ID (Search) -->
                               <div class="form-group">
                                 <label class="form-label">
-                                  ${field.label} ${field.required ? '<span class="required">*</span>' : ''}
+                                  Project ID <span class="required">*</span>
                                 </label>
                                 <div style="position: relative;">
-                                  <input type="text" class="form-input" data-field-id="${field.id}" value="${selectedProjectInfo.projectId ? selectedProjectInfo.projectId + ' - ' + selectedProjectInfo.projectName : (field.value || '')}" placeholder="${field.placeholder || 'Search...'}" ${field.required ? 'required' : ''} ${field.readonly ? 'readonly' : ''} style="padding-left: 36px;" oninput="searchOneUNOPSProjects(this.value, '${dropdownId}')" onfocus="searchOneUNOPSProjects(this.value || '', '${dropdownId}')" />
+                                  <input type="text" class="form-input" data-field-id="projectId-${projectIndex}" value="${projectEntry.projectId ? projectEntry.projectId + ' - ' + projectEntry.projectName : ''}" placeholder="Search from oneUNOPS Project" required style="padding-left: 36px;" oninput="searchOneUNOPSProjects(this.value, '${dropdownId}', ${projectIndex})" onfocus="searchOneUNOPSProjects(this.value || '', '${dropdownId}', ${projectIndex})" />
                                   <span style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 13px;">🔍</span>
                                   <div id="${dropdownId}" class="project-search-dropdown" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--surface-card); border: 1px solid var(--border-color); border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); max-height: 250px; overflow-y: auto; z-index: 1000; margin-top: 4px;"></div>
                                 </div>
-                                ${field.source ? '<span class="help-text">Source: ' + field.source + '</span>' : ''}
+                                <span class="help-text">Source: oneUNOPS Project</span>
                               </div>
-                            `;
-                          } else if (field.type === 'search') {
-                            return `
+                              
+                              <!-- Project Name (auto-populated) -->
                               <div class="form-group">
                                 <label class="form-label">
-                                  ${field.label} ${field.required ? '<span class="required">*</span>' : ''}
+                                  Project Name <span class="required">*</span>
                                 </label>
-                                <div style="position: relative;">
-                                  <input type="text" class="form-input" data-field-id="${field.id}" value="${field.value || ''}" placeholder="${field.placeholder || 'Search...'}" ${field.required ? 'required' : ''} ${field.readonly ? 'readonly' : ''} style="padding-left: 36px;" />
-                                  <span style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 13px;">🔍</span>
-                                </div>
-                                ${field.source ? '<span class="help-text">Source: ' + field.source + '</span>' : ''}
+                                <input type="text" class="form-input" data-field-id="projectName-${projectIndex}" value="${projectEntry.projectName || ''}" placeholder="" required readonly />
+                                <span class="help-text">Source: oneUNOPS Project (auto-populated)</span>
                               </div>
-                            `;
-                          } else if (field.type === 'date') {
-                            return `
+                              
+                              <!-- Implementation End Date (auto-populated) -->
                               <div class="form-group">
                                 <label class="form-label">
-                                  ${field.label} ${field.required ? '<span class="required">*</span>' : ''}
+                                  Implementation End Date
                                 </label>
-                                <input type="date" class="form-input" data-field-id="${field.id}" value="${field.id === 'implementationEndDate' && selectedProjectInfo.implementationEndDate ? selectedProjectInfo.implementationEndDate : (field.value || '')}" ${field.required ? 'required' : ''} ${field.readonly ? 'readonly' : ''} ${onchangeAttr} />
-                                ${field.source ? '<span class="help-text">Source: ' + field.source + '</span>' : ''}
+                                <input type="date" class="form-input" data-field-id="implementationEndDate-${projectIndex}" value="${projectEntry.implementationEndDate || ''}" readonly />
+                                <span class="help-text">Source: oneUNOPS Project (auto-populated)</span>
                               </div>
-                            `;
-                          } else if (field.type === 'textarea') {
-                            return `
+                              
+                              <!-- Donor / Funding Source Comment -->
                               <div class="form-group full-width">
                                 <label class="form-label">
-                                  ${field.label} ${field.required ? '<span class="required">*</span>' : ''}
+                                  Donor / Funding Source Comment
                                 </label>
-                                <textarea class="form-textarea" data-field-id="${field.id}" placeholder="${field.placeholder || ''}" ${field.required ? 'required' : ''} ${field.readonly ? 'readonly' : ''} style="min-height: 80px; resize: vertical;">${field.value || ''}</textarea>
-                                ${field.source ? '<span class="help-text">Source: ' + field.source + '</span>' : ''}
+                                <textarea class="form-textarea" data-field-id="donorFundingSourceComment-${projectIndex}" placeholder="Enter comments about the donor/funding source..." style="min-height: 80px; resize: vertical;" onchange="updateDonorComment(this.value, ${projectIndex})">${projectEntry.donorFundingSourceComment || ''}</textarea>
                               </div>
-                            `;
-                          } else {
-                            return `
-                              <div class="form-group">
-                                <label class="form-label">
-                                  ${field.label} ${field.required ? '<span class="required">*</span>' : ''}
-                                </label>
-                                <input type="text" class="form-input" data-field-id="${field.id}" value="${field.id === 'projectName' && selectedProjectInfo.projectName ? selectedProjectInfo.projectName : (field.value || '')}" placeholder="${field.placeholder || ''}" ${field.required ? 'required' : ''} ${field.readonly ? 'readonly' : ''} ${onchangeAttr} />
-                                ${field.source ? '<span class="help-text">Source: ' + field.source + '</span>' : ''}
-                              </div>
-                            `;
-                          }
-                        }).join('')}
+                            </div>
+                          </div>
+                        `;
+                      }).join('')}
+                      
+                      <!-- Add Project Button -->
+                      <div style="display: flex; justify-content: center; margin-top: 8px;">
+                        <button type="button" onclick="addProject()" class="btn-add-project" style="padding: 10px 20px; font-size: 13px; font-weight: 500; background: var(--surface-card); border: 2px dashed var(--primary-color); color: var(--primary-color); border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.2s;" onmouseenter="this.style.background='var(--primary-50)'; this.style.borderStyle='solid'" onmouseleave="this.style.background='var(--surface-card)'; this.style.borderStyle='dashed'">
+                          <i class="pi pi-plus-circle" style="font-size: 14px;"></i>
+                          Add Another Project
+                        </button>
                       </div>
                     </div>
                   </div>

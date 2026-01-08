@@ -6476,6 +6476,45 @@ Submission Requirements
           </div>
         </div>
 
+        <!-- Subcontractors Section -->
+        <div class="subcontractors-section" style="margin-top: var(--spacing-md); padding: var(--spacing-sm); background: var(--surface-100); border-radius: var(--radius-sm); border: 1px dashed var(--surface-300);">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--spacing-sm);">
+            <div style="font-weight: 600; font-size: 12px; color: var(--text-secondary); display: flex; align-items: center; gap: 6px;">
+              <i class="pi pi-users" style="font-size: 11px;"></i> Subcontractors <span style="font-weight: 400; color: var(--text-muted);">(if applicable)</span>
+            </div>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="addSubcontractor(this)" style="padding: 4px 10px; font-size: 10px; display: flex; align-items: center; gap: 4px;">
+              <i class="pi pi-plus" style="font-size: 9px;"></i> Add Subcontractor
+            </button>
+          </div>
+          <div class="subcontractors-list">
+            <div class="subcontractor-entry" style="background: var(--surface-0); padding: var(--spacing-xs); border-radius: var(--radius-sm); border: 1px solid var(--surface-200); margin-bottom: var(--spacing-xs);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-xs);">
+                <span style="font-size: 10px; font-weight: 600; color: var(--primary-600);"><i class="pi pi-user" style="margin-right: 4px;"></i> Subcontractor 1</span>
+                <button type="button" class="btn btn-ghost btn-sm" onclick="removeSubcontractor(this)" style="padding: 2px 6px; font-size: 9px; color: var(--danger-500);" title="Remove">
+                  <i class="pi pi-trash" style="font-size: 10px;"></i>
+                </button>
+              </div>
+              <div class="supplier-form-grid cols-3" style="gap: var(--spacing-xs);">
+                <div class="supplier-form-field" style="margin-bottom: 0;">
+                  <label style="font-size: 10px;"><i class="pi pi-building"></i> Company Name</label>
+                  <input type="text" placeholder="Subcontractor company name" style="font-size: 11px; padding: 6px 8px;">
+                </div>
+                <div class="supplier-form-field" style="margin-bottom: 0;">
+                  <label style="font-size: 10px;"><i class="pi pi-phone"></i> Contact</label>
+                  <input type="text" placeholder="Phone / Email" style="font-size: 11px; padding: 6px 8px;">
+                </div>
+                <div class="supplier-form-field" style="margin-bottom: 0;">
+                  <label style="font-size: 10px;"><i class="pi pi-map-marker"></i> Address</label>
+                  <input type="text" placeholder="Full address" style="font-size: 11px; padding: 6px 8px;">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="font-size: 9px; color: var(--text-muted); margin-top: var(--spacing-xs);">
+            <i class="pi pi-info-circle" style="margin-right: 4px;"></i> List any subcontractors that will be involved in fulfilling this product/service.
+          </div>
+        </div>
+
         <!-- Specification Compliance Table -->
         <div class="supplier-subsection-header" style="margin-top: var(--spacing-xl);">
           <strong><i class="pi pi-list"></i> Specification Compliance</strong>
@@ -9154,6 +9193,61 @@ document.addEventListener('DOMContentLoaded', function() {
 // ========== ALTERNATE OFFER FUNCTIONALITY ==========
 let alternateOfferCounters = {};
 
+// Subcontractor Management Functions
+function addSubcontractor(buttonElement) {
+    const subcontractorsSection = buttonElement.closest('.subcontractors-section');
+    const subcontractorsList = subcontractorsSection.querySelector('.subcontractors-list');
+    const existingEntries = subcontractorsList.querySelectorAll('.subcontractor-entry');
+    const newNumber = existingEntries.length + 1;
+    
+    const newEntry = document.createElement('div');
+    newEntry.className = 'subcontractor-entry';
+    newEntry.style.cssText = 'background: var(--surface-0); padding: var(--spacing-xs); border-radius: var(--radius-sm); border: 1px solid var(--surface-200); margin-bottom: var(--spacing-xs);';
+    
+    newEntry.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-xs);">
+            <span style="font-size: 10px; font-weight: 600; color: var(--primary-600);"><i class="pi pi-user" style="margin-right: 4px;"></i> Subcontractor ${newNumber}</span>
+            <button type="button" class="btn btn-ghost btn-sm" onclick="removeSubcontractor(this)" style="padding: 2px 6px; font-size: 9px; color: var(--danger-500);" title="Remove">
+                <i class="pi pi-trash" style="font-size: 10px;"></i>
+            </button>
+        </div>
+        <div class="supplier-form-grid cols-3" style="gap: var(--spacing-xs);">
+            <div class="supplier-form-field" style="margin-bottom: 0;">
+                <label style="font-size: 10px;"><i class="pi pi-building"></i> Company Name</label>
+                <input type="text" placeholder="Subcontractor company name" style="font-size: 11px; padding: 6px 8px;">
+            </div>
+            <div class="supplier-form-field" style="margin-bottom: 0;">
+                <label style="font-size: 10px;"><i class="pi pi-phone"></i> Contact</label>
+                <input type="text" placeholder="Phone / Email" style="font-size: 11px; padding: 6px 8px;">
+            </div>
+            <div class="supplier-form-field" style="margin-bottom: 0;">
+                <label style="font-size: 10px;"><i class="pi pi-map-marker"></i> Address</label>
+                <input type="text" placeholder="Full address" style="font-size: 11px; padding: 6px 8px;">
+            </div>
+        </div>
+    `;
+    
+    subcontractorsList.appendChild(newEntry);
+    renumberSubcontractors(subcontractorsList);
+}
+
+function removeSubcontractor(buttonElement) {
+    const entry = buttonElement.closest('.subcontractor-entry');
+    const subcontractorsList = entry.parentElement;
+    entry.remove();
+    renumberSubcontractors(subcontractorsList);
+}
+
+function renumberSubcontractors(subcontractorsList) {
+    const entries = subcontractorsList.querySelectorAll('.subcontractor-entry');
+    entries.forEach((entry, index) => {
+        const label = entry.querySelector('span[style*="font-weight: 600"]');
+        if (label) {
+            label.innerHTML = `<i class="pi pi-user" style="margin-right: 4px;"></i> Subcontractor ${index + 1}`;
+        }
+    });
+}
+
 function addAlternateOffer(buttonElement, productId, productName) {
     // Initialize counter for this product if not exists
     if (!alternateOfferCounters[productId]) {
@@ -9226,6 +9320,45 @@ function createAlternateTechnicalSection(productId, productName, alternateNumber
           <div class="supplier-form-field">
             <label><i class="pi pi-link"></i> Product Documentation URL</label>
             <input type="url" placeholder="https://manufacturer.com/product-specs">
+          </div>
+        </div>
+
+        <!-- Subcontractors Section for Alternate -->
+        <div class="subcontractors-section" style="margin-top: var(--spacing-md); padding: var(--spacing-sm); background: var(--surface-100); border-radius: var(--radius-sm); border: 1px dashed var(--surface-300);">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--spacing-sm);">
+            <div style="font-weight: 600; font-size: 12px; color: var(--text-secondary); display: flex; align-items: center; gap: 6px;">
+              <i class="pi pi-users" style="font-size: 11px;"></i> Subcontractors <span style="font-weight: 400; color: var(--text-muted);">(if applicable)</span>
+            </div>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="addSubcontractor(this)" style="padding: 4px 10px; font-size: 10px; display: flex; align-items: center; gap: 4px;">
+              <i class="pi pi-plus" style="font-size: 9px;"></i> Add Subcontractor
+            </button>
+          </div>
+          <div class="subcontractors-list">
+            <div class="subcontractor-entry" style="background: var(--surface-0); padding: var(--spacing-xs); border-radius: var(--radius-sm); border: 1px solid var(--surface-200); margin-bottom: var(--spacing-xs);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-xs);">
+                <span style="font-size: 10px; font-weight: 600; color: var(--primary-600);"><i class="pi pi-user" style="margin-right: 4px;"></i> Subcontractor 1</span>
+                <button type="button" class="btn btn-ghost btn-sm" onclick="removeSubcontractor(this)" style="padding: 2px 6px; font-size: 9px; color: var(--danger-500);" title="Remove">
+                  <i class="pi pi-trash" style="font-size: 10px;"></i>
+                </button>
+              </div>
+              <div class="supplier-form-grid cols-3" style="gap: var(--spacing-xs);">
+                <div class="supplier-form-field" style="margin-bottom: 0;">
+                  <label style="font-size: 10px;"><i class="pi pi-building"></i> Company Name</label>
+                  <input type="text" placeholder="Subcontractor company name" style="font-size: 11px; padding: 6px 8px;">
+                </div>
+                <div class="supplier-form-field" style="margin-bottom: 0;">
+                  <label style="font-size: 10px;"><i class="pi pi-phone"></i> Contact</label>
+                  <input type="text" placeholder="Phone / Email" style="font-size: 11px; padding: 6px 8px;">
+                </div>
+                <div class="supplier-form-field" style="margin-bottom: 0;">
+                  <label style="font-size: 10px;"><i class="pi pi-map-marker"></i> Address</label>
+                  <input type="text" placeholder="Full address" style="font-size: 11px; padding: 6px 8px;">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="font-size: 9px; color: var(--text-muted); margin-top: var(--spacing-xs);">
+            <i class="pi pi-info-circle" style="margin-right: 4px;"></i> List any subcontractors that will be involved in fulfilling this product/service.
           </div>
         </div>
 
