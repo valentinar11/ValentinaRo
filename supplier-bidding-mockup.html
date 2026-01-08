@@ -4667,9 +4667,9 @@ Submit Question
 <div class="deadline-date">30 Nov 2024</div>
 </div>
 </td>
-<td><span class="status-badge status-submitted">Submitted</span></td>
-<td><span class="status-badge status-awarded">Awarded ✓</span></td>
-<td><button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); viewTenderDetails('UNOPS/RFQ/2024/089')">View Details</button></td>
+<td><span class="status-badge status-in-progress">In Progress</span></td>
+<td><span class="status-badge status-open">Open</span></td>
+<td><button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); selectTenderForBid('UNOPS/RFQ/2024/089')">Continue Bid</button></td>
 </tr>
 <tr onclick="viewTenderDetails('UNOPS/ITB/2024/072')">
 <td>
@@ -6338,18 +6338,92 @@ Submission Requirements
           <span class="supplier-section-title-icon">⚙️</span>
           <div>
             <h3>Technical Bid</h3>
-            <p>Demonstrate how your products meet our technical specifications</p>
+            <p id="tech-bid-description">Demonstrate how your products meet our technical specifications</p>
           </div>
         </div>
       </div>
 
+      <!-- SIMPLIFIED TECHNICAL BID (for RFQ/2024/089) - Hidden by default -->
+      <div id="technical-bid-simplified" style="display: none;">
+        <!-- Instructions Alert -->
+        <div style="background: var(--info-50); border: 1px solid var(--info-200); border-left: 4px solid var(--info-500); border-radius: var(--radius-sm); padding: var(--spacing-md); margin-bottom: var(--spacing-lg);">
+          <div style="display: flex; align-items: flex-start; gap: var(--spacing-sm);">
+            <i class="pi pi-info-circle" style="color: var(--info-500); font-size: 16px; margin-top: 2px;"></i>
+            <div style="font-size: 12px; color: var(--info-700); line-height: 1.5;">
+              <strong>Instructions:</strong> For each section below, download the Excel template using the link provided, complete all required fields in the spreadsheet, and upload the completed file. Do not modify column headers or structure.
+            </div>
+          </div>
+        </div>
 
+        <!-- 1. Technical Specifications for Goods -->
+        <div class="supplier-form-field" style="margin-bottom: var(--spacing-lg);">
+          <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+            <i class="pi pi-list" style="color: var(--primary-500);"></i>
+            <span style="font-weight: 600;">Technical Specifications for Goods – Comparative Data Table</span>
+            <span style="color: var(--danger-500);">*</span>
+          </label>
+          <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px; padding: 10px; background: var(--surface-50); border-radius: var(--radius-sm); border-left: 3px solid var(--primary-500);">
+            Complete the comparative data table with your product specifications against UNOPS requirements.
+            <a href="#" style="color: var(--primary-600); font-weight: 600; text-decoration: none; margin-left: 8px;" onclick="event.preventDefault(); alert('Downloading: Technical_Specifications_CDT.xlsx')">
+              <i class="pi pi-download" style="font-size: 11px;"></i> Download Template (Technical_Specifications_CDT.xlsx)
+            </a>
+          </div>
+          <div class="supplier-upload-area" style="padding: var(--spacing-md);">
+            <div style="color: var(--primary-500); font-size: 1.5em; margin-bottom: 6px;"><i class="pi pi-cloud-upload"></i></div>
+            <div class="supplier-upload-text">Upload Completed Technical Specifications</div>
+            <div class="supplier-upload-hint">Accepted formats: .xlsx, .xls • Max size: 10MB</div>
+          </div>
+        </div>
 
+        <!-- 2. Delivery Requirements -->
+        <div class="supplier-form-field" style="margin-bottom: var(--spacing-lg);">
+          <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+            <i class="pi pi-truck" style="color: var(--success-500);"></i>
+            <span style="font-weight: 600;">Delivery Requirements – Comparative Data Table</span>
+            <span style="color: var(--danger-500);">*</span>
+          </label>
+          <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px; padding: 10px; background: var(--surface-50); border-radius: var(--radius-sm); border-left: 3px solid var(--success-500);">
+            Provide delivery timelines, shipping details, and logistics information as per UNOPS requirements.
+            <a href="#" style="color: var(--success-600); font-weight: 600; text-decoration: none; margin-left: 8px;" onclick="event.preventDefault(); alert('Downloading: Delivery_Requirements_CDT.xlsx')">
+              <i class="pi pi-download" style="font-size: 11px;"></i> Download Template (Delivery_Requirements_CDT.xlsx)
+            </a>
+          </div>
+          <div class="supplier-upload-area" style="padding: var(--spacing-md);">
+            <div style="color: var(--success-500); font-size: 1.5em; margin-bottom: 6px;"><i class="pi pi-cloud-upload"></i></div>
+            <div class="supplier-upload-text">Upload Completed Delivery Requirements</div>
+            <div class="supplier-upload-hint">Accepted formats: .xlsx, .xls • Max size: 10MB</div>
+          </div>
+        </div>
+
+        <!-- 3. Related Services Requirements - BOQ -->
+        <div class="supplier-form-field" style="margin-bottom: var(--spacing-lg);">
+          <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+            <i class="pi pi-cog" style="color: var(--warning-500);"></i>
+            <span style="font-weight: 600;">Related Services Requirements – Bill of Quantities (BOQ)</span>
+            <span style="color: var(--danger-500);">*</span>
+          </label>
+          <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px; padding: 10px; background: var(--surface-50); border-radius: var(--radius-sm); border-left: 3px solid var(--warning-500);">
+            Complete the BOQ for all related services including installation, training, and warranty terms.
+            <a href="#" style="color: var(--warning-600); font-weight: 600; text-decoration: none; margin-left: 8px;" onclick="event.preventDefault(); alert('Downloading: Related_Services_BOQ.xlsx')">
+              <i class="pi pi-download" style="font-size: 11px;"></i> Download Template (Related_Services_BOQ.xlsx)
+            </a>
+          </div>
+          <div class="supplier-upload-area" style="padding: var(--spacing-md);">
+            <div style="color: var(--warning-500); font-size: 1.5em; margin-bottom: 6px;"><i class="pi pi-cloud-upload"></i></div>
+            <div class="supplier-upload-text">Upload Completed BOQ</div>
+            <div class="supplier-upload-hint">Accepted formats: .xlsx, .xls • Max size: 10MB</div>
+          </div>
+        </div>
+      </div>
+      <!-- END SIMPLIFIED TECHNICAL BID -->
+
+      <!-- DEFAULT TECHNICAL BID (for ITB/2025/001) -->
+      <div id="technical-bid-default">
       <!-- Item 1: Technical Specifications -->
       <div class="product-technical-section" data-product-id="42182104" data-product-name="Ultrasound Machines" style="background: var(--surface-50); padding: var(--spacing-sm); border-radius: var(--radius-sm); margin-bottom: var(--spacing-sm); border: 1px solid var(--surface-200);">
         <div style="font-weight: 600; margin-bottom: var(--spacing-sm); color: var(--primary-700); background: var(--surface-100); padding: var(--spacing-xs) var(--spacing-sm); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: space-between; font-size: 12px;">
           <div style="display: flex; align-items: center; gap: 6px;">
-            <i class="pi pi-tag" style="font-size: 11px;"></i> UNSPSC Code: 42182104 - Ultrasound Machines
+            <i class="pi pi-tag" style="font-size: 11px;"></i> UNSPSC Code: 42182104 - Ultrasound Machines <span style="margin-left: 8px; background: var(--info-100); color: var(--info-700); padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600;">Qty: 5</span>
           </div>
           <button type="button" class="btn btn-secondary add-alternate-offer-btn" onclick="addAlternateOffer(this, '42182104', 'Ultrasound Machines')" style="padding: 4px 10px; font-size: 11px; display: flex; align-items: center; gap: 4px;">
             <i class="pi pi-plus-circle" style="font-size: 10px;"></i> Add Alternate Offer
@@ -6371,13 +6445,23 @@ Submission Requirements
             <label><i class="pi pi-building"></i> Manufacturer <span style="color: var(--danger-500);">*</span></label>
             <div style="display: flex; gap: 8px;">
               <input type="text" placeholder="Manufacturer name" style="flex: 1;">
-              <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 12px;"><i class="pi pi-search"></i></button>
+              <button class="btn btn-ghost" style="padding: 6px 10px; font-size: 10px; white-space: nowrap; color: var(--primary-600);" onclick="openReplicateManufacturerModal(this)" title="Apply to other items"><i class="pi pi-copy" style="margin-right: 3px;"></i> Apply to...</button>
             </div>
           </div>
 
           <div class="supplier-form-field">
             <label><i class="pi pi-verified"></i> Manufacturer UNGM ID <span style="color: var(--text-muted); font-weight: 400;">(if available)</span></label>
             <input type="text" placeholder="UNGM-XXXXXX">
+          </div>
+
+          <div class="supplier-form-field">
+            <label><i class="pi pi-file-check"></i> Manufacturer's Authorization <span style="color: var(--danger-500);">*</span></label>
+            <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
+              <button class="btn btn-secondary btn-sm" style="font-size: 10px; padding: 4px 10px; white-space: nowrap;"><i class="pi pi-download" style="margin-right: 4px; font-size: 9px;"></i> Template</button>
+              <div style="flex: 1; border: 1px dashed var(--surface-300); border-radius: var(--radius-sm); padding: 6px 10px; background: var(--surface-50); display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 10px; color: var(--text-muted);">
+                <i class="pi pi-upload" style="font-size: 10px; color: var(--primary-500);"></i> Upload completed form
+              </div>
+            </div>
           </div>
 
           <div class="supplier-form-field">
@@ -6522,6 +6606,8 @@ Submission Requirements
         <div class="supplier-upload-text">Upload Technical Documents</div>
         <div class="supplier-upload-hint">Product brochures, technical data sheets, certifications (ISO 13485, CE, FDA)</div>
       </div>
+      </div>
+      <!-- END DEFAULT TECHNICAL BID -->
 
       <div class="supplier-action-bar">
         <button class="btn btn-ghost" onclick="prevSupplierSection('bidder-info')"><i class="pi pi-arrow-left" style="margin-right: 6px;"></i> Back</button>
@@ -6690,13 +6776,26 @@ Submission Requirements
         <strong><i class="pi pi-truck"></i> Shipment & Delivery Information</strong>
       </div>
 
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-md); margin-bottom: var(--spacing-md);">
+        <div class="supplier-form-field">
+          <label><i class="pi pi-box"></i> Freight Cost per 20/40 ft. container <span style="color: var(--text-muted); font-weight: 400;">(if applicable)</span></label>
+          <input type="text" placeholder="Enter freight cost per container">
+        </div>
+        <div class="supplier-form-field">
+          <label><i class="pi pi-file-export"></i> Customs clearance costs <span style="color: var(--text-muted); font-weight: 400;">(if applicable)</span></label>
+          <input type="text" placeholder="Enter customs clearance costs">
+        </div>
+      </div>
+
       <table class="supplier-smart-table">
         <thead>
           <tr>
             <th>Item</th>
             <th>FCA Point(s) of Delivery</th>
-            <th>Shipment dimensions</th>
+            <th>Shipment dimensions<br><small style="font-weight: 400;">(Including package)</small></th>
             <th>Gross weight</th>
+            <th>Containers - Number</th>
+            <th>Containers - Size</th>
             <th>Total volume</th>
           </tr>
         </thead>
@@ -6706,6 +6805,8 @@ Submission Requirements
             <td><input type="text" placeholder="City, Country"></td>
             <td><input type="text" placeholder="L×W×H cm"></td>
             <td><input type="text" placeholder="kg"></td>
+            <td><input type="text" placeholder="Number"></td>
+            <td><input type="text" placeholder="L×W×H cm"></td>
             <td><input type="text" placeholder="m³"></td>
           </tr>
           <tr>
@@ -6713,6 +6814,8 @@ Submission Requirements
             <td><input type="text" placeholder="City, Country"></td>
             <td><input type="text" placeholder="L×W×H cm"></td>
             <td><input type="text" placeholder="kg"></td>
+            <td><input type="text" placeholder="Number"></td>
+            <td><input type="text" placeholder="L×W×H cm"></td>
             <td><input type="text" placeholder="m³"></td>
           </tr>
           <tr>
@@ -6720,6 +6823,8 @@ Submission Requirements
             <td><input type="text" placeholder="City, Country"></td>
             <td><input type="text" placeholder="L×W×H cm"></td>
             <td><input type="text" placeholder="kg"></td>
+            <td><input type="text" placeholder="Number"></td>
+            <td><input type="text" placeholder="L×W×H cm"></td>
             <td><input type="text" placeholder="m³"></td>
           </tr>
           <tr>
@@ -6727,6 +6832,8 @@ Submission Requirements
             <td><input type="text" placeholder="City, Country"></td>
             <td><input type="text" placeholder="L×W×H cm"></td>
             <td><input type="text" placeholder="kg"></td>
+            <td><input type="text" placeholder="Number"></td>
+            <td><input type="text" placeholder="L×W×H cm"></td>
             <td><input type="text" placeholder="m³"></td>
           </tr>
         </tbody>
@@ -6766,7 +6873,7 @@ Submission Requirements
       <!-- Section 1: Performance Statement -->
       <div class="supplier-subsection-header">
         <strong><i class="pi pi-chart-line"></i> Section 1: Performance Statement</strong>
-       </div>
+      </div>
 
       <div class="supplier-partner-card" style="margin-bottom: var(--spacing-sm);">
         <div class="supplier-partner-header">
@@ -6775,47 +6882,59 @@ Submission Requirements
         
         <div class="supplier-form-grid">
           <div class="supplier-form-field">
-            <label><i class="pi pi-building"></i> Client/Organization Name <span style="color: var(--danger-500);">*</span></label>
-            <input type="text" placeholder="Enter client name">
+            <label><i class="pi pi-user"></i> Order placed by <span style="color: var(--danger-500);">*</span></label>
+            <input type="text" placeholder="Name of purchaser/organization">
           </div>
           <div class="supplier-form-field">
-            <label><i class="pi pi-file"></i> Contract Reference Number</label>
-            <input type="text" placeholder="Contract/PO number">
+            <label><i class="pi pi-map-marker"></i> Full address of purchaser <span style="color: var(--danger-500);">*</span></label>
+            <textarea placeholder="Complete address" rows="2"></textarea>
+          </div>
+        </div>
+        
+        <div class="supplier-form-grid">
+          <div class="supplier-form-field">
+            <label><i class="pi pi-file"></i> Order no <span style="color: var(--danger-500);">*</span></label>
+            <input type="text" placeholder="Order/Contract number">
+          </div>
+          <div class="supplier-form-field">
+            <label><i class="pi pi-calendar"></i> Date <span style="color: var(--danger-500);">*</span></label>
+            <input type="date">
           </div>
         </div>
         
         <div class="supplier-form-field" style="margin: var(--spacing-xs) 0;">
-          <label><i class="pi pi-align-left"></i> Description of Work/Goods Supplied <span style="color: var(--danger-500);">*</span></label>
-          <textarea placeholder="Describe the goods/services delivered" rows="2"></textarea>
+          <label><i class="pi pi-list"></i> Description & quantity of ordered items <span style="color: var(--danger-500);">*</span></label>
+          <textarea placeholder="Describe the items ordered and their quantities" rows="2"></textarea>
         </div>
         
         <div class="supplier-form-grid cols-3">
           <div class="supplier-form-field">
-            <label><i class="pi pi-dollar"></i> Contract Value <span style="color: var(--danger-500);">*</span></label>
+            <label><i class="pi pi-dollar"></i> Value of Order <span style="color: var(--danger-500);">*</span></label>
             <input type="text" placeholder="USD 0.00">
           </div>
           <div class="supplier-form-field">
-            <label><i class="pi pi-calendar"></i> Contract Period</label>
-            <input type="text" placeholder="Start - End dates">
+            <label><i class="pi pi-calendar"></i> Date of completion of Delivery<br><small style="font-weight: 400; color: var(--text-muted);">As per Contract</small></label>
+            <input type="date" placeholder="As per contract">
           </div>
           <div class="supplier-form-field">
-            <label><i class="pi pi-check-circle"></i> Completion Status</label>
-            <select>
-              <option>Select</option>
-              <option>Completed</option>
-              <option>Ongoing</option>
-            </select>
+            <label><i class="pi pi-calendar-times"></i> Date of completion of Delivery<br><small style="font-weight: 400; color: var(--text-muted);">Actual</small></label>
+            <input type="date" placeholder="Actual date">
           </div>
         </div>
         
         <div class="supplier-form-grid" style="margin-top: var(--spacing-xs);">
           <div class="supplier-form-field">
-            <label><i class="pi pi-user"></i> Contact Person</label>
-            <input type="text" placeholder="Reference contact name">
+            <label><i class="pi pi-comment"></i> Remarks indicating reasons of late delivery, if any</label>
+            <textarea placeholder="Explain any delays in delivery" rows="2"></textarea>
           </div>
           <div class="supplier-form-field">
-            <label><i class="pi pi-envelope"></i> Contact Email/Phone</label>
-            <input type="text" placeholder="Email or phone number">
+            <label><i class="pi pi-check-circle"></i> Was the supplies of goods satisfactory? <span style="color: var(--danger-500);">*</span></label>
+            <select>
+              <option value="">Select</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+              <option value="partial">Partially</option>
+            </select>
           </div>
         </div>
       </div>
@@ -6830,7 +6949,7 @@ Submission Requirements
 
       </div>
 
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-sm); margin-bottom: var(--spacing-md);">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-sm); margin-bottom: var(--spacing-sm);">
         <div style="border: 1px solid var(--surface-200); border-radius: var(--radius-sm); padding: var(--spacing-sm); background: var(--surface-0); text-align: center;">
           <div style="color: var(--warning-500); font-size: 1.3em; margin-bottom: 6px;"><i class="pi pi-download"></i></div>
           <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 3px; font-size: 12px;">Download Template</div>
@@ -6842,6 +6961,11 @@ Submission Requirements
           <div class="supplier-upload-text">Upload Completed Form</div>
           <div class="supplier-upload-hint">Click or drag file here</div>
         </div>
+      </div>
+
+      <div class="supplier-form-field" style="margin-bottom: var(--spacing-md);">
+        <label><i class="pi pi-calendar-times"></i> Bid security expiry date <span style="color: var(--danger-500);">*</span></label>
+        <input type="date" style="max-width: 250px;">
       </div>
 
       <!-- Section 3: Financial Statements -->
@@ -6865,25 +6989,6 @@ Submission Requirements
           <div style="color: var(--info-400); font-size: 1.2em; margin-bottom: 4px;"><i class="pi pi-file-pdf"></i></div>
           <div class="supplier-upload-text">Year 2025</div>
           <div class="supplier-upload-hint">Upload PDF</div>
-        </div>
-      </div>
-
-      <!-- Section 4: Manufacturer's Authorization -->
-      <div class="supplier-subsection-header success">
-        <strong><i class="pi pi-verified" style="color: var(--success-500);"></i> Section 4: Manufacturer's Authorization</strong>
-      </div>
-
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-sm);">
-        <div style="border: 1px solid var(--surface-200); border-radius: var(--radius-sm); padding: var(--spacing-sm); background: var(--surface-0); text-align: center;">
-          <div style="color: var(--success-500); font-size: 1.3em; margin-bottom: 6px;"><i class="pi pi-download"></i></div>
-          <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 3px; font-size: 12px;">Download Template</div>
-          <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 8px;">Manufacturer's Authorization Template</div>
-          <button class="btn btn-secondary btn-sm" style="font-size: 11px; padding: 4px 10px;"><i class="pi pi-download" style="margin-right: 4px; font-size: 10px;"></i> Download</button>
-        </div>
-        <div class="supplier-upload-area" style="padding: var(--spacing-sm);">
-          <div style="color: var(--success-500); font-size: 1.3em; margin-bottom: 6px;"><i class="pi pi-upload"></i></div>
-          <div class="supplier-upload-text">Upload Completed Form</div>
-          <div class="supplier-upload-hint">Click or drag file here</div>
         </div>
       </div>
 
@@ -7005,38 +7110,9 @@ Submission Requirements
       </div>
 
 
-      <!-- Section 1: Bid Submission Declaration -->
-      <div class="supplier-subsection-header">
-        <strong><i class="pi pi-file-edit"></i> Section 1: Bid Submission Declaration</strong>
-      </div>
-
-
-
-      <div class="supplier-declaration-box" style="margin-bottom: var(--spacing-md);">
-        <p style="font-weight: 600; margin-bottom: var(--spacing-xs); font-size: 12px;">We, the undersigned, declare that:</p>
-        <ol style="line-height: 1.5; padding-left: var(--spacing-sm); margin: 0; font-size: 11px;">
-          <li style="margin-bottom: 3px;">We have examined and have no reservations to the bidding documents, including amendments:
-            <span style="background: var(--info-50); padding: 2px 6px; border-radius: 3px; margin-left: 4px; font-size: 10px;">No. 01 - Dec 5, 2025</span>
-          </li>
-          <li style="margin-bottom: 3px;">We offer to supply in conformity with the bidding documents, including the UNOPS General Conditions of Contract;</li>
-          <li style="margin-bottom: 3px;">The total price of our bid, excluding any discounts offered below, is: 
-            <span style="background: var(--info-50); padding: 2px 6px; border-radius: 3px; margin: 0 3px; font-weight: 600; font-size: 10px;">USD 0.00</span>
-          </li>
-          <li style="margin-bottom: 3px;">Our bid shall be valid for the period of time of <span style="background: var(--info-50); padding: 1px 4px; border-radius: 3px; font-size: 10px;">90</span> days from the date fixed for the bid submission deadline;</li>
-          <li style="margin-bottom: 3px;">If our bid is accepted, we commit to obtain a performance security in accordance with the General Conditions;</li>
-          <li style="margin-bottom: 3px;">We have no conflict of interest in any activity that would put us in conflict with UNOPS;</li>
-          <li style="margin-bottom: 3px;">We have not declared bankruptcy, are not involved in bankruptcy proceedings;</li>
-          <li style="margin-bottom: 3px;">Our firm confirms that we have not been associated with the preparation of these tender documents;</li>
-          <li style="margin-bottom: 3px;">We embrace the principles of the United Nations Supplier Code of Conduct;</li>
-          <li style="margin-bottom: 3px;">Our firm has not been declared ineligible by UNOPS or included in UN suspension lists;</li>
-          <li style="margin-bottom: 3px;">We have not offered and will not offer any gifts or favours in exchange for this ITB;</li>
-          <li>We understand that you are not bound to accept the lowest evaluated bid.</li>
-        </ol>
-      </div>
-
-      <!-- Section 2: Self Disclosure Form -->
+      <!-- Section 1: Self Disclosure Form -->
       <div class="supplier-subsection-header warning">
-        <strong><i class="pi pi-exclamation-triangle" style="color: var(--warning-500);"></i> Section 2: Self Disclosure Form</strong>
+        <strong><i class="pi pi-exclamation-triangle" style="color: var(--warning-500);"></i> Section 1: Self Disclosure Form</strong>
       </div>
 
       <div class="supplier-compliance-item">
@@ -7121,6 +7197,33 @@ Submission Requirements
           <label class="supplier-radio-option"><input type="radio" name="disclosure7" value="no"><span>No</span></label>
           <label class="supplier-radio-option"><input type="radio" name="disclosure7" value="yes"><span>Yes</span></label>
         </div>
+      </div>
+
+      <!-- Section 2: Bid Submission Declaration -->
+      <div class="supplier-subsection-header" style="margin-top: var(--spacing-xl);">
+        <strong><i class="pi pi-file-edit"></i> Section 2: Bid Submission Declaration</strong>
+      </div>
+
+      <div class="supplier-declaration-box" style="margin-bottom: var(--spacing-md);">
+        <p style="font-weight: 600; margin-bottom: var(--spacing-xs); font-size: 12px;">We, the undersigned, declare that:</p>
+        <ol style="line-height: 1.5; padding-left: var(--spacing-sm); margin: 0; font-size: 11px;">
+          <li style="margin-bottom: 3px;">We have examined and have no reservations to the bidding documents, including amendments:
+            <span style="background: var(--info-50); padding: 2px 6px; border-radius: 3px; margin-left: 4px; font-size: 10px;">No. 01 - Dec 5, 2025</span>
+          </li>
+          <li style="margin-bottom: 3px;">We offer to supply in conformity with the bidding documents, including the UNOPS General Conditions of Contract;</li>
+          <li style="margin-bottom: 3px;">The total price of our bid, excluding any discounts offered below, is: 
+            <span style="background: var(--info-50); padding: 2px 6px; border-radius: 3px; margin: 0 3px; font-weight: 600; font-size: 10px;">USD 0.00</span>
+          </li>
+          <li style="margin-bottom: 3px;">Our bid shall be valid for the period of time of <span style="background: var(--info-50); padding: 1px 4px; border-radius: 3px; font-size: 10px;">90</span> days from the date fixed for the bid submission deadline;</li>
+          <li style="margin-bottom: 3px;">If our bid is accepted, we commit to obtain a performance security in accordance with the General Conditions;</li>
+          <li style="margin-bottom: 3px;">We have no conflict of interest in any activity that would put us in conflict with UNOPS;</li>
+          <li style="margin-bottom: 3px;">We have not declared bankruptcy, are not involved in bankruptcy proceedings;</li>
+          <li style="margin-bottom: 3px;">Our firm confirms that we have not been associated with the preparation of these tender documents;</li>
+          <li style="margin-bottom: 3px;">We embrace the principles of the United Nations Supplier Code of Conduct;</li>
+          <li style="margin-bottom: 3px;">Our firm has not been declared ineligible by UNOPS or included in UN suspension lists;</li>
+          <li style="margin-bottom: 3px;">We have not offered and will not offer any gifts or favours in exchange for this ITB;</li>
+          <li>We understand that you are not bound to accept the lowest evaluated bid.</li>
+        </ol>
       </div>
 
       <!-- Authorized Signature -->
@@ -7355,7 +7458,7 @@ Submission Requirements
   </div>
   <div style="display: flex; gap: var(--spacing-md); align-items: center;">
   <button class="btn btn-secondary btn-sm" onclick="openModal('add-alternate-offer-modal')">
-  <span>📑</span> Add Alternate Offer
+  <span>📑</span> Add Alternative Offer
   </button>
   <span class="section-status status-incomplete">In Progress</span>
   </div>
@@ -7589,6 +7692,8 @@ Submission Requirements
   <th>FCA Point(s) of Delivery</th>
   <th>Shipment dimensions<br><small>(Including package)</small></th>
   <th>Gross weight</th>
+  <th>Containers - Number</th>
+  <th>Containers - Size</th>  
   <th>Total volume</th>
   </tr>
   </thead>
@@ -7598,6 +7703,8 @@ Submission Requirements
   <td><input type="text" class="form-input" placeholder="City, Country"></td>
   <td><input type="text" class="form-input" placeholder="L×W×H cm"></td>
   <td><input type="text" class="form-input" placeholder="kg"></td>
+  <td><input type="text" class="form-input" placeholder="Number"></td>
+  <td><input type="text" class="form-input" placeholder="L×W×H cm"></td>    
   <td><input type="text" class="form-input" placeholder="m³"></td>
   </tr>
   <tr>
@@ -7605,6 +7712,8 @@ Submission Requirements
   <td><input type="text" class="form-input" placeholder="City, Country"></td>
   <td><input type="text" class="form-input" placeholder="L×W×H cm"></td>
   <td><input type="text" class="form-input" placeholder="kg"></td>
+  <td><input type="text" class="form-input" placeholder="Number"></td>
+  <td><input type="text" class="form-input" placeholder="L×W×H cm"></td>  
   <td><input type="text" class="form-input" placeholder="m³"></td>
   </tr>
   <tr>
@@ -7612,6 +7721,8 @@ Submission Requirements
   <td><input type="text" class="form-input" placeholder="City, Country"></td>
   <td><input type="text" class="form-input" placeholder="L×W×H cm"></td>
   <td><input type="text" class="form-input" placeholder="kg"></td>
+  <td><input type="text" class="form-input" placeholder="Number"></td>
+  <td><input type="text" class="form-input" placeholder="L×W×H cm"></td>  
   <td><input type="text" class="form-input" placeholder="m³"></td>
   </tr>
   <tr>
@@ -7619,6 +7730,8 @@ Submission Requirements
   <td><input type="text" class="form-input" placeholder="City, Country"></td>
   <td><input type="text" class="form-input" placeholder="L×W×H cm"></td>
   <td><input type="text" class="form-input" placeholder="kg"></td>
+  <td><input type="text" class="form-input" placeholder="Number"></td>
+  <td><input type="text" class="form-input" placeholder="L×W×H cm"></td>  
   <td><input type="text" class="form-input" placeholder="m³"></td>
   </tr>
   </tbody>
@@ -8323,6 +8436,41 @@ Submission Requirements
 </div>
 </div>
 
+<!-- Replicate Manufacturer Modal -->
+<div class="modal" id="replicate-manufacturer-modal">
+<div class="modal-content" style="max-width: 450px;">
+<div class="modal-header">
+<h3 class="modal-title">
+<i class="pi pi-copy"></i>
+<span>Apply Manufacturer to Items</span>
+</h3>
+<button class="modal-close" onclick="closeModal('replicate-manufacturer-modal')">×</button>
+</div>
+<div class="modal-body">
+<div class="alert alert-info" style="margin-bottom: var(--spacing-md);">
+<i class="pi pi-info-circle"></i>
+<div>
+<strong>Replicate Manufacturer Info</strong>
+<p style="margin-top: 4px; font-size: 12px;">Select the line items where you want to apply the same manufacturer details (Name, UNGM ID, Address).</p>
+</div>
+</div>
+<div id="replicate-manufacturer-items" style="max-height: 250px; overflow-y: auto;">
+<!-- Items will be populated dynamically -->
+</div>
+<div style="margin-top: var(--spacing-sm); padding-top: var(--spacing-sm); border-top: 1px solid var(--surface-200);">
+<label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 12px; color: var(--text-secondary);">
+<input type="checkbox" id="replicate-select-all" onchange="toggleReplicateSelectAll(this.checked)">
+<span>Select all items</span>
+</label>
+</div>
+</div>
+<div class="modal-footer">
+<button class="btn btn-ghost" onclick="closeModal('replicate-manufacturer-modal')">Cancel</button>
+<button class="btn btn-primary" onclick="applyManufacturerToSelected()"><i class="pi pi-check" style="margin-right: 8px;"></i>Apply to Selected</button>
+</div>
+</div>
+</div>
+
 
 <script>
 let currentView = 'dashboard';
@@ -8777,10 +8925,38 @@ function viewTenderDetails(ref) {
 navigateToView('tender-details');
 }
 
+let currentTenderRef = 'UNOPS/ITB/2025/001';
+
 function selectTenderForBid(ref) {
+currentTenderRef = ref;
 navigateToView('bid-submission');
 // Initialize the enhanced supplier bid form
 initSupplierBidForms();
+// Update tender info and toggle Technical Bid content based on tender
+updateBidViewForTender(ref);
+}
+
+function updateBidViewForTender(ref) {
+    const bannerRef = document.querySelector('#view-bid-submission .tender-banner-ref');
+    const bannerTitle = document.querySelector('#view-bid-submission .tender-banner-title');
+    const techBidDefault = document.getElementById('technical-bid-default');
+    const techBidSimplified = document.getElementById('technical-bid-simplified');
+    
+    if (ref === 'UNOPS/RFQ/2024/089') {
+        // Update banner for RFQ
+        if (bannerRef) bannerRef.textContent = '📋 Reference: UNOPS/RFQ/2024/089';
+        if (bannerTitle) bannerTitle.textContent = 'Office Supplies and Stationery';
+        // Show simplified Technical Bid, hide default
+        if (techBidDefault) techBidDefault.style.display = 'none';
+        if (techBidSimplified) techBidSimplified.style.display = 'block';
+    } else {
+        // Update banner for ITB
+        if (bannerRef) bannerRef.textContent = '📋 Reference: UNOPS/ITB/2025/001';
+        if (bannerTitle) bannerTitle.textContent = 'Supply and Delivery of Medical Equipment and Supplies';
+        // Show default Technical Bid, hide simplified
+        if (techBidDefault) techBidDefault.style.display = 'block';
+        if (techBidSimplified) techBidSimplified.style.display = 'none';
+    }
 }
 
 // =====================================================================
@@ -9657,6 +9833,100 @@ function switchTab(tabId, btnElement) {
   if (btnElement) {
     btnElement.classList.add('active');
 }
+}
+
+// ========== REPLICATE MANUFACTURER FUNCTIONALITY ==========
+let sourceManufacturerElement = null;
+
+function openReplicateManufacturerModal(buttonElement) {
+    // Store reference to the source manufacturer section
+    sourceManufacturerElement = buttonElement.closest('.product-technical-section');
+    if (!sourceManufacturerElement) {
+        sourceManufacturerElement = buttonElement.closest('.supplier-form-grid')?.closest('[data-product-id]');
+    }
+    
+    const sourceProductId = sourceManufacturerElement?.getAttribute('data-product-id');
+    
+    // Get all product sections
+    const allProductSections = document.querySelectorAll('.product-technical-section[data-product-id]');
+    const itemsContainer = document.getElementById('replicate-manufacturer-items');
+    itemsContainer.innerHTML = '';
+    
+    // Available items to replicate to (products with UNSPSC codes from the financial table)
+    const productItems = [
+        { id: '42182104', name: 'Ultrasound Machines', qty: 5 },
+        { id: '42182108', name: 'Patient Monitors', qty: 20 },
+        { id: '42192201', name: 'Surgical Lights', qty: 8 },
+        { id: '42182101', name: 'Anesthesia Machines', qty: 3 }
+    ];
+    
+    productItems.forEach(item => {
+        const isSource = item.id === sourceProductId;
+        const itemDiv = document.createElement('div');
+        itemDiv.style.cssText = 'display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: var(--radius-sm); margin-bottom: 6px; background: ' + (isSource ? 'var(--primary-50)' : 'var(--surface-50)') + '; border: 1px solid ' + (isSource ? 'var(--primary-200)' : 'var(--surface-200)') + ';';
+        
+        if (isSource) {
+            itemDiv.innerHTML = `
+                <i class="pi pi-building" style="color: var(--primary-500); font-size: 14px;"></i>
+                <div style="flex: 1;">
+                    <div style="font-weight: 600; font-size: 12px; color: var(--primary-700);">${item.name}</div>
+                    <div style="font-size: 10px; color: var(--text-muted);">UNSPSC: ${item.id} • Qty: ${item.qty}</div>
+                </div>
+                <span style="font-size: 9px; background: var(--primary-100); color: var(--primary-600); padding: 2px 6px; border-radius: 8px;">SOURCE</span>
+            `;
+        } else {
+            itemDiv.innerHTML = `
+                <input type="checkbox" class="replicate-item-checkbox" data-product-id="${item.id}" style="cursor: pointer;">
+                <div style="flex: 1;">
+                    <div style="font-weight: 500; font-size: 12px; color: var(--text-primary);">${item.name}</div>
+                    <div style="font-size: 10px; color: var(--text-muted);">UNSPSC: ${item.id} • Qty: ${item.qty}</div>
+                </div>
+            `;
+        }
+        itemsContainer.appendChild(itemDiv);
+    });
+    
+    // Reset select all checkbox
+    document.getElementById('replicate-select-all').checked = false;
+    
+    // Open modal
+    openModal('replicate-manufacturer-modal');
+}
+
+function toggleReplicateSelectAll(checked) {
+    document.querySelectorAll('.replicate-item-checkbox').forEach(cb => {
+        cb.checked = checked;
+    });
+}
+
+function applyManufacturerToSelected() {
+    const selectedItems = document.querySelectorAll('.replicate-item-checkbox:checked');
+    
+    if (selectedItems.length === 0) {
+        alert('Please select at least one item to apply the manufacturer to.');
+        return;
+    }
+    
+    // Get source manufacturer data
+    const sourceGrid = sourceManufacturerElement?.querySelector('.supplier-form-grid');
+    const manufacturerName = sourceGrid?.querySelector('input[placeholder="Manufacturer name"]')?.value || '';
+    const ungmId = sourceGrid?.querySelector('input[placeholder="UNGM-XXXXXX"]')?.value || '';
+    const address = sourceGrid?.querySelector('textarea[placeholder="Full address"]')?.value || '';
+    
+    // Apply to selected items (in real implementation, this would update the respective sections)
+    const itemNames = [];
+    selectedItems.forEach(cb => {
+        const productId = cb.getAttribute('data-product-id');
+        itemNames.push(productId);
+        // Here you would update the actual form fields for each product
+        console.log(`Applying manufacturer to product ${productId}:`, { manufacturerName, ungmId, address });
+    });
+    
+    closeModal('replicate-manufacturer-modal');
+    
+    // Show success feedback
+    const successMsg = `Manufacturer info applied to ${selectedItems.length} item(s)`;
+    alert(successMsg);
 }
 </script>
 </body>
