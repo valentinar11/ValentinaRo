@@ -8426,7 +8426,7 @@
           id: 'form-d', 
           code: 'D', 
           name: 'Technical Bid', 
-          description: 'Technical proposal and specifications', 
+          description: 'Technical bid/proposal', 
           icon: '⚙️', 
           required: true, 
           added: true,
@@ -8507,7 +8507,7 @@
           id: 'form-compliance', 
           code: 'C&D', 
           name: 'Compliance & Declarations', 
-          description: 'Bid submission declarations and self-disclosure form', 
+          description: 'Bid submission form and self-disclosure form', 
           icon: '✅', 
           required: true, 
           added: true,
@@ -15177,12 +15177,28 @@
               <p style="font-size: 12px; color: var(--text-muted); margin-bottom: var(--spacing-md);">Select how suppliers should submit technical specifications.</p>
               <div style="display: flex; flex-direction: column; gap: var(--spacing-sm);">
                 <div class="form-config-option">
-                  <input type="radio" name="tech-submission-type" id="config-online" ${form.config.allowOnlineSubmission && !form.config.allowSpreadsheetUpload ? 'checked' : ''} onchange="setTechnicalSubmissionType('online')" />
-                  <label for="config-online"><strong>Online Form Submission</strong></label>
+                  <input type="radio" name="tech-submission-type" id="config-template" ${form.config.allowSpreadsheetUpload && !form.config.allowOnlineSubmission ? 'checked' : ''} onchange="setTechnicalSubmissionType('spreadsheet')" />
+                  <label for="config-template">
+                    <i class="pi pi-file" style="margin-right: 6px; color: var(--primary-500);"></i>
+                    <strong>Technical Bid Template</strong>
+                    <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px; margin-left: 22px;">Use a predefined template to structure the technical submission.</div>
+                  </label>
                 </div>
                 <div class="form-config-option">
-                  <input type="radio" name="tech-submission-type" id="config-spreadsheet" ${form.config.allowSpreadsheetUpload && !form.config.allowOnlineSubmission ? 'checked' : ''} onchange="setTechnicalSubmissionType('spreadsheet')" />
-                  <label for="config-spreadsheet"><strong>Spreadsheet Upload</strong></label>
+                  <input type="radio" name="tech-submission-type" id="config-online" ${form.config.allowOnlineSubmission && !form.config.allowSpreadsheetUpload ? 'checked' : ''} onchange="setTechnicalSubmissionType('online')" />
+                  <label for="config-online">
+                    <i class="pi pi-pencil" style="margin-right: 6px; color: var(--primary-500);"></i>
+                    <strong>Create Custom Online Form</strong>
+                    <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px; margin-left: 22px;">Build your own online form to collect technical specifications.</div>
+                  </label>
+                </div>
+                <div class="form-config-option">
+                  <input type="radio" name="tech-submission-type" id="config-offline" ${!form.config.allowOnlineSubmission && !form.config.allowSpreadsheetUpload ? 'checked' : ''} onchange="setTechnicalSubmissionType('offline')" />
+                  <label for="config-offline">
+                    <i class="pi pi-ban" style="margin-right: 6px; color: var(--text-muted);"></i>
+                    <strong>No Technical Submission (Offline Process)</strong>
+                    <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px; margin-left: 22px;">Technical evaluation will be handled outside the system. Suppliers will not submit any technical documents.</div>
+                  </label>
                 </div>
               </div>
             </div>
@@ -15389,18 +15405,6 @@
                 <textarea id="config-financial-requirements" placeholder="Specify requirements for financial statements (e.g., audited statements for last 3 years, minimum annual turnover, etc.)" rows="3" style="width: 100%; padding: 8px 12px; border: 1px solid var(--surface-300); border-radius: var(--radius-sm); resize: vertical;" onchange="updateFormConfig('form-qual', 'financialStatementsRequirements', this.value)">${form.config.financialStatementsRequirements || ''}</textarea>
               </div>
             </div>
-            
-            <div class="form-config-section">
-              <h4><i class="pi pi-info-circle" style="margin-right: 8px;"></i> Included Sections</h4>
-              <p style="font-size: 12px; color: var(--text-muted); margin-bottom: var(--spacing-md);">The following sections are always included in this form:</p>
-              <div style="display: flex; flex-direction: column; gap: var(--spacing-xs);">
-
-                <div style="display: flex; align-items: center; gap: var(--spacing-sm); padding: var(--spacing-sm); background: var(--surface-50); border-radius: var(--radius-sm);">
-                  <i class="pi pi-check-circle" style="color: var(--success-500);"></i>
-                  <span style="font-size: 13px;">Manufacturer's Authorization</span>
-                </div>
-              </div>
-            </div>
           `;
         }
         
@@ -15455,9 +15459,12 @@
         if (type === 'online') {
           form.config.allowOnlineSubmission = true;
           form.config.allowSpreadsheetUpload = false;
-        } else {
+        } else if (type === 'spreadsheet') {
           form.config.allowOnlineSubmission = false;
           form.config.allowSpreadsheetUpload = true;
+        } else if (type === 'offline') {
+          form.config.allowOnlineSubmission = false;
+          form.config.allowSpreadsheetUpload = false;
         }
         
         // Toggle custom fields section visibility
@@ -17492,25 +17499,7 @@
                       `;}).join('')}
                     </div>
                     
-                    <!-- Attachments Section - Same level as forms -->
-                    <div class="submission-attachments-section">
-                      <div class="submission-attachments-header">
-                        <span class="submission-attachments-title"><i class="pi pi-paperclip"></i> Tender Package Attachments</span>
-                        <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); openTenderAttachmentModal()">
-                          <i class="pi pi-plus"></i> Add Attachment
-                        </button>
-                      </div>
-                      <div class="submission-attachments-list" id="tender-attachments-list">
-                        ${renderTenderAttachmentsList()}
-                      </div>
-                      <div class="submission-attachments-drop-zone" id="tender-attachments-drop-zone"
-                           ondragover="handleTenderAttachmentDragOver(event)"
-                           ondragleave="handleTenderAttachmentDragLeave(event)"
-                           ondrop="handleTenderAttachmentDrop(event)">
-                        <i class="pi pi-cloud-upload"></i>
-                        <span>Drop files here to add attachments</span>
-                      </div>
-                    </div>
+                    
                     <div class="submission-forms-drop-hint" id="forms-drop-hint">
                       <i class="pi pi-download"></i> Drop forms here from the Form Library
                     </div>
@@ -20577,7 +20566,10 @@
                 </div>
                 <div class="unspsc-info-message">
                   <i class="pi pi-info-circle"></i>
-                  <span>Can't find the UNSPSC code you need? Please contact the <strong>Data and Analytics team</strong> to have the code added to the master data in oneUNOPS.</span>
+                  <span>  Can’t find the UNSPSC code you need? If the code exists in the 
+  <a href="https://www.ungm.org/Public/UNSPSC" target="_blank">UNGM UNSPSC list</a>, 
+  it can be added to oneUNOPS / ERP upon request. 
+  Please contact the <strong>Data and Analytics team</strong> to request the addition.</span>
                 </div>
               </div>
               <div class="form-group">
