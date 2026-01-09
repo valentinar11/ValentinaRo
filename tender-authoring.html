@@ -5710,6 +5710,71 @@
         font-size: 14px;
         margin-top: 1px;
       }
+      
+      /* UNSPSC Category Badges */
+      .unspsc-category-badge {
+        font-size: 10px;
+        font-weight: 600;
+        padding: 2px 6px;
+        border-radius: 3px;
+        text-transform: uppercase;
+        white-space: nowrap;
+        margin-left: auto;
+      }
+      .unspsc-category-badge.category-2 {
+        background: var(--warning-100);
+        color: var(--warning-700);
+        border: 1px solid var(--warning-300);
+      }
+      .unspsc-category-badge.category-3 {
+        background: var(--danger-100);
+        color: var(--danger-700);
+        border: 1px solid var(--danger-300);
+      }
+      
+      /* Category Warning Indicators */
+      .category-warning {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 12px 14px;
+        border-radius: var(--radius-sm);
+        margin-top: 8px;
+        margin-bottom: 4px;
+      }
+      .category-warning.category-2 {
+        background: var(--warning-50);
+        border: 1px solid var(--warning-300);
+        border-left: 4px solid var(--warning-500);
+      }
+      .category-warning.category-3 {
+        background: var(--danger-50);
+        border: 1px solid var(--danger-300);
+        border-left: 4px solid var(--danger-500);
+      }
+      .category-warning .category-icon {
+        font-size: 18px;
+        flex-shrink: 0;
+      }
+      .category-warning .category-text {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .category-warning .category-text strong {
+        font-size: 13px;
+      }
+      .category-warning.category-2 .category-text strong {
+        color: var(--warning-700);
+      }
+      .category-warning.category-3 .category-text strong {
+        color: var(--danger-700);
+      }
+      .category-warning .category-text span {
+        font-size: 12px;
+        color: var(--text-secondary);
+        line-height: 1.4;
+      }
 
       .team-subsection {
         margin-bottom: var(--spacing-md);
@@ -8105,16 +8170,16 @@
               fields: [
                 { id: 'title', label: 'Title', type: 'text', required: true, value: '' },
                 { id: 'reference', label: 'Reference', type: 'text', required: true, value: 'Auto-generated', readonly: true },
-                { id: 'sourcingOrSolicitation', label: 'Sourcing or Solicitation', type: 'select', required: true, options: ['Select...', 'Sourcing', 'Solicitation'], onchange: 'updateSourcingOrSolicitation' },
-                { id: 'eventType', label: 'Event Type', type: 'select', required: false, options: ['Select...', 'RFQ', 'RFP', 'ITB', 'EOI', 'RFI', 'PQ'], onchange: 'updateEventType' },
+                { id: 'sourcingOrSolicitation', label: 'Sourcing or Solicitation', type: 'select', required: true, options: ['Select...', 'Sourcing', 'Solicitation'], onchange: 'updateSourcingOrSolicitation', readonly: true },
+                { id: 'eventType', label: 'Event Type', type: 'select', required: false, options: ['Select...', 'RFQ', 'RFP', 'ITB', 'EOI', 'RFI', 'PQ'], onchange: 'updateEventType', readonly: true },
                 { id: 'processType', label: 'Process Type', type: 'select', required: false, options: ['Select...', 'Standard solicitation', 'Solicit offers against LTA/BPA', 'Secondary bidding against LTA/BPA', 'Direct contracting / Sole sourcing'], onchange: 'updateProcessTypeSelect', conditionalVisibility: { field: 'sourcingOrSolicitation', value: 'Solicitation' } },
-                { id: 'typeOfRequirement', label: 'Type of Requirement', type: 'select', required: true, options: ['Select...', 'Goods', 'Services', 'Works'], onchange: 'updateTypeOfRequirement' },
+                { id: 'typeOfRequirement', label: 'Type of Requirement', type: 'select', required: true, options: ['Select...', 'Goods', 'Services', 'Works'], onchange: 'updateTypeOfRequirement', readonly: true },
                 { id: 'description', label: 'Description', type: 'textarea', required: true, value: '' },
                 { id: 'organizationalUnit', label: 'Organizational Unit', type: 'search', required: false, value: '', placeholder: 'Search from oneUNOPS' },
                 { id: 'beneficiaryCountries', label: 'Beneficiary country(ies)', type: 'country-multiselect', required: false, multiple: true, options: ['Afghanistan', 'Albania', 'Algeria', 'Angola', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bahrain', 'Bangladesh', 'Belarus', 'Belgium', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia and Herzegovina', 'Botswana', 'Brazil', 'Brunei', 'Bulgaria', 'Burkina Faso', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Central African Republic', 'Chad', 'Chile', 'China', 'Colombia', 'Comoros', 'Congo', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominican Republic', 'DR Congo', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Eswatini', 'Ethiopia', 'Fiji', 'Finland', 'France', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Greece', 'Guatemala', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hungary', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland', 'Israel', 'Italy', 'Ivory Coast', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'Kosovo', 'Kuwait', 'Kyrgyzstan', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Lithuania', 'Luxembourg', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Mauritania', 'Mauritius', 'Mexico', 'Moldova', 'Mongolia', 'Montenegro', 'Morocco', 'Mozambique', 'Myanmar', 'Namibia', 'Nepal', 'Netherlands', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'North Korea', 'North Macedonia', 'Norway', 'Oman', 'Pakistan', 'Palestine', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russia', 'Rwanda', 'Saudi Arabia', 'Senegal', 'Serbia', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'Somalia', 'South Africa', 'South Korea', 'South Sudan', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Sweden', 'Switzerland', 'Syria', 'Tajikistan', 'Tanzania', 'Thailand', 'Timor-Leste', 'Togo', 'Trinidad and Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Venezuela', 'Vietnam', 'Yemen', 'Zambia', 'Zimbabwe'] },
                 { id: 'modalityOfBidReceipt', label: 'Modality of Bid Receipt', type: 'select', required: true, options: ['Select...', 'Online Only', 'Email Submission', 'Physical Submission'], onchange: 'updateModalityOfBidReceipt' },
                 { id: 'waiverForBidReceipt', label: 'Waiver for Bid Receipt Modality', type: 'text', required: false, value: '', placeholder: 'Provide waiver link', conditionalVisibility: { field: 'modalityOfBidReceipt', values: ['Email Submission', 'Physical Submission'] } },
-                { id: 'epp', label: 'EPP', type: 'select', required: false, options: ['Select...', 'Yes', 'No'], onchange: 'updateEPP' },
+                { id: 'epp', label: 'EPP', type: 'select', required: false, options: ['Select...', 'Yes', 'No'], onchange: 'updateEPP', readonly: true },
                 { id: 'eppAuthorizationLink', label: 'EPP Authorization (Jira Link)', type: 'text', required: false, value: '', placeholder: 'Enter Jira link', conditionalVisibility: { field: 'epp', value: 'Yes' } },
                 { id: 'eppAuthorizationEndDate', label: 'EPP Authorization End Date', type: 'date', required: false, value: '', conditionalVisibility: { field: 'epp', value: 'Yes' } },
                 { id: 'scopeOfEPPApproval', label: 'Scope of EPP Approval', type: 'select', required: false, options: ['Select...', 'Project', 'Org Unit', 'Specific procurement process', 'Other'], conditionalVisibility: { field: 'epp', value: 'Yes' } },
@@ -8308,6 +8373,8 @@
       ];
       
       // Master UNSPSC Codes List (from oneUNOPS master data)
+      // Category 2: Requires additional review/approval
+      // Category 3: High-risk items requiring special handling
       const masterUnspscCodes = [
         { code: '43000000', description: 'Information Technology Broadcasting and Telecommunications' },
         { code: '43211503', description: 'Laptop computers' },
@@ -8319,7 +8386,7 @@
         { code: '43212105', description: 'Computer monitors' },
         { code: '43222609', description: 'Network switches' },
         { code: '43222619', description: 'Wireless access points' },
-        { code: '43232100', description: 'Network security equipment' },
+        { code: '43232100', description: 'Network security equipment', category: 2 },
         { code: '43233000', description: 'Data storage equipment' },
         { code: '44121700', description: 'Office supplies' },
         { code: '44111500', description: 'Office furniture' },
@@ -8327,29 +8394,35 @@
         { code: '56101600', description: 'Office chairs' },
         { code: '72151500', description: 'Building cleaning services' },
         { code: '78111800', description: 'Passenger transport' },
-        { code: '80111600', description: 'Temporary personnel services' },
+        { code: '80111600', description: 'Temporary personnel services', category: 2 },
         { code: '81111500', description: 'Software development services' },
         { code: '81111812', description: 'Network installation & configuration service' },
         { code: '81112000', description: 'Data processing services' },
         { code: '82101500', description: 'Advertising services' },
         { code: '82111700', description: 'Public relations services' },
-        { code: '84111500', description: 'Accounting services' },
+        { code: '84111500', description: 'Accounting services', category: 2 },
         { code: '86101700', description: 'Training and educational facilities' },
         { code: '90101600', description: 'Hotels and lodging' },
         { code: '90111500', description: 'Restaurant services' },
-        { code: '25101500', description: 'Motor vehicles' },
-        { code: '25101600', description: 'Trucks and vans' },
+        { code: '25101500', description: 'Motor vehicles', category: 3 },
+        { code: '25101600', description: 'Trucks and vans', category: 3 },
         { code: '26111700', description: 'Batteries' },
         { code: '31162800', description: 'Fasteners' },
         { code: '39121000', description: 'Lamps and light bulbs' },
         { code: '40141700', description: 'Air handling equipment' },
-        { code: '41111500', description: 'Laboratory equipment' },
-        { code: '42131500', description: 'Medical instruments' },
-        { code: '46171500', description: 'Safety equipment' },
+        { code: '41111500', description: 'Laboratory equipment', category: 2 },
+        { code: '42131500', description: 'Medical instruments', category: 3 },
+        { code: '46171500', description: 'Safety equipment', category: 2 },
         { code: '47131500', description: 'Cleaning equipment' },
         { code: '48101500', description: 'Food service equipment' },
         { code: '55101500', description: 'Printed publications' },
       ];
+      
+      // Helper function to get UNSPSC category info
+      window.getUnspscCategory = function(code) {
+        const item = masterUnspscCodes.find(u => u.code === code);
+        return item ? item.category : null;
+      };
       
       // Product Requirements (per UNSPSC code)
       let productRequirements = {}; // { unspscCode: { requirementType: 'attributes'|'description', attributes: [{name, value}], description: '' } }
@@ -8589,12 +8662,16 @@
       // Supplier Form Preview Toggle
       let isSupplierFormPreviewVisible = false;
       
-      // Delivery Requirements - Configurable Fields
-      let deliveryRequirementFields = [
-        { id: 'dr1', label: 'Delivery Time', type: 'text', placeholder: 'e.g., Within 30 days', value: '' },
-        { id: 'dr2', label: 'Delivery Place', type: 'text', placeholder: 'e.g., Warehouse, Copenhagen', value: '' },
-        { id: 'dr4', label: 'Consignee Details', type: 'textarea', placeholder: 'Enter consignee details', value: '' }
+      // Track collapsed state of collapsible sections (to preserve state on re-render)
+      let collapsibleSectionStates = {};
+      
+      // Delivery Requirements - Grid-based structure with lot/product assignment
+      let deliveryRequirements = [
+        // Each entry: { id, deliveryTime, deliveryPlace, consigneeDetails, applyTo: 'all'|'lot'|'product', targetIds: [] }
       ];
+      
+      // Legacy field structure for backwards compatibility
+      let deliveryRequirementFields = [];
       
       // Evaluation Criteria Library - Reusable criteria templates
       const criteriaLibrary = [
@@ -11671,8 +11748,8 @@
         } else if (sectionType === 'other-req') {
           total = 3;
           completed = tenderAuthorConfig.serviceDescriptions.length > 0 ? 1 : 0;
-          completed += deliveryRequirementFields.filter(f => f.value).length > 0 ? 1 : 0;
-          completed += tenderAuthorConfig.specificRequirements ? 1 : 0;
+          completed += deliveryRequirements.length > 0 ? 1 : 0;
+          completed += tenderAuthorConfig.specificRequirements.length > 0 ? 1 : 0;
         } else if (sectionType === 'key-dates') {
           total = 3;
           completed = 0;
@@ -12732,7 +12809,7 @@
               
               
               <!-- Product Requirements Section - Collapsible -->
-              <div class="collapsible-section collapsed" id="product-requirements-section" style="margin-top: var(--spacing-md);">
+              <div class="collapsible-section ${getCollapsibleClass('product-requirements-section', true)}" id="product-requirements-section" style="margin-top: var(--spacing-md);">
                 <div class="collapsible-header" onclick="toggleCollapsibleSection('product-requirements-section')">
                   <div class="collapsible-header-left">
                     <span class="collapsible-header-title">Product Requirements & Specifications</span>
@@ -12752,7 +12829,7 @@
               </div>
               
               <!-- Other Requirements Section - Collapsible -->
-              <div class="collapsible-section collapsed" id="other-requirements-section" style="margin-top: var(--spacing-md);">
+              <div class="collapsible-section ${getCollapsibleClass('other-requirements-section', true)}" id="other-requirements-section" style="margin-top: var(--spacing-md);">
                 <div class="collapsible-header" onclick="toggleCollapsibleSection('other-requirements-section')">
                   <div class="collapsible-header-left">
                     <span class="collapsible-header-title">Other Requirements</span>
@@ -13173,6 +13250,9 @@
               <button class="btn btn-secondary btn-sm" onclick="addServiceLine()"><i class="pi pi-plus"></i> Add</button>
             </div>
             <div class="subsection-body">
+              <div style="background: var(--success-50); border: 1px solid var(--success-200); border-radius: var(--radius-sm); padding: 8px 12px; margin-bottom: var(--spacing-sm); font-size: 11px; color: var(--success-700);">
+                <strong>💰 Priced:</strong> Each line added here will be part of the financial bid. Suppliers will be required to provide a price.
+              </div>
               ${tenderAuthorConfig.serviceDescriptions.length === 0 ? `
                 <div style="text-align: center; padding: var(--spacing-md); color: var(--text-muted); font-size: 12px; border: 1px dashed var(--surface-300); border-radius: var(--radius-sm);">
                   No service lines. Click "+ Add" to create one.
@@ -13180,9 +13260,26 @@
               ` : `
                 <div style="display: flex; flex-direction: column; gap: var(--spacing-sm);">
                   ${tenderAuthorConfig.serviceDescriptions.map((service, idx) => `
-                    <div class="service-line-compact">
-                      <input type="text" class="form-input" value="${service.name}" placeholder="Service name" onchange="updateServiceLine(${idx}, 'name', this.value)" style="flex: 1; font-size: 12px; padding: 6px 10px;" />
-                      <input type="text" class="form-input" value="${service.description || ''}" placeholder="Description (optional)" onchange="updateServiceLine(${idx}, 'description', this.value)" style="flex: 2; font-size: 12px; padding: 6px 10px;" />
+                    <div class="service-line-compact" style="flex-wrap: wrap;">
+                      <input type="text" class="form-input" value="${service.name}" placeholder="Service name" onchange="updateServiceLine(${idx}, 'name', this.value)" style="flex: 1; min-width: 120px; font-size: 12px; padding: 6px 10px;" />
+                      <input type="text" class="form-input" value="${service.description || ''}" placeholder="Description (optional)" onchange="updateServiceLine(${idx}, 'description', this.value)" style="flex: 2; min-width: 150px; font-size: 12px; padding: 6px 10px;" />
+                      <select class="form-select" onchange="updateServiceLineApplyTo(${idx}, this.value)" style="flex: 0 0 auto; width: 130px; font-size: 12px; padding: 6px 10px;">
+                        <option value="all" ${service.applyTo === 'all' || !service.applyTo ? 'selected' : ''}>All Lots</option>
+                        <option value="lot" ${service.applyTo === 'lot' ? 'selected' : ''}>Specific Lot</option>
+                        <option value="product" ${service.applyTo === 'product' ? 'selected' : ''}>Specific Product</option>
+                      </select>
+                      ${service.applyTo === 'lot' ? `
+                        <select class="form-select" onchange="updateServiceLine(${idx}, 'targetId', this.value)" style="flex: 0 0 auto; width: 140px; font-size: 12px; padding: 6px 10px;">
+                          <option value="">Select Lot...</option>
+                          ${lots.map(lot => `<option value="${lot.id}" ${service.targetId === lot.id ? 'selected' : ''}>${lot.id} - ${lot.description || 'No description'}</option>`).join('')}
+                        </select>
+                      ` : ''}
+                      ${service.applyTo === 'product' ? `
+                        <select class="form-select" onchange="updateServiceLine(${idx}, 'targetId', this.value)" style="flex: 0 0 auto; width: 140px; font-size: 12px; padding: 6px 10px;">
+                          <option value="">Select Product...</option>
+                          ${productsAndServices.map(prod => `<option value="${prod.id}" ${service.targetId === prod.id ? 'selected' : ''}>${prod.unspscCode} - ${prod.description || prod.unspscDescription}</option>`).join('')}
+                        </select>
+                      ` : ''}
                       <button class="btn-icon-sm" onclick="removeServiceLine(${idx})" style="font-size: 12px;">×</button>
                     </div>
                   `).join('')}
@@ -13191,63 +13288,125 @@
             </div>
           </div>
           
-          <!-- Delivery Requirements - 3 Column Layout -->
+          <!-- Delivery Requirements - Grid Layout -->
           <div class="other-req-subsection" style="margin-top: var(--spacing-md);">
             <div class="subsection-header">
               <span class="subsection-title">Delivery Requirements</span>
-              <button class="btn btn-secondary btn-sm" onclick="addDeliveryRequirementField()"><i class="pi pi-plus"></i> Add Field</button>
+              <button class="btn btn-secondary btn-sm" onclick="addDeliveryRequirement()"><i class="pi pi-plus"></i> Add</button>
             </div>
             <div class="subsection-body">
-              <div class="form-grid-3col">
-                ${deliveryRequirementFields.map((field, idx) => {
-                  if (field.type === 'text') {
-                    return `
-                      <div class="form-group">
-                        <label class="form-label" style="font-size: 12px;">${field.label}</label>
-                        <div style="display: flex; gap: 4px;">
-                          <input type="text" class="form-input" value="${field.value}" placeholder="${field.placeholder}" onchange="updateDeliveryFieldValue('${field.id}', this.value)" style="flex: 1; font-size: 12px; padding: 6px 10px;" />
-                          <button class="btn-icon-sm" onclick="removeDeliveryRequirementField('${field.id}')" style="font-size: 10px;">×</button>
-                        </div>
-                      </div>
-                    `;
-                  } else if (field.type === 'multi-select' && field.id === 'dr3') {
-                    return `
-                      <div class="form-group">
-                        <label class="form-label" style="font-size: 12px;">${field.label}</label>
-                        <select class="form-select" multiple size="3" onchange="updateAllowedIncoterms(this)" style="font-size: 12px;">
-                          <option value="EXW" ${tenderAuthorConfig.deliveryConfig.allowedIncoterms?.includes('EXW') ? 'selected' : ''}>EXW</option>
-                          <option value="FCA" ${tenderAuthorConfig.deliveryConfig.allowedIncoterms?.includes('FCA') ? 'selected' : ''}>FCA</option>
-                          <option value="DAP" ${tenderAuthorConfig.deliveryConfig.allowedIncoterms?.includes('DAP') ? 'selected' : ''}>DAP</option>
-                          <option value="DDP" ${tenderAuthorConfig.deliveryConfig.allowedIncoterms?.includes('DDP') ? 'selected' : ''}>DDP</option>
-                        </select>
-                      </div>
-                    `;
-                  } else if (field.type === 'textarea') {
-                    return `
-                      <div class="form-group full-width">
-                        <label class="form-label" style="font-size: 12px;">${field.label}</label>
-                        <div style="display: flex; gap: 4px;">
-                          <textarea class="form-textarea" placeholder="${field.placeholder}" onchange="updateDeliveryFieldValue('${field.id}', this.value)" style="flex: 1; font-size: 12px; padding: 6px 10px; min-height: 60px;">${field.value}</textarea>
-                          <button class="btn-icon-sm" onclick="removeDeliveryRequirementField('${field.id}')" style="font-size: 10px;">×</button>
-                        </div>
-                      </div>
-                    `;
-                  }
-                  return '';
-                }).join('')}
+              <div style="background: var(--info-50); border: 1px solid var(--info-200); border-radius: var(--radius-sm); padding: 8px 12px; margin-bottom: var(--spacing-sm); font-size: 11px; color: var(--info-700);">
+                <strong>ℹ️ Not Priced:</strong> Delivery requirements are informational and do not require suppliers to provide a separate price.
               </div>
+              ${deliveryRequirements.length === 0 ? `
+                <div style="text-align: center; padding: var(--spacing-md); color: var(--text-muted); font-size: 12px; border: 1px dashed var(--surface-300); border-radius: var(--radius-sm);">
+                  No delivery requirements. Click "+ Add" to create one.
+                </div>
+              ` : `
+                <div style="overflow-x: auto;">
+                  <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+                    <thead>
+                      <tr style="background: var(--surface-100);">
+                        <th style="padding: 8px; text-align: left; font-weight: 600; border-bottom: 1px solid var(--surface-300);">Delivery Time</th>
+                        <th style="padding: 8px; text-align: left; font-weight: 600; border-bottom: 1px solid var(--surface-300);">Delivery Place</th>
+                        <th style="padding: 8px; text-align: left; font-weight: 600; border-bottom: 1px solid var(--surface-300);">Consignee Details</th>
+                        <th style="padding: 8px; text-align: left; font-weight: 600; border-bottom: 1px solid var(--surface-300); width: 180px;">Apply To</th>
+                        <th style="padding: 8px; text-align: center; font-weight: 600; border-bottom: 1px solid var(--surface-300); width: 40px;"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      ${deliveryRequirements.map((req, idx) => `
+                        <tr style="border-bottom: 1px solid var(--surface-200);">
+                          <td style="padding: 8px; vertical-align: top;">
+                            <input type="text" class="form-input" value="${req.deliveryTime || ''}" placeholder="e.g., Within 30 days" onchange="updateDeliveryRequirement(${idx}, 'deliveryTime', this.value)" style="font-size: 12px; padding: 6px 8px; width: 100%;" />
+                          </td>
+                          <td style="padding: 8px; vertical-align: top;">
+                            <input type="text" class="form-input" value="${req.deliveryPlace || ''}" placeholder="e.g., Copenhagen" onchange="updateDeliveryRequirement(${idx}, 'deliveryPlace', this.value)" style="font-size: 12px; padding: 6px 8px; width: 100%;" />
+                          </td>
+                          <td style="padding: 8px; vertical-align: top;">
+                            <input type="text" class="form-input" value="${req.consigneeDetails || ''}" placeholder="Consignee details" onchange="updateDeliveryRequirement(${idx}, 'consigneeDetails', this.value)" style="font-size: 12px; padding: 6px 8px; width: 100%;" />
+                          </td>
+                          <td style="padding: 8px; vertical-align: top;">
+                            <select class="form-select" onchange="updateDeliveryRequirementApplyTo(${idx}, this.value)" style="font-size: 12px; padding: 6px 8px; width: 100%; margin-bottom: 4px;">
+                              <option value="all" ${req.applyTo === 'all' || !req.applyTo ? 'selected' : ''}>All Lots</option>
+                              <option value="lot" ${req.applyTo === 'lot' ? 'selected' : ''}>Specific Lot(s)</option>
+                              <option value="product" ${req.applyTo === 'product' ? 'selected' : ''}>Specific Product(s)</option>
+                            </select>
+                            ${req.applyTo === 'lot' && lots.length > 0 ? `
+                              <div style="max-height: 80px; overflow-y: auto; border: 1px solid var(--surface-200); border-radius: var(--radius-sm); padding: 4px;">
+                                ${lots.map(lot => `
+                                  <label style="display: flex; align-items: center; gap: 4px; padding: 2px 4px; cursor: pointer; font-size: 11px;">
+                                    <input type="checkbox" ${req.targetIds && req.targetIds.includes(lot.id) ? 'checked' : ''} onchange="toggleDeliveryRequirementTarget(${idx}, '${lot.id}', this.checked)" />
+                                    <span>${lot.id}</span>
+                                  </label>
+                                `).join('')}
+                              </div>
+                            ` : ''}
+                            ${req.applyTo === 'product' && productsAndServices.length > 0 ? `
+                              <div style="max-height: 80px; overflow-y: auto; border: 1px solid var(--surface-200); border-radius: var(--radius-sm); padding: 4px;">
+                                ${productsAndServices.map(prod => `
+                                  <label style="display: flex; align-items: center; gap: 4px; padding: 2px 4px; cursor: pointer; font-size: 11px;">
+                                    <input type="checkbox" ${req.targetIds && req.targetIds.includes(prod.id) ? 'checked' : ''} onchange="toggleDeliveryRequirementTarget(${idx}, '${prod.id}', this.checked)" />
+                                    <span title="${prod.description || prod.unspscDescription}">${prod.unspscCode}</span>
+                                  </label>
+                                `).join('')}
+                              </div>
+                            ` : ''}
+                          </td>
+                          <td style="padding: 8px; text-align: center; vertical-align: top;">
+                            <button class="btn-icon-sm" onclick="removeDeliveryRequirement(${idx})" style="font-size: 12px;">×</button>
+                          </td>
+                        </tr>
+                      `).join('')}
+                    </tbody>
+                  </table>
+                </div>
+              `}
             </div>
           </div>
           
-          <!-- Specific Requirements - Full Width -->
+          <!-- Specific Requirements - Grid Layout -->
           <div class="other-req-subsection" style="margin-top: var(--spacing-md);">
             <div class="subsection-header">
               <span class="subsection-title">Specific Requirements</span>
+              <button class="btn btn-secondary btn-sm" onclick="addSpecificRequirement()"><i class="pi pi-plus"></i> Add</button>
             </div>
             <div class="subsection-body">
-              <div class="form-group" style="margin: 0;">
-                <textarea class="form-textarea" placeholder="Enter specific requirements, conditions and additional information..." style="min-height: 80px; font-size: 13px;" onchange="tenderAuthorConfig.specificRequirements = this.value">${tenderAuthorConfig.specificRequirements || ''}</textarea>
+              <div style="background: var(--info-50); border: 1px solid var(--info-200); border-radius: var(--radius-sm); padding: 8px 12px; margin-bottom: var(--spacing-sm); font-size: 11px; color: var(--info-700);">
+                <strong>ℹ️ Not Priced:</strong> Specific requirements are informational conditions and do not require suppliers to provide a separate price.
               </div>
+              ${tenderAuthorConfig.specificRequirements.length === 0 ? `
+                <div style="text-align: center; padding: var(--spacing-md); color: var(--text-muted); font-size: 12px; border: 1px dashed var(--surface-300); border-radius: var(--radius-sm);">
+                  No specific requirements. Click "+ Add" to create one.
+                </div>
+              ` : `
+                <div style="display: flex; flex-direction: column; gap: var(--spacing-sm);">
+                  ${tenderAuthorConfig.specificRequirements.map((req, idx) => `
+                    <div class="service-line-compact" style="flex-wrap: wrap;">
+                      <input type="text" class="form-input" value="${req.name || ''}" placeholder="Requirement name" onchange="updateSpecificRequirement(${idx}, 'name', this.value)" style="flex: 1; min-width: 120px; font-size: 12px; padding: 6px 10px;" />
+                      <input type="text" class="form-input" value="${req.description || ''}" placeholder="Description (optional)" onchange="updateSpecificRequirement(${idx}, 'description', this.value)" style="flex: 2; min-width: 150px; font-size: 12px; padding: 6px 10px;" />
+                      <select class="form-select" onchange="updateSpecificRequirementApplyTo(${idx}, this.value)" style="flex: 0 0 auto; width: 130px; font-size: 12px; padding: 6px 10px;">
+                        <option value="all" ${req.applyTo === 'all' || !req.applyTo ? 'selected' : ''}>All Lots</option>
+                        <option value="lot" ${req.applyTo === 'lot' ? 'selected' : ''}>Specific Lot</option>
+                        <option value="product" ${req.applyTo === 'product' ? 'selected' : ''}>Specific Product</option>
+                      </select>
+                      ${req.applyTo === 'lot' ? `
+                        <select class="form-select" onchange="updateSpecificRequirement(${idx}, 'targetId', this.value)" style="flex: 0 0 auto; width: 140px; font-size: 12px; padding: 6px 10px;">
+                          <option value="">Select Lot...</option>
+                          ${lots.map(lot => `<option value="${lot.id}" ${req.targetId === lot.id ? 'selected' : ''}>${lot.id} - ${lot.description || 'No description'}</option>`).join('')}
+                        </select>
+                      ` : ''}
+                      ${req.applyTo === 'product' ? `
+                        <select class="form-select" onchange="updateSpecificRequirement(${idx}, 'targetId', this.value)" style="flex: 0 0 auto; width: 140px; font-size: 12px; padding: 6px 10px;">
+                          <option value="">Select Product...</option>
+                          ${productsAndServices.map(prod => `<option value="${prod.id}" ${req.targetId === prod.id ? 'selected' : ''}>${prod.unspscCode} - ${prod.description || prod.unspscDescription}</option>`).join('')}
+                        </select>
+                      ` : ''}
+                      <button class="btn-icon-sm" onclick="removeSpecificRequirement(${idx})" style="font-size: 12px;">×</button>
+                    </div>
+                  `).join('')}
+                </div>
+              `}
             </div>
           </div>
         `;
@@ -15831,45 +15990,61 @@
         }
       }
       
-      // ===== DELIVERY REQUIREMENTS FIELDS MANAGEMENT =====
-      window.addDeliveryRequirementField = function() {
-        const fieldLabel = prompt('Enter field label:');
-        if (!fieldLabel) return;
-        
-        const fieldType = prompt('Enter field type (text, textarea, select):');
-        if (!fieldType) return;
-        
-        const newField = {
-          id: `dr_custom_${fieldIdCounter++}`,
-          label: fieldLabel,
-          type: fieldType || 'text',
-          placeholder: '',
-          value: ''
-        };
-        
-        deliveryRequirementFields.push(newField);
+      // ===== DELIVERY REQUIREMENTS MANAGEMENT =====
+      window.addDeliveryRequirement = function() {
+        deliveryRequirements.push({
+          id: `dr_${Date.now()}`,
+          deliveryTime: '',
+          deliveryPlace: '',
+          consigneeDetails: '',
+          applyTo: 'all', // 'all', 'lot', or 'product'
+          targetIds: [] // IDs of specific lots or products
+        });
         renderCurrentBlock();
       }
       
-      window.removeDeliveryRequirementField = function(fieldId) {
-        if (confirm('Are you sure you want to remove this field?')) {
-          const index = deliveryRequirementFields.findIndex(f => f.id === fieldId);
-          if (index !== -1) {
-            deliveryRequirementFields.splice(index, 1);
-            renderCurrentBlock();
+      window.removeDeliveryRequirement = function(idx) {
+        deliveryRequirements.splice(idx, 1);
+        renderCurrentBlock();
+      }
+      
+      window.updateDeliveryRequirement = function(idx, field, value) {
+        if (deliveryRequirements[idx]) {
+          deliveryRequirements[idx][field] = value;
+        }
+      }
+      
+      window.updateDeliveryRequirementApplyTo = function(idx, value) {
+        if (deliveryRequirements[idx]) {
+          deliveryRequirements[idx].applyTo = value;
+          deliveryRequirements[idx].targetIds = []; // Reset targets when applyTo changes
+          renderCurrentBlock();
+        }
+      }
+      
+      window.toggleDeliveryRequirementTarget = function(idx, targetId, checked) {
+        if (deliveryRequirements[idx]) {
+          if (checked) {
+            if (!deliveryRequirements[idx].targetIds.includes(targetId)) {
+              deliveryRequirements[idx].targetIds.push(targetId);
+            }
+          } else {
+            deliveryRequirements[idx].targetIds = deliveryRequirements[idx].targetIds.filter(id => id !== targetId);
           }
         }
       }
       
+      // Legacy functions for backwards compatibility
+      window.addDeliveryRequirementField = function() {
+        addDeliveryRequirement();
+      }
+      
+      window.removeDeliveryRequirementField = function(fieldId) {
+        // Legacy - not used in new grid structure
+      }
+      
       window.updateDeliveryFieldValue = function(fieldId, value) {
-        const field = deliveryRequirementFields.find(f => f.id === fieldId);
-        if (field) {
-          field.value = value;
-          // Also update tenderAuthorConfig for backwards compatibility
-          if (fieldId === 'dr1') tenderAuthorConfig.deliveryConfig.deliveryTime = value;
-          if (fieldId === 'dr2') tenderAuthorConfig.deliveryConfig.deliveryPlace = value;
-          if (fieldId === 'dr4') tenderAuthorConfig.deliveryConfig.consigneeDetails = value;
-        }
+        // Legacy - not used in new grid structure
       }
       
       // ===== SUPPLIER FORM PREVIEW TOGGLE =====
@@ -17047,7 +17222,7 @@
           allowedIncoterms: [],
           consigneeDetails: '',
         },
-        specificRequirements: '', // Specific requirements, conditions and additional information
+        specificRequirements: [], // [{ name, description, applyTo: 'all'|'lot'|'product', targetId }]
       };
       
       function renderTenderAuthorConfigSection(block, section, sectionIndex, isFirst) {
@@ -17068,9 +17243,16 @@
               
               <!-- 1. Service Descriptions -->
               <div style="background: var(--surface-0); border: 1px solid var(--surface-200); border-radius: var(--radius-sm); padding: var(--spacing-lg); margin-bottom: var(--spacing-xl);">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-lg);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-md);">
                   <h4 style="font-size: 16px; font-weight: 600; margin: 0;">1. Service Descriptions</h4>
                   <button class="btn btn-ghost btn-sm" onclick="addServiceLine()">+ Add Service Line</button>
+                </div>
+                <div style="background: var(--success-50); border: 1px solid var(--success-200); border-radius: var(--radius-sm); padding: 12px 16px; margin-bottom: var(--spacing-lg); display: flex; align-items: center; gap: 10px;">
+                  <span style="font-size: 18px;">💰</span>
+                  <div>
+                    <strong style="color: var(--success-700); font-size: 13px;">Priced Items</strong>
+                    <p style="margin: 4px 0 0 0; font-size: 12px; color: var(--success-600);">Each line added here will be part of the financial bid. Suppliers will be required to provide a price for each service.</p>
+                  </div>
                 </div>
                 <div id="service-lines-list" style="display: flex; flex-direction: column; gap: var(--spacing-md);">
                   ${tenderAuthorConfig.serviceDescriptions.length === 0 ? `
@@ -17079,7 +17261,7 @@
                     </div>
                   ` : tenderAuthorConfig.serviceDescriptions.map((service, idx) => `
                     <div style="border: 1px solid var(--surface-200); border-radius: var(--radius-sm); padding: var(--spacing-md); background: var(--surface-50);">
-                      <div style="display: grid; grid-template-columns: 1fr 2fr auto; gap: var(--spacing-md); align-items: start;">
+                      <div style="display: grid; grid-template-columns: 1fr 2fr 1fr auto; gap: var(--spacing-md); align-items: start;">
                         <div class="form-group" style="margin: 0;">
                           <label style="font-size: 13px; font-weight: 600; margin-bottom: 4px; display: block;">Service Name</label>
                           <input type="text" class="form-input" value="${service.name}" placeholder="e.g., Installation Services" style="font-size: 13px; padding: 8px;" onchange="updateServiceLine(${idx}, 'name', this.value)" />
@@ -17087,6 +17269,26 @@
                         <div class="form-group" style="margin: 0;">
                           <label style="font-size: 13px; font-weight: 600; margin-bottom: 4px; display: block;">Description (Optional)</label>
                           <textarea class="form-textarea" placeholder="Service description" style="font-size: 13px; padding: 8px; min-height: 60px;" onchange="updateServiceLine(${idx}, 'description', this.value)">${service.description || ''}</textarea>
+                        </div>
+                        <div class="form-group" style="margin: 0;">
+                          <label style="font-size: 13px; font-weight: 600; margin-bottom: 4px; display: block;">Apply To</label>
+                          <select class="form-select" onchange="updateServiceLineApplyTo(${idx}, this.value)" style="font-size: 13px; padding: 8px;">
+                            <option value="all" ${service.applyTo === 'all' || !service.applyTo ? 'selected' : ''}>All Lots</option>
+                            <option value="lot" ${service.applyTo === 'lot' ? 'selected' : ''}>Specific Lot</option>
+                            <option value="product" ${service.applyTo === 'product' ? 'selected' : ''}>Specific Product</option>
+                          </select>
+                          ${service.applyTo === 'lot' ? `
+                            <select class="form-select" onchange="updateServiceLine(${idx}, 'targetId', this.value)" style="font-size: 13px; padding: 8px; margin-top: 8px;">
+                              <option value="">Select Lot...</option>
+                              ${lots.map(lot => `<option value="${lot.id}" ${service.targetId === lot.id ? 'selected' : ''}>${lot.id} - ${lot.description || 'No description'}</option>`).join('')}
+                            </select>
+                          ` : ''}
+                          ${service.applyTo === 'product' ? `
+                            <select class="form-select" onchange="updateServiceLine(${idx}, 'targetId', this.value)" style="font-size: 13px; padding: 8px; margin-top: 8px;">
+                              <option value="">Select Product...</option>
+                              ${productsAndServices.map(prod => `<option value="${prod.id}" ${service.targetId === prod.id ? 'selected' : ''}>${prod.unspscCode} - ${prod.description || prod.unspscDescription}</option>`).join('')}
+                            </select>
+                          ` : ''}
                         </div>
                         <button class="btn-icon-sm" onclick="removeServiceLine(${idx})" style="margin-top: 24px;">✖</button>
                       </div>
@@ -17097,66 +17299,141 @@
               
               <!-- 2. Delivery Requirements -->
               <div style="background: var(--surface-0); border: 1px solid var(--surface-200); border-radius: var(--radius-sm); padding: var(--spacing-lg); margin-bottom: var(--spacing-xl);">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-lg);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-md);">
                   <h4 style="font-size: 16px; font-weight: 600; margin: 0;">2. Delivery Requirements</h4>
-                  <button class="btn btn-ghost btn-sm" onclick="addDeliveryRequirementField()" style="font-size: 13px;">+ Add Field</button>
+                  <button class="btn btn-ghost btn-sm" onclick="addDeliveryRequirement()" style="font-size: 13px;">+ Add Delivery Requirement</button>
                 </div>
-                <div class="form-grid">
-                  ${deliveryRequirementFields.map((field, idx) => {
-                    if (field.type === 'text') {
-                      return `
-                        <div class="form-group" style="position: relative;">
-                          <label class="form-label">${field.label}</label>
-                          <div style="display: flex; gap: 8px; align-items: start;">
-                            <input type="text" class="form-input" value="${field.value}" placeholder="${field.placeholder}" onchange="updateDeliveryFieldValue('${field.id}', this.value)" style="flex: 1;" />
-                            <button class="btn-icon-sm" onclick="removeDeliveryRequirementField('${field.id}')" title="Remove field">✖</button>
-                          </div>
-                        </div>
-                      `;
-                    } else if (field.type === 'multi-select' && field.id === 'dr3') {
-                      return `
-                        <div class="form-group full-width" style="position: relative;">
-                          <label class="form-label">${field.label}</label>
-                          <div style="display: flex; gap: 8px; align-items: start;">
-                            <div style="flex: 1;">
-                              <select class="form-select" multiple size="4" onchange="updateAllowedIncoterms(this)">
-                                <option value="EXW" ${tenderAuthorConfig.deliveryConfig.allowedIncoterms && tenderAuthorConfig.deliveryConfig.allowedIncoterms.includes('EXW') ? 'selected' : ''}>EXW - Ex Works</option>
-                                <option value="FCA" ${tenderAuthorConfig.deliveryConfig.allowedIncoterms && tenderAuthorConfig.deliveryConfig.allowedIncoterms.includes('FCA') ? 'selected' : ''}>FCA - Free Carrier</option>
-                                <option value="CPT" ${tenderAuthorConfig.deliveryConfig.allowedIncoterms && tenderAuthorConfig.deliveryConfig.allowedIncoterms.includes('CPT') ? 'selected' : ''}>CPT - Carriage Paid To</option>
-                                <option value="CIP" ${tenderAuthorConfig.deliveryConfig.allowedIncoterms && tenderAuthorConfig.deliveryConfig.allowedIncoterms.includes('CIP') ? 'selected' : ''}>CIP - Carriage and Insurance Paid To</option>
-                                <option value="DAP" ${tenderAuthorConfig.deliveryConfig.allowedIncoterms && tenderAuthorConfig.deliveryConfig.allowedIncoterms.includes('DAP') ? 'selected' : ''}>DAP - Delivered at Place</option>
-                                <option value="DPU" ${tenderAuthorConfig.deliveryConfig.allowedIncoterms && tenderAuthorConfig.deliveryConfig.allowedIncoterms.includes('DPU') ? 'selected' : ''}>DPU - Delivered at Place Unloaded</option>
-                                <option value="DDP" ${tenderAuthorConfig.deliveryConfig.allowedIncoterms && tenderAuthorConfig.deliveryConfig.allowedIncoterms.includes('DDP') ? 'selected' : ''}>DDP - Delivered Duty Paid</option>
+                <div style="background: var(--info-50); border: 1px solid var(--info-200); border-radius: var(--radius-sm); padding: 12px 16px; margin-bottom: var(--spacing-lg); display: flex; align-items: center; gap: 10px;">
+                  <span style="font-size: 18px;">ℹ️</span>
+                  <div>
+                    <strong style="color: var(--info-700); font-size: 13px;">Not Priced</strong>
+                    <p style="margin: 4px 0 0 0; font-size: 12px; color: var(--info-600);">Delivery requirements are informational and do not require suppliers to provide a separate price.</p>
+                  </div>
+                </div>
+                ${deliveryRequirements.length === 0 ? `
+                  <div style="text-align: center; padding: var(--spacing-xl); color: var(--text-muted); border: 1px dashed var(--surface-300); border-radius: var(--radius-sm);">
+                    No delivery requirements defined. Click "+ Add Delivery Requirement" to start.
+                  </div>
+                ` : `
+                  <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                      <thead>
+                        <tr style="background: var(--surface-100);">
+                          <th style="padding: 12px; text-align: left; font-weight: 600; border-bottom: 2px solid var(--surface-300);">Delivery Time</th>
+                          <th style="padding: 12px; text-align: left; font-weight: 600; border-bottom: 2px solid var(--surface-300);">Delivery Place</th>
+                          <th style="padding: 12px; text-align: left; font-weight: 600; border-bottom: 2px solid var(--surface-300);">Consignee Details</th>
+                          <th style="padding: 12px; text-align: left; font-weight: 600; border-bottom: 2px solid var(--surface-300); width: 220px;">Apply To</th>
+                          <th style="padding: 12px; text-align: center; font-weight: 600; border-bottom: 2px solid var(--surface-300); width: 50px;"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        ${deliveryRequirements.map((req, idx) => `
+                          <tr style="border-bottom: 1px solid var(--surface-200); background: ${idx % 2 === 0 ? 'var(--surface-0)' : 'var(--surface-50)'};">
+                            <td style="padding: 12px; vertical-align: top;">
+                              <input type="text" class="form-input" value="${req.deliveryTime || ''}" placeholder="e.g., Within 30 days ARO" onchange="updateDeliveryRequirement(${idx}, 'deliveryTime', this.value)" style="font-size: 13px; padding: 8px; width: 100%;" />
+                            </td>
+                            <td style="padding: 12px; vertical-align: top;">
+                              <input type="text" class="form-input" value="${req.deliveryPlace || ''}" placeholder="e.g., Warehouse, Copenhagen" onchange="updateDeliveryRequirement(${idx}, 'deliveryPlace', this.value)" style="font-size: 13px; padding: 8px; width: 100%;" />
+                            </td>
+                            <td style="padding: 12px; vertical-align: top;">
+                              <textarea class="form-textarea" placeholder="Enter consignee details..." onchange="updateDeliveryRequirement(${idx}, 'consigneeDetails', this.value)" style="font-size: 13px; padding: 8px; width: 100%; min-height: 60px;">${req.consigneeDetails || ''}</textarea>
+                            </td>
+                            <td style="padding: 12px; vertical-align: top;">
+                              <select class="form-select" onchange="updateDeliveryRequirementApplyTo(${idx}, this.value)" style="font-size: 13px; padding: 8px; width: 100%; margin-bottom: 8px;">
+                                <option value="all" ${req.applyTo === 'all' || !req.applyTo ? 'selected' : ''}>All Lots</option>
+                                <option value="lot" ${req.applyTo === 'lot' ? 'selected' : ''}>Specific Lot(s)</option>
+                                <option value="product" ${req.applyTo === 'product' ? 'selected' : ''}>Specific Product(s)</option>
                               </select>
-                              <span class="help-text">Hold Ctrl/Cmd to select multiple Incoterms</span>
-                            </div>
-                            <button class="btn-icon-sm" onclick="removeDeliveryRequirementField('${field.id}')" title="Remove field">✖</button>
-                          </div>
-                        </div>
-                      `;
-                    } else if (field.type === 'textarea') {
-                      return `
-                        <div class="form-group full-width" style="position: relative;">
-                          <label class="form-label">${field.label}</label>
-                          <div style="display: flex; gap: 8px; align-items: start;">
-                            <textarea class="form-textarea" placeholder="${field.placeholder}" onchange="updateDeliveryFieldValue('${field.id}', this.value)" style="flex: 1;">${field.value}</textarea>
-                            <button class="btn-icon-sm" onclick="removeDeliveryRequirementField('${field.id}')" title="Remove field">✖</button>
-                          </div>
-                        </div>
-                      `;
-                    }
-                  }).join('')}
-                </div>
+                              ${req.applyTo === 'lot' ? `
+                                <div style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-sm); padding: 8px; max-height: 120px; overflow-y: auto;">
+                                  <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 6px;">Select lot(s):</div>
+                                  ${lots.length > 0 ? lots.map(lot => `
+                                    <label style="display: flex; align-items: center; gap: 6px; padding: 4px 6px; cursor: pointer; font-size: 12px; border-radius: var(--radius-sm); margin-bottom: 2px;" onmouseover="this.style.background='var(--surface-100)'" onmouseout="this.style.background='transparent'">
+                                      <input type="checkbox" ${req.targetIds && req.targetIds.includes(lot.id) ? 'checked' : ''} onchange="toggleDeliveryRequirementTarget(${idx}, '${lot.id}', this.checked)" style="cursor: pointer;" />
+                                      <span><strong>${lot.id}</strong> - ${lot.description || 'No description'}</span>
+                                    </label>
+                                  `).join('') : '<div style="font-size: 12px; color: var(--text-muted); font-style: italic;">No lots defined yet</div>'}
+                                </div>
+                              ` : ''}
+                              ${req.applyTo === 'product' ? `
+                                <div style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-sm); padding: 8px; max-height: 120px; overflow-y: auto;">
+                                  <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 6px;">Select product(s):</div>
+                                  ${productsAndServices.length > 0 ? productsAndServices.map(prod => `
+                                    <label style="display: flex; align-items: center; gap: 6px; padding: 4px 6px; cursor: pointer; font-size: 12px; border-radius: var(--radius-sm); margin-bottom: 2px;" onmouseover="this.style.background='var(--surface-100)'" onmouseout="this.style.background='transparent'">
+                                      <input type="checkbox" ${req.targetIds && req.targetIds.includes(prod.id) ? 'checked' : ''} onchange="toggleDeliveryRequirementTarget(${idx}, '${prod.id}', this.checked)" style="cursor: pointer;" />
+                                      <span title="${prod.description || prod.unspscDescription}"><strong>${prod.unspscCode}</strong> - ${(prod.description || prod.unspscDescription || '').substring(0, 30)}${(prod.description || prod.unspscDescription || '').length > 30 ? '...' : ''}</span>
+                                    </label>
+                                  `).join('') : '<div style="font-size: 12px; color: var(--text-muted); font-style: italic;">No products defined yet</div>'}
+                                </div>
+                              ` : ''}
+                            </td>
+                            <td style="padding: 12px; text-align: center; vertical-align: top;">
+                              <button class="btn-icon-sm" onclick="removeDeliveryRequirement(${idx})" title="Remove" style="color: var(--danger-500);">✖</button>
+                            </td>
+                          </tr>
+                        `).join('')}
+                      </tbody>
+                    </table>
+                  </div>
+                `}
               </div>
               
               <!-- 3. Specific Requirements -->
               <div style="background: var(--surface-0); border: 1px solid var(--surface-200); border-radius: var(--radius-sm); padding: var(--spacing-lg); margin-bottom: var(--spacing-xl);">
-                <h4 style="font-size: 16px; font-weight: 600; margin: 0 0 var(--spacing-lg) 0;">3. Specific Requirements</h4>
-                <div class="form-group">
-                  <label class="form-label">Specific requirements, conditions and additional information</label>
-                  <textarea class="form-textarea" placeholder="Enter specific requirements, conditions and additional information..." style="min-height: 120px;" onchange="tenderAuthorConfig.specificRequirements = this.value">${tenderAuthorConfig.specificRequirements || ''}</textarea>
-                  <span class="help-text">Add any specific requirements, conditions, or additional information that suppliers need to know</span>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-md);">
+                  <h4 style="font-size: 16px; font-weight: 600; margin: 0;">3. Specific Requirements</h4>
+                  <button class="btn btn-ghost btn-sm" onclick="addSpecificRequirement()">+ Add Specific Requirement</button>
                 </div>
+                <div style="background: var(--info-50); border: 1px solid var(--info-200); border-radius: var(--radius-sm); padding: 12px 16px; margin-bottom: var(--spacing-lg); display: flex; align-items: center; gap: 10px;">
+                  <span style="font-size: 18px;">ℹ️</span>
+                  <div>
+                    <strong style="color: var(--info-700); font-size: 13px;">Not Priced</strong>
+                    <p style="margin: 4px 0 0 0; font-size: 12px; color: var(--info-600);">Specific requirements are informational conditions and do not require suppliers to provide a separate price.</p>
+                  </div>
+                </div>
+                ${tenderAuthorConfig.specificRequirements.length === 0 ? `
+                  <div style="text-align: center; padding: var(--spacing-xl); color: var(--text-muted); border: 1px dashed var(--surface-300); border-radius: var(--radius-sm);">
+                    No specific requirements defined. Click "+ Add Specific Requirement" to start.
+                  </div>
+                ` : `
+                  <div style="display: flex; flex-direction: column; gap: var(--spacing-md);">
+                    ${tenderAuthorConfig.specificRequirements.map((req, idx) => `
+                      <div style="border: 1px solid var(--surface-200); border-radius: var(--radius-sm); padding: var(--spacing-md); background: var(--surface-50);">
+                        <div style="display: grid; grid-template-columns: 1fr 2fr 1fr auto; gap: var(--spacing-md); align-items: start;">
+                          <div class="form-group" style="margin: 0;">
+                            <label style="font-size: 13px; font-weight: 600; margin-bottom: 4px; display: block;">Requirement Name</label>
+                            <input type="text" class="form-input" value="${req.name || ''}" placeholder="e.g., Insurance Certificate" style="font-size: 13px; padding: 8px;" onchange="updateSpecificRequirement(${idx}, 'name', this.value)" />
+                          </div>
+                          <div class="form-group" style="margin: 0;">
+                            <label style="font-size: 13px; font-weight: 600; margin-bottom: 4px; display: block;">Description (Optional)</label>
+                            <textarea class="form-textarea" placeholder="Requirement description" style="font-size: 13px; padding: 8px; min-height: 60px;" onchange="updateSpecificRequirement(${idx}, 'description', this.value)">${req.description || ''}</textarea>
+                          </div>
+                          <div class="form-group" style="margin: 0;">
+                            <label style="font-size: 13px; font-weight: 600; margin-bottom: 4px; display: block;">Apply To</label>
+                            <select class="form-select" onchange="updateSpecificRequirementApplyTo(${idx}, this.value)" style="font-size: 13px; padding: 8px;">
+                              <option value="all" ${req.applyTo === 'all' || !req.applyTo ? 'selected' : ''}>All Lots</option>
+                              <option value="lot" ${req.applyTo === 'lot' ? 'selected' : ''}>Specific Lot</option>
+                              <option value="product" ${req.applyTo === 'product' ? 'selected' : ''}>Specific Product</option>
+                            </select>
+                            ${req.applyTo === 'lot' ? `
+                              <select class="form-select" onchange="updateSpecificRequirement(${idx}, 'targetId', this.value)" style="font-size: 13px; padding: 8px; margin-top: 8px;">
+                                <option value="">Select Lot...</option>
+                                ${lots.map(lot => `<option value="${lot.id}" ${req.targetId === lot.id ? 'selected' : ''}>${lot.id} - ${lot.description || 'No description'}</option>`).join('')}
+                              </select>
+                            ` : ''}
+                            ${req.applyTo === 'product' ? `
+                              <select class="form-select" onchange="updateSpecificRequirement(${idx}, 'targetId', this.value)" style="font-size: 13px; padding: 8px; margin-top: 8px;">
+                                <option value="">Select Product...</option>
+                                ${productsAndServices.map(prod => `<option value="${prod.id}" ${req.targetId === prod.id ? 'selected' : ''}>${prod.unspscCode} - ${prod.description || prod.unspscDescription}</option>`).join('')}
+                              </select>
+                            ` : ''}
+                          </div>
+                          <button class="btn-icon-sm" onclick="removeSpecificRequirement(${idx})" style="margin-top: 24px;">✖</button>
+                        </div>
+                      </div>
+                    `).join('')}
+                  </div>
+                `}
               </div>
             </div>
           </div>
@@ -17168,6 +17445,8 @@
         tenderAuthorConfig.serviceDescriptions.push({
           name: '',
           description: '',
+          applyTo: 'all', // 'all', 'lot', or 'product'
+          targetId: '', // ID of specific lot or product if applyTo is not 'all'
         });
         renderCurrentBlock();
       }
@@ -17178,8 +17457,46 @@
         }
       }
       
+      window.updateServiceLineApplyTo = function(idx, value) {
+        if (tenderAuthorConfig.serviceDescriptions[idx]) {
+          tenderAuthorConfig.serviceDescriptions[idx].applyTo = value;
+          tenderAuthorConfig.serviceDescriptions[idx].targetId = ''; // Reset target when applyTo changes
+          renderCurrentBlock();
+        }
+      }
+      
       window.removeServiceLine = function(idx) {
         tenderAuthorConfig.serviceDescriptions.splice(idx, 1);
+        renderCurrentBlock();
+      }
+      
+      // ===== SPECIFIC REQUIREMENTS MANAGEMENT =====
+      window.addSpecificRequirement = function() {
+        tenderAuthorConfig.specificRequirements.push({
+          name: '',
+          description: '',
+          applyTo: 'all', // 'all', 'lot', or 'product'
+          targetId: '',
+        });
+        renderCurrentBlock();
+      }
+      
+      window.updateSpecificRequirement = function(idx, field, value) {
+        if (tenderAuthorConfig.specificRequirements[idx]) {
+          tenderAuthorConfig.specificRequirements[idx][field] = value;
+        }
+      }
+      
+      window.updateSpecificRequirementApplyTo = function(idx, value) {
+        if (tenderAuthorConfig.specificRequirements[idx]) {
+          tenderAuthorConfig.specificRequirements[idx].applyTo = value;
+          tenderAuthorConfig.specificRequirements[idx].targetId = '';
+          renderCurrentBlock();
+        }
+      }
+      
+      window.removeSpecificRequirement = function(idx) {
+        tenderAuthorConfig.specificRequirements.splice(idx, 1);
         renderCurrentBlock();
       }
       
@@ -19236,7 +19553,7 @@
                 </div>
                 
                 <!-- Drop Zone for Forms -->
-                <div class="form-drop-zone">Drop forms from library here</div>
+                ${!isGeneralInfo ? '<div class="form-drop-zone">Drop forms from library here</div>' : ''}
               ${isGeneralInfo ? '</div>' : '</div>'}
             </div>
           `;
@@ -19266,7 +19583,17 @@
         const section = document.getElementById(sectionId);
         if (section) {
           section.classList.toggle('collapsed');
+          // Track the state for persistence across re-renders
+          collapsibleSectionStates[sectionId] = section.classList.contains('collapsed');
         }
+      }
+      
+      // Get the collapsed class based on saved state (defaults to collapsed if not set)
+      window.getCollapsibleClass = function(sectionId, defaultCollapsed = true) {
+        if (collapsibleSectionStates.hasOwnProperty(sectionId)) {
+          return collapsibleSectionStates[sectionId] ? 'collapsed' : '';
+        }
+        return defaultCollapsed ? 'collapsed' : '';
       }
       
       // ===== COUNTRY MULTISELECT FUNCTIONS =====
@@ -19410,9 +19737,17 @@
         const uomSelect = document.getElementById('new-ps-uom');
         const valueInput = document.getElementById('new-ps-value');
         const linkedReqSelect = document.getElementById('new-ps-linked-req');
+        const categoryIndicator = document.getElementById('unspsc-category-indicator');
         if (unspscInput) unspscInput.value = '';
         if (unspscSearchInput) unspscSearchInput.value = '';
-        if (descInput) descInput.value = '';
+        if (descInput) {
+          descInput.value = '';
+          descInput.setAttribute('readonly', 'readonly');
+        }
+        if (categoryIndicator) {
+          categoryIndicator.innerHTML = '';
+          categoryIndicator.style.display = 'none';
+        }
         
         // Initialize the UNSPSC dropdown
         initUnspscDropdown();
@@ -19655,33 +19990,76 @@
         }
         
         dropdown.innerHTML = items.map(item => `
-          <div class="unspsc-option" onclick="selectUnspscCode('${item.code}', '${item.description.replace(/'/g, "\\'")}')">
+          <div class="unspsc-option" onclick="selectUnspscCode('${item.code}', '${item.description.replace(/'/g, "\\'")}', ${item.category || 'null'})">
             <span class="unspsc-option-code">${item.code}</span>
             <span class="unspsc-option-desc">${item.description}</span>
+            ${item.category ? `<span class="unspsc-category-badge category-${item.category}" title="Category ${item.category} - Requires special handling">Cat ${item.category}</span>` : ''}
           </div>
         `).join('');
       };
       
-      window.selectUnspscCode = function(code, description) {
+      window.selectUnspscCode = function(code, description, category) {
         const searchInput = document.getElementById('new-ps-unspsc-search');
         const hiddenInput = document.getElementById('new-ps-unspsc');
         const descInput = document.getElementById('new-ps-desc');
         const dropdown = document.getElementById('unspsc-dropdown');
+        const categoryIndicator = document.getElementById('unspsc-category-indicator');
         
         if (searchInput) searchInput.value = code + ' - ' + description;
         if (hiddenInput) hiddenInput.value = code;
-        if (descInput) descInput.value = description;
+        if (descInput) {
+          descInput.value = description;
+          descInput.removeAttribute('readonly'); // Make editable after selection
+        }
         if (dropdown) dropdown.classList.remove('show');
+        
+        // Update category indicator
+        if (categoryIndicator) {
+          if (category === 2) {
+            categoryIndicator.innerHTML = `
+              <div class="category-warning category-2">
+                <span class="category-icon">⚠️</span>
+                <div class="category-text">
+                  <strong>Category 2 Item</strong>
+                  <span>This UNSPSC code requires additional review and approval processes.</span>
+                </div>
+              </div>
+            `;
+            categoryIndicator.style.display = 'block';
+          } else if (category === 3) {
+            categoryIndicator.innerHTML = `
+              <div class="category-warning category-3">
+                <span class="category-icon">🚨</span>
+                <div class="category-text">
+                  <strong>Category 3 Item</strong>
+                  <span>This UNSPSC code is high-risk and requires special handling and enhanced due diligence.</span>
+                </div>
+              </div>
+            `;
+            categoryIndicator.style.display = 'block';
+          } else {
+            categoryIndicator.innerHTML = '';
+            categoryIndicator.style.display = 'none';
+          }
+        }
       };
       
       window.clearUnspscSelection = function() {
         const searchInput = document.getElementById('new-ps-unspsc-search');
         const hiddenInput = document.getElementById('new-ps-unspsc');
         const descInput = document.getElementById('new-ps-desc');
+        const categoryIndicator = document.getElementById('unspsc-category-indicator');
         
         if (searchInput) searchInput.value = '';
         if (hiddenInput) hiddenInput.value = '';
-        if (descInput) descInput.value = '';
+        if (descInput) {
+          descInput.value = '';
+          descInput.setAttribute('readonly', 'readonly'); // Reset to readonly
+        }
+        if (categoryIndicator) {
+          categoryIndicator.innerHTML = '';
+          categoryIndicator.style.display = 'none';
+        }
       };
       
       window.addNewProductService = function() {
@@ -20604,9 +20982,11 @@
                     <!-- Options populated by JavaScript -->
                   </div>
                 </div>
+                <!-- Category Indicator - shown when Category 2/3 UNSPSC is selected -->
+                <div id="unspsc-category-indicator" style="display: none;"></div>
                 <div class="unspsc-info-message">
                   <i class="pi pi-info-circle"></i>
-                  <span>  Can’t find the UNSPSC code you need? If the code exists in the 
+                  <span>  Can't find the UNSPSC code you need? If the code exists in the 
   <a href="https://www.ungm.org/Public/UNSPSC" target="_blank">UNGM UNSPSC list</a>, 
   it can be added to oneUNOPS / ERP upon request. 
   Please contact the <strong>Data and Analytics team</strong> to request the addition.</span>
@@ -20614,7 +20994,7 @@
               </div>
               <div class="form-group">
                 <label class="form-label">Description <span class="required">*</span></label>
-                <input type="text" id="new-ps-desc" class="form-input" placeholder="Auto-filled from UNSPSC selection" style="font-size: 13px;" readonly />
+                <input type="text" id="new-ps-desc" class="form-input" placeholder="Automatically populated from the selected UNSPSC code. Editable if needed." style="font-size: 13px;" readonly />
               </div>
               <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-md);">
                 <div class="form-group">
