@@ -11746,9 +11746,8 @@
           total = 1;
           completed = 0;
         } else if (sectionType === 'other-req') {
-          total = 3;
+          total = 2;
           completed = tenderAuthorConfig.serviceDescriptions.length > 0 ? 1 : 0;
-          completed += deliveryRequirements.length > 0 ? 1 : 0;
           completed += tenderAuthorConfig.specificRequirements.length > 0 ? 1 : 0;
         } else if (sectionType === 'key-dates') {
           total = 3;
@@ -13288,102 +13287,34 @@
             </div>
           </div>
           
-          <!-- Delivery Requirements - Grid Layout -->
+          <!-- Delivery and Specific Requirements - Grid Layout -->
           <div class="other-req-subsection" style="margin-top: var(--spacing-md);">
             <div class="subsection-header">
-              <span class="subsection-title">Delivery Requirements</span>
-              <button class="btn btn-secondary btn-sm" onclick="addDeliveryRequirement()"><i class="pi pi-plus"></i> Add</button>
-            </div>
-            <div class="subsection-body">
-              <div style="background: var(--info-50); border: 1px solid var(--info-200); border-radius: var(--radius-sm); padding: 8px 12px; margin-bottom: var(--spacing-sm); font-size: 11px; color: var(--info-700);">
-                <strong>ℹ️ Not Priced:</strong> Delivery requirements are informational and do not require suppliers to provide a separate price.
-              </div>
-              ${deliveryRequirements.length === 0 ? `
-                <div style="text-align: center; padding: var(--spacing-md); color: var(--text-muted); font-size: 12px; border: 1px dashed var(--surface-300); border-radius: var(--radius-sm);">
-                  No delivery requirements. Click "+ Add" to create one.
-                </div>
-              ` : `
-                <div style="overflow-x: auto;">
-                  <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
-                    <thead>
-                      <tr style="background: var(--surface-100);">
-                        <th style="padding: 8px; text-align: left; font-weight: 600; border-bottom: 1px solid var(--surface-300);">Delivery Time</th>
-                        <th style="padding: 8px; text-align: left; font-weight: 600; border-bottom: 1px solid var(--surface-300);">Delivery Place</th>
-                        <th style="padding: 8px; text-align: left; font-weight: 600; border-bottom: 1px solid var(--surface-300);">Consignee Details</th>
-                        <th style="padding: 8px; text-align: left; font-weight: 600; border-bottom: 1px solid var(--surface-300); width: 180px;">Apply To</th>
-                        <th style="padding: 8px; text-align: center; font-weight: 600; border-bottom: 1px solid var(--surface-300); width: 40px;"></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      ${deliveryRequirements.map((req, idx) => `
-                        <tr style="border-bottom: 1px solid var(--surface-200);">
-                          <td style="padding: 8px; vertical-align: top;">
-                            <input type="text" class="form-input" value="${req.deliveryTime || ''}" placeholder="e.g., Within 30 days" onchange="updateDeliveryRequirement(${idx}, 'deliveryTime', this.value)" style="font-size: 12px; padding: 6px 8px; width: 100%;" />
-                          </td>
-                          <td style="padding: 8px; vertical-align: top;">
-                            <input type="text" class="form-input" value="${req.deliveryPlace || ''}" placeholder="e.g., Copenhagen" onchange="updateDeliveryRequirement(${idx}, 'deliveryPlace', this.value)" style="font-size: 12px; padding: 6px 8px; width: 100%;" />
-                          </td>
-                          <td style="padding: 8px; vertical-align: top;">
-                            <input type="text" class="form-input" value="${req.consigneeDetails || ''}" placeholder="Consignee details" onchange="updateDeliveryRequirement(${idx}, 'consigneeDetails', this.value)" style="font-size: 12px; padding: 6px 8px; width: 100%;" />
-                          </td>
-                          <td style="padding: 8px; vertical-align: top;">
-                            <select class="form-select" onchange="updateDeliveryRequirementApplyTo(${idx}, this.value)" style="font-size: 12px; padding: 6px 8px; width: 100%; margin-bottom: 4px;">
-                              <option value="all" ${req.applyTo === 'all' || !req.applyTo ? 'selected' : ''}>All Lots</option>
-                              <option value="lot" ${req.applyTo === 'lot' ? 'selected' : ''}>Specific Lot(s)</option>
-                              <option value="product" ${req.applyTo === 'product' ? 'selected' : ''}>Specific Product(s)</option>
-                            </select>
-                            ${req.applyTo === 'lot' && lots.length > 0 ? `
-                              <div style="max-height: 80px; overflow-y: auto; border: 1px solid var(--surface-200); border-radius: var(--radius-sm); padding: 4px;">
-                                ${lots.map(lot => `
-                                  <label style="display: flex; align-items: center; gap: 4px; padding: 2px 4px; cursor: pointer; font-size: 11px;">
-                                    <input type="checkbox" ${req.targetIds && req.targetIds.includes(lot.id) ? 'checked' : ''} onchange="toggleDeliveryRequirementTarget(${idx}, '${lot.id}', this.checked)" />
-                                    <span>${lot.id}</span>
-                                  </label>
-                                `).join('')}
-                              </div>
-                            ` : ''}
-                            ${req.applyTo === 'product' && productsAndServices.length > 0 ? `
-                              <div style="max-height: 80px; overflow-y: auto; border: 1px solid var(--surface-200); border-radius: var(--radius-sm); padding: 4px;">
-                                ${productsAndServices.map(prod => `
-                                  <label style="display: flex; align-items: center; gap: 4px; padding: 2px 4px; cursor: pointer; font-size: 11px;">
-                                    <input type="checkbox" ${req.targetIds && req.targetIds.includes(prod.id) ? 'checked' : ''} onchange="toggleDeliveryRequirementTarget(${idx}, '${prod.id}', this.checked)" />
-                                    <span title="${prod.description || prod.unspscDescription}">${prod.unspscCode}</span>
-                                  </label>
-                                `).join('')}
-                              </div>
-                            ` : ''}
-                          </td>
-                          <td style="padding: 8px; text-align: center; vertical-align: top;">
-                            <button class="btn-icon-sm" onclick="removeDeliveryRequirement(${idx})" style="font-size: 12px;">×</button>
-                          </td>
-                        </tr>
-                      `).join('')}
-                    </tbody>
-                  </table>
-                </div>
-              `}
-            </div>
-          </div>
-          
-          <!-- Specific Requirements - Grid Layout -->
-          <div class="other-req-subsection" style="margin-top: var(--spacing-md);">
-            <div class="subsection-header">
-              <span class="subsection-title">Specific Requirements</span>
+              <span class="subsection-title">Delivery and Specific Requirements</span>
               <button class="btn btn-secondary btn-sm" onclick="addSpecificRequirement()"><i class="pi pi-plus"></i> Add</button>
             </div>
             <div class="subsection-body">
               <div style="background: var(--info-50); border: 1px solid var(--info-200); border-radius: var(--radius-sm); padding: 8px 12px; margin-bottom: var(--spacing-sm); font-size: 11px; color: var(--info-700);">
-                <strong>ℹ️ Not Priced:</strong> Specific requirements are informational conditions and do not require suppliers to provide a separate price.
+                <strong>ℹ️ Not Priced:</strong> Delivery and specific requirements are informational conditions and do not require suppliers to provide a separate price.
               </div>
               ${tenderAuthorConfig.specificRequirements.length === 0 ? `
                 <div style="text-align: center; padding: var(--spacing-md); color: var(--text-muted); font-size: 12px; border: 1px dashed var(--surface-300); border-radius: var(--radius-sm);">
-                  No specific requirements. Click "+ Add" to create one.
+                  No requirements defined. Click "+ Add" to create one.
                 </div>
               ` : `
                 <div style="display: flex; flex-direction: column; gap: var(--spacing-sm);">
                   ${tenderAuthorConfig.specificRequirements.map((req, idx) => `
                     <div class="service-line-compact" style="flex-wrap: wrap;">
-                      <input type="text" class="form-input" value="${req.name || ''}" placeholder="Requirement name" onchange="updateSpecificRequirement(${idx}, 'name', this.value)" style="flex: 1; min-width: 120px; font-size: 12px; padding: 6px 10px;" />
+                      ${req.isPredefined ? `
+                        <input type="text" class="form-input" value="${req.name}" readonly disabled style="flex: 0 0 auto; width: 140px; font-size: 12px; padding: 6px 10px; background: var(--surface-100); color: var(--text-secondary); cursor: not-allowed;" title="Predefined field - cannot be renamed" />
+                      ` : `
+                        <select class="form-select" onchange="handleRequirementNameChange(${idx}, this.value)" style="flex: 0 0 auto; width: 160px; font-size: 12px; padding: 6px 10px;">
+                          <option value="">Select type...</option>
+                          ${PREDEFINED_REQUIREMENT_NAMES.map(name => '<option value="' + name + '"' + (req.name === name ? ' selected' : '') + '>' + name + '</option>').join('')}
+                          <option value="__custom__" ${req.isCustom || (req.name && !PREDEFINED_REQUIREMENT_NAMES.includes(req.name)) ? 'selected' : ''}>Custom...</option>
+                        </select>
+                        ${req.isCustom || (req.name && !PREDEFINED_REQUIREMENT_NAMES.includes(req.name)) ? '<input type="text" class="form-input" value="' + req.name + '" placeholder="Custom name" onchange="updateSpecificRequirement(' + idx + ', \'name\', this.value)" style="flex: 1; min-width: 100px; font-size: 12px; padding: 6px 10px;" />' : ''}
+                      `}
                       <input type="text" class="form-input" value="${req.description || ''}" placeholder="Description (optional)" onchange="updateSpecificRequirement(${idx}, 'description', this.value)" style="flex: 2; min-width: 150px; font-size: 12px; padding: 6px 10px;" />
                       <select class="form-select" onchange="updateSpecificRequirementApplyTo(${idx}, this.value)" style="flex: 0 0 auto; width: 130px; font-size: 12px; padding: 6px 10px;">
                         <option value="all" ${req.applyTo === 'all' || !req.applyTo ? 'selected' : ''}>All Lots</option>
@@ -17214,6 +17145,9 @@
       }
 
       // ===== TENDER AUTHOR CONFIGURATION SECTION =====
+      // Predefined requirement names - these are known database fields
+      const PREDEFINED_REQUIREMENT_NAMES = ['Delivery Time', 'Delivery Place', 'Consignee Details'];
+      
       let tenderAuthorConfig = {
         serviceDescriptions: [], // [{ name, description }]
         deliveryConfig: {
@@ -17222,7 +17156,11 @@
           allowedIncoterms: [],
           consigneeDetails: '',
         },
-        specificRequirements: [], // [{ name, description, applyTo: 'all'|'lot'|'product', targetId }]
+        specificRequirements: [
+          { name: 'Delivery Time', description: '', applyTo: 'all', targetId: '', isPredefined: true },
+          { name: 'Delivery Place', description: '', applyTo: 'all', targetId: '', isPredefined: true },
+          { name: 'Consignee Details', description: '', applyTo: 'all', targetId: '', isPredefined: true }
+        ], // [{ name, description, applyTo: 'all'|'lot'|'product', targetId }]
       };
       
       function renderTenderAuthorConfigSection(block, section, sectionIndex, isFirst) {
@@ -17297,103 +17235,22 @@
                 </div>
               </div>
               
-              <!-- 2. Delivery Requirements -->
+              <!-- 2. Delivery and Specific Requirements -->
               <div style="background: var(--surface-0); border: 1px solid var(--surface-200); border-radius: var(--radius-sm); padding: var(--spacing-lg); margin-bottom: var(--spacing-xl);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-md);">
-                  <h4 style="font-size: 16px; font-weight: 600; margin: 0;">2. Delivery Requirements</h4>
-                  <button class="btn btn-ghost btn-sm" onclick="addDeliveryRequirement()" style="font-size: 13px;">+ Add Delivery Requirement</button>
+                  <h4 style="font-size: 16px; font-weight: 600; margin: 0;">2. Delivery and Specific Requirements</h4>
+                  <button class="btn btn-ghost btn-sm" onclick="addSpecificRequirement()">+ Add Requirement</button>
                 </div>
                 <div style="background: var(--info-50); border: 1px solid var(--info-200); border-radius: var(--radius-sm); padding: 12px 16px; margin-bottom: var(--spacing-lg); display: flex; align-items: center; gap: 10px;">
                   <span style="font-size: 18px;">ℹ️</span>
                   <div>
                     <strong style="color: var(--info-700); font-size: 13px;">Not Priced</strong>
-                    <p style="margin: 4px 0 0 0; font-size: 12px; color: var(--info-600);">Delivery requirements are informational and do not require suppliers to provide a separate price.</p>
-                  </div>
-                </div>
-                ${deliveryRequirements.length === 0 ? `
-                  <div style="text-align: center; padding: var(--spacing-xl); color: var(--text-muted); border: 1px dashed var(--surface-300); border-radius: var(--radius-sm);">
-                    No delivery requirements defined. Click "+ Add Delivery Requirement" to start.
-                  </div>
-                ` : `
-                  <div style="overflow-x: auto;">
-                    <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
-                      <thead>
-                        <tr style="background: var(--surface-100);">
-                          <th style="padding: 12px; text-align: left; font-weight: 600; border-bottom: 2px solid var(--surface-300);">Delivery Time</th>
-                          <th style="padding: 12px; text-align: left; font-weight: 600; border-bottom: 2px solid var(--surface-300);">Delivery Place</th>
-                          <th style="padding: 12px; text-align: left; font-weight: 600; border-bottom: 2px solid var(--surface-300);">Consignee Details</th>
-                          <th style="padding: 12px; text-align: left; font-weight: 600; border-bottom: 2px solid var(--surface-300); width: 220px;">Apply To</th>
-                          <th style="padding: 12px; text-align: center; font-weight: 600; border-bottom: 2px solid var(--surface-300); width: 50px;"></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        ${deliveryRequirements.map((req, idx) => `
-                          <tr style="border-bottom: 1px solid var(--surface-200); background: ${idx % 2 === 0 ? 'var(--surface-0)' : 'var(--surface-50)'};">
-                            <td style="padding: 12px; vertical-align: top;">
-                              <input type="text" class="form-input" value="${req.deliveryTime || ''}" placeholder="e.g., Within 30 days ARO" onchange="updateDeliveryRequirement(${idx}, 'deliveryTime', this.value)" style="font-size: 13px; padding: 8px; width: 100%;" />
-                            </td>
-                            <td style="padding: 12px; vertical-align: top;">
-                              <input type="text" class="form-input" value="${req.deliveryPlace || ''}" placeholder="e.g., Warehouse, Copenhagen" onchange="updateDeliveryRequirement(${idx}, 'deliveryPlace', this.value)" style="font-size: 13px; padding: 8px; width: 100%;" />
-                            </td>
-                            <td style="padding: 12px; vertical-align: top;">
-                              <textarea class="form-textarea" placeholder="Enter consignee details..." onchange="updateDeliveryRequirement(${idx}, 'consigneeDetails', this.value)" style="font-size: 13px; padding: 8px; width: 100%; min-height: 60px;">${req.consigneeDetails || ''}</textarea>
-                            </td>
-                            <td style="padding: 12px; vertical-align: top;">
-                              <select class="form-select" onchange="updateDeliveryRequirementApplyTo(${idx}, this.value)" style="font-size: 13px; padding: 8px; width: 100%; margin-bottom: 8px;">
-                                <option value="all" ${req.applyTo === 'all' || !req.applyTo ? 'selected' : ''}>All Lots</option>
-                                <option value="lot" ${req.applyTo === 'lot' ? 'selected' : ''}>Specific Lot(s)</option>
-                                <option value="product" ${req.applyTo === 'product' ? 'selected' : ''}>Specific Product(s)</option>
-                              </select>
-                              ${req.applyTo === 'lot' ? `
-                                <div style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-sm); padding: 8px; max-height: 120px; overflow-y: auto;">
-                                  <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 6px;">Select lot(s):</div>
-                                  ${lots.length > 0 ? lots.map(lot => `
-                                    <label style="display: flex; align-items: center; gap: 6px; padding: 4px 6px; cursor: pointer; font-size: 12px; border-radius: var(--radius-sm); margin-bottom: 2px;" onmouseover="this.style.background='var(--surface-100)'" onmouseout="this.style.background='transparent'">
-                                      <input type="checkbox" ${req.targetIds && req.targetIds.includes(lot.id) ? 'checked' : ''} onchange="toggleDeliveryRequirementTarget(${idx}, '${lot.id}', this.checked)" style="cursor: pointer;" />
-                                      <span><strong>${lot.id}</strong> - ${lot.description || 'No description'}</span>
-                                    </label>
-                                  `).join('') : '<div style="font-size: 12px; color: var(--text-muted); font-style: italic;">No lots defined yet</div>'}
-                                </div>
-                              ` : ''}
-                              ${req.applyTo === 'product' ? `
-                                <div style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-sm); padding: 8px; max-height: 120px; overflow-y: auto;">
-                                  <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 6px;">Select product(s):</div>
-                                  ${productsAndServices.length > 0 ? productsAndServices.map(prod => `
-                                    <label style="display: flex; align-items: center; gap: 6px; padding: 4px 6px; cursor: pointer; font-size: 12px; border-radius: var(--radius-sm); margin-bottom: 2px;" onmouseover="this.style.background='var(--surface-100)'" onmouseout="this.style.background='transparent'">
-                                      <input type="checkbox" ${req.targetIds && req.targetIds.includes(prod.id) ? 'checked' : ''} onchange="toggleDeliveryRequirementTarget(${idx}, '${prod.id}', this.checked)" style="cursor: pointer;" />
-                                      <span title="${prod.description || prod.unspscDescription}"><strong>${prod.unspscCode}</strong> - ${(prod.description || prod.unspscDescription || '').substring(0, 30)}${(prod.description || prod.unspscDescription || '').length > 30 ? '...' : ''}</span>
-                                    </label>
-                                  `).join('') : '<div style="font-size: 12px; color: var(--text-muted); font-style: italic;">No products defined yet</div>'}
-                                </div>
-                              ` : ''}
-                            </td>
-                            <td style="padding: 12px; text-align: center; vertical-align: top;">
-                              <button class="btn-icon-sm" onclick="removeDeliveryRequirement(${idx})" title="Remove" style="color: var(--danger-500);">✖</button>
-                            </td>
-                          </tr>
-                        `).join('')}
-                      </tbody>
-                    </table>
-                  </div>
-                `}
-              </div>
-              
-              <!-- 3. Specific Requirements -->
-              <div style="background: var(--surface-0); border: 1px solid var(--surface-200); border-radius: var(--radius-sm); padding: var(--spacing-lg); margin-bottom: var(--spacing-xl);">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-md);">
-                  <h4 style="font-size: 16px; font-weight: 600; margin: 0;">3. Specific Requirements</h4>
-                  <button class="btn btn-ghost btn-sm" onclick="addSpecificRequirement()">+ Add Specific Requirement</button>
-                </div>
-                <div style="background: var(--info-50); border: 1px solid var(--info-200); border-radius: var(--radius-sm); padding: 12px 16px; margin-bottom: var(--spacing-lg); display: flex; align-items: center; gap: 10px;">
-                  <span style="font-size: 18px;">ℹ️</span>
-                  <div>
-                    <strong style="color: var(--info-700); font-size: 13px;">Not Priced</strong>
-                    <p style="margin: 4px 0 0 0; font-size: 12px; color: var(--info-600);">Specific requirements are informational conditions and do not require suppliers to provide a separate price.</p>
+                    <p style="margin: 4px 0 0 0; font-size: 12px; color: var(--info-600);">Delivery and specific requirements are informational conditions and do not require suppliers to provide a separate price.</p>
                   </div>
                 </div>
                 ${tenderAuthorConfig.specificRequirements.length === 0 ? `
                   <div style="text-align: center; padding: var(--spacing-xl); color: var(--text-muted); border: 1px dashed var(--surface-300); border-radius: var(--radius-sm);">
-                    No specific requirements defined. Click "+ Add Specific Requirement" to start.
+                    No requirements defined. Click "+ Add Requirement" to start.
                   </div>
                 ` : `
                   <div style="display: flex; flex-direction: column; gap: var(--spacing-md);">
@@ -17402,7 +17259,16 @@
                         <div style="display: grid; grid-template-columns: 1fr 2fr 1fr auto; gap: var(--spacing-md); align-items: start;">
                           <div class="form-group" style="margin: 0;">
                             <label style="font-size: 13px; font-weight: 600; margin-bottom: 4px; display: block;">Requirement Name</label>
-                            <input type="text" class="form-input" value="${req.name || ''}" placeholder="e.g., Insurance Certificate" style="font-size: 13px; padding: 8px;" onchange="updateSpecificRequirement(${idx}, 'name', this.value)" />
+                            ${req.isPredefined ? `
+                              <input type="text" class="form-input" value="${req.name}" readonly disabled style="font-size: 13px; padding: 8px; background: var(--surface-100); color: var(--text-secondary); cursor: not-allowed;" title="Predefined field - cannot be renamed" />
+                            ` : `
+                              <select class="form-select" onchange="handleRequirementNameChange(${idx}, this.value)" style="font-size: 13px; padding: 8px; margin-bottom: 8px;">
+                                <option value="">Select type...</option>
+                                ${PREDEFINED_REQUIREMENT_NAMES.map(name => '<option value="' + name + '"' + (req.name === name ? ' selected' : '') + '>' + name + '</option>').join('')}
+                                <option value="__custom__" ${req.isCustom || (req.name && !PREDEFINED_REQUIREMENT_NAMES.includes(req.name)) ? 'selected' : ''}>Custom...</option>
+                              </select>
+                              ${req.isCustom || (req.name && !PREDEFINED_REQUIREMENT_NAMES.includes(req.name)) ? '<input type="text" class="form-input" value="' + req.name + '" placeholder="Enter custom name" onchange="updateSpecificRequirement(' + idx + ', \'name\', this.value)" style="font-size: 13px; padding: 8px;" />' : ''}
+                            `}
                           </div>
                           <div class="form-group" style="margin: 0;">
                             <label style="font-size: 13px; font-weight: 600; margin-bottom: 4px; display: block;">Description (Optional)</label>
@@ -17477,8 +17343,25 @@
           description: '',
           applyTo: 'all', // 'all', 'lot', or 'product'
           targetId: '',
+          isPredefined: false
         });
         renderCurrentBlock();
+      }
+      
+      // Handle requirement name selection from dropdown
+      window.handleRequirementNameChange = function(idx, value) {
+        if (tenderAuthorConfig.specificRequirements[idx]) {
+          if (value === '__custom__') {
+            // User wants to enter a custom name
+            tenderAuthorConfig.specificRequirements[idx].name = '';
+            tenderAuthorConfig.specificRequirements[idx].isCustom = true;
+          } else {
+            // User selected a predefined name
+            tenderAuthorConfig.specificRequirements[idx].name = value;
+            tenderAuthorConfig.specificRequirements[idx].isCustom = false;
+          }
+          renderCurrentBlock();
+        }
       }
       
       window.updateSpecificRequirement = function(idx, field, value) {
