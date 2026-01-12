@@ -10450,12 +10450,22 @@
                       <label class="form-label">
                         Are partial quotations/bids/proposals allowed? <span class="required">*</span>
                       </label>
-                      <select class="form-select" onchange="updateAllowPartialQuotations(this.value)" style="max-width: 300px;">
-                        <option value="" ${allowPartialQuotations === '' ? 'selected' : ''}>Select...</option>
-                        <option value="Yes" ${allowPartialQuotations === 'Yes' ? 'selected' : ''}>Yes - Allow partial quotations (Lots enabled)</option>
-                        <option value="No" ${allowPartialQuotations === 'No' ? 'selected' : ''}>No - Full quotation required (No lots)</option>
-                      </select>
-                      <span class="help-text">If Yes, suppliers can submit bids for individual lots. If No, suppliers must bid on all items.</span>
+                      <div class="radio-group" style="display: flex; flex-direction: column; gap: var(--spacing-sm);">
+                        <label class="radio-option" style="display: flex; align-items: flex-start; gap: var(--spacing-sm); cursor: pointer; padding: var(--spacing-sm); border: 1px solid var(--surface-300); border-radius: var(--radius-md); transition: all 0.2s ease; ${allowPartialQuotations === 'Yes' ? 'background: var(--primary-50); border-color: var(--primary-500);' : ''}">
+                          <input type="radio" name="allowPartialQuotations" value="Yes" ${allowPartialQuotations === 'Yes' ? 'checked' : ''} onchange="updateAllowPartialQuotations(this.value)" style="margin-top: 3px; accent-color: var(--primary-500);">
+                          <div>
+                            <strong style="color: var(--text-primary);">Yes - Partial Quotations Allowed</strong>
+                            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">Bidders/Offerors shall be allowed to quote prices for one or more lots identified in this tender. However, bidders/offerors must offer 100% of the items specified for each lot and to 100% of the quantities specified for each item of a lot. Evaluation will be done per lot.</div>
+                          </div>
+                        </label>
+                        <label class="radio-option" style="display: flex; align-items: flex-start; gap: var(--spacing-sm); cursor: pointer; padding: var(--spacing-sm); border: 1px solid var(--surface-300); border-radius: var(--radius-md); transition: all 0.2s ease; ${allowPartialQuotations === 'No' ? 'background: var(--primary-50); border-color: var(--primary-500);' : ''}">
+                          <input type="radio" name="allowPartialQuotations" value="No" ${allowPartialQuotations === 'No' ? 'checked' : ''} onchange="updateAllowPartialQuotations(this.value)" style="margin-top: 3px; accent-color: var(--primary-500);">
+                          <div>
+                            <strong style="color: var(--text-primary);">No - Partial Quotations NOT Allowed</strong>
+                            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">Partial bids/proposals shall NOT be allowed. Bidders/Offerors must quote prices for the total goods, services or works for the total requirement. Evaluation will be done for the total requirement.</div>
+                          </div>
+                        </label>
+                      </div>
                     </div>
                   </div>
                 </div>
