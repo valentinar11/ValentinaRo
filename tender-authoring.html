@@ -8439,7 +8439,11 @@
         limitedCompetitionJustification: '',
         directContractingReason: '',
         linkedProcess: '',
-        directContractingJustification: ''
+        directContractingJustification: '',
+        // Vendor Notification
+        notificationVendors: [],
+        vendorListPage: 1,
+        vendorListFilter: ''
       };
       
       // Contract Provisions settings
@@ -11820,6 +11824,151 @@
       }
       
       // ===== COMPETITION BLOCK =====
+      
+      // Helper function to render Vendor Notification Section (always visible)
+      function renderVendorNotificationSection() {
+        
+        // Build vendors table rows using string concatenation to avoid template literal nesting issues
+        let vendorRows = '';
+        const vendors = competitionValues.notificationVendors || [];
+        const page = competitionValues.vendorListPage || 1;
+        const startIdx = (page - 1) * 10;
+        const endIdx = page * 10;
+        const pagedVendors = vendors.slice(startIdx, endIdx);
+        
+        pagedVendors.forEach((vendor, idx) => {
+          const globalIdx = startIdx + idx;
+          const sourceClass = vendor.source === 'UNGM' ? 'badge-primary' : vendor.source === 'Shortlist' ? 'badge-info' : vendor.source === 'Manual' ? 'badge-success' : 'badge-warning';
+          vendorRows += '<tr style="border-bottom: 1px solid var(--surface-100);">' +
+            '<td style="padding: 10px 12px; color: var(--text-primary);">' + (vendor.companyName || '-') + '</td>' +
+            '<td style="padding: 10px 12px; color: var(--text-secondary);">' + (vendor.email || '-') + '</td>' +
+            '<td style="padding: 10px 12px; color: var(--text-secondary);">' + (vendor.ungmId || '-') + '</td>' +
+            '<td style="padding: 10px 12px;"><span class="badge ' + sourceClass + '" style="font-size: 10px;">' + (vendor.source || 'Unknown') + '</span></td>' +
+            '<td style="padding: 10px 12px; text-align: center;">' + (vendor.notified ? '<span class="badge badge-success" style="font-size: 10px;">Yes</span>' : '<span class="badge badge-secondary" style="font-size: 10px;">No</span>') + '</td>' +
+            '<td style="padding: 10px 12px; text-align: center;"><button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); removeNotificationVendor(' + globalIdx + ')" style="color: var(--danger-500); padding: 4px;"><i class="pi pi-times"></i></button></td>' +
+          '</tr>';
+        });
+        
+        // Build pagination
+        let pagination = '';
+        if (vendors.length > 0) {
+          const totalPages = Math.max(1, Math.ceil(vendors.length / 10));
+          const showing = vendors.length > 0 ? (startIdx + 1) + ' - ' + Math.min(endIdx, vendors.length) : '0';
+          pagination = '<div style="background: var(--surface-50); padding: var(--spacing-sm) var(--spacing-md); display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--surface-200);">' +
+            '<div style="font-size: 12px; color: var(--text-secondary);">Showing ' + showing + ' of ' + vendors.length + ' vendors</div>' +
+            '<div style="display: flex; align-items: center; gap: 4px;">' +
+              '<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); changeVendorListPage(\'prev\')" ' + (page === 1 ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : '') + '><i class="pi pi-chevron-left"></i></button>' +
+              '<span style="font-size: 12px; color: var(--text-secondary); padding: 0 8px;">Page ' + page + ' of ' + totalPages + '</span>' +
+              '<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); changeVendorListPage(\'next\')" ' + (page >= totalPages ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : '') + '><i class="pi pi-chevron-right"></i></button>' +
+            '</div>' +
+          '</div>';
+        }
+        
+        // Build table content
+        let tableContent = '';
+        if (vendors.length > 0) {
+          tableContent = '<table style="width: 100%; border-collapse: collapse; font-size: 13px;">' +
+            '<thead style="background: var(--surface-50);"><tr>' +
+              '<th style="padding: 10px 12px; text-align: left; font-weight: 600; color: var(--text-secondary); border-bottom: 1px solid var(--surface-200);">Company Name</th>' +
+              '<th style="padding: 10px 12px; text-align: left; font-weight: 600; color: var(--text-secondary); border-bottom: 1px solid var(--surface-200);">Email</th>' +
+              '<th style="padding: 10px 12px; text-align: left; font-weight: 600; color: var(--text-secondary); border-bottom: 1px solid var(--surface-200);">UNGM ID</th>' +
+              '<th style="padding: 10px 12px; text-align: left; font-weight: 600; color: var(--text-secondary); border-bottom: 1px solid var(--surface-200);">Source</th>' +
+              '<th style="padding: 10px 12px; text-align: center; font-weight: 600; color: var(--text-secondary); border-bottom: 1px solid var(--surface-200);">Notified</th>' +
+              '<th style="padding: 10px 12px; text-align: center; font-weight: 600; color: var(--text-secondary); border-bottom: 1px solid var(--surface-200); width: 60px;">Action</th>' +
+            '</tr></thead>' +
+            '<tbody id="notification-vendors-tbody">' + vendorRows + '</tbody>' +
+          '</table>';
+        } else {
+          tableContent = '<div style="padding: var(--spacing-xl); text-align: center; color: var(--text-muted);">' +
+            '<i class="pi pi-inbox" style="font-size: 36px; color: var(--surface-300); display: block; margin-bottom: var(--spacing-sm);"></i>' +
+            '<div style="font-size: 14px; font-weight: 500; color: var(--text-secondary); margin-bottom: 4px;">No vendors added yet</div>' +
+            '<div style="font-size: 12px;">Use one of the methods above to add vendors</div>' +
+          '</div>';
+        }
+        
+        const clearAllBtn = vendors.length > 0 ? '<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); clearAllNotificationVendors()" style="color: var(--danger-500); font-size: 11px;"><i class="pi pi-trash"></i> Clear All</button>' : '';
+        
+        return '<div class="collapsible-section collapsed" id="vendor-notification-section" style="margin-top: var(--spacing-md);">' +
+          '<div class="collapsible-header" onclick="toggleCollapsibleSection(\'vendor-notification-section\')">' +
+            '<div class="collapsible-header-left">' +
+              '<span class="collapsible-header-title">Vendor Notification</span>' +
+              '<span class="badge badge-info" style="margin-left: 8px; font-size: 10px;">' + vendors.length + ' vendors</span>' +
+            '</div>' +
+            '<div class="collapsible-toggle">▼</div>' +
+          '</div>' +
+          '<div class="collapsible-body" onclick="event.stopPropagation()">' +
+            '<div style="margin-bottom: var(--spacing-md);">' +
+              '<h4 style="margin: 0 0 4px 0; font-size: 14px; font-weight: 600; color: var(--text-primary);">Add Vendors to Notify</h4>' +
+              '<p style="margin: 0; font-size: 12px; color: var(--text-secondary);">Choose one of the methods below to add vendors to the notification list</p>' +
+            '</div>' +
+            '<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-md); margin-bottom: var(--spacing-lg);">' +
+              '<div style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-lg); padding: var(--spacing-md);">' +
+                '<div style="display: flex; align-items: center; gap: 8px; margin-bottom: var(--spacing-sm);">' +
+                  '<div style="width: 32px; height: 32px; background: var(--primary-100); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;"><i class="pi pi-globe" style="color: var(--primary-600); font-size: 14px;"></i></div>' +
+                  '<div><div style="font-weight: 600; font-size: 13px; color: var(--text-primary);">Search UNGM</div><div style="font-size: 11px; color: var(--text-secondary);">Find registered vendors</div></div>' +
+                '</div>' +
+                '<div style="position: relative;">' +
+                  '<input type="text" class="form-input" placeholder="Search by vendor name or ID..." style="padding-left: 36px; font-size: 13px;" id="ungm-vendor-search" onclick="event.stopPropagation()" onkeyup="searchUNGMVendors(this.value)" />' +
+                  '<i class="pi pi-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 13px;"></i>' +
+                '</div>' +
+                '<div id="ungm-search-results" style="display: none; position: absolute; z-index: 100; background: white; border: 1px solid var(--surface-300); border-radius: var(--radius-md); box-shadow: var(--shadow-lg); max-height: 200px; overflow-y: auto; width: calc(100% - 32px); margin-top: 4px;"></div>' +
+              '</div>' +
+              '<div style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-lg); padding: var(--spacing-md);">' +
+                '<div style="display: flex; align-items: center; gap: 8px; margin-bottom: var(--spacing-sm);">' +
+                  '<div style="width: 32px; height: 32px; background: var(--info-100); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;"><i class="pi pi-list" style="color: var(--info-600); font-size: 14px;"></i></div>' +
+                  '<div><div style="font-weight: 600; font-size: 13px; color: var(--text-primary);">From Shortlist</div><div style="font-size: 11px; color: var(--text-secondary);">Add from existing shortlists</div></div>' +
+                '</div>' +
+                '<select class="form-select" style="font-size: 13px;" onchange="addShortlistVendors(this.value); this.value=\'\';" onclick="event.stopPropagation()">' +
+                  '<option value="">Select a shortlist...</option>' +
+                  '<option value="shortlist-1">IT Equipment Suppliers (12 vendors)</option>' +
+                  '<option value="shortlist-2">Construction Services (8 vendors)</option>' +
+                  '<option value="shortlist-3">Office Supplies (15 vendors)</option>' +
+                  '<option value="shortlist-4">Consulting Services (6 vendors)</option>' +
+                '</select>' +
+              '</div>' +
+              '<div style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-lg); padding: var(--spacing-md);">' +
+                '<div style="display: flex; align-items: center; gap: 8px; margin-bottom: var(--spacing-sm);">' +
+                  '<div style="width: 32px; height: 32px; background: var(--success-100); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;"><i class="pi pi-user-plus" style="color: var(--success-600); font-size: 14px;"></i></div>' +
+                  '<div><div style="font-weight: 600; font-size: 13px; color: var(--text-primary);">Add Manually</div><div style="font-size: 11px; color: var(--text-secondary);">Unregistered suppliers</div></div>' +
+                '</div>' +
+                '<div style="display: flex; flex-direction: column; gap: 8px;">' +
+                  '<input type="text" class="form-input" placeholder="Company name *" style="font-size: 13px;" id="manual-vendor-company" onclick="event.stopPropagation()" />' +
+                  '<input type="email" class="form-input" placeholder="Email address *" style="font-size: 13px;" id="manual-vendor-email" onclick="event.stopPropagation()" />' +
+                  '<button class="btn btn-success btn-sm" onclick="event.stopPropagation(); addManualVendor()" style="align-self: flex-start;"><i class="pi pi-plus"></i> Add Vendor</button>' +
+                '</div>' +
+              '</div>' +
+              '<div style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-lg); padding: var(--spacing-md);">' +
+                '<div style="display: flex; align-items: center; gap: 8px; margin-bottom: var(--spacing-sm);">' +
+                  '<div style="width: 32px; height: 32px; background: var(--warning-100); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;"><i class="pi pi-upload" style="color: var(--warning-600); font-size: 14px;"></i></div>' +
+                  '<div><div style="font-weight: 600; font-size: 13px; color: var(--text-primary);">Bulk Upload</div><div style="font-size: 11px; color: var(--text-secondary);">Import from spreadsheet</div></div>' +
+                '</div>' +
+                '<div style="display: flex; gap: 8px; flex-wrap: wrap;">' +
+                  '<button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); downloadVendorNotificationTemplate()" title="Download template"><i class="pi pi-download"></i> Template</button>' +
+                  '<button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); document.getElementById(\'vendor-upload-input\').click()" title="Upload vendor list"><i class="pi pi-upload"></i> Upload File</button>' +
+                  '<input type="file" id="vendor-upload-input" accept=".xlsx,.xls,.csv" style="display: none;" onchange="handleVendorListUpload(event)" />' +
+                '</div>' +
+                '<div style="font-size: 11px; color: var(--text-muted); margin-top: 8px;">Accepts .xlsx, .xls, .csv</div>' +
+              '</div>' +
+            '</div>' +
+            '<div style="border: 1px solid var(--surface-200); border-radius: var(--radius-lg); overflow: hidden;">' +
+              '<div style="background: var(--surface-100); padding: var(--spacing-sm) var(--spacing-md); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--surface-200);">' +
+                '<div style="display: flex; align-items: center; gap: 8px;">' +
+                  '<i class="pi pi-users" style="color: var(--text-secondary);"></i>' +
+                  '<span style="font-weight: 600; font-size: 13px; color: var(--text-primary);">Vendors</span>' +
+                  '<span class="badge badge-primary" style="font-size: 10px;">' + vendors.length + '</span>' +
+                '</div>' +
+                '<div style="display: flex; align-items: center; gap: 8px;">' +
+                  '<input type="text" class="form-input" placeholder="Filter vendors..." style="font-size: 12px; padding: 4px 10px; width: 180px;" onclick="event.stopPropagation()" onkeyup="filterNotificationVendors(this.value)" />' +
+                  clearAllBtn +
+                '</div>' +
+              '</div>' +
+              '<div style="overflow-x: auto;">' + tableContent + '</div>' +
+              pagination +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      }
+      
       function renderCompetitionBlock(block) {
         const isOpenOrLimited = ['Open competition', 'Limited competition'].includes(competitionValues.competitionType);
         const isLimited = competitionValues.competitionType === 'Limited competition';
@@ -11854,104 +12003,21 @@
                 </div>
               </div>
               
-              <!-- Vendor Notification Section - Collapsible -->
-              <div class="collapsible-section collapsed" id="vendor-notification-section" style="margin-top: var(--spacing-md);">
-                <div class="collapsible-header" onclick="toggleCollapsibleSection('vendor-notification-section')">
+              <!-- Competition Details Section - Collapsible (visible when competition type is selected) -->
+              ${competitionValues.competitionType ? `
+              <div class="collapsible-section collapsed" id="competition-details-section" style="margin-top: var(--spacing-md);">
+                <div class="collapsible-header" onclick="toggleCollapsibleSection('competition-details-section')">
                   <div class="collapsible-header-left">
-                    <span class="collapsible-header-title">Vendor Notification</span>
-                    ${renderSectionProgress('vendor-notification', null)}
+                    <span class="collapsible-header-title">Competition Details</span>
+                    ${renderSectionProgress('competition-details', null)}
                   </div>
                   <div class="collapsible-toggle">▼</div>
                 </div>
                 <div class="collapsible-body" onclick="event.stopPropagation()">
                   <div class="form-grid-3col">
-                    <div class="form-group full-width">
-                      <label class="form-label">Add UNGM vendor to be notified</label>
-                      <div style="position: relative;">
-                        <input type="text" class="form-input" placeholder="Search UNGM vendors or shortlist..." style="padding-left: 36px;" id="ungm-vendor-search" onclick="event.stopPropagation()" />
-                        <span style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 13px;">🔍</span>
-                      </div>
-                      <span class="help-text">Search from UNGM database or existing shortlists</span>
-                      
-                      <!-- Selected vendors display -->
-                      <div id="selected-ungm-vendors" style="margin-top: var(--spacing-sm); display: flex; flex-wrap: wrap; gap: var(--spacing-xs);">
-                        ${competitionValues.ungmVendors.map((vendor, idx) => `
-                          <span class="badge badge-info" style="display: inline-flex; align-items: center; gap: 4px;">
-                            ${vendor}
-                            <button type="button" onclick="event.stopPropagation(); removeUngmVendor(${idx})" style="background: none; border: none; cursor: pointer; padding: 0; font-size: 14px;">×</button>
-                          </span>
-                        `).join('')}
-                      </div>
-                    </div>
                     
-                    <div class="form-group">
-                      <label class="form-label">Add email address (unregistered supplier)</label>
-                      <input type="email" class="form-input" placeholder="supplier@company.com" value="${competitionValues.unregisteredEmail}" onchange="updateCompetitionValue('unregisteredEmail', this.value)" onclick="event.stopPropagation()" />
-                      <span class="help-text">For suppliers not registered in UNGM</span>
-                    </div>
-                    
-                    <div class="form-group">
-                      <label class="form-label">Add Company Name (unregistered supplier)</label>
-                      <input type="text" class="form-input" placeholder="Company name" value="${competitionValues.unregisteredCompanyName}" onchange="updateCompetitionValue('unregisteredCompanyName', this.value)" onclick="event.stopPropagation()" />
-                      <span class="help-text">For suppliers not registered in UNGM</span>
-                    </div>
-                    
-                    <!-- Bulk Vendor Upload Section -->
-                    <div class="form-group full-width" style="margin-top: var(--spacing-md); padding-top: var(--spacing-md); border-top: 1px dashed var(--surface-300);">
-                      <label class="form-label">Bulk Vendor Upload</label>
-                      <div style="display: flex; align-items: center; gap: var(--spacing-sm); flex-wrap: wrap;">
-                        <button class="btn btn-secondary" onclick="event.stopPropagation(); downloadVendorNotificationTemplate()" title="Download Excel template for vendor list">
-                          <i class="pi pi-download"></i> Download Template
-                        </button>
-                        <button class="btn btn-secondary" onclick="event.stopPropagation(); document.getElementById('vendor-upload-input').click()" title="Upload vendor list from spreadsheet">
-                          <i class="pi pi-upload"></i> Upload Vendor List
-                        </button>
-                        <input type="file" id="vendor-upload-input" accept=".xlsx,.xls,.csv" style="display: none;" onchange="handleVendorListUpload(event)" />
-                        <span style="font-size: 12px; color: var(--text-muted);">Supported formats: .xlsx, .xls, .csv</span>
-                      </div>
-                      <span class="help-text">Download the template, fill in vendor details, and upload to bulk add vendors to be notified</span>
-                      
-                      <!-- Uploaded Vendors List -->
-                      <div id="uploaded-vendors-list" style="margin-top: var(--spacing-sm);">
-                        ${competitionValues.uploadedVendors && competitionValues.uploadedVendors.length > 0 ? `
-                          <div style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-md); padding: var(--spacing-sm); margin-top: var(--spacing-sm);">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-xs);">
-                              <span style="font-size: 12px; font-weight: 600; color: var(--text-secondary);">
-                                <i class="pi pi-users" style="margin-right: 4px;"></i>
-                                Uploaded Vendors (${competitionValues.uploadedVendors.length})
-                              </span>
-                              <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); clearUploadedVendors()" style="font-size: 11px; color: var(--danger-500);">
-                                <i class="pi pi-trash"></i> Clear All
-                              </button>
-                            </div>
-                            <div style="display: flex; flex-wrap: wrap; gap: 6px; max-height: 120px; overflow-y: auto;">
-                              ${competitionValues.uploadedVendors.map((vendor, idx) => `
-                                <span class="badge badge-secondary" style="display: inline-flex; align-items: center; gap: 4px; font-size: 11px;">
-                                  ${vendor.companyName}${vendor.email ? ' (' + vendor.email + ')' : ''}
-                                  <button type="button" onclick="event.stopPropagation(); removeUploadedVendor(${idx})" style="background: none; border: none; cursor: pointer; padding: 0; font-size: 12px; color: var(--text-muted);">×</button>
-                                </span>
-                              `).join('')}
-                            </div>
-                          </div>
-                        ` : ''}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Market Research & Outreach Section - Collapsible (visible for Open/Limited) -->
-              ${isOpenOrLimited ? `
-              <div class="collapsible-section collapsed" id="market-research-section" style="margin-top: var(--spacing-md);">
-                <div class="collapsible-header" onclick="toggleCollapsibleSection('market-research-section')">
-                  <div class="collapsible-header-left">
-                    <span class="collapsible-header-title">Market Research & Outreach</span>
-                    ${renderSectionProgress('market-research', null)}
-                  </div>
-                  <div class="collapsible-toggle">▼</div>
-                </div>
-                <div class="collapsible-body" onclick="event.stopPropagation()">
-                  <div class="form-grid-3col">
+                    <!-- Market Research fields (visible for Open and Limited) -->
+                    ${isOpenOrLimited ? `
                     <div class="form-group full-width">
                       <label class="form-label">Details on market research and outreach <span class="required">*</span></label>
                       <textarea class="form-textarea" placeholder="Describe the market research conducted and outreach efforts..." style="min-height: 100px;" onchange="updateCompetitionValue('marketResearchDetails', this.value)" onclick="event.stopPropagation()" required>${competitionValues.marketResearchDetails}</textarea>
@@ -11963,66 +12029,23 @@
                       <textarea class="form-textarea" placeholder="Explain how effective competition will be achieved..." style="min-height: 100px;" onchange="updateCompetitionValue('effectiveCompetitionDetails', this.value)" onclick="event.stopPropagation()" required>${competitionValues.effectiveCompetitionDetails}</textarea>
                       <span class="help-text">Describe strategies to ensure competitive process</span>
                     </div>
-                  </div>
-                </div>
-              </div>
-              ` : ''}
-              
-              <!-- Limited Competition Justification Section - Collapsible (visible for Limited) -->
-              ${isLimited ? `
-              <div class="collapsible-section collapsed" id="limited-justification-section" style="margin-top: var(--spacing-md);">
-                <div class="collapsible-header" onclick="toggleCollapsibleSection('limited-justification-section')">
-                  <div class="collapsible-header-left">
-                    <span class="collapsible-header-title">Limited Competition Justification</span>
-                    ${renderSectionProgress('limited-justification', null)}
-                  </div>
-                  <div class="collapsible-toggle">▼</div>
-                </div>
-                <div class="collapsible-body" onclick="event.stopPropagation()">
-                  <div class="form-grid-3col">
+                    ` : ''}
+                    
+                    <!-- Limited Competition Justification field (visible for Limited only) -->
+                    ${isLimited ? `
                     <div class="form-group full-width">
                       <label class="form-label">Justification for reason for limited competition <span class="required">*</span></label>
                       <textarea class="form-textarea" placeholder="Provide detailed justification for selecting limited competition..." style="min-height: 120px;" onchange="updateCompetitionValue('limitedCompetitionJustification', this.value)" onclick="event.stopPropagation()" required>${competitionValues.limitedCompetitionJustification}</textarea>
                       <span class="help-text">Explain why limited competition is appropriate for this procurement</span>
                     </div>
-                  </div>
-                </div>
-              </div>
-              ` : ''}
-              
-              <!-- Direct Contracting Section - Collapsible (visible for Direct) -->
-              ${isDirect ? `
-              <div class="collapsible-section collapsed" id="direct-contracting-section" style="margin-top: var(--spacing-md);">
-                <div class="collapsible-header" onclick="toggleCollapsibleSection('direct-contracting-section')">
-                  <div class="collapsible-header-left">
-                    <span class="collapsible-header-title">Direct Contracting Details</span>
-                    ${renderSectionProgress('direct-contracting', null)}
-                  </div>
-                  <div class="collapsible-toggle">▼</div>
-                </div>
-                <div class="collapsible-body" onclick="event.stopPropagation()">
-                  <div class="form-grid-3col">
+                    ` : ''}
+                    
+                    <!-- Direct Contracting fields (visible for Direct only) -->
+                    ${isDirect ? `
                     <div class="form-group full-width">
                       <label class="form-label">Reason for direct contracting under UNOPS Financial Rule 118.05(a) <span class="required">*</span></label>
-                      <select class="form-select" onchange="updateCompetitionValue('directContractingReason', this.value)" onclick="event.stopPropagation()" required>
-                        <option value="">Select reason...</option>
-                        <option value="sole-source" ${competitionValues.directContractingReason === 'sole-source' ? 'selected' : ''}>Sole source - only one supplier capable</option>
-                        <option value="emergency" ${competitionValues.directContractingReason === 'emergency' ? 'selected' : ''}>Emergency procurement</option>
-                        <option value="standardization" ${competitionValues.directContractingReason === 'standardization' ? 'selected' : ''}>Standardization of equipment</option>
-                        <option value="proprietary" ${competitionValues.directContractingReason === 'proprietary' ? 'selected' : ''}>Proprietary rights</option>
-                        <option value="previous-contract" ${competitionValues.directContractingReason === 'previous-contract' ? 'selected' : ''}>Extension of existing contract</option>
-                        <option value="other" ${competitionValues.directContractingReason === 'other' ? 'selected' : ''}>Other (specify in justification)</option>
-                      </select>
-                      <span class="help-text">Select the applicable reason per UNOPS Financial Rules</span>
-                    </div>
-                    
-                    <div class="form-group full-width">
-                      <label class="form-label">Linked process</label>
-                      <div style="position: relative;">
-                        <input type="text" class="form-input" placeholder="Search for linked procurement process..." style="padding-left: 36px;" value="${competitionValues.linkedProcess}" onchange="updateCompetitionValue('linkedProcess', this.value)" onclick="event.stopPropagation()" />
-                        <span style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 13px;">🔍</span>
-                      </div>
-                      <span class="help-text">Link to related procurement process if applicable</span>
+                      <textarea class="form-textarea" placeholder="Enter the reason for direct contracting..." style="min-height: 80px;" onchange="updateCompetitionValue('directContractingReason', this.value)" onclick="event.stopPropagation()" required>${competitionValues.directContractingReason}</textarea>
+                      <span class="help-text">Provide the applicable reason per UNOPS Financial Rules</span>
                     </div>
                     
                     <div class="form-group full-width">
@@ -12030,10 +12053,208 @@
                       <textarea class="form-textarea" placeholder="Provide detailed justification for direct contracting..." style="min-height: 120px;" onchange="updateCompetitionValue('directContractingJustification', this.value)" onclick="event.stopPropagation()" required>${competitionValues.directContractingJustification}</textarea>
                       <span class="help-text">Provide comprehensive justification supporting the selected reason</span>
                     </div>
+                    ` : ''}
+                    
                   </div>
                 </div>
               </div>
               ` : ''}
+              
+              <!-- Vendor Notification Section - Collapsible (always visible) -->
+              <div class="collapsible-section collapsed" id="vendor-notification-section" style="margin-top: var(--spacing-md);">
+                <div class="collapsible-header" onclick="toggleCollapsibleSection('vendor-notification-section')">
+                  <div class="collapsible-header-left">
+                    <span class="collapsible-header-title">Vendor Notification</span>
+                    <span class="badge badge-info" style="margin-left: 8px; font-size: 10px;">${competitionValues.notificationVendors ? competitionValues.notificationVendors.length : 0} vendors</span>
+                  </div>
+                  <div class="collapsible-toggle">▼</div>
+                </div>
+                <div class="collapsible-body" onclick="event.stopPropagation()">
+                  
+                  <!-- Add Vendors Section Header -->
+                  <div style="margin-bottom: var(--spacing-md);">
+                    <h4 style="margin: 0 0 4px 0; font-size: 14px; font-weight: 600; color: var(--text-primary);">Add Vendors to Notify</h4>
+                    <p style="margin: 0; font-size: 12px; color: var(--text-secondary);">Choose one of the methods below to add vendors to the notification list</p>
+                  </div>
+                  
+                  <!-- 4 Methods Grid -->
+                  <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-md); margin-bottom: var(--spacing-lg);">
+                    
+                    <!-- Method 1: Search UNGM Vendor -->
+                    <div style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-lg); padding: var(--spacing-md);">
+                      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: var(--spacing-sm);">
+                        <div style="width: 32px; height: 32px; background: var(--primary-100); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;">
+                          <i class="pi pi-globe" style="color: var(--primary-600); font-size: 14px;"></i>
+                        </div>
+                        <div>
+                          <div style="font-weight: 600; font-size: 13px; color: var(--text-primary);">Search UNGM</div>
+                          <div style="font-size: 11px; color: var(--text-secondary);">Find registered vendors</div>
+                        </div>
+                      </div>
+                      <div style="position: relative;">
+                        <input type="text" class="form-input" placeholder="Search by vendor name or ID..." style="padding-left: 36px; font-size: 13px;" id="ungm-vendor-search" onclick="event.stopPropagation()" onkeyup="searchUNGMVendors(this.value)" />
+                        <i class="pi pi-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 13px;"></i>
+                      </div>
+                      <!-- UNGM Search Results Dropdown -->
+                      <div id="ungm-search-results" style="display: none; position: absolute; z-index: 100; background: white; border: 1px solid var(--surface-300); border-radius: var(--radius-md); box-shadow: var(--shadow-lg); max-height: 200px; overflow-y: auto; width: calc(100% - 32px); margin-top: 4px;">
+                      </div>
+                    </div>
+                    
+                    <!-- Method 2: Search from Shortlist -->
+                    <div style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-lg); padding: var(--spacing-md);">
+                      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: var(--spacing-sm);">
+                        <div style="width: 32px; height: 32px; background: var(--info-100); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;">
+                          <i class="pi pi-list" style="color: var(--info-600); font-size: 14px;"></i>
+                        </div>
+                        <div>
+                          <div style="font-weight: 600; font-size: 13px; color: var(--text-primary);">From Shortlist</div>
+                          <div style="font-size: 11px; color: var(--text-secondary);">Add from existing shortlists</div>
+                        </div>
+                      </div>
+                      <select class="form-select" style="font-size: 13px;" onchange="addShortlistVendors(this.value); this.value='';" onclick="event.stopPropagation()">
+                        <option value="">Select a shortlist...</option>
+                        <option value="shortlist-1">IT Equipment Suppliers (12 vendors)</option>
+                        <option value="shortlist-2">Construction Services (8 vendors)</option>
+                        <option value="shortlist-3">Office Supplies (15 vendors)</option>
+                        <option value="shortlist-4">Consulting Services (6 vendors)</option>
+                      </select>
+                    </div>
+                    
+                    <!-- Method 3: Add Manual Vendor -->
+                    <div style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-lg); padding: var(--spacing-md);">
+                      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: var(--spacing-sm);">
+                        <div style="width: 32px; height: 32px; background: var(--success-100); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;">
+                          <i class="pi pi-user-plus" style="color: var(--success-600); font-size: 14px;"></i>
+                        </div>
+                        <div>
+                          <div style="font-weight: 600; font-size: 13px; color: var(--text-primary);">Add Manually</div>
+                          <div style="font-size: 11px; color: var(--text-secondary);">Unregistered suppliers</div>
+                        </div>
+                      </div>
+                      <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <input type="text" class="form-input" placeholder="Company name *" style="font-size: 13px;" id="manual-vendor-company" onclick="event.stopPropagation()" />
+                        <input type="email" class="form-input" placeholder="Email address *" style="font-size: 13px;" id="manual-vendor-email" onclick="event.stopPropagation()" />
+                        <button class="btn btn-success btn-sm" onclick="event.stopPropagation(); addManualVendor()" style="align-self: flex-start;">
+                          <i class="pi pi-plus"></i> Add Vendor
+                        </button>
+                      </div>
+                    </div>
+                    
+                    <!-- Method 4: Bulk Upload -->
+                    <div style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-lg); padding: var(--spacing-md);">
+                      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: var(--spacing-sm);">
+                        <div style="width: 32px; height: 32px; background: var(--warning-100); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;">
+                          <i class="pi pi-upload" style="color: var(--warning-600); font-size: 14px;"></i>
+                        </div>
+                        <div>
+                          <div style="font-weight: 600; font-size: 13px; color: var(--text-primary);">Bulk Upload</div>
+                          <div style="font-size: 11px; color: var(--text-secondary);">Import from spreadsheet</div>
+                        </div>
+                      </div>
+                      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); downloadVendorNotificationTemplate()" title="Download template">
+                          <i class="pi pi-download"></i> Template
+                        </button>
+                        <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); document.getElementById('vendor-upload-input').click()" title="Upload vendor list">
+                          <i class="pi pi-upload"></i> Upload File
+                        </button>
+                        <input type="file" id="vendor-upload-input" accept=".xlsx,.xls,.csv" style="display: none;" onchange="handleVendorListUpload(event)" />
+                      </div>
+                      <div style="font-size: 11px; color: var(--text-muted); margin-top: 8px;">
+                        Accepts .xlsx, .xls, .csv
+                      </div>
+                    </div>
+                    
+                  </div>
+                  
+                  <!-- Vendors List Section -->
+                  <div style="border: 1px solid var(--surface-200); border-radius: var(--radius-lg); overflow: hidden;">
+                    <!-- List Header -->
+                    <div style="background: var(--surface-100); padding: var(--spacing-sm) var(--spacing-md); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--surface-200);">
+                      <div style="display: flex; align-items: center; gap: 8px;">
+                        <i class="pi pi-users" style="color: var(--text-secondary);"></i>
+                        <span style="font-weight: 600; font-size: 13px; color: var(--text-primary);">Vendors</span>
+                        <span class="badge badge-primary" style="font-size: 10px;">${competitionValues.notificationVendors ? competitionValues.notificationVendors.length : 0}</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 8px;">
+                        <input type="text" class="form-input" placeholder="Filter vendors..." style="font-size: 12px; padding: 4px 10px; width: 180px;" onclick="event.stopPropagation()" onkeyup="filterNotificationVendors(this.value)" />
+                        ${competitionValues.notificationVendors && competitionValues.notificationVendors.length > 0 ? `
+                          <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); clearAllNotificationVendors()" style="color: var(--danger-500); font-size: 11px;">
+                            <i class="pi pi-trash"></i> Clear All
+                          </button>
+                        ` : ''}
+                      </div>
+                    </div>
+                    
+                    <!-- Vendors Table -->
+                    <div style="overflow-x: auto;">
+                      ${competitionValues.notificationVendors && competitionValues.notificationVendors.length > 0 ? `
+                        <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                          <thead style="background: var(--surface-50);">
+                            <tr>
+                              <th style="padding: 10px 12px; text-align: left; font-weight: 600; color: var(--text-secondary); border-bottom: 1px solid var(--surface-200);">Company Name</th>
+                              <th style="padding: 10px 12px; text-align: left; font-weight: 600; color: var(--text-secondary); border-bottom: 1px solid var(--surface-200);">Email</th>
+                              <th style="padding: 10px 12px; text-align: left; font-weight: 600; color: var(--text-secondary); border-bottom: 1px solid var(--surface-200);">UNGM ID</th>
+                              <th style="padding: 10px 12px; text-align: left; font-weight: 600; color: var(--text-secondary); border-bottom: 1px solid var(--surface-200);">Source</th>
+                              <th style="padding: 10px 12px; text-align: center; font-weight: 600; color: var(--text-secondary); border-bottom: 1px solid var(--surface-200);">Notified</th>
+                              <th style="padding: 10px 12px; text-align: center; font-weight: 600; color: var(--text-secondary); border-bottom: 1px solid var(--surface-200); width: 60px;">Action</th>
+                            </tr>
+                          </thead>
+                          <tbody id="notification-vendors-tbody">
+                            ${(competitionValues.notificationVendors || []).slice(((competitionValues.vendorListPage || 1) - 1) * 10, (competitionValues.vendorListPage || 1) * 10).map((vendor, idx) => 
+                              '<tr style="border-bottom: 1px solid var(--surface-100);">' +
+                                '<td style="padding: 10px 12px; color: var(--text-primary);">' + (vendor.companyName || '-') + '</td>' +
+                                '<td style="padding: 10px 12px; color: var(--text-secondary);">' + (vendor.email || '-') + '</td>' +
+                                '<td style="padding: 10px 12px; color: var(--text-secondary);">' + (vendor.ungmId || '-') + '</td>' +
+                                '<td style="padding: 10px 12px;">' +
+                                  '<span class="badge ' + (vendor.source === 'UNGM' ? 'badge-primary' : vendor.source === 'Shortlist' ? 'badge-info' : vendor.source === 'Manual' ? 'badge-success' : 'badge-warning') + '" style="font-size: 10px;">' +
+                                    (vendor.source || 'Unknown') +
+                                  '</span>' +
+                                '</td>' +
+                                '<td style="padding: 10px 12px; text-align: center;">' +
+                                  (vendor.notified ? 
+                                    '<span class="badge badge-success" style="font-size: 10px;">Yes</span>' : 
+                                    '<span class="badge badge-secondary" style="font-size: 10px;">No</span>') +
+                                '</td>' +
+                                '<td style="padding: 10px 12px; text-align: center;">' +
+                                  '<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); removeNotificationVendor(' + (((competitionValues.vendorListPage || 1) - 1) * 10 + idx) + ')" style="color: var(--danger-500); padding: 4px;">' +
+                                    '<i class="pi pi-times"></i>' +
+                                  '</button>' +
+                                '</td>' +
+                              '</tr>'
+                            ).join('')}
+                          </tbody>
+                        </table>
+                      ` : `
+                        <div style="padding: var(--spacing-xl); text-align: center; color: var(--text-muted);">
+                          <i class="pi pi-inbox" style="font-size: 36px; color: var(--surface-300); display: block; margin-bottom: var(--spacing-sm);"></i>
+                          <div style="font-size: 14px; font-weight: 500; color: var(--text-secondary); margin-bottom: 4px;">No vendors added yet</div>
+                          <div style="font-size: 12px;">Use one of the methods above to add vendors</div>
+                        </div>
+                      `}
+                    </div>
+                    
+                    <!-- Pagination -->
+                    ${competitionValues.notificationVendors && competitionValues.notificationVendors.length > 0 ? 
+                      '<div style="background: var(--surface-50); padding: var(--spacing-sm) var(--spacing-md); display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--surface-200);">' +
+                        '<div style="font-size: 12px; color: var(--text-secondary);">' +
+                          'Showing ' + (competitionValues.notificationVendors.length > 0 ? (((competitionValues.vendorListPage || 1) - 1) * 10 + 1) : 0) + ' - ' + Math.min((competitionValues.vendorListPage || 1) * 10, competitionValues.notificationVendors.length) + ' of ' + competitionValues.notificationVendors.length + ' vendors' +
+                        '</div>' +
+                        '<div style="display: flex; align-items: center; gap: 4px;">' +
+                          '<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); changeVendorListPage(\'prev\')" ' + ((competitionValues.vendorListPage || 1) === 1 ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : '') + '>' +
+                            '<i class="pi pi-chevron-left"></i>' +
+                          '</button>' +
+                          '<span style="font-size: 12px; color: var(--text-secondary); padding: 0 8px;">Page ' + (competitionValues.vendorListPage || 1) + ' of ' + Math.max(1, Math.ceil(competitionValues.notificationVendors.length / 10)) + '</span>' +
+                          '<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); changeVendorListPage(\'next\')" ' + ((competitionValues.vendorListPage || 1) >= Math.ceil(competitionValues.notificationVendors.length / 10) ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : '') + '>' +
+                            '<i class="pi pi-chevron-right"></i>' +
+                          '</button>' +
+                        '</div>' +
+                      '</div>'
+                    : ''}
+                  </div>
+                  
+                </div>
+              </div>
               
             </div>
           </div>
@@ -12044,10 +12265,8 @@
       // Track expanded sections for Competition tab
       let competitionExpandedSections = {
         'competition-type-section': false,
-        'vendor-notification-section': false,
-        'market-research-section': false,
-        'limited-justification-section': false,
-        'direct-contracting-section': false
+        'competition-details-section': false,
+        'vendor-notification-section': false
       };
       
       window.updateCompetitionType = function(value) {
@@ -12062,7 +12281,7 @@
       }
       
       function saveCompetitionSectionStates() {
-        const sectionIds = ['competition-type-section', 'vendor-notification-section', 'market-research-section', 'limited-justification-section', 'direct-contracting-section'];
+        const sectionIds = ['competition-type-section', 'competition-details-section', 'vendor-notification-section'];
         sectionIds.forEach(id => {
           const section = document.getElementById(id);
           if (section) {
@@ -12090,6 +12309,312 @@
         renderCurrentBlock();
         restoreCompetitionSectionStates();
       }
+      
+      // ===== VENDOR NOTIFICATION FUNCTIONS =====
+      
+      // Search UNGM Vendors (mock implementation)
+      window.searchUNGMVendors = function(searchTerm) {
+        const resultsContainer = document.getElementById('ungm-search-results');
+        if (!resultsContainer) return;
+        
+        if (!searchTerm || searchTerm.length < 2) {
+          resultsContainer.style.display = 'none';
+          return;
+        }
+        
+        // Mock UNGM vendors data
+        const mockUNGMVendors = [
+          { id: 'UNGM-001', companyName: 'Acme Corporation', email: 'contact@acme.com', country: 'United States' },
+          { id: 'UNGM-002', companyName: 'Global Tech Solutions', email: 'info@globaltech.com', country: 'Germany' },
+          { id: 'UNGM-003', companyName: 'Swift Logistics Ltd', email: 'bids@swiftlogistics.co.uk', country: 'United Kingdom' },
+          { id: 'UNGM-004', companyName: 'Green Energy Systems', email: 'procurement@greenenergy.nl', country: 'Netherlands' },
+          { id: 'UNGM-005', companyName: 'Medical Supplies International', email: 'tenders@medsupply.ch', country: 'Switzerland' },
+          { id: 'UNGM-006', companyName: 'Construction Partners Inc', email: 'projects@constructionpartners.com', country: 'Canada' },
+          { id: 'UNGM-007', companyName: 'IT Services Global', email: 'sales@itservicesglobal.com', country: 'India' },
+          { id: 'UNGM-008', companyName: 'Food & Agriculture Co', email: 'supply@foodagri.com', country: 'Brazil' },
+        ];
+        
+        const filtered = mockUNGMVendors.filter(v => 
+          v.companyName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          v.id.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        
+        if (filtered.length === 0) {
+          resultsContainer.innerHTML = '<div style="padding: 12px; text-align: center; color: var(--text-muted); font-size: 12px;">No vendors found</div>';
+        } else {
+          resultsContainer.innerHTML = filtered.map(vendor => `
+            <div onclick="event.stopPropagation(); addUNGMVendorToList('${vendor.id}', '${vendor.companyName}', '${vendor.email}')" 
+                 style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid var(--surface-100); transition: background 0.15s;"
+                 onmouseover="this.style.background='var(--surface-100)'" 
+                 onmouseout="this.style.background='white'">
+              <div style="font-weight: 500; font-size: 13px; color: var(--text-primary);">${vendor.companyName}</div>
+              <div style="font-size: 11px; color: var(--text-secondary);">${vendor.id} • ${vendor.email} • ${vendor.country}</div>
+            </div>
+          `).join('');
+        }
+        
+        resultsContainer.style.display = 'block';
+      }
+      
+      // Add UNGM vendor to notification list
+      window.addUNGMVendorToList = function(id, companyName, email) {
+        // Check Direct contracting limit
+        if (!canAddVendor(1)) return;
+        
+        saveCompetitionSectionStates();
+        
+        // Check if already exists
+        const exists = competitionValues.notificationVendors.some(v => v.email === email);
+        if (exists) {
+          alert('This vendor is already in the notification list.');
+          return;
+        }
+        
+        competitionValues.notificationVendors.push({
+          companyName: companyName,
+          email: email,
+          source: 'UNGM',
+          ungmId: id
+        });
+        
+        // Clear search
+        const searchInput = document.getElementById('ungm-vendor-search');
+        if (searchInput) searchInput.value = '';
+        const resultsContainer = document.getElementById('ungm-search-results');
+        if (resultsContainer) resultsContainer.style.display = 'none';
+        
+        renderCurrentBlock();
+        restoreCompetitionSectionStates();
+      }
+      
+      // Add all vendors from shortlist
+      window.addShortlistVendors = function(shortlistId) {
+        if (!shortlistId) return;
+        
+        // For Direct contracting, only allow adding if no vendors exist
+        if (competitionValues.competitionType === 'Direct contracting') {
+          if (competitionValues.notificationVendors.length >= 1) {
+            alert('Direct contracting allows only 1 vendor. Please remove the existing vendor before adding from a shortlist.');
+            return;
+          }
+          alert('Direct contracting allows only 1 vendor. Only the first vendor from the shortlist will be added.');
+        }
+        
+        saveCompetitionSectionStates();
+        
+        const mockShortlists = {
+          'shortlist-1': [
+            { companyName: 'Dell Technologies', email: 'gov@dell.com' },
+            { companyName: 'HP Enterprise', email: 'public@hpe.com' },
+            { companyName: 'Lenovo Group', email: 'bids@lenovo.com' },
+          ],
+          'shortlist-2': [
+            { companyName: 'Turner Construction', email: 'projects@turnerconstruction.com' },
+            { companyName: 'Skanska AB', email: 'tenders@skanska.com' },
+          ],
+          'shortlist-3': [
+            { companyName: 'Staples Inc', email: 'business@staples.com' },
+            { companyName: 'Office Depot', email: 'corporate@officedepot.com' },
+          ],
+          'shortlist-4': [
+            { companyName: 'McKinsey & Company', email: 'rfp@mckinsey.com' },
+            { companyName: 'Deloitte Consulting', email: 'proposals@deloitte.com' },
+          ]
+        };
+        
+        const vendors = mockShortlists[shortlistId] || [];
+        let addedCount = 0;
+        const isDirect = competitionValues.competitionType === 'Direct contracting';
+        
+        for (const vendor of vendors) {
+          // For Direct contracting, stop after adding 1 vendor
+          if (isDirect && competitionValues.notificationVendors.length >= 1) break;
+          
+          const exists = competitionValues.notificationVendors.some(v => v.email === vendor.email);
+          if (!exists) {
+            competitionValues.notificationVendors.push({
+              companyName: vendor.companyName,
+              email: vendor.email,
+              source: 'Shortlist'
+            });
+            addedCount++;
+            
+            // For Direct contracting, only add 1 vendor
+            if (isDirect) break;
+          }
+        }
+        
+        renderCurrentBlock();
+        restoreCompetitionSectionStates();
+      }
+      
+      // Helper function to check if adding vendors is allowed (Direct contracting = max 1 vendor)
+      function canAddVendor(countToAdd = 1) {
+        if (competitionValues.competitionType === 'Direct contracting') {
+          const currentCount = competitionValues.notificationVendors.length;
+          if (currentCount >= 1) {
+            alert('Direct contracting allows only 1 vendor. Please remove the existing vendor before adding a new one.');
+            return false;
+          }
+          if (currentCount + countToAdd > 1) {
+            alert('Direct contracting allows only 1 vendor.');
+            return false;
+          }
+        }
+        return true;
+      }
+      
+      // Add manual vendor
+      window.addManualVendor = function() {
+        // Check Direct contracting limit
+        if (!canAddVendor(1)) return;
+        
+        const companyInput = document.getElementById('manual-vendor-company');
+        const emailInput = document.getElementById('manual-vendor-email');
+        
+        const companyName = companyInput ? companyInput.value.trim() : '';
+        const email = emailInput ? emailInput.value.trim() : '';
+        
+        if (!companyName || !email) {
+          alert('Please enter both company name and email address.');
+          return;
+        }
+        
+        // Basic email validation
+        if (!email.includes('@') || !email.includes('.')) {
+          alert('Please enter a valid email address.');
+          return;
+        }
+        
+        // Check if already exists
+        const exists = competitionValues.notificationVendors.some(v => v.email === email);
+        if (exists) {
+          alert('A vendor with this email is already in the notification list.');
+          return;
+        }
+        
+        saveCompetitionSectionStates();
+        
+        competitionValues.notificationVendors.push({
+          companyName: companyName,
+          email: email,
+          source: 'Manual'
+        });
+        
+        // Clear inputs
+        if (companyInput) companyInput.value = '';
+        if (emailInput) emailInput.value = '';
+        
+        renderCurrentBlock();
+        restoreCompetitionSectionStates();
+      }
+      
+      // Remove vendor from notification list
+      window.removeNotificationVendor = function(index) {
+        saveCompetitionSectionStates();
+        competitionValues.notificationVendors.splice(index, 1);
+        
+        // Adjust page if needed
+        const totalPages = Math.ceil(competitionValues.notificationVendors.length / 10);
+        if (competitionValues.vendorListPage > totalPages && totalPages > 0) {
+          competitionValues.vendorListPage = totalPages;
+        }
+        
+        renderCurrentBlock();
+        restoreCompetitionSectionStates();
+      }
+      
+      // Clear all vendors
+      window.clearAllNotificationVendors = function() {
+        if (!confirm('Are you sure you want to remove all vendors from the notification list?')) {
+          return;
+        }
+        
+        saveCompetitionSectionStates();
+        competitionValues.notificationVendors = [];
+        competitionValues.vendorListPage = 1;
+        renderCurrentBlock();
+        restoreCompetitionSectionStates();
+      }
+      
+      // Filter notification vendors
+      window.filterNotificationVendors = function(filterText) {
+        competitionValues.vendorListFilter = filterText.toLowerCase();
+        // For simplicity, we'll just re-render. In a real app, you'd filter the displayed list.
+        // This is a mock - actual filtering would need to be implemented in the render
+      }
+      
+      // Change vendor list page
+      window.changeVendorListPage = function(action) {
+        saveCompetitionSectionStates();
+        
+        const totalPages = Math.ceil(competitionValues.notificationVendors.length / 10);
+        
+        if (action === 'prev' && competitionValues.vendorListPage > 1) {
+          competitionValues.vendorListPage--;
+        } else if (action === 'next' && competitionValues.vendorListPage < totalPages) {
+          competitionValues.vendorListPage++;
+        } else if (typeof action === 'number') {
+          competitionValues.vendorListPage = action;
+        }
+        
+        renderCurrentBlock();
+        restoreCompetitionSectionStates();
+      }
+      
+      // Handle bulk vendor upload
+      window.handleVendorListUpload = function(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        
+        // Check Direct contracting limit
+        const isDirect = competitionValues.competitionType === 'Direct contracting';
+        if (isDirect && competitionValues.notificationVendors.length >= 1) {
+          alert('Direct contracting allows only 1 vendor. Please remove the existing vendor before uploading.');
+          event.target.value = '';
+          return;
+        }
+        
+        saveCompetitionSectionStates();
+        
+        // Mock: Simulate adding vendors from file
+        const mockUploadedVendors = [
+          { companyName: 'Uploaded Company A', email: 'companya@example.com' },
+          { companyName: 'Uploaded Company B', email: 'companyb@example.com' },
+          { companyName: 'Uploaded Company C', email: 'companyc@example.com' },
+        ];
+        
+        let addedCount = 0;
+        for (const vendor of mockUploadedVendors) {
+          // For Direct contracting, stop after adding 1 vendor
+          if (isDirect && competitionValues.notificationVendors.length >= 1) break;
+          
+          const exists = competitionValues.notificationVendors.some(v => v.email === vendor.email);
+          if (!exists) {
+            competitionValues.notificationVendors.push({
+              companyName: vendor.companyName,
+              email: vendor.email,
+              source: 'Bulk Upload'
+            });
+            addedCount++;
+            if (isDirect) break;
+          }
+        }
+        
+        // Reset file input
+        event.target.value = '';
+        
+        renderCurrentBlock();
+        restoreCompetitionSectionStates();
+        
+        if (isDirect && addedCount === 1) {
+          alert('Direct contracting allows only 1 vendor. Only the first vendor was imported.');
+        } else {
+          alert(`Successfully imported ${addedCount} vendors from ${file.name}`);
+        }
+      }
+      
+      // ===== END VENDOR NOTIFICATION FUNCTIONS =====
       
       // Download Vendor Notification Template
       window.downloadVendorNotificationTemplate = function() {
@@ -12130,6 +12655,14 @@
         const file = event.target.files[0];
         if (!file) return;
         
+        // Check Direct contracting limit
+        const isDirect = competitionValues.competitionType === 'Direct contracting';
+        if (isDirect && competitionValues.notificationVendors.length >= 1) {
+          alert('Direct contracting allows only 1 vendor. Please remove the existing vendor before uploading.');
+          event.target.value = '';
+          return;
+        }
+        
         const reader = new FileReader();
         reader.onload = function(e) {
           try {
@@ -12147,41 +12680,47 @@
             
             saveCompetitionSectionStates();
             
-            dataLines.forEach(line => {
+            for (const line of dataLines) {
+              // For Direct contracting, stop after adding 1 vendor
+              if (isDirect && competitionValues.notificationVendors.length >= 1) break;
+              
               // Parse CSV line (handle quoted values)
               const values = line.match(/("([^"]*)"|[^,]+)/g);
-              if (!values || values.length < 2) return;
+              if (!values || values.length < 2) continue;
               
               // Clean values (remove quotes)
               const cleanValues = values.map(v => v.replace(/^"|"$/g, '').trim());
               
               const [companyName, email, contactPerson, phone, country, ungmId] = cleanValues;
               
-              if (!companyName) return;
+              if (!companyName) continue;
               
-              // Check for duplicates
-              const isDuplicate = competitionValues.uploadedVendors.some(
+              // Check for duplicates in notificationVendors
+              const isDuplicate = competitionValues.notificationVendors.some(
                 v => v.companyName.toLowerCase() === companyName.toLowerCase() || 
                      (v.email && email && v.email.toLowerCase() === email.toLowerCase())
               );
               
               if (!isDuplicate) {
-                competitionValues.uploadedVendors.push({
+                competitionValues.notificationVendors.push({
                   companyName: companyName,
                   email: email || '',
-                  contactPerson: contactPerson || '',
-                  phone: phone || '',
-                  country: country || '',
+                  source: 'Bulk Upload',
                   ungmId: ungmId || ''
                 });
                 vendorsAdded++;
+                
+                // For Direct contracting, only add 1 vendor
+                if (isDirect) break;
               }
-            });
+            }
             
             renderCurrentBlock();
             restoreCompetitionSectionStates();
             
-            if (vendorsAdded > 0) {
+            if (isDirect && vendorsAdded === 1) {
+              showNotification('Direct contracting allows only 1 vendor. Only the first vendor was imported.', 'warning');
+            } else if (vendorsAdded > 0) {
               showNotification(`${vendorsAdded} vendor(s) imported successfully!`, 'success');
             } else {
               showNotification('No new vendors were added (duplicates skipped or empty file).', 'warning');
