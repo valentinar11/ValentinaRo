@@ -11845,7 +11845,10 @@
             '<td style="padding: 10px 12px; color: var(--text-secondary);">' + (vendor.ungmId || '-') + '</td>' +
             '<td style="padding: 10px 12px;"><span class="badge ' + sourceClass + '" style="font-size: 10px;">' + (vendor.source || 'Unknown') + '</span></td>' +
             '<td style="padding: 10px 12px; text-align: center;">' + (vendor.notified ? '<span class="badge badge-success" style="font-size: 10px;">Yes</span>' : '<span class="badge badge-secondary" style="font-size: 10px;">No</span>') + '</td>' +
-            '<td style="padding: 10px 12px; text-align: center;"><button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); removeNotificationVendor(' + globalIdx + ')" style="color: var(--danger-500); padding: 4px;"><i class="pi pi-times"></i></button></td>' +
+            '<td style="padding: 10px 12px; text-align: center; white-space: nowrap;">' +
+              (vendor.notified ? '' : '<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); notifyVendor(' + globalIdx + ')" style="color: var(--primary-500); padding: 4px;" title="Send notification"><i class="pi pi-send"></i></button>') +
+              '<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); removeNotificationVendor(' + globalIdx + ')" style="color: var(--danger-500); padding: 4px;" title="Remove vendor"><i class="pi pi-times"></i></button>' +
+            '</td>' +
           '</tr>';
         });
         
@@ -11886,6 +11889,8 @@
           '</div>';
         }
         
+        const unnotifiedCount = vendors.filter(v => !v.notified).length;
+        const notifyAllBtn = unnotifiedCount > 0 ? '<button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); notifyAllVendors()" style="font-size: 11px;"><i class="pi pi-send"></i> Notify All (' + unnotifiedCount + ')</button>' : '';
         const clearAllBtn = vendors.length > 0 ? '<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); clearAllNotificationVendors()" style="color: var(--danger-500); font-size: 11px;"><i class="pi pi-trash"></i> Clear All</button>' : '';
         
         return '<div class="collapsible-section collapsed" id="vendor-notification-section" style="margin-top: var(--spacing-md);">' +
@@ -11913,19 +11918,34 @@
                 '</div>' +
                 '<div id="ungm-search-results" style="display: none; position: absolute; z-index: 100; background: white; border: 1px solid var(--surface-300); border-radius: var(--radius-md); box-shadow: var(--shadow-lg); max-height: 200px; overflow-y: auto; width: calc(100% - 32px); margin-top: 4px;"></div>' +
               '</div>' +
+              (competitionValues.competitionType !== 'Direct contracting' ? 
               '<div style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-lg); padding: var(--spacing-md);">' +
                 '<div style="display: flex; align-items: center; gap: 8px; margin-bottom: var(--spacing-sm);">' +
                   '<div style="width: 32px; height: 32px; background: var(--info-100); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;"><i class="pi pi-list" style="color: var(--info-600); font-size: 14px;"></i></div>' +
-                  '<div><div style="font-weight: 600; font-size: 13px; color: var(--text-primary);">From Shortlist</div><div style="font-size: 11px; color: var(--text-secondary);">Add from existing shortlists</div></div>' +
+                  '<div><div style="font-weight: 600; font-size: 13px; color: var(--text-primary);">From Vendor List</div><div style="font-size: 11px; color: var(--text-secondary);">Add vendors from existing lists</div></div>' +
                 '</div>' +
-                '<select class="form-select" style="font-size: 13px;" onchange="addShortlistVendors(this.value); this.value=\'\';" onclick="event.stopPropagation()">' +
-                  '<option value="">Select a shortlist...</option>' +
-                  '<option value="shortlist-1">IT Equipment Suppliers (12 vendors)</option>' +
-                  '<option value="shortlist-2">Construction Services (8 vendors)</option>' +
-                  '<option value="shortlist-3">Office Supplies (15 vendors)</option>' +
-                  '<option value="shortlist-4">Consulting Services (6 vendors)</option>' +
-                '</select>' +
-              '</div>' +
+                '<div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px;">' +
+                  '<label style="display: inline-flex; align-items: center; gap: 6px; cursor: pointer; padding: 6px 10px; border: 1px solid var(--surface-200); border-radius: 16px; background: white; font-size: 12px; color: var(--text-primary);" onclick="event.stopPropagation(); selectShortlistType(\'adhoc\')">' +
+                    '<input type="radio" name="shortlistTypeInline" value="adhoc" style="accent-color: var(--primary-500); margin: 0; width: 14px; height: 14px;" onclick="event.stopPropagation(); selectShortlistType(\'adhoc\')" />' +
+                    'Ad-hoc Shortlist' +
+                  '</label>' +
+                  '<label style="display: inline-flex; align-items: center; gap: 6px; cursor: pointer; padding: 6px 10px; border: 1px solid var(--surface-200); border-radius: 16px; background: white; font-size: 12px; color: var(--text-primary);" onclick="event.stopPropagation(); selectShortlistType(\'sourcing\')">' +
+                    '<input type="radio" name="shortlistTypeInline" value="sourcing" style="accent-color: var(--primary-500); margin: 0; width: 14px; height: 14px;" onclick="event.stopPropagation(); selectShortlistType(\'sourcing\')" />' +
+                    'Sourcing Exercise Outcome' +
+                  '</label>' +
+                  '<label style="display: inline-flex; align-items: center; gap: 6px; cursor: pointer; padding: 6px 10px; border: 1px solid var(--surface-200); border-radius: 16px; background: white; font-size: 12px; color: var(--text-primary);" onclick="event.stopPropagation(); selectShortlistType(\'tender\')">' +
+                    '<input type="radio" name="shortlistTypeInline" value="tender" style="accent-color: var(--primary-500); margin: 0; width: 14px; height: 14px;" onclick="event.stopPropagation(); selectShortlistType(\'tender\')" />' +
+                    'Existing Tender Vendors' +
+                  '</label>' +
+                '</div>' +
+                '<div id="shortlist-search-container-inline" style="display: none;">' +
+                  '<div style="position: relative;">' +
+                    '<input type="text" class="form-input" id="shortlist-search-input-inline" placeholder="Search list by name..." style="padding-left: 36px; font-size: 13px; margin-bottom: 8px;" onclick="event.stopPropagation()" onkeyup="filterShortlistOptions(this.value)" onfocus="showShortlistDropdown()" />' +
+                    '<i class="pi pi-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 13px; margin-top: -4px;"></i>' +
+                  '</div>' +
+                  '<div id="shortlist-dropdown-inline" style="display: none; position: relative; z-index: 100; background: white; border: 1px solid var(--surface-300); border-radius: var(--radius-md); box-shadow: var(--shadow-lg); max-height: 200px; overflow-y: auto;"></div>' +
+                '</div>' +
+              '</div>' : '') +
               '<div style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-lg); padding: var(--spacing-md);">' +
                 '<div style="display: flex; align-items: center; gap: 8px; margin-bottom: var(--spacing-sm);">' +
                   '<div style="width: 32px; height: 32px; background: var(--success-100); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;"><i class="pi pi-user-plus" style="color: var(--success-600); font-size: 14px;"></i></div>' +
@@ -11937,6 +11957,7 @@
                   '<button class="btn btn-success btn-sm" onclick="event.stopPropagation(); addManualVendor()" style="align-self: flex-start;"><i class="pi pi-plus"></i> Add Vendor</button>' +
                 '</div>' +
               '</div>' +
+              (competitionValues.competitionType !== 'Direct contracting' ?
               '<div style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-lg); padding: var(--spacing-md);">' +
                 '<div style="display: flex; align-items: center; gap: 8px; margin-bottom: var(--spacing-sm);">' +
                   '<div style="width: 32px; height: 32px; background: var(--warning-100); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;"><i class="pi pi-upload" style="color: var(--warning-600); font-size: 14px;"></i></div>' +
@@ -11948,7 +11969,7 @@
                   '<input type="file" id="vendor-upload-input" accept=".xlsx,.xls,.csv" style="display: none;" onchange="handleVendorListUpload(event)" />' +
                 '</div>' +
                 '<div style="font-size: 11px; color: var(--text-muted); margin-top: 8px;">Accepts .xlsx, .xls, .csv</div>' +
-              '</div>' +
+              '</div>' : '') +
             '</div>' +
             '<div style="border: 1px solid var(--surface-200); border-radius: var(--radius-lg); overflow: hidden;">' +
               '<div style="background: var(--surface-100); padding: var(--spacing-sm) var(--spacing-md); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--surface-200);">' +
@@ -11959,6 +11980,7 @@
                 '</div>' +
                 '<div style="display: flex; align-items: center; gap: 8px;">' +
                   '<input type="text" class="form-input" placeholder="Filter vendors..." style="font-size: 12px; padding: 4px 10px; width: 180px;" onclick="event.stopPropagation()" onkeyup="filterNotificationVendors(this.value)" />' +
+                  notifyAllBtn +
                   clearAllBtn +
                 '</div>' +
               '</div>' +
@@ -12044,8 +12066,19 @@
                     ${isDirect ? `
                     <div class="form-group full-width">
                       <label class="form-label">Reason for direct contracting under UNOPS Financial Rule 118.05(a) <span class="required">*</span></label>
-                      <textarea class="form-textarea" placeholder="Enter the reason for direct contracting..." style="min-height: 80px;" onchange="updateCompetitionValue('directContractingReason', this.value)" onclick="event.stopPropagation()" required>${competitionValues.directContractingReason}</textarea>
-                      <span class="help-text">Provide the applicable reason per UNOPS Financial Rules</span>
+                      <select class="form-select" onchange="updateCompetitionValue('directContractingReason', this.value)" onclick="event.stopPropagation()" required>
+                        <option value="">Select a reason...</option>
+                        <option value="ii" ${competitionValues.directContractingReason === 'ii' ? 'selected' : ''}>(ii) There is no competitive marketplace for the requirement, such as where a monopoly exists; where prices are fixed by legislation or government regulation; or where the requirement involves a proprietary product or service</option>
+                        <option value="iii" ${competitionValues.directContractingReason === 'iii' ? 'selected' : ''}>(iii) There has been a previous determination with regard to an identical procurement activity, or there is a need to standardize the requirement following recent procurement activity</option>
+                        <option value="iv" ${competitionValues.directContractingReason === 'iv' ? 'selected' : ''}>(iv) The proposed procurement contract is the result of cooperation with other organizations of the United Nations system, pursuant to Rule 118.02 (c) or governments and organizations other than those of the United Nations system, pursuant to Rule 118.02 (d)</option>
+                        <option value="v" ${competitionValues.directContractingReason === 'v' ? 'selected' : ''}>(v) Offers for identical requirements have been obtained competitively within a reasonable period and the prices and conditions offered by the proposed contractor remain competitive</option>
+                        <option value="vi" ${competitionValues.directContractingReason === 'vi' ? 'selected' : ''}>(vi) A formal solicitation has not produced satisfactory results within a reasonable prior period</option>
+                        <option value="vii" ${competitionValues.directContractingReason === 'vii' ? 'selected' : ''}>(vii) The proposed procurement contract is for the purchase or lease of real property</option>
+                        <option value="viii" ${competitionValues.directContractingReason === 'viii' ? 'selected' : ''}>(viii) There is a genuine exigency for the requirement</option>
+                        <option value="ix" ${competitionValues.directContractingReason === 'ix' ? 'selected' : ''}>(ix) The proposed procurement contract relates to obtaining services that cannot be evaluated objectively</option>
+                        <option value="x" ${competitionValues.directContractingReason === 'x' ? 'selected' : ''}>(x) The ECPO or authorized personnel otherwise determine that a formal solicitation will not give satisfactory results including, but not limited to, the situations where the proposed contractor is pre-selected by the funding source pursuant to Rule 118.02 (e)</option>
+                      </select>
+                      <span class="help-text">Select the applicable reason per UNOPS Financial Rules</span>
                     </div>
                     
                     <div class="form-group full-width">
@@ -12100,25 +12133,46 @@
                       </div>
                     </div>
                     
-                    <!-- Method 2: Search from Shortlist -->
+                    <!-- Method 2: Search from Shortlist (hidden for Direct contracting) -->
+                    ${!isDirect ? `
                     <div style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-lg); padding: var(--spacing-md);">
                       <div style="display: flex; align-items: center; gap: 8px; margin-bottom: var(--spacing-sm);">
                         <div style="width: 32px; height: 32px; background: var(--info-100); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;">
                           <i class="pi pi-list" style="color: var(--info-600); font-size: 14px;"></i>
                         </div>
                         <div>
-                          <div style="font-weight: 600; font-size: 13px; color: var(--text-primary);">From Shortlist</div>
-                          <div style="font-size: 11px; color: var(--text-secondary);">Add from existing shortlists</div>
+                          <div style="font-weight: 600; font-size: 13px; color: var(--text-primary);">From Vendor List</div>
+                          <div style="font-size: 11px; color: var(--text-secondary);">Add vendors from existing lists</div>
                         </div>
                       </div>
-                      <select class="form-select" style="font-size: 13px;" onchange="addShortlistVendors(this.value); this.value='';" onclick="event.stopPropagation()">
-                        <option value="">Select a shortlist...</option>
-                        <option value="shortlist-1">IT Equipment Suppliers (12 vendors)</option>
-                        <option value="shortlist-2">Construction Services (8 vendors)</option>
-                        <option value="shortlist-3">Office Supplies (15 vendors)</option>
-                        <option value="shortlist-4">Consulting Services (6 vendors)</option>
-                      </select>
+                      
+                      <!-- Radio buttons for list type selection -->
+                      <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px;">
+                        <label style="display: inline-flex; align-items: center; gap: 6px; cursor: pointer; padding: 6px 10px; border: 1px solid var(--surface-200); border-radius: 16px; background: white; font-size: 12px; color: var(--text-primary); transition: all 0.15s ease;" onclick="event.stopPropagation(); selectShortlistType('adhoc')" onmouseover="this.style.borderColor='var(--primary-300)'; this.style.background='var(--primary-50)'" onmouseout="if(!this.querySelector('input').checked){this.style.borderColor='var(--surface-200)'; this.style.background='white'}">
+                          <input type="radio" name="shortlistType" value="adhoc" style="accent-color: var(--primary-500); margin: 0; width: 14px; height: 14px;" onclick="event.stopPropagation(); selectShortlistType('adhoc')" />
+                          Ad-hoc Shortlist
+                        </label>
+                        <label style="display: inline-flex; align-items: center; gap: 6px; cursor: pointer; padding: 6px 10px; border: 1px solid var(--surface-200); border-radius: 16px; background: white; font-size: 12px; color: var(--text-primary); transition: all 0.15s ease;" onclick="event.stopPropagation(); selectShortlistType('sourcing')" onmouseover="this.style.borderColor='var(--primary-300)'; this.style.background='var(--primary-50)'" onmouseout="if(!this.querySelector('input').checked){this.style.borderColor='var(--surface-200)'; this.style.background='white'}">
+                          <input type="radio" name="shortlistType" value="sourcing" style="accent-color: var(--primary-500); margin: 0; width: 14px; height: 14px;" onclick="event.stopPropagation(); selectShortlistType('sourcing')" />
+                          Sourcing Exercise Outcome
+                        </label>
+                        <label style="display: inline-flex; align-items: center; gap: 6px; cursor: pointer; padding: 6px 10px; border: 1px solid var(--surface-200); border-radius: 16px; background: white; font-size: 12px; color: var(--text-primary); transition: all 0.15s ease;" onclick="event.stopPropagation(); selectShortlistType('tender')" onmouseover="this.style.borderColor='var(--primary-300)'; this.style.background='var(--primary-50)'" onmouseout="if(!this.querySelector('input').checked){this.style.borderColor='var(--surface-200)'; this.style.background='white'}">
+                          <input type="radio" name="shortlistType" value="tender" style="accent-color: var(--primary-500); margin: 0; width: 14px; height: 14px;" onclick="event.stopPropagation(); selectShortlistType('tender')" />
+                          Existing Tender Vendors
+                        </label>
+                      </div>
+                      
+                      <!-- Searchable dropdown (hidden until radio selected) -->
+                      <div id="shortlist-search-container" style="display: none;">
+                        <div style="position: relative;">
+                          <input type="text" class="form-input" id="shortlist-search-input" placeholder="Search list by name..." style="padding-left: 36px; font-size: 13px; margin-bottom: 8px;" onclick="event.stopPropagation()" onkeyup="filterShortlistOptions(this.value)" onfocus="showShortlistDropdown()" />
+                          <i class="pi pi-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 13px; margin-top: -4px;"></i>
+                        </div>
+                        <div id="shortlist-dropdown" style="display: none; position: relative; z-index: 100; background: white; border: 1px solid var(--surface-300); border-radius: var(--radius-md); box-shadow: var(--shadow-lg); max-height: 200px; overflow-y: auto;">
+                        </div>
+                      </div>
                     </div>
+                    ` : ''}
                     
                     <!-- Method 3: Add Manual Vendor -->
                     <div style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-lg); padding: var(--spacing-md);">
@@ -12140,7 +12194,8 @@
                       </div>
                     </div>
                     
-                    <!-- Method 4: Bulk Upload -->
+                    <!-- Method 4: Bulk Upload (hidden for Direct contracting) -->
+                    ${!isDirect ? `
                     <div style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-lg); padding: var(--spacing-md);">
                       <div style="display: flex; align-items: center; gap: 8px; margin-bottom: var(--spacing-sm);">
                         <div style="width: 32px; height: 32px; background: var(--warning-100); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;">
@@ -12164,6 +12219,7 @@
                         Accepts .xlsx, .xls, .csv
                       </div>
                     </div>
+                    ` : ''}
                     
                   </div>
                   
@@ -12178,6 +12234,11 @@
                       </div>
                       <div style="display: flex; align-items: center; gap: 8px;">
                         <input type="text" class="form-input" placeholder="Filter vendors..." style="font-size: 12px; padding: 4px 10px; width: 180px;" onclick="event.stopPropagation()" onkeyup="filterNotificationVendors(this.value)" />
+                        ${competitionValues.notificationVendors && competitionValues.notificationVendors.filter(v => !v.notified).length > 0 ? `
+                          <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); notifyAllVendors()" style="font-size: 11px;">
+                            <i class="pi pi-send"></i> Notify All (${competitionValues.notificationVendors.filter(v => !v.notified).length})
+                          </button>
+                        ` : ''}
                         ${competitionValues.notificationVendors && competitionValues.notificationVendors.length > 0 ? `
                           <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); clearAllNotificationVendors()" style="color: var(--danger-500); font-size: 11px;">
                             <i class="pi pi-trash"></i> Clear All
@@ -12216,8 +12277,12 @@
                                     '<span class="badge badge-success" style="font-size: 10px;">Yes</span>' : 
                                     '<span class="badge badge-secondary" style="font-size: 10px;">No</span>') +
                                 '</td>' +
-                                '<td style="padding: 10px 12px; text-align: center;">' +
-                                  '<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); removeNotificationVendor(' + (((competitionValues.vendorListPage || 1) - 1) * 10 + idx) + ')" style="color: var(--danger-500); padding: 4px;">' +
+                                '<td style="padding: 10px 12px; text-align: center; white-space: nowrap;">' +
+                                  (vendor.notified ? '' : 
+                                    '<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); notifyVendor(' + (((competitionValues.vendorListPage || 1) - 1) * 10 + idx) + ')" style="color: var(--primary-500); padding: 4px;" title="Send notification">' +
+                                      '<i class="pi pi-send"></i>' +
+                                    '</button>') +
+                                  '<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); removeNotificationVendor(' + (((competitionValues.vendorListPage || 1) - 1) * 10 + idx) + ')" style="color: var(--danger-500); padding: 4px;" title="Remove vendor">' +
                                     '<i class="pi pi-times"></i>' +
                                   '</button>' +
                                 '</td>' +
@@ -12403,23 +12468,71 @@
         saveCompetitionSectionStates();
         
         const mockShortlists = {
-          'shortlist-1': [
+          // Ad-hoc Shortlists
+          'adhoc-1': [
             { companyName: 'Dell Technologies', email: 'gov@dell.com' },
             { companyName: 'HP Enterprise', email: 'public@hpe.com' },
             { companyName: 'Lenovo Group', email: 'bids@lenovo.com' },
+            { companyName: 'Cisco Systems', email: 'procurement@cisco.com' },
           ],
-          'shortlist-2': [
-            { companyName: 'Turner Construction', email: 'projects@turnerconstruction.com' },
-            { companyName: 'Skanska AB', email: 'tenders@skanska.com' },
-          ],
-          'shortlist-3': [
+          'adhoc-2': [
             { companyName: 'Staples Inc', email: 'business@staples.com' },
             { companyName: 'Office Depot', email: 'corporate@officedepot.com' },
           ],
-          'shortlist-4': [
+          'adhoc-3': [
             { companyName: 'McKinsey & Company', email: 'rfp@mckinsey.com' },
             { companyName: 'Deloitte Consulting', email: 'proposals@deloitte.com' },
-          ]
+            { companyName: 'Boston Consulting Group', email: 'tenders@bcg.com' },
+          ],
+          'adhoc-4': [
+            { companyName: 'Securitas AB', email: 'contracts@securitas.com' },
+            { companyName: 'G4S Security', email: 'bids@g4s.com' },
+          ],
+          'adhoc-5': [
+            { companyName: 'DHL Logistics', email: 'government@dhl.com' },
+            { companyName: 'Kuehne + Nagel', email: 'tenders@kuehne-nagel.com' },
+          ],
+          // Sourcing Exercise Outcomes
+          'sourcing-1': [
+            { companyName: 'IBM Corporation', email: 'govcontracts@ibm.com' },
+            { companyName: 'Microsoft Azure', email: 'azure-gov@microsoft.com' },
+            { companyName: 'Amazon Web Services', email: 'aws-sector@amazon.com' },
+          ],
+          'sourcing-2': [
+            { companyName: 'Turner Construction', email: 'projects@turnerconstruction.com' },
+            { companyName: 'Skanska AB', email: 'tenders@skanska.com' },
+            { companyName: 'AECOM', email: 'proposals@aecom.com' },
+          ],
+          'sourcing-3': [
+            { companyName: 'Siemens Healthineers', email: 'procurement@siemens-healthineers.com' },
+            { companyName: 'GE Healthcare', email: 'bids@gehealthcare.com' },
+          ],
+          'sourcing-4': [
+            { companyName: 'Maersk Logistics', email: 'contracts@maersk.com' },
+            { companyName: 'FedEx Supply Chain', email: 'government@fedex.com' },
+          ],
+          // Existing Tender Vendor Lists
+          'tender-1': [
+            { companyName: 'Hensel Phelps', email: 'proposals@henselphelps.com' },
+            { companyName: 'Clark Construction', email: 'bids@clarkconstruction.com' },
+          ],
+          'tender-2': [
+            { companyName: 'Accenture', email: 'rfp@accenture.com' },
+            { companyName: 'Infosys Ltd', email: 'tenders@infosys.com' },
+            { companyName: 'Wipro Technologies', email: 'contracts@wipro.com' },
+          ],
+          'tender-3': [
+            { companyName: 'Toyota Fleet Management', email: 'fleet@toyota.com' },
+            { companyName: 'Ford Commercial', email: 'govfleet@ford.com' },
+          ],
+          'tender-4': [
+            { companyName: 'Viking Office Products', email: 'accounts@viking.com' },
+            { companyName: 'Lyreco', email: 'tenders@lyreco.com' },
+          ],
+          'tender-5': [
+            { companyName: 'Allied Universal', email: 'contracts@aus.com' },
+            { companyName: 'Prosegur', email: 'bids@prosegur.com' },
+          ],
         };
         
         const vendors = mockShortlists[shortlistId] || [];
@@ -12447,6 +12560,156 @@
         renderCurrentBlock();
         restoreCompetitionSectionStates();
       }
+      
+      // Mock data for different shortlist types
+      const shortlistData = {
+        adhoc: [
+          { id: 'adhoc-1', name: 'IT Equipment Suppliers', vendorCount: 12 },
+          { id: 'adhoc-2', name: 'Office Supplies Vendors', vendorCount: 8 },
+          { id: 'adhoc-3', name: 'Consulting Firms Pool', vendorCount: 15 },
+          { id: 'adhoc-4', name: 'Security Services List', vendorCount: 6 },
+          { id: 'adhoc-5', name: 'Transportation Partners', vendorCount: 10 },
+        ],
+        sourcing: [
+          { id: 'sourcing-1', name: 'Shortlist - RFI-2025-001 IT Infrastructure', vendorCount: 18, date: '2025-10-15' },
+          { id: 'sourcing-2', name: 'Shortlist - EOI-2025-003 Construction Services', vendorCount: 24, date: '2025-09-20' },
+          { id: 'sourcing-3', name: 'Shortlist - RFI-2025-005 Medical Equipment', vendorCount: 9, date: '2025-11-02' },
+          { id: 'sourcing-4', name: 'Shortlist - EOI-2024-012 Logistics Partners', vendorCount: 31, date: '2024-12-10' },
+        ],
+        tender: [
+          { id: 'tender-1', name: 'ITB-2025-0042 - Office Renovation', vendorCount: 5, status: 'Awarded' },
+          { id: 'tender-2', name: 'RFP-2025-0038 - IT Support Services', vendorCount: 8, status: 'Closed' },
+          { id: 'tender-3', name: 'ITB-2024-0156 - Vehicle Fleet', vendorCount: 12, status: 'Awarded' },
+          { id: 'tender-4', name: 'RFQ-2025-0089 - Stationery Supply', vendorCount: 6, status: 'Closed' },
+          { id: 'tender-5', name: 'RFP-2024-0201 - Security Services', vendorCount: 4, status: 'Awarded' },
+        ]
+      };
+      
+      // Current selected shortlist type
+      let currentShortlistType = null;
+      
+      // Select shortlist type (radio button handler)
+      window.selectShortlistType = function(type) {
+        currentShortlistType = type;
+        
+        // Show the search container
+        const searchContainer = document.getElementById('shortlist-search-container');
+        const searchContainerInline = document.getElementById('shortlist-search-container-inline');
+        
+        if (searchContainer) {
+          searchContainer.style.display = 'block';
+        }
+        if (searchContainerInline) {
+          searchContainerInline.style.display = 'block';
+        }
+        
+        // Update placeholder based on type
+        const placeholders = {
+          adhoc: 'Search ad-hoc shortlists...',
+          sourcing: 'Search sourcing exercise outcomes...',
+          tender: 'Search existing tender vendors...'
+        };
+        
+        const searchInput = document.getElementById('shortlist-search-input');
+        const searchInputInline = document.getElementById('shortlist-search-input-inline');
+        
+        if (searchInput) {
+          searchInput.placeholder = placeholders[type] || 'Search list by name...';
+          searchInput.value = '';
+        }
+        if (searchInputInline) {
+          searchInputInline.placeholder = placeholders[type] || 'Search list by name...';
+          searchInputInline.value = '';
+        }
+        
+        // Populate dropdown with options for this type
+        populateShortlistDropdown(type, '');
+        showShortlistDropdown();
+      }
+      
+      // Populate the shortlist dropdown based on type and search term
+      function populateShortlistDropdown(type, searchTerm) {
+        const dropdown = document.getElementById('shortlist-dropdown');
+        const dropdownInline = document.getElementById('shortlist-dropdown-inline');
+        
+        const lists = shortlistData[type] || [];
+        const filtered = lists.filter(list => 
+          list.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        
+        let html = '';
+        if (filtered.length === 0) {
+          html = '<div style="padding: 12px; text-align: center; color: var(--text-muted); font-size: 12px;">No lists found</div>';
+        } else {
+          html = filtered.map(list => {
+            let subtitle = `${list.vendorCount} vendors`;
+            if (list.date) subtitle += ` • ${list.date}`;
+            if (list.status) subtitle += ` • ${list.status}`;
+            
+            return `
+              <div onclick="event.stopPropagation(); selectShortlist('${list.id}', '${list.name}')" 
+                   style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid var(--surface-100); transition: background 0.15s;"
+                   onmouseover="this.style.background='var(--surface-100)'" 
+                   onmouseout="this.style.background='white'">
+                <div style="font-weight: 500; font-size: 13px; color: var(--text-primary);">${list.name}</div>
+                <div style="font-size: 11px; color: var(--text-secondary);">${subtitle}</div>
+              </div>
+            `;
+          }).join('');
+        }
+        
+        if (dropdown) dropdown.innerHTML = html;
+        if (dropdownInline) dropdownInline.innerHTML = html;
+      }
+      
+      // Filter shortlist options as user types
+      window.filterShortlistOptions = function(searchTerm) {
+        if (!currentShortlistType) return;
+        populateShortlistDropdown(currentShortlistType, searchTerm);
+        showShortlistDropdown();
+      }
+      
+      // Show the shortlist dropdown
+      window.showShortlistDropdown = function() {
+        const dropdown = document.getElementById('shortlist-dropdown');
+        const dropdownInline = document.getElementById('shortlist-dropdown-inline');
+        
+        if (dropdown) dropdown.style.display = 'block';
+        if (dropdownInline) dropdownInline.style.display = 'block';
+      }
+      
+      // Select a shortlist from the dropdown
+      window.selectShortlist = function(listId, listName) {
+        // Hide the dropdown
+        const dropdown = document.getElementById('shortlist-dropdown');
+        const dropdownInline = document.getElementById('shortlist-dropdown-inline');
+        if (dropdown) dropdown.style.display = 'none';
+        if (dropdownInline) dropdownInline.style.display = 'none';
+        
+        // Update the search input to show selection
+        const searchInput = document.getElementById('shortlist-search-input');
+        const searchInputInline = document.getElementById('shortlist-search-input-inline');
+        if (searchInput) searchInput.value = listName;
+        if (searchInputInline) searchInputInline.value = listName;
+        
+        // Add vendors from the selected list
+        addShortlistVendors(listId);
+      }
+      
+      // Close shortlist dropdown when clicking outside
+      document.addEventListener('click', function(e) {
+        const dropdown = document.getElementById('shortlist-dropdown');
+        const dropdownInline = document.getElementById('shortlist-dropdown-inline');
+        const searchInput = document.getElementById('shortlist-search-input');
+        const searchInputInline = document.getElementById('shortlist-search-input-inline');
+        
+        if (dropdown && !dropdown.contains(e.target) && searchInput && !searchInput.contains(e.target)) {
+          dropdown.style.display = 'none';
+        }
+        if (dropdownInline && !dropdownInline.contains(e.target) && searchInputInline && !searchInputInline.contains(e.target)) {
+          dropdownInline.style.display = 'none';
+        }
+      });
       
       // Helper function to check if adding vendors is allowed (Direct contracting = max 1 vendor)
       function canAddVendor(countToAdd = 1) {
@@ -12533,6 +12796,56 @@
         saveCompetitionSectionStates();
         competitionValues.notificationVendors = [];
         competitionValues.vendorListPage = 1;
+        renderCurrentBlock();
+        restoreCompetitionSectionStates();
+      }
+      
+      // Notify a single vendor
+      window.notifyVendor = function(index) {
+        if (index < 0 || index >= competitionValues.notificationVendors.length) {
+          return;
+        }
+        
+        const vendor = competitionValues.notificationVendors[index];
+        if (vendor.notified) {
+          return; // Already notified
+        }
+        
+        saveCompetitionSectionStates();
+        
+        // Mark as notified
+        competitionValues.notificationVendors[index].notified = true;
+        
+        // Show success feedback
+        showNotification('Notification sent to ' + vendor.companyName, 'success');
+        
+        renderCurrentBlock();
+        restoreCompetitionSectionStates();
+      }
+      
+      // Notify all unnotified vendors
+      window.notifyAllVendors = function() {
+        const unnotified = competitionValues.notificationVendors.filter(v => !v.notified);
+        
+        if (unnotified.length === 0) {
+          showNotification('All vendors have already been notified', 'info');
+          return;
+        }
+        
+        if (!confirm('Send notifications to ' + unnotified.length + ' vendor(s)?')) {
+          return;
+        }
+        
+        saveCompetitionSectionStates();
+        
+        // Mark all as notified
+        competitionValues.notificationVendors.forEach(vendor => {
+          vendor.notified = true;
+        });
+        
+        // Show success feedback
+        showNotification('Notifications sent to ' + unnotified.length + ' vendor(s)', 'success');
+        
         renderCurrentBlock();
         restoreCompetitionSectionStates();
       }
