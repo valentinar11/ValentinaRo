@@ -11838,7 +11838,9 @@
         
         pagedVendors.forEach((vendor, idx) => {
           const globalIdx = startIdx + idx;
-          const sourceClass = vendor.source === 'UNGM' ? 'badge-primary' : vendor.source === 'Shortlist' ? 'badge-info' : vendor.source === 'Manual' ? 'badge-success' : 'badge-warning';
+          const sourceClass = vendor.source === 'UNGM' ? 'badge-primary' : 
+            (vendor.source === 'Ad-hoc Shortlist' || vendor.source === 'Sourcing Outcome' || vendor.source === 'Tender Vendors' || vendor.source === 'Shortlist') ? 'badge-info' : 
+            vendor.source === 'Manual' ? 'badge-success' : 'badge-warning';
           vendorRows += '<tr style="border-bottom: 1px solid var(--surface-100);">' +
             '<td style="padding: 10px 12px; color: var(--text-primary);">' + (vendor.companyName || '-') + '</td>' +
             '<td style="padding: 10px 12px; color: var(--text-secondary);">' + (vendor.email || '-') + '</td>' +
@@ -12268,7 +12270,7 @@
                                 '<td style="padding: 10px 12px; color: var(--text-secondary);">' + (vendor.email || '-') + '</td>' +
                                 '<td style="padding: 10px 12px; color: var(--text-secondary);">' + (vendor.ungmId || '-') + '</td>' +
                                 '<td style="padding: 10px 12px;">' +
-                                  '<span class="badge ' + (vendor.source === 'UNGM' ? 'badge-primary' : vendor.source === 'Shortlist' ? 'badge-info' : vendor.source === 'Manual' ? 'badge-success' : 'badge-warning') + '" style="font-size: 10px;">' +
+                                  '<span class="badge ' + (vendor.source === 'UNGM' ? 'badge-primary' : (vendor.source === 'Ad-hoc Shortlist' || vendor.source === 'Sourcing Outcome' || vendor.source === 'Tender Vendors' || vendor.source === 'Shortlist') ? 'badge-info' : vendor.source === 'Manual' ? 'badge-success' : 'badge-warning') + '" style="font-size: 10px;">' +
                                     (vendor.source || 'Unknown') +
                                   '</span>' +
                                 '</td>' +
@@ -12453,8 +12455,16 @@
       }
       
       // Add all vendors from shortlist
-      window.addShortlistVendors = function(shortlistId) {
+      window.addShortlistVendors = function(shortlistId, listType) {
         if (!shortlistId) return;
+        
+        // Determine the source label based on list type
+        const sourceLabels = {
+          'adhoc': 'Ad-hoc Shortlist',
+          'sourcing': 'Sourcing Outcome',
+          'tender': 'Tender Vendors'
+        };
+        const sourceLabel = sourceLabels[listType] || 'Shortlist';
         
         // For Direct contracting, only allow adding if no vendors exist
         if (competitionValues.competitionType === 'Direct contracting') {
@@ -12548,7 +12558,7 @@
             competitionValues.notificationVendors.push({
               companyName: vendor.companyName,
               email: vendor.email,
-              source: 'Shortlist'
+              source: sourceLabel
             });
             addedCount++;
             
@@ -12692,8 +12702,8 @@
         if (searchInput) searchInput.value = listName;
         if (searchInputInline) searchInputInline.value = listName;
         
-        // Add vendors from the selected list
-        addShortlistVendors(listId);
+        // Add vendors from the selected list, passing the current list type
+        addShortlistVendors(listId, currentShortlistType);
       }
       
       // Close shortlist dropdown when clicking outside
