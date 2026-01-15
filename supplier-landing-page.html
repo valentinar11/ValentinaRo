@@ -191,7 +191,7 @@
       .hero {
         background: linear-gradient(135deg, var(--unops-navy) 0%, var(--unops-blue-darker) 100%);
         color: var(--white);
-        padding: 56px 0 64px;
+        padding: 32px 0 40px;
         position: relative;
         overflow: hidden;
       }
@@ -268,31 +268,31 @@
       .login-card {
         background: var(--white);
         border-radius: 12px;
-        padding: 40px;
+        padding: 28px 32px;
         box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
         color: var(--gray-800);
       }
 
       .login-card h2 {
-        font-size: 24px;
+        font-size: 22px;
         font-weight: 700;
-        margin-bottom: 8px;
+        margin-bottom: 4px;
         color: var(--gray-900);
       }
 
       .login-card .subtitle {
-        font-size: 15px;
+        font-size: 14px;
         color: var(--gray-600);
-        margin-bottom: 24px;
+        margin-bottom: 16px;
       }
 
       .login-notice {
         background: #e8f7fc;
         border-radius: 8px;
-        padding: 16px;
-        margin-bottom: 24px;
+        padding: 12px;
+        margin-bottom: 16px;
         display: flex;
-        gap: 12px;
+        gap: 10px;
         align-items: flex-start;
       }
 
@@ -319,23 +319,23 @@
       }
 
       .form-group {
-        margin-bottom: 20px;
+        margin-bottom: 14px;
       }
 
       .form-label {
         display: block;
-        font-size: 14px;
+        font-size: 13px;
         font-weight: 600;
         color: var(--gray-700);
-        margin-bottom: 8px;
+        margin-bottom: 6px;
       }
 
       .form-input {
         width: 100%;
-        padding: 14px 16px;
+        padding: 10px 14px;
         border: 1px solid var(--gray-300);
         border-radius: 6px;
-        font-size: 15px;
+        font-size: 14px;
         font-family: inherit;
         transition: var(--transition);
         background: var(--white);
@@ -352,33 +352,33 @@
       }
 
       .form-actions {
-        margin-top: 24px;
+        margin-top: 16px;
       }
 
       .form-actions .btn {
         width: 100%;
         justify-content: center;
-        padding: 14px 24px;
+        padding: 11px 20px;
       }
 
       .login-footer {
-        margin-top: 24px;
-        padding-top: 24px;
+        margin-top: 16px;
+        padding-top: 16px;
         border-top: 1px solid var(--gray-200);
         text-align: center;
       }
 
       .login-footer p {
-        font-size: 14px;
+        font-size: 13px;
         color: var(--gray-600);
-        margin-bottom: 8px;
+        margin-bottom: 4px;
       }
 
       .login-footer a {
         color: var(--unops-blue);
         text-decoration: none;
         font-weight: 600;
-        font-size: 15px;
+        font-size: 14px;
         display: inline-flex;
         align-items: center;
         gap: 6px;
@@ -891,7 +891,7 @@
         }
 
         .hero {
-          padding: 40px 0 48px;
+          padding: 24px 0 32px;
         }
 
         .hero-text h1 {
@@ -961,7 +961,7 @@
 
         <nav class="header-nav">
           <a href="#opportunities" class="nav-link">Opportunities</a>
-          <a href="#help" class="nav-link">Help & Support</a>
+          <a href="help-center.html" class="nav-link">Help & Support</a>
           <a href="https://www.ungm.org" target="_blank" class="nav-link">UNGM</a>
           <a href="#login" class="btn btn-primary">Sign In</a>
         </nav>
@@ -1200,7 +1200,7 @@
         </div>
 
         <div class="help-grid">
-          <a href="#" class="help-card">
+          <a href="help-center.html#guides" class="help-card">
             <div class="help-card-icon">
               <i class="pi pi-book"></i>
             </div>
@@ -1211,7 +1211,7 @@
             </span>
           </a>
 
-          <a href="#" class="help-card">
+          <a href="help-center.html#videos" class="help-card">
             <div class="help-card-icon">
               <i class="pi pi-video"></i>
             </div>
@@ -1222,7 +1222,7 @@
             </span>
           </a>
 
-          <a href="#" class="help-card">
+          <a href="help-center.html#faq" class="help-card">
             <div class="help-card-icon">
               <i class="pi pi-comments"></i>
             </div>
@@ -1233,7 +1233,7 @@
             </span>
           </a>
 
-          <a href="#" class="help-card">
+          <a href="help-center.html#contact" class="help-card">
             <div class="help-card-icon">
               <i class="pi pi-envelope"></i>
             </div>
@@ -1337,17 +1337,21 @@
             e.preventDefault();
             const target = document.querySelector(href);
             if (target) {
-              target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
+              const headerOffset = 80;
+              const elementPosition = target.getBoundingClientRect().top;
+              const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+              
+              window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
               });
             }
           }
         });
       });
 
-      // Form submission handler (mockup)
-      document.querySelector('form').addEventListener('submit', function(e) {
+      // Login form submission handler
+      document.querySelector('.login-card form').addEventListener('submit', function(e) {
         e.preventDefault();
         alert('Login functionality would redirect to UNGM authentication.\n\nAfter successful authentication, users will be redirected to the authenticated supplier portal.');
       });

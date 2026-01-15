@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Help Center · UNOPS Supplier Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/primeicons@6.0.1/primeicons.css" />
+    <style>
+      :root {
+        /* UNOPS Brand Colors */
+        --unops-blue: #009edb;
+        --unops-blue-dark: #007bb8;
+        --unops-blue-darker: #005a87;
+        --unops-navy: #1a1a2e;
+        --unops-navy-light: #2d2d44;
+        
+        /* Neutral Colors */
+        --white: #ffffff;
+        --gray-50: #f8f9fa;
+        --gray-100: #f1f3f5;
+        --gray-200: #e9ecef;
+        --gray-300: #dee2e6;
+        --gray-400: #ced4da;
+        --gray-500: #adb5bd;
+        --gray-600: #6c757d;
+        --gray-700: #495057;
+        --gray-800: #343a40;
+        --gray-900: #212529;
+
+        /* Typography */
+        --font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        
+        /* Spacing */
+        --container-max: 1200px;
+        
+        /* Transitions */
+        --transition: all 0.3s ease;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: var(--font-family);
+        color: var(--gray-800);
+        line-height: 1.6;
+        background: var(--gray-50);
+      }
+
+      .container {
+        max-width: var(--container-max);
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      /* Header */
+      .header {
+        background: var(--white);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 1px 0 rgba(0,0,0,0.08);
+      }
+
+      .header-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 24px;
+        max-width: var(--container-max);
+        margin: 0 auto;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+      }
+
+      .logo-icon {
+        height: 48px;
+        width: auto;
+      }
+
+      .logo-icon img {
+        height: 100%;
+        width: auto;
+      }
+
+      .logo-divider {
+        width: 1px;
+        height: 32px;
+        background: var(--gray-300);
+      }
+
+      .logo-text {
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--gray-700);
+        letter-spacing: -0.01em;
+      }
+
+      .header-nav {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .nav-link {
+        font-size: 15px;
+        font-weight: 500;
+        color: var(--gray-700);
+        text-decoration: none;
+        padding: 10px 16px;
+        border-radius: 4px;
+        transition: var(--transition);
+      }
+
+      .nav-link:hover {
+        color: var(--unops-blue);
+        background: var(--gray-50);
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        border-radius: 4px;
+        font-size: 15px;
+        font-weight: 600;
+        font-family: inherit;
+        cursor: pointer;
+        border: none;
+        transition: var(--transition);
+        text-decoration: none;
+      }
+
+      .btn-primary {
+        background: var(--unops-blue);
+        color: var(--white);
+      }
+
+      .btn-primary:hover {
+        background: var(--unops-blue-dark);
+      }
+
+      /* Page Header */
+      .page-header {
+        background: linear-gradient(135deg, var(--unops-navy) 0%, var(--unops-blue-darker) 100%);
+        color: var(--white);
+        padding: 48px 0;
+      }
+
+      .page-header-content {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .page-header-icon {
+        width: 64px;
+        height: 64px;
+        background: rgba(255,255,255,0.15);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .page-header-icon i {
+        font-size: 28px;
+        color: var(--white);
+      }
+
+      .page-header h1 {
+        font-size: 36px;
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+
+      .page-header p {
+        font-size: 18px;
+        opacity: 0.85;
+      }
+
+      .breadcrumb {
+        margin-bottom: 16px;
+        font-size: 14px;
+        opacity: 0.7;
+      }
+
+      .breadcrumb a {
+        color: var(--white);
+        text-decoration: none;
+      }
+
+      .breadcrumb a:hover {
+        text-decoration: underline;
+      }
+
+      /* Tabs */
+      .tabs-container {
+        background: var(--white);
+        border-bottom: 1px solid var(--gray-200);
+        position: sticky;
+        top: 80px;
+        z-index: 100;
+      }
+
+      .tabs {
+        display: flex;
+        gap: 0;
+      }
+
+      .tab-btn {
+        padding: 20px 28px;
+        background: none;
+        border: none;
+        font-family: inherit;
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--gray-600);
+        cursor: pointer;
+        transition: var(--transition);
+        border-bottom: 3px solid transparent;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .tab-btn:hover {
+        color: var(--gray-900);
+        background: var(--gray-50);
+      }
+
+      .tab-btn.active {
+        color: var(--unops-blue);
+        border-bottom-color: var(--unops-blue);
+      }
+
+      .tab-btn i {
+        font-size: 18px;
+      }
+
+      /* Tab Content */
+      .tab-content {
+        padding: 48px 0 80px;
+        min-height: 60vh;
+      }
+
+      .tab-panel {
+        display: none;
+      }
+
+      .tab-panel.active {
+        display: block;
+      }
+
+      /* Guide List */
+      .guide-list {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .guide-item {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 24px;
+        background: var(--white);
+        border-radius: 12px;
+        text-decoration: none;
+        color: inherit;
+        transition: var(--transition);
+        border: 1px solid var(--gray-200);
+      }
+
+      .guide-item:hover {
+        border-color: var(--unops-blue);
+        box-shadow: 0 4px 16px rgba(0, 158, 219, 0.12);
+        transform: translateX(4px);
+      }
+
+      .guide-icon {
+        width: 52px;
+        height: 52px;
+        background: linear-gradient(135deg, var(--unops-blue) 0%, var(--unops-blue-dark) 100%);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .guide-icon i {
+        color: var(--white);
+        font-size: 22px;
+      }
+
+      .guide-content {
+        flex: 1;
+      }
+
+      .guide-content h4 {
+        font-size: 17px;
+        font-weight: 600;
+        color: var(--gray-900);
+        margin-bottom: 6px;
+      }
+
+      .guide-content p {
+        font-size: 14px;
+        color: var(--gray-600);
+        line-height: 1.6;
+      }
+
+      .guide-badges {
+        display: flex;
+        gap: 8px;
+        margin-top: 10px;
+      }
+
+      .guide-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 11px;
+        font-weight: 600;
+        padding: 5px 10px;
+        border-radius: 4px;
+      }
+
+      .guide-badge.pdf {
+        background: #fef2f2;
+        color: #dc2626;
+      }
+
+      .guide-badge.time {
+        background: #f0fdf4;
+        color: #16a34a;
+      }
+
+      .guide-arrow {
+        width: 44px;
+        height: 44px;
+        background: var(--gray-50);
+        border: 1px solid var(--gray-200);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        transition: var(--transition);
+        color: var(--gray-500);
+      }
+
+      .guide-item:hover .guide-arrow {
+        background: var(--unops-blue);
+        border-color: var(--unops-blue);
+        color: var(--white);
+      }
+
+      /* Video Grid */
+      .video-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      .video-card {
+        background: var(--white);
+        border-radius: 12px;
+        overflow: hidden;
+        text-decoration: none;
+        color: inherit;
+        transition: var(--transition);
+        border: 1px solid var(--gray-200);
+      }
+
+      .video-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+        border-color: var(--unops-blue);
+      }
+
+      .video-thumbnail {
+        position: relative;
+        background: linear-gradient(135deg, var(--unops-navy) 0%, var(--unops-blue-darker) 100%);
+        padding-top: 56.25%;
+      }
+
+      .video-thumbnail i {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 56px;
+        height: 56px;
+        background: var(--white);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--unops-blue);
+        font-size: 20px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+        transition: var(--transition);
+      }
+
+      .video-card:hover .video-thumbnail i {
+        transform: translate(-50%, -50%) scale(1.1);
+        background: var(--unops-blue);
+        color: var(--white);
+      }
+
+      .video-duration {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        background: rgba(0, 0, 0, 0.85);
+        color: var(--white);
+        font-size: 12px;
+        font-weight: 600;
+        padding: 5px 10px;
+        border-radius: 4px;
+      }
+
+      .video-info {
+        padding: 20px;
+      }
+
+      .video-info h4 {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--gray-900);
+        margin-bottom: 6px;
+        line-height: 1.4;
+      }
+
+      .video-info p {
+        font-size: 14px;
+        color: var(--gray-600);
+        line-height: 1.5;
+      }
+
+      /* FAQ */
+      .faq-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        max-width: 900px;
+      }
+
+      .faq-item {
+        border: 1px solid var(--gray-200);
+        border-radius: 12px;
+        overflow: hidden;
+        background: var(--white);
+      }
+
+      .faq-question {
+        width: 100%;
+        padding: 22px 24px;
+        background: var(--white);
+        border: none;
+        text-align: left;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        font-family: inherit;
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--gray-900);
+        transition: var(--transition);
+      }
+
+      .faq-question:hover {
+        background: var(--gray-50);
+      }
+
+      .faq-question i {
+        color: var(--unops-blue);
+        transition: transform 0.3s ease;
+        flex-shrink: 0;
+        font-size: 14px;
+      }
+
+      .faq-item.active {
+        border-color: var(--unops-blue);
+        box-shadow: 0 4px 12px rgba(0, 158, 219, 0.1);
+      }
+
+      .faq-item.active .faq-question {
+        background: var(--unops-blue);
+        color: var(--white);
+      }
+
+      .faq-item.active .faq-question i {
+        transform: rotate(180deg);
+        color: var(--white);
+      }
+
+      .faq-answer {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        background: var(--gray-50);
+      }
+
+      .faq-answer-inner {
+        padding: 24px;
+        font-size: 15px;
+        color: var(--gray-700);
+        line-height: 1.8;
+      }
+
+      .faq-item.active .faq-answer {
+        max-height: 500px;
+      }
+
+      /* Contact */
+      .contact-layout {
+        display: grid;
+        grid-template-columns: 1fr 1.5fr;
+        gap: 48px;
+      }
+
+      .contact-info-panel {
+        background: var(--white);
+        padding: 32px;
+        border-radius: 16px;
+        border: 1px solid var(--gray-200);
+      }
+
+      .contact-info-panel h3 {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--gray-900);
+        margin-bottom: 12px;
+      }
+
+      .contact-info-panel > p {
+        font-size: 15px;
+        color: var(--gray-600);
+        line-height: 1.7;
+        margin-bottom: 28px;
+      }
+
+      .contact-methods-list {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .contact-method {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 16px;
+        background: var(--gray-50);
+        border-radius: 12px;
+      }
+
+      .contact-method-icon {
+        width: 48px;
+        height: 48px;
+        background: linear-gradient(135deg, var(--unops-blue) 0%, var(--unops-blue-dark) 100%);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .contact-method-icon i {
+        color: var(--white);
+        font-size: 20px;
+      }
+
+      .contact-method-info h4 {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--gray-500);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 4px;
+      }
+
+      .contact-method-info p {
+        font-size: 16px;
+        color: var(--gray-900);
+        font-weight: 600;
+      }
+
+      .contact-form-panel {
+        background: var(--white);
+        padding: 32px;
+        border-radius: 16px;
+        border: 1px solid var(--gray-200);
+      }
+
+      .contact-form-panel h3 {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--gray-900);
+        margin-bottom: 24px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-label {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--gray-700);
+        margin-bottom: 8px;
+      }
+
+      .form-input {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid var(--gray-300);
+        border-radius: 6px;
+        font-size: 15px;
+        font-family: inherit;
+        transition: var(--transition);
+        background: var(--white);
+      }
+
+      .form-input:focus {
+        outline: none;
+        border-color: var(--unops-blue);
+        box-shadow: 0 0 0 3px rgba(0,158,219,0.15);
+      }
+
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+
+      .form-textarea {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid var(--gray-300);
+        border-radius: 6px;
+        font-size: 14px;
+        font-family: inherit;
+        resize: vertical;
+        min-height: 120px;
+        transition: var(--transition);
+      }
+
+      .form-textarea:focus {
+        outline: none;
+        border-color: var(--unops-blue);
+        box-shadow: 0 0 0 3px rgba(0, 158, 219, 0.15);
+      }
+
+      .form-actions {
+        margin-top: 24px;
+      }
+
+      /* Footer */
+      .footer {
+        background: var(--unops-navy);
+        color: var(--white);
+        padding: 32px 0;
+      }
+
+      .footer-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .footer-content span {
+        font-size: 14px;
+        opacity: 0.6;
+      }
+
+      .footer-links {
+        display: flex;
+        gap: 24px;
+      }
+
+      .footer-links a {
+        color: var(--white);
+        text-decoration: none;
+        font-size: 14px;
+        opacity: 0.6;
+        transition: var(--transition);
+      }
+
+      .footer-links a:hover {
+        opacity: 1;
+      }
+
+      /* Responsive */
+      @media (max-width: 1024px) {
+        .video-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .contact-layout {
+          grid-template-columns: 1fr;
+          gap: 24px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .header-nav .nav-link {
+          display: none;
+        }
+
+        .page-header {
+          padding: 32px 0;
+        }
+
+        .page-header h1 {
+          font-size: 28px;
+        }
+
+        .page-header-content {
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .tabs {
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+        }
+
+        .tab-btn {
+          padding: 16px 20px;
+          font-size: 14px;
+          white-space: nowrap;
+        }
+
+        .tab-btn span {
+          display: none;
+        }
+
+        .video-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .guide-item {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 16px;
+        }
+
+        .guide-arrow {
+          display: none;
+        }
+
+        .form-row {
+          grid-template-columns: 1fr;
+        }
+
+        .footer-content {
+          flex-direction: column;
+          gap: 16px;
+          text-align: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="header-inner">
+        <a href="supplier-landing-page.html" class="logo">
+          <div class="logo-icon">
+            <img src="unops-logo-rgb.png" alt="UNOPS Logo">
+          </div>
+          <div class="logo-divider"></div>
+          <span class="logo-text">Supplier Portal</span>
+        </a>
+
+        <nav class="header-nav">
+          <a href="supplier-landing-page.html#opportunities" class="nav-link">Opportunities</a>
+          <a href="help-center.html" class="nav-link">Help & Support</a>
+          <a href="https://www.ungm.org" target="_blank" class="nav-link">UNGM</a>
+          <a href="supplier-landing-page.html#login" class="btn btn-primary">Sign In</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+      <div class="container">
+        <div class="breadcrumb">
+          <a href="supplier-landing-page.html">Home</a> / Help Center
+        </div>
+        <div class="page-header-content">
+          <div class="page-header-icon">
+            <i class="pi pi-question-circle"></i>
+          </div>
+          <div>
+            <h1>Help Center</h1>
+            <p>Everything you need to get started and succeed as a UNOPS supplier</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tabs -->
+    <div class="tabs-container">
+      <div class="container">
+        <div class="tabs">
+          <button class="tab-btn active" data-tab="guides">
+            <i class="pi pi-book"></i>
+            <span>Guides</span>
+          </button>
+          <button class="tab-btn" data-tab="videos">
+            <i class="pi pi-video"></i>
+            <span>Video Tutorials</span>
+          </button>
+          <button class="tab-btn" data-tab="faq">
+            <i class="pi pi-comments"></i>
+            <span>FAQ</span>
+          </button>
+          <button class="tab-btn" data-tab="contact">
+            <i class="pi pi-envelope"></i>
+            <span>Contact Support</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab Content -->
+    <div class="tab-content">
+      <div class="container">
+        <!-- Guides Panel -->
+        <div class="tab-panel active" id="guides">
+          <div class="guide-list">
+            <a href="#" class="guide-item">
+              <div class="guide-icon">
+                <i class="pi pi-user-plus"></i>
+              </div>
+              <div class="guide-content">
+                <h4>Getting Started: UNGM Registration</h4>
+                <p>Complete guide to creating your UNGM account and completing vendor registration with required documents.</p>
+                <div class="guide-badges">
+                  <span class="guide-badge pdf"><i class="pi pi-file-pdf"></i> PDF</span>
+                  <span class="guide-badge time"><i class="pi pi-clock"></i> 15 min read</span>
+                </div>
+              </div>
+              <div class="guide-arrow">
+                <i class="pi pi-download"></i>
+              </div>
+            </a>
+            <a href="#" class="guide-item">
+              <div class="guide-icon">
+                <i class="pi pi-search"></i>
+              </div>
+              <div class="guide-content">
+                <h4>Finding Procurement Opportunities</h4>
+                <p>Learn how to search, filter, and identify relevant tender opportunities that match your business capabilities.</p>
+                <div class="guide-badges">
+                  <span class="guide-badge pdf"><i class="pi pi-file-pdf"></i> PDF</span>
+                  <span class="guide-badge time"><i class="pi pi-clock"></i> 10 min read</span>
+                </div>
+              </div>
+              <div class="guide-arrow">
+                <i class="pi pi-download"></i>
+              </div>
+            </a>
+            <a href="#" class="guide-item">
+              <div class="guide-icon">
+                <i class="pi pi-send"></i>
+              </div>
+              <div class="guide-content">
+                <h4>Submitting Your Offer</h4>
+                <p>Step-by-step instructions for preparing and submitting compliant offers, including required documentation.</p>
+                <div class="guide-badges">
+                  <span class="guide-badge pdf"><i class="pi pi-file-pdf"></i> PDF</span>
+                  <span class="guide-badge time"><i class="pi pi-clock"></i> 20 min read</span>
+                </div>
+              </div>
+              <div class="guide-arrow">
+                <i class="pi pi-download"></i>
+              </div>
+            </a>
+            <a href="#" class="guide-item">
+              <div class="guide-icon">
+                <i class="pi pi-check-circle"></i>
+              </div>
+              <div class="guide-content">
+                <h4>Understanding Evaluation Criteria</h4>
+                <p>Overview of how offers are evaluated, scoring methodologies, and tips for improving your submission quality.</p>
+                <div class="guide-badges">
+                  <span class="guide-badge pdf"><i class="pi pi-file-pdf"></i> PDF</span>
+                  <span class="guide-badge time"><i class="pi pi-clock"></i> 12 min read</span>
+                </div>
+              </div>
+              <div class="guide-arrow">
+                <i class="pi pi-download"></i>
+              </div>
+            </a>
+            <a href="#" class="guide-item">
+              <div class="guide-icon">
+                <i class="pi pi-briefcase"></i>
+              </div>
+              <div class="guide-content">
+                <h4>Contract Award & Management</h4>
+                <p>What to expect after winning a contract, including onboarding, deliverables, and performance management.</p>
+                <div class="guide-badges">
+                  <span class="guide-badge pdf"><i class="pi pi-file-pdf"></i> PDF</span>
+                  <span class="guide-badge time"><i class="pi pi-clock"></i> 18 min read</span>
+                </div>
+              </div>
+              <div class="guide-arrow">
+                <i class="pi pi-download"></i>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Videos Panel -->
+        <div class="tab-panel" id="videos">
+          <div class="video-grid">
+            <a href="#" class="video-card">
+              <div class="video-thumbnail">
+                <i class="pi pi-play"></i>
+                <span class="video-duration">4:32</span>
+              </div>
+              <div class="video-info">
+                <h4>Platform Overview & Navigation</h4>
+                <p>Introduction to the supplier portal and its main features</p>
+              </div>
+            </a>
+            <a href="#" class="video-card">
+              <div class="video-thumbnail">
+                <i class="pi pi-play"></i>
+                <span class="video-duration">6:15</span>
+              </div>
+              <div class="video-info">
+                <h4>UNGM Registration Walkthrough</h4>
+                <p>Step-by-step guide to creating your UNGM account</p>
+              </div>
+            </a>
+            <a href="#" class="video-card">
+              <div class="video-thumbnail">
+                <i class="pi pi-play"></i>
+                <span class="video-duration">5:48</span>
+              </div>
+              <div class="video-info">
+                <h4>Searching for Opportunities</h4>
+                <p>How to find and filter relevant procurement tenders</p>
+              </div>
+            </a>
+            <a href="#" class="video-card">
+              <div class="video-thumbnail">
+                <i class="pi pi-play"></i>
+                <span class="video-duration">8:22</span>
+              </div>
+              <div class="video-info">
+                <h4>Preparing Your Offer</h4>
+                <p>Tips for preparing compliant and competitive submissions</p>
+              </div>
+            </a>
+            <a href="#" class="video-card">
+              <div class="video-thumbnail">
+                <i class="pi pi-play"></i>
+                <span class="video-duration">7:05</span>
+              </div>
+              <div class="video-info">
+                <h4>Submitting an Offer</h4>
+                <p>Complete walkthrough of the offer submission process</p>
+              </div>
+            </a>
+            <a href="#" class="video-card">
+              <div class="video-thumbnail">
+                <i class="pi pi-play"></i>
+                <span class="video-duration">3:45</span>
+              </div>
+              <div class="video-info">
+                <h4>Managing Your Profile</h4>
+                <p>How to update your company information and documents</p>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- FAQ Panel -->
+        <div class="tab-panel" id="faq">
+          <div class="faq-list">
+            <div class="faq-item active">
+              <button class="faq-question">
+                How do I register as a UNOPS supplier?
+                <i class="pi pi-chevron-down"></i>
+              </button>
+              <div class="faq-answer">
+                <div class="faq-answer-inner">
+                  To become a UNOPS supplier, you must first register on the United Nations Global Marketplace (UNGM) at <strong>www.ungm.org</strong>. Complete your company profile with all required information, including business registration documents, financial statements, and capability statements. Once your UNGM registration is approved, you can access the UNOPS Procurement Platform using your UNGM credentials.
+                </div>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question">
+                What documents are required for registration?
+                <i class="pi pi-chevron-down"></i>
+              </button>
+              <div class="faq-answer">
+                <div class="faq-answer-inner">
+                  Required documents typically include: Certificate of Incorporation or Business Registration, Tax Registration Certificate, audited financial statements for the past 2-3 years, company profile/capability statement, references from previous clients, and any relevant certifications or licenses for your industry. Specific requirements may vary by tender.
+                </div>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question">
+                How do I find opportunities relevant to my business?
+                <i class="pi pi-chevron-down"></i>
+              </button>
+              <div class="faq-answer">
+                <div class="faq-answer-inner">
+                  Use the search and filter options in the Opportunities section to narrow down tenders by organization, type (RFQ, RFP, ITB), country, and keywords. You can also set up email alerts on UNGM to receive notifications when new opportunities matching your profile are published.
+                </div>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question">
+                What is the typical tender response timeline?
+                <i class="pi pi-chevron-down"></i>
+              </button>
+              <div class="faq-answer">
+                <div class="faq-answer-inner">
+                  Response timelines vary depending on the complexity of the procurement. Request for Quotations (RFQs) typically allow 2-4 weeks, while Request for Proposals (RFPs) and Invitations to Bid (ITBs) may allow 4-8 weeks. Always check the specific deadline and time zone indicated in each opportunity. Late submissions are not accepted.
+                </div>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question">
+                Can I submit offers for multiple opportunities?
+                <i class="pi pi-chevron-down"></i>
+              </button>
+              <div class="faq-answer">
+                <div class="faq-answer-inner">
+                  Yes, you can submit offers for as many opportunities as you wish, provided you meet the eligibility criteria for each. However, ensure you have the capacity to fulfill all contracts if awarded. Each submission should be tailored to the specific requirements of that tender.
+                </div>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question">
+                How are offers evaluated?
+                <i class="pi pi-chevron-down"></i>
+              </button>
+              <div class="faq-answer">
+                <div class="faq-answer-inner">
+                  Evaluation criteria depend on the procurement type. Generally, offers are assessed on technical compliance, price competitiveness, supplier qualifications, and past performance. For RFPs, technical evaluation typically weighs 60-70% and price 30-40%. The specific criteria and weightings are detailed in each tender document.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Panel -->
+        <div class="tab-panel" id="contact">
+          <div class="contact-layout">
+            <div class="contact-info-panel">
+              <h3>Get in Touch</h3>
+              <p>Our support team is available Monday to Friday, 9:00 AM - 5:00 PM (CET). Choose your preferred contact method or send us a message.</p>
+              
+              <div class="contact-methods-list">
+                <div class="contact-method">
+                  <div class="contact-method-icon">
+                    <i class="pi pi-envelope"></i>
+                  </div>
+                  <div class="contact-method-info">
+                    <h4>Email Support</h4>
+                    <p>supplier.support@unops.org</p>
+                  </div>
+                </div>
+                <div class="contact-method">
+                  <div class="contact-method-icon">
+                    <i class="pi pi-phone"></i>
+                  </div>
+                  <div class="contact-method-info">
+                    <h4>Phone Support</h4>
+                    <p>+45 45 33 75 00</p>
+                  </div>
+                </div>
+                <div class="contact-method">
+                  <div class="contact-method-icon">
+                    <i class="pi pi-map-marker"></i>
+                  </div>
+                  <div class="contact-method-info">
+                    <h4>Headquarters</h4>
+                    <p>Copenhagen, Denmark</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="contact-form-panel">
+              <h3>Send us a Message</h3>
+              <form id="contact-form">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label" for="contact-name">Full Name</label>
+                    <input type="text" id="contact-name" class="form-input" placeholder="Your name">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="contact-email">Email Address</label>
+                    <input type="email" id="contact-email" class="form-input" placeholder="your.email@company.com">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="contact-subject">Subject</label>
+                  <input type="text" id="contact-subject" class="form-input" placeholder="How can we help?">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="contact-message">Message</label>
+                  <textarea id="contact-message" class="form-textarea" placeholder="Describe your question or issue..."></textarea>
+                </div>
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-primary">
+                    <i class="pi pi-send"></i>
+                    Send Message
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <span>© 2026 UNOPS. All rights reserved.</span>
+          <div class="footer-links">
+            <a href="supplier-landing-page.html">Back to Portal</a>
+            <a href="https://www.unops.org" target="_blank">unops.org</a>
+            <a href="https://www.ungm.org" target="_blank">ungm.org</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Tab functionality
+      const tabBtns = document.querySelectorAll('.tab-btn');
+      const tabPanels = document.querySelectorAll('.tab-panel');
+
+      function switchTab(tabId) {
+        // Update buttons
+        tabBtns.forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.tab === tabId);
+        });
+        
+        // Update panels
+        tabPanels.forEach(panel => {
+          panel.classList.toggle('active', panel.id === tabId);
+        });
+      }
+
+      tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          switchTab(btn.dataset.tab);
+        });
+      });
+
+      // Handle hash in URL (e.g., help-center.html#faq)
+      function handleHashChange() {
+        const hash = window.location.hash.slice(1);
+        if (hash && document.getElementById(hash)) {
+          switchTab(hash);
+        }
+      }
+
+      // Check hash on page load
+      handleHashChange();
+      window.addEventListener('hashchange', handleHashChange);
+
+      // FAQ Accordion
+      const faqQuestions = document.querySelectorAll('.faq-question');
+      faqQuestions.forEach(question => {
+        question.addEventListener('click', function() {
+          const faqItem = this.parentElement;
+          const wasActive = faqItem.classList.contains('active');
+          
+          // Close all other items
+          document.querySelectorAll('.faq-item').forEach(item => {
+            item.classList.remove('active');
+          });
+          
+          // Toggle current item
+          if (!wasActive) {
+            faqItem.classList.add('active');
+          }
+        });
+      });
+
+      // Contact form submission
+      document.getElementById('contact-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const name = document.getElementById('contact-name').value;
+        const email = document.getElementById('contact-email').value;
+        const subject = document.getElementById('contact-subject').value;
+        const message = document.getElementById('contact-message').value;
+
+        if (name && email && subject && message) {
+          alert('Thank you for your message!\n\nOur support team will respond to your inquiry within 1-2 business days.');
+          this.reset();
+        } else {
+          alert('Please fill in all fields before submitting.');
+        }
+      });
+    </script>
+  </body>
+</html>
+
