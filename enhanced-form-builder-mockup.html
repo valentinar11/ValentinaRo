@@ -204,12 +204,16 @@
 
       /* ===== SIDEBAR ===== */
       .sidebar {
-        width: 280px;
-        min-width: 280px;
+        width: 300px;
+        min-width: 300px;
+        max-width: 300px;
         background-color: #0192D1;
         color: white;
         display: flex;
         flex-direction: column;
+        border-right: none;
+        flex-shrink: 0;
+        overflow-y: auto;
       }
 
       .sidebar-menu { flex: 1; padding: 16px 0; }
@@ -241,8 +245,49 @@
         border-left-color: white;
         font-weight: 600;
       }
+      .menu-item.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .menu-item.disabled:hover {
+        background-color: transparent;
+      }
 
       .menu-icon { font-size: 16px; width: 20px; text-align: center; }
+
+      /* Menu Groups */
+      .menu-group { margin-bottom: var(--spacing-xs); }
+      .menu-group-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 20px;
+        cursor: pointer;
+        transition: background 0.2s;
+        font-size: 14px;
+      }
+      .menu-group-header:hover { background: rgba(255,255,255,0.1); }
+      .menu-group-header span { display: flex; align-items: center; gap: 10px; }
+      .menu-group-header i { font-size: 12px; transition: transform 0.2s; }
+      .menu-group.collapsed .menu-group-header i.pi-chevron-down { transform: rotate(-90deg); }
+      .menu-group.collapsed .menu-group-items { display: none; }
+      .menu-group-items { padding-left: 12px; }
+      .menu-group-items .menu-item {
+        padding: 10px 20px 10px 28px;
+        font-size: 13px;
+        border-left: none;
+      }
+      .menu-group-items .menu-item.active {
+        background: rgba(255,255,255,0.15);
+        border-left: none;
+        border-radius: 0 4px 4px 0;
+        margin-right: 8px;
+      }
+      .menu-divider {
+        height: 1px;
+        background: rgba(255,255,255,0.15);
+        margin: var(--spacing-md) 0;
+      }
 
       /* ===== MAIN CONTENT ===== */
       .main-content {
@@ -431,16 +476,15 @@
       }
 
       .component-badge.level-delivery {
-        background: var(--teal-100);
-        color: var(--teal-700);
+        background: var(--success-100);
+        color: var(--success-600);
       }
 
-      .predefined-field-item {
-        background: linear-gradient(135deg, var(--surface-50) 0%, white 100%);
-        border-left: 3px solid var(--success-500);
+      .component-badge.level-service {
+        background: var(--warning-100);
+        color: var(--warning-600);
       }
 
-      .predefined-field-item i { color: var(--success-500); }
 
       /* Drag Preview */
       .drag-preview {
@@ -1379,6 +1423,252 @@
       .apply-to-option.selected { border-color: var(--primary-500); background: var(--primary-50); }
       .apply-to-option label { font-size: 12px; cursor: pointer; }
 
+      /* Quick Actions Buttons */
+      .quick-actions-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .quick-action-btn {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 14px;
+        border-radius: var(--radius-md);
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+        border: 1px solid;
+      }
+
+      .quick-action-btn i {
+        font-size: 16px;
+      }
+
+      .quick-action-btn.add {
+        background: var(--primary-50);
+        border-color: var(--primary-200);
+        color: var(--primary-700);
+      }
+
+      .quick-action-btn.add:hover {
+        background: var(--primary-100);
+        border-color: var(--primary-400);
+      }
+
+      .quick-action-btn.remove {
+        background: var(--surface-50);
+        border-color: var(--surface-200);
+        color: var(--text-secondary);
+      }
+
+      .quick-action-btn.remove:hover {
+        background: var(--danger-50);
+        border-color: var(--danger-200);
+        color: var(--danger-600);
+      }
+
+      .quick-action-btn.remove:hover i {
+        color: var(--danger-500);
+      }
+
+      /* Enhanced Apply To Section */
+      .apply-to-counter {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 12px;
+        background: var(--primary-50);
+        border: 1px solid var(--primary-200);
+        border-radius: var(--radius-sm);
+        margin-bottom: 12px;
+        font-size: 12px;
+      }
+
+      .apply-to-counter .count {
+        font-weight: 600;
+        color: var(--primary-600);
+      }
+
+      .apply-to-counter .total {
+        color: var(--text-muted);
+      }
+
+      .advanced-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 12px;
+        background: var(--surface-50);
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        margin-top: 12px;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--text-secondary);
+      }
+
+      .advanced-toggle:hover {
+        background: var(--surface-100);
+      }
+
+      .advanced-toggle i {
+        font-size: 12px;
+        transition: transform 0.2s;
+      }
+
+      .advanced-toggle.expanded i {
+        transform: rotate(180deg);
+      }
+
+      .advanced-selection {
+        border: 1px solid var(--surface-200);
+        border-top: none;
+        border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+        padding: 12px;
+        background: white;
+        display: none;
+      }
+
+      .advanced-selection.visible {
+        display: block;
+      }
+
+      .search-box {
+        position: relative;
+        margin-bottom: 12px;
+      }
+
+      .search-box input {
+        width: 100%;
+        padding: 8px 12px 8px 32px;
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-sm);
+        font-size: 12px;
+      }
+
+      .search-box i {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+        font-size: 12px;
+      }
+
+      .bulk-actions {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+
+      .bulk-btn {
+        flex: 1;
+        padding: 6px 10px;
+        font-size: 11px;
+        border: 1px solid var(--surface-200);
+        background: white;
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        color: var(--text-secondary);
+      }
+
+      .bulk-btn:hover {
+        background: var(--surface-50);
+        border-color: var(--primary-300);
+      }
+
+      .lot-group {
+        margin-bottom: 12px;
+      }
+
+      .lot-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 10px;
+        background: var(--surface-50);
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 500;
+      }
+
+      .lot-header:hover {
+        background: var(--surface-100);
+      }
+
+      .lot-header input[type="checkbox"] {
+        width: 14px;
+        height: 14px;
+      }
+
+      .lot-header .lot-name {
+        flex: 1;
+      }
+
+      .lot-header .lot-count {
+        font-size: 10px;
+        color: var(--text-muted);
+        background: var(--surface-200);
+        padding: 2px 6px;
+        border-radius: 10px;
+      }
+
+      .lot-header .expand-icon {
+        font-size: 10px;
+        color: var(--text-muted);
+        transition: transform 0.2s;
+      }
+
+      .lot-header.expanded .expand-icon {
+        transform: rotate(180deg);
+      }
+
+      .lot-products {
+        display: none;
+        padding: 8px 0 8px 28px;
+      }
+
+      .lot-products.visible {
+        display: block;
+      }
+
+      .product-checkbox {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 10px;
+        font-size: 11px;
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+      }
+
+      .product-checkbox:hover {
+        background: var(--surface-50);
+      }
+
+      .product-checkbox input[type="checkbox"] {
+        width: 13px;
+        height: 13px;
+      }
+
+      .product-checkbox .product-name {
+        flex: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .product-checkbox .product-code {
+        font-size: 10px;
+        color: var(--text-muted);
+      }
+
+
       /* Toast */
       .toast-container {
         position: fixed;
@@ -1460,25 +1750,147 @@
 
     <!-- App Container -->
     <div class="app-container">
-      <!-- Sidebar -->
+      <!-- Sidebar - Matching tender-authoring -->
       <aside class="sidebar">
         <nav class="sidebar-menu">
+          <!-- Administrative Applications -->
           <div class="menu-section">
-            <div class="menu-section-title">Form Builder</div>
-            <a class="menu-item active" href="#"><i class="pi pi-file-edit menu-icon"></i><span>Technical Bid Form</span></a>
-            <a class="menu-item" href="#"><i class="pi pi-list menu-icon"></i><span>Form Templates</span></a>
-            <a class="menu-item" href="#"><i class="pi pi-history menu-icon"></i><span>Version History</span></a>
+            <div class="menu-section-title">Administrative Applications</div>
+            
+            <!-- System Settings -->
+            <div class="menu-group collapsed">
+              <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                <span><i class="pi pi-cog"></i> System Settings</span>
+                <i class="pi pi-chevron-down"></i>
+              </div>
+              <div class="menu-group-items">
+                <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-users"></i></span><span>User Role Management</span></a>
+                <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-id-card"></i></span><span>Role Management</span></a>
+                <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-sliders-h"></i></span><span>Attribute Management</span></a>
+                <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-database"></i></span><span>Data Management</span></a>
+                <a class="menu-item" href="translation-management.html"><span class="menu-icon"><i class="pi pi-language"></i></span><span>Translations</span></a>
+              </div>
+            </div>
+            
+            <!-- Components -->
+            <div class="menu-group collapsed">
+              <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                <span><i class="pi pi-box"></i> Components</span>
+                <i class="pi pi-chevron-down"></i>
+              </div>
+              <div class="menu-group-items">
+                <a class="menu-item" id="menu-criteria" href="https://valentinar11.github.io/ValentinaRo/components-library.html"><span class="menu-icon"><i class="pi pi-list"></i></span><span>Evaluation Criteria Library</span></a>
+                <a class="menu-item" id="menu-specifications"><span class="menu-icon"><i class="pi pi-cog"></i></span><span>Specifications Library</span></a>
+              </div>
+            </div>
+            
+            <!-- Forms -->
+            <div class="menu-group">
+              <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                <span><i class="pi pi-file-edit"></i> Forms</span>
+                <i class="pi pi-chevron-down"></i>
+              </div>
+              <div class="menu-group-items">
+                <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-folder"></i></span><span>Forms Library</span></a>
+                <a class="menu-item active"><span class="menu-icon"><i class="pi pi-pencil"></i></span><span>Form Builder</span></a>
+              </div>
+            </div>
+            
+            <!-- Processes -->
+            <div class="menu-group collapsed">
+              <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                <span><i class="pi pi-sitemap"></i> Processes</span>
+                <i class="pi pi-chevron-down"></i>
+              </div>
+              <div class="menu-group-items">
+                <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-list"></i></span><span>Process Library</span></a>
+              </div>
+            </div>
+            
+            <!-- Templates -->
+            <div class="menu-group collapsed">
+              <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                <span><i class="pi pi-copy"></i> Templates</span>
+                <i class="pi pi-chevron-down"></i>
+              </div>
+              <div class="menu-group-items">
+                <a class="menu-item" href="template-library.html"><span class="menu-icon"><i class="pi pi-folder"></i></span><span>Templates Library</span></a>
+                <a class="menu-item" href="template-builder-workspace.html"><span class="menu-icon"><i class="pi pi-pencil"></i></span><span>Template Builder</span></a>
+              </div>
+            </div>
           </div>
+          
+          <div class="menu-divider"></div>
+          
+          <!-- Business Applications -->
           <div class="menu-section">
-            <div class="menu-section-title">Configuration</div>
-            <a class="menu-item" href="#"><i class="pi pi-cog menu-icon"></i><span>Form Settings</span></a>
-            <a class="menu-item" href="#"><i class="pi pi-chart-bar menu-icon"></i><span>Scoring Rules</span></a>
-            <a class="menu-item" href="#"><i class="pi pi-shield menu-icon"></i><span>Validation Rules</span></a>
-          </div>
-          <div class="menu-section">
-            <div class="menu-section-title">Preview</div>
-            <a class="menu-item" href="#"><i class="pi pi-eye menu-icon"></i><span>Supplier View</span></a>
-            <a class="menu-item" href="#"><i class="pi pi-print menu-icon"></i><span>Print Preview</span></a>
+            <div class="menu-section-title">Business Applications</div>
+            
+            <!-- eTendering -->
+            <div class="menu-group collapsed">
+              <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                <span><i class="pi pi-briefcase"></i> eTendering</span>
+                <i class="pi pi-chevron-down"></i>
+              </div>
+              <div class="menu-group-items">
+                <a class="menu-item" href="tender-dashboard-complete.html"><span class="menu-icon"><i class="pi pi-chart-bar"></i></span><span>Overview</span></a>
+                <a class="menu-item" href="tender-dashboard-complete.html"><span class="menu-icon"><i class="pi pi-folder-open"></i></span><span>Tenders</span></a>
+                <a class="menu-item" href="tender-authoring.html"><span class="menu-icon"><i class="pi pi-plus"></i></span><span>Create Tender</span></a>
+              </div>
+            </div>
+            
+            <!-- Award & Review -->
+            <div class="menu-group collapsed">
+              <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                <span><i class="pi pi-check-square"></i> Award & Review</span>
+                <i class="pi pi-chevron-down"></i>
+              </div>
+              <div class="menu-group-items">
+                <a class="menu-item" href="CPC.html"><span class="menu-icon"><i class="pi pi-chart-bar"></i></span><span>Overview</span></a>
+                <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-folder"></i></span><span>Cases</span></a>
+                <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-calendar"></i></span><span>Meetings</span></a>
+                <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-users"></i></span><span>Pool Management</span></a>
+                <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-comments"></i></span><span>Q&A</span></a>
+              </div>
+            </div>
+            
+            <!-- DRiVE -->
+            <div class="menu-group collapsed">
+              <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                <span><i class="pi pi-shield"></i> DRiVE</span>
+                <i class="pi pi-chevron-down"></i>
+              </div>
+              <div class="menu-group-items">
+                <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-chart-bar"></i></span><span>Overview</span></a>
+                <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-inbox"></i></span><span>Response Library</span></a>
+                <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-check-circle"></i></span><span>Verification</span></a>
+                <a class="menu-item" href="capa-interactive-mockup.html"><span class="menu-icon"><i class="pi pi-exclamation-triangle"></i></span><span>CAPA</span></a>
+                <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-question-circle"></i></span><span>Questionnaire Management</span></a>
+                <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-chart-line"></i></span><span>Risk Management</span></a>
+              </div>
+            </div>
+            
+            <!-- Contracts -->
+            <div class="menu-group collapsed">
+              <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                <span><i class="pi pi-file"></i> Contracts</span>
+                <i class="pi pi-chevron-down"></i>
+              </div>
+              <div class="menu-group-items">
+                <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-list"></i></span><span>Contract Management</span></a>
+              </div>
+            </div>
+            
+            <!-- Supplier Management -->
+            <div class="menu-group collapsed">
+              <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                <span><i class="pi pi-truck"></i> Supplier Management</span>
+                <i class="pi pi-chevron-down"></i>
+              </div>
+              <div class="menu-group-items">
+                <a class="menu-item" href="supplier-management-procurement.html"><span class="menu-icon"><i class="pi pi-building"></i></span><span>Suppliers</span></a>
+              </div>
+            </div>
           </div>
         </nav>
       </aside>
@@ -1512,63 +1924,102 @@
             
             <div class="palette-content" id="predefined-tab">
               <!-- Product Level Fields -->
-              <div class="component-item predefined-field-item" draggable="true" data-type="text" data-name="Model Name" data-level="product">
-                <i class="pi pi-box"></i><span>Model Name</span><span class="component-badge level-product">Product Level</span>
+              <div class="component-item" draggable="true" data-type="text" data-name="Model Name" data-level="product">
+                <span>Model Name</span><span class="component-badge level-product">Product Level</span>
               </div>
-              <div class="component-item predefined-field-item" draggable="true" data-type="text" data-name="Manufacturer" data-level="product">
-                <i class="pi pi-building"></i><span>Manufacturer</span><span class="component-badge level-product">Product Level</span>
+              <div class="component-item" draggable="true" data-type="text" data-name="Manufacturer" data-level="product">
+                <span>Manufacturer</span><span class="component-badge level-product">Product Level</span>
               </div>
-              <div class="component-item predefined-field-item" draggable="true" data-type="text" data-name="Country of Origin" data-level="product">
-                <i class="pi pi-globe"></i><span>Country of Origin</span><span class="component-badge level-product">Product Level</span>
+              <div class="component-item" draggable="true" data-type="text" data-name="Country of Origin" data-level="product">
+                <span>Country of Origin</span><span class="component-badge level-product">Product Level</span>
               </div>
-              <div class="component-item predefined-field-item" draggable="true" data-type="textarea" data-name="Deviations" data-level="product">
-                <i class="pi pi-exclamation-circle"></i><span>Deviations</span><span class="component-badge level-product">Product Level</span>
+              <div class="component-item" draggable="true" data-type="textarea" data-name="Deviations" data-level="product">
+                <span>Deviations</span><span class="component-badge level-product">Product Level</span>
               </div>
               <!-- Specification Level Fields -->
-              <div class="component-item predefined-field-item" draggable="true" data-type="checkbox" data-name="Is Compliant?" data-level="specification">
-                <i class="pi pi-check-circle"></i><span>Is Compliant?</span><span class="component-badge level-spec">Spec Level</span>
+              <div class="component-item" draggable="true" data-type="checkbox" data-name="Is Compliant?" data-level="specification">
+                <span>Is Compliant?</span><span class="component-badge level-spec">Spec Level</span>
               </div>
-              <div class="component-item predefined-field-item" draggable="true" data-type="textarea" data-name="Details Offered" data-level="specification">
-                <i class="pi pi-align-left"></i><span>Details Offered</span><span class="component-badge level-spec">Spec Level</span>
+              <div class="component-item" draggable="true" data-type="textarea" data-name="Details Offered" data-level="specification">
+                <span>Details Offered</span><span class="component-badge level-spec">Spec Level</span>
+              </div>
+              <!-- Service Description Level Fields -->
+              <div class="component-item" draggable="true" data-type="checkbox" data-name="Is Compliant?" data-level="service-description">
+                <span>Is Compliant?</span><span class="component-badge level-service">Service Level</span>
+              </div>
+              <div class="component-item" draggable="true" data-type="textarea" data-name="Details Offered" data-level="service-description">
+                <span>Details Offered</span><span class="component-badge level-service">Service Level</span>
               </div>
               <!-- Delivery Level Fields -->
-              <div class="component-item predefined-field-item" draggable="true" data-type="checkbox" data-name="Delivery Compliance" data-level="delivery">
-                <i class="pi pi-truck"></i><span>Delivery Compliance</span><span class="component-badge level-delivery">Delivery Level</span>
+              <div class="component-item" draggable="true" data-type="checkbox" data-name="Is Compliant?" data-level="delivery">
+                <span>Is Compliant?</span><span class="component-badge level-delivery">Delivery Level</span>
               </div>
-              <div class="component-item predefined-field-item" draggable="true" data-type="date" data-name="Delivery Date" data-level="delivery">
-                <i class="pi pi-calendar"></i><span>Delivery Date</span><span class="component-badge level-delivery">Delivery Level</span>
+              <div class="component-item" draggable="true" data-type="textarea" data-name="Details Offered" data-level="delivery">
+                <span>Details Offered</span><span class="component-badge level-delivery">Delivery Level</span>
+              </div>
+              <div class="component-item" draggable="true" data-type="checkbox" data-name="Delivery Compliance" data-level="delivery">
+                <span>Delivery Compliance</span><span class="component-badge level-delivery">Delivery Level</span>
+              </div>
+              <div class="component-item" draggable="true" data-type="date" data-name="Delivery Date" data-level="delivery">
+                <span>Delivery Date</span><span class="component-badge level-delivery">Delivery Level</span>
               </div>
             </div>
             
             <div class="palette-content" id="custom-tab" style="display: none;">
+              <!-- Fields -->
               <div class="component-group">
-                <div class="component-group-title">Input Fields</div>
-                <div class="component-item" draggable="true" data-type="text" data-name="Text Input">
-                  <i class="pi pi-align-left"></i><span>Text Input</span>
+                <div class="component-group-title">Fields</div>
+                <div class="component-item" draggable="true" data-type="text" data-name="Single Line Text">
+                  <i class="pi pi-minus"></i><span>Single Line Text</span>
                 </div>
-                <div class="component-item" draggable="true" data-type="textarea" data-name="Text Area">
-                  <i class="pi pi-file-edit"></i><span>Text Area</span>
+                <div class="component-item" draggable="true" data-type="integer" data-name="Integer">
+                  <i class="pi pi-hashtag"></i><span>Integer</span>
                 </div>
                 <div class="component-item" draggable="true" data-type="number" data-name="Number">
                   <i class="pi pi-calculator"></i><span>Number</span>
                 </div>
-                <div class="component-item" draggable="true" data-type="date" data-name="Date Picker">
-                  <i class="pi pi-calendar"></i><span>Date Picker</span>
+                <div class="component-item" draggable="true" data-type="datetime" data-name="DateTime">
+                  <i class="pi pi-calendar-times"></i><span>DateTime</span>
                 </div>
-                <div class="component-item" draggable="true" data-type="select" data-name="Dropdown">
-                  <i class="pi pi-list"></i><span>Dropdown</span>
+                <div class="component-item" draggable="true" data-type="textarea" data-name="Multi-line Text">
+                  <i class="pi pi-align-left"></i><span>Multi-line Text</span>
                 </div>
                 <div class="component-item" draggable="true" data-type="checkbox" data-name="Checkbox">
                   <i class="pi pi-check-square"></i><span>Checkbox</span>
                 </div>
-                <div class="component-item" draggable="true" data-type="radio" data-name="Radio Buttons">
-                  <i class="pi pi-circle"></i><span>Radio Buttons</span>
+                <div class="component-item" draggable="true" data-type="select" data-name="Single Select List">
+                  <i class="pi pi-list"></i><span>Single Select List</span>
+                </div>
+                <div class="component-item" draggable="true" data-type="multiselect" data-name="Multi-Select List">
+                  <i class="pi pi-check-circle"></i><span>Multi-Select List</span>
+                </div>
+                <div class="component-item" draggable="true" data-type="richtext" data-name="Rich Text">
+                  <i class="pi pi-file-edit"></i><span>Rich Text</span>
                 </div>
                 <div class="component-item" draggable="true" data-type="file" data-name="File Upload">
-                  <i class="pi pi-paperclip"></i><span>File Upload</span>
+                  <i class="pi pi-upload"></i><span>File Upload</span>
                 </div>
-                <div class="component-item" draggable="true" data-type="image" data-name="Image Upload">
-                  <i class="pi pi-image"></i><span>Image Upload</span>
+              </div>
+              
+              <!-- Display -->
+              <div class="component-group">
+                <div class="component-group-title">Display</div>
+                <div class="component-item" draggable="true" data-type="static-image" data-name="Static Image">
+                  <i class="pi pi-image"></i><span>Static Image</span>
+                </div>
+                <div class="component-item" draggable="true" data-type="static-text" data-name="Static Text">
+                  <i class="pi pi-info-circle"></i><span>Static Text</span>
+                </div>
+              </div>
+              
+              <!-- Data -->
+              <div class="component-group">
+                <div class="component-group-title">Data</div>
+                <div class="component-item" draggable="true" data-type="table" data-name="Table">
+                  <i class="pi pi-table"></i><span>Table</span>
+                </div>
+                <div class="component-item" draggable="true" data-type="matrix" data-name="Matrix">
+                  <i class="pi pi-th-large"></i><span>Matrix</span>
                 </div>
               </div>
             </div>
@@ -1607,14 +2058,13 @@
                       </div>
                       <div class="product-actions">
                         <button class="product-action-btn"><i class="pi pi-chevron-down"></i></button>
-                        <button class="product-action-btn"><i class="pi pi-cog"></i></button>
                       </div>
                     </div>
                     <div class="product-body">
-                      <!-- Product Level Fields -->
+                      <!-- Product Information -->
                       <div class="fields-level">
                         <div class="level-header">
-                          <div class="level-title product"><i class="pi pi-box"></i>Product Level Fields</div>
+                          <div class="level-title product"><i class="pi pi-box"></i>Product Information</div>
                         </div>
                         
                         <!-- Drop Zone for Product Level -->
@@ -1622,60 +2072,155 @@
                           <i class="pi pi-plus-circle"></i>Drag fields here or click to add
                         </div>
 
+                        <!-- Model / Product Name -->
                         <div class="field-row" onclick="selectField(this)" data-field-id="1">
                           <div class="field-drag-handle"><i class="pi pi-bars"></i></div>
                           <div class="field-info">
                             <div class="field-label-row">
-                              <div class="field-type-icon text"><i class="pi pi-box"></i></div>
-                              <span class="field-name">Model (full name)<span class="field-required">*</span></span>
+                              <span class="field-name">Model / Product Name<span class="field-required">*</span></span>
                               <span class="field-badge predefined">Predefined</span>
-                              <i class="pi pi-star scored-icon" title="Scored field"></i>
                             </div>
-                            <div class="field-input-preview">Insert model details...</div>
+                            <div class="field-input-preview">Enter model or product name...</div>
                           </div>
                           <div class="field-actions">
                             <button class="field-action-btn delete"><i class="pi pi-trash"></i></button>
                           </div>
                         </div>
 
+                        <!-- Country of Origin -->
                         <div class="field-row" onclick="selectField(this)" data-field-id="2">
                           <div class="field-drag-handle"><i class="pi pi-bars"></i></div>
                           <div class="field-info">
                             <div class="field-label-row">
-                              <div class="field-type-icon text"><i class="pi pi-building"></i></div>
-                              <span class="field-name">Manufacturer<span class="field-required">*</span></span>
+                              <span class="field-name">Country of Origin<span class="field-required">*</span></span>
                               <span class="field-badge predefined">Predefined</span>
                             </div>
-                            <div class="field-input-preview">Full legal name | UNGM ID</div>
+                            <div class="field-input-preview">Select country...</div>
                           </div>
                           <div class="field-actions">
                             <button class="field-action-btn delete"><i class="pi pi-trash"></i></button>
                           </div>
                         </div>
 
-                        <div class="field-row selected" onclick="selectField(this)" data-field-id="3">
+                        <!-- Manufacturer -->
+                        <div class="field-row" onclick="selectField(this)" data-field-id="3">
                           <div class="field-drag-handle"><i class="pi pi-bars"></i></div>
                           <div class="field-info">
                             <div class="field-label-row">
-                              <div class="field-type-icon attachment"><i class="pi pi-paperclip"></i></div>
-                              <span class="field-name">Technical Datasheet<span class="field-required">*</span></span>
-                              <span class="field-badge custom">Custom</span>
-                              <i class="pi pi-star scored-icon" title="Scored field"></i>
+                              <span class="field-name">Manufacturer<span class="field-required">*</span></span>
+                              <span class="field-badge predefined">Predefined</span>
                             </div>
-                            <div class="field-input-preview">Upload PDF/DOC (max 10MB)</div>
+                            <div class="field-input-preview">Enter manufacturer's full legal name...</div>
                           </div>
                           <div class="field-actions">
                             <button class="field-action-btn delete"><i class="pi pi-trash"></i></button>
+                          </div>
+                        </div>
+
+                        <!-- Manufacturer UNGM ID -->
+                        <div class="field-row" onclick="selectField(this)" data-field-id="4">
+                          <div class="field-drag-handle"><i class="pi pi-bars"></i></div>
+                          <div class="field-info">
+                            <div class="field-label-row">
+                              <span class="field-name">Manufacturer UNGM ID</span>
+                              <span class="field-badge predefined">Predefined</span>
+                            </div>
+                            <div class="field-input-preview">Enter UNGM ID (if available)...</div>
+                          </div>
+                          <div class="field-actions">
+                            <button class="field-action-btn delete"><i class="pi pi-trash"></i></button>
+                          </div>
+                        </div>
+
+                        <!-- Manufacturer's Authorization -->
+                        <div class="field-row selected" onclick="selectField(this)" data-field-id="5">
+                          <div class="field-drag-handle"><i class="pi pi-bars"></i></div>
+                          <div class="field-info">
+                            <div class="field-label-row">
+                              <span class="field-name">Manufacturer's Authorization<span class="field-required">*</span></span>
+                              <span class="field-badge predefined">Predefined</span>
+                            </div>
+                            <div class="field-input-preview">Upload PDF/DOC (max 10MB)</div>
+                            <div class="field-help-text" style="margin-top: 6px; font-size: 11px; color: var(--text-muted);">
+                              <i class="pi pi-download" style="font-size: 11px; margin-right: 4px;"></i>
+                              <a href="#" style="color: var(--primary-500); text-decoration: none;">Download template</a>
+                            </div>
+                          </div>
+                          <div class="field-actions">
+                            <button class="field-action-btn delete"><i class="pi pi-trash"></i></button>
+                          </div>
+                        </div>
+
+                        <!-- Product Documentation URL -->
+                        <div class="field-row" onclick="selectField(this)" data-field-id="6">
+                          <div class="field-drag-handle"><i class="pi pi-bars"></i></div>
+                          <div class="field-info">
+                            <div class="field-label-row">
+                              <span class="field-name">Product Documentation URL</span>
+                              <span class="field-badge predefined">Predefined</span>
+                            </div>
+                            <div class="field-input-preview">Enter URL to product documentation...</div>
+                          </div>
+                          <div class="field-actions">
+                            <button class="field-action-btn delete"><i class="pi pi-trash"></i></button>
+                          </div>
+                        </div>
+
+                        <!-- Subcontractors Table -->
+                        <div class="field-row" onclick="selectField(this)" data-field-id="7" style="display: block;">
+                          <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+                            <div class="field-drag-handle"><i class="pi pi-bars"></i></div>
+                            <div class="field-info" style="flex: 1;">
+                              <div class="field-label-row">
+                                <span class="field-name">Subcontractors</span>
+                                <span class="field-badge predefined">Predefined</span>
+                              </div>
+                            </div>
+                            <div class="field-actions">
+                              <button class="field-action-btn delete"><i class="pi pi-trash"></i></button>
+                            </div>
+                          </div>
+                          <div style="margin-left: 36px;">
+                            <div class="specs-table-wrapper" style="margin-top: 8px;">
+                              <table class="specs-table">
+                                <thead>
+                                  <tr>
+                                    <th class="col-fixed col-number" style="width: 40px;">#</th>
+                                    <th class="col-fixed" style="padding: 12px; min-width: 180px;">Company Name</th>
+                                    <th class="col-fixed" style="padding: 12px; min-width: 150px;">Contact</th>
+                                    <th class="col-fixed" style="padding: 12px; min-width: 200px;">Address</th>
+                                    <th class="col-fixed" style="width: 50px; padding: 12px; text-align: center;">
+                                      <i class="pi pi-trash" style="color: var(--text-muted); font-size: 12px;"></i>
+                                    </th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td class="spec-number">1</td>
+                                    <td><div class="cell-preview text">Enter company name...</div></td>
+                                    <td><div class="cell-preview text">Enter contact...</div></td>
+                                    <td><div class="cell-preview text">Enter address...</div></td>
+                                    <td style="text-align: center;"><button class="field-action-btn delete" style="margin: 0 auto;"><i class="pi pi-trash"></i></button></td>
+                                  </tr>
+                                  <tr>
+                                    <td class="spec-number">2</td>
+                                    <td><div class="cell-preview text">Enter company name...</div></td>
+                                    <td><div class="cell-preview text">Enter contact...</div></td>
+                                    <td><div class="cell-preview text">Enter address...</div></td>
+                                    <td style="text-align: center;"><button class="field-action-btn delete" style="margin: 0 auto;"><i class="pi pi-trash"></i></button></td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
                           </div>
                         </div>
                       </div>
 
-                      <!-- Specification Level Fields -->
+                      <!-- Technical Specifications -->
                       <div class="fields-level">
                         <div class="level-header">
                           <div class="level-title spec">
-                            <i class="pi pi-list"></i>Specification Level Fields
-                            <span class="spec-type-badge attributes">List of Attributes</span>
+                            <i class="pi pi-list"></i>Technical Specifications
                           </div>
                         </div>
 
@@ -1761,11 +2306,6 @@
                             </table>
                           </div>
 
-                          <div class="table-legend">
-                            <div class="legend-item"><span class="legend-dot predefined"></span> Predefined</div>
-                            <div class="legend-item"><span class="legend-dot custom"></span> Custom</div>
-                            <div class="legend-item"><i class="pi pi-star" style="color: var(--purple-500); font-size: 11px;"></i> Scored</div>
-                          </div>
                         </div>
                       </div>
                     </div>
@@ -1782,7 +2322,6 @@
                       </div>
                       <div class="product-actions">
                         <button class="product-action-btn"><i class="pi pi-chevron-right"></i></button>
-                        <button class="product-action-btn"><i class="pi pi-cog"></i></button>
                       </div>
                     </div>
                     <div class="product-body" style="display: none;"></div>
@@ -1799,7 +2338,6 @@
                       </div>
                       <div class="product-actions">
                         <button class="product-action-btn"><i class="pi pi-chevron-right"></i></button>
-                        <button class="product-action-btn"><i class="pi pi-cog"></i></button>
                       </div>
                     </div>
                     <div class="product-body" style="display: none;"></div>
@@ -1816,35 +2354,184 @@
                       </div>
                       <div class="product-actions">
                         <button class="product-action-btn"><i class="pi pi-chevron-right"></i></button>
-                        <button class="product-action-btn"><i class="pi pi-cog"></i></button>
                       </div>
                     </div>
                     <div class="product-body" style="display: none;"></div>
                   </div>
 
-                  <!-- Delivery Requirements -->
-                  <div class="delivery-section">
+                  <!-- Service Descriptions Section -->
+                  <div class="delivery-section" id="service-descriptions-section">
                     <div class="section-header">
-                      <div class="section-title"><i class="pi pi-truck"></i>Delivery Requirements</div>
+                      <div class="section-title"><i class="pi pi-file-edit"></i>Service Descriptions</div>
                     </div>
 
-                    <div class="drop-zone" data-level="delivery" data-product="all">
-                      <i class="pi pi-plus-circle"></i>Drag delivery fields here
+                    <div class="spec-columns-info">
+                      <i class="pi pi-info-circle"></i>
+                      <span>Define service descriptions that suppliers must respond to. Fields added here become <strong>columns</strong> in the table.</span>
                     </div>
 
-                    <div class="field-row" onclick="selectField(this)" data-field-id="10">
-                      <div class="field-drag-handle"><i class="pi pi-bars"></i></div>
-                      <div class="field-info">
-                        <div class="field-label-row">
-                          <div class="field-type-icon checkbox"><i class="pi pi-check-circle"></i></div>
-                          <span class="field-name">Delivery Time Compliance<span class="field-required">*</span></span>
-                          <span class="field-badge predefined">Predefined</span>
-                          <i class="pi pi-star scored-icon" title="Scored field"></i>
-                        </div>
-                        <div class="field-input-preview">Within 60 days - Yes/No</div>
+                    <div class="specs-table-container" id="service-desc-table">
+                      <!-- Column Drop Zone -->
+                      <div class="column-drop-zone" data-level="service-description" data-product="all">
+                        <i class="pi pi-plus"></i> Drop field here to add new column
                       </div>
-                      <div class="field-actions">
-                        <button class="field-action-btn delete"><i class="pi pi-trash"></i></button>
+
+                      <div class="specs-table-wrapper">
+                        <table class="specs-table">
+                          <thead>
+                            <tr>
+                              <th class="col-fixed col-number">#</th>
+                              <th class="col-fixed col-spec" style="min-width: 150px;">Name of Service</th>
+                              <th class="col-fixed col-spec" style="min-width: 200px;">Description of Service</th>
+                              <th class="col-fixed" style="min-width: 120px; padding: 12px;">Apply To</th>
+                              <th class="col-field" data-col-id="svc-col-1" onclick="selectColumn(this, 'svc-col-1')">
+                                <div class="col-header-content">
+                                  <span class="col-name">Is Compliant?</span>
+                                  <span class="col-badge predefined">Predefined</span>
+                                </div>
+                                <div class="col-actions">
+                                  <button class="col-action-btn" title="Edit"><i class="pi pi-pencil"></i></button>
+                                  <button class="col-action-btn delete" title="Remove"><i class="pi pi-trash"></i></button>
+                                </div>
+                              </th>
+                              <th class="col-field" data-col-id="svc-col-2" onclick="selectColumn(this, 'svc-col-2')">
+                                <div class="col-header-content">
+                                  <span class="col-name">Details Offered</span>
+                                  <span class="col-badge predefined">Predefined</span>
+                                </div>
+                                <div class="col-actions">
+                                  <button class="col-action-btn" title="Edit"><i class="pi pi-pencil"></i></button>
+                                  <button class="col-action-btn delete" title="Remove"><i class="pi pi-trash"></i></button>
+                                </div>
+                              </th>
+                              <th class="col-add" title="Add new column">
+                                <i class="pi pi-plus"></i>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td class="spec-number">1</td>
+                              <td class="spec-name">Installation Service</td>
+                              <td class="spec-name" style="font-weight: 400;">On-site installation and configuration of equipment</td>
+                              <td class="spec-name" style="font-weight: 400; background: var(--surface-50);">All Lots</td>
+                              <td><div class="cell-preview checkbox">☐ Yes / No</div></td>
+                              <td><div class="cell-preview text">Enter details...</div></td>
+                              <td class="col-add-cell"></td>
+                            </tr>
+                            <tr>
+                              <td class="spec-number">2</td>
+                              <td class="spec-name">Training Service</td>
+                              <td class="spec-name" style="font-weight: 400;">User training for equipment operation</td>
+                              <td class="spec-name" style="font-weight: 400; background: var(--surface-50);">All Lots</td>
+                              <td><div class="cell-preview checkbox">☐ Yes / No</div></td>
+                              <td><div class="cell-preview text">Enter details...</div></td>
+                              <td class="col-add-cell"></td>
+                            </tr>
+                            <tr>
+                              <td class="spec-number">3</td>
+                              <td class="spec-name">Maintenance Service</td>
+                              <td class="spec-name" style="font-weight: 400;">Preventive maintenance and support</td>
+                              <td class="spec-name" style="font-weight: 400; background: var(--surface-50);">Lot 1, Lot 2</td>
+                              <td><div class="cell-preview checkbox">☐ Yes / No</div></td>
+                              <td><div class="cell-preview text">Enter details...</div></td>
+                              <td class="col-add-cell"></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Delivery and Specific Requirements Section -->
+                  <div class="delivery-section" id="delivery-requirements-section">
+                    <div class="section-header">
+                      <div class="section-title"><i class="pi pi-truck"></i>Delivery and Specific Requirements</div>
+                    </div>
+
+                    <div class="spec-columns-info">
+                      <i class="pi pi-info-circle"></i>
+                      <span>Define delivery and specific requirements that suppliers must comply with. Fields added here become <strong>columns</strong> in the table.</span>
+                    </div>
+
+                    <div class="specs-table-container" id="delivery-req-table">
+                      <!-- Column Drop Zone -->
+                      <div class="column-drop-zone" data-level="delivery" data-product="all">
+                        <i class="pi pi-plus"></i> Drop field here to add new column
+                      </div>
+
+                      <div class="specs-table-wrapper">
+                        <table class="specs-table">
+                          <thead>
+                            <tr>
+                              <th class="col-fixed col-number">#</th>
+                              <th class="col-fixed col-spec" style="min-width: 150px;">Name</th>
+                              <th class="col-fixed col-spec" style="min-width: 200px;">Description</th>
+                              <th class="col-fixed" style="min-width: 120px; padding: 12px;">Apply To</th>
+                              <th class="col-field" data-col-id="del-col-1" onclick="selectColumn(this, 'del-col-1')">
+                                <div class="col-header-content">
+                                  <span class="col-name">Is Compliant?</span>
+                                  <span class="col-badge predefined">Predefined</span>
+                                </div>
+                                <div class="col-actions">
+                                  <button class="col-action-btn" title="Edit"><i class="pi pi-pencil"></i></button>
+                                  <button class="col-action-btn delete" title="Remove"><i class="pi pi-trash"></i></button>
+                                </div>
+                              </th>
+                              <th class="col-field" data-col-id="del-col-2" onclick="selectColumn(this, 'del-col-2')">
+                                <div class="col-header-content">
+                                  <span class="col-name">Details Offered</span>
+                                  <span class="col-badge predefined">Predefined</span>
+                                </div>
+                                <div class="col-actions">
+                                  <button class="col-action-btn" title="Edit"><i class="pi pi-pencil"></i></button>
+                                  <button class="col-action-btn delete" title="Remove"><i class="pi pi-trash"></i></button>
+                                </div>
+                              </th>
+                              <th class="col-add" title="Add new column">
+                                <i class="pi pi-plus"></i>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td class="spec-number">1</td>
+                              <td class="spec-name">Delivery Timeline</td>
+                              <td class="spec-name" style="font-weight: 400;">Goods must be delivered within 60 days of PO issuance</td>
+                              <td class="spec-name" style="font-weight: 400; background: var(--surface-50);">All Lots</td>
+                              <td><div class="cell-preview checkbox">☐ Yes / No</div></td>
+                              <td><div class="cell-preview text">Enter details...</div></td>
+                              <td class="col-add-cell"></td>
+                            </tr>
+                            <tr>
+                              <td class="spec-number">2</td>
+                              <td class="spec-name">Packaging Requirements</td>
+                              <td class="spec-name" style="font-weight: 400;">Items must be packaged for international shipping</td>
+                              <td class="spec-name" style="font-weight: 400; background: var(--surface-50);">All Lots</td>
+                              <td><div class="cell-preview checkbox">☐ Yes / No</div></td>
+                              <td><div class="cell-preview text">Enter details...</div></td>
+                              <td class="col-add-cell"></td>
+                            </tr>
+                            <tr>
+                              <td class="spec-number">3</td>
+                              <td class="spec-name">Documentation</td>
+                              <td class="spec-name" style="font-weight: 400;">Provide user manuals in English and French</td>
+                              <td class="spec-name" style="font-weight: 400; background: var(--surface-50);">Lot 1, Lot 3</td>
+                              <td><div class="cell-preview checkbox">☐ Yes / No</div></td>
+                              <td><div class="cell-preview text">Enter details...</div></td>
+                              <td class="col-add-cell"></td>
+                            </tr>
+                            <tr>
+                              <td class="spec-number">4</td>
+                              <td class="spec-name">Warranty Period</td>
+                              <td class="spec-name" style="font-weight: 400;">Minimum 24-month warranty required</td>
+                              <td class="spec-name" style="font-weight: 400; background: var(--surface-50);">All Lots</td>
+                              <td><div class="cell-preview checkbox">☐ Yes / No</div></td>
+                              <td><div class="cell-preview text">Enter details...</div></td>
+                              <td class="col-add-cell"></td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </div>
                   </div>
@@ -1870,123 +2557,74 @@
 
               <!-- Field Properties (shown when a field is selected) -->
               <div id="field-properties" style="display: none;">
+                <!-- Field Properties Section -->
                 <div class="property-group">
-                  <div class="property-group-title" id="properties-title">Field Properties</div>
-                  
-                  <!-- Context indicator for spec level -->
-                  <div class="context-indicator" id="context-indicator" style="display: none;">
-                    <i class="pi pi-table"></i>
-                    <span>This field will appear as a <strong>column</strong> in the specifications table</span>
-                  </div>
+                  <div class="property-group-title">Field Properties</div>
                   
                   <div class="property-row">
                     <label class="property-label">Field Name <span class="required">*</span></label>
-                    <input type="text" class="property-input" id="prop-field-name" value="Technical Datasheet" placeholder="Enter field name">
-                    <div class="char-count"><span id="name-count">19</span>/200</div>
+                    <input type="text" class="property-input" id="prop-field-name" value="Manufacturer's Authorization" placeholder="Enter field name">
                   </div>
                   
                   <div class="property-row">
-                    <label class="property-label">Field Type</label>
-                    <select class="property-select" id="prop-field-type">
-                      <option value="text">Text Input</option>
-                      <option value="textarea">Text Area</option>
-                      <option value="number">Number</option>
-                      <option value="select">Dropdown</option>
-                      <option value="checkbox">Checkbox</option>
-                      <option value="file" selected>File Upload</option>
-                      <option value="date">Date Picker</option>
-                    </select>
+                    <label class="property-label">Description</label>
+                    <textarea class="property-textarea" id="prop-description" placeholder="Enter field description" style="min-height: 60px;">Upload the manufacturer's authorization letter</textarea>
                   </div>
 
                   <div class="property-row">
-                    <label class="property-label">Placeholder</label>
-                    <input type="text" class="property-input" id="prop-placeholder" value="Upload PDF/DOC (max 10MB)" placeholder="Enter placeholder text">
-                    <div class="char-count"><span id="placeholder-count">24</span>/200</div>
-                  </div>
-
-                  <div class="property-row">
-                    <label class="property-label">Help Text</label>
-                    <textarea class="property-textarea" id="prop-help" placeholder="Enter help text for suppliers"></textarea>
-                    <div class="char-count"><span id="help-count">0</span>/1000</div>
+                    <label class="property-label">Field Number</label>
+                    <input type="text" class="property-input" id="prop-field-number" value="PI-005" placeholder="e.g., PI-001">
                   </div>
 
                   <div class="property-checkbox-row">
                     <input type="checkbox" id="prop-required" checked>
                     <label for="prop-required">This field is mandatory</label>
                   </div>
-                </div>
 
-                <!-- File Upload Properties -->
-                <div class="property-group" id="file-properties">
-                  <div class="property-group-title">File Upload Settings</div>
-                  
                   <div class="property-row">
-                    <label class="property-label">Accepted File Types</label>
-                    <input type="text" class="property-input" value=".pdf, .doc, .docx" placeholder="e.g., .pdf, .doc">
+                    <label class="property-label">Help Text</label>
+                    <textarea class="property-textarea" id="prop-help" placeholder="Enter help text for suppliers" style="min-height: 60px;">Please upload the original signed authorization letter from the manufacturer.</textarea>
                   </div>
-                  
+
                   <div class="property-row">
-                    <label class="property-label">Max File Size (MB)</label>
-                    <input type="number" class="property-input" value="10" min="1" max="50">
+                    <label class="property-label">Placeholder</label>
+                    <input type="text" class="property-input" id="prop-placeholder" value="Upload PDF/DOC (max 10MB)" placeholder="Enter placeholder text">
                   </div>
                 </div>
 
-                <!-- Attachments Setting -->
-                <div class="property-group" id="attachment-settings" style="display: none;">
-                  <div class="property-group-title">Attachments</div>
-                  <div class="select-button-group">
-                    <button class="select-button active" onclick="setAttachment(this, 'none')">None</button>
-                    <button class="select-button" onclick="setAttachment(this, 'allow')">Allow</button>
-                    <button class="select-button" onclick="setAttachment(this, 'require')">Require</button>
-                  </div>
-                </div>
-
-                <!-- Scoring Section -->
-                <div class="scoring-section">
-                  <div class="scoring-toggle">
-                    <div class="scoring-toggle-label"><i class="pi pi-star"></i>Enable Scoring</div>
-                    <div class="toggle-switch active" id="scoring-toggle" onclick="toggleScoring()"></div>
-                  </div>
+                <!-- Scoring Properties Section -->
+                <div class="property-group">
+                  <div class="property-group-title">Scoring Properties</div>
                   
-                  <div id="scoring-config">
-                    <div class="scoring-fields">
-                      <div class="scoring-field">
-                        <label>Weight (Points)</label>
-                        <input type="number" value="15" min="0" max="100" id="prop-weight">
-                      </div>
-                      <div class="scoring-field">
-                        <label>Scoring Method</label>
-                        <select id="prop-scoring-method">
-                          <option value="binary">Binary (Pass/Fail)</option>
-                          <option value="scale" selected>Scale (1-5)</option>
-                          <option value="percentage">Percentage</option>
-                        </select>
-                      </div>
-                    </div>
+                  <div class="property-checkbox-row">
+                    <input type="checkbox" id="prop-scoring-enabled" checked>
+                    <label for="prop-scoring-enabled">Enable Scoring for this field</label>
+                  </div>
+
+                  <div class="property-row" id="scoring-weight-row">
+                    <label class="property-label">Field Weight</label>
+                    <input type="number" class="property-input" id="prop-weight" value="15" min="0" max="100" placeholder="Enter weight">
                   </div>
                 </div>
 
-                <!-- Apply To Section -->
-                <div class="apply-to-section">
-                  <div class="apply-to-title">Apply This Field To</div>
-                  <div class="apply-to-options">
-                    <div class="apply-to-option selected" onclick="selectApplyTo(this)">
-                      <input type="radio" name="applyTo" checked>
-                      <label>This product only</label>
-                    </div>
-                    <div class="apply-to-option" onclick="selectApplyTo(this)">
-                      <input type="radio" name="applyTo">
-                      <label>All products (4 items)</label>
-                    </div>
-                    <div class="apply-to-option" onclick="selectApplyTo(this)">
-                      <input type="radio" name="applyTo">
-                      <label>Selected products...</label>
-                    </div>
+                <!-- Quick Actions Section -->
+                <div class="property-group">
+                  <div class="property-group-title">Quick Actions</div>
+                  
+                  <div class="quick-actions-buttons">
+                    <button class="quick-action-btn add" onclick="addToAllProducts()">
+                      <i class="pi pi-plus-circle"></i>
+                      <span>Add to all products</span>
+                    </button>
+                    <button class="quick-action-btn remove" onclick="removeFromAllProducts()">
+                      <i class="pi pi-minus-circle"></i>
+                      <span>Remove from all products</span>
+                    </button>
                   </div>
                 </div>
 
-                <!-- Field Level -->
-                <div class="property-group" style="margin-top: 16px;">
+                <!-- Field Level Section -->
+                <div class="property-group">
                   <div class="property-group-title">Field Level</div>
                   <select class="property-select" id="prop-level">
                     <option value="product" selected>Product Level</option>
@@ -2008,6 +2646,12 @@
     <div class="toast-container" id="toast-container"></div>
 
     <script>
+      // ===== SIDEBAR MENU GROUP TOGGLE =====
+      function toggleMenuGroup(header) {
+        const group = header.parentElement;
+        group.classList.toggle('collapsed');
+      }
+
       let draggedItem = null;
       let selectedFieldId = null;
       let selectedColumnId = null;
@@ -2109,19 +2753,32 @@
         
         const data = JSON.parse(e.dataTransfer.getData('text/plain'));
         const product = this.dataset.product;
+        const level = this.dataset.level;
         
-        // Add as column to specification table
-        addColumnToTable(data, product);
+        // Add as column to the appropriate table
+        addColumnToTable(data, product, level);
         
         // Show properties panel for column configuration
         showColumnPropertiesPanel(data);
         
-        showToast('Column Added', `"${data.name}" added as a new column. Configure in the Properties Panel.`);
+        const sectionName = level === 'service-description' ? 'Service Descriptions' : 
+                           level === 'delivery' ? 'Delivery and Specific Requirements' : 'Specifications';
+        showToast('Column Added', `"${data.name}" added to ${sectionName} table. Configure in the Properties Panel.`);
       }
 
       // Add column to specification table
-      function addColumnToTable(data, productId) {
-        const table = document.querySelector(`#specs-table-${productId} .specs-table`);
+      function addColumnToTable(data, productId, level) {
+        let table;
+        
+        // Find the correct table based on level
+        if (level === 'service-description') {
+          table = document.querySelector('#service-desc-table .specs-table');
+        } else if (level === 'delivery') {
+          table = document.querySelector('#delivery-req-table .specs-table');
+        } else {
+          table = document.querySelector(`#specs-table-${productId} .specs-table`);
+        }
+        
         if (!table) return;
 
         const colId = 'col-' + Date.now();
@@ -2346,10 +3003,16 @@
         btn.classList.add('active');
       }
 
-      function selectApplyTo(element) {
-        document.querySelectorAll('.apply-to-option').forEach(opt => opt.classList.remove('selected'));
-        element.classList.add('selected');
-        element.querySelector('input').checked = true;
+      // Quick Action: Add to All Products
+      function addToAllProducts() {
+        showToast('Field Added', 'Field added to all 4 products');
+      }
+
+      // Quick Action: Remove from All Products
+      function removeFromAllProducts() {
+        if (confirm('Are you sure you want to remove this field from all products?')) {
+          showToast('Field Removed', 'Field removed from all products');
+        }
       }
 
       // Product Card Toggle

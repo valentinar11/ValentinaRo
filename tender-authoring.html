@@ -16011,6 +16011,12 @@
         const form = submissionForms.find(f => f.id === formId);
         if (!form || !form.hasConfig) return;
         
+        // Redirect to enhanced form builder for Technical Bid (form-d)
+        if (formId === 'form-d') {
+          window.location.href = 'enhanced-form-builder-mockup.html';
+          return;
+        }
+        
         currentFormForModal = form;
         const modal = document.getElementById('form-config-modal');
         const titleEl = document.getElementById('form-config-title');
