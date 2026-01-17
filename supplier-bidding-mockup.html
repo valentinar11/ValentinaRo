@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/primeicons@6.0.1/primeicons.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/primeicons@7.0.0/primeicons.css">
 <style>
 :root {
 /* UNOPS Preset Primary Colors */
@@ -561,89 +561,173 @@ width: 100%;
 }
 
 .page-header {
-margin-bottom: var(--spacing-xl);
+margin-bottom: var(--spacing-lg);
 display: flex;
 justify-content: space-between;
 align-items: center;
+flex-wrap: wrap;
+gap: var(--spacing-sm);
 }
 
 .page-title {
-font-size: 28px;
+font-size: 22px;
 font-weight: 600;
 color: var(--text-primary);
-margin-bottom: var(--spacing-sm);
+margin-bottom: 4px;
+display: flex;
+align-items: center;
+gap: 10px;
+}
+
+.page-title i {
+color: var(--primary-500);
+font-size: 24px;
 }
 
 .page-subtitle {
-font-size: 14px;
-color: var(--text-secondary);
+font-size: 13px;
+color: var(--text-muted);
 }
 
 .stats-grid {
 display: grid;
-grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-gap: var(--spacing-lg);
+grid-template-columns: repeat(4, 1fr);
+gap: var(--spacing-md);
 margin-bottom: var(--spacing-xl);
+}
+
+@media (max-width: 1200px) {
+.stats-grid {
+grid-template-columns: repeat(2, 1fr);
+}
+}
+
+@media (max-width: 600px) {
+.stats-grid {
+grid-template-columns: 1fr;
+}
 }
 
 .stat-card {
 background: var(--surface-0);
-border-radius: var(--radius-lg);
-padding: var(--spacing-lg);
-box-shadow: var(--shadow-card);
+border-radius: var(--radius-md);
+padding: var(--spacing-md);
+box-shadow: var(--shadow-sm);
 border: 1px solid var(--surface-200);
+display: flex;
+align-items: center;
+gap: var(--spacing-md);
+transition: all 0.2s ease;
+}
+
+.stat-card:hover {
+box-shadow: var(--shadow-md);
+border-color: var(--primary-200);
+transform: translateY(-2px);
+}
+
+.stat-icon-wrapper {
+width: 44px;
+height: 44px;
+border-radius: var(--radius-md);
+display: flex;
+align-items: center;
+justify-content: center;
+flex-shrink: 0;
+}
+
+.stat-icon-wrapper.total {
+background: linear-gradient(135deg, var(--primary-100) 0%, var(--primary-50) 100%);
+color: var(--primary-600);
+}
+
+.stat-icon-wrapper.progress {
+background: linear-gradient(135deg, var(--warning-50) 0%, #fff5eb 100%);
+color: var(--warning-500);
+}
+
+.stat-icon-wrapper.submitted {
+background: linear-gradient(135deg, var(--info-50) 0%, #e6f7ff 100%);
+color: var(--info-400);
+}
+
+.stat-icon-wrapper.awarded {
+background: linear-gradient(135deg, var(--success-50) 0%, #e8f5e3 100%);
+color: var(--success-500);
+}
+
+.stat-icon-wrapper i {
+font-size: 20px;
+}
+
+.stat-content {
+display: flex;
+flex-direction: column;
+min-width: 0;
 }
 
 .stat-value {
-font-size: 32px;
+font-size: 24px;
 font-weight: 700;
-color: var(--primary-400);
-margin-bottom: var(--spacing-xs);
+color: var(--text-primary);
+line-height: 1.2;
 }
 
 .stat-label {
-font-size: 14px;
-color: var(--text-secondary);
+font-size: 13px;
+color: var(--text-muted);
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
 }
 
 .stat-icon {
-font-size: 24px;
-margin-bottom: var(--spacing-sm);
+font-size: 20px;
 }
 
 .card {
 background: var(--surface-0);
-border-radius: var(--radius-lg);
-padding: var(--spacing-xl);
-box-shadow: var(--shadow-card);
+border-radius: var(--radius-md);
+padding: var(--spacing-lg);
+box-shadow: var(--shadow-sm);
 border: 1px solid var(--surface-200);
-margin-bottom: var(--spacing-lg);
+margin-bottom: var(--spacing-md);
 }
 
 .card-header {
 display: flex;
 align-items: center;
 justify-content: space-between;
-margin-bottom: var(--spacing-lg);
-padding-bottom: var(--spacing-md);
-border-bottom: 2px solid var(--surface-200);
+margin-bottom: var(--spacing-md);
+padding-bottom: var(--spacing-sm);
+border-bottom: 1px solid var(--surface-200);
+flex-wrap: wrap;
+gap: var(--spacing-sm);
 }
 
 .card-title {
-font-size: 20px;
+font-size: 16px;
 font-weight: 600;
 color: var(--text-primary);
+display: flex;
+align-items: center;
+gap: 8px;
+}
+
+.card-title i {
+color: var(--primary-500);
+font-size: 18px;
 }
 
 .tender-table {
 width: 100%;
 border-collapse: collapse;
-font-size: 14px;
+font-size: 13px;
 }
 
 .tender-table th,
 .tender-table td {
-padding: 16px;
+padding: 12px 14px;
 text-align: left;
 border-bottom: 1px solid var(--surface-200);
 }
@@ -651,8 +735,8 @@ border-bottom: 1px solid var(--surface-200);
 .tender-table th {
 background: var(--surface-50);
 font-weight: 600;
-color: var(--text-primary);
-font-size: 12px;
+color: var(--text-secondary);
+font-size: 11px;
 text-transform: uppercase;
 letter-spacing: 0.05em;
 }
@@ -1028,6 +1112,290 @@ color: var(--danger-500);
 font-weight: 600;
 }
 
+/* Compact Tender Header */
+.tender-header-compact {
+  background: var(--surface-0);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--surface-200);
+  margin-bottom: var(--spacing-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.tender-header-main {
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-400) 100%);
+  color: white;
+}
+
+.tender-header-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-xs);
+}
+
+.tender-header-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.tender-header-ref {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.tender-header-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.tender-header-badges {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  flex-shrink: 0;
+}
+
+.tender-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.tender-status-badge .status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #4ade80;
+}
+
+.tender-countdown {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--warning-500);
+}
+
+.tender-countdown i {
+  font-size: 12px;
+}
+
+.tender-header-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.meta-tag {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.meta-tag-separator {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Compact Timeline Row */
+.tender-timeline-compact {
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: var(--surface-50);
+  border-bottom: 1px solid var(--surface-100);
+}
+
+.timeline-compact-wrapper {
+  position: relative;
+}
+
+.timeline-compact-track {
+  position: relative;
+  height: 4px;
+  background: var(--surface-200);
+  border-radius: 2px;
+}
+
+.timeline-compact-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: var(--primary-500);
+  border-radius: 2px;
+}
+
+.timeline-compact-points {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.timeline-compact-point {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--surface-0);
+  border: 2px solid var(--surface-300);
+  z-index: 2;
+}
+
+.timeline-compact-point.completed {
+  background: var(--primary-500);
+  border-color: var(--primary-500);
+}
+
+.timeline-compact-point.active {
+  background: var(--warning-500);
+  border-color: var(--warning-500);
+  box-shadow: 0 0 0 3px var(--warning-100);
+}
+
+.timeline-compact-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-top: var(--spacing-sm);
+  text-align: center;
+}
+
+.timeline-compact-labels span {
+  flex: 1;
+  line-height: 1.3;
+}
+
+.timeline-compact-labels span:first-child {
+  text-align: left;
+}
+
+.timeline-compact-labels span:last-child {
+  text-align: right;
+}
+
+.timeline-compact-labels .active {
+  color: var(--warning-600);
+  font-weight: 600;
+}
+
+.timeline-compact-labels .completed {
+  color: var(--primary-600);
+  font-weight: 500;
+}
+
+/* Action Bar */
+.tender-action-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  background: var(--surface-0);
+}
+
+.action-bar-left {
+  display: flex;
+  align-items: center;
+}
+
+.action-bar-right {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.btn-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  padding: 8px 12px;
+  transition: all 0.2s;
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--radius-md);
+}
+
+.btn-back-link:hover {
+  color: var(--primary-500);
+  background: var(--surface-100);
+}
+
+.btn-back-link i {
+  font-size: 14px;
+}
+
+/* Action Bar Buttons - Consistent styling */
+.action-bar-right .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+
+.action-bar-right .btn i {
+  font-size: 14px;
+}
+
+.action-bar-right .btn-secondary {
+  background: var(--surface-0);
+  border-color: var(--surface-300);
+  color: var(--text-secondary);
+}
+
+.action-bar-right .btn-secondary:hover {
+  background: var(--surface-100);
+  border-color: var(--surface-400);
+  color: var(--text-primary);
+}
+
+.action-bar-right .btn-primary {
+  background: var(--primary-500);
+  border-color: var(--primary-500);
+  color: white;
+}
+
+.action-bar-right .btn-primary:hover {
+  background: var(--primary-600);
+  border-color: var(--primary-600);
+}
+
+/* Legacy tender-info-banner kept for backwards compatibility */
 .tender-info-banner {
 background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-400) 100%);
 border-radius: var(--radius-md);
@@ -1035,6 +1403,7 @@ padding: var(--spacing-md) var(--spacing-lg);
 color: white;
 margin-bottom: var(--spacing-md);
 box-shadow: var(--shadow-card);
+display: none;
 }
 
 .tender-banner-ref {
@@ -1074,7 +1443,7 @@ font-size: 13px;
 font-weight: 600;
 }
 
-/* Tender Timeline Banner */
+/* Tender Timeline Banner (Legacy - hidden) */
 .tender-timeline-banner {
   background: var(--surface-0);
   border-radius: var(--radius-md);
@@ -1082,6 +1451,7 @@ font-weight: 600;
   margin-bottom: var(--spacing-md);
   border: 1px solid var(--surface-200);
   box-shadow: var(--shadow-xs);
+  display: none;
 }
 
 .timeline-banner-header {
@@ -1370,12 +1740,97 @@ display: block;
   overflow: hidden;
 }
 
-.tender-tabs-nav {
+/* Segmented Toggle for Tab Context */
+.tab-context-header {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-md);
   background: var(--surface-50);
   border-bottom: 1px solid var(--surface-200);
+}
+
+.tab-context-toggle {
+  display: inline-flex;
+  background: var(--surface-200);
+  border-radius: var(--radius-md);
+  padding: 3px;
+  gap: 2px;
+}
+
+.toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: 'Lato', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.toggle-btn:hover {
+  color: var(--text-primary);
+}
+
+.toggle-btn.active {
+  background: var(--surface-0);
+  color: var(--primary-600);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.toggle-btn i {
+  font-size: 14px;
+}
+
+.toggle-btn .toggle-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 10px;
+  background: var(--surface-300);
+  color: var(--text-muted);
+}
+
+.toggle-btn.active .toggle-badge {
+  background: var(--primary-100);
+  color: var(--primary-600);
+}
+
+.toggle-btn .toggle-badge.has-updates {
+  background: var(--warning-500);
+  color: white;
+}
+
+.tab-context-info {
+  font-size: 12px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tab-context-info i {
+  font-size: 14px;
+}
+
+/* Tab nav visibility */
+.tender-tabs-nav.hidden {
+  display: none;
+}
+
+.tender-tabs-nav {
+  display: flex;
+  gap: var(--spacing-xs);
+  border-bottom: 2px solid var(--surface-200);
+  background: var(--surface-0);
   overflow-x: auto;
-  gap: 0;
 }
 
 .tender-tabs-nav::-webkit-scrollbar {
@@ -1391,40 +1846,31 @@ display: block;
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 14px 20px;
+  padding: var(--spacing-sm) var(--spacing-lg);
   border: none;
   background: transparent;
   color: var(--text-secondary);
   font-family: 'Lato', sans-serif;
   font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 0.01em;
+  font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
   border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
   transition: all 0.2s ease;
-  position: relative;
 }
 
 .tender-tab-btn:hover {
-  background: var(--surface-100);
-  color: var(--text-primary);
+  color: var(--primary-500);
 }
 
 .tender-tab-btn.active {
-  color: var(--primary-600);
-  background: var(--surface-0);
+  color: var(--primary-500);
   border-bottom-color: var(--primary-500);
-  font-weight: 600;
 }
 
 .tender-tab-btn i {
   font-size: 15px;
-  opacity: 0.85;
-}
-
-.tender-tab-btn.active i {
-  opacity: 1;
 }
 
 .tender-tab-btn .tab-badge {
@@ -4649,30 +5095,46 @@ Submit Question
 
 <div class="stats-grid">
 <div class="stat-card">
-<div class="stat-icon">📋</div>
+<div class="stat-icon-wrapper total">
+<i class="pi pi-file"></i>
+</div>
+<div class="stat-content">
 <div class="stat-value">8</div>
 <div class="stat-label">Total Tenders</div>
 </div>
+</div>
 <div class="stat-card">
-<div class="stat-icon">✍️</div>
+<div class="stat-icon-wrapper progress">
+<i class="pi pi-pencil"></i>
+</div>
+<div class="stat-content">
 <div class="stat-value">2</div>
 <div class="stat-label">Bids in Progress</div>
 </div>
+</div>
 <div class="stat-card">
-<div class="stat-icon">📤</div>
+<div class="stat-icon-wrapper submitted">
+<i class="pi pi-send"></i>
+</div>
+<div class="stat-content">
 <div class="stat-value">3</div>
 <div class="stat-label">Bids Submitted</div>
 </div>
+</div>
 <div class="stat-card">
-<div class="stat-icon">🏆</div>
+<div class="stat-icon-wrapper awarded">
+<i class="pi pi-star-fill" style="font-size: 20px; color: #4c9f38;"></i>
+</div>
+<div class="stat-content">
 <div class="stat-value">1</div>
 <div class="stat-label">Awarded</div>
+</div>
 </div>
 </div>
 
 <div class="card">
 <div class="card-header">
-<h2 class="card-title">All My Tenders</h2>
+<h2 class="card-title"><i class="pi pi-list"></i>All My Tenders</h2>
 <div style="display: flex; gap: var(--spacing-sm); align-items: center;">
 <input type="search" placeholder="Search tenders..." style="padding: 8px 12px; border: 1px solid var(--surface-300); border-radius: var(--radius-md); width: 250px; font-size: 14px;">
 <select style="padding: 8px 12px; border: 1px solid var(--surface-300); border-radius: var(--radius-md); font-size: 14px;">
@@ -4785,11 +5247,11 @@ Submit Question
       </div>
 
       <!-- Open Procurement Events Section -->
-      <div class="card" style="margin-top: var(--spacing-xl);">
+      <div class="card" style="margin-top: var(--spacing-lg);">
         <div class="card-header">
           <div>
-            <h2 class="card-title">Open Procurement Events</h2>
-            <p style="font-size: 14px; color: var(--text-muted); margin-top: 4px;">Explore new opportunities and express your interest</p>
+            <h2 class="card-title"><i class="pi pi-briefcase"></i>Open Procurement Events</h2>
+            <p style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Explore new opportunities and express your interest</p>
           </div>
           <div style="display: flex; gap: var(--spacing-sm);">
             <input type="search" placeholder="Search opportunities..." style="padding: 8px 12px; border: 1px solid var(--surface-300); border-radius: var(--radius-md); width: 300px;">
@@ -4909,115 +5371,97 @@ Submit Question
   <!-- Tender Details View -->
 <div class="view-section" id="view-tender-details">
 <div id="main-content-tender-details" class="main-content">
-<div class="tender-info-banner">
-<div class="tender-banner-ref">Reference: UNOPS/ITB/2025/001</div>
-<h2 class="tender-banner-title">Supply and Delivery of Medical Equipment and Supplies</h2>
-<div class="tender-meta">
-<div class="meta-item">
-<span class="meta-label">Type</span>
-<span class="meta-value">ITB</span>
-</div>
-<div class="meta-item">
-<span class="meta-label">Category</span>
-<span class="meta-value">Goods</span>
-</div>
-<div class="meta-item">
-<span class="meta-label">Value</span>
-<span class="meta-value">$250,000 USD</span>
-</div>
-<div class="meta-item">
-<span class="meta-label">Deadline</span>
-<span class="meta-value">15 Jan 2025</span>
-</div>
-<div class="meta-item">
-<span class="meta-label">Status</span>
-<span class="meta-value">Open</span>
-</div>
-</div>
-</div>
-
-<!-- Tender Timeline Banner -->
-<div class="tender-timeline-banner">
-  <div class="timeline-banner-header">
-    <div class="timeline-banner-status">
-      <span class="timeline-status-dot"></span>
-      <span class="timeline-status-text">Open for Bidding</span>
-</div>
-    <div class="timeline-header-right">
-      <div class="timeline-remaining">
-        <i class="pi pi-clock"></i>
-        <span class="timeline-remaining-text">5 days, 14 hours to submission</span>
+<!-- Compact Tender Header -->
+<div class="tender-header-compact">
+  <!-- Main Info Row -->
+  <div class="tender-header-main">
+    <div class="tender-header-top">
+      <div class="tender-header-info">
+        <div class="tender-header-ref">UNOPS/ITB/2025/001</div>
+        <h2 class="tender-header-title">Supply and Delivery of Medical Equipment and Supplies</h2>
       </div>
-      <button class="btn btn-primary btn-sm" onclick="selectTenderForBid('UNOPS/ITB/2025/001')">
-        <i class="pi pi-send" style="font-size: 12px;"></i> Start/Continue Bid
-</button>
+      <div class="tender-header-badges">
+        <span class="tender-status-badge"><span class="status-dot"></span> Open</span>
+        <span class="tender-countdown"><i class="pi pi-clock"></i> 5d 14h left</span>
+      </div>
     </div>
-</div>
-
-  <div class="horizontal-timeline">
-    <div class="timeline-track">
-      <div class="timeline-progress" style="width: 72%;"></div>
-      <div class="timeline-today-marker" style="left: 72%;">
-        <div class="today-marker-label">Today</div>
-        <div class="today-marker-dot"></div>
-      </div>
-      <div class="timeline-points">
-        <div class="timeline-point completed" style="left: 0%;">
-          <div class="timeline-point-dot"></div>
-          <div class="timeline-point-content">
-            <div class="timeline-point-label">Published</div>
-            <div class="timeline-point-date">5 Dec</div>
-          </div>
-        </div>
-        <div class="timeline-point completed" style="left: 18%;">
-          <div class="timeline-point-dot"></div>
-          <div class="timeline-point-content">
-            <div class="timeline-point-label">Site Visit</div>
-            <div class="timeline-point-date">15 Dec</div>
-          </div>
-        </div>
-        <div class="timeline-point completed" style="left: 55%;">
-          <div class="timeline-point-dot"></div>
-          <div class="timeline-point-content">
-            <div class="timeline-point-label">Clarifications</div>
-            <div class="timeline-point-date">10 Jan</div>
-          </div>
-        </div>
-        <div class="timeline-point active" style="left: 80%;">
-          <div class="timeline-point-dot"></div>
-          <div class="timeline-point-content">
-            <div class="timeline-point-label">Submission</div>
-            <div class="timeline-point-date">15 Jan</div>
-          </div>
-        </div>
-        <div class="timeline-point future" style="left: 88%;">
-          <div class="timeline-point-dot"></div>
-          <div class="timeline-point-content">
-            <div class="timeline-point-label">Bid Opening</div>
-            <div class="timeline-point-date">16 Jan</div>
-          </div>
-        </div>
-        <div class="timeline-point future" style="left: 100%;">
-          <div class="timeline-point-dot"></div>
-          <div class="timeline-point-content">
-            <div class="timeline-point-label">Award</div>
-            <div class="timeline-point-date">15 Feb</div>
-          </div>
-        </div>
-      </div>
+    <div class="tender-header-meta">
+      <span class="meta-tag">ITB</span>
+      <span class="meta-tag-separator">·</span>
+      <span class="meta-tag">Goods</span>
+      <span class="meta-tag-separator">·</span>
+      <span class="meta-tag">$250,000 USD</span>
+      <span class="meta-tag-separator">·</span>
+      <span class="meta-tag">Myanmar MCO</span>
     </div>
   </div>
-</div> <!-- End tender-timeline-banner -->
+
+  <!-- Compact Timeline Row -->
+  <div class="tender-timeline-compact">
+    <div class="timeline-compact-wrapper">
+      <div class="timeline-compact-track">
+        <div class="timeline-compact-progress" style="width: 66%;"></div>
+      </div>
+      <div class="timeline-compact-points">
+        <div class="timeline-compact-point completed"></div>
+        <div class="timeline-compact-point completed"></div>
+        <div class="timeline-compact-point active"></div>
+        <div class="timeline-compact-point"></div>
+      </div>
+    </div>
+    <div class="timeline-compact-labels">
+      <span class="completed">Published<br><small>5 Dec</small></span>
+      <span class="completed">Clarifications<br><small>10 Jan</small></span>
+      <span class="active">Submission<br><small>15 Jan</small></span>
+      <span>Award<br><small>15 Feb</small></span>
+    </div>
+  </div>
+
+  <!-- Action Bar -->
+  <div class="tender-action-bar">
+    <div class="action-bar-left">
+      <button class="btn-back-link" onclick="navigateToView('dashboard')">
+        <i class="pi pi-arrow-left"></i> Back to Dashboard
+      </button>
+    </div>
+    <div class="action-bar-right">
+      <button class="btn btn-secondary" onclick="openModal('ask-clarification-modal')">
+        <i class="pi pi-comment"></i> Ask Question
+      </button>
+      <button class="btn btn-primary" onclick="selectTenderForBid('UNOPS/ITB/2025/001')">
+        <i class="pi pi-send"></i> Continue Bid
+      </button>
+    </div>
+  </div>
+</div>
 
   <!-- Tabs section - inside main-content-tender-details -->
 <div class="tender-overview-grid">
     <div class="tender-tabs-container">
-  <div class="tender-tabs-nav">
+  
+  <!-- Segmented Toggle Header -->
+  <div class="tab-context-header">
+    <div class="tab-context-toggle">
+      <button class="toggle-btn active" onclick="switchTabContext('info', this)">
+        <i class="pi pi-file-edit"></i> Tender Information
+      </button>
+      <button class="toggle-btn" onclick="switchTabContext('process', this)">
+        <i class="pi pi-sync"></i> Process <span class="toggle-badge has-updates">3</span>
+      </button>
+    </div>
+    <div class="tab-context-info" id="tab-context-hint">
+      <i class="pi pi-info-circle"></i>
+      <span>Reference information from tender authoring</span>
+    </div>
+  </div>
+
+  <!-- Tender Information Tabs -->
+  <div class="tender-tabs-nav" id="tabs-info">
     <button class="tender-tab-btn active" onclick="switchTab('tab-general', this)">
       <i class="pi pi-file"></i> General
     </button>
-    <button class="tender-tab-btn" onclick="switchTab('tab-project', this)">
-      <i class="pi pi-briefcase"></i> Project
+    <button class="tender-tab-btn" onclick="switchTab('tab-particulars', this)">
+      <i class="pi pi-briefcase"></i> Particulars
     </button>
     <button class="tender-tab-btn" onclick="switchTab('tab-scope', this)">
       <i class="pi pi-check-square"></i> Requirements
@@ -5026,13 +5470,20 @@ Submit Question
       <i class="pi pi-chart-bar"></i> Evaluation
     </button>
     <button class="tender-tab-btn" onclick="switchTab('tab-documents-forms', this)">
-      <i class="pi pi-folder"></i> Tender Documents & Forms <span class="tab-badge">7</span>
+      <i class="pi pi-folder"></i> Documents & Forms <span class="tab-badge">7</span>
     </button>
+  </div>
+
+  <!-- Process Tabs -->
+  <div class="tender-tabs-nav hidden" id="tabs-process">
     <button class="tender-tab-btn" onclick="switchTab('tab-amendments', this)">
       <i class="pi pi-pencil"></i> Amendments <span class="tab-badge">2</span>
     </button>
     <button class="tender-tab-btn" onclick="switchTab('tab-clarifications', this)">
       <i class="pi pi-comments"></i> Clarifications <span class="tab-badge">1</span>
+    </button>
+    <button class="tender-tab-btn" onclick="switchTab('tab-award', this)">
+      <i class="pi pi-trophy"></i> Award Evaluation
     </button>
   </div>
 
@@ -5078,8 +5529,8 @@ Submit Question
     </div>
   </div>
 
-  <!-- Tab Panel: Project & Tender Details -->
-  <div id="tab-project" class="tender-tab-panel">
+  <!-- Tab Panel: Particulars & Tender Details -->
+  <div id="tab-particulars" class="tender-tab-panel">
     <div style="font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 6px;">Tender Particulars</div>
     <div class="info-grid-2col">
       <div class="info-row">
@@ -6027,6 +6478,20 @@ Submit Question
 </div>
 </div>
   </div> <!-- End tab-clarifications -->
+
+  <!-- Tab Panel: Award Evaluation -->
+  <div id="tab-award" class="tender-tab-panel">
+    <div class="empty-state" style="text-align: center; padding: var(--spacing-2xl);">
+      <div style="font-size: 48px; margin-bottom: var(--spacing-md); opacity: 0.3;">
+        <i class="pi pi-trophy"></i>
+      </div>
+      <h3 style="font-size: 16px; font-weight: 600; color: var(--text-primary); margin-bottom: var(--spacing-xs);">Award Evaluation Not Available</h3>
+      <p style="font-size: 13px; color: var(--text-muted); max-width: 400px; margin: 0 auto;">
+        Award evaluation information will be available once the evaluation process has been completed and a decision has been made.
+      </p>
+    </div>
+  </div> <!-- End tab-award -->
+
     </div> <!-- End tender-tabs-container -->
   </div> <!-- End tender-overview-grid -->
 
@@ -10563,6 +11028,41 @@ const section = header.closest('.collapsible-section');
 if (section) {
 section.classList.toggle('collapsed');
 }
+}
+
+// Tab context switching (Tender Info vs Process)
+function switchTabContext(context, btnElement) {
+  // Update toggle buttons
+  const toggleBtns = document.querySelectorAll('.toggle-btn');
+  toggleBtns.forEach(btn => btn.classList.remove('active'));
+  btnElement.classList.add('active');
+  
+  // Show/hide tab nav groups
+  const infoTabs = document.getElementById('tabs-info');
+  const processTabs = document.getElementById('tabs-process');
+  const contextHint = document.getElementById('tab-context-hint');
+  
+  if (context === 'info') {
+    infoTabs.classList.remove('hidden');
+    processTabs.classList.add('hidden');
+    contextHint.innerHTML = '<i class="pi pi-info-circle"></i><span>Reference information from tender authoring</span>';
+    
+    // Activate first info tab
+    const firstInfoTab = infoTabs.querySelector('.tender-tab-btn');
+    if (firstInfoTab) {
+      switchTab('tab-general', firstInfoTab);
+    }
+  } else {
+    infoTabs.classList.add('hidden');
+    processTabs.classList.remove('hidden');
+    contextHint.innerHTML = '<i class="pi pi-info-circle"></i><span>Active process and workflow items</span>';
+    
+    // Activate first process tab
+    const firstProcessTab = processTabs.querySelector('.tender-tab-btn');
+    if (firstProcessTab) {
+      switchTab('tab-amendments', firstProcessTab);
+    }
+  }
 }
 
 // Tab switching for tender details

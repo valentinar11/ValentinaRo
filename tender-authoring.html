@@ -5760,6 +5760,37 @@
         background: var(--warning-100);
         color: var(--warning-700);
       }
+      
+      /* Evaluation Panel Status Badges */
+      .eval-status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 3px 8px;
+        border-radius: 10px;
+        font-size: 10px;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+      .eval-status-badge i {
+        font-size: 10px;
+      }
+      .eval-status-badge.established {
+        background: var(--info-100);
+        color: var(--info-700);
+      }
+      .eval-status-badge.approved {
+        background: var(--success-100);
+        color: var(--success-700);
+      }
+      .eval-status-badge.signed {
+        background: var(--success-100);
+        color: var(--success-700);
+      }
+      .eval-status-badge.pending {
+        background: var(--warning-100);
+        color: var(--warning-700);
+      }
       .affidavit-badge {
         display: inline-flex;
         align-items: center;
@@ -8897,6 +8928,7 @@
         procurementReviewer: null,
         procurementAuthority: null,
         technicalExperts: [],
+        tmeBypass: 'applicable', // 'applicable' | 'bypass_procurement' | 'bypass_waiver'
         bidOpeningPanel: [],
         evaluationTeam: [
           { name: 'John Smith', email: 'john.smith@unops.org', avatar: 'JS', panelRole: 'Procurement Official', approved: true },
@@ -11019,7 +11051,7 @@
                             </div>
                             <div style="display: flex; gap: 4px;">
                               <button class="btn btn-ghost btn-sm" onclick="openEditProductServiceModal('${item.id}')" title="Edit" style="padding: 2px 6px; font-size: 10px;"><i class="pi pi-pencil" style="font-size: 10px; color: var(--primary-600);"></i></button>
-                              <button class="btn btn-ghost btn-sm" onclick="removeProductService('${item.id}')" title="Remove" style="padding: 2px 6px; font-size: 10px;"><i class="pi pi-trash" style="font-size: 10px; color: var(--danger-500);"></i></button>
+                            <button class="btn btn-ghost btn-sm" onclick="removeProductService('${item.id}')" title="Remove" style="padding: 2px 6px; font-size: 10px;"><i class="pi pi-trash" style="font-size: 10px; color: var(--danger-500);"></i></button>
                             </div>
                           </div>
                         </div>
@@ -12461,23 +12493,23 @@
         
         // Build vendors table rows using string concatenation to avoid template literal nesting issues
         let vendorRows = '';
-        const vendors = competitionValues.notificationVendors || [];
+        const allVendors = competitionValues.notificationVendors || [];
+        const vendors = filterVendorList(allVendors);
         const page = competitionValues.vendorListPage || 1;
         const startIdx = (page - 1) * 10;
         const endIdx = page * 10;
         const pagedVendors = vendors.slice(startIdx, endIdx);
         
-        // Count vendors with eligibility issues
-        const vendorsWithIssues = vendors.filter(v => v.eligibilityStatus && v.eligibilityStatus !== 'null').length;
+        // Count vendors with eligibility issues (from all vendors, not filtered)
+        const vendorsWithIssues = allVendors.filter(v => v.eligibilityStatus && v.eligibilityStatus !== 'null').length;
         
         pagedVendors.forEach((vendor, idx) => {
-          const globalIdx = startIdx + idx;
+          // Find the original index in allVendors for actions
+          const globalIdx = allVendors.findIndex(v => v.email === vendor.email && v.companyName === vendor.companyName);
           const sourceClass = vendor.source === 'UNGM' ? 'badge-primary' : 
             (vendor.source === 'Ad-hoc Shortlist' || vendor.source === 'Sourcing Outcome' || vendor.source === 'Tender Vendors' || vendor.source === 'Shortlist') ? 'badge-info' : 
             vendor.source === 'Manual' ? 'badge-success' : 'badge-warning';
-          const hasEligibilityIssue = vendor.eligibilityStatus && vendor.eligibilityStatus !== 'null';
-          const rowBgStyle = hasEligibilityIssue ? 'background: rgba(220, 38, 38, 0.03);' : '';
-          vendorRows += '<tr style="border-bottom: 1px solid var(--surface-100);' + rowBgStyle + '">' +
+          vendorRows += '<tr style="border-bottom: 1px solid var(--surface-100);">' +
             '<td style="padding: 10px 12px; color: var(--text-primary);">' +
               (vendor.ungmId ? '<a href="#" onclick="event.stopPropagation(); openUNGMVendorDetails(\'' + vendor.ungmId + '\')" style="color: var(--primary-600); text-decoration: none; font-weight: 500;" title="Click to view UNGM details">' + (vendor.companyName || '-') + '</a>' : (vendor.companyName || '-')) +
             '</td>' +
@@ -12495,11 +12527,13 @@
         
         // Build pagination
         let pagination = '';
+        const isFiltered = competitionValues.vendorListFilter && competitionValues.vendorListFilter.length > 0;
         if (vendors.length > 0) {
           const totalPages = Math.max(1, Math.ceil(vendors.length / 10));
           const showing = vendors.length > 0 ? (startIdx + 1) + ' - ' + Math.min(endIdx, vendors.length) : '0';
+          const filterInfo = isFiltered ? ' (filtered from ' + allVendors.length + ')' : '';
           pagination = '<div style="background: var(--surface-50); padding: var(--spacing-sm) var(--spacing-md); display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--surface-200);">' +
-            '<div style="font-size: 12px; color: var(--text-secondary);">Showing ' + showing + ' of ' + vendors.length + ' vendors</div>' +
+            '<div style="font-size: 12px; color: var(--text-secondary);">Showing ' + showing + ' of ' + vendors.length + ' vendors' + filterInfo + '</div>' +
             '<div style="display: flex; align-items: center; gap: 4px;">' +
               '<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); changeVendorListPage(\'prev\')" ' + (page === 1 ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : '') + '><i class="pi pi-chevron-left"></i></button>' +
               '<span style="font-size: 12px; color: var(--text-secondary); padding: 0 8px;">Page ' + page + ' of ' + totalPages + '</span>' +
@@ -12619,11 +12653,24 @@
                 '<div style="display: flex; align-items: center; gap: 8px;">' +
                   '<i class="pi pi-users" style="color: var(--text-secondary);"></i>' +
                   '<span style="font-weight: 600; font-size: 13px; color: var(--text-primary);">Vendors</span>' +
-                  '<span class="badge badge-primary" style="font-size: 10px;">' + vendors.length + '</span>' +
+                  '<span class="badge badge-primary" style="font-size: 10px;">' + (isFiltered ? vendors.length + '/' + allVendors.length : allVendors.length) + '</span>' +
+                  (isFiltered ? '<span class="badge badge-info" style="font-size: 9px;"><i class="pi pi-filter" style="font-size: 8px;"></i> Filtered</span>' : '') +
                   (vendorsWithIssues > 0 ? '<span class="badge badge-danger" style="font-size: 10px;" title="' + vendorsWithIssues + ' vendor(s) with eligibility issues"><i class="pi pi-exclamation-triangle" style="font-size: 9px;"></i> ' + vendorsWithIssues + ' flagged</span>' : '') +
                 '</div>' +
                 '<div style="display: flex; align-items: center; gap: 8px;">' +
-                  '<input type="text" class="form-input" placeholder="Filter vendors..." style="font-size: 12px; padding: 4px 10px; width: 180px;" onclick="event.stopPropagation()" onkeyup="filterNotificationVendors(this.value)" />' +
+                  '<div style="display: flex; align-items: center; gap: 4px; background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-md); padding: 2px;">' +
+                    '<select id="vendor-filter-field" class="form-input" style="font-size: 11px; padding: 4px 8px; border: none; background: transparent; min-width: 90px;" onclick="event.stopPropagation()" onchange="applyVendorFilter()">' +
+                      '<option value="all">All Fields</option>' +
+                      '<option value="companyName">Company</option>' +
+                      '<option value="email">Email</option>' +
+                      '<option value="ungmId">UNGM ID</option>' +
+                      '<option value="eligibilityStatus">Status</option>' +
+                      '<option value="source">Source</option>' +
+                      '<option value="notified">Notified</option>' +
+                    '</select>' +
+                    '<input type="text" id="vendor-filter-value" class="form-input" placeholder="Filter..." style="font-size: 11px; padding: 4px 8px; width: 120px; border: none; border-left: 1px solid var(--surface-200);" onclick="event.stopPropagation()" onkeyup="applyVendorFilter()" />' +
+                  '</div>' +
+                  (competitionValues.vendorListFilter ? '<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); clearVendorFilter()" style="color: var(--text-muted); padding: 4px;" title="Clear filter"><i class="pi pi-times"></i></button>' : '') +
                   notifyAllBtn +
                   clearAllBtn +
                 '</div>' +
@@ -12881,7 +12928,19 @@
                         ${competitionValues.notificationVendors && competitionValues.notificationVendors.filter(v => v.eligibilityStatus && v.eligibilityStatus !== 'null').length > 0 ? `<span class="badge badge-danger" style="font-size: 10px;" title="${competitionValues.notificationVendors.filter(v => v.eligibilityStatus && v.eligibilityStatus !== 'null').length} vendor(s) with eligibility issues"><i class="pi pi-exclamation-triangle" style="font-size: 9px;"></i> ${competitionValues.notificationVendors.filter(v => v.eligibilityStatus && v.eligibilityStatus !== 'null').length} flagged</span>` : ''}
                       </div>
                       <div style="display: flex; align-items: center; gap: 8px;">
-                        <input type="text" class="form-input" placeholder="Filter vendors..." style="font-size: 12px; padding: 4px 10px; width: 180px;" onclick="event.stopPropagation()" onkeyup="filterNotificationVendors(this.value)" />
+                        <div style="display: flex; align-items: center; gap: 4px; background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-md); padding: 2px;">
+                          <select id="vendor-filter-field-dc" class="form-input" style="font-size: 11px; padding: 4px 8px; border: none; background: transparent; min-width: 90px;" onclick="event.stopPropagation()" onchange="applyVendorFilter()">
+                            <option value="all">All Fields</option>
+                            <option value="companyName">Company</option>
+                            <option value="email">Email</option>
+                            <option value="ungmId">UNGM ID</option>
+                            <option value="eligibilityStatus">Status</option>
+                            <option value="source">Source</option>
+                            <option value="notified">Notified</option>
+                          </select>
+                          <input type="text" id="vendor-filter-value-dc" class="form-input" placeholder="Filter..." style="font-size: 11px; padding: 4px 8px; width: 120px; border: none; border-left: 1px solid var(--surface-200);" onclick="event.stopPropagation()" onkeyup="applyVendorFilter()" />
+                        </div>
+                        ${competitionValues.vendorListFilter ? '<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); clearVendorFilter()" style="color: var(--text-muted); padding: 4px;" title="Clear filter"><i class="pi pi-times"></i></button>' : ''}
                         ${competitionValues.notificationVendors && competitionValues.notificationVendors.filter(v => !v.notified).length > 0 ? `
                           <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); notifyAllVendors()" style="font-size: 11px;">
                             <i class="pi pi-send"></i> Notify All (${competitionValues.notificationVendors.filter(v => !v.notified).length})
@@ -12912,9 +12971,7 @@
                           </thead>
                           <tbody id="notification-vendors-tbody">
                             ${(competitionValues.notificationVendors || []).slice(((competitionValues.vendorListPage || 1) - 1) * 10, (competitionValues.vendorListPage || 1) * 10).map((vendor, idx) => {
-                              const hasEligibilityIssue = vendor.eligibilityStatus && vendor.eligibilityStatus !== 'null';
-                              const rowBgStyle = hasEligibilityIssue ? 'background: rgba(220, 38, 38, 0.03);' : '';
-                              return '<tr style="border-bottom: 1px solid var(--surface-100);' + rowBgStyle + '">' +
+                              return '<tr style="border-bottom: 1px solid var(--surface-100);">' +
                                 '<td style="padding: 10px 12px; color: var(--text-primary);">' + 
                                   (vendor.ungmId ? '<a href="#" onclick="event.stopPropagation(); openUNGMVendorDetails(\'' + vendor.ungmId + '\')" style="color: var(--primary-600); text-decoration: none; font-weight: 500;" title="Click to view UNGM details">' + (vendor.companyName || '-') + '</a>' : (vendor.companyName || '-')) +
                                 '</td>' +
@@ -13512,11 +13569,84 @@
         restoreCompetitionSectionStates();
       }
       
-      // Filter notification vendors
+      // Filter notification vendors (legacy - kept for compatibility)
       window.filterNotificationVendors = function(filterText) {
         competitionValues.vendorListFilter = filterText.toLowerCase();
-        // For simplicity, we'll just re-render. In a real app, you'd filter the displayed list.
-        // This is a mock - actual filtering would need to be implemented in the render
+        competitionValues.vendorListFilterField = 'all';
+        competitionValues.vendorListPage = 1;
+        saveCompetitionSectionStates();
+        renderCurrentBlock();
+        restoreCompetitionSectionStates();
+      }
+      
+      // Apply vendor filter with field selection
+      window.applyVendorFilter = function() {
+        // Get filter values from either the regular or DC (direct contracting) inputs
+        const fieldEl = document.getElementById('vendor-filter-field') || document.getElementById('vendor-filter-field-dc');
+        const valueEl = document.getElementById('vendor-filter-value') || document.getElementById('vendor-filter-value-dc');
+        
+        const filterField = fieldEl ? fieldEl.value : 'all';
+        const filterValue = valueEl ? valueEl.value.toLowerCase().trim() : '';
+        
+        competitionValues.vendorListFilterField = filterField;
+        competitionValues.vendorListFilter = filterValue;
+        competitionValues.vendorListPage = 1;
+        
+        saveCompetitionSectionStates();
+        renderCurrentBlock();
+        restoreCompetitionSectionStates();
+        
+        // Restore filter input values after re-render
+        setTimeout(() => {
+          const newFieldEl = document.getElementById('vendor-filter-field') || document.getElementById('vendor-filter-field-dc');
+          const newValueEl = document.getElementById('vendor-filter-value') || document.getElementById('vendor-filter-value-dc');
+          if (newFieldEl) newFieldEl.value = filterField;
+          if (newValueEl) newValueEl.value = filterValue;
+        }, 50);
+      }
+      
+      // Clear vendor filter
+      window.clearVendorFilter = function() {
+        competitionValues.vendorListFilter = '';
+        competitionValues.vendorListFilterField = 'all';
+        competitionValues.vendorListPage = 1;
+        
+        saveCompetitionSectionStates();
+        renderCurrentBlock();
+        restoreCompetitionSectionStates();
+      }
+      
+      // Helper function to filter vendors based on field and value
+      function filterVendorList(vendors) {
+        const filterValue = competitionValues.vendorListFilter || '';
+        const filterField = competitionValues.vendorListFilterField || 'all';
+        
+        if (!filterValue) return vendors;
+        
+        return vendors.filter(vendor => {
+          if (filterField === 'all') {
+            // Search all text fields
+            return (vendor.companyName || '').toLowerCase().includes(filterValue) ||
+                   (vendor.email || '').toLowerCase().includes(filterValue) ||
+                   (vendor.ungmId || '').toLowerCase().includes(filterValue) ||
+                   (vendor.eligibilityStatus || '').toLowerCase().includes(filterValue) ||
+                   (vendor.source || '').toLowerCase().includes(filterValue) ||
+                   (vendor.notified ? 'yes' : 'no').includes(filterValue);
+          } else if (filterField === 'notified') {
+            const notifiedStr = vendor.notified ? 'yes' : 'no';
+            return notifiedStr.includes(filterValue);
+          } else if (filterField === 'eligibilityStatus') {
+            // Allow searching for status text or 'clear' for no issues
+            const status = vendor.eligibilityStatus || '';
+            const statusText = status ? status.toLowerCase().replace(/_/g, ' ') : 'clear';
+            return statusText.includes(filterValue) || 
+                   (filterValue === 'clear' && !status) ||
+                   (filterValue === 'sanction' && (status === 'Ineligibility_or_Debarment' || status === 'Ineligible_for_registration'));
+          } else {
+            const fieldValue = (vendor[filterField] || '').toString().toLowerCase();
+            return fieldValue.includes(filterValue);
+          }
+        });
       }
       
       // Open UNGM vendor details (simulated - would open UNGM portal in real implementation)
@@ -13973,23 +14103,60 @@
           return members.map((m, idx) => renderTeamMemberCard(m, role, true, `${removeFunc}(${idx})`)).join('');
         };
         
-        // Get affidavit counts for status badge
-        const getAffidavitCounts = () => {
+        // Get evaluation panel status for aggregated state
+        const getEvaluationPanelStatus = () => {
           const total = teamMembers.evaluationTeam.length;
           let signed = 0;
+          let approved = 0;
+          let hasProcurementOfficial = false;
+          let hasChair = false;
+          
           teamMembers.evaluationTeam.forEach(m => {
             if (evaluationAffidavits[m.email] && evaluationAffidavits[m.email].signed) signed++;
+            if (m.approved) approved++;
+            if (m.panelRole === 'Procurement Official') hasProcurementOfficial = true;
+            if (m.panelRole === 'Chair') hasChair = true;
           });
-          return { signed, total };
+          
+          return { 
+            total, 
+            signed, 
+            approved,
+            panelEstablished: total > 0 && hasProcurementOfficial && hasChair,
+            paApproved: total > 0 && approved === total,
+            allSigned: total > 0 && signed === total
+          };
         };
         
-        // Render affidavit status badge for header
+        // Render aggregated evaluation panel status badges for header
         const renderAffidavitStatusBadge = () => {
-          const counts = getAffidavitCounts();
-          if (counts.total === 0) return '';
-          const isComplete = counts.signed === counts.total;
-          return '<span class="affidavit-status-badge ' + (isComplete ? 'complete' : 'partial') + '">' +
-            (isComplete ? '✓' : '⚠') + ' ' + counts.signed + '/' + counts.total + ' Signed</span>';
+          const status = getEvaluationPanelStatus();
+          if (status.total === 0) return '';
+          
+          let badges = '';
+          
+          // Panel Established status
+          if (status.panelEstablished) {
+            badges += '<span class="eval-status-badge established" title="Evaluation panel has required roles"><i class="pi pi-check-circle"></i> Panel Established</span>';
+          } else {
+            badges += '<span class="eval-status-badge pending" title="Missing required roles (Procurement Official and/or Chair)"><i class="pi pi-clock"></i> Panel Incomplete</span>';
+          }
+          
+          // PA Approved status
+          if (status.paApproved) {
+            badges += '<span class="eval-status-badge approved" title="All members approved by PA"><i class="pi pi-check-circle"></i> PA Approved</span>';
+          } else {
+            badges += '<span class="eval-status-badge pending" title="' + status.approved + '/' + status.total + ' members approved by PA"><i class="pi pi-clock"></i> PA Pending</span>';
+          }
+          
+          // Affidavit Signed status
+          if (status.allSigned) {
+            badges += '<span class="eval-status-badge signed" title="All members signed affidavit"><i class="pi pi-check-circle"></i> Affidavit Signed</span>';
+          } else {
+            badges += '<span class="eval-status-badge pending" title="' + status.signed + '/' + status.total + ' affidavits signed"><i class="pi pi-clock"></i> Affidavit Pending</span>';
+          }
+          
+          return '<div style="display: flex; gap: 6px; margin-left: 8px;">' + badges + '</div>';
         };
         
         // Get role badge class based on panel role
@@ -14060,7 +14227,7 @@
                 <div class="eval-panel-affidavit-cell">
                   ${aff.signed 
                     ? `<span class="eval-panel-affidavit-badge signed" onclick="event.stopPropagation();viewAffidavit('${safeEmail}')" title="View signed affidavit"><i class="pi pi-check-circle"></i> Signed</span>`
-                    : `<span class="eval-panel-affidavit-badge pending-sign" onclick="event.stopPropagation();openSignAffidavitModal('${safeEmail}','${safeName}')" title="Click to sign affidavit"><i class="pi pi-pencil"></i> Sign</span>`
+                    : `<span class="eval-panel-affidavit-badge pending-sign" onclick="event.stopPropagation();openSignAffidavitModal('${safeEmail}','${safeName}')" title="Click to sign affidavit"><i class="pi pi-clock"></i> Pending</span>`
                   }
                 </div>
               </td>
@@ -14213,17 +14380,30 @@
                           <div class="team-role-icon"><i class="pi pi-cog"></i></div>
                           <div class="team-role-title">Technical Matter Expert(s)</div>
                         </div>
-                        <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); openAddTeamMemberModal('technicalExperts')">
+                        <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); openAddTeamMemberModal('technicalExperts')" ${teamMembers.tmeBypass !== 'applicable' ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''}>
                           <i class="pi pi-plus"></i> Add Expert
                         </button>
                       </div>
-                      <div class="team-role-content">
+                      <div class="team-role-content" style="${teamMembers.tmeBypass !== 'applicable' ? 'opacity: 0.5; pointer-events: none;' : ''}">
                         ${teamMembers.technicalExperts && teamMembers.technicalExperts.length > 0 ? 
                           teamMembers.technicalExperts.map((expert, idx) => renderTeamMemberCard(expert, 'Expert', true, `removeTechnicalExpert(${idx})`)).join('') :
                           `<div class="team-empty-slot">No technical experts assigned</div>`
                         }
                       </div>
                       <span class="help-text">Provides technical guidance and specifications. You can add multiple technical experts.</span>
+                      
+                      <!-- TME Bypass Options -->
+                      <div style="margin-top: var(--spacing-sm); padding-top: var(--spacing-sm); border-top: 1px dashed var(--surface-200);">
+                        <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
+                          <span style="font-size: 11px; font-weight: 600; color: var(--text-secondary);">TME Sign-off:</span>
+                          <select class="form-input" style="font-size: 11px; padding: 4px 8px; border-radius: 4px; min-width: 220px;" onchange="event.stopPropagation(); updateTmeBypass(this.value)" onclick="event.stopPropagation()">
+                            <option value="applicable" ${teamMembers.tmeBypass === 'applicable' ? 'selected' : ''}>TME sign-off applicable</option>
+                            <option value="bypass_procurement" ${teamMembers.tmeBypass === 'bypass_procurement' ? 'selected' : ''}>Bypass - Procurement requirements</option>
+                            <option value="bypass_waiver" ${teamMembers.tmeBypass === 'bypass_waiver' ? 'selected' : ''}>Bypass - Waiver</option>
+                          </select>
+                          ${teamMembers.tmeBypass !== 'applicable' ? '<span class="badge badge-warning" style="font-size: 9px;"><i class="pi pi-exclamation-triangle" style="font-size: 9px;"></i> Bypassed</span>' : ''}
+                        </div>
+                      </div>
                     </div>
                     <!-- Bid Opening Panel -->
                     <div class="team-role-card">
@@ -14266,7 +14446,7 @@
                             <li>All evaluation panel members must <strong>accept the Conflict of Interest affidavit</strong>.</li>
                             <li>All <strong>external</strong> evaluation panel members must be approved and upload supporting documents for the affidavit.</li>
                           </ul>
-                        </div>
+                      </div>
                       </div>
                     </div>
                     
@@ -14275,7 +14455,7 @@
                       <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); openAddEvalPanelMemberModal()">
                         <i class="pi pi-plus"></i> Add Member
                       </button>
-                    </div>
+                  </div>
                     
                     <!-- Evaluation Panel Table -->
                     <div>
@@ -14593,6 +14773,16 @@
       
       window.removeTechnicalExpert = function(index) {
         teamMembers.technicalExperts.splice(index, 1);
+        renderCurrentBlock();
+      }
+      
+      // Update TME bypass option
+      window.updateTmeBypass = function(value) {
+        teamMembers.tmeBypass = value;
+        // If bypassing, clear any existing technical experts
+        if (value !== 'applicable') {
+          teamMembers.technicalExperts = [];
+        }
         renderCurrentBlock();
       }
       
