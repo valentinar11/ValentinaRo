@@ -3297,6 +3297,331 @@
             border: 0;
         }
 
+        /* ==================== APPROVAL BANNER STYLES ==================== */
+        .approval-banner {
+            background: linear-gradient(135deg, var(--warning-50) 0%, #fff7ed 100%);
+            border: 2px solid var(--warning-500);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-md);
+            display: none;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        .approval-banner.visible {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .approval-banner-header {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .approval-banner-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--warning-500);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(232, 92, 14, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 0 10px rgba(232, 92, 14, 0);
+            }
+        }
+
+        .approval-banner-icon i {
+            font-size: 22px;
+            color: white;
+        }
+
+        .approval-banner-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .approval-banner-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--warning-500);
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: var(--radius-sm);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .approval-banner-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .approval-banner-description {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .approval-banner-meta {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            font-size: 12px;
+            color: var(--text-muted);
+            flex-wrap: wrap;
+        }
+
+        .approval-banner-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .approval-banner-meta-item i {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .approval-banner-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: var(--radius-sm);
+            transition: all 0.2s;
+        }
+
+        .approval-banner-close:hover {
+            background: var(--surface-200);
+            color: var(--text-primary);
+        }
+
+        .approval-banner-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            flex-wrap: wrap;
+            padding-top: var(--spacing-md);
+            border-top: 1px solid var(--warning-200);
+        }
+
+        .approval-banner-actions .btn {
+            font-size: 13px;
+            padding: 10px 18px;
+        }
+
+        .approval-banner-actions .btn-approve {
+            background: var(--success-500);
+            color: white;
+            border: none;
+        }
+
+        .approval-banner-actions .btn-approve:hover {
+            background: #3d7f2d;
+        }
+
+        .approval-banner-actions .btn-reject {
+            background: var(--danger-500);
+            color: white;
+            border: none;
+        }
+
+        .approval-banner-actions .btn-reject:hover {
+            background: #b82318;
+        }
+
+        .approval-banner-actions .btn-changes {
+            background: var(--surface-0);
+            color: var(--text-primary);
+            border: 1px solid var(--surface-300);
+        }
+
+        .approval-banner-actions .btn-changes:hover {
+            background: var(--surface-100);
+            border-color: var(--surface-400);
+        }
+
+        .approval-comment-box {
+            width: 100%;
+        }
+
+        .approval-comment-box textarea {
+            width: 100%;
+            padding: var(--spacing-sm);
+            border: 1px solid var(--surface-300);
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 80px;
+            transition: border-color 0.2s;
+        }
+
+        .approval-comment-box textarea:focus {
+            outline: none;
+            border-color: var(--primary-400);
+        }
+
+        .approval-comment-box textarea::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* ==================== APPROVAL CONFIRMATION MODAL ==================== */
+        .approval-modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10002;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .approval-modal-backdrop.visible {
+            display: flex;
+        }
+
+        .approval-modal {
+            background: var(--surface-0);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .approval-modal-header {
+            padding: var(--spacing-lg);
+            border-bottom: 1px solid var(--surface-200);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .approval-modal-header.approve {
+            background: linear-gradient(135deg, var(--success-50) 0%, #ecfdf5 100%);
+        }
+
+        .approval-modal-header.reject {
+            background: linear-gradient(135deg, var(--danger-50) 0%, #fef2f2 100%);
+        }
+
+        .approval-modal-header.changes {
+            background: linear-gradient(135deg, var(--warning-50) 0%, #fffbeb 100%);
+        }
+
+        .approval-modal-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .approval-modal-icon.approve {
+            background: var(--success-500);
+            color: white;
+        }
+
+        .approval-modal-icon.reject {
+            background: var(--danger-500);
+            color: white;
+        }
+
+        .approval-modal-icon.changes {
+            background: var(--warning-500);
+            color: white;
+        }
+
+        .approval-modal-icon i {
+            font-size: 20px;
+        }
+
+        .approval-modal-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .approval-modal-body {
+            padding: var(--spacing-lg);
+        }
+
+        .approval-modal-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .approval-modal-footer {
+            padding: var(--spacing-md) var(--spacing-lg) var(--spacing-lg);
+            display: flex;
+            gap: var(--spacing-sm);
+            justify-content: flex-end;
+        }
+
+        .approval-modal-footer .btn {
+            padding: 10px 20px;
+        }
+
+        /* Responsive adjustments for approval banner */
+        @media (max-width: 768px) {
+            .approval-banner-actions {
+                flex-direction: column;
+            }
+
+            .approval-banner-actions .btn {
+                width: 100%;
+            }
+        }
+
         /* Accessibility Panel Styles */
         .accessibility-panel {
             position: fixed;
@@ -6528,6 +6853,78 @@
                         <button class="btn btn-danger" onclick="openCancelModalFromDetails()">
                             <i class="pi pi-times-circle"></i> Cancel Tender
                         </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Approval Banner - Contextual Action Required -->
+                <div class="approval-banner" id="approval-banner">
+                    <div class="approval-banner-header">
+                        <div class="approval-banner-icon">
+                            <i class="pi pi-exclamation-circle"></i>
+                        </div>
+                        <div class="approval-banner-content">
+                            <div class="approval-banner-badge">
+                                <i class="pi pi-clock"></i> Action Required
+                            </div>
+                            <div class="approval-banner-title" id="approval-banner-title">
+                                Evaluation Panel Approval Required
+                            </div>
+                            <div class="approval-banner-description" id="approval-banner-description">
+                                You have been requested to review and approve the Evaluation Panel composition for this tender before the evaluation process can begin.
+                            </div>
+                            <div class="approval-banner-meta">
+                                <div class="approval-banner-meta-item">
+                                    <i class="pi pi-user"></i>
+                                    <span>Requested by: <strong id="approval-requested-by">Jane Doe</strong></span>
+                                </div>
+                                <div class="approval-banner-meta-item">
+                                    <i class="pi pi-calendar"></i>
+                                    <span id="approval-requested-date">Jan 20, 2025</span>
+                                </div>
+                                <div class="approval-banner-meta-item">
+                                    <i class="pi pi-tag"></i>
+                                    <span id="approval-type-badge" style="background: var(--primary-100); color: var(--primary-600); padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600;">Evaluation Panel</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="approval-banner-close" onclick="dismissApprovalBanner()" title="Dismiss">
+                            <i class="pi pi-times"></i>
+                        </button>
+                    </div>
+                    <div class="approval-banner-actions">
+                        <button class="btn btn-approve" onclick="showApprovalConfirmation('approve')">
+                            <i class="pi pi-check"></i> Approve
+                        </button>
+                        <button class="btn btn-reject" onclick="showApprovalConfirmation('reject')">
+                            <i class="pi pi-times"></i> Reject
+                        </button>
+                        <button class="btn btn-changes" onclick="showApprovalConfirmation('changes')">
+                            <i class="pi pi-comment"></i> Request Changes
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Approval Confirmation Modal -->
+                <div class="approval-modal-backdrop" id="approval-modal-backdrop">
+                    <div class="approval-modal" id="approval-modal">
+                        <div class="approval-modal-header" id="approval-modal-header">
+                            <div class="approval-modal-icon" id="approval-modal-icon">
+                                <i class="pi pi-check" id="approval-modal-icon-i"></i>
+                            </div>
+                            <h4 class="approval-modal-title" id="approval-modal-title">Confirm Approval</h4>
+                        </div>
+                        <div class="approval-modal-body">
+                            <p class="approval-modal-text" id="approval-modal-text">
+                                Are you sure you want to approve the Evaluation Panel for this tender? This action will be recorded in the workflow history.
+                            </p>
+                            <div class="approval-comment-box">
+                                <textarea id="approval-modal-comment" placeholder="Add a comment (optional)..." style="min-height: 60px;"></textarea>
+                            </div>
+                        </div>
+                        <div class="approval-modal-footer">
+                            <button class="btn btn-secondary" onclick="closeApprovalModal()">Cancel</button>
+                            <button class="btn" id="approval-modal-confirm-btn" onclick="confirmApprovalAction()">Confirm</button>
                         </div>
                     </div>
                 </div>
@@ -20362,6 +20759,339 @@
         document.getElementById('tender-preview-sidebar').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeTenderPreview();
+            }
+        });
+
+        // ==================== APPROVAL BANNER SYSTEM ====================
+        
+        // Current approval data
+        let currentApprovalData = null;
+        let pendingApprovalAction = null;
+
+        // Sample approval requests (in real app, this would come from backend)
+        const approvalRequests = {
+            'evaluation-panel': {
+                type: 'Evaluation Panel',
+                title: 'Evaluation Panel Approval Required',
+                description: 'You have been requested to review and approve the Evaluation Panel composition for this tender before the evaluation process can begin.',
+                requestedBy: 'Jane Doe',
+                requestedByRole: 'Procurement Officer',
+                requestedDate: 'Jan 20, 2025',
+                requestedDateTime: 'January 20, 2025 at 10:30 AM',
+                panelMembers: [
+                    { name: 'John Smith', initials: 'JS', role: 'Technical Expert - Lead Evaluator', coiDeclared: true },
+                    { name: 'Sarah Wilson', initials: 'SW', role: 'Financial Analyst', coiDeclared: true },
+                    { name: 'Mike Brown', initials: 'MB', role: 'Category Manager', coiDeclared: true }
+                ],
+                justification: 'The proposed evaluation panel has been selected based on their expertise in medical equipment procurement. John Smith has 10+ years of experience in healthcare technology. Sarah Wilson brings financial analysis expertise from previous similar procurements. Mike Brown has category knowledge and has successfully led 15+ medical equipment evaluations.',
+                documents: [
+                    { id: 'panel-nomination', name: 'Panel_Nomination_Form.pdf', date: 'Jan 20, 2025', size: '245 KB' },
+                    { id: 'coi-declarations', name: 'COI_Declarations_All_Members.pdf', date: 'Jan 20, 2025', size: '180 KB' },
+                    { id: 'cv-evaluators', name: 'CVs_Proposed_Evaluators.pdf', date: 'Jan 20, 2025', size: '520 KB' }
+                ]
+            },
+            'tender-posting': {
+                type: 'Tender Posting',
+                title: 'Tender Approval Required Before Posting',
+                description: 'This tender requires your approval before it can be published to the UNGM portal and made visible to suppliers.',
+                requestedBy: 'Maria Santos',
+                requestedByRole: 'Tender Author',
+                requestedDate: 'Jan 18, 2025',
+                requestedDateTime: 'January 18, 2025 at 2:15 PM',
+                panelMembers: null,
+                justification: 'The tender documents have been reviewed by the Technical Team and are ready for posting. All required documents have been uploaded and the evaluation criteria have been defined according to the project requirements.',
+                documents: [
+                    { id: 'tender-summary', name: 'Tender_Summary_Sheet.pdf', date: 'Jan 18, 2025', size: '125 KB' },
+                    { id: 'solicitation-doc', name: 'ITB_Solicitation_Document.pdf', date: 'Jan 18, 2025', size: '1.2 MB' }
+                ]
+            },
+            'award-recommendation': {
+                type: 'Award Recommendation',
+                title: 'Award Recommendation Approval Required',
+                description: 'The evaluation has been completed and the award recommendation requires your approval before proceeding with supplier notification.',
+                requestedBy: 'John Smith',
+                requestedByRole: 'Lead Evaluator',
+                requestedDate: 'Jan 25, 2025',
+                requestedDateTime: 'January 25, 2025 at 4:45 PM',
+                panelMembers: null,
+                justification: 'Based on the technical and financial evaluation, MedSupply International Ltd. has been selected as the recommended supplier with a final score of 92%. The evaluation was conducted in accordance with the criteria defined in the solicitation document.',
+                documents: [
+                    { id: 'eval-report', name: 'Evaluation_Report.pdf', date: 'Jan 25, 2025', size: '850 KB' },
+                    { id: 'award-recommendation', name: 'Award_Recommendation.pdf', date: 'Jan 25, 2025', size: '320 KB' },
+                    { id: 'comparison-matrix', name: 'Technical_Financial_Comparison.xlsx', date: 'Jan 25, 2025', size: '145 KB' }
+                ]
+            }
+        };
+
+        // Check for pending approvals when showing tender details
+        function checkPendingApprovals(tenderData) {
+            // Simulate checking for pending approvals based on tender status
+            // In real app, this would be an API call
+            
+            let approvalType = null;
+            
+            // Demo: Show different approval banners based on status
+            if (tenderData && tenderData.statusKey === 'approval') {
+                approvalType = 'tender-posting';
+            } else if (tenderData && tenderData.statusKey === 'evaluation') {
+                approvalType = 'evaluation-panel';
+            } else if (tenderData && tenderData.statusKey === 'award-pending') {
+                approvalType = 'award-recommendation';
+            } else {
+                // For demo purposes, show evaluation panel approval on active tenders
+                approvalType = 'evaluation-panel';
+            }
+
+            if (approvalType && approvalRequests[approvalType]) {
+                showApprovalBanner(approvalType);
+            } else {
+                hideApprovalBanner();
+            }
+        }
+
+        function showApprovalBanner(approvalType) {
+            currentApprovalData = approvalRequests[approvalType];
+            currentApprovalData.approvalType = approvalType;
+
+            const banner = document.getElementById('approval-banner');
+            
+            // Update banner content
+            document.getElementById('approval-banner-title').textContent = currentApprovalData.title;
+            document.getElementById('approval-banner-description').textContent = currentApprovalData.description;
+            document.getElementById('approval-requested-by').textContent = currentApprovalData.requestedBy;
+            document.getElementById('approval-requested-date').textContent = currentApprovalData.requestedDate;
+            document.getElementById('approval-type-badge').textContent = currentApprovalData.type;
+
+            // Show the banner
+            banner.classList.add('visible');
+        }
+
+        function hideApprovalBanner() {
+            const banner = document.getElementById('approval-banner');
+            banner.classList.remove('visible');
+            currentApprovalData = null;
+        }
+
+        function dismissApprovalBanner() {
+            hideApprovalBanner();
+            showToast('ℹ️ Approval banner dismissed. It will reappear next time you visit this tender.');
+        }
+
+        function showApprovalConfirmation(action) {
+            pendingApprovalAction = action;
+
+            const modal = document.getElementById('approval-modal-backdrop');
+            const header = document.getElementById('approval-modal-header');
+            const icon = document.getElementById('approval-modal-icon');
+            const iconI = document.getElementById('approval-modal-icon-i');
+            const title = document.getElementById('approval-modal-title');
+            const text = document.getElementById('approval-modal-text');
+            const confirmBtn = document.getElementById('approval-modal-confirm-btn');
+
+            // Remove all modifier classes
+            header.classList.remove('approve', 'reject', 'changes');
+            icon.classList.remove('approve', 'reject', 'changes');
+            confirmBtn.classList.remove('btn-approve', 'btn-reject', 'btn-changes');
+
+            const approvalTypeName = currentApprovalData ? currentApprovalData.type : 'this item';
+
+            if (action === 'approve') {
+                header.classList.add('approve');
+                icon.classList.add('approve');
+                iconI.className = 'pi pi-check';
+                title.textContent = 'Confirm Approval';
+                text.textContent = `Are you sure you want to approve the ${approvalTypeName} for this tender? This action will be recorded in the workflow history and the process will proceed to the next stage.`;
+                confirmBtn.textContent = 'Approve';
+                confirmBtn.classList.add('btn-approve');
+            } else if (action === 'reject') {
+                header.classList.add('reject');
+                icon.classList.add('reject');
+                iconI.className = 'pi pi-times';
+                title.textContent = 'Confirm Rejection';
+                text.textContent = `Are you sure you want to reject the ${approvalTypeName}? A comment is recommended to explain the reason for rejection.`;
+                confirmBtn.textContent = 'Reject';
+                confirmBtn.classList.add('btn-reject');
+            } else if (action === 'changes') {
+                header.classList.add('changes');
+                icon.classList.add('changes');
+                iconI.className = 'pi pi-undo';
+                title.textContent = 'Request Changes';
+                text.textContent = `Request changes to the ${approvalTypeName}? Please provide specific feedback on what needs to be modified.`;
+                confirmBtn.textContent = 'Request Changes';
+                confirmBtn.classList.add('btn-changes');
+            }
+
+            // Clear comment field
+            document.getElementById('approval-modal-comment').value = '';
+
+            // Show modal
+            modal.classList.add('visible');
+        }
+
+        function closeApprovalModal() {
+            const modal = document.getElementById('approval-modal-backdrop');
+            modal.classList.remove('visible');
+            pendingApprovalAction = null;
+        }
+
+        function confirmApprovalAction() {
+            const comment = document.getElementById('approval-modal-comment').value;
+            processApproval(pendingApprovalAction, comment);
+            closeApprovalModal();
+        }
+
+        function processApproval(action, comment) {
+            if (!currentApprovalData) return;
+
+            const providedComment = comment || '';
+            const approvalType = currentApprovalData.type;
+
+            // Create workflow entry
+            addApprovalToWorkflow(action, approvalType, providedComment);
+
+            // Hide the approval banner
+            hideApprovalBanner();
+
+            // Show success message
+            let message = '';
+            if (action === 'approve') {
+                message = `✅ ${approvalType} has been approved successfully!`;
+            } else if (action === 'reject') {
+                message = `❌ ${approvalType} has been rejected.`;
+            } else if (action === 'changes') {
+                message = `↩️ Changes requested for ${approvalType}.`;
+            }
+
+            showToast(message);
+
+            // Automatically switch to Workflow tab to show the new entry
+            setTimeout(() => {
+                // Switch to Process context and Workflow tab
+                switchTabContext('process', document.querySelector('.toggle-btn:last-child'));
+                setTimeout(() => {
+                    switchTab('tab-workflow', document.querySelector('[onclick*="tab-workflow"]'));
+                }, 100);
+            }, 500);
+        }
+
+        function addApprovalToWorkflow(action, approvalType, comment) {
+            const workflowTimeline = document.querySelector('.workflow-timeline');
+            if (!workflowTimeline) return;
+
+            // Find or create "Today" group
+            let todayGroup = workflowTimeline.querySelector('.workflow-date-group:first-child');
+            let isNewTodayGroup = false;
+
+            if (!todayGroup || !todayGroup.querySelector('.workflow-date-label')?.textContent.includes('Today')) {
+                // Create new Today group
+                isNewTodayGroup = true;
+                todayGroup = document.createElement('div');
+                todayGroup.className = 'workflow-date-group';
+                todayGroup.innerHTML = `
+                    <div class="workflow-date-header">
+                        <span class="workflow-date-label">Today</span>
+                        <span class="workflow-date-count">0 events</span>
+                    </div>
+                `;
+            }
+
+            // Create the workflow event
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+            
+            let actionTitle, actionDescription, iconClass, actionDataType;
+            
+            if (action === 'approve') {
+                actionTitle = `${approvalType} Approved`;
+                actionDescription = `Approved the ${approvalType.toLowerCase()} for this tender`;
+                iconClass = 'approval';
+                actionDataType = 'approval';
+            } else if (action === 'reject') {
+                actionTitle = `${approvalType} Rejected`;
+                actionDescription = `Rejected the ${approvalType.toLowerCase()} for this tender`;
+                iconClass = 'amendment'; // Using amendment style for rejection (orange/warning)
+                actionDataType = 'approval';
+            } else if (action === 'changes') {
+                actionTitle = `Changes Requested for ${approvalType}`;
+                actionDescription = `Requested modifications to the ${approvalType.toLowerCase()}`;
+                iconClass = 'edit';
+                actionDataType = 'approval';
+            }
+
+            const commentHtml = comment ? `
+                <div style="background: var(--surface-100); padding: 8px 12px; border-radius: var(--radius-sm); margin-top: 8px; font-size: 12px; color: var(--text-secondary); border-left: 3px solid var(--primary-400);">
+                    <strong style="color: var(--text-primary);">Comment:</strong> "${comment}"
+                </div>
+            ` : '';
+
+            const newEvent = document.createElement('div');
+            newEvent.className = 'workflow-event';
+            newEvent.setAttribute('data-action', actionDataType);
+            newEvent.setAttribute('data-user', 'current-user');
+            newEvent.style.animation = 'slideDown 0.3s ease-out';
+            newEvent.innerHTML = `
+                <div class="workflow-event-icon ${iconClass}">
+                    <i class="pi pi-${action === 'approve' ? 'check-circle' : action === 'reject' ? 'times-circle' : 'undo'}"></i>
+                </div>
+                <div class="workflow-event-content">
+                    <div class="workflow-event-header">
+                        <span class="workflow-event-title">${actionTitle}</span>
+                        <span class="workflow-event-time">${timeStr}</span>
+                    </div>
+                    <p class="workflow-event-description">${actionDescription}</p>
+                    ${commentHtml}
+                    <div class="workflow-event-meta">
+                        <span class="workflow-user"><i class="pi pi-user"></i> Current User (Procurement Authority)</span>
+                        <span class="workflow-detail"><i class="pi pi-verified"></i> Digital Signature Applied</span>
+                    </div>
+                </div>
+            `;
+
+            // Insert the event
+            if (isNewTodayGroup) {
+                todayGroup.appendChild(newEvent);
+                workflowTimeline.insertBefore(todayGroup, workflowTimeline.firstChild);
+            } else {
+                // Insert after the header
+                const header = todayGroup.querySelector('.workflow-date-header');
+                if (header.nextSibling) {
+                    todayGroup.insertBefore(newEvent, header.nextSibling);
+                } else {
+                    todayGroup.appendChild(newEvent);
+                }
+            }
+
+            // Update event count
+            const countSpan = todayGroup.querySelector('.workflow-date-count');
+            const currentCount = parseInt(countSpan.textContent) || 0;
+            countSpan.textContent = `${currentCount + 1} events`;
+
+            // Update workflow stats
+            const approvalsStat = document.querySelector('.clarifications-stat:nth-child(3) .stat-value');
+            if (approvalsStat && action === 'approve') {
+                approvalsStat.textContent = parseInt(approvalsStat.textContent) + 1;
+            }
+            const totalStat = document.querySelector('.clarifications-stat:first-child .stat-value');
+            if (totalStat) {
+                totalStat.textContent = parseInt(totalStat.textContent) + 1;
+            }
+        }
+
+        // Override showTenderDetails to check for pending approvals
+        const originalShowTenderDetails = showTenderDetails;
+        showTenderDetails = function(tenderData) {
+            originalShowTenderDetails(tenderData);
+            // Check for pending approvals after showing tender details
+            setTimeout(() => {
+                checkPendingApprovals(tenderData);
+            }, 100);
+        };
+
+        // Keyboard shortcut: Escape to close approval modal
+        document.addEventListener('keydown', function(e) {
+            const modal = document.getElementById('approval-modal-backdrop');
+            if (modal.classList.contains('visible') && e.key === 'Escape') {
+                closeApprovalModal();
             }
         });
     </script>
