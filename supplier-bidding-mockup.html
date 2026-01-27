@@ -476,6 +476,211 @@ min-height: calc(100vh - 65px);
     cursor: not-allowed;
 }
 .menu-icon { font-size: 16px; opacity: 0.9; width: 20px; text-align: center; }
+
+/* ==========================================================================
+   OFFER TABS - Sub-navigation for Main Offer / Alternate Offers
+   ========================================================================== */
+.offer-tabs-container {
+    background: linear-gradient(135deg, var(--surface-50) 0%, var(--surface-100) 100%);
+    border: 1px solid var(--surface-200);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+}
+
+.offer-tabs-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-sm);
+}
+
+.offer-tabs-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.offer-tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+    flex-direction: row;
+}
+
+.offer-tab {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: var(--surface-0);
+    border: 2px solid var(--surface-300);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.offer-tab:hover {
+    border-color: var(--primary-300);
+    background: var(--primary-50);
+    color: var(--primary-600);
+}
+
+.offer-tab.active {
+    border-color: var(--primary-500);
+    background: var(--primary-500);
+    color: white;
+    box-shadow: 0 2px 8px rgba(0, 146, 209, 0.3);
+}
+
+.offer-tab.main-offer {
+    border-color: var(--primary-400);
+}
+
+.offer-tab.main-offer.active {
+    background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-600) 100%);
+}
+
+.offer-tab.alternate-offer {
+    border-color: var(--warning-300);
+}
+
+.offer-tab.alternate-offer:hover {
+    border-color: var(--warning-400);
+    background: var(--warning-50);
+    color: var(--warning-700);
+}
+
+.offer-tab.alternate-offer.active {
+    background: linear-gradient(135deg, var(--warning-500) 0%, #f57c00 100%);
+    border-color: var(--warning-500);
+}
+
+.offer-tab-badge {
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 8px;
+    text-transform: uppercase;
+}
+
+.offer-tab.main-offer .offer-tab-badge {
+    background: rgba(255,255,255,0.2);
+}
+
+.offer-tab.alternate-offer .offer-tab-badge {
+    background: rgba(255,255,255,0.2);
+}
+
+.offer-tab-remove {
+    margin-left: 4px;
+    padding: 2px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.offer-tab-remove:hover {
+    background: var(--danger-500);
+    color: white;
+}
+
+.add-alternate-offer-global-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    background: linear-gradient(135deg, var(--warning-100) 0%, var(--warning-50) 100%);
+    border: 2px dashed var(--warning-400);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--warning-700);
+}
+
+.add-alternate-offer-global-btn:hover {
+    background: linear-gradient(135deg, var(--warning-200) 0%, var(--warning-100) 100%);
+    border-color: var(--warning-500);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(232, 92, 14, 0.2);
+}
+
+.add-alternate-offer-global-btn i {
+    font-size: 12px;
+}
+
+.offer-content-wrapper {
+    position: relative;
+}
+
+.offer-content-panel {
+    display: none;
+}
+
+.offer-content-panel.active {
+    display: block;
+    animation: offerFadeIn 0.3s ease;
+}
+
+@keyframes offerFadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInRight {
+    from { opacity: 0; transform: translateX(100px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideOutRight {
+    from { opacity: 1; transform: translateX(0); }
+    to { opacity: 0; transform: translateX(100px); }
+}
+
+.alternate-offer-banner {
+    background: linear-gradient(135deg, var(--warning-50) 0%, var(--warning-100) 100%);
+    border: 1px solid var(--warning-300);
+    border-left: 4px solid var(--warning-500);
+    border-radius: var(--radius-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.alternate-offer-banner-icon {
+    font-size: 20px;
+}
+
+.alternate-offer-banner-content {
+    flex: 1;
+}
+
+.alternate-offer-banner-title {
+    font-weight: 600;
+    color: var(--warning-700);
+    font-size: 13px;
+}
+
+.alternate-offer-banner-desc {
+    font-size: 11px;
+    color: var(--warning-600);
+    margin-top: 2px;
+}
 .menu-group {
     margin-bottom: var(--spacing-xs);
 }
@@ -6797,14 +7002,14 @@ Submission Requirements
       </div>
 
       <!-- Bidding For Selection -->
-      <div style="background: linear-gradient(135deg, var(--primary-50) 0%, var(--surface-100) 100%); padding: var(--spacing-sm); border: 1px solid var(--primary-200); border-radius: var(--radius-sm); margin-bottom: var(--spacing-md);">
-        <label style="font-weight: 600; color: var(--primary-700); margin-bottom: 6px; display: block; font-size: 12px;">
+      <div style="background: var(--surface-50); padding: var(--spacing-sm); border: 1px solid var(--surface-200); border-radius: var(--radius-sm); margin-bottom: var(--spacing-md);">
+        <label style="font-weight: 600; color: var(--text-primary); margin-bottom: 6px; display: block; font-size: 12px;">
           <i class="pi pi-list" style="margin-right: 6px; font-size: 12px;"></i> Bidding for <span style="color: var(--danger-500);">*</span>
         </label>
         <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 6px;">
-          <div style="display: flex; align-items: center; gap: 6px; padding: 8px 12px; background: white; border: 1px solid var(--primary-400); border-radius: var(--radius-sm); cursor: pointer; box-shadow: 0 1px 4px rgba(0, 118, 189, 0.1);">
+          <div style="display: flex; align-items: center; gap: 6px; padding: 8px 12px; background: white; border: 1px solid var(--surface-300); border-radius: var(--radius-sm); cursor: pointer;">
             <input type="radio" name="biddingFor" id="biddingForEntireTender" value="entire-tender" checked onchange="toggleBiddingForSelection(this)" style="width: 14px; height: 14px; accent-color: var(--primary-500);">
-            <label for="biddingForEntireTender" style="cursor: pointer; font-weight: 500; color: var(--primary-600); font-size: 12px; flex: 1;">
+            <label for="biddingForEntireTender" style="cursor: pointer; font-weight: 500; color: var(--text-secondary); font-size: 12px; flex: 1;">
               <i class="pi pi-check-circle" style="margin-right: 4px; font-size: 11px;"></i> Entire Tender
             </label>
           </div>
@@ -6846,8 +7051,8 @@ Submission Requirements
       </div>
 
       <!-- Pre-bid Meeting Participation -->
-      <div style="background: linear-gradient(135deg, var(--info-50, #e3f2fd) 0%, var(--surface-100) 100%); padding: var(--spacing-sm); border: 1px solid var(--info-200, #90caf9); border-radius: var(--radius-sm); margin-bottom: var(--spacing-md);">
-        <label style="font-weight: 600; color: var(--info-700, #1565c0); margin-bottom: 6px; display: block; font-size: 12px;">
+      <div style="background: var(--surface-50); padding: var(--spacing-sm); border: 1px solid var(--surface-200); border-radius: var(--radius-sm); margin-bottom: var(--spacing-md);">
+        <label style="font-weight: 600; color: var(--text-primary); margin-bottom: 6px; display: block; font-size: 12px;">
           <i class="pi pi-calendar" style="margin-right: 6px; font-size: 12px;"></i> Pre-bid Meeting
         </label>
         <div style="display: flex; align-items: center; gap: 8px; margin-top: 6px; padding: 8px 12px; background: white; border: 1px solid var(--surface-300); border-radius: var(--radius-sm);">
@@ -6865,14 +7070,14 @@ Submission Requirements
       <!-- Bidding As Selection -->
 
 
-      <div style="background: linear-gradient(135deg, var(--primary-50) 0%, var(--surface-100) 100%); padding: var(--spacing-sm); border: 1px solid var(--primary-200); border-radius: var(--radius-sm); margin-bottom: var(--spacing-md);">
-        <label style="font-weight: 600; color: var(--primary-700); margin-bottom: 6px; display: block; font-size: 12px;">
+      <div style="background: var(--surface-50); padding: var(--spacing-sm); border: 1px solid var(--surface-200); border-radius: var(--radius-sm); margin-bottom: var(--spacing-md);">
+        <label style="font-weight: 600; color: var(--text-primary); margin-bottom: 6px; display: block; font-size: 12px;">
           <i class="pi pi-briefcase" style="margin-right: 6px; font-size: 12px;"></i> Bidding as <span style="color: var(--danger-500);">*</span>
         </label>
         <div style="display: flex; gap: 12px; margin-top: 6px;">
-          <div style="display: flex; align-items: center; gap: 6px; padding: 8px 12px; background: white; border: 1px solid var(--primary-400); border-radius: var(--radius-sm); cursor: pointer; box-shadow: 0 1px 4px rgba(0, 118, 189, 0.1);">
+          <div style="display: flex; align-items: center; gap: 6px; padding: 8px 12px; background: white; border: 1px solid var(--surface-300); border-radius: var(--radius-sm); cursor: pointer;">
             <input type="radio" name="supplierBidType" id="supplierSingle" value="single" checked onchange="toggleSupplierConsortium()" style="width: 14px; height: 14px; accent-color: var(--primary-500);">
-            <label for="supplierSingle" style="cursor: pointer; font-weight: 500; color: var(--primary-600); font-size: 12px;"><i class="pi pi-building" style="margin-right: 4px; font-size: 11px;"></i> Single Company</label>
+            <label for="supplierSingle" style="cursor: pointer; font-weight: 500; color: var(--text-secondary); font-size: 12px;"><i class="pi pi-building" style="margin-right: 4px; font-size: 11px;"></i> Single Company</label>
           </div>
           <div style="display: flex; align-items: center; gap: 6px; padding: 8px 12px; background: white; border: 1px solid var(--surface-300); border-radius: var(--radius-sm); cursor: pointer;">
             <input type="radio" name="supplierBidType" id="supplierConsortium" value="consortium" onchange="toggleSupplierConsortium()" style="width: 14px; height: 14px; accent-color: var(--primary-500);">
@@ -6989,6 +7194,33 @@ Submission Requirements
         </div>
       </div>
 
+      <!-- Offer Tabs Navigation -->
+      <div class="offer-tabs-container" id="technical-bid-offer-tabs">
+        <div class="offer-tabs-header">
+          <div class="offer-tabs-title">
+            <i class="pi pi-folder-open"></i> Select Offer to Edit
+          </div>
+          <div style="font-size: 11px; color: var(--text-muted);">
+            <i class="pi pi-info-circle" style="margin-right: 4px;"></i>
+            Alternate offers duplicate all Technical &amp; Financial bid content
+          </div>
+        </div>
+        <div class="offer-tabs">
+          <div class="offer-tab main-offer active" data-offer-id="main" onclick="switchOffer('technical', 'main')">
+            <i class="pi pi-check-circle"></i>
+            <span>Main Offer</span>
+          </div><div id="technical-alternate-tabs" style="display: contents;"></div>
+          <button type="button" class="add-alternate-offer-global-btn" onclick="addGlobalAlternateOffer()">
+            <i class="pi pi-plus-circle"></i> Add Alternate Offer
+          </button>
+        </div>
+      </div>
+
+      <!-- Offer Content Wrapper -->
+      <div class="offer-content-wrapper" id="technical-offer-content-wrapper">
+        <!-- Main Offer Content -->
+        <div class="offer-content-panel active" id="technical-offer-main" data-offer-id="main">
+
       <!-- SIMPLIFIED TECHNICAL BID (for RFQ/2024/089) - Hidden by default -->
       <div id="technical-bid-simplified" style="display: none;">
         <!-- Instructions Alert -->
@@ -7071,9 +7303,8 @@ Submission Requirements
           <div style="display: flex; align-items: center; gap: 6px;">
             <i class="pi pi-tag" style="font-size: 11px;"></i> UNSPSC Code: 42182104 - Ultrasound Machines <span style="margin-left: 8px; background: var(--info-100); color: var(--info-700); padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600;">Qty: 5</span>
           </div>
-          <button type="button" class="btn btn-secondary add-alternate-offer-btn" onclick="addAlternateOffer(this, '42182104', 'Ultrasound Machines')" style="padding: 4px 10px; font-size: 11px; display: flex; align-items: center; gap: 4px;">
-            <i class="pi pi-plus-circle" style="font-size: 10px;"></i> Add Alternate Offer
-          </button>
+          <!-- Per-product alternate offers removed - now using global alternate offer approach -->
+          <span style="font-size: 10px; color: var(--text-muted);"><i class="pi pi-info-circle"></i> Use tabs above for alternate offers</span>
         </div>
 
         <div class="supplier-form-grid">
@@ -7241,59 +7472,11 @@ Submission Requirements
         </div>
       </div>
 
-      <!-- Alternate Offers Container for 42182104 -->
-      <div id="alternate-offers-container-42182104" class="alternate-offers-container"></div>
-
-      <!-- Delivery Requirements -->
-      <div class="supplier-subsection-header">
-        <strong><i class="pi pi-truck"></i> Delivery Requirements</strong>
-      </div>
-
-      <div style="overflow-x: auto;">
-        <table class="supplier-smart-table">
-          <thead>
-            <tr>
-              <th style="width: 15%;">Delivery Time</th>
-              <th style="width: 15%;">Delivery Place</th>
-              <th style="width: 18%;">Consignee Details</th>
-              <th style="width: 12%;">Apply To</th>
-              <th style="width: 12%;">Is quotation compliant?</th>
-              <th>Details</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="prefilled" style="font-size: 12px;">Within 60 days ARO (FCA)<br>Within 90 days ARO (DPU)</td>
-              <td class="prefilled" style="font-size: 12px;">FCA: Supplier's warehouse<br>DPU: UNOPS Warehouse, Copenhagen</td>
-              <td class="prefilled" style="font-size: 12px;">UNOPS Copenhagen Hub<br>Marmorvej 51, 2100 Copenhagen<br>Contact: logistics@unops.org</td>
-              <td class="prefilled" style="font-size: 12px;"><span style="background: var(--primary-100); color: var(--primary-700); padding: 2px 8px; border-radius: 10px; font-weight: 600;">Lot 1</span></td>
-              <td>
-                <div style="display: flex; flex-direction: column; gap: 4px;">
-                  <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 12px;"><input type="radio" name="delivery1"> Yes</label>
-                  <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 12px;"><input type="radio" name="delivery1"> No</label>
-                </div>
-              </td>
-              <td><textarea placeholder="Provide delivery details, any deviations, or alternative proposals" rows="2" style="font-size: 12px;"></textarea></td>
-            </tr>
-            <tr>
-              <td class="prefilled" style="font-size: 12px;">Within 45 days ARO (FCA)<br>Within 75 days ARO (DPU)</td>
-              <td class="prefilled" style="font-size: 12px;">FCA: Supplier's warehouse<br>DPU: UNOPS Field Office, Nairobi</td>
-              <td class="prefilled" style="font-size: 12px;">UNOPS Kenya Office<br>UN Complex, Gigiri, Nairobi<br>Contact: kenya.logistics@unops.org</td>
-              <td class="prefilled" style="font-size: 12px;"><span style="background: var(--success-100); color: var(--success-700); padding: 2px 8px; border-radius: 10px; font-weight: 600;">Lot 2</span></td>
-              <td>
-                <div style="display: flex; flex-direction: column; gap: 4px;">
-                  <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 12px;"><input type="radio" name="delivery2"> Yes</label>
-                  <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 12px;"><input type="radio" name="delivery2"> No</label>
-                </div>
-              </td>
-              <td><textarea placeholder="Provide delivery details, any deviations, or alternative proposals" rows="2" style="font-size: 12px;"></textarea></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <!-- Legacy per-product alternate offers container (no longer used - see global alternate offer tabs above) -->
+      <div id="alternate-offers-container-42182104" class="alternate-offers-container" style="display: none;"></div>
 
       <!-- Service Descriptions -->
-      <div class="supplier-subsection-header" style="margin-top: var(--spacing-xl);">
+      <div class="supplier-subsection-header">
         <strong><i class="pi pi-briefcase"></i> Service Descriptions</strong>
       </div>
 
@@ -7301,15 +7484,17 @@ Submission Requirements
         <table class="supplier-smart-table">
           <thead>
             <tr>
+              <th style="width: 5%;">#</th>
               <th style="width: 18%;">Name</th>
               <th style="width: 30%;">Description</th>
               <th style="width: 12%;">Apply To</th>
-              <th style="width: 12%;">Is quotation compliant?</th>
-              <th>Details</th>
+              <th style="width: 12%;">Is Compliant?</th>
+              <th>Details Offered</th>
             </tr>
           </thead>
           <tbody>
             <tr>
+              <td class="prefilled" style="font-size: 12px; font-weight: 600; text-align: center;">1</td>
               <td class="prefilled" style="font-size: 12px; font-weight: 600;">Installation Services</td>
               <td class="prefilled" style="font-size: 12px;">Complete on-site installation of all equipment including setup, calibration, and integration with existing systems.</td>
               <td class="prefilled" style="font-size: 12px;"><span style="background: var(--info-100); color: var(--info-700); padding: 2px 8px; border-radius: 10px; font-weight: 600;">All Lots</span></td>
@@ -7322,6 +7507,7 @@ Submission Requirements
               <td><textarea placeholder="Provide service details" rows="2" style="font-size: 12px;"></textarea></td>
             </tr>
             <tr>
+              <td class="prefilled" style="font-size: 12px; font-weight: 600; text-align: center;">2</td>
               <td class="prefilled" style="font-size: 12px; font-weight: 600;">Training</td>
               <td class="prefilled" style="font-size: 12px;">Comprehensive training for end-users and technical staff on equipment operation and maintenance (minimum 3 days).</td>
               <td class="prefilled" style="font-size: 12px;"><span style="background: var(--primary-100); color: var(--primary-700); padding: 2px 8px; border-radius: 10px; font-weight: 600;">Lot 1</span></td>
@@ -7334,6 +7520,7 @@ Submission Requirements
               <td><textarea placeholder="Provide service details" rows="2" style="font-size: 12px;"></textarea></td>
             </tr>
             <tr>
+              <td class="prefilled" style="font-size: 12px; font-weight: 600; text-align: center;">3</td>
               <td class="prefilled" style="font-size: 12px; font-weight: 600;">Warranty Support</td>
               <td class="prefilled" style="font-size: 12px;">24-month warranty with on-site support response within 48 hours for critical issues.</td>
               <td class="prefilled" style="font-size: 12px;"><span style="background: var(--success-100); color: var(--success-700); padding: 2px 8px; border-radius: 10px; font-weight: 600;">Lot 2</span></td>
@@ -7349,55 +7536,87 @@ Submission Requirements
         </table>
       </div>
 
-      <!-- Specific Requirements -->
+      <!-- Delivery and Specific Requirements (Merged) -->
       <div class="supplier-subsection-header" style="margin-top: var(--spacing-xl);">
-        <strong><i class="pi pi-check-square"></i> Specific Requirements</strong>
+        <strong><i class="pi pi-truck"></i> Delivery and Specific Requirements</strong>
       </div>
 
       <div style="overflow-x: auto;">
         <table class="supplier-smart-table">
           <thead>
             <tr>
+              <th style="width: 5%;">#</th>
               <th style="width: 18%;">Name</th>
               <th style="width: 30%;">Description</th>
               <th style="width: 12%;">Apply To</th>
-              <th style="width: 12%;">Is quotation compliant?</th>
-              <th>Details</th>
+              <th style="width: 12%;">Is Compliant?</th>
+              <th>Details Offered</th>
             </tr>
           </thead>
           <tbody>
+            <!-- Delivery Requirements -->
             <tr>
+              <td class="prefilled" style="font-size: 12px; font-weight: 600; text-align: center;">1</td>
+              <td class="prefilled" style="font-size: 12px; font-weight: 600;">Delivery Timeline (Lot 1)</td>
+              <td class="prefilled" style="font-size: 12px;">Within 60 days ARO (FCA) / Within 90 days ARO (DPU) to UNOPS Copenhagen Hub, Marmorvej 51, 2100 Copenhagen.</td>
+              <td class="prefilled" style="font-size: 12px;"><span style="background: var(--primary-100); color: var(--primary-700); padding: 2px 8px; border-radius: 10px; font-weight: 600;">Lot 1</span></td>
+              <td>
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                  <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 12px;"><input type="radio" name="delspec1"> Yes</label>
+                  <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 12px;"><input type="radio" name="delspec1"> No</label>
+                </div>
+              </td>
+              <td><textarea placeholder="Provide delivery details, any deviations, or alternative proposals" rows="2" style="font-size: 12px;"></textarea></td>
+            </tr>
+            <tr>
+              <td class="prefilled" style="font-size: 12px; font-weight: 600; text-align: center;">2</td>
+              <td class="prefilled" style="font-size: 12px; font-weight: 600;">Delivery Timeline (Lot 2)</td>
+              <td class="prefilled" style="font-size: 12px;">Within 45 days ARO (FCA) / Within 75 days ARO (DPU) to UNOPS Kenya Office, UN Complex, Gigiri, Nairobi.</td>
+              <td class="prefilled" style="font-size: 12px;"><span style="background: var(--success-100); color: var(--success-700); padding: 2px 8px; border-radius: 10px; font-weight: 600;">Lot 2</span></td>
+              <td>
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                  <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 12px;"><input type="radio" name="delspec2"> Yes</label>
+                  <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 12px;"><input type="radio" name="delspec2"> No</label>
+                </div>
+              </td>
+              <td><textarea placeholder="Provide delivery details, any deviations, or alternative proposals" rows="2" style="font-size: 12px;"></textarea></td>
+            </tr>
+            <!-- Specific Requirements -->
+            <tr>
+              <td class="prefilled" style="font-size: 12px; font-weight: 600; text-align: center;">3</td>
               <td class="prefilled" style="font-size: 12px; font-weight: 600;">Insurance Certificate</td>
               <td class="prefilled" style="font-size: 12px;">Valid product liability insurance with minimum coverage of USD 1,000,000.</td>
               <td class="prefilled" style="font-size: 12px;"><span style="background: var(--info-100); color: var(--info-700); padding: 2px 8px; border-radius: 10px; font-weight: 600;">All Lots</span></td>
               <td>
                 <div style="display: flex; flex-direction: column; gap: 4px;">
-                  <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 12px;"><input type="radio" name="specific1"> Yes</label>
-                  <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 12px;"><input type="radio" name="specific1"> No</label>
+                  <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 12px;"><input type="radio" name="delspec3"> Yes</label>
+                  <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 12px;"><input type="radio" name="delspec3"> No</label>
                 </div>
               </td>
               <td><textarea placeholder="Provide details or reference to attached documents" rows="2" style="font-size: 12px;"></textarea></td>
             </tr>
             <tr>
+              <td class="prefilled" style="font-size: 12px; font-weight: 600; text-align: center;">4</td>
               <td class="prefilled" style="font-size: 12px; font-weight: 600;">CE/FDA Certification</td>
               <td class="prefilled" style="font-size: 12px;">All medical equipment must have valid CE marking or FDA approval for the intended use.</td>
               <td class="prefilled" style="font-size: 12px;"><span style="background: var(--primary-100); color: var(--primary-700); padding: 2px 8px; border-radius: 10px; font-weight: 600;">Lot 1</span></td>
               <td>
                 <div style="display: flex; flex-direction: column; gap: 4px;">
-                  <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 12px;"><input type="radio" name="specific2"> Yes</label>
-                  <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 12px;"><input type="radio" name="specific2"> No</label>
+                  <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 12px;"><input type="radio" name="delspec4"> Yes</label>
+                  <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 12px;"><input type="radio" name="delspec4"> No</label>
                 </div>
               </td>
               <td><textarea placeholder="Provide details or reference to attached documents" rows="2" style="font-size: 12px;"></textarea></td>
             </tr>
             <tr>
+              <td class="prefilled" style="font-size: 12px; font-weight: 600; text-align: center;">5</td>
               <td class="prefilled" style="font-size: 12px; font-weight: 600;">Local Service Partner</td>
               <td class="prefilled" style="font-size: 12px;">Bidder must have an authorized local service partner in the destination country for after-sales support.</td>
               <td class="prefilled" style="font-size: 12px;"><span style="background: var(--success-100); color: var(--success-700); padding: 2px 8px; border-radius: 10px; font-weight: 600;">Lot 2</span></td>
               <td>
                 <div style="display: flex; flex-direction: column; gap: 4px;">
-                  <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 12px;"><input type="radio" name="specific3"> Yes</label>
-                  <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 12px;"><input type="radio" name="specific3"> No</label>
+                  <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 12px;"><input type="radio" name="delspec5"> Yes</label>
+                  <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 12px;"><input type="radio" name="delspec5"> No</label>
                 </div>
               </td>
               <td><textarea placeholder="Provide details or reference to attached documents" rows="2" style="font-size: 12px;"></textarea></td>
@@ -7406,8 +7625,75 @@ Submission Requirements
         </table>
       </div>
 
+      <!-- Custom Forms Section (Author-defined) -->
+      <div class="supplier-subsection-header" style="margin-top: var(--spacing-xl);">
+        <strong><i class="pi pi-file-edit"></i> Additional Forms</strong>
+        <span style="font-size: 11px; color: var(--text-muted); font-weight: 400; margin-left: 8px;">(Custom forms defined by the tender author)</span>
+      </div>
+
+      <!-- Custom Form A -->
+      <div style="border: 1px solid var(--surface-200); border-radius: var(--radius-md); margin-bottom: var(--spacing-sm); overflow: hidden;">
+        <div onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none'; this.querySelector('.custom-form-arrow').style.transform = this.nextElementSibling.style.display === 'none' ? 'rotate(0deg)' : 'rotate(180deg)';" style="display: flex; align-items: center; justify-content: space-between; padding: var(--spacing-sm) var(--spacing-md); background: var(--surface-50); cursor: pointer; transition: background 0.2s;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <i class="pi pi-file" style="color: var(--primary-500);"></i>
+            <span style="font-weight: 600; font-size: 13px;">Custom Form A: Equipment Specifications Checklist</span>
+            <span style="background: var(--warning-100); color: var(--warning-700); padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600;">CUSTOM</span>
+          </div>
+          <i class="pi pi-chevron-down custom-form-arrow" style="font-size: 12px; color: var(--text-muted); transition: transform 0.2s;"></i>
+        </div>
+        <div style="display: none; padding: var(--spacing-md); background: white; border-top: 1px solid var(--surface-200);">
+          <div style="color: var(--text-muted); font-size: 12px; font-style: italic; text-align: center; padding: var(--spacing-lg);">
+            <i class="pi pi-info-circle" style="margin-right: 6px;"></i>
+            Custom form content defined by tender author will appear here.
+          </div>
+        </div>
+      </div>
+
+      <!-- Custom Form B -->
+      <div style="border: 1px solid var(--surface-200); border-radius: var(--radius-md); margin-bottom: var(--spacing-sm); overflow: hidden;">
+        <div onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none'; this.querySelector('.custom-form-arrow').style.transform = this.nextElementSibling.style.display === 'none' ? 'rotate(0deg)' : 'rotate(180deg)';" style="display: flex; align-items: center; justify-content: space-between; padding: var(--spacing-sm) var(--spacing-md); background: var(--surface-50); cursor: pointer; transition: background 0.2s;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <i class="pi pi-file" style="color: var(--primary-500);"></i>
+            <span style="font-weight: 600; font-size: 13px;">Custom Form B: Environmental Compliance Declaration</span>
+            <span style="background: var(--warning-100); color: var(--warning-700); padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600;">CUSTOM</span>
+          </div>
+          <i class="pi pi-chevron-down custom-form-arrow" style="font-size: 12px; color: var(--text-muted); transition: transform 0.2s;"></i>
+        </div>
+        <div style="display: none; padding: var(--spacing-md); background: white; border-top: 1px solid var(--surface-200);">
+          <div style="color: var(--text-muted); font-size: 12px; font-style: italic; text-align: center; padding: var(--spacing-lg);">
+            <i class="pi pi-info-circle" style="margin-right: 6px;"></i>
+            Custom form content defined by tender author will appear here.
+          </div>
+        </div>
+      </div>
+
+      <!-- Custom Form C -->
+      <div style="border: 1px solid var(--surface-200); border-radius: var(--radius-md); margin-bottom: var(--spacing-sm); overflow: hidden;">
+        <div onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none'; this.querySelector('.custom-form-arrow').style.transform = this.nextElementSibling.style.display === 'none' ? 'rotate(0deg)' : 'rotate(180deg)';" style="display: flex; align-items: center; justify-content: space-between; padding: var(--spacing-sm) var(--spacing-md); background: var(--surface-50); cursor: pointer; transition: background 0.2s;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <i class="pi pi-file" style="color: var(--primary-500);"></i>
+            <span style="font-weight: 600; font-size: 13px;">Custom Form C: Quality Assurance Questionnaire</span>
+            <span style="background: var(--warning-100); color: var(--warning-700); padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600;">CUSTOM</span>
+          </div>
+          <i class="pi pi-chevron-down custom-form-arrow" style="font-size: 12px; color: var(--text-muted); transition: transform 0.2s;"></i>
+        </div>
+        <div style="display: none; padding: var(--spacing-md); background: white; border-top: 1px solid var(--surface-200);">
+          <div style="color: var(--text-muted); font-size: 12px; font-style: italic; text-align: center; padding: var(--spacing-lg);">
+            <i class="pi pi-info-circle" style="margin-right: 6px;"></i>
+            Custom form content defined by tender author will appear here.
+          </div>
+        </div>
+      </div>
+
       </div>
       <!-- END DEFAULT TECHNICAL BID -->
+
+        </div><!-- End Main Offer Content Panel -->
+        
+        <!-- Alternate Offer Panels Container -->
+        <div id="technical-alternate-panels"></div>
+        
+      </div><!-- End Offer Content Wrapper -->
 
       <div class="supplier-action-bar">
         <button class="btn btn-ghost" onclick="prevSupplierSection('bidder-info')"><i class="pi pi-arrow-left" style="margin-right: 6px;"></i> Back</button>
@@ -7428,7 +7714,63 @@ Submission Requirements
         </div>
       </div>
 
+      <!-- Offer Tabs Navigation -->
+      <div class="offer-tabs-container" id="financial-bid-offer-tabs">
+        <div class="offer-tabs-header">
+          <div class="offer-tabs-title">
+            <i class="pi pi-folder-open"></i> Select Offer to Edit
+          </div>
+          <div style="font-size: 11px; color: var(--text-muted);">
+            <i class="pi pi-info-circle" style="margin-right: 4px;"></i>
+            Alternate offers duplicate all Technical &amp; Financial bid content
+          </div>
+        </div>
+        <div class="offer-tabs">
+          <div class="offer-tab main-offer active" data-offer-id="main" onclick="switchOffer('financial', 'main')">
+            <i class="pi pi-check-circle"></i>
+            <span>Main Offer</span>
+          </div><div id="financial-alternate-tabs" style="display: contents;"></div>
+          <button type="button" class="add-alternate-offer-global-btn" onclick="addGlobalAlternateOffer()">
+            <i class="pi pi-plus-circle"></i> Add Alternate Offer
+          </button>
+        </div>
+      </div>
 
+      <!-- Offer Content Wrapper -->
+      <div class="offer-content-wrapper" id="financial-offer-content-wrapper">
+        <!-- Main Offer Content -->
+        <div class="offer-content-panel active" id="financial-offer-main" data-offer-id="main">
+
+      <!-- Bid Currency Selection -->
+      <div class="supplier-subsection-header">
+        <strong><i class="pi pi-money-bill"></i> Bid Currency</strong>
+      </div>
+
+      <div style="background: var(--surface-50); padding: var(--spacing-md); border-radius: var(--radius-sm); border: 1px solid var(--surface-200); margin-bottom: var(--spacing-md);">
+        <div style="display: flex; align-items: center; gap: var(--spacing-md);">
+          <div style="flex: 0 0 auto;">
+            <label style="font-size: 12px; font-weight: 600; color: var(--text-primary); display: flex; align-items: center; gap: 6px;">
+              <i class="pi pi-globe" style="color: var(--primary-600);"></i>
+              Select Currency for this Offer
+            </label>
+          </div>
+          <div style="flex: 0 0 200px;">
+            <select class="bid-currency-select" style="width: 100%; padding: 10px 12px; border: 1px solid var(--surface-300); border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; background: var(--surface-0); color: var(--text-primary); cursor: pointer;" onchange="updateBidCurrency(this)">
+              <option value="USD" selected>USD - US Dollar</option>
+              <option value="EUR">EUR - Euro</option>
+              <option value="GBP">GBP - British Pound</option>
+              <option value="CHF">CHF - Swiss Franc</option>
+              <option value="JPY">JPY - Japanese Yen</option>
+              <option value="CAD">CAD - Canadian Dollar</option>
+              <option value="AUD">AUD - Australian Dollar</option>
+            </select>
+          </div>
+          <div style="flex: 1; font-size: 11px; color: var(--text-secondary); display: flex; align-items: center; gap: 6px;">
+            <i class="pi pi-info-circle"></i>
+            <span>All prices in this offer will be quoted in the selected currency. Alternate offers may use a different currency.</span>
+          </div>
+        </div>
+      </div>
 
       <!-- Bid Summary -->
       <div class="supplier-subsection-header">
@@ -7439,15 +7781,15 @@ Submission Requirements
         <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-sm);">
           <div>
             <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 2px;">Total Bid Value (FCA)</div>
-            <div id="total-fca" style="font-size: 16px; font-weight: 700; color: var(--primary-600);">USD 0.00</div>
+            <div id="total-fca" class="total-display" style="font-size: 16px; font-weight: 700; color: var(--primary-600);">USD 0.00</div>
           </div>
           <div>
             <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 2px;">Total Bid Value (CPT)</div>
-            <div id="total-cpt" style="font-size: 16px; font-weight: 700; color: var(--primary-600);">USD 0.00</div>
+            <div id="total-cpt" class="total-display" style="font-size: 16px; font-weight: 700; color: var(--primary-600);">USD 0.00</div>
           </div>
           <div>
             <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 2px;">Total Bid Value (DPU)</div>
-            <div id="total-dpu" style="font-size: 16px; font-weight: 700; color: var(--primary-600);">USD 0.00</div>
+            <div id="total-dpu" class="total-display" style="font-size: 16px; font-weight: 700; color: var(--primary-600);">USD 0.00</div>
           </div>
         </div>
 
@@ -7506,9 +7848,9 @@ Submission Requirements
         </div>
       </div>
 
-      <!-- Prices for Goods -->
+      <!-- Prices for Items -->
       <div class="supplier-subsection-header" style="display: flex; justify-content: space-between; align-items: center;">
-        <strong><i class="pi pi-shopping-cart"></i> Prices for Goods</strong>
+        <strong><i class="pi pi-shopping-cart"></i> Prices for Items</strong>
         <div style="display: flex; gap: 8px;">
           <button class="btn btn-ghost btn-sm" title="Download Price Template" onclick="alert('Downloading price template...');">
             <i class="pi pi-download"></i> Download Template
@@ -7522,15 +7864,12 @@ Submission Requirements
       <table class="supplier-smart-table" id="prices-for-goods-table">
         <thead>
           <tr>
-            <th style="width: 4%;">#</th>
-            <th style="width: 22%;">Item Description</th>
-            <th style="width: 8%;">Lot</th>
-            <th style="width: 6%;">Qty</th>
-            <th style="width: 8%;">Currency</th>
-            <th style="width: 12%;">Unit Price FCA</th>
-            <th style="width: 12%;">Unit Price CPT</th>
-            <th style="width: 12%;">Unit Price DPU</th>
-            <th style="width: 10%;">Total</th>
+            <th style="width: 5%;">#</th>
+            <th style="width: 35%;">Item Description</th>
+            <th style="width: 15%;">Lot</th>
+            <th style="width: 10%;">Qty</th>
+            <th style="width: 18%;">Unit Price</th>
+            <th style="width: 17%;">Total</th>
           </tr>
         </thead>
         <tbody id="prices-for-goods-tbody">
@@ -7539,10 +7878,7 @@ Submission Requirements
             <td><strong>Ultrasound Machines</strong><div style="font-size: 0.85em; color: var(--text-muted);">UNSPSC: 42182104</div></td>
             <td class="prefilled" style="text-align: center;"><span style="background: var(--primary-100); color: var(--primary-700); padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600;">Lot 1</span></td>
             <td class="prefilled qty-cell" style="text-align: center; font-weight: 600;">5</td>
-            <td><select><option>USD</option><option>EUR</option></select></td>
             <td><input type="number" placeholder="0.00" step="0.01" class="price-fca" oninput="calculateFinancialBid()"></td>
-            <td><input type="number" placeholder="0.00" step="0.01" class="price-cpt" oninput="calculateFinancialBid()"></td>
-            <td><input type="number" placeholder="0.00" step="0.01" class="price-dpu" oninput="calculateFinancialBid()"></td>
             <td class="calculated row-total">0.00</td>
           </tr>
           <tr data-product-id="42182108" data-lot="lot1" data-is-original="true">
@@ -7550,10 +7886,7 @@ Submission Requirements
             <td><strong>Patient Monitors</strong><div style="font-size: 0.85em; color: var(--text-muted);">UNSPSC: 42182108</div></td>
             <td class="prefilled" style="text-align: center;"><span style="background: var(--primary-100); color: var(--primary-700); padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600;">Lot 1</span></td>
             <td class="prefilled qty-cell" style="text-align: center; font-weight: 600;">20</td>
-            <td><select><option>USD</option><option>EUR</option></select></td>
             <td><input type="number" placeholder="0.00" step="0.01" class="price-fca" oninput="calculateFinancialBid()"></td>
-            <td><input type="number" placeholder="0.00" step="0.01" class="price-cpt" oninput="calculateFinancialBid()"></td>
-            <td><input type="number" placeholder="0.00" step="0.01" class="price-dpu" oninput="calculateFinancialBid()"></td>
             <td class="calculated row-total">0.00</td>
           </tr>
           <tr data-product-id="42192201" data-lot="lot2" data-is-original="true">
@@ -7561,10 +7894,7 @@ Submission Requirements
             <td><strong>Surgical Lights</strong><div style="font-size: 0.85em; color: var(--text-muted);">UNSPSC: 42192201</div></td>
             <td class="prefilled" style="text-align: center;"><span style="background: var(--success-100); color: var(--success-700); padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600;">Lot 2</span></td>
             <td class="prefilled qty-cell" style="text-align: center; font-weight: 600;">8</td>
-            <td><select><option>USD</option><option>EUR</option></select></td>
             <td><input type="number" placeholder="0.00" step="0.01" class="price-fca" oninput="calculateFinancialBid()"></td>
-            <td><input type="number" placeholder="0.00" step="0.01" class="price-cpt" oninput="calculateFinancialBid()"></td>
-            <td><input type="number" placeholder="0.00" step="0.01" class="price-dpu" oninput="calculateFinancialBid()"></td>
             <td class="calculated row-total">0.00</td>
           </tr>
           <tr data-product-id="42182101" data-lot="lot2" data-is-original="true">
@@ -7572,14 +7902,11 @@ Submission Requirements
             <td><strong>Anesthesia Machines</strong><div style="font-size: 0.85em; color: var(--text-muted);">UNSPSC: 42182101</div></td>
             <td class="prefilled" style="text-align: center;"><span style="background: var(--success-100); color: var(--success-700); padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600;">Lot 2</span></td>
             <td class="prefilled qty-cell" style="text-align: center; font-weight: 600;">3</td>
-            <td><select><option>USD</option><option>EUR</option></select></td>
             <td><input type="number" placeholder="0.00" step="0.01" class="price-fca" oninput="calculateFinancialBid()"></td>
-            <td><input type="number" placeholder="0.00" step="0.01" class="price-cpt" oninput="calculateFinancialBid()"></td>
-            <td><input type="number" placeholder="0.00" step="0.01" class="price-dpu" oninput="calculateFinancialBid()"></td>
             <td class="calculated row-total">0.00</td>
           </tr>
           <tr id="prices-for-goods-total-row" style="background: var(--surface-100);">
-            <td colspan="7" style="text-align: right; font-weight: 600; padding-right: var(--spacing-md);">Total Price of Goods →</td>
+            <td colspan="5" style="text-align: right; font-weight: 600; padding-right: var(--spacing-md);">Total Price of Items →</td>
             <td class="calculated" style="font-weight: 700;">0.00</td>
           </tr>
         </tbody>
@@ -7590,44 +7917,39 @@ Submission Requirements
         <strong><i class="pi pi-wrench"></i> Prices for Related Services</strong>
       </div>
 
-      <div style="background: var(--info-50); border: 1px solid var(--info-200); border-left: 3px solid var(--info-500); border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: var(--spacing-md); font-size: 12px; color: var(--info-700); display: flex; align-items: flex-start; gap: 10px;">
-        <i class="pi pi-info-circle" style="font-size: 14px; margin-top: 1px;"></i>
-        <span>The price provided for each service will be <strong>split equally</strong> among all products/lots it applies to for evaluation purposes.</span>
-      </div>
-
       <table class="supplier-smart-table">
         <thead>
           <tr>
-            <th style="width: 4%;">#</th>
-            <th style="width: 30%;">Service Description</th>
+            <th style="width: 5%;">#</th>
+            <th style="width: 18%;">Name</th>
+            <th style="width: 32%;">Description</th>
             <th style="width: 12%;">Apply To</th>
-            <th style="width: 14%;">Quantity</th>
             <th style="width: 18%;">Unit Price</th>
-            <th style="width: 14%;">Total</th>
+            <th style="width: 15%;">Total</th>
           </tr>
         </thead>
         <tbody id="services-tbody">
           <tr data-apply-to="all">
             <td style="font-weight: 600;">1</td>
-            <td class="prefilled"><strong>Installation and Configuration</strong><div style="font-size: 0.85em; color: var(--text-muted);">From requirements</div></td>
+            <td class="prefilled" style="font-weight: 600;">Installation and Configuration</td>
+            <td class="prefilled" style="font-size: 12px;">Complete on-site installation of all equipment including setup, calibration, and integration with existing systems.</td>
             <td class="prefilled" style="text-align: center;"><span style="background: var(--info-100); color: var(--info-700); padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600;">All Lots</span></td>
-            <td class="prefilled">1 service</td>
             <td><input type="number" placeholder="0.00" step="0.01" onchange="calculateFinancialBid()" oninput="calculateFinancialBid()"></td>
             <td class="calculated">0.00</td>
           </tr>
           <tr data-apply-to="lot1">
             <td style="font-weight: 600;">2</td>
-            <td class="prefilled"><strong>Training (3 days)</strong><div style="font-size: 0.85em; color: var(--text-muted);">From requirements</div></td>
+            <td class="prefilled" style="font-weight: 600;">Training</td>
+            <td class="prefilled" style="font-size: 12px;">Comprehensive training for end-users and technical staff on equipment operation and maintenance (minimum 3 days, 10 persons).</td>
             <td class="prefilled" style="text-align: center;"><span style="background: var(--primary-100); color: var(--primary-700); padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600;">Lot 1</span></td>
-            <td class="prefilled">10 persons</td>
             <td><input type="number" placeholder="0.00" step="0.01" onchange="calculateFinancialBid()" oninput="calculateFinancialBid()"></td>
             <td class="calculated">0.00</td>
           </tr>
           <tr data-apply-to="lot2">
             <td style="font-weight: 600;">3</td>
-            <td class="prefilled"><strong>Extended Warranty (2 years)</strong><div style="font-size: 0.85em; color: var(--text-muted);">From requirements</div></td>
+            <td class="prefilled" style="font-weight: 600;">Extended Warranty</td>
+            <td class="prefilled" style="font-size: 12px;">24-month extended warranty with on-site support response within 48 hours for critical issues.</td>
             <td class="prefilled" style="text-align: center;"><span style="background: var(--success-100); color: var(--success-700); padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600;">Lot 2</span></td>
-            <td class="prefilled">All items</td>
             <td><input type="number" placeholder="0.00" step="0.01" onchange="calculateFinancialBid()" oninput="calculateFinancialBid()"></td>
             <td class="calculated">0.00</td>
           </tr>
@@ -7763,6 +8085,13 @@ Submission Requirements
       <div style="font-size: 11px; color: var(--text-muted); margin-top: var(--spacing-xs);">
         <i class="pi pi-info-circle" style="margin-right: 4px;"></i> Add any discounts you are offering. Fill either Discount % or Discount Amount, not both.
       </div>
+
+        </div><!-- End Main Offer Content Panel -->
+        
+        <!-- Alternate Offer Panels Container -->
+        <div id="financial-alternate-panels"></div>
+        
+      </div><!-- End Offer Content Wrapper -->
 
       <div class="supplier-action-bar">
         <button class="btn btn-ghost" onclick="prevSupplierSection('technical-bid')"><i class="pi pi-arrow-left" style="margin-right: 6px;"></i> Back</button>
@@ -9250,7 +9579,7 @@ Submission Requirements
 </div>
 
 <div class="modal" id="add-alternate-offer-modal">
-<div class="modal-content">
+<div class="modal-content" style="max-width: 550px;">
 <div class="modal-header">
 <h3 class="modal-title">
 <i class="pi pi-copy"></i>
@@ -9259,27 +9588,30 @@ Submission Requirements
 <button class="modal-close" onclick="closeModal('add-alternate-offer-modal')">×</button>
 </div>
 <div class="modal-body">
-<div class="alert alert-info">
-<i class="pi pi-lightbulb"></i>
+<div class="alert alert-info" style="background: linear-gradient(135deg, var(--warning-50) 0%, var(--info-50) 100%);">
+<i class="pi pi-lightbulb" style="color: var(--warning-500);"></i>
 <div>
-<strong>Alternate Offers</strong>
-<p style="margin-top: 4px; font-size: 13px;">Submit an alternative bid in addition to your primary compliant bid. Each alternate offer requires separate pricing and technical documentation.</p>
+<strong style="color: var(--warning-700);">About Alternate Offers</strong>
+<p style="margin-top: 4px; font-size: 13px;">An alternate offer allows you to submit an additional bid alongside your primary (main) offer. This is useful when you can offer different product configurations, pricing options, or technical solutions.</p>
 </div>
 </div>
 
-<div class="form-group" style="margin-bottom: var(--spacing-lg);">
-<label class="form-label">Alternate Offer Title <span class="required">*</span></label>
-<input type="text" class="form-input" placeholder="e.g., Alternative Bid #1 - Premium Equipment">
+<div style="background: var(--surface-50); border-radius: var(--radius-md); padding: var(--spacing-md); margin: var(--spacing-md) 0;">
+<h4 style="font-size: 13px; font-weight: 600; color: var(--primary-700); margin-bottom: var(--spacing-sm);"><i class="pi pi-list" style="margin-right: 6px;"></i> What will be duplicated:</h4>
+<ul style="font-size: 12px; color: var(--text-secondary); margin: 0; padding-left: 20px; line-height: 1.8;">
+<li><strong>Technical Bid:</strong> All product specifications, compliance tables, manufacturer details</li>
+<li><strong>Financial Bid:</strong> All pricing for goods, services, delivery, and discounts</li>
+</ul>
 </div>
 
-<div class="form-group">
-<label class="form-label">Description <span class="required">*</span></label>
-<textarea class="form-textarea" placeholder="Describe what makes this alternate offer different..." style="min-height: 120px;"></textarea>
+<div class="alert alert-info" style="background: var(--info-50);">
+<i class="pi pi-info-circle" style="color: var(--info-500);"></i>
+<div style="font-size: 12px;">You can switch between offers using the tabs at the top of the Technical Bid and Financial Bid sections.</div>
 </div>
 </div>
 <div class="modal-footer">
 <button class="btn btn-ghost" onclick="closeModal('add-alternate-offer-modal')">Cancel</button>
-<button class="btn btn-primary" onclick="createAlternateOffer()"><i class="pi pi-plus" style="margin-right: 8px;"></i>Create Alternate Offer</button>
+<button class="btn btn-primary" onclick="createAlternateOffer()" style="background: linear-gradient(135deg, var(--warning-500) 0%, #f57c00 100%); border-color: var(--warning-500);"><i class="pi pi-plus-circle" style="margin-right: 8px;"></i>Create Alternate Offer</button>
 </div>
 </div>
 </div>
@@ -9993,17 +10325,16 @@ function toggleBiddingForSelection(clickedElement) {
     if (clickedEntireTender) {
         if (lot1) lot1.checked = false;
         if (lot2) lot2.checked = false;
-        entireTender.parentElement.style.border = '1px solid var(--primary-400)';
-        entireTender.parentElement.style.boxShadow = '0 1px 4px rgba(0, 118, 189, 0.1)';
-        entireTender.nextElementSibling.style.color = 'var(--primary-600)';
+        entireTender.parentElement.style.border = '1px solid var(--surface-400)';
+        entireTender.parentElement.style.background = 'var(--surface-50)';
         // Reset lot styling
         if (lot1) {
             lot1.parentElement.style.border = '1px solid var(--surface-300)';
-            lot1.parentElement.style.boxShadow = 'none';
+            lot1.parentElement.style.background = 'white';
         }
         if (lot2) {
             lot2.parentElement.style.border = '1px solid var(--surface-300)';
-            lot2.parentElement.style.boxShadow = 'none';
+            lot2.parentElement.style.background = 'white';
         }
     }
     
@@ -10012,26 +10343,25 @@ function toggleBiddingForSelection(clickedElement) {
         if (entireTender) {
             entireTender.checked = false;
             entireTender.parentElement.style.border = '1px solid var(--surface-300)';
-            entireTender.parentElement.style.boxShadow = 'none';
-            entireTender.nextElementSibling.style.color = 'var(--text-secondary)';
+            entireTender.parentElement.style.background = 'white';
         }
         // Update lot checkbox styling
         if (lot1) {
             if (lot1.checked) {
-                lot1.parentElement.style.border = '1px solid var(--primary-400)';
-                lot1.parentElement.style.boxShadow = '0 1px 4px rgba(0, 118, 189, 0.1)';
+                lot1.parentElement.style.border = '1px solid var(--surface-400)';
+                lot1.parentElement.style.background = 'var(--surface-50)';
             } else {
                 lot1.parentElement.style.border = '1px solid var(--surface-300)';
-                lot1.parentElement.style.boxShadow = 'none';
+                lot1.parentElement.style.background = 'white';
             }
         }
         if (lot2) {
             if (lot2.checked) {
-                lot2.parentElement.style.border = '1px solid var(--primary-400)';
-                lot2.parentElement.style.boxShadow = '0 1px 4px rgba(0, 118, 189, 0.1)';
+                lot2.parentElement.style.border = '1px solid var(--surface-400)';
+                lot2.parentElement.style.background = 'var(--surface-50)';
             } else {
                 lot2.parentElement.style.border = '1px solid var(--surface-300)';
-                lot2.parentElement.style.boxShadow = 'none';
+                lot2.parentElement.style.background = 'white';
             }
         }
     }
@@ -10062,7 +10392,229 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// ========== ALTERNATE OFFER FUNCTIONALITY ==========
+// ========== GLOBAL ALTERNATE OFFER FUNCTIONALITY ==========
+let globalAlternateOfferCount = 0;
+let activeOffer = { technical: 'main', financial: 'main' };
+
+function addGlobalAlternateOffer() {
+    globalAlternateOfferCount++;
+    const offerId = `alt-${globalAlternateOfferCount}`;
+    
+    // Add tab to Technical Bid
+    addOfferTab('technical', offerId, globalAlternateOfferCount);
+    
+    // Add tab to Financial Bid  
+    addOfferTab('financial', offerId, globalAlternateOfferCount);
+    
+    // Clone and add content panel to Technical Bid
+    createAlternateOfferPanel('technical', offerId, globalAlternateOfferCount);
+    
+    // Clone and add content panel to Financial Bid
+    createAlternateOfferPanel('financial', offerId, globalAlternateOfferCount);
+    
+    // Switch to the new alternate offer
+    switchOffer('technical', offerId);
+    switchOffer('financial', offerId);
+    
+    // Show success notification
+    showOfferNotification(`Alternate Offer #${globalAlternateOfferCount} created! You can now provide alternate specifications and pricing.`);
+}
+
+function addOfferTab(section, offerId, offerNumber) {
+    const tabsContainer = document.getElementById(`${section}-alternate-tabs`);
+    if (!tabsContainer) return;
+    
+    const tab = document.createElement('div');
+    tab.className = 'offer-tab alternate-offer';
+    tab.id = `${section}-tab-${offerId}`;
+    tab.setAttribute('data-offer-id', offerId);
+    tab.innerHTML = `
+        <i class="pi pi-bookmark"></i>
+        <span>Alt Offer ${offerNumber}</span>
+        <span class="offer-tab-remove" onclick="event.stopPropagation(); removeGlobalAlternateOffer('${offerId}')" title="Remove this alternate offer">
+            <i class="pi pi-times" style="font-size: 10px;"></i>
+        </span>
+    `;
+    tab.onclick = function(e) {
+        if (!e.target.closest('.offer-tab-remove')) {
+            switchOffer(section, offerId);
+        }
+    };
+    tabsContainer.appendChild(tab);
+}
+
+function createAlternateOfferPanel(section, offerId, offerNumber) {
+    const panelsContainer = document.getElementById(`${section}-alternate-panels`);
+    const mainPanel = document.getElementById(`${section}-offer-main`);
+    if (!panelsContainer || !mainPanel) return;
+    
+    // Clone the main panel content
+    const newPanel = document.createElement('div');
+    newPanel.className = 'offer-content-panel';
+    newPanel.id = `${section}-offer-${offerId}`;
+    newPanel.setAttribute('data-offer-id', offerId);
+    
+    // Add alternate offer banner
+    const banner = `
+        <div class="alternate-offer-banner">
+            <span class="alternate-offer-banner-icon">📑</span>
+            <div class="alternate-offer-banner-content">
+                <div class="alternate-offer-banner-title">Alternate Offer #${offerNumber}</div>
+                <div class="alternate-offer-banner-desc">Provide alternative ${section === 'technical' ? 'specifications and technical details' : 'pricing and financial terms'} for this offer. All fields must be completed separately from your main offer.</div>
+            </div>
+        </div>
+    `;
+    
+    // Clone the main panel's inner HTML and update IDs to make them unique
+    let clonedContent = mainPanel.innerHTML;
+    
+    // Make all IDs unique for this alternate offer
+    clonedContent = clonedContent.replace(/id="([^"]+)"/g, (match, id) => {
+        // Don't modify certain container IDs
+        if (id.includes('alternate-panels') || id.includes('alternate-tabs')) {
+            return match;
+        }
+        return `id="${id}-${offerId}"`;
+    });
+    
+    // Update data attributes and names to be unique
+    clonedContent = clonedContent.replace(/name="([^"]+)"/g, `name="$1-${offerId}"`);
+    
+    newPanel.innerHTML = banner + clonedContent;
+    
+    // Clear all input values in the cloned panel
+    panelsContainer.appendChild(newPanel);
+    
+    // Clear form values in the new panel
+    const inputs = newPanel.querySelectorAll('input[type="text"], input[type="number"], input[type="email"], input[type="tel"], textarea');
+    inputs.forEach(input => {
+        if (!input.classList.contains('prefilled') && !input.readOnly) {
+            input.value = '';
+        }
+    });
+    
+    // Reset all select elements to first option (except prefilled)
+    const selects = newPanel.querySelectorAll('select:not(.prefilled)');
+    selects.forEach(select => {
+        select.selectedIndex = 0;
+    });
+    
+    // Reset all checkboxes and radios
+    const checkboxes = newPanel.querySelectorAll('input[type="checkbox"]:not([disabled])');
+    checkboxes.forEach(cb => cb.checked = false);
+    
+    // Reset calculated fields
+    const calculatedFields = newPanel.querySelectorAll('.calculated, .row-total');
+    calculatedFields.forEach(field => {
+        if (field.tagName === 'INPUT') {
+            field.value = '0.00';
+        } else {
+            field.textContent = '0.00';
+        }
+    });
+}
+
+function switchOffer(section, offerId) {
+    // Update active offer tracking
+    activeOffer[section] = offerId;
+    
+    // Update tab styling
+    const allTabs = document.querySelectorAll(`#${section}-bid-offer-tabs .offer-tab, #${section}-alternate-tabs .offer-tab`);
+    allTabs.forEach(tab => {
+        if (tab.getAttribute('data-offer-id') === offerId) {
+            tab.classList.add('active');
+        } else {
+            tab.classList.remove('active');
+        }
+    });
+    
+    // Also check main offer tab
+    const mainTab = document.querySelector(`#${section}-bid-offer-tabs .offer-tab.main-offer`);
+    if (mainTab) {
+        if (offerId === 'main') {
+            mainTab.classList.add('active');
+        } else {
+            mainTab.classList.remove('active');
+        }
+    }
+    
+    // Show/hide panels
+    const allPanels = document.querySelectorAll(`#${section}-offer-content-wrapper .offer-content-panel`);
+    allPanels.forEach(panel => {
+        if (panel.getAttribute('data-offer-id') === offerId) {
+            panel.classList.add('active');
+        } else {
+            panel.classList.remove('active');
+        }
+    });
+}
+
+function removeGlobalAlternateOffer(offerId) {
+    if (!confirm(`Are you sure you want to remove this alternate offer?\n\nAll data entered for this alternate offer will be lost.`)) {
+        return;
+    }
+    
+    // Remove tabs from both sections
+    ['technical', 'financial'].forEach(section => {
+        const tab = document.getElementById(`${section}-tab-${offerId}`);
+        if (tab) tab.remove();
+        
+        const panel = document.getElementById(`${section}-offer-${offerId}`);
+        if (panel) panel.remove();
+        
+        // If this was the active offer, switch back to main
+        if (activeOffer[section] === offerId) {
+            switchOffer(section, 'main');
+        }
+    });
+    
+    showOfferNotification('Alternate offer removed successfully.');
+}
+
+function showOfferNotification(message) {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: linear-gradient(135deg, var(--success-500) 0%, #388e3c 100%);
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        z-index: 10000;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+        font-weight: 500;
+        animation: slideInRight 0.3s ease;
+    `;
+    notification.innerHTML = `<i class="pi pi-check-circle"></i> ${message}`;
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.style.animation = 'slideOutRight 0.3s ease';
+        setTimeout(() => notification.remove(), 300);
+    }, 3500);
+}
+
+// Sync offer tabs between Technical and Financial sections when navigating
+function syncOfferSelection() {
+    const currentSection = supplierCurrentSection;
+    if (currentSection === 'technical-bid' || currentSection === 'financial-bid') {
+        const otherSection = currentSection === 'technical-bid' ? 'financial' : 'technical';
+        const currentSectionKey = currentSection === 'technical-bid' ? 'technical' : 'financial';
+        
+        // Sync the active offer between sections
+        if (activeOffer[currentSectionKey] !== activeOffer[otherSection]) {
+            // Optionally sync them
+        }
+    }
+}
+
+// Legacy functions kept for backward compatibility
 let alternateOfferCounters = {};
 
 // Subcontractor Management Functions
@@ -10198,14 +10750,51 @@ function toggleLotBreakdown() {
     }
 }
 
+// Update Bid Currency for the current offer panel
+function updateBidCurrency(selectElement) {
+    const panel = selectElement.closest('.offer-content-panel');
+    const currency = selectElement.value;
+    
+    // Update all total displays in this panel to show the new currency
+    if (panel) {
+        const totalDisplays = panel.querySelectorAll('.total-display');
+        totalDisplays.forEach(display => {
+            const currentText = display.textContent;
+            const numericValue = currentText.replace(/[^0-9.-]/g, '') || '0.00';
+            display.textContent = currency + ' ' + parseFloat(numericValue).toFixed(2);
+        });
+        
+        // Update calculated cells in tables
+        const calculatedCells = panel.querySelectorAll('.calculated');
+        calculatedCells.forEach(cell => {
+            if (cell.textContent.trim() !== '' && !isNaN(parseFloat(cell.textContent.replace(/[^0-9.-]/g, '')))) {
+                const numericValue = cell.textContent.replace(/[^0-9.-]/g, '') || '0.00';
+                // Only update if it looks like a currency value
+                if (cell.textContent.match(/^[A-Z]{3}\s/)) {
+                    cell.textContent = currency + ' ' + parseFloat(numericValue).toFixed(2);
+                }
+            }
+        });
+    }
+    
+    // Recalculate to update currency displays
+    calculateFinancialBid();
+}
+
 // Financial Bid Calculation Functions
 function calculateFinancialBid() {
+    // Get current selected currency from the active panel
+    const activePanel = document.querySelector('#financial-offer-content-wrapper .offer-content-panel.active');
+    const currencySelect = activePanel ? activePanel.querySelector('.bid-currency-select') : null;
+    const currency = currencySelect ? currencySelect.value : 'USD';
+    
     // Initialize lot totals
     let lot1Goods = { fca: 0, cpt: 0, dpu: 0 };
     let lot2Goods = { fca: 0, cpt: 0, dpu: 0 };
     
-    // Get all goods rows using data-lot attribute
-    const goodsRows = document.querySelectorAll('#prices-for-goods-tbody tr[data-lot]');
+    // Get all goods rows using data-lot attribute (within active panel if exists)
+    const container = activePanel || document;
+    const goodsRows = container.querySelectorAll('#prices-for-goods-tbody tr[data-lot], [id^="prices-for-goods-tbody"] tr[data-lot]');
     
     goodsRows.forEach(row => {
         const lot = row.getAttribute('data-lot');
@@ -10246,7 +10835,7 @@ function calculateFinancialBid() {
     let lot2Services = 0;
     let totalServices = 0;
     
-    const serviceRows = document.querySelectorAll('#services-tbody tr[data-apply-to]');
+    const serviceRows = container.querySelectorAll('#services-tbody tr[data-apply-to], [id^="services-tbody"] tr[data-apply-to]');
     serviceRows.forEach(row => {
         const applyTo = row.getAttribute('data-apply-to');
         const priceInput = row.querySelector('input[type="number"]');
@@ -10272,7 +10861,7 @@ function calculateFinancialBid() {
     });
     
     // Update services total
-    updateElementText('services-total', totalServices.toFixed(2));
+    updateElementTextInPanel(activePanel, 'services-total', totalServices.toFixed(2));
     
     // Calculate lot totals
     const lot1Total = lot1Goods.fca + lot1Services;
@@ -10281,23 +10870,30 @@ function calculateFinancialBid() {
     const grandServices = lot1Services + lot2Services;
     const grandTotal = grandGoods + grandServices;
     
-    // Update lot breakdown table
-    updateElementText('lot1-goods', 'USD ' + lot1Goods.fca.toFixed(2));
-    updateElementText('lot1-services', 'USD ' + lot1Services.toFixed(2));
-    updateElementText('lot1-total', 'USD ' + lot1Total.toFixed(2));
+    // Update lot breakdown table (within active panel)
+    updateElementTextInPanel(activePanel, 'lot1-goods', currency + ' ' + lot1Goods.fca.toFixed(2));
+    updateElementTextInPanel(activePanel, 'lot1-services', currency + ' ' + lot1Services.toFixed(2));
+    updateElementTextInPanel(activePanel, 'lot1-total', currency + ' ' + lot1Total.toFixed(2));
     
-    updateElementText('lot2-goods', 'USD ' + lot2Goods.fca.toFixed(2));
-    updateElementText('lot2-services', 'USD ' + lot2Services.toFixed(2));
-    updateElementText('lot2-total', 'USD ' + lot2Total.toFixed(2));
+    updateElementTextInPanel(activePanel, 'lot2-goods', currency + ' ' + lot2Goods.fca.toFixed(2));
+    updateElementTextInPanel(activePanel, 'lot2-services', currency + ' ' + lot2Services.toFixed(2));
+    updateElementTextInPanel(activePanel, 'lot2-total', currency + ' ' + lot2Total.toFixed(2));
     
-    updateElementText('grand-goods', 'USD ' + grandGoods.toFixed(2));
-    updateElementText('grand-services', 'USD ' + grandServices.toFixed(2));
-    updateElementText('grand-total', 'USD ' + grandTotal.toFixed(2));
+    updateElementTextInPanel(activePanel, 'grand-goods', currency + ' ' + grandGoods.toFixed(2));
+    updateElementTextInPanel(activePanel, 'grand-services', currency + ' ' + grandServices.toFixed(2));
+    updateElementTextInPanel(activePanel, 'grand-total', currency + ' ' + grandTotal.toFixed(2));
     
     // Update main bid summary totals
-    updateElementText('total-fca', 'USD ' + (lot1Goods.fca + lot2Goods.fca + totalServices).toFixed(2));
-    updateElementText('total-cpt', 'USD ' + (lot1Goods.cpt + lot2Goods.cpt + totalServices).toFixed(2));
-    updateElementText('total-dpu', 'USD ' + (lot1Goods.dpu + lot2Goods.dpu + totalServices).toFixed(2));
+    updateElementTextInPanel(activePanel, 'total-fca', currency + ' ' + (lot1Goods.fca + lot2Goods.fca + totalServices).toFixed(2));
+    updateElementTextInPanel(activePanel, 'total-cpt', currency + ' ' + (lot1Goods.cpt + lot2Goods.cpt + totalServices).toFixed(2));
+    updateElementTextInPanel(activePanel, 'total-dpu', currency + ' ' + (lot1Goods.dpu + lot2Goods.dpu + totalServices).toFixed(2));
+}
+
+function updateElementTextInPanel(panel, id, text) {
+    // Try to find element within panel first, then fallback to document
+    let el = panel ? panel.querySelector('#' + id) || panel.querySelector('[id$="-' + id + '"]') : null;
+    if (!el) el = document.getElementById(id);
+    if (el) el.textContent = text;
 }
 
 function updateElementText(id, text) {
@@ -10651,12 +11247,20 @@ function addSupplierPartner() {
             </div>
         </div>
         
-        <div style="margin-top: var(--spacing-md); padding-top: var(--spacing-md); border-top: 1px solid var(--surface-200); display: flex; justify-content: space-between; align-items: center;">
+        <div style="margin-top: var(--spacing-md); padding-top: var(--spacing-md); border-top: 1px solid var(--surface-200); display: flex; flex-direction: column; gap: var(--spacing-sm);">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; gap: var(--spacing-lg);">
             <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
                 <input type="checkbox" ${isLead ? 'checked' : ''} onchange="setSupplierLeadPartner(${supplierPartnerCount}, this.checked)">
                 <span><strong>Leading Partner</strong> (authority to bind the JV)</span>
             </label>
+                    <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; padding: 4px 10px; background: var(--success-50); border: 1px solid var(--success-200); border-radius: var(--radius-sm); font-size: 12px;">
+                        <input type="checkbox" ${isLead ? 'checked' : ''} class="payment-recipient-checkbox" onchange="setPaymentRecipient(${supplierPartnerCount}, this.checked)" style="width: 14px; height: 14px;">
+                        <span style="color: var(--success-700);"><i class="pi pi-wallet" style="margin-right: 3px; font-size: 10px;"></i>Payment Recipient</span>
+                    </label>
+                </div>
             ${!isLead ? `<button class="btn btn-ghost btn-sm" onclick="removeSupplierPartner(${supplierPartnerCount})" style="color: var(--danger-500);"><i class="pi pi-trash" style="margin-right: 4px;"></i>Remove</button>` : ''}
+            </div>
         </div>
     `;
     
@@ -10674,8 +11278,8 @@ function removeSupplierPartner(id) {
 
 function setSupplierLeadPartner(id, isLead) {
     if (isLead) {
-        // Uncheck all others
-        document.querySelectorAll('#supplierPartnerCards input[type="checkbox"]').forEach(cb => {
+        // Uncheck all other lead partner checkboxes (not payment recipient ones)
+        document.querySelectorAll('#supplierPartnerCards input[type="checkbox"]:not(.payment-recipient-checkbox)').forEach(cb => {
             if (cb.closest('.supplier-partner-card').id !== 'supplier-partner-' + id) {
                 cb.checked = false;
             }
@@ -10696,6 +11300,17 @@ function setSupplierLeadPartner(id, isLead) {
             badge.innerHTML = '<i class="pi pi-star-fill" style="margin-right: 4px;"></i>LEAD PARTNER';
             currentCard.insertBefore(badge, currentCard.firstChild);
         }
+    }
+}
+
+function setPaymentRecipient(id, isRecipient) {
+    if (isRecipient) {
+        // Uncheck all other payment recipient checkboxes (only one can receive payment)
+        document.querySelectorAll('#supplierPartnerCards .payment-recipient-checkbox').forEach(cb => {
+            if (cb.closest('.supplier-partner-card').id !== 'supplier-partner-' + id) {
+                cb.checked = false;
+            }
+        });
     }
 }
 
@@ -10829,12 +11444,20 @@ ${isFirst ? '<span style="background: var(--primary-500); color: white; padding:
 </div>
 </div>
 
-<div style="display: flex; justify-content: space-between; align-items: center; margin-top: var(--spacing-md); padding-top: var(--spacing-sm); border-top: 1px solid var(--surface-200);">
+<div style="display: flex; flex-direction: column; gap: var(--spacing-sm); margin-top: var(--spacing-md); padding-top: var(--spacing-sm); border-top: 1px solid var(--surface-200);">
+<div style="display: flex; justify-content: space-between; align-items: center;">
+<div style="display: flex; gap: var(--spacing-lg); flex-wrap: wrap;">
 <label style="display: flex; align-items: center; gap: 8px;">
 <input type="checkbox" ${isFirst ? 'checked' : ''} onchange="setJVLeadPartner(${jvBiddingPartnerCount}, this.checked)">
 <span>Leading Partner (authority to bind the JV)</span>
 </label>
+<label style="display: flex; align-items: center; gap: 6px; padding: 4px 10px; background: var(--success-50); border: 1px solid var(--success-200); border-radius: var(--radius-sm); font-size: 12px; cursor: pointer;">
+<input type="checkbox" ${isFirst ? 'checked' : ''} class="jv-payment-recipient-checkbox" onchange="setJVPaymentRecipient(${jvBiddingPartnerCount}, this.checked)" style="width: 14px; height: 14px;">
+<span style="color: var(--success-700);">💰 Payment Recipient</span>
+</label>
+</div>
 ${!isFirst ? `<button class="btn btn-ghost btn-sm" onclick="removeJVPartner(${jvBiddingPartnerCount})" style="color: var(--error-500);">🗑️ Remove</button>` : ''}
+</div>
 </div>
 `;
 
@@ -10852,8 +11475,8 @@ updateJVPercentages();
 
 function setJVLeadPartner(partnerId, isLead) {
 if (isLead) {
-// Uncheck all others
-document.querySelectorAll('#jvPartnersContainer input[type="checkbox"]').forEach(cb => {
+// Uncheck all other lead partner checkboxes (not payment recipient ones)
+document.querySelectorAll('#jvPartnersContainer input[type="checkbox"]:not(.jv-payment-recipient-checkbox)').forEach(cb => {
 if (cb.closest('.jv-partner-card').id !== 'jv-partner-' + partnerId) {
 cb.checked = false;
 }
@@ -10886,6 +11509,17 @@ header.appendChild(badge);
 }
 }
 jvBiddingLeadPartner = partnerId;
+}
+}
+
+function setJVPaymentRecipient(partnerId, isRecipient) {
+if (isRecipient) {
+// Uncheck all other payment recipient checkboxes (only one can receive payment)
+document.querySelectorAll('#jvPartnersContainer .jv-payment-recipient-checkbox').forEach(cb => {
+if (cb.closest('.jv-partner-card').id !== 'jv-partner-' + partnerId) {
+cb.checked = false;
+}
+});
 }
 }
 
@@ -10974,7 +11608,8 @@ alert('✅ Clarification submitted!');
 
 function createAlternateOffer() {
 closeModal('add-alternate-offer-modal');
-alert('✅ Alternate offer created! You can now fill out the forms for your alternate bid.');
+    // Use the new global alternate offer function
+    addGlobalAlternateOffer();
 }
 
 function toggleCollapseSidebar(header) {

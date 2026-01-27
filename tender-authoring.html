@@ -2592,6 +2592,405 @@
         color: var(--text-muted);
       }
 
+      /* ===== FORM CATEGORY CONTAINER - Modern Design ===== */
+      .form-category-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 16px;
+      }
+
+      .form-category-container {
+        background: var(--surface-0);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
+        transition: all 0.2s ease;
+        border: 1px solid transparent;
+      }
+
+      .form-category-container:hover {
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+        transform: translateY(-1px);
+      }
+
+      .form-category-container.drag-over {
+        border-color: var(--primary-400);
+        box-shadow: 0 0 0 3px var(--primary-100), 0 4px 12px rgba(0,0,0,0.1);
+      }
+
+      .form-category-header {
+        display: flex;
+        align-items: center;
+        padding: 14px 16px;
+        background: var(--surface-0);
+        border-bottom: 1px solid var(--surface-100);
+      }
+
+      .form-category-header-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .form-category-icon {
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        color: var(--primary-600);
+        background: linear-gradient(135deg, var(--primary-50) 0%, var(--primary-100) 100%);
+        border-radius: 10px;
+      }
+
+      .form-category-title-group {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+
+      .form-category-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin: 0;
+        letter-spacing: -0.01em;
+      }
+
+      .form-category-subtitle {
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+
+      .form-category-body {
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        background: var(--surface-50);
+      }
+
+      /* Form Item - Modern unified style */
+      .form-category-item {
+        background: var(--surface-0);
+        border-radius: 8px;
+        padding: 10px 12px;
+        transition: all 0.15s ease;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+      }
+
+      .form-category-item:hover {
+        background: var(--surface-0);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+      }
+
+      .form-category-item.predefined.enabled {
+        background: var(--surface-0);
+      }
+
+      .form-category-item.predefined.disabled {
+        opacity: 0.5;
+        background: var(--surface-100);
+      }
+
+      .form-category-item.library {
+        background: var(--surface-0);
+      }
+
+      .form-category-item-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex: 1;
+        min-width: 0;
+      }
+
+      .form-category-item-toggle {
+        position: relative;
+        width: 36px;
+        height: 20px;
+        background: var(--surface-300);
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        flex-shrink: 0;
+      }
+
+      .form-category-item-toggle.on {
+        background: var(--success-500);
+      }
+
+      .form-category-item-toggle::after {
+        content: '';
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 16px;
+        height: 16px;
+        background: white;
+        border-radius: 50%;
+        transition: all 0.2s ease;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+      }
+
+      .form-category-item-toggle.on::after {
+        left: 18px;
+      }
+
+      .form-category-item-icon {
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        font-size: 12px;
+        flex-shrink: 0;
+      }
+
+      .form-category-item.predefined .form-category-item-icon {
+        background: linear-gradient(135deg, var(--primary-50) 0%, var(--primary-100) 100%);
+        color: var(--primary-600);
+      }
+
+      .form-category-item.library .form-category-item-icon {
+        background: linear-gradient(135deg, var(--info-50) 0%, var(--info-100) 100%);
+        color: var(--info-600);
+      }
+
+      .form-category-item-info {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        flex: 1;
+        min-width: 0;
+      }
+
+      .form-category-item-name {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text-primary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .form-category-item-meta {
+        font-size: 11px;
+        color: var(--text-muted);
+      }
+
+      .form-category-item-actions {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        flex-shrink: 0;
+        opacity: 0.6;
+        transition: opacity 0.15s ease;
+      }
+
+      .form-category-item:hover .form-category-item-actions {
+        opacity: 1;
+      }
+
+      /* Legacy template styles for compatibility */
+      .form-category-template {
+        background: var(--surface-50);
+        border: 1px solid var(--surface-200);
+        border-radius: 4px;
+        padding: 5px 6px;
+        margin-bottom: 4px;
+        transition: all 0.2s ease;
+      }
+
+      .form-category-template.enabled {
+        border-color: var(--success-300);
+        background: var(--success-50);
+      }
+
+      .form-category-template.disabled {
+        opacity: 0.5;
+        background: var(--surface-100);
+      }
+
+      .form-category-template-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .form-category-template-left {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .form-category-template-toggle {
+        position: relative;
+        width: 28px;
+        height: 16px;
+        background: var(--surface-300);
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        flex-shrink: 0;
+      }
+
+      .form-category-template-toggle.on {
+        background: var(--success-500);
+      }
+
+      .form-category-template-toggle::after {
+        content: '';
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 12px;
+        height: 12px;
+        background: white;
+        border-radius: 50%;
+        transition: all 0.2s ease;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+      }
+
+      .form-category-template-toggle.on::after {
+        left: 14px;
+      }
+
+      .form-category-template-icon {
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--primary-100);
+        color: var(--primary-600);
+        border-radius: 3px;
+        font-size: 9px;
+      }
+
+      .form-category-template-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        flex: 1;
+        min-width: 0;
+      }
+
+      .form-category-template-name {
+        font-size: 10px;
+        font-weight: 600;
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .form-category-template-name .template-badge {
+        font-size: 7px;
+        font-weight: 600;
+        text-transform: uppercase;
+        padding: 1px 3px;
+        background: var(--primary-100);
+        color: var(--primary-600);
+        border-radius: 2px;
+        flex-shrink: 0;
+      }
+
+      .form-category-template-desc {
+        font-size: 9px;
+        color: var(--text-muted);
+      }
+
+      .form-category-template-actions {
+        display: flex;
+        align-items: center;
+        gap: 1px;
+        flex-shrink: 0;
+      }
+
+      /* Drop Zone - Modern style */
+      .form-category-dropzone {
+        border: 2px dashed var(--surface-200);
+        border-radius: 8px;
+        padding: 12px;
+        text-align: center;
+        color: var(--text-muted);
+        font-size: 12px;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        background: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .form-category-dropzone:hover {
+        border-color: var(--primary-300);
+        background: var(--primary-50);
+        color: var(--primary-600);
+      }
+
+      .form-category-dropzone.drag-over {
+        border-color: var(--primary-500);
+        background: var(--primary-100);
+        color: var(--primary-700);
+        border-style: solid;
+      }
+
+      .form-category-dropzone-icon {
+        font-size: 14px;
+      }
+
+      .form-category-dropzone-text {
+        font-weight: 500;
+        font-size: 12px;
+      }
+
+      /* Empty/Warning State - Modern */
+      .form-category-empty-warning {
+        background: var(--warning-50);
+        border-radius: 8px;
+        padding: 10px 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        color: var(--warning-700);
+      }
+
+      .form-category-empty-warning i {
+        font-size: 14px;
+      }
+
+      /* Buttons inside form category containers */
+      .form-category-container .btn-icon-xs {
+        min-width: 26px;
+        height: 26px;
+        padding: 0 6px;
+        font-size: 11px;
+        border-radius: 6px;
+        border: none;
+        background: var(--surface-100);
+      }
+
+      .form-category-container .btn-icon-xs:hover {
+        background: var(--surface-200);
+      }
+
+      .form-category-container .btn-icon-xs i {
+        font-size: 11px;
+      }
+
       /* ===== DOCUMENTS SECTION ===== */
       .documents-drop-zone {
         border: 2px dashed var(--surface-300);
@@ -3018,6 +3417,13 @@
 
       .form-library-item:active {
         cursor: grabbing;
+      }
+
+      .form-library-item.dragging {
+        opacity: 0.5;
+        border-color: var(--primary-500);
+        background: var(--primary-100);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       }
 
       .form-library-item-icon {
@@ -8954,13 +9360,14 @@
           id: 'form-a', 
           code: 'A', 
           name: "Bidder's Information", 
-          description: 'Company details and Joint Venture Partner Information Form', 
+          description: 'Company details & JV Partner info', 
           icon: '👤', 
           required: true, 
           added: true,
           hasConfig: false,
           attachments: [],
-          badge: 'mandatory'
+          badge: 'mandatory',
+          templateName: "Bidder's Information Form"
         },
         { 
           id: 'form-d', 
@@ -8973,6 +9380,7 @@
           hasConfig: true,
           attachments: [],
           badge: 'mandatory',
+          templateName: 'Technical Bid Template',
           config: {
             allowOnlineSubmission: true,
             allowSpreadsheetUpload: false,
@@ -8994,13 +9402,14 @@
           id: 'form-c', 
           code: 'C', 
           name: 'Financial Bid', 
-          description: 'Pricing template and cost breakdown', 
+          description: 'Pricing & cost breakdown', 
           icon: '💰', 
           required: true, 
           added: true,
           hasConfig: true,
           attachments: [],
           badge: 'mandatory',
+          templateName: 'Financial Bid Template',
           config: {
             allowOnlineSubmission: true,
             allowSpreadsheetUpload: false,
@@ -9027,13 +9436,14 @@
           id: 'form-qual', 
           code: 'Q', 
           name: 'Qualifications & Eligibility', 
-          description: 'Performance, bid security, financial statements & authorization', 
+          description: 'Performance & financial capability', 
           icon: '🎯', 
           required: true, 
           added: true,
           hasConfig: true,
           attachments: [],
           badge: 'mandatory',
+          templateName: 'Performance Statement',
           config: {
             requirePerformanceStatement: true,
             requireBidSecurity: true,
@@ -9047,27 +9457,56 @@
           id: 'form-compliance', 
           code: 'C&D', 
           name: 'Compliance & Declarations', 
-          description: 'Bid submission form and self-disclosure form', 
+          description: 'Self-disclosure & bid submission', 
           icon: '✅', 
           required: true, 
           added: true,
           hasConfig: false,
           attachments: [],
-          badge: 'mandatory'
+          badge: 'mandatory',
+          templateName: 'Self Disclosure Form',
+          additionalTemplates: ['Bid Submission Declaration']
         },
         { 
-          id: 'form-drive', 
-          code: 'DRiVE', 
-          name: 'DRiVE Self Assessment', 
-          description: 'Due diligence risk self-assessment questionnaire', 
-          icon: '🛡️', 
-          required: true, 
+          id: 'form-other', 
+          code: 'O', 
+          name: 'Other Forms', 
+          description: 'Additional forms & assessments', 
+          icon: '📋', 
+          required: false, 
           added: true,
           hasConfig: false,
           attachments: [],
-          badge: 'mandatory'
+          badge: 'optional',
+          templateName: null
         }
       ];
+
+      // Library forms added to each form category (keyed by form id)
+      // Each category can have: template enabled/disabled + additional library forms
+      let formCategoryLibraryForms = {
+        'form-c': [], // Financial Bid
+        'form-d': [], // Technical Bid
+        'form-a': [], // Bidder's Information
+        'form-qual': [
+          { name: 'Bid Security Form', type: 'bid-security', addedDate: 'Jan 20' },
+          { name: 'Financial Statements', type: 'financial-statements', addedDate: 'Jan 20' }
+        ],
+        'form-compliance': [],
+        'form-other': [
+          { name: 'DRiVE Self Assessment', type: 'drive-questionnaire', addedDate: 'Jan 15' }
+        ]
+      };
+
+      // Track if template is enabled for each category (separate from 'added' which was for old UI)
+      let formCategoryTemplateEnabled = {
+        'form-c': true, // Financial Bid template enabled by default
+        'form-d': true,
+        'form-a': true,
+        'form-qual': true,
+        'form-compliance': true,
+        'form-other': false // No predefined template for Other Forms
+      };
 
       // Tender Package Attachments (separate from forms)
       let tenderAttachments = [];
@@ -10668,13 +11107,30 @@
         formItems.forEach((item) => {
           item.addEventListener('dragstart', (e) => {
             e.dataTransfer.effectAllowed = 'copy';
-            e.dataTransfer.setData('form-type', item.dataset.formType);
-            e.dataTransfer.setData('form-name', item.dataset.formName);
+            // Use text/* format for cross-browser compatibility
+            e.dataTransfer.setData('text/form-type', item.dataset.formType);
+            e.dataTransfer.setData('text/form-name', item.dataset.formName);
+            // Also set plain text for fallback
+            e.dataTransfer.setData('text/plain', item.dataset.formName);
             item.style.opacity = '0.5';
+            item.classList.add('dragging');
           });
 
           item.addEventListener('dragend', (e) => {
             item.style.opacity = '1';
+            item.classList.remove('dragging');
+          });
+          
+          // Also add click handler to add to current target category
+          item.addEventListener('click', (e) => {
+            if (window.currentTargetFormCategory) {
+              addLibraryFormToCategory(window.currentTargetFormCategory, {
+                type: item.dataset.formType,
+                name: item.dataset.formName,
+                icon: getFormIconByType(item.dataset.formType)
+              });
+              window.currentTargetFormCategory = null; // Reset after adding
+            }
           });
         });
 
@@ -18796,6 +19252,195 @@
         }
       }
       
+      // ===== LINK FORMS TO CRITERIA =====
+      let currentLinkingCriterionId = null;
+      
+      window.openLinkFormsModal = function(criterionId) {
+        currentLinkingCriterionId = criterionId;
+        const criterion = evaluationCriteria.find(c => c.id === criterionId);
+        if (!criterion) return;
+        
+        // Initialize linkedForms if not exists
+        if (!criterion.linkedForms) {
+          criterion.linkedForms = [];
+        }
+        
+        const modal = document.getElementById('link-forms-modal');
+        const titleEl = document.getElementById('link-forms-modal-title');
+        const bodyEl = document.getElementById('link-forms-modal-body');
+        
+        titleEl.textContent = `Link Forms to: ${criterion.criteria}`;
+        bodyEl.innerHTML = renderLinkFormsModalContent(criterion);
+        
+        modal.style.display = 'flex';
+      }
+      
+      window.closeLinkFormsModal = function() {
+        const modal = document.getElementById('link-forms-modal');
+        modal.style.display = 'none';
+        currentLinkingCriterionId = null;
+      }
+      
+      function renderLinkFormsModalContent(criterion) {
+        const linkedForms = criterion.linkedForms || [];
+        
+        // Get all available forms from submissionForms and their library additions
+        const availableForms = getAvailableFormsForLinking();
+        
+        return `
+          <div style="margin-bottom: var(--spacing-lg);">
+            <div style="font-size: 12px; color: var(--text-muted); margin-bottom: var(--spacing-md);">
+              Select forms or sections where suppliers should provide information for this criterion.
+            </div>
+            
+            <!-- Currently Linked Forms -->
+            ${linkedForms.length > 0 ? `
+              <div style="margin-bottom: var(--spacing-lg);">
+                <label style="font-size: 11px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: var(--spacing-sm); display: block;">
+                  Currently Linked
+                </label>
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                  ${linkedForms.map((link, idx) => `
+                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: var(--info-50); border: 1px solid var(--info-200); border-radius: 6px;">
+                      <div style="display: flex; align-items: center; gap: 8px;">
+                        <i class="pi pi-file" style="color: var(--info-600);"></i>
+                        <span style="font-size: 13px; font-weight: 500;">${link.formName}</span>
+                        ${link.section ? `<span style="color: var(--text-muted);">→</span><span style="font-size: 12px; color: var(--text-secondary);">${link.section}</span>` : ''}
+                      </div>
+                      <button class="btn-icon-xs danger" onclick="removeLinkFromCriterion(${idx})" title="Remove link">
+                        <i class="pi pi-times"></i>
+                      </button>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            ` : ''}
+            
+            <!-- Available Forms to Link -->
+            <div>
+              <label style="font-size: 11px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: var(--spacing-sm); display: block;">
+                Available Forms
+              </label>
+              <div style="display: flex; flex-direction: column; gap: 4px; max-height: 300px; overflow-y: auto; border: 1px solid var(--surface-200); border-radius: 6px; padding: 8px;">
+                ${availableForms.map(form => `
+                  <div style="padding: 10px 12px; background: var(--surface-0); border: 1px solid var(--surface-200); border-radius: 6px; cursor: pointer; transition: all 0.15s;" 
+                       onmouseover="this.style.borderColor='var(--primary-300)'; this.style.background='var(--primary-50)'"
+                       onmouseout="this.style.borderColor='var(--surface-200)'; this.style.background='var(--surface-0)'"
+                       onclick="addLinkToCriterion('${form.id}', '${form.name}', '')">
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                      <div style="display: flex; align-items: center; gap: 10px;">
+                        <i class="pi ${form.icon}" style="font-size: 14px; color: var(--primary-600);"></i>
+                        <div>
+                          <div style="font-size: 13px; font-weight: 500; color: var(--text-primary);">${form.name}</div>
+                          <div style="font-size: 11px; color: var(--text-muted);">${form.type}</div>
+                        </div>
+                      </div>
+                      <i class="pi pi-plus" style="color: var(--primary-500);"></i>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+          
+          <div style="display: flex; justify-content: flex-end; gap: var(--spacing-sm); padding-top: var(--spacing-md); border-top: 1px solid var(--surface-200);">
+            <button class="btn btn-secondary" onclick="closeLinkFormsModal()">Done</button>
+          </div>
+        `;
+      }
+      
+      function getAvailableFormsForLinking() {
+        const forms = [];
+        
+        // Add forms from submissionForms that have templates enabled
+        submissionForms.forEach(form => {
+          const templateEnabled = formCategoryTemplateEnabled[form.id] !== false;
+          const libraryForms = formCategoryLibraryForms[form.id] || [];
+          
+          if (templateEnabled && form.templateName) {
+            forms.push({
+              id: form.id,
+              name: form.templateName,
+              type: 'Predefined template',
+              icon: 'pi-file'
+            });
+          }
+          
+          // Add additional templates
+          if (form.additionalTemplates) {
+            form.additionalTemplates.forEach(tmpl => {
+              forms.push({
+                id: form.id + '-' + tmpl.replace(/\s+/g, '-').toLowerCase(),
+                name: tmpl,
+                type: 'Predefined template',
+                icon: 'pi-file'
+              });
+            });
+          }
+          
+          // Add library forms
+          libraryForms.forEach(libForm => {
+            forms.push({
+              id: form.id + '-lib-' + libForm.name.replace(/\s+/g, '-').toLowerCase(),
+              name: libForm.name,
+              type: 'Library form',
+              icon: 'pi-file-edit'
+            });
+          });
+        });
+        
+        return forms;
+      }
+      
+      window.addLinkToCriterion = function(formId, formName, section) {
+        if (!currentLinkingCriterionId) return;
+        
+        const criterion = evaluationCriteria.find(c => c.id === currentLinkingCriterionId);
+        if (!criterion) return;
+        
+        if (!criterion.linkedForms) {
+          criterion.linkedForms = [];
+        }
+        
+        // Check if already linked
+        const exists = criterion.linkedForms.some(l => l.formId === formId && l.section === section);
+        if (exists) {
+          showToast('This form is already linked', 'warning');
+          return;
+        }
+        
+        criterion.linkedForms.push({
+          formId: formId,
+          formName: formName,
+          section: section
+        });
+        
+        // Re-render modal content
+        const bodyEl = document.getElementById('link-forms-modal-body');
+        bodyEl.innerHTML = renderLinkFormsModalContent(criterion);
+        
+        // Also update the main table
+        renderCurrentBlock();
+        
+        showToast(`Linked "${formName}" to criterion`, 'success');
+      }
+      
+      window.removeLinkFromCriterion = function(linkIndex) {
+        if (!currentLinkingCriterionId) return;
+        
+        const criterion = evaluationCriteria.find(c => c.id === currentLinkingCriterionId);
+        if (!criterion || !criterion.linkedForms) return;
+        
+        criterion.linkedForms.splice(linkIndex, 1);
+        
+        // Re-render modal content
+        const bodyEl = document.getElementById('link-forms-modal-body');
+        bodyEl.innerHTML = renderLinkFormsModalContent(criterion);
+        
+        // Also update the main table
+        renderCurrentBlock();
+      }
+      
       window.updateEvaluationCriterionName = function(criterionId, value) {
         const criterion = evaluationCriteria.find(c => c.id === criterionId);
         if (criterion) {
@@ -19803,6 +20448,288 @@
         `;
       }
       
+      // ===== FORM CATEGORY CONTAINER RENDERER (Approach 1) =====
+      function renderFormCategoryContainer(form) {
+        if (!form) return '';
+        
+        const templateEnabled = formCategoryTemplateEnabled[form.id] !== false;
+        const libraryForms = formCategoryLibraryForms[form.id] || [];
+        const hasLibraryForms = libraryForms.length > 0;
+        const hasTemplate = form.templateName !== null;
+        const hasNoForms = !templateEnabled && !hasLibraryForms && hasTemplate;
+        const hasNoFormsAtAll = !hasLibraryForms && !hasTemplate;
+        
+        // Get PrimeIcon for form type
+        const formPiIcon = getFormPiIcon(form.id);
+        
+        // Get additional templates if any
+        const additionalTemplates = form.additionalTemplates || [];
+        
+        return `
+          <div class="form-category-container ${hasNoForms || hasNoFormsAtAll ? 'empty' : ''}" 
+               id="form-category-${form.id}"
+               ondragover="handleCategoryDragOver(event, '${form.id}')"
+               ondragleave="handleCategoryDragLeave(event, '${form.id}')"
+               ondrop="handleCategoryDrop(event, '${form.id}')">
+            
+            <!-- Category Header -->
+            <div class="form-category-header">
+              <div class="form-category-header-left">
+                <div class="form-category-icon"><i class="pi ${formPiIcon}"></i></div>
+                <div class="form-category-title-group">
+                  <h4 class="form-category-title">${form.name}</h4>
+                  <span class="form-category-subtitle">${form.description}</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Category Body -->
+            <div class="form-category-body">
+              
+              ${hasTemplate ? `
+                <!-- Predefined Template -->
+                <div class="form-category-item predefined ${templateEnabled ? 'enabled' : 'disabled'}">
+                  <div class="form-category-item-left">
+                    <div class="form-category-item-toggle ${templateEnabled ? 'on' : ''}" 
+                         onclick="toggleFormCategoryTemplate('${form.id}')"
+                         title="${templateEnabled ? 'Disable' : 'Enable'}">
+                    </div>
+                    <div class="form-category-item-icon"><i class="pi pi-file"></i></div>
+                    <div class="form-category-item-info">
+                      <span class="form-category-item-name">${form.templateName}</span>
+                      <span class="form-category-item-meta">Predefined template</span>
+                    </div>
+                  </div>
+                  <div class="form-category-item-actions">
+                    ${templateEnabled ? `
+                      <button class="btn-icon-xs" onclick="event.stopPropagation();" title="Preview">
+                        <i class="pi pi-eye"></i>
+                      </button>
+                      ${form.hasConfig ? `
+                        <button class="btn-icon-xs" onclick="${form.id === 'form-c' ? `window.open('financial-bid-form-builder-mockup.html', '_blank')` : `event.stopPropagation();`}" title="Configure">
+                          <i class="pi pi-cog"></i>
+                        </button>
+                      ` : ''}
+                    ` : ''}
+                  </div>
+                </div>
+                
+                ${additionalTemplates.map(tmplName => `
+                  <div class="form-category-item predefined enabled">
+                    <div class="form-category-item-left">
+                      <div class="form-category-item-toggle on" style="pointer-events: none;" title="Required"></div>
+                      <div class="form-category-item-icon"><i class="pi pi-file"></i></div>
+                      <div class="form-category-item-info">
+                        <span class="form-category-item-name">${tmplName}</span>
+                        <span class="form-category-item-meta">Predefined template</span>
+                      </div>
+                    </div>
+                    <div class="form-category-item-actions">
+                      <button class="btn-icon-xs" onclick="event.stopPropagation();" title="Preview">
+                        <i class="pi pi-eye"></i>
+                      </button>
+                    </div>
+                  </div>
+                `).join('')}
+              ` : ''}
+              
+              <!-- Library Forms -->
+              ${libraryForms.map((libForm, index) => `
+                <div class="form-category-item library" data-library-form-index="${index}">
+                  <div class="form-category-item-left">
+                    <div class="form-category-item-icon"><i class="pi pi-file-edit"></i></div>
+                    <div class="form-category-item-info">
+                      <span class="form-category-item-name">${libForm.name}</span>
+                      <span class="form-category-item-meta">From library</span>
+                    </div>
+                  </div>
+                  <div class="form-category-item-actions">
+                    <button class="btn-icon-xs" onclick="event.stopPropagation();" title="Preview">
+                      <i class="pi pi-eye"></i>
+                    </button>
+                    <button class="btn-icon-xs danger" onclick="removeLibraryFormFromCategory('${form.id}', ${index})" title="Remove">
+                      <i class="pi pi-times"></i>
+                    </button>
+                  </div>
+                </div>
+              `).join('')}
+              
+              <!-- Drop Zone for adding more forms -->
+              <div class="form-category-dropzone" 
+                   id="dropzone-${form.id}"
+                   onclick="openFormLibraryForCategory('${form.id}')">
+                <div class="form-category-dropzone-icon">
+                  <i class="pi pi-plus"></i>
+                </div>
+                <div class="form-category-dropzone-text">Add from library</div>
+              </div>
+              
+              <!-- Warning if no forms at all -->
+              ${hasNoForms ? `
+                <div class="form-category-empty-warning">
+                  <i class="pi pi-exclamation-triangle"></i>
+                  <span>No forms - enable template or add from library</span>
+                </div>
+              ` : ''}
+              ${hasNoFormsAtAll && !hasLibraryForms ? `
+                <div class="form-category-empty-warning">
+                  <i class="pi pi-info-circle"></i>
+                  <span>No forms added yet</span>
+                </div>
+              ` : ''}
+              
+            </div>
+          </div>
+        `;
+      }
+      
+      // Get PrimeIcon class for form type
+      function getFormPiIcon(formId) {
+        const iconMap = {
+          'form-c': 'pi-dollar',
+          'form-d': 'pi-cog',
+          'form-a': 'pi-user',
+          'form-qual': 'pi-verified',
+          'form-compliance': 'pi-check-circle',
+          'form-other': 'pi-folder'
+        };
+        return iconMap[formId] || 'pi-file';
+      }
+      
+      // Toggle template enabled/disabled for a category
+      function toggleFormCategoryTemplate(formId) {
+        formCategoryTemplateEnabled[formId] = !formCategoryTemplateEnabled[formId];
+        renderCurrentBlock();
+        showToast(formCategoryTemplateEnabled[formId] ? 'Template enabled' : 'Template disabled', 'info');
+      }
+      
+      // Add a library form to a category
+      function addLibraryFormToCategory(formId, libraryForm) {
+        if (!formCategoryLibraryForms[formId]) {
+          formCategoryLibraryForms[formId] = [];
+        }
+        
+        // Add with metadata
+        formCategoryLibraryForms[formId].push({
+          ...libraryForm,
+          addedDate: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+        });
+        
+        renderCurrentBlock();
+        showToast(`"${libraryForm.name}" added to ${getFormCategoryName(formId)}`, 'success');
+      }
+      
+      // Remove a library form from a category
+      function removeLibraryFormFromCategory(formId, index) {
+        if (formCategoryLibraryForms[formId] && formCategoryLibraryForms[formId][index]) {
+          const removedForm = formCategoryLibraryForms[formId][index];
+          formCategoryLibraryForms[formId].splice(index, 1);
+          renderCurrentBlock();
+          showToast(`"${removedForm.name}" removed`, 'info');
+        }
+      }
+      
+      // Get form category name by ID
+      function getFormCategoryName(formId) {
+        const form = submissionForms.find(f => f.id === formId);
+        return form ? form.name : 'Unknown';
+      }
+      
+      // Preview a library form
+      function previewLibraryForm(formId, index) {
+        const libForm = formCategoryLibraryForms[formId]?.[index];
+        if (libForm) {
+          showToast(`Previewing: ${libForm.name}`, 'info');
+          // In a real app, this would open a preview modal
+        }
+      }
+      
+      // Open form library panel focused on a specific category
+      function openFormLibraryForCategory(formId) {
+        // Store the target category for when a form is dropped/selected
+        window.currentTargetFormCategory = formId;
+        
+        // Open the form library panel
+        const panel = document.getElementById('form-library-panel');
+        if (panel && !panel.classList.contains('open')) {
+          panel.classList.add('open');
+          panel.classList.remove('collapsed');
+        }
+        
+        showToast(`Select a form to add to ${getFormCategoryName(formId)}`, 'info');
+      }
+      
+      // Handle drag over for category container
+      function handleCategoryDragOver(event, formId) {
+        event.preventDefault();
+        event.stopPropagation();
+        
+        const container = document.getElementById(`form-category-${formId}`);
+        const dropzone = document.getElementById(`dropzone-${formId}`);
+        
+        if (container) container.classList.add('drag-over');
+        if (dropzone) dropzone.classList.add('drag-over');
+      }
+      
+      // Handle drag leave for category container
+      function handleCategoryDragLeave(event, formId) {
+        event.preventDefault();
+        event.stopPropagation();
+        
+        // Only remove if we're actually leaving the container
+        const container = document.getElementById(`form-category-${formId}`);
+        const dropzone = document.getElementById(`dropzone-${formId}`);
+        
+        // Check if we're leaving to an element outside the container
+        const relatedTarget = event.relatedTarget;
+        if (container && !container.contains(relatedTarget)) {
+          container.classList.remove('drag-over');
+        }
+        if (dropzone && !dropzone.contains(relatedTarget)) {
+          dropzone.classList.remove('drag-over');
+        }
+      }
+      
+      // Handle drop for category container
+      function handleCategoryDrop(event, formId) {
+        event.preventDefault();
+        event.stopPropagation();
+        
+        const container = document.getElementById(`form-category-${formId}`);
+        const dropzone = document.getElementById(`dropzone-${formId}`);
+        
+        if (container) container.classList.remove('drag-over');
+        if (dropzone) dropzone.classList.remove('drag-over');
+        
+        // Get the dragged form data
+        const formType = event.dataTransfer.getData('text/form-type');
+        const formName = event.dataTransfer.getData('text/form-name');
+        
+        if (formType && formName) {
+          // Add the library form to this category
+          addLibraryFormToCategory(formId, {
+            type: formType,
+            name: formName,
+            icon: getFormIconByType(formType)
+          });
+        }
+      }
+      
+      // Get icon for a form type
+      function getFormIconByType(formType) {
+        const iconMap = {
+          'instructions': '📄',
+          'contracts': '📝',
+          'bank-guarantee': '🏦',
+          'bid-security': '🔒',
+          'drive-questionnaire': '📊',
+          'technical-specs': '⚙️',
+          'evaluation': '✅',
+          'price-schedule': '💰'
+        };
+        return iconMap[formType] || '📄';
+      }
+
       // ===== BID RESPONSE REQUIREMENTS SECTION =====
       function renderSupplierResponseStructureSection(block, section, sectionIndex, isFirst) {
         const addedFormsCount = submissionForms.filter(f => f.added).length;
@@ -19820,52 +20747,9 @@
                   <div class="collapsible-toggle">▼</div>
                 </div>
                 <div class="collapsible-body" onclick="event.stopPropagation()">
-                  <div class="info-alert" style="margin-bottom: var(--spacing-lg);">
-                    <div class="info-alert-text">
-                      📄 Configure the standard forms to include in your tender. Drag forms from the Form Library panel to add more.
-                    </div>
-                  </div>
-                  
-                  <!-- Forms Drop Zone -->
-                  <div class="submission-forms-drop-zone" id="submission-forms-drop-zone" 
-                       ondragover="handleFormsDragOver(event)" 
-                       ondragleave="handleFormsDragLeave(event)" 
-                       ondrop="handleFormsDrop(event)">
-                    <div class="submission-forms-grid">
-                      ${submissionForms.map(form => {
-                        const badgeClass = form.badge === 'mandatory' ? 'badge-mandatory' : 
-                                           form.badge === 'conditional' ? 'badge-conditional' : 'badge-optional';
-                        const badgeText = form.badge === 'mandatory' ? 'MANDATORY' : 
-                                          form.badge === 'conditional' ? 'CONDITIONAL' : 'OPTIONAL';
-                        return `
-                        <div class="submission-form-card ${form.added ? 'added' : 'not-added'} ${form.required ? 'required' : ''}" 
-                             data-form-id="${form.id}"
-                             draggable="true"
-                             ondragstart="handleFormCardDragStart(event, '${form.id}')">
-                          <div class="submission-form-card-header">
-                            <span class="submission-form-badge ${badgeClass}">${badgeText}</span>
-                            <div class="submission-form-actions">
-                              ${form.added ? `
-                                ${form.id !== 'form-drive' ? `<button class="btn-icon-xs preview" onclick="event.stopPropagation(); openFormPreviewModal('${form.id}')" title="Preview supplier view"><i class="pi pi-eye"></i></button>` : ''}
-                                ${form.hasConfig ? `<button class="btn-icon-xs configure" onclick="event.stopPropagation(); openFormConfigModal('${form.id}')" title="Configure form"><i class="pi pi-cog"></i></button>` : ''}
-                                ${!form.required ? `<button class="btn-icon-xs danger" onclick="event.stopPropagation(); toggleSubmissionForm('${form.id}')" title="Remove form"><i class="pi pi-times"></i></button>` : ''}
-                              ` : `
-                                <button class="btn-icon-xs success" onclick="event.stopPropagation(); toggleSubmissionForm('${form.id}')" title="Add form"><i class="pi pi-plus"></i></button>
-                              `}
-                            </div>
-                          </div>
-                          <div class="submission-form-icon">${form.icon}</div>
-                          <div class="submission-form-name">${form.name}</div>
-                          <div class="submission-form-description">${form.description}</div>
-                          ${!form.added ? '<div class="submission-form-overlay"><span>Click + to add</span></div>' : ''}
-                        </div>
-                      `;}).join('')}
-                    </div>
-                    
-                    
-                    <div class="submission-forms-drop-hint" id="forms-drop-hint">
-                      <i class="pi pi-download"></i> Drop forms here from the Form Library
-                    </div>
+                  <!-- All Forms as Category Containers -->
+                  <div class="form-category-grid">
+                    ${submissionForms.map(form => renderFormCategoryContainer(form)).join('')}
                   </div>
                 </div>
               </div>
@@ -20100,11 +20984,11 @@
                   <thead>
                     <tr style="background: var(--surface-50);">
                       <th style="padding: 12px 14px; text-align: left; font-weight: 600; color: var(--text-secondary); border-bottom: 2px solid var(--surface-200); width: 70px;">ID</th>
-                      <th style="padding: 12px 14px; text-align: left; font-weight: 600; color: var(--text-secondary); border-bottom: 2px solid var(--surface-200); width: 140px;">Type</th>
+                      <th style="padding: 12px 14px; text-align: left; font-weight: 600; color: var(--text-secondary); border-bottom: 2px solid var(--surface-200); width: 130px;">Type</th>
                       <th style="padding: 12px 14px; text-align: left; font-weight: 600; color: var(--text-secondary); border-bottom: 2px solid var(--surface-200);">Criteria</th>
-                      <th style="padding: 12px 14px; text-align: center; font-weight: 600; color: var(--text-secondary); border-bottom: 2px solid var(--surface-200); width: 100px;">Method</th>
-                      <th style="padding: 12px 14px; text-align: center; font-weight: 600; color: var(--text-secondary); border-bottom: 2px solid var(--surface-200); width: 90px;">Applies To</th>
-                      <th style="padding: 12px 14px; text-align: center; font-weight: 600; color: var(--text-secondary); border-bottom: 2px solid var(--surface-200); width: 90px;">Actions</th>
+                      <th style="padding: 12px 14px; text-align: center; font-weight: 600; color: var(--text-secondary); border-bottom: 2px solid var(--surface-200); width: 90px;">Method</th>
+                      <th style="padding: 12px 14px; text-align: left; font-weight: 600; color: var(--text-secondary); border-bottom: 2px solid var(--surface-200); width: 160px;">Linked Forms</th>
+                      <th style="padding: 12px 14px; text-align: center; font-weight: 600; color: var(--text-secondary); border-bottom: 2px solid var(--surface-200); width: 80px;">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -20116,6 +21000,8 @@
                       const typeBg = criterion.type === 'Eligibility & Formal' ? 'var(--primary-50)' : 
                                      criterion.type === 'Qualification criteria' ? 'var(--success-50)' : 
                                      criterion.type === 'Technical criteria' ? 'var(--warning-50)' : 'var(--info-50)';
+                      const linkedForms = criterion.linkedForms || [];
+                      const hasLinks = linkedForms.length > 0;
                       
                       return `
                         <tr style="background: ${idx % 2 === 0 ? 'var(--surface-0)' : 'var(--surface-50)'}; transition: background 0.15s;" onmouseover="this.style.background='var(--primary-50)'" onmouseout="this.style.background='${idx % 2 === 0 ? 'var(--surface-0)' : 'var(--surface-50)'}'">
@@ -20129,23 +21015,40 @@
                           </td>
                           <td style="padding: 10px 14px; border-bottom: 1px solid var(--surface-100);">
                             <div style="font-weight: 500; color: var(--text-primary); margin-bottom: 2px;">${criterion.criteria}</div>
-                            <div style="font-size: 11px; color: var(--text-muted); line-height: 1.4; max-width: 400px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${criterion.description}">${criterion.description}</div>
+                            <div style="font-size: 11px; color: var(--text-muted); line-height: 1.4; max-width: 350px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${criterion.description}">${criterion.description}</div>
                           </td>
                           <td style="padding: 10px 14px; border-bottom: 1px solid var(--surface-100); text-align: center;">
                             <span style="background: var(--surface-100); color: var(--text-secondary); padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 500;">${criterion.evaluationMethod}</span>
                           </td>
-                          <td style="padding: 10px 14px; border-bottom: 1px solid var(--surface-100); text-align: center;">
-                            <span style="font-size: 11px; color: var(--text-muted);">${criterion.appliesTo === 'entire' ? 'Entire' : 'Specific'}</span>
+                          <td style="padding: 10px 14px; border-bottom: 1px solid var(--surface-100);">
+                            ${hasLinks ? `
+                              <div style="display: flex; flex-wrap: wrap; gap: 4px; align-items: center;">
+                                ${linkedForms.slice(0, 2).map(link => `
+                                  <span style="background: var(--info-50); color: var(--info-600); padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 500; display: inline-flex; align-items: center; gap: 3px;">
+                                    <i class="pi pi-file" style="font-size: 9px;"></i>
+                                    ${link.formName}${link.section ? ' → ' + link.section : ''}
+                                  </span>
+                                `).join('')}
+                                ${linkedForms.length > 2 ? `<span style="font-size: 10px; color: var(--text-muted);">+${linkedForms.length - 2} more</span>` : ''}
+                                <button class="btn-icon-xs" onclick="openLinkFormsModal('${criterion.id}')" title="Edit links" style="margin-left: 4px;">
+                                  <i class="pi pi-pencil" style="font-size: 10px;"></i>
+                                </button>
+                              </div>
+                            ` : `
+                              <button class="btn btn-ghost btn-xs" onclick="openLinkFormsModal('${criterion.id}')" style="font-size: 11px; padding: 4px 8px; color: var(--text-muted);">
+                                <i class="pi pi-link" style="margin-right: 4px;"></i> Link forms
+                              </button>
+                            `}
                           </td>
                           <td style="padding: 10px 14px; border-bottom: 1px solid var(--surface-100); text-align: center;">
                             ${isPredefined ? `
-                              <span style="font-size: 11px; color: var(--text-muted); font-style: italic;">System</span>
+                              <span style="font-size: 10px; color: var(--text-muted); font-style: italic;">System</span>
                             ` : `
                               <div style="display: flex; gap: 4px; justify-content: center;">
-                                <button class="btn-icon-xs" onclick="openEvaluationCriterionModal('${criterion.id}')" title="Edit criterion">
+                                <button class="btn-icon-xs" onclick="openEvaluationCriterionModal('${criterion.id}')" title="Edit">
                                   <i class="pi pi-pencil"></i>
                                 </button>
-                                <button class="btn-icon-xs danger" onclick="removeEvaluationCriterion('${criterion.id}')" title="Remove criterion">
+                                <button class="btn-icon-xs danger" onclick="removeEvaluationCriterion('${criterion.id}')" title="Remove">
                                   <i class="pi pi-trash"></i>
                                 </button>
                               </div>
@@ -20160,7 +21063,7 @@
               
               <div style="font-size: 11px; color: var(--text-muted); margin-top: var(--spacing-sm); display: flex; align-items: center; gap: 6px;">
                 <i class="pi pi-info-circle"></i> 
-                Predefined eligibility & formal criteria (system) are automatically included. Custom criteria can be edited or removed.
+                Link criteria to forms or sections to specify where suppliers should provide information for evaluation.
               </div>
             </div>
           </div>
@@ -20295,10 +21198,11 @@
                       <thead>
                         <tr style="background: var(--surface-50);">
                           <th style="padding: 10px 12px; text-align: left; font-weight: 600; color: var(--text-secondary); border-bottom: 2px solid var(--surface-200); width: 70px;">ID</th>
-                          <th style="padding: 10px 12px; text-align: left; font-weight: 600; color: var(--text-secondary); border-bottom: 2px solid var(--surface-200); width: 130px;">Type</th>
+                          <th style="padding: 10px 12px; text-align: left; font-weight: 600; color: var(--text-secondary); border-bottom: 2px solid var(--surface-200); width: 120px;">Type</th>
                           <th style="padding: 10px 12px; text-align: left; font-weight: 600; color: var(--text-secondary); border-bottom: 2px solid var(--surface-200);">Criteria</th>
-                          <th style="padding: 10px 12px; text-align: center; font-weight: 600; color: var(--text-secondary); border-bottom: 2px solid var(--surface-200); width: 90px;">Method</th>
-                          <th style="padding: 10px 12px; text-align: center; font-weight: 600; color: var(--text-secondary); border-bottom: 2px solid var(--surface-200); width: 80px;">Actions</th>
+                          <th style="padding: 10px 12px; text-align: center; font-weight: 600; color: var(--text-secondary); border-bottom: 2px solid var(--surface-200); width: 80px;">Method</th>
+                          <th style="padding: 10px 12px; text-align: left; font-weight: 600; color: var(--text-secondary); border-bottom: 2px solid var(--surface-200); width: 150px;">Linked Forms</th>
+                          <th style="padding: 10px 12px; text-align: center; font-weight: 600; color: var(--text-secondary); border-bottom: 2px solid var(--surface-200); width: 70px;">Actions</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -20310,6 +21214,8 @@
                           const typeBg = criterion.type === 'Eligibility & Formal' ? 'var(--primary-50)' : 
                                          criterion.type === 'Qualification criteria' ? 'var(--success-50)' : 
                                          criterion.type === 'Technical criteria' ? 'var(--warning-50)' : 'var(--info-50)';
+                          const linkedForms = criterion.linkedForms || [];
+                          const hasLinks = linkedForms.length > 0;
                           
                           return `
                             <tr style="background: ${idx % 2 === 0 ? 'var(--surface-0)' : 'var(--surface-50)'};">
@@ -20323,21 +21229,40 @@
                               </td>
                               <td style="padding: 10px 12px; border-bottom: 1px solid var(--surface-100);">
                                 <div style="font-weight: 500; color: var(--text-primary); margin-bottom: 2px;">${criterion.criteria}</div>
-                                <div style="font-size: 11px; color: var(--text-muted); line-height: 1.3; max-width: 350px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${criterion.description}">${criterion.description}</div>
+                                <div style="font-size: 11px; color: var(--text-muted); line-height: 1.3; max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${criterion.description}">${criterion.description}</div>
                               </td>
                               <td style="padding: 10px 12px; border-bottom: 1px solid var(--surface-100); text-align: center;">
                                 <span style="background: var(--surface-100); color: var(--text-secondary); padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 500;">${criterion.evaluationMethod}</span>
                               </td>
+                              <td style="padding: 10px 12px; border-bottom: 1px solid var(--surface-100);">
+                                ${hasLinks ? `
+                                  <div style="display: flex; flex-wrap: wrap; gap: 3px; align-items: center;">
+                                    ${linkedForms.slice(0, 2).map(link => `
+                                      <span style="background: var(--info-50); color: var(--info-600); padding: 2px 5px; border-radius: 3px; font-size: 9px; font-weight: 500;">
+                                        ${link.formName}
+                                      </span>
+                                    `).join('')}
+                                    ${linkedForms.length > 2 ? `<span style="font-size: 9px; color: var(--text-muted);">+${linkedForms.length - 2}</span>` : ''}
+                                    <button class="btn-icon-xs" onclick="event.stopPropagation(); openLinkFormsModal('${criterion.id}')" title="Edit links" style="margin-left: 2px; min-width: 18px; height: 18px;">
+                                      <i class="pi pi-pencil" style="font-size: 9px;"></i>
+                                    </button>
+                                  </div>
+                                ` : `
+                                  <button onclick="event.stopPropagation(); openLinkFormsModal('${criterion.id}')" style="font-size: 10px; padding: 3px 6px; color: var(--text-muted); background: none; border: 1px dashed var(--surface-300); border-radius: 4px; cursor: pointer;">
+                                    <i class="pi pi-link" style="margin-right: 3px; font-size: 9px;"></i>Link
+                                  </button>
+                                `}
+                              </td>
                               <td style="padding: 10px 12px; border-bottom: 1px solid var(--surface-100); text-align: center;">
                                 ${isPredefined ? `
-                                  <span style="font-size: 10px; color: var(--text-muted);">System</span>
+                                  <span style="font-size: 9px; color: var(--text-muted);">System</span>
                                 ` : `
-                                  <div style="display: flex; gap: 4px; justify-content: center;">
-                                    <button class="btn-icon-xs" onclick="event.stopPropagation(); openEvaluationCriterionModal('${criterion.id}')" title="Edit">
-                                      <i class="pi pi-pencil"></i>
+                                  <div style="display: flex; gap: 3px; justify-content: center;">
+                                    <button class="btn-icon-xs" onclick="event.stopPropagation(); openEvaluationCriterionModal('${criterion.id}')" title="Edit" style="min-width: 20px; height: 20px;">
+                                      <i class="pi pi-pencil" style="font-size: 10px;"></i>
                                     </button>
-                                    <button class="btn-icon-xs danger" onclick="event.stopPropagation(); removeEvaluationCriterion('${criterion.id}')" title="Remove">
-                                      <i class="pi pi-trash"></i>
+                                    <button class="btn-icon-xs danger" onclick="event.stopPropagation(); removeEvaluationCriterion('${criterion.id}')" title="Remove" style="min-width: 20px; height: 20px;">
+                                      <i class="pi pi-trash" style="font-size: 10px;"></i>
                                     </button>
                                   </div>
                                 `}
@@ -20351,7 +21276,7 @@
                   
                   <div style="font-size: 11px; color: var(--text-muted); margin-top: 8px; display: flex; align-items: center; gap: 4px;">
                     <i class="pi pi-info-circle"></i> 
-                    Predefined criteria (System) are always included. Custom criteria can be edited or removed.
+                    Link criteria to forms to specify where suppliers provide information for evaluation.
                   </div>
                 </div>
               </div>
@@ -23199,6 +24124,19 @@
       </div>
     </div>
 
+    <!-- Link Forms to Criterion Modal -->
+    <div class="req-modal" id="link-forms-modal" onclick="if(event.target === this) closeLinkFormsModal()">
+      <div class="req-modal-content" style="max-width: 500px;">
+        <div class="req-modal-header">
+          <span class="req-modal-title"><i class="pi pi-link" style="margin-right: 8px;"></i><span id="link-forms-modal-title">Link Forms</span></span>
+          <button class="modal-close-btn" onclick="closeLinkFormsModal()">✕</button>
+        </div>
+        <div class="req-modal-body" id="link-forms-modal-body" style="padding: var(--spacing-lg);">
+          <!-- Content will be dynamically generated -->
+        </div>
+      </div>
+    </div>
+
     <!-- Evaluation Criteria Library Modal -->
     <div class="req-modal" id="eval-criteria-library-modal" onclick="if(event.target === this) closeCriteriaLibraryModal()">
       <div class="req-modal-content" style="max-width: 700px;">
@@ -23215,13 +24153,10 @@
           <!-- Filter Buttons -->
           <div class="criteria-library-filters">
             <button class="criteria-filter-btn active" onclick="filterCriteriaByCategory('all', this)">All</button>
-            <button class="criteria-filter-btn" onclick="filterCriteriaByCategory('Quality', this)">Quality</button>
-            <button class="criteria-filter-btn" onclick="filterCriteriaByCategory('Financial', this)">Financial</button>
-            <button class="criteria-filter-btn" onclick="filterCriteriaByCategory('Experience', this)">Experience</button>
+            <button class="criteria-filter-btn" onclick="filterCriteriaByCategory('Eligibility & Formal', this)">Eligibility & Formal</button>
+            <button class="criteria-filter-btn" onclick="filterCriteriaByCategory('Qualification', this)">Qualification</button>
             <button class="criteria-filter-btn" onclick="filterCriteriaByCategory('Technical', this)">Technical</button>
-            <button class="criteria-filter-btn" onclick="filterCriteriaByCategory('Human Resources', this)">HR</button>
-            <button class="criteria-filter-btn" onclick="filterCriteriaByCategory('Sustainability', this)">Sustainability</button>
-            <button class="criteria-filter-btn" onclick="filterCriteriaByCategory('Capacity', this)">Capacity</button>
+            <button class="criteria-filter-btn" onclick="filterCriteriaByCategory('Financial', this)">Financial</button>
           </div>
           
           <!-- Criteria Grid -->
