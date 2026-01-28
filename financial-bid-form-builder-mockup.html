@@ -1,0 +1,2013 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UNOPS PDJ · Financial Bid Form Builder</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/primeicons@6.0.1/primeicons.css" />
+    <style>
+      :root {
+        --primary-50: #e6f7ff;
+        --primary-100: #bae7ff;
+        --primary-200: #7dd3fc;
+        --primary-300: #38bdf8;
+        --primary-400: #0ea5e9;
+        --primary-500: #0092D1;
+        --primary-600: #0284c7;
+        --primary-700: #0369a1;
+        --primary-800: #003a56;
+        --primary-900: #001d2b;
+
+        --surface-0: #ffffff;
+        --surface-50: #f5f8fb;
+        --surface-100: #ebf1f8;
+        --surface-200: #dde8f2;
+        --surface-300: #cfdfec;
+        --surface-400: #a3a3a3;
+        --surface-600: #95a7ba;
+        --surface-800: #596170;
+        --surface-900: #3b3e4a;
+
+        --success-50: #d2e7cd;
+        --success-100: #e8f5e9;
+        --success-500: #4c9f38;
+        --success-600: #4c9f38;
+        
+        --info-50: #bfe4f4;
+        --info-100: #e3f2fd;
+        --info-400: #0092d1;
+        --info-500: #2196f3;
+        --info-600: #2563eb;
+        
+        --warning-50: #f9d6c3;
+        --warning-100: #fff3e0;
+        --warning-500: #e85c0e;
+        --warning-600: #d97706;
+        
+        --danger-50: #f6cac6;
+        --danger-100: #fee2e2;
+        --danger-500: #da291c;
+        --danger-600: #dc2626;
+
+        --purple-50: #f3e8ff;
+        --purple-100: #e9d5ff;
+        --purple-500: #9333ea;
+        --purple-700: #7c3aed;
+
+        --text-primary: var(--surface-900);
+        --text-secondary: var(--surface-800);
+        --text-muted: var(--surface-600);
+
+        --spacing-xs: 6px;
+        --spacing-sm: 12px;
+        --spacing-md: 20px;
+        --spacing-lg: 28px;
+        --spacing-xl: 36px;
+
+        --radius-sm: 4px;
+        --radius-md: 6px;
+        --radius-lg: 8px;
+        --radius-xl: 16px;
+
+        --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+        --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.08);
+        --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+        --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+      }
+
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+
+      body {
+        font-family: 'Lato', 'Noto Sans', system-ui, sans-serif;
+        background: var(--surface-50);
+        color: var(--text-primary);
+        line-height: 1.5;
+        min-height: 100vh;
+      }
+
+      /* ===== HEADER ===== */
+      .header {
+        background: var(--surface-0);
+        border-bottom: 1px solid var(--surface-200);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .header-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: var(--spacing-md) var(--spacing-xl);
+      }
+
+      .logo-container {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-md);
+      }
+
+      .logo {
+        font-weight: 700;
+        font-size: 20px;
+        letter-spacing: 0.12em;
+        color: var(--primary-400);
+      }
+
+      .portal-badge {
+        background: var(--primary-400);
+        color: white;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 4px 12px;
+        border-radius: 4px;
+        text-transform: uppercase;
+      }
+
+      .header-actions {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-md);
+        margin-left: auto;
+        margin-right: var(--spacing-lg);
+      }
+
+      .header-action-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px;
+        background: transparent;
+        border: none;
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        position: relative;
+      }
+
+      .header-action-btn:hover { background: var(--surface-100); }
+      .header-action-btn i { font-size: 20px; color: var(--text-muted); }
+
+      .notification-badge {
+        position: absolute;
+        top: -4px;
+        right: -4px;
+        background: var(--danger-500);
+        color: white;
+        font-size: 10px;
+        font-weight: 700;
+        min-width: 18px;
+        height: 18px;
+        border-radius: 9px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid white;
+      }
+
+      .user-menu { display: flex; align-items: center; gap: var(--spacing-md); }
+      .user-info { text-align: right; }
+      .user-company { font-size: 12px; color: var(--text-muted); }
+      .user-name { font-size: 14px; font-weight: 500; }
+
+      .user-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--primary-100);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        color: var(--primary-600);
+        cursor: pointer;
+      }
+
+      /* ===== APP CONTAINER ===== */
+      .app-container { display: flex; min-height: calc(100vh - 65px); }
+
+      /* ===== SIDEBAR ===== */
+      .sidebar {
+        width: 300px;
+        min-width: 300px;
+        max-width: 300px;
+        background-color: #0192D1;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        border-right: none;
+        flex-shrink: 0;
+        overflow-y: auto;
+      }
+
+      .sidebar-menu { flex: 1; padding: 16px 0; }
+      .menu-section { margin-bottom: var(--spacing-sm); }
+
+      .menu-section-title {
+        padding: 8px 20px 12px 20px;
+        font-size: 11px;
+        font-weight: 700;
+        color: rgba(255,255,255,0.5);
+        text-transform: uppercase;
+      }
+
+      .menu-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 20px;
+        font-size: 14px;
+        color: white;
+        cursor: pointer;
+        border-left: 3px solid transparent;
+        text-decoration: none;
+      }
+
+      .menu-item:hover { background: rgba(255,255,255,0.1); }
+      .menu-item.active {
+        background: rgba(255,255,255,0.15);
+        border-left-color: white;
+        font-weight: 600;
+      }
+      .menu-item.disabled { opacity: 0.5; cursor: not-allowed; }
+      .menu-item.disabled:hover { background-color: transparent; }
+
+      .menu-icon { font-size: 16px; width: 20px; text-align: center; }
+
+      /* Menu Groups */
+      .menu-group { margin-bottom: var(--spacing-xs); }
+      .menu-group-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 20px;
+        cursor: pointer;
+        transition: background 0.2s;
+        font-size: 14px;
+      }
+      .menu-group-header:hover { background: rgba(255,255,255,0.1); }
+      .menu-group-header span { display: flex; align-items: center; gap: 10px; }
+      .menu-group-header i { font-size: 12px; transition: transform 0.2s; }
+      .menu-group.collapsed .menu-group-header i.pi-chevron-down { transform: rotate(-90deg); }
+      .menu-group.collapsed .menu-group-items { display: none; }
+      .menu-group-items { padding-left: 12px; }
+      .menu-group-items .menu-item {
+        padding: 10px 20px 10px 28px;
+        font-size: 13px;
+        border-left: none;
+      }
+      .menu-group-items .menu-item.active {
+        background: rgba(255,255,255,0.15);
+        border-left: none;
+        border-radius: 0 4px 4px 0;
+        margin-right: 8px;
+      }
+      .menu-divider {
+        height: 1px;
+        background: rgba(255,255,255,0.15);
+        margin: var(--spacing-md) 0;
+      }
+
+      /* ===== MAIN CONTENT ===== */
+      .main-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      /* ===== FORM BUILDER HEADER ===== */
+      .form-builder-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 20px;
+        background: linear-gradient(135deg, #2b659a 0%, #1a4a7a 100%);
+        color: white;
+      }
+
+      .header-left { display: flex; align-items: center; gap: 12px; }
+      .form-label { font-weight: 700; font-size: 15px; }
+      .form-name { font-size: 14px; opacity: 0.9; }
+
+      .form-status-tag {
+        background: rgba(255,255,255,0.2);
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+
+      .header-right { display: flex; align-items: center; gap: 8px; }
+
+      .header-btn {
+        background: rgba(255,255,255,0.15);
+        border: 1px solid rgba(255,255,255,0.3);
+        color: white;
+        padding: 8px 12px;
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+      }
+
+      .header-btn:hover { background: rgba(255,255,255,0.25); }
+      .header-btn.primary { background: white; color: var(--primary-700); font-weight: 600; }
+
+      /* ===== FORM BUILDER LAYOUT ===== */
+      .form-builder-layout { display: flex; flex: 1; overflow: hidden; }
+
+      /* ===== COMPONENT PALETTE ===== */
+      .component-palette {
+        width: 320px;
+        min-width: 320px;
+        background: white;
+        border-right: 1px solid var(--surface-200);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .palette-tabs { display: flex; border-bottom: 2px solid var(--surface-200); }
+
+      .palette-tab {
+        flex: 1;
+        padding: 14px 12px;
+        text-align: center;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-muted);
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -2px;
+        background: var(--surface-50);
+      }
+
+      .palette-tab:hover { color: var(--primary-500); background: white; }
+      .palette-tab.active { color: var(--primary-600); border-bottom-color: var(--primary-500); background: white; }
+
+      .palette-content { flex: 1; overflow-y: auto; padding: 16px; }
+      .component-group { margin-bottom: 20px; }
+
+      .component-group-title {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        margin-bottom: 10px;
+        padding-bottom: 6px;
+        border-bottom: 1px solid var(--surface-200);
+      }
+
+      .component-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-md);
+        margin-bottom: 8px;
+        cursor: grab;
+        background: white;
+        transition: all 0.2s;
+      }
+
+      .component-item:hover {
+        border-color: var(--primary-300);
+        background: var(--primary-50);
+        transform: translateX(4px);
+      }
+
+      .component-item:active { cursor: grabbing; }
+      .component-item.dragging { opacity: 0.5; border-color: var(--primary-500); box-shadow: var(--shadow-md); }
+      .component-item i { font-size: 16px; color: var(--primary-500); width: 24px; text-align: center; }
+      .component-item span { font-size: 13px; color: var(--text-primary); }
+
+      .component-item .component-badge {
+        margin-left: auto;
+        font-size: 9px;
+        padding: 2px 6px;
+        background: var(--surface-100);
+        border-radius: 10px;
+        color: var(--text-muted);
+        white-space: nowrap;
+      }
+
+      .component-badge.level-goods { background: var(--success-100); color: var(--success-600); }
+      .component-badge.level-services { background: var(--info-100); color: var(--info-600); }
+      .component-badge.level-shipment { background: var(--warning-100); color: var(--warning-600); }
+      .component-badge.level-discount { background: var(--purple-100); color: var(--purple-700); }
+
+      /* ===== FORM CANVAS ===== */
+      .form-canvas-container {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        background: var(--surface-50);
+        min-width: 0;
+      }
+
+      .canvas-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 20px;
+        background: white;
+        border-bottom: 1px solid var(--surface-200);
+      }
+
+      .canvas-title { font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+      .canvas-title i { color: var(--primary-500); }
+      .canvas-actions { display: flex; gap: 8px; }
+
+      .canvas-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .canvas-btn.secondary {
+        background: var(--surface-100);
+        border: 1px solid var(--surface-200);
+        color: var(--text-primary);
+      }
+
+      .canvas-btn.secondary:hover { background: var(--surface-200); }
+
+      .form-canvas { flex: 1; overflow-y: auto; padding: 24px; }
+
+      .form-canvas-inner {
+        max-width: 1100px;
+        margin: 0 auto;
+        background: white;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-lg);
+        border: 2px dashed var(--surface-300);
+        min-height: 700px;
+        transition: border-color 0.2s;
+      }
+
+      /* Form Header */
+      .form-header-section {
+        background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-700) 100%);
+        color: white;
+        padding: 24px;
+        border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      }
+
+      .form-header-title {
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .form-header-desc { font-size: 14px; opacity: 0.9; }
+
+      /* Section */
+      .form-section {
+        padding: 20px 24px;
+        border-bottom: 1px solid var(--surface-200);
+      }
+
+      .form-section:last-child { border-bottom: none; }
+
+      .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+      }
+
+      .section-title {
+        font-size: 16px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .section-title i { font-size: 18px; }
+      .section-title.goods i { color: var(--success-500); }
+      .section-title.services i { color: var(--info-500); }
+      .section-title.shipment i { color: var(--warning-500); }
+      .section-title.discount i { color: var(--purple-500); }
+
+      .section-actions { display: flex; gap: 8px; }
+
+      .section-btn {
+        padding: 6px 12px;
+        font-size: 11px;
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        background: var(--surface-100);
+        border: 1px solid var(--surface-200);
+        color: var(--text-secondary);
+      }
+
+      .section-btn:hover { background: var(--surface-200); border-color: var(--surface-300); }
+      .section-btn i { font-size: 11px; }
+
+      /* Info Alert */
+      .info-alert {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 12px 14px;
+        background: var(--info-50);
+        border: 1px solid var(--info-100);
+        border-left: 3px solid var(--info-500);
+        border-radius: var(--radius-md);
+        margin-bottom: 16px;
+        font-size: 12px;
+        color: var(--info-600);
+      }
+
+      .info-alert i { font-size: 14px; margin-top: 1px; }
+
+      /* Drop Zone */
+      .column-drop-zone {
+        border: 2px dashed var(--surface-300);
+        border-radius: var(--radius-md);
+        padding: 12px 16px;
+        text-align: center;
+        color: var(--text-muted);
+        font-size: 12px;
+        margin-bottom: 12px;
+        transition: all 0.2s;
+        cursor: pointer;
+      }
+
+      .column-drop-zone:hover,
+      .column-drop-zone.drag-over {
+        border-color: var(--primary-400);
+        background: var(--primary-50);
+        color: var(--primary-600);
+      }
+
+      .column-drop-zone i { margin-right: 6px; }
+
+      /* Financial Table */
+      .financial-table-wrapper {
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-md);
+        overflow-x: auto;
+      }
+
+      .financial-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+        min-width: 800px;
+      }
+
+      .financial-table th {
+        background: var(--surface-100);
+        padding: 12px 10px;
+        text-align: left;
+        font-weight: 600;
+        border-bottom: 2px solid var(--surface-200);
+        font-size: 11px;
+        color: var(--text-secondary);
+      }
+
+      .financial-table th.col-fixed { background: var(--surface-50); }
+      .financial-table th.col-number { width: 40px; text-align: center; }
+      .financial-table th.col-field { cursor: pointer; transition: all 0.2s; min-width: 100px; position: relative; }
+      .financial-table th.col-field:hover { background: var(--surface-200); }
+      .financial-table th.col-field.selected { background: var(--primary-100); box-shadow: inset 0 -3px 0 var(--primary-500); }
+
+      .financial-table th.col-add {
+        width: 40px;
+        text-align: center;
+        cursor: pointer;
+        background: var(--surface-50);
+        transition: all 0.2s;
+      }
+      .financial-table th.col-add:hover { background: var(--primary-50); }
+      .financial-table th.col-add i { font-size: 14px; color: var(--primary-500); }
+
+      .financial-table td {
+        padding: 10px;
+        border-bottom: 1px solid var(--surface-100);
+        vertical-align: middle;
+      }
+
+      .financial-table tr:last-child td { border-bottom: none; }
+      .financial-table tr:hover { background: var(--surface-50); }
+
+      .financial-table .prefilled {
+        background: var(--surface-50);
+        font-weight: 500;
+      }
+
+      .financial-table .calculated {
+        background: var(--success-50);
+        font-weight: 600;
+        color: var(--success-600);
+        text-align: right;
+      }
+
+      .financial-table .total-row {
+        background: var(--surface-100);
+        font-weight: 600;
+      }
+
+      .financial-table .total-row td { border-top: 2px solid var(--surface-200); }
+
+      .lot-badge {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 10px;
+        font-size: 10px;
+        font-weight: 600;
+      }
+
+      .lot-badge.lot1 { background: var(--primary-100); color: var(--primary-700); }
+      .lot-badge.lot2 { background: var(--success-100); color: var(--success-600); }
+
+      /* Cell Preview */
+      .cell-preview {
+        padding: 6px 10px;
+        background: white;
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-sm);
+        font-size: 11px;
+        color: var(--text-muted);
+        font-style: italic;
+      }
+
+      .cell-preview.number { text-align: right; }
+
+      /* Column Header Content */
+      .col-header-content { padding: 2px 0; }
+      .col-name { display: block; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; font-size: 11px; }
+      .col-badge {
+        display: inline-block;
+        font-size: 8px;
+        padding: 2px 5px;
+        border-radius: 8px;
+        font-weight: 500;
+      }
+      .col-badge.predefined { background: var(--success-100); color: var(--success-600); }
+      .col-badge.custom { background: var(--info-100); color: var(--info-600); }
+
+      .col-actions {
+        display: flex;
+        gap: 4px;
+        padding-top: 6px;
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+
+      .financial-table th.col-field:hover .col-actions,
+      .financial-table th.col-field.selected .col-actions {
+        opacity: 1;
+      }
+
+      .col-action-btn {
+        width: 20px;
+        height: 20px;
+        border-radius: var(--radius-sm);
+        border: none;
+        background: white;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .col-action-btn:hover { background: var(--surface-200); }
+      .col-action-btn.delete:hover { background: var(--danger-100); }
+      .col-action-btn.delete:hover i { color: var(--danger-500); }
+      .col-action-btn i { font-size: 10px; color: var(--text-muted); }
+
+      /* ===== PROPERTIES PANEL ===== */
+      .properties-panel {
+        width: 340px;
+        min-width: 340px;
+        background: white;
+        border-left: 1px solid var(--surface-200);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .properties-header {
+        padding: 16px;
+        border-bottom: 1px solid var(--surface-200);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: var(--surface-50);
+      }
+
+      .properties-title {
+        font-size: 15px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .properties-title i { color: var(--primary-500); }
+
+      .properties-close-btn {
+        width: 28px;
+        height: 28px;
+        border-radius: var(--radius-sm);
+        border: none;
+        background: var(--surface-200);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .properties-close-btn:hover { background: var(--surface-300); }
+
+      .properties-content { flex: 1; overflow-y: auto; padding: 16px; }
+
+      .no-selection { text-align: center; padding: 40px 20px; color: var(--text-muted); }
+      .no-selection i { font-size: 48px; margin-bottom: 16px; opacity: 0.5; }
+      .no-selection h4 { font-size: 16px; margin-bottom: 8px; color: var(--text-primary); }
+      .no-selection p { font-size: 13px; line-height: 1.5; }
+
+      .property-group { margin-bottom: 20px; }
+
+      .property-group-title {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        margin-bottom: 12px;
+        padding-bottom: 6px;
+        border-bottom: 1px solid var(--surface-200);
+      }
+
+      .property-row { margin-bottom: 14px; }
+
+      .property-label {
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--text-secondary);
+        margin-bottom: 6px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .property-label .required { color: var(--danger-500); }
+
+      .property-input {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-sm);
+        font-size: 13px;
+      }
+
+      .property-input:focus { outline: none; border-color: var(--primary-400); }
+
+      .property-select {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-sm);
+        font-size: 13px;
+        background: white;
+      }
+
+      .property-textarea {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-sm);
+        font-size: 13px;
+        resize: vertical;
+        min-height: 60px;
+      }
+
+      .property-checkbox-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+
+      .property-checkbox-row input[type="checkbox"] { width: 16px; height: 16px; }
+      .property-checkbox-row label { font-size: 13px; cursor: pointer; }
+
+      /* Quick Actions */
+      .quick-actions-buttons { display: flex; flex-direction: column; gap: 8px; }
+
+      .quick-action-btn {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 14px;
+        border-radius: var(--radius-md);
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+        border: 1px solid;
+      }
+
+      .quick-action-btn i { font-size: 16px; }
+      .quick-action-btn.add { background: var(--primary-50); border-color: var(--primary-200); color: var(--primary-700); }
+      .quick-action-btn.add:hover { background: var(--primary-100); border-color: var(--primary-400); }
+      .quick-action-btn.remove { background: var(--surface-50); border-color: var(--surface-200); color: var(--text-secondary); }
+      .quick-action-btn.remove:hover { background: var(--danger-50); border-color: var(--danger-200); color: var(--danger-600); }
+
+      /* Toast */
+      .toast-container {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 2000;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .toast {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 18px;
+        background: white;
+        border-radius: var(--radius-md);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        animation: slideIn 0.3s ease;
+        min-width: 300px;
+      }
+
+      @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+      }
+
+      .toast.success { border-left: 4px solid var(--success-500); }
+
+      .toast-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .toast.success .toast-icon { background: var(--success-100); color: var(--success-600); }
+
+      .toast-content { flex: 1; }
+      .toast-title { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+      .toast-message { font-size: 12px; color: var(--text-muted); }
+      .toast-close { background: none; border: none; color: var(--text-muted); cursor: pointer; }
+
+      /* Drag Preview */
+      .drag-preview {
+        position: fixed;
+        pointer-events: none;
+        z-index: 9999;
+        padding: 10px 16px;
+        background: var(--primary-500);
+        color: white;
+        border-radius: var(--radius-md);
+        font-size: 13px;
+        font-weight: 500;
+        box-shadow: var(--shadow-lg);
+        display: none;
+      }
+
+      .drag-preview.visible { display: flex; align-items: center; gap: 8px; }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="header-top">
+        <div class="logo-container">
+          <span class="logo">UNOPS</span>
+          <span class="portal-badge">Procurement Portal</span>
+        </div>
+        <div class="header-actions">
+          <button class="header-action-btn"><i class="pi pi-search"></i></button>
+          <button class="header-action-btn">
+            <i class="pi pi-bell"></i>
+            <span class="notification-badge">3</span>
+          </button>
+          <button class="header-action-btn"><i class="pi pi-question-circle"></i></button>
+        </div>
+        <div class="user-menu">
+          <div class="user-info">
+            <div class="user-company">UNOPS</div>
+            <div class="user-name">Sarah Mitchell</div>
+          </div>
+          <div class="user-avatar">SM</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- App Container -->
+    <div class="app-container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <nav class="sidebar-menu">
+          <!-- Administrative Applications -->
+          <div class="menu-section">
+            <div class="menu-section-title">Administrative Applications</div>
+            
+            <!-- System Settings -->
+            <div class="menu-group collapsed">
+              <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                <span><i class="pi pi-cog"></i> System Settings</span>
+                <i class="pi pi-chevron-down"></i>
+              </div>
+              <div class="menu-group-items">
+                <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-users"></i></span><span>User Role Management</span></a>
+                <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-id-card"></i></span><span>Role Management</span></a>
+                <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-sliders-h"></i></span><span>Attribute Management</span></a>
+                <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-database"></i></span><span>Data Management</span></a>
+                <a class="menu-item" href="translation-management.html"><span class="menu-icon"><i class="pi pi-language"></i></span><span>Translations</span></a>
+              </div>
+            </div>
+            
+            <!-- Components -->
+            <div class="menu-group collapsed">
+              <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                <span><i class="pi pi-box"></i> Components</span>
+                <i class="pi pi-chevron-down"></i>
+              </div>
+              <div class="menu-group-items">
+                <a class="menu-item"><span class="menu-icon"><i class="pi pi-list"></i></span><span>Evaluation Criteria Library</span></a>
+                <a class="menu-item"><span class="menu-icon"><i class="pi pi-cog"></i></span><span>Specifications Library</span></a>
+              </div>
+            </div>
+            
+            <!-- Forms -->
+            <div class="menu-group">
+              <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                <span><i class="pi pi-file-edit"></i> Forms</span>
+                <i class="pi pi-chevron-down"></i>
+              </div>
+              <div class="menu-group-items">
+                <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-folder"></i></span><span>Forms Library</span></a>
+                <a class="menu-item active"><span class="menu-icon"><i class="pi pi-pencil"></i></span><span>Form Builder</span></a>
+              </div>
+            </div>
+            
+            <!-- Processes -->
+            <div class="menu-group collapsed">
+              <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                <span><i class="pi pi-sitemap"></i> Processes</span>
+                <i class="pi pi-chevron-down"></i>
+              </div>
+              <div class="menu-group-items">
+                <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-list"></i></span><span>Process Library</span></a>
+              </div>
+            </div>
+            
+            <!-- Templates -->
+            <div class="menu-group collapsed">
+              <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                <span><i class="pi pi-copy"></i> Templates</span>
+                <i class="pi pi-chevron-down"></i>
+              </div>
+              <div class="menu-group-items">
+                <a class="menu-item" href="template-library.html"><span class="menu-icon"><i class="pi pi-folder"></i></span><span>Templates Library</span></a>
+                <a class="menu-item" href="template-builder-workspace.html"><span class="menu-icon"><i class="pi pi-pencil"></i></span><span>Template Builder</span></a>
+              </div>
+            </div>
+          </div>
+          
+          <div class="menu-divider"></div>
+          
+          <!-- Business Applications -->
+          <div class="menu-section">
+            <div class="menu-section-title">Business Applications</div>
+            
+            <!-- eTendering -->
+            <div class="menu-group collapsed">
+              <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                <span><i class="pi pi-briefcase"></i> eTendering</span>
+                <i class="pi pi-chevron-down"></i>
+              </div>
+              <div class="menu-group-items">
+                <a class="menu-item"><span class="menu-icon"><i class="pi pi-chart-bar"></i></span><span>Overview</span></a>
+                <a class="menu-item"><span class="menu-icon"><i class="pi pi-folder-open"></i></span><span>Tenders</span></a>
+                <a class="menu-item"><span class="menu-icon"><i class="pi pi-plus"></i></span><span>Create Tender</span></a>
+              </div>
+            </div>
+            
+            <!-- Award & Review -->
+            <div class="menu-group collapsed">
+              <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                <span><i class="pi pi-check-square"></i> Award & Review</span>
+                <i class="pi pi-chevron-down"></i>
+              </div>
+              <div class="menu-group-items">
+                <a class="menu-item"><span class="menu-icon"><i class="pi pi-chart-bar"></i></span><span>Overview</span></a>
+                <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-folder"></i></span><span>Cases</span></a>
+              </div>
+            </div>
+            
+            <!-- DRiVE -->
+            <div class="menu-group collapsed">
+              <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                <span><i class="pi pi-shield"></i> DRiVE</span>
+                <i class="pi pi-chevron-down"></i>
+              </div>
+              <div class="menu-group-items">
+                <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-chart-bar"></i></span><span>Overview</span></a>
+              </div>
+            </div>
+            
+            <!-- Contracts -->
+            <div class="menu-group collapsed">
+              <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                <span><i class="pi pi-file"></i> Contracts</span>
+                <i class="pi pi-chevron-down"></i>
+              </div>
+              <div class="menu-group-items">
+                <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-list"></i></span><span>Contract Management</span></a>
+              </div>
+            </div>
+            
+            <!-- Supplier Management -->
+            <div class="menu-group collapsed">
+              <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                <span><i class="pi pi-truck"></i> Supplier Management</span>
+                <i class="pi pi-chevron-down"></i>
+              </div>
+              <div class="menu-group-items">
+                <a class="menu-item"><span class="menu-icon"><i class="pi pi-building"></i></span><span>Suppliers</span></a>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Form Builder Header -->
+        <div class="form-builder-header">
+          <div class="header-left">
+            <span class="form-label">Form Builder |</span>
+            <span class="form-name">Financial Bid - RFQ-2025-001</span>
+            <span class="form-status-tag">Draft</span>
+          </div>
+          <div class="header-right">
+            <button class="header-btn"><i class="pi pi-eye"></i> Preview</button>
+            <button class="header-btn"><i class="pi pi-cog"></i> Properties</button>
+            <button class="header-btn"><i class="pi pi-ellipsis-v"></i></button>
+            <button class="header-btn primary"><i class="pi pi-save"></i> Save</button>
+          </div>
+        </div>
+
+        <!-- Form Builder Layout -->
+        <div class="form-builder-layout">
+          <!-- Component Palette -->
+          <aside class="component-palette">
+            <div class="palette-tabs">
+              <div class="palette-tab" onclick="switchTab(this, 'custom')">Custom Fields</div>
+              <div class="palette-tab active" onclick="switchTab(this, 'predefined')">Predefined Fields</div>
+            </div>
+            
+            <div class="palette-content" id="predefined-tab">
+              <!-- All Predefined Fields -->
+              <div class="component-item" draggable="true" data-type="number" data-name="Unit Price FCA" data-level="goods">
+                <span>Unit Price FCA</span><span class="component-badge level-goods">Goods Level</span>
+              </div>
+              <div class="component-item" draggable="true" data-type="number" data-name="Unit Price CPT" data-level="goods">
+                <span>Unit Price CPT</span><span class="component-badge level-goods">Goods Level</span>
+              </div>
+              <div class="component-item" draggable="true" data-type="number" data-name="Unit Price DPU" data-level="goods">
+                <span>Unit Price DPU</span><span class="component-badge level-goods">Goods Level</span>
+              </div>
+              <div class="component-item" draggable="true" data-type="number" data-name="Total Price" data-level="services">
+                <span>Total Price</span><span class="component-badge level-services">Services Level</span>
+              </div>
+              <div class="component-item" draggable="true" data-type="text" data-name="FCA Point of Delivery" data-level="shipment">
+                <span>FCA Point of Delivery</span><span class="component-badge level-shipment">Shipment Level</span>
+              </div>
+              <div class="component-item" draggable="true" data-type="text" data-name="Shipment Dimensions" data-level="shipment">
+                <span>Shipment Dimensions</span><span class="component-badge level-shipment">Shipment Level</span>
+              </div>
+              <div class="component-item" draggable="true" data-type="text" data-name="Gross Weight" data-level="shipment">
+                <span>Gross Weight</span><span class="component-badge level-shipment">Shipment Level</span>
+              </div>
+              <div class="component-item" draggable="true" data-type="number" data-name="Number of Containers" data-level="shipment">
+                <span>Number of Containers</span><span class="component-badge level-shipment">Shipment Level</span>
+              </div>
+              <div class="component-item" draggable="true" data-type="text" data-name="Container Size" data-level="shipment">
+                <span>Container Size</span><span class="component-badge level-shipment">Shipment Level</span>
+              </div>
+              <div class="component-item" draggable="true" data-type="text" data-name="Total Volume" data-level="shipment">
+                <span>Total Volume</span><span class="component-badge level-shipment">Shipment Level</span>
+              </div>
+              <div class="component-item" draggable="true" data-type="select" data-name="Discount Type" data-level="discount">
+                <span>Discount Type</span><span class="component-badge level-discount">Discount Level</span>
+              </div>
+              <div class="component-item" draggable="true" data-type="textarea" data-name="Discount Description" data-level="discount">
+                <span>Discount Description</span><span class="component-badge level-discount">Discount Level</span>
+              </div>
+              <div class="component-item" draggable="true" data-type="select" data-name="Apply To" data-level="discount">
+                <span>Apply To</span><span class="component-badge level-discount">Discount Level</span>
+              </div>
+              <div class="component-item" draggable="true" data-type="number" data-name="Discount %" data-level="discount">
+                <span>Discount %</span><span class="component-badge level-discount">Discount Level</span>
+              </div>
+              <div class="component-item" draggable="true" data-type="number" data-name="Discount Amount" data-level="discount">
+                <span>Discount Amount</span><span class="component-badge level-discount">Discount Level</span>
+              </div>
+            </div>
+            
+            <div class="palette-content" id="custom-tab" style="display: none;">
+              <!-- Fields -->
+              <div class="component-group">
+                <div class="component-group-title">Fields</div>
+                <div class="component-item" draggable="true" data-type="text" data-name="Single Line Text">
+                  <i class="pi pi-minus"></i><span>Single Line Text</span>
+                </div>
+                <div class="component-item" draggable="true" data-type="integer" data-name="Integer">
+                  <i class="pi pi-hashtag"></i><span>Integer</span>
+                </div>
+                <div class="component-item" draggable="true" data-type="number" data-name="Number">
+                  <i class="pi pi-calculator"></i><span>Number</span>
+                </div>
+                <div class="component-item" draggable="true" data-type="datetime" data-name="DateTime">
+                  <i class="pi pi-calendar-times"></i><span>DateTime</span>
+                </div>
+                <div class="component-item" draggable="true" data-type="textarea" data-name="Multi-line Text">
+                  <i class="pi pi-align-left"></i><span>Multi-line Text</span>
+                </div>
+                <div class="component-item" draggable="true" data-type="checkbox" data-name="Checkbox">
+                  <i class="pi pi-check-square"></i><span>Checkbox</span>
+                </div>
+                <div class="component-item" draggable="true" data-type="select" data-name="Single Select List">
+                  <i class="pi pi-list"></i><span>Single Select List</span>
+                </div>
+                <div class="component-item" draggable="true" data-type="multiselect" data-name="Multi-Select List">
+                  <i class="pi pi-check-circle"></i><span>Multi-Select List</span>
+                </div>
+                <div class="component-item" draggable="true" data-type="richtext" data-name="Rich Text">
+                  <i class="pi pi-file-edit"></i><span>Rich Text</span>
+                </div>
+                <div class="component-item" draggable="true" data-type="file" data-name="File Upload">
+                  <i class="pi pi-upload"></i><span>File Upload</span>
+                </div>
+              </div>
+              
+              <!-- Display -->
+              <div class="component-group">
+                <div class="component-group-title">Display</div>
+                <div class="component-item" draggable="true" data-type="static-image" data-name="Static Image">
+                  <i class="pi pi-image"></i><span>Static Image</span>
+                </div>
+                <div class="component-item" draggable="true" data-type="static-text" data-name="Static Text">
+                  <i class="pi pi-info-circle"></i><span>Static Text</span>
+                </div>
+              </div>
+              
+              <!-- Data -->
+              <div class="component-group">
+                <div class="component-group-title">Data</div>
+                <div class="component-item" draggable="true" data-type="table" data-name="Table">
+                  <i class="pi pi-table"></i><span>Table</span>
+                </div>
+                <div class="component-item" draggable="true" data-type="matrix" data-name="Matrix">
+                  <i class="pi pi-th-large"></i><span>Matrix</span>
+                </div>
+              </div>
+            </div>
+          </aside>
+
+          <!-- Form Canvas -->
+          <div class="form-canvas-container">
+            <div class="canvas-toolbar">
+              <div class="canvas-title"><i class="pi pi-file-edit"></i>Form Canvas</div>
+              <div class="canvas-actions">
+                <button class="canvas-btn secondary"><i class="pi pi-undo"></i> Undo</button>
+                <button class="canvas-btn secondary"><i class="pi pi-refresh"></i> Redo</button>
+              </div>
+            </div>
+            
+            <div class="form-canvas">
+              <div class="form-canvas-inner" id="form-canvas">
+                <div class="form-header-section">
+                  <h1 class="form-header-title"><i class="pi pi-dollar"></i>Financial Bid Form</h1>
+                  <p class="form-header-desc">Provide pricing information for all products and services.</p>
+                </div>
+
+                <!-- Section 1: Prices for Goods -->
+                <div class="form-section" id="goods-section">
+                  <div class="section-header">
+                    <div class="section-title goods"><i class="pi pi-shopping-cart"></i>Prices for Items</div>
+                  </div>
+                  
+                  <div class="column-drop-zone" data-level="goods">
+                    <i class="pi pi-plus-circle"></i>Drag fields here to add new columns
+                  </div>
+                  
+                  <div class="financial-table-wrapper">
+                    <table class="financial-table" id="goods-table">
+                      <thead>
+                        <tr>
+                          <th class="col-fixed col-number">#</th>
+                          <th class="col-fixed" style="min-width: 180px;">Item Description</th>
+                          <th class="col-fixed" style="min-width: 70px;">Lot</th>
+                          <th class="col-fixed" style="min-width: 50px;">Qty</th>
+                          <th class="col-fixed" style="min-width: 80px;">Currency</th>
+                          <th class="col-field" data-col-id="price-fca" onclick="selectColumn(this, 'price-fca')">
+                            <div class="col-header-content">
+                              <span class="col-name">Unit Price FCA</span>
+                              <span class="col-badge predefined">Predefined</span>
+                            </div>
+                            <div class="col-actions">
+                              <button class="col-action-btn" title="Edit"><i class="pi pi-pencil"></i></button>
+                              <button class="col-action-btn delete" title="Remove"><i class="pi pi-trash"></i></button>
+                            </div>
+                          </th>
+                          <th class="col-field" data-col-id="price-cpt" onclick="selectColumn(this, 'price-cpt')">
+                            <div class="col-header-content">
+                              <span class="col-name">Unit Price CPT</span>
+                              <span class="col-badge predefined">Predefined</span>
+                            </div>
+                            <div class="col-actions">
+                              <button class="col-action-btn" title="Edit"><i class="pi pi-pencil"></i></button>
+                              <button class="col-action-btn delete" title="Remove"><i class="pi pi-trash"></i></button>
+                            </div>
+                          </th>
+                          <th class="col-field" data-col-id="price-dpu" onclick="selectColumn(this, 'price-dpu')">
+                            <div class="col-header-content">
+                              <span class="col-name">Unit Price DPU</span>
+                              <span class="col-badge predefined">Predefined</span>
+                            </div>
+                            <div class="col-actions">
+                              <button class="col-action-btn" title="Edit"><i class="pi pi-pencil"></i></button>
+                              <button class="col-action-btn delete" title="Remove"><i class="pi pi-trash"></i></button>
+                            </div>
+                          </th>
+                          <th class="col-add" title="Add Column"><i class="pi pi-plus"></i></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td class="prefilled" style="text-align: center; font-weight: 600;">1</td>
+                          <td class="prefilled"><strong>Ultrasound Machines</strong><div style="font-size: 10px; color: var(--text-muted);">UNSPSC: 42182104</div></td>
+                          <td class="prefilled" style="text-align: center;"><span class="lot-badge lot1">Lot 1</span></td>
+                          <td class="prefilled" style="text-align: center; font-weight: 600;">5</td>
+                          <td class="prefilled" style="text-align: center;">USD</td>
+                          <td><div class="cell-preview number">0.00</div></td>
+                          <td><div class="cell-preview number">0.00</div></td>
+                          <td><div class="cell-preview number">0.00</div></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td class="prefilled" style="text-align: center; font-weight: 600;">2</td>
+                          <td class="prefilled"><strong>Patient Monitors</strong><div style="font-size: 10px; color: var(--text-muted);">UNSPSC: 42182108</div></td>
+                          <td class="prefilled" style="text-align: center;"><span class="lot-badge lot1">Lot 1</span></td>
+                          <td class="prefilled" style="text-align: center; font-weight: 600;">20</td>
+                          <td class="prefilled" style="text-align: center;">USD</td>
+                          <td><div class="cell-preview number">0.00</div></td>
+                          <td><div class="cell-preview number">0.00</div></td>
+                          <td><div class="cell-preview number">0.00</div></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td class="prefilled" style="text-align: center; font-weight: 600;">3</td>
+                          <td class="prefilled"><strong>Surgical Lights</strong><div style="font-size: 10px; color: var(--text-muted);">UNSPSC: 42192201</div></td>
+                          <td class="prefilled" style="text-align: center;"><span class="lot-badge lot2">Lot 2</span></td>
+                          <td class="prefilled" style="text-align: center; font-weight: 600;">8</td>
+                          <td class="prefilled" style="text-align: center;">USD</td>
+                          <td><div class="cell-preview number">0.00</div></td>
+                          <td><div class="cell-preview number">0.00</div></td>
+                          <td><div class="cell-preview number">0.00</div></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td class="prefilled" style="text-align: center; font-weight: 600;">4</td>
+                          <td class="prefilled"><strong>Anesthesia Machines</strong><div style="font-size: 10px; color: var(--text-muted);">UNSPSC: 42182101</div></td>
+                          <td class="prefilled" style="text-align: center;"><span class="lot-badge lot2">Lot 2</span></td>
+                          <td class="prefilled" style="text-align: center; font-weight: 600;">3</td>
+                          <td class="prefilled" style="text-align: center;">USD</td>
+                          <td><div class="cell-preview number">0.00</div></td>
+                          <td><div class="cell-preview number">0.00</div></td>
+                          <td><div class="cell-preview number">0.00</div></td>
+                          <td></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <!-- Section 2: Prices for Related Services -->
+                <div class="form-section" id="services-section">
+                  <div class="section-header">
+                    <div class="section-title services"><i class="pi pi-wrench"></i>Prices for Related Services</div>
+                    <div class="section-actions">
+                      <button class="section-btn" onclick="removeSection('services-section')" title="Remove Section"><i class="pi pi-trash"></i> Remove Section</button>
+                    </div>
+                  </div>
+                  
+                  <div class="info-alert">
+                    <i class="pi pi-info-circle"></i>
+                    <span>The price provided for each service will be <strong>split equally</strong> among all products/lots it applies to for evaluation purposes.</span>
+                  </div>
+                  
+                  <div class="column-drop-zone" data-level="services">
+                    <i class="pi pi-plus-circle"></i>Drag fields here to add new columns
+                  </div>
+                  
+                  <div class="financial-table-wrapper">
+                    <table class="financial-table" id="services-table">
+                      <thead>
+                        <tr>
+                          <th class="col-fixed col-number">#</th>
+                          <th class="col-fixed" style="min-width: 200px;">Service Description</th>
+                          <th class="col-fixed" style="min-width: 80px;">Apply To</th>
+                          <th class="col-field" data-col-id="svc-total" onclick="selectColumn(this, 'svc-total')">
+                            <div class="col-header-content">
+                              <span class="col-name">Total Price</span>
+                              <span class="col-badge predefined">Predefined</span>
+                            </div>
+                            <div class="col-actions">
+                              <button class="col-action-btn" title="Edit"><i class="pi pi-pencil"></i></button>
+                              <button class="col-action-btn delete" title="Remove"><i class="pi pi-trash"></i></button>
+                            </div>
+                          </th>
+                          <th class="col-add" title="Add Column"><i class="pi pi-plus"></i></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td class="prefilled" style="text-align: center; font-weight: 600;">1</td>
+                          <td class="prefilled"><strong>Installation and Configuration</strong><div style="font-size: 10px; color: var(--text-muted);">From requirements</div></td>
+                          <td class="prefilled" style="text-align: center;"><span style="background: var(--info-100); color: var(--info-600); padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600;">All Lots</span></td>
+                          <td><div class="cell-preview number">0.00</div></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td class="prefilled" style="text-align: center; font-weight: 600;">2</td>
+                          <td class="prefilled"><strong>Training (3 days)</strong><div style="font-size: 10px; color: var(--text-muted);">From requirements</div></td>
+                          <td class="prefilled" style="text-align: center;"><span class="lot-badge lot1">Lot 1</span></td>
+                          <td><div class="cell-preview number">0.00</div></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td class="prefilled" style="text-align: center; font-weight: 600;">3</td>
+                          <td class="prefilled"><strong>Extended Warranty (2 years)</strong><div style="font-size: 10px; color: var(--text-muted);">From requirements</div></td>
+                          <td class="prefilled" style="text-align: center;"><span class="lot-badge lot2">Lot 2</span></td>
+                          <td><div class="cell-preview number">0.00</div></td>
+                          <td></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <!-- Section 3: Shipment & Delivery Information -->
+                <div class="form-section" id="shipment-section">
+                  <div class="section-header">
+                    <div class="section-title shipment"><i class="pi pi-truck"></i>Shipment & Delivery Information</div>
+                    <div class="section-actions">
+                      <button class="section-btn" onclick="removeSection('shipment-section')" title="Remove Section"><i class="pi pi-trash"></i> Remove Section</button>
+                    </div>
+                  </div>
+                  
+                  <div class="column-drop-zone" data-level="shipment">
+                    <i class="pi pi-plus-circle"></i>Drag fields here to add new columns
+                  </div>
+                  
+                  <div class="financial-table-wrapper">
+                    <table class="financial-table" id="shipment-table">
+                      <thead>
+                        <tr>
+                          <th class="col-fixed" style="min-width: 150px;">Item</th>
+                          <th class="col-field" data-col-id="fca-point" onclick="selectColumn(this, 'fca-point')">
+                            <div class="col-header-content">
+                              <span class="col-name">FCA Point(s)</span>
+                              <span class="col-badge predefined">Predefined</span>
+                            </div>
+                            <div class="col-actions">
+                              <button class="col-action-btn" title="Edit"><i class="pi pi-pencil"></i></button>
+                              <button class="col-action-btn delete" title="Remove"><i class="pi pi-trash"></i></button>
+                            </div>
+                          </th>
+                          <th class="col-field" data-col-id="dimensions" onclick="selectColumn(this, 'dimensions')">
+                            <div class="col-header-content">
+                              <span class="col-name">Shipment Dimensions</span>
+                              <span class="col-badge predefined">Predefined</span>
+                            </div>
+                            <div class="col-actions">
+                              <button class="col-action-btn" title="Edit"><i class="pi pi-pencil"></i></button>
+                              <button class="col-action-btn delete" title="Remove"><i class="pi pi-trash"></i></button>
+                            </div>
+                          </th>
+                          <th class="col-field" data-col-id="weight" onclick="selectColumn(this, 'weight')">
+                            <div class="col-header-content">
+                              <span class="col-name">Gross Weight</span>
+                              <span class="col-badge predefined">Predefined</span>
+                            </div>
+                            <div class="col-actions">
+                              <button class="col-action-btn" title="Edit"><i class="pi pi-pencil"></i></button>
+                              <button class="col-action-btn delete" title="Remove"><i class="pi pi-trash"></i></button>
+                            </div>
+                          </th>
+                          <th class="col-field" data-col-id="containers" onclick="selectColumn(this, 'containers')">
+                            <div class="col-header-content">
+                              <span class="col-name">Containers</span>
+                              <span class="col-badge predefined">Predefined</span>
+                            </div>
+                            <div class="col-actions">
+                              <button class="col-action-btn" title="Edit"><i class="pi pi-pencil"></i></button>
+                              <button class="col-action-btn delete" title="Remove"><i class="pi pi-trash"></i></button>
+                            </div>
+                          </th>
+                          <th class="col-field" data-col-id="volume" onclick="selectColumn(this, 'volume')">
+                            <div class="col-header-content">
+                              <span class="col-name">Total Volume</span>
+                              <span class="col-badge predefined">Predefined</span>
+                            </div>
+                            <div class="col-actions">
+                              <button class="col-action-btn" title="Edit"><i class="pi pi-pencil"></i></button>
+                              <button class="col-action-btn delete" title="Remove"><i class="pi pi-trash"></i></button>
+                            </div>
+                          </th>
+                          <th class="col-fixed" style="width: 40px;"></th>
+                          <th class="col-add" title="Add Column"><i class="pi pi-plus"></i></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td class="prefilled"><strong>Ultrasound Machines</strong><div style="font-size: 10px; color: var(--text-muted);">UNSPSC: 42182104</div></td>
+                          <td><div class="cell-preview">City, Country</div></td>
+                          <td><div class="cell-preview">L×W×H cm</div></td>
+                          <td><div class="cell-preview">kg</div></td>
+                          <td><div class="cell-preview">Number</div></td>
+                          <td><div class="cell-preview">m³</div></td>
+                          <td style="text-align: center;"><button class="col-action-btn delete" title="Remove Item" onclick="removeShipmentRow(this)"><i class="pi pi-trash"></i></button></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td class="prefilled"><strong>Patient Monitors</strong><div style="font-size: 10px; color: var(--text-muted);">UNSPSC: 42182108</div></td>
+                          <td><div class="cell-preview">City, Country</div></td>
+                          <td><div class="cell-preview">L×W×H cm</div></td>
+                          <td><div class="cell-preview">kg</div></td>
+                          <td><div class="cell-preview">Number</div></td>
+                          <td><div class="cell-preview">m³</div></td>
+                          <td style="text-align: center;"><button class="col-action-btn delete" title="Remove Item" onclick="removeShipmentRow(this)"><i class="pi pi-trash"></i></button></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td class="prefilled"><strong>Surgical Lights</strong><div style="font-size: 10px; color: var(--text-muted);">UNSPSC: 42192201</div></td>
+                          <td><div class="cell-preview">City, Country</div></td>
+                          <td><div class="cell-preview">L×W×H cm</div></td>
+                          <td><div class="cell-preview">kg</div></td>
+                          <td><div class="cell-preview">Number</div></td>
+                          <td><div class="cell-preview">m³</div></td>
+                          <td style="text-align: center;"><button class="col-action-btn delete" title="Remove Item" onclick="removeShipmentRow(this)"><i class="pi pi-trash"></i></button></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td class="prefilled"><strong>Anesthesia Machines</strong><div style="font-size: 10px; color: var(--text-muted);">UNSPSC: 42182101</div></td>
+                          <td><div class="cell-preview">City, Country</div></td>
+                          <td><div class="cell-preview">L×W×H cm</div></td>
+                          <td><div class="cell-preview">kg</div></td>
+                          <td><div class="cell-preview">Number</div></td>
+                          <td><div class="cell-preview">m³</div></td>
+                          <td style="text-align: center;"><button class="col-action-btn delete" title="Remove Item" onclick="removeShipmentRow(this)"><i class="pi pi-trash"></i></button></td>
+                          <td></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <!-- Section 4: Discounts Offered -->
+                <div class="form-section" id="discounts-section">
+                  <div class="section-header">
+                    <div class="section-title discount"><i class="pi pi-percentage"></i>Discounts Offered</div>
+                    <div class="section-actions">
+                      <button class="section-btn" onclick="removeSection('discounts-section')" title="Remove Section"><i class="pi pi-trash"></i> Remove Section</button>
+                    </div>
+                  </div>
+                  
+                  <div class="column-drop-zone" data-level="discount">
+                    <i class="pi pi-plus-circle"></i>Drag fields here to add new columns
+                  </div>
+                  
+                  <div class="financial-table-wrapper">
+                    <table class="financial-table" id="discounts-table">
+                      <thead>
+                        <tr>
+                          <th class="col-fixed col-number">#</th>
+                          <th class="col-field" data-col-id="discount-type" onclick="selectColumn(this, 'discount-type')">
+                            <div class="col-header-content">
+                              <span class="col-name">Discount Type</span>
+                              <span class="col-badge predefined">Predefined</span>
+                            </div>
+                            <div class="col-actions">
+                              <button class="col-action-btn" title="Edit"><i class="pi pi-pencil"></i></button>
+                              <button class="col-action-btn delete" title="Remove"><i class="pi pi-trash"></i></button>
+                            </div>
+                          </th>
+                          <th class="col-field" data-col-id="discount-desc" onclick="selectColumn(this, 'discount-desc')">
+                            <div class="col-header-content">
+                              <span class="col-name">Description / Methodology</span>
+                              <span class="col-badge predefined">Predefined</span>
+                            </div>
+                            <div class="col-actions">
+                              <button class="col-action-btn" title="Edit"><i class="pi pi-pencil"></i></button>
+                              <button class="col-action-btn delete" title="Remove"><i class="pi pi-trash"></i></button>
+                            </div>
+                          </th>
+                          <th class="col-field" data-col-id="discount-apply" onclick="selectColumn(this, 'discount-apply')">
+                            <div class="col-header-content">
+                              <span class="col-name">Apply To</span>
+                              <span class="col-badge predefined">Predefined</span>
+                            </div>
+                            <div class="col-actions">
+                              <button class="col-action-btn" title="Edit"><i class="pi pi-pencil"></i></button>
+                              <button class="col-action-btn delete" title="Remove"><i class="pi pi-trash"></i></button>
+                            </div>
+                          </th>
+                          <th class="col-field" data-col-id="discount-pct" onclick="selectColumn(this, 'discount-pct')">
+                            <div class="col-header-content">
+                              <span class="col-name">Discount %</span>
+                              <span class="col-badge predefined">Predefined</span>
+                            </div>
+                            <div class="col-actions">
+                              <button class="col-action-btn" title="Edit"><i class="pi pi-pencil"></i></button>
+                              <button class="col-action-btn delete" title="Remove"><i class="pi pi-trash"></i></button>
+                            </div>
+                          </th>
+                          <th class="col-field" data-col-id="discount-amt" onclick="selectColumn(this, 'discount-amt')">
+                            <div class="col-header-content">
+                              <span class="col-name">Discount Amount</span>
+                              <span class="col-badge predefined">Predefined</span>
+                            </div>
+                            <div class="col-actions">
+                              <button class="col-action-btn" title="Edit"><i class="pi pi-pencil"></i></button>
+                              <button class="col-action-btn delete" title="Remove"><i class="pi pi-trash"></i></button>
+                            </div>
+                          </th>
+                          <th class="col-fixed" style="width: 40px;"></th>
+                          <th class="col-add" title="Add Column"><i class="pi pi-plus"></i></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td style="text-align: center; font-weight: 600;">1</td>
+                          <td><div class="cell-preview">Select type...</div></td>
+                          <td><div class="cell-preview">Describe discount terms...</div></td>
+                          <td><div class="cell-preview">Select...</div></td>
+                          <td><div class="cell-preview number">0</div></td>
+                          <td><div class="cell-preview number">0.00</div></td>
+                          <td style="text-align: center;"><button class="col-action-btn delete" title="Remove Row"><i class="pi pi-trash"></i></button></td>
+                          <td></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  
+                  <div style="font-size: 11px; color: var(--text-muted); margin-top: 10px; display: flex; align-items: center; gap: 6px;">
+                    <i class="pi pi-info-circle"></i>
+                    <span>Add any discounts you are offering. Fill either Discount % or Discount Amount, not both.</span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- Properties Panel -->
+          <aside class="properties-panel" id="properties-panel">
+            <div class="properties-header">
+              <div class="properties-title" id="properties-title"><i class="pi pi-sliders-h"></i>Column Properties</div>
+              <button class="properties-close-btn" onclick="closePropertiesPanel()"><i class="pi pi-times"></i></button>
+            </div>
+            
+            <div class="properties-content" id="properties-content">
+              <!-- No Selection State -->
+              <div class="no-selection" id="no-selection" style="display: none;">
+                <i class="pi pi-info-circle"></i>
+                <h4>No Component Selected</h4>
+                <p>Select a column from the canvas or drag a new field from the palette to view and edit its properties.</p>
+              </div>
+
+              <!-- Field Properties (shown when a field is selected) -->
+              <div id="field-properties">
+                <!-- Field Properties Section -->
+                <div class="property-group">
+                  <div class="property-group-title">Field Properties</div>
+                  
+                  <div class="property-row">
+                    <label class="property-label">Field Name <span class="required">*</span></label>
+                    <input type="text" class="property-input" id="prop-field-name" value="Currency" placeholder="Enter field name">
+                  </div>
+                  
+                  <div class="property-row">
+                    <label class="property-label">Description</label>
+                    <textarea class="property-textarea" id="prop-description" placeholder="Enter field description">Select the currency for pricing</textarea>
+                  </div>
+
+                  <div class="property-row">
+                    <label class="property-label">Field Number</label>
+                    <input type="text" class="property-input" id="prop-field-number" value="FIN-001" placeholder="e.g., FIN-001">
+                  </div>
+
+                  <div class="property-checkbox-row">
+                    <input type="checkbox" id="prop-required" checked>
+                    <label for="prop-required">This field is mandatory</label>
+                  </div>
+
+                  <div class="property-row">
+                    <label class="property-label">Help Text</label>
+                    <textarea class="property-textarea" id="prop-help" placeholder="Enter help text for suppliers">Select the currency you will use for all pricing.</textarea>
+                  </div>
+
+                  <div class="property-row">
+                    <label class="property-label">Placeholder</label>
+                    <input type="text" class="property-input" id="prop-placeholder" value="Select..." placeholder="Enter placeholder text">
+                  </div>
+                </div>
+
+                <!-- Scoring Properties Section -->
+                <div class="property-group">
+                  <div class="property-group-title">Scoring Properties</div>
+                  
+                  <div class="property-checkbox-row">
+                    <input type="checkbox" id="prop-scoring-enabled">
+                    <label for="prop-scoring-enabled">Enable Scoring for this field</label>
+                  </div>
+
+                  <div class="property-row" id="scoring-weight-row" style="display: none;">
+                    <label class="property-label">Field Weight</label>
+                    <input type="number" class="property-input" id="prop-weight" value="0" min="0" max="100" placeholder="Enter weight">
+                  </div>
+                </div>
+
+                <!-- Quick Actions Section -->
+                <div class="property-group">
+                  <div class="property-group-title">Quick Actions</div>
+                  
+                  <div class="quick-actions-buttons">
+                    <button class="quick-action-btn add" onclick="addToAllProducts()">
+                      <i class="pi pi-plus-circle"></i>
+                      <span>Add to all products</span>
+                    </button>
+                    <button class="quick-action-btn remove" onclick="removeFromAllProducts()">
+                      <i class="pi pi-minus-circle"></i>
+                      <span>Remove from all products</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Field Level Section -->
+                <div class="property-group">
+                  <div class="property-group-title">Field Level</div>
+                  <select class="property-select" id="prop-level">
+                    <option value="goods" selected>Goods Level</option>
+                    <option value="services">Services Level</option>
+                    <option value="shipment">Shipment Level</option>
+                    <option value="discount">Discount Level</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </main>
+    </div>
+
+    <!-- Drag Preview -->
+    <div class="drag-preview" id="drag-preview"><i class="pi pi-plus"></i><span></span></div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script>
+      // ===== SIDEBAR MENU GROUP TOGGLE =====
+      function toggleMenuGroup(header) {
+        const group = header.parentElement;
+        group.classList.toggle('collapsed');
+      }
+
+      let selectedColumnId = null;
+
+      // Tab switching
+      function switchTab(tab, tabId) {
+        document.querySelectorAll('.palette-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById('predefined-tab').style.display = tabId === 'predefined' ? 'block' : 'none';
+        document.getElementById('custom-tab').style.display = tabId === 'custom' ? 'block' : 'none';
+      }
+
+      // Drag and Drop
+      document.querySelectorAll('.component-item').forEach(item => {
+        item.addEventListener('dragstart', handleDragStart);
+        item.addEventListener('dragend', handleDragEnd);
+      });
+
+      // Column drop zones
+      document.querySelectorAll('.column-drop-zone').forEach(zone => {
+        zone.addEventListener('dragover', handleDragOver);
+        zone.addEventListener('dragleave', handleDragLeave);
+        zone.addEventListener('drop', handleColumnDrop);
+      });
+
+      function handleDragStart(e) {
+        this.classList.add('dragging');
+        
+        const preview = document.getElementById('drag-preview');
+        preview.querySelector('span').textContent = this.dataset.name;
+        preview.classList.add('visible');
+        
+        e.dataTransfer.effectAllowed = 'copy';
+        e.dataTransfer.setData('text/plain', JSON.stringify({
+          type: this.dataset.type,
+          name: this.dataset.name,
+          level: this.dataset.level || 'goods'
+        }));
+        
+        // Highlight valid drop zones
+        document.querySelectorAll('.column-drop-zone').forEach(zone => {
+          zone.style.borderColor = 'var(--primary-400)';
+        });
+      }
+
+      function handleDragEnd(e) {
+        this.classList.remove('dragging');
+        document.getElementById('drag-preview').classList.remove('visible');
+        
+        document.querySelectorAll('.column-drop-zone').forEach(zone => {
+          zone.classList.remove('drag-over');
+          zone.style.borderColor = '';
+        });
+      }
+
+      function handleDragOver(e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'copy';
+        this.classList.add('drag-over');
+        
+        const preview = document.getElementById('drag-preview');
+        preview.style.left = (e.clientX + 15) + 'px';
+        preview.style.top = (e.clientY + 15) + 'px';
+      }
+
+      function handleDragLeave(e) {
+        this.classList.remove('drag-over');
+      }
+
+      function handleColumnDrop(e) {
+        e.preventDefault();
+        this.classList.remove('drag-over');
+        
+        const data = JSON.parse(e.dataTransfer.getData('text/plain'));
+        const level = this.dataset.level;
+        
+        // Add column to the appropriate table
+        addColumnToTable(data, level);
+        
+        // Show properties panel
+        showColumnPropertiesPanel(data);
+        
+        const sectionName = {
+          'goods': 'Prices for Goods',
+          'services': 'Prices for Related Services',
+          'shipment': 'Shipment & Delivery Information',
+          'discount': 'Discounts Offered'
+        }[level] || level;
+        
+        showToast('Column Added', `"${data.name}" added to ${sectionName} table. Configure in the Properties Panel.`);
+      }
+
+      function addColumnToTable(data, level) {
+        const tableId = {
+          'goods': 'goods-table',
+          'services': 'services-table',
+          'shipment': 'shipment-table',
+          'discount': 'discounts-table'
+        }[level];
+        
+        const table = document.getElementById(tableId);
+        if (!table) return;
+
+        const colId = 'col-' + Date.now();
+        
+        // Add header column (before the + button)
+        const headerRow = table.querySelector('thead tr');
+        const addBtn = headerRow.querySelector('.col-add');
+        
+        const newHeader = document.createElement('th');
+        newHeader.className = 'col-field selected';
+        newHeader.dataset.colId = colId;
+        newHeader.onclick = function() { selectColumn(this, colId); };
+        newHeader.innerHTML = `
+          <div class="col-header-content">
+            <span class="col-name">${data.name}</span>
+            <span class="col-badge custom">Custom</span>
+          </div>
+          <div class="col-actions">
+            <button class="col-action-btn" title="Edit"><i class="pi pi-pencil"></i></button>
+            <button class="col-action-btn delete" title="Remove" onclick="event.stopPropagation(); removeColumn('${colId}')"><i class="pi pi-trash"></i></button>
+          </div>
+        `;
+        
+        headerRow.insertBefore(newHeader, addBtn);
+        
+        // Add cells to each body row
+        const bodyRows = table.querySelectorAll('tbody tr');
+        bodyRows.forEach(row => {
+          if (row.classList.contains('total-row')) {
+            // For total rows, add an empty cell
+            const addCell = row.querySelector('td:last-child');
+            const newCell = document.createElement('td');
+            row.insertBefore(newCell, addCell);
+          } else {
+            // For data rows
+            const lastCell = row.querySelector('td:last-child');
+            const newCell = document.createElement('td');
+            newCell.innerHTML = `<div class="cell-preview">${getPlaceholderForType(data.type)}</div>`;
+            row.insertBefore(newCell, lastCell);
+          }
+        });
+
+        // Deselect other columns and select new one
+        table.querySelectorAll('th.col-field').forEach(th => th.classList.remove('selected'));
+        newHeader.classList.add('selected');
+        selectedColumnId = colId;
+      }
+
+      function getPlaceholderForType(type) {
+        const placeholders = {
+          'text': 'Enter text...',
+          'textarea': 'Enter details...',
+          'number': '0.00',
+          'select': 'Select...',
+          'checkbox': '☐ Yes / No',
+          'date': 'Select date...',
+          'file': '📎 Upload...'
+        };
+        return placeholders[type] || 'Enter value...';
+      }
+
+      function selectColumn(element, colId) {
+        // Deselect all columns in all tables
+        document.querySelectorAll('.financial-table th.col-field').forEach(th => th.classList.remove('selected'));
+        
+        // Select this column
+        element.classList.add('selected');
+        selectedColumnId = colId;
+        
+        // Show properties panel
+        const colName = element.querySelector('.col-name').textContent;
+        showColumnPropertiesPanel({ name: colName, type: 'text' });
+      }
+
+      function showColumnPropertiesPanel(data) {
+        document.getElementById('no-selection').style.display = 'none';
+        document.getElementById('field-properties').style.display = 'block';
+        document.getElementById('prop-field-name').value = data.name;
+      }
+
+      function closePropertiesPanel() {
+        document.getElementById('no-selection').style.display = 'block';
+        document.getElementById('field-properties').style.display = 'none';
+        
+        document.querySelectorAll('.financial-table th.col-field').forEach(th => th.classList.remove('selected'));
+        selectedColumnId = null;
+      }
+
+      function removeColumn(colId) {
+        const header = document.querySelector(`th[data-col-id="${colId}"]`);
+        if (!header) return;
+        
+        const colName = header.querySelector('.col-name').textContent;
+        const table = header.closest('table');
+        const colIndex = Array.from(header.parentNode.children).indexOf(header);
+        
+        header.remove();
+        
+        // Remove cells from each row at the same index
+        table.querySelectorAll('tbody tr').forEach(row => {
+          const cell = row.children[colIndex];
+          if (cell) {
+            cell.remove();
+          }
+        });
+        
+        closePropertiesPanel();
+        showToast('Column Removed', `"${colName}" column has been removed.`);
+      }
+
+      function addDiscountRow() {
+        const tbody = document.querySelector('#discounts-table tbody');
+        const rowCount = tbody.querySelectorAll('tr').length + 1;
+        
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+          <td style="text-align: center; font-weight: 600;">${rowCount}</td>
+          <td><div class="cell-preview">Select type...</div></td>
+          <td><div class="cell-preview">Describe discount terms...</div></td>
+          <td><div class="cell-preview">Select...</div></td>
+          <td><div class="cell-preview number">0</div></td>
+          <td><div class="cell-preview number">0.00</div></td>
+          <td style="text-align: center;"><button class="col-action-btn delete" title="Remove Row" onclick="removeDiscountRow(this)"><i class="pi pi-trash"></i></button></td>
+          <td></td>
+        `;
+        
+        tbody.appendChild(newRow);
+        showToast('Row Added', 'New discount row added to the table.');
+      }
+
+      function removeDiscountRow(btn) {
+        const row = btn.closest('tr');
+        row.remove();
+        
+        // Renumber rows
+        const rows = document.querySelectorAll('#discounts-table tbody tr');
+        rows.forEach((row, index) => {
+          row.cells[0].textContent = index + 1;
+        });
+        
+        showToast('Row Removed', 'Discount row has been removed.');
+      }
+
+      function removeSection(sectionId) {
+        const section = document.getElementById(sectionId);
+        if (!section) return;
+        
+        const sectionNames = {
+          'services-section': 'Prices for Related Services',
+          'shipment-section': 'Shipment & Delivery Information',
+          'discounts-section': 'Discounts Offered'
+        };
+        
+        if (confirm(`Are you sure you want to remove the "${sectionNames[sectionId]}" section?`)) {
+          section.remove();
+          showToast('Section Removed', `"${sectionNames[sectionId]}" section has been removed.`);
+        }
+      }
+
+      function removeShipmentRow(btn) {
+        const row = btn.closest('tr');
+        const itemName = row.querySelector('strong')?.textContent || 'Item';
+        
+        if (confirm(`Are you sure you want to remove "${itemName}" from shipment information?`)) {
+          row.remove();
+          showToast('Item Removed', `"${itemName}" has been removed from shipment information.`);
+        }
+      }
+
+      // Quick Actions
+      function addToAllProducts() {
+        showToast('Field Added', 'Field added to all products');
+      }
+
+      function removeFromAllProducts() {
+        if (confirm('Are you sure you want to remove this field from all products?')) {
+          showToast('Field Removed', 'Field removed from all products');
+        }
+      }
+
+      // Toast
+      function showToast(title, message) {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = 'toast success';
+        toast.innerHTML = `
+          <div class="toast-icon"><i class="pi pi-check"></i></div>
+          <div class="toast-content">
+            <div class="toast-title">${title}</div>
+            <div class="toast-message">${message}</div>
+          </div>
+          <button class="toast-close" onclick="this.parentElement.remove()"><i class="pi pi-times"></i></button>
+        `;
+        container.appendChild(toast);
+        setTimeout(() => toast.remove(), 4000);
+      }
+
+      // Toggle scoring weight visibility
+      document.getElementById('prop-scoring-enabled')?.addEventListener('change', function() {
+        document.getElementById('scoring-weight-row').style.display = this.checked ? 'block' : 'none';
+      });
+    </script>
+  </body>
+</html>
