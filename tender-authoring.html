@@ -8153,10 +8153,44 @@
       /* Criteria Library Modal Styles */
       .criteria-library-grid {
         display: grid;
-        gap: var(--spacing-md);
-        max-height: 400px;
+        grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+        gap: 12px;
+        max-height: 450px;
         overflow-y: auto;
         padding-right: 4px;
+      }
+      
+      .criteria-library-item:hover {
+        border-color: var(--primary-300) !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        transform: translateY(-1px);
+      }
+      
+      .criteria-library-item.selected:hover {
+        border-color: var(--primary-600) !important;
+      }
+      
+      .criteria-filter-btn {
+        border: 1px solid var(--surface-300);
+        background: var(--surface-0);
+        color: var(--text-secondary);
+        padding: 6px 12px;
+        border-radius: var(--radius-sm);
+        font-size: 11px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      
+      .criteria-filter-btn:hover {
+        background: var(--surface-50);
+        border-color: var(--surface-400);
+      }
+      
+      .criteria-filter-btn.active {
+        background: var(--primary-500);
+        color: white;
+        border-color: var(--primary-500);
       }
       
       .criteria-library-item {
@@ -9150,10 +9184,10 @@
               title: 'Evaluation Method',
               fields: [
                 { id: 'evaluationMethod', label: 'Evaluation method', type: 'select', required: true, options: ['Select...', 'Lowest priced substantially compliant offer', 'Lowest priced most technically acceptable offer', 'Cumulative analysis'], onchange: 'updateEvaluationMethodInEvaluation' },
-                { id: 'weightage', label: 'Weightage of technical and financial proposals', type: 'select', required: false, options: ['Select...', '50% technical / 50% financial', '70% technical / 30% financial', '60% technical / 40% financial', '80% technical / 20% financial'], conditionalVisibility: { field: 'evaluationMethod', value: 'Cumulative analysis' } },
+                { id: 'weightage', label: 'Weightage of technical and financial proposals', type: 'select', required: false, options: ['Select...', '50% technical / 50% financial', '60% technical / 40% financial', '70% technical / 30% financial', '80% technical / 20% financial'], conditionalVisibility: { field: 'evaluationMethod', value: 'Cumulative analysis' } },
                 { id: 'minPoints', label: 'Minimum Points for Technical compliance', type: 'number', required: false, value: '', placeholder: 'Range from 40% to 100%', conditionalVisibility: { field: 'evaluationMethod', value: 'Cumulative analysis' } },
-                { id: 'evaluationMethodDetails', label: 'Evaluation method details', type: 'select', required: false, options: ['Select...', 'Standard evaluation', 'Detailed evaluation criteria', 'Other'], onchange: 'updateEvaluationMethodDetailsInEvaluation' },
-                { id: 'evaluationMethodDetailsFreeText', label: 'Evaluation method details – free text', type: 'textarea', required: false, value: '', placeholder: 'Provide detailed evaluation method description...', conditionalVisibility: { field: 'evaluationMethodDetails', value: 'Other' } },
+                { id: 'maxPointsTechnical', label: 'Maximum points for technical evaluation', type: 'number', required: false, value: '', placeholder: 'e.g., 1000', conditionalVisibility: { field: 'evaluationMethod', value: 'Cumulative analysis' } },
+                { id: 'evaluationMethodDetails', label: 'Evaluation method details', type: 'textarea', required: false, value: '', placeholder: 'Evaluation method details will be pre-filled based on solicitation method...', isEvaluationMethodDetails: true },
               ],
             },
             {
@@ -9579,160 +9613,331 @@
       // Legacy field structure for backwards compatibility
       let deliveryRequirementFields = [];
       
-      // Evaluation Criteria Library - Reusable criteria templates
+      // Evaluation Criteria Library - Reusable criteria templates with enhanced fields
       const criteriaLibrary = [
+        // Eligibility & Formal Criteria
+        {
+          id: 'LIB-EF-001',
+          name: 'Legal Entity Registration',
+          criteriaCategory: 'Eligibility & Formal',
+          type: 'Eligibility & Formal',
+          method: 'Pass/Fail',
+          maxPoints: null,
+          description: 'Bidder must be a legally registered entity with valid registration documents.',
+          category: 'Eligibility',
+          sustainableProcurement: [],
+          linkedFormsSuggestion: ['form-compliance']
+        },
+        {
+          id: 'LIB-EF-002',
+          name: 'Tax Compliance Certificate',
+          criteriaCategory: 'Eligibility & Formal',
+          type: 'Eligibility & Formal',
+          method: 'Pass/Fail',
+          maxPoints: null,
+          description: 'Bidder must provide valid tax compliance certificate from relevant tax authority.',
+          category: 'Eligibility',
+          sustainableProcurement: [],
+          linkedFormsSuggestion: ['form-compliance']
+        },
+        // Qualification Criteria
         {
           id: 'LIB-QC-001',
           name: 'ISO 9001 Quality Management Certification',
-          type: 'Qualification criteria',
+          criteriaCategory: 'Qualification',
+          type: 'Qualification',
           method: 'Pass/Fail',
+          maxPoints: null,
           description: 'Bidder must hold valid ISO 9001:2015 Quality Management System certification from an accredited certification body.',
-          category: 'Quality'
+          category: 'Quality',
+          sustainableProcurement: [],
+          linkedFormsSuggestion: ['form-qualification']
         },
         {
           id: 'LIB-QC-002',
           name: 'ISO 14001 Environmental Certification',
-          type: 'Qualification criteria',
+          criteriaCategory: 'Qualification',
+          type: 'Qualification',
           method: 'Pass/Fail',
+          maxPoints: null,
           description: 'Bidder must hold valid ISO 14001:2015 Environmental Management System certification.',
-          category: 'Quality'
+          category: 'Quality',
+          sustainableProcurement: ['Resource Efficiency - Energy efficiency measures'],
+          linkedFormsSuggestion: ['form-qualification', 'form-sustainability']
         },
         {
           id: 'LIB-QC-003',
           name: 'ISO 45001 Occupational Health & Safety',
-          type: 'Qualification criteria',
+          criteriaCategory: 'Qualification',
+          type: 'Qualification',
           method: 'Pass/Fail',
+          maxPoints: null,
           description: 'Bidder must demonstrate compliance with ISO 45001:2018 Occupational Health and Safety Management System.',
-          category: 'Quality'
+          category: 'Quality',
+          sustainableProcurement: ['Health and Safety - Security and safety of workers'],
+          linkedFormsSuggestion: ['form-qualification']
         },
         {
           id: 'LIB-FC-001',
           name: 'Financial Capacity - Annual Turnover',
-          type: 'Qualification criteria',
+          criteriaCategory: 'Qualification',
+          type: 'Qualification',
           method: 'Pass/Fail',
+          maxPoints: null,
           description: 'Bidder must demonstrate average annual turnover of at least [X] USD over the past 3 financial years.',
-          category: 'Financial'
+          category: 'Financial',
+          sustainableProcurement: [],
+          linkedFormsSuggestion: ['form-financial']
         },
         {
           id: 'LIB-FC-002',
           name: 'Financial Capacity - Liquidity Ratio',
-          type: 'Qualification criteria',
+          criteriaCategory: 'Qualification',
+          type: 'Qualification',
           method: 'Pass/Fail',
+          maxPoints: null,
           description: 'Bidder must demonstrate a current ratio (current assets/current liabilities) of at least 1.0.',
-          category: 'Financial'
+          category: 'Financial',
+          sustainableProcurement: [],
+          linkedFormsSuggestion: ['form-financial']
         },
         {
           id: 'LIB-FC-003',
           name: 'Financial Statement Audit',
-          type: 'Qualification criteria',
+          criteriaCategory: 'Qualification',
+          type: 'Qualification',
           method: 'Pass/Fail',
+          maxPoints: null,
           description: 'Bidder must provide audited financial statements for the last 3 years from a recognized audit firm.',
-          category: 'Financial'
+          category: 'Financial',
+          sustainableProcurement: [],
+          linkedFormsSuggestion: ['form-financial']
         },
         {
           id: 'LIB-EX-001',
           name: 'Relevant Project Experience',
-          type: 'Qualification criteria',
-          method: 'Scoring (0-100)',
+          criteriaCategory: 'Qualification',
+          type: 'Qualification',
+          method: 'Numeric',
+          maxPoints: 30,
           description: 'Bidder must demonstrate experience in at least [X] similar projects completed within the last 5 years.',
-          category: 'Experience'
+          category: 'Experience',
+          sustainableProcurement: [],
+          linkedFormsSuggestion: ['form-experience']
         },
         {
           id: 'LIB-EX-002',
           name: 'UN/International Organization Experience',
-          type: 'Qualification criteria',
-          method: 'Scoring (0-100)',
+          criteriaCategory: 'Qualification',
+          type: 'Qualification',
+          method: 'Numeric',
+          maxPoints: 20,
           description: 'Prior experience working with UN agencies or international organizations in similar capacity.',
-          category: 'Experience'
+          category: 'Experience',
+          sustainableProcurement: [],
+          linkedFormsSuggestion: ['form-experience']
         },
         {
           id: 'LIB-EX-003',
           name: 'Regional/Country Experience',
-          type: 'Qualification criteria',
-          method: 'Scoring (0-100)',
+          criteriaCategory: 'Qualification',
+          type: 'Qualification',
+          method: 'Numeric',
+          maxPoints: 15,
           description: 'Demonstrated experience operating in the target region/country for at least [X] years.',
-          category: 'Experience'
+          category: 'Experience',
+          sustainableProcurement: [],
+          linkedFormsSuggestion: ['form-experience']
         },
+        // Technical Criteria
         {
           id: 'LIB-TC-001',
           name: 'Technical Methodology',
-          type: 'Technical criteria',
-          method: 'Scoring (0-100)',
+          criteriaCategory: 'Technical',
+          type: 'Technical',
+          method: 'Numeric',
+          maxPoints: 40,
           description: 'Evaluation of proposed technical approach, methodology and work plan for delivering the required goods/services.',
-          category: 'Technical'
+          category: 'Technical',
+          sustainableProcurement: [],
+          linkedFormsSuggestion: ['form-technical']
         },
         {
           id: 'LIB-TC-002',
           name: 'Quality Assurance Plan',
-          type: 'Technical criteria',
-          method: 'Scoring (0-100)',
+          criteriaCategory: 'Technical',
+          type: 'Technical',
+          method: 'Numeric',
+          maxPoints: 25,
           description: 'Assessment of the proposed quality assurance and quality control measures.',
-          category: 'Technical'
+          category: 'Technical',
+          sustainableProcurement: [],
+          linkedFormsSuggestion: ['form-technical']
         },
         {
           id: 'LIB-TC-003',
           name: 'Risk Management Approach',
-          type: 'Technical criteria',
-          method: 'Scoring (0-100)',
+          criteriaCategory: 'Technical',
+          type: 'Technical',
+          method: 'Numeric',
+          maxPoints: 20,
           description: 'Evaluation of risk identification, mitigation strategies and contingency planning.',
-          category: 'Technical'
+          category: 'Technical',
+          sustainableProcurement: [],
+          linkedFormsSuggestion: ['form-technical']
         },
         {
           id: 'LIB-TC-004',
           name: 'Innovation and Value-Added Services',
-          type: 'Technical criteria',
-          method: 'Scoring (0-100)',
+          criteriaCategory: 'Technical',
+          type: 'Technical',
+          method: 'Numeric',
+          maxPoints: 15,
           description: 'Assessment of innovative solutions, added value and continuous improvement proposals.',
-          category: 'Technical'
+          category: 'Technical',
+          sustainableProcurement: [],
+          linkedFormsSuggestion: ['form-technical']
         },
         {
           id: 'LIB-HR-001',
           name: 'Key Personnel Qualifications',
-          type: 'Technical criteria',
-          method: 'Scoring (0-100)',
+          criteriaCategory: 'Technical',
+          type: 'Technical',
+          method: 'Numeric',
+          maxPoints: 30,
           description: 'Evaluation of qualifications, experience and expertise of proposed key personnel.',
-          category: 'Human Resources'
+          category: 'Human Resources',
+          sustainableProcurement: [],
+          linkedFormsSuggestion: ['form-technical']
         },
         {
           id: 'LIB-HR-002',
           name: 'Team Composition and Structure',
-          type: 'Technical criteria',
-          method: 'Scoring (0-100)',
+          criteriaCategory: 'Technical',
+          type: 'Technical',
+          method: 'Numeric',
+          maxPoints: 20,
           description: 'Assessment of proposed team structure, roles and responsibilities.',
-          category: 'Human Resources'
+          category: 'Human Resources',
+          sustainableProcurement: [],
+          linkedFormsSuggestion: ['form-technical']
         },
         {
           id: 'LIB-SL-001',
           name: 'Past Performance References',
-          type: 'Shortlisting criteria',
+          criteriaCategory: 'Qualification',
+          type: 'Qualification',
           method: 'Pass/Fail',
+          maxPoints: null,
           description: 'Satisfactory references from at least [X] clients for similar contracts completed in the last 5 years.',
-          category: 'Experience'
+          category: 'Experience',
+          sustainableProcurement: [],
+          linkedFormsSuggestion: ['form-experience']
         },
         {
           id: 'LIB-SL-002',
           name: 'Capacity Assessment',
-          type: 'Shortlisting criteria',
+          criteriaCategory: 'Qualification',
+          type: 'Qualification',
           method: 'Pass/Fail',
+          maxPoints: null,
           description: 'Demonstration of adequate capacity (personnel, equipment, facilities) to undertake the assignment.',
-          category: 'Capacity'
+          category: 'Capacity',
+          sustainableProcurement: [],
+          linkedFormsSuggestion: ['form-qualification']
         },
+        // Sustainability Criteria
         {
           id: 'LIB-SU-001',
           name: 'Environmental Sustainability Plan',
-          type: 'Technical criteria',
-          method: 'Scoring (0-100)',
+          criteriaCategory: 'Technical',
+          type: 'Technical',
+          method: 'Numeric',
+          maxPoints: 25,
           description: 'Assessment of environmental sustainability measures, green practices and carbon footprint reduction plans.',
-          category: 'Sustainability'
+          category: 'Sustainability',
+          sustainableProcurement: ['Resource Efficiency - Energy efficiency measures', 'Resource Efficiency - Water conservation and management'],
+          linkedFormsSuggestion: ['form-sustainability']
         },
         {
           id: 'LIB-SU-002',
           name: 'Social Responsibility Commitment',
-          type: 'Technical criteria',
-          method: 'Scoring (0-100)',
+          criteriaCategory: 'Technical',
+          type: 'Technical',
+          method: 'Numeric',
+          maxPoints: 25,
           description: 'Evaluation of social responsibility policies, labor practices and community engagement initiatives.',
-          category: 'Sustainability'
+          category: 'Sustainability',
+          sustainableProcurement: ['Gender and Social Inclusion - Equality opportunity, Diversity and inclusion', 'Labor Standards - Hiring of local labour'],
+          linkedFormsSuggestion: ['form-sustainability']
+        },
+        {
+          id: 'LIB-SU-003',
+          name: 'Gender Equality and Women Empowerment',
+          criteriaCategory: 'Technical',
+          type: 'Technical',
+          method: 'Numeric',
+          maxPoints: 20,
+          description: 'Assessment of gender equality policies, women in leadership positions, and support for women-owned businesses.',
+          category: 'Sustainability',
+          sustainableProcurement: ['Gender and Social Inclusion - Equality opportunity, Diversity and inclusion', 'Gender and Social Inclusion - Gender and social inclusion mainstreaming', 'Gender and Social Inclusion - Labor opportunities for women and/or traditionally disadvantaged groups'],
+          linkedFormsSuggestion: ['form-sustainability']
+        },
+        {
+          id: 'LIB-SU-004',
+          name: 'Youth Employment and Training',
+          criteriaCategory: 'Technical',
+          type: 'Technical',
+          method: 'Numeric',
+          maxPoints: 15,
+          description: 'Evaluation of youth employment programs, apprenticeships, and training opportunities.',
+          category: 'Sustainability',
+          sustainableProcurement: ['Gender and Social Inclusion - Youth inclusion and partnership with youth'],
+          linkedFormsSuggestion: ['form-sustainability']
+        },
+        {
+          id: 'LIB-SU-005',
+          name: 'Labor Standards Compliance',
+          criteriaCategory: 'Qualification',
+          type: 'Qualification',
+          method: 'Pass/Fail',
+          maxPoints: null,
+          description: 'Verification of compliance with international labor standards including no child labor, no forced labor, and fair wages.',
+          category: 'Sustainability',
+          sustainableProcurement: ['Labor Standards - Child Labor', 'Labor Standards - Forced labour and human trafficking', 'Labor Standards - Grievance mechanism'],
+          linkedFormsSuggestion: ['form-compliance', 'form-sustainability']
+        },
+        {
+          id: 'LIB-SU-006',
+          name: 'Health and Safety Management',
+          criteriaCategory: 'Qualification',
+          type: 'Qualification',
+          method: 'Pass/Fail',
+          maxPoints: null,
+          description: 'Assessment of occupational health and safety policies, incident tracking, and emergency preparedness.',
+          category: 'Sustainability',
+          sustainableProcurement: ['Health and Safety - Emergency preparedness', 'Health and Safety - Incidents/accidents tracking system', 'Health and Safety - Security and safety of workers'],
+          linkedFormsSuggestion: ['form-qualification']
         }
+      ];
+      
+      // Sustainable Procurement Categories
+      const sustainableProcurementCategories = [
+        { id: 'sp-gsi-1', category: 'Gender and Social Inclusion', value: 'Equality opportunity, Diversity and inclusion' },
+        { id: 'sp-gsi-2', category: 'Gender and Social Inclusion', value: 'Gender and social inclusion mainstreaming' },
+        { id: 'sp-gsi-3', category: 'Gender and Social Inclusion', value: 'Labor opportunities for women and/or traditionally disadvantaged groups' },
+        { id: 'sp-gsi-4', category: 'Gender and Social Inclusion', value: 'Youth inclusion and partnership with youth' },
+        { id: 'sp-hs-1', category: 'Health and Safety', value: 'Emergency preparedness' },
+        { id: 'sp-hs-2', category: 'Health and Safety', value: 'Incidents/accidents tracking system' },
+        { id: 'sp-hs-3', category: 'Health and Safety', value: 'Security and safety of workers' },
+        { id: 'sp-ls-1', category: 'Labor Standards', value: 'Child Labor' },
+        { id: 'sp-ls-2', category: 'Labor Standards', value: 'Forced labour and human trafficking' },
+        { id: 'sp-ls-3', category: 'Labor Standards', value: 'Grievance mechanism' },
+        { id: 'sp-ls-4', category: 'Labor Standards', value: 'Hiring of local labour' },
+        { id: 'sp-ls-5', category: 'Labor Standards', value: 'Labor risks along the supply chain' },
+        { id: 'sp-ls-6', category: 'Labor Standards', value: 'Suppliers and Contractors selection and management' },
+        { id: 'sp-re-1', category: 'Resource Efficiency', value: 'Energy efficiency measures' },
+        { id: 'sp-re-2', category: 'Resource Efficiency', value: 'Water conservation and management' }
       ];
       
       // Evaluation Criteria
@@ -9740,83 +9945,118 @@
       let evaluationCriteria = [
         { 
           id: 'EF-001', 
+          category: 'Eligibility & Formal',
           type: 'Eligibility & Formal', 
           criteria: "Bidders' nationality check",
           description: 'Verification of bidder nationality against eligible countries list (if restriction set by tender author)', 
           evaluationMethod: 'Pass/Fail',
-          appliesTo: 'entire',
+          maxPoints: null,
+          sustainableProcurement: [],
+          appliesTo: 'tender',
           lots: [],
           unspscCodes: [],
+          linkedForms: [],
           isPredefined: true
         },
         { 
           id: 'EF-002', 
+          category: 'Eligibility & Formal',
           type: 'Eligibility & Formal', 
           criteria: 'Bid/Proposal Submission Form',
           description: 'Response validation with flag for deviations on predetermined fields (bid validity, etc.)', 
           evaluationMethod: 'Pass/Fail',
-          appliesTo: 'entire',
+          maxPoints: null,
+          sustainableProcurement: [],
+          appliesTo: 'tender',
           lots: [],
           unspscCodes: [],
+          linkedForms: [],
           isPredefined: true
         },
         { 
           id: 'EF-003', 
+          category: 'Eligibility & Formal',
           type: 'Eligibility & Formal', 
           criteria: 'UNGM eligibility check',
           description: 'Verification of UNGM registration for bidder & all parties in JV/consortium', 
           evaluationMethod: 'Pass/Fail',
-          appliesTo: 'entire',
+          maxPoints: null,
+          sustainableProcurement: [],
+          appliesTo: 'tender',
           lots: [],
           unspscCodes: [],
+          linkedForms: [],
           isPredefined: true
         },
         { 
           id: 'EF-004', 
+          category: 'Eligibility & Formal',
           type: 'Eligibility & Formal', 
           criteria: 'Completeness of documents',
           description: 'Check for all required documents including validation of dates (bid validity compliance)', 
           evaluationMethod: 'Pass/Fail',
-          appliesTo: 'entire',
+          maxPoints: null,
+          sustainableProcurement: [],
+          appliesTo: 'tender',
           lots: [],
           unspscCodes: [],
+          linkedForms: [],
           isPredefined: true
         },
         { 
           id: 'EF-005', 
+          category: 'Eligibility & Formal',
           type: 'Eligibility & Formal', 
           criteria: 'Document format check',
           description: 'Automatic verification that all attachments are readable, non-empty, and not corrupted', 
           evaluationMethod: 'Pass/Fail',
-          appliesTo: 'entire',
+          maxPoints: null,
+          sustainableProcurement: [],
+          appliesTo: 'tender',
           lots: [],
           unspscCodes: [],
+          linkedForms: [],
           isPredefined: true
         },
         { 
           id: 'EF-006', 
+          category: 'Eligibility & Formal',
           type: 'Eligibility & Formal', 
           criteria: 'UNOPS claims log check',
           description: 'Verification against UNOPS claims log for any previous issues', 
           evaluationMethod: 'Pass/Fail',
-          appliesTo: 'entire',
+          maxPoints: null,
+          sustainableProcurement: [],
+          appliesTo: 'tender',
           lots: [],
           unspscCodes: [],
+          linkedForms: [],
           isPredefined: true
         },
         { 
           id: 'EF-007', 
+          category: 'Eligibility & Formal',
           type: 'Eligibility & Formal', 
           criteria: 'Acceptance of general conditions',
           description: 'Verification that bidder has accepted General Conditions of Contract without material deviations', 
           evaluationMethod: 'Pass/Fail',
-          appliesTo: 'entire',
+          maxPoints: null,
+          sustainableProcurement: [],
+          appliesTo: 'tender',
           lots: [],
           unspscCodes: [],
+          linkedForms: [],
           isPredefined: true
         }
       ];
       let evaluationCriteriaIdCounter = 100; // Start higher to avoid conflicts with predefined IDs
+      
+      // Evaluation criteria categories for dropdown
+      const evaluationCriteriaCategories = [
+        'Eligibility & Formal',
+        'Qualification',
+        'Technical'
+      ];
       
       // General Information - Field Values for Conditional Visibility
       let generalInfoValues = {
@@ -9859,7 +10099,21 @@
       // Evaluation Block - Field Values for Conditional Visibility
       let evaluationBlockValues = {
         evaluationMethod: '',
-        evaluationMethodDetails: ''
+        maxPointsTechnical: '',
+        evaluationMethodDetails: '',
+        spWaiverCode: ''
+      };
+      
+      // Minimum SP criteria required (if below this, waiver is needed)
+      const MIN_SP_CRITERIA_REQUIRED = 1;
+      
+      // Pre-filled Evaluation Method Details based on Solicitation Type
+      const evaluationMethodDetailsTemplates = {
+        'RFQ': 'Preliminary Examination. Quotations shall be reviewed for compliance of the eligibility and formal criteria specified in Evaluation Criteria section. Qualifications of the Bidder will be assessed as per qualification criteria specified in the Evaluation Criteria section. Technical compliance of the offered goods/services. The technical criteria specified in the Evaluation Criteria section will be reviewed for compliance compared to UNOPS requirements. Financial evaluation. Quotations that are found to be technically acceptable shall be evaluated based on price and UNOPS will award the contract as per the lowest priced, most technically acceptable offer evaluation methodology.',
+        'ITB': 'Preliminary Examination. Bids shall be reviewed for compliance of the eligibility and formal criteria specified in Evaluation Criteria section. Qualifications of the Bidder will be assessed as per qualification criteria specified in the Evaluation Criteria section. Technical compliance of the offered goods/services/works. The technical criteria specified in the Evaluation Criteria section will be reviewed for compliance compared to UNOPS requirements. Financial evaluation. Bids that are found to be technically acceptable shall be evaluated based on price and UNOPS will award the contract to the lowest priced, substantially compliant bidder.',
+        'RFP': 'Preliminary Examination. Proposals shall be reviewed for compliance of the eligibility and formal criteria specified in Evaluation Criteria section. Qualifications of the Offeror will be assessed as per qualification criteria specified in the Evaluation Criteria section. Technical Evaluation. Proposals meeting the eligibility and qualification requirements will proceed to technical evaluation. Technical criteria specified in the Evaluation Criteria section will be scored according to the defined weighting. Financial Evaluation. Proposals that achieve the minimum technical score will have their financial proposals opened and evaluated. The contract shall be awarded using cumulative analysis methodology combining technical and financial scores.',
+        'EOI': 'Preliminary Examination. Expressions of Interest shall be reviewed for compliance of the eligibility and formal criteria specified in Evaluation Criteria section. Qualifications Assessment. Interested parties will be assessed against the qualification criteria specified in the Evaluation Criteria section. Shortlisting. Based on the evaluation results, a shortlist of qualified candidates will be prepared for the subsequent procurement process.',
+        'default': 'Preliminary Examination. Submissions shall be reviewed for compliance of the eligibility and formal criteria specified in Evaluation Criteria section. Qualifications Assessment. Submissions will be assessed against the qualification criteria specified in the Evaluation Criteria section. Technical Evaluation. Technical criteria specified in the Evaluation Criteria section will be evaluated. Financial Evaluation. Financial aspects of compliant submissions shall be evaluated according to the specified methodology.'
       };
       
       // Initialize sample requisition lines (simulating ERP data)
@@ -14900,7 +15154,6 @@
                             <li>Only <strong>UNOPS personnel</strong> can take the Procurement Official and Chair roles.</li>
                             <li>All evaluation panel members, including observers, must be <strong>approved by the Procurement Authority (PA)</strong> prior to starting the evaluation.</li>
                             <li>All evaluation panel members must <strong>accept the Conflict of Interest affidavit</strong>.</li>
-                            <li>All <strong>external</strong> evaluation panel members must be approved and upload supporting documents for the affidavit.</li>
                           </ul>
                       </div>
                       </div>
@@ -15049,15 +15302,6 @@
                 '</div>' +
                 '<input type="hidden" id="eval-member-role" value="">' +
               '</div>' +
-              '<div class="form-group" style="margin-bottom: 0;">' +
-                '<label style="display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 12px 16px; background: #f8fafc; border-radius: 10px; border: 1px solid #e2e8f0;">' +
-                  '<input type="checkbox" id="eval-member-approved" style="width: 18px; height: 18px; accent-color: #059669; cursor: pointer;">' +
-                  '<div>' +
-                    '<span style="font-weight: 600; color: #374151; font-size: 14px;">Mark as Approved</span>' +
-                    '<p style="margin: 2px 0 0; font-size: 12px; color: #6b7280;">Member has been approved to participate in evaluation</p>' +
-                  '</div>' +
-                '</label>' +
-              '</div>' +
             '</div>' +
             '<div class="modal-footer" style="padding: 20px 28px; border-top: 1px solid var(--surface-200); background: var(--surface-50); display: flex; justify-content: flex-end; gap: 12px;">' +
               '<button class="btn btn-ghost" style="padding: 12px 24px; border: 1px solid var(--surface-300); background: white; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500; color: var(--text-primary);" onclick="closeEvalPanelMemberModal()">Cancel</button>' +
@@ -15103,7 +15347,6 @@
       window.confirmAddEvalPanelMember = function() {
         const selectEl = document.getElementById('eval-member-select');
         const roleEl = document.getElementById('eval-member-role');
-        const approvedEl = document.getElementById('eval-member-approved');
         
         if (!selectEl.value) {
           showNotification('Please select a team member', 'error');
@@ -15124,11 +15367,10 @@
           return;
         }
         
-        // Add member with role and approval status
+        // Add member with role
         teamMembers.evaluationTeam.push({
           ...selectedMember,
-          panelRole: roleEl.value,
-          approved: approvedEl.checked
+          panelRole: roleEl.value
         });
         
         closeEvalPanelMemberModal();
@@ -18832,14 +19074,189 @@
         renderCriteriaLibrary();
       }
       
+      window.clearLibrarySelection = function() {
+        selectedLibraryCriteria = [];
+        renderCriteriaLibrary();
+        updateCriteriaLibrarySelectedInfo();
+      }
+      
+      // Toggle evaluation category sections (grouped criteria view)
+      window.toggleEvalCategorySection = function(categoryId) {
+        const body = document.getElementById('body-' + categoryId);
+        const toggle = document.getElementById('toggle-' + categoryId);
+        
+        if (body && toggle) {
+          const isHidden = body.style.display === 'none';
+          body.style.display = isHidden ? 'block' : 'none';
+          toggle.style.transform = isHidden ? 'rotate(0deg)' : 'rotate(-90deg)';
+        }
+      }
+      
+      // Render grouped evaluation criteria by category
+      function renderGroupedEvaluationCriteria(criteriaList, sectionPrefix) {
+        const categories = ['Eligibility & Formal', 'Qualification', 'Technical'];
+        const categoryConfig = {
+          'Eligibility & Formal': { color: 'var(--primary-600)', bg: 'var(--primary-50)', border: 'var(--primary-200)', icon: 'pi-check-circle' },
+          'Qualification': { color: 'var(--success-600)', bg: 'var(--success-50)', border: 'var(--success-200)', icon: 'pi-verified' },
+          'Technical': { color: 'var(--warning-600)', bg: 'var(--warning-50)', border: 'var(--warning-200)', icon: 'pi-cog' }
+        };
+        
+        let html = '';
+        
+        // Always render in order: Eligibility & Formal, Qualification, Technical
+        categories.forEach((cat, catIndex) => {
+          const config = categoryConfig[cat];
+          const criteriaInCategory = criteriaList.filter(c => (c.category || c.type || 'Eligibility & Formal') === cat);
+          
+          if (criteriaInCategory.length === 0) return;
+          
+          const numericCount = criteriaInCategory.filter(c => c.evaluationMethod === 'Numeric').length;
+          const totalMaxPoints = criteriaInCategory.reduce((sum, c) => sum + (c.maxPoints || 0), 0);
+          const spCount = criteriaInCategory.filter(c => c.sustainableProcurement && c.sustainableProcurement.length > 0).length;
+          const sectionId = sectionPrefix + '-' + cat.replace(/\s+/g, '-').toLowerCase();
+          
+          html += '<div class="eval-category-section" style="margin-bottom: 12px; border: 1px solid ' + config.border + '; border-radius: var(--radius-md); overflow: hidden;">';
+          
+          // Category Header - Simplified
+          html += '<div class="eval-category-header" onclick="toggleEvalCategorySection(\'' + sectionId + '\')" style="background: ' + config.bg + '; padding: 10px 14px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid ' + config.border + ';">';
+          html += '<div style="display: flex; align-items: center; gap: 10px;">';
+          html += '<div style="width: 32px; height: 32px; background: ' + config.color + '; border-radius: 6px; display: flex; align-items: center; justify-content: center;">';
+          html += '<i class="pi ' + config.icon + '" style="color: white; font-size: 14px;"></i></div>';
+          html += '<div style="font-weight: 700; font-size: 13px; color: ' + config.color + '; display: flex; align-items: center; gap: 8px;">' + cat;
+          html += '<span style="background: ' + config.color + '; color: white; padding: 1px 6px; border-radius: 8px; font-size: 10px; font-weight: 600;">' + criteriaInCategory.length + '</span></div>';
+          html += '</div>';
+          html += '<div style="display: flex; align-items: center; gap: 12px;">';
+          html += '<div style="display: flex; gap: 10px; font-size: 10px; color: var(--text-secondary);">';
+          if (spCount > 0) {
+            html += '<span style="color: var(--success-600);"><i class="pi pi-leaf" style="margin-right: 3px;"></i>' + spCount + ' with SP</span>';
+          }
+          if (numericCount > 0) {
+            html += '<span><i class="pi pi-star" style="margin-right: 3px;"></i>' + totalMaxPoints + ' pts</span>';
+          }
+          html += '</div>';
+          html += '<i class="pi pi-chevron-down eval-category-toggle" id="toggle-' + sectionId + '" style="font-size: 11px; color: ' + config.color + '; transition: transform 0.2s;"></i>';
+          html += '</div></div>';
+          
+          // Category Table
+          html += '<div class="eval-category-body" id="body-' + sectionId + '" style="overflow-x: auto;">';
+          html += '<table style="width: 100%; min-width: 1000px; border-collapse: collapse; font-size: 11px;">';
+          html += '<thead><tr style="background: var(--surface-50);">';
+          html += '<th style="padding: 6px 8px; text-align: left; font-weight: 600; color: var(--text-secondary); border-bottom: 1px solid var(--surface-200); width: 60px;">ID</th>';
+          html += '<th style="padding: 6px 8px; text-align: left; font-weight: 600; color: var(--text-secondary); border-bottom: 1px solid var(--surface-200); min-width: 150px;">Criteria Name</th>';
+          html += '<th style="padding: 6px 8px; text-align: left; font-weight: 600; color: var(--text-secondary); border-bottom: 1px solid var(--surface-200); min-width: 200px;">Description</th>';
+          html += '<th style="padding: 6px 8px; text-align: center; font-weight: 600; color: var(--text-secondary); border-bottom: 1px solid var(--surface-200); width: 70px;">Method</th>';
+          html += '<th style="padding: 6px 8px; text-align: center; font-weight: 600; color: var(--text-secondary); border-bottom: 1px solid var(--surface-200); width: 55px;">Max Pts</th>';
+          html += '<th style="padding: 6px 8px; text-align: left; font-weight: 600; color: var(--text-secondary); border-bottom: 1px solid var(--surface-200); width: 140px;">SP Category</th>';
+          html += '<th style="padding: 6px 8px; text-align: left; font-weight: 600; color: var(--text-secondary); border-bottom: 1px solid var(--surface-200); width: 80px;">Apply To</th>';
+          html += '<th style="padding: 6px 8px; text-align: left; font-weight: 600; color: var(--text-secondary); border-bottom: 1px solid var(--surface-200); width: 100px;">Linked Forms</th>';
+          html += '<th style="padding: 6px 8px; text-align: center; font-weight: 600; color: var(--text-secondary); border-bottom: 1px solid var(--surface-200); width: 65px;">Actions</th>';
+          html += '</tr></thead><tbody>';
+          
+          criteriaInCategory.forEach((criterion, idx) => {
+            const isPredefined = criterion.isPredefined;
+            const linkedForms = criterion.linkedForms || [];
+            const hasLinks = linkedForms.length > 0;
+            const spCategories = criterion.sustainableProcurement || [];
+            const hasSP = spCategories.length > 0;
+            const appliesTo = criterion.appliesTo || 'tender';
+            const selectedLots = criterion.lots || [];
+            const rowBg = idx % 2 === 0 ? 'var(--surface-0)' : 'var(--surface-50)';
+            
+            html += '<tr style="background: ' + rowBg + '; vertical-align: top; border-left: 3px solid ' + config.color + ';">';
+            
+            // ID
+            html += '<td style="padding: 8px; border-bottom: 1px solid var(--surface-100);">';
+            html += '<span style="font-weight: 600; color: ' + (isPredefined ? config.color : 'var(--text-primary)') + '; font-size: 10px; font-family: monospace;">' + criterion.id + '</span></td>';
+            
+            // Criteria Name
+            html += '<td style="padding: 8px; border-bottom: 1px solid var(--surface-100);">';
+            html += '<div style="font-weight: 500; color: var(--text-primary); font-size: 11px; line-height: 1.3;">' + criterion.criteria + '</div></td>';
+            
+            // Description
+            const desc = criterion.description || '';
+            const shortDesc = desc.length > 90 ? desc.substring(0, 90) + '...' : desc;
+            html += '<td style="padding: 8px; border-bottom: 1px solid var(--surface-100);">';
+            html += '<div style="font-size: 10px; color: var(--text-muted); line-height: 1.3;" title="' + desc.replace(/"/g, '&quot;') + '">' + shortDesc + '</div></td>';
+            
+            // Method
+            const methodBg = criterion.evaluationMethod === 'Pass/Fail' ? 'var(--surface-100)' : 'var(--warning-50)';
+            const methodColor = criterion.evaluationMethod === 'Pass/Fail' ? 'var(--text-secondary)' : 'var(--warning-700)';
+            html += '<td style="padding: 8px; border-bottom: 1px solid var(--surface-100); text-align: center;">';
+            html += '<span style="background: ' + methodBg + '; color: ' + methodColor + '; padding: 2px 6px; border-radius: 3px; font-size: 9px; font-weight: 500;">' + criterion.evaluationMethod + '</span></td>';
+            
+            // Max Points
+            html += '<td style="padding: 8px; border-bottom: 1px solid var(--surface-100); text-align: center;">';
+            if (criterion.evaluationMethod === 'Numeric' && criterion.maxPoints) {
+              html += '<span style="font-weight: 700; color: var(--warning-600); font-size: 11px;">' + criterion.maxPoints + '</span>';
+            } else {
+              html += '<span style="color: var(--text-muted);">—</span>';
+            }
+            html += '</td>';
+            
+            // SP Category
+            html += '<td style="padding: 8px; border-bottom: 1px solid var(--surface-100);">';
+            if (hasSP) {
+              html += '<div style="display: flex; flex-wrap: wrap; gap: 2px;">';
+              const firstSP = spCategories[0];
+              const spShort = firstSP.includes(' - ') ? firstSP.split(' - ')[1].substring(0, 18) : firstSP.substring(0, 18);
+              html += '<span style="background: var(--success-50); color: var(--success-700); padding: 1px 4px; border-radius: 2px; font-size: 8px; font-weight: 500;" title="' + firstSP.replace(/"/g, '&quot;') + '">' + spShort + '...</span>';
+              if (spCategories.length > 1) {
+                html += '<span style="font-size: 8px; color: var(--text-muted);">+' + (spCategories.length - 1) + '</span>';
+              }
+              html += '</div>';
+            } else {
+              html += '<span style="color: var(--text-muted); font-size: 9px;">—</span>';
+            }
+            html += '</td>';
+            
+            // Apply To
+            html += '<td style="padding: 8px; border-bottom: 1px solid var(--surface-100);">';
+            if (appliesTo === 'tender') {
+              html += '<span style="font-size: 11px; color: var(--text-secondary);">Tender</span>';
+            } else {
+              html += '<span style="font-size: 11px; color: var(--text-secondary);">Lots (' + (selectedLots.length || 'All') + ')</span>';
+            }
+            html += '</td>';
+            
+            // Linked Forms
+            html += '<td style="padding: 8px; border-bottom: 1px solid var(--surface-100);">';
+            if (hasLinks) {
+              html += '<span style="background: var(--info-50); color: var(--info-600); padding: 1px 4px; border-radius: 2px; font-size: 8px;">' + linkedForms.length + ' form(s)</span>';
+            } else {
+              html += '<button onclick="openLinkFormsModal(\'' + criterion.id + '\')" style="font-size: 8px; padding: 2px 4px; color: var(--text-muted); background: none; border: 1px dashed var(--surface-300); border-radius: 2px; cursor: pointer;"><i class="pi pi-link"></i></button>';
+            }
+            html += '</td>';
+            
+            // Actions
+            html += '<td style="padding: 8px; border-bottom: 1px solid var(--surface-100); text-align: center;">';
+            if (isPredefined) {
+              html += '<span style="font-size: 8px; color: var(--text-muted); background: var(--surface-100); padding: 2px 5px; border-radius: 3px;">System</span>';
+            } else {
+              html += '<div style="display: flex; gap: 3px; justify-content: center;">';
+              html += '<button class="btn-icon-xs" onclick="openEvaluationCriterionModal(\'' + criterion.id + '\')" title="Edit" style="min-width: 20px; height: 20px;"><i class="pi pi-pencil" style="font-size: 9px;"></i></button>';
+              html += '<button class="btn-icon-xs danger" onclick="removeEvaluationCriterion(\'' + criterion.id + '\')" title="Remove" style="min-width: 20px; height: 20px;"><i class="pi pi-trash" style="font-size: 9px;"></i></button>';
+              html += '</div>';
+            }
+            html += '</td></tr>';
+          });
+          
+          html += '</tbody></table></div></div>';
+        });
+        
+        return html;
+      }
+      
       function renderCriteriaLibrary() {
         const grid = document.getElementById('eval-criteria-library-grid');
         if (!grid) return;
         
+        const isCumulativeAnalysis = evaluationBlockValues.evaluationMethod === 'Cumulative analysis';
+        
         // Filter criteria
         let filteredCriteria = criteriaLibrary.filter(c => {
-          // Category filter
-          if (criteriaLibraryFilter !== 'all' && c.category !== criteriaLibraryFilter) {
+          // Category filter - use criteriaCategory for proper filtering
+          const criteriaType = c.criteriaCategory || c.type || 'Eligibility & Formal';
+          if (criteriaLibraryFilter !== 'all' && criteriaType !== criteriaLibraryFilter) {
             return false;
           }
           
@@ -18848,7 +19265,9 @@
             const searchMatch = 
               c.name.toLowerCase().includes(criteriaLibrarySearchTerm) ||
               c.description.toLowerCase().includes(criteriaLibrarySearchTerm) ||
-              c.category.toLowerCase().includes(criteriaLibrarySearchTerm);
+              (c.category && c.category.toLowerCase().includes(criteriaLibrarySearchTerm)) ||
+              (c.criteriaCategory && c.criteriaCategory.toLowerCase().includes(criteriaLibrarySearchTerm)) ||
+              (c.sustainableProcurement && c.sustainableProcurement.some(sp => sp.toLowerCase().includes(criteriaLibrarySearchTerm)));
             if (!searchMatch) return false;
           }
           
@@ -18867,16 +19286,53 @@
         
         grid.innerHTML = filteredCriteria.map(c => {
           const isSelected = selectedLibraryCriteria.includes(c.id);
+          const criteriaCategory = c.criteriaCategory || c.type || 'Eligibility & Formal';
+          const categoryColor = criteriaCategory === 'Eligibility & Formal' ? 'var(--primary-500)' : 
+                                criteriaCategory === 'Qualification' ? 'var(--success-500)' : 
+                                criteriaCategory === 'Technical' ? 'var(--warning-500)' : 'var(--info-500)';
+          const categoryBg = criteriaCategory === 'Eligibility & Formal' ? 'var(--primary-50)' : 
+                             criteriaCategory === 'Qualification' ? 'var(--success-50)' : 
+                             criteriaCategory === 'Technical' ? 'var(--warning-50)' : 'var(--info-50)';
+          const hasSP = c.sustainableProcurement && c.sustainableProcurement.length > 0;
+          const hasLinkedForms = c.linkedFormsSuggestion && c.linkedFormsSuggestion.length > 0;
+          const isNumericNotAllowed = c.method === 'Numeric' && !isCumulativeAnalysis;
+          
           return `
-            <div class="criteria-library-item ${isSelected ? 'selected' : ''}" onclick="toggleLibraryCriterionSelection('${c.id}')">
-              <div class="criteria-library-item-header">
-                <span class="criteria-library-item-name">${c.name}</span>
-                <span class="criteria-library-item-type">${c.category}</span>
+            <div class="criteria-library-item ${isSelected ? 'selected' : ''}" onclick="toggleLibraryCriterionSelection('${c.id}')" style="padding: 12px; border: 2px solid ${isSelected ? 'var(--primary-500)' : 'var(--surface-200)'}; border-radius: var(--radius-md); background: ${isSelected ? 'var(--primary-50)' : 'var(--surface-0)'}; cursor: pointer; transition: all 0.2s; box-shadow: ${isSelected ? '0 2px 8px rgba(var(--primary-500-rgb), 0.15)' : 'none'};">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                <div style="flex: 1;">
+                  <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                    <span style="font-size: 10px; color: var(--text-muted); font-family: monospace; background: var(--surface-100); padding: 1px 4px; border-radius: 3px;">${c.id}</span>
+                    <span style="background: ${categoryBg}; color: ${categoryColor}; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 600;">
+                      ${criteriaCategory}
+                    </span>
               </div>
-              <div class="criteria-library-item-description">${c.description}</div>
-              <div class="criteria-library-item-meta">
-                <span><i class="pi pi-tag" style="margin-right: 4px;"></i>${c.type}</span>
-                <span><i class="pi pi-chart-bar" style="margin-right: 4px;"></i>${c.method}</span>
+                  <div style="font-weight: 600; color: var(--text-primary); font-size: 13px; line-height: 1.3;">${c.name}</div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  ${isSelected ? '<i class="pi pi-check-circle" style="color: var(--primary-500); font-size: 18px;"></i>' : '<i class="pi pi-circle" style="color: var(--surface-300); font-size: 18px;"></i>'}
+                </div>
+              </div>
+              <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.4; margin-bottom: 10px;">${c.description.length > 120 ? c.description.substring(0, 120) + '...' : c.description}</div>
+              <div style="display: flex; flex-wrap: wrap; gap: 6px; align-items: center;">
+                <span style="background: ${c.method === 'Pass/Fail' ? 'var(--surface-100)' : 'var(--warning-50)'}; color: ${c.method === 'Pass/Fail' ? 'var(--text-secondary)' : 'var(--warning-700)'}; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 500;">
+                  <i class="pi ${c.method === 'Pass/Fail' ? 'pi-check-square' : 'pi-chart-bar'}" style="font-size: 9px; margin-right: 4px;"></i>${c.method}${c.method === 'Numeric' && c.maxPoints ? ` (${c.maxPoints} pts)` : ''}
+                </span>
+                ${isNumericNotAllowed ? `
+                  <span style="background: var(--danger-50); color: var(--danger-600); padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 500;" title="Cannot be added - Numeric method requires Cumulative analysis evaluation method">
+                    <i class="pi pi-ban" style="font-size: 9px; margin-right: 4px;"></i>Cannot add
+                  </span>
+                ` : ''}
+                ${hasSP ? `
+                  <span style="background: var(--success-50); color: var(--success-700); padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 500;" title="${c.sustainableProcurement.join('&#10;')}">
+                    <i class="pi pi-leaf" style="font-size: 9px; margin-right: 4px;"></i>SP (${c.sustainableProcurement.length})
+                  </span>
+                ` : ''}
+                ${hasLinkedForms ? `
+                  <span style="background: var(--info-50); color: var(--info-700); padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 500;" title="Suggested linked forms">
+                    <i class="pi pi-link" style="font-size: 9px; margin-right: 4px;"></i>Forms
+                  </span>
+                ` : ''}
               </div>
             </div>
           `;
@@ -18920,24 +19376,41 @@
       window.addSelectedCriteriaFromLibrary = function() {
         if (selectedLibraryCriteria.length === 0) return;
         
+        const isCumulativeAnalysis = evaluationBlockValues.evaluationMethod === 'Cumulative analysis';
+        let addedCount = 0;
+        let skippedCount = 0;
+        
         selectedLibraryCriteria.forEach(libId => {
           const libCriterion = criteriaLibrary.find(c => c.id === libId);
           if (libCriterion) {
-            // Create new criterion from library template
+            // Skip Numeric criteria if not using Cumulative analysis
+            if (libCriterion.method === 'Numeric' && !isCumulativeAnalysis) {
+              skippedCount++;
+              return; // Skip this criterion
+            }
+            
+            // Create new criterion from library template with all fields
+            const criteriaCategory = libCriterion.criteriaCategory || libCriterion.type || 'Eligibility & Formal';
+            
             const newCriterion = {
-              id: `ec_${evaluationCriteriaIdCounter++}`,
+              id: `LIB-${String(evaluationCriteriaIdCounter++).padStart(3, '0')}`,
               criteria: libCriterion.name,
-              type: libCriterion.type,
+              category: criteriaCategory,
+              type: criteriaCategory, // Keep type for backwards compatibility
               description: libCriterion.description,
               evaluationMethod: libCriterion.method,
-              appliesTo: 'entire',
+              maxPoints: libCriterion.maxPoints || null,
+              sustainableProcurement: libCriterion.sustainableProcurement ? [...libCriterion.sustainableProcurement] : [],
+              appliesTo: 'tender',
               lots: [],
               unspscCodes: [],
+              linkedForms: [],
               isPredefined: false,
               fromLibrary: true,
               libraryId: libCriterion.id
             };
             evaluationCriteria.push(newCriterion);
+            addedCount++;
           }
         });
         
@@ -18948,7 +19421,13 @@
         
         // Show notification
         if (typeof showNotification === 'function') {
-          showNotification(`${selectedLibraryCriteria.length} criteria added from library`, 'success');
+          if (skippedCount > 0 && addedCount > 0) {
+            showNotification(`${addedCount} criteria added. ${skippedCount} Numeric criteria skipped (requires Cumulative analysis)`, 'warning');
+          } else if (skippedCount > 0 && addedCount === 0) {
+            showNotification(`Cannot add Numeric criteria - Evaluation Method must be set to "Cumulative analysis"`, 'error');
+          } else {
+            showNotification(`${addedCount} criteria added from library`, 'success');
+          }
         }
       }
       
@@ -19804,7 +20283,24 @@
       // ===== EVALUATION BLOCK - CONDITIONAL VISIBILITY HANDLERS =====
       window.updateEvaluationMethodInEvaluation = function(value) {
         saveEvaluationSectionStates();
+        const previousMethod = evaluationBlockValues.evaluationMethod;
         evaluationBlockValues.evaluationMethod = value;
+        
+        // If switching away from Cumulative analysis, remove any Numeric criteria
+        if (previousMethod === 'Cumulative analysis' && value !== 'Cumulative analysis') {
+          const numericCriteria = evaluationCriteria.filter(c => c.evaluationMethod === 'Numeric' && !c.isPredefined);
+          if (numericCriteria.length > 0) {
+            // Remove numeric criteria
+            evaluationCriteria = evaluationCriteria.filter(c => c.evaluationMethod !== 'Numeric' || c.isPredefined);
+            showNotification(`${numericCriteria.length} Numeric criteria removed (only allowed with Cumulative analysis)`, 'warning');
+          }
+        }
+        
+        // Pre-fill evaluation method details if not already customized
+        if (value && (!evaluationBlockValues.evaluationMethodDetails || evaluationBlockValues.evaluationMethodDetails === getDefaultEvaluationMethodDetails())) {
+          evaluationBlockValues.evaluationMethodDetails = getDefaultEvaluationMethodDetails();
+        }
+        
         renderCurrentBlock();
         restoreEvaluationSectionStates();
       }
@@ -19814,6 +20310,28 @@
         evaluationBlockValues.evaluationMethodDetails = value;
         renderCurrentBlock();
         restoreEvaluationSectionStates();
+      }
+      
+      window.updateMaxPointsTechnical = function(value) {
+        evaluationBlockValues.maxPointsTechnical = value;
+      }
+      
+      // Get default evaluation method details based on solicitation type
+      function getDefaultEvaluationMethodDetails() {
+        // Try to determine solicitation type from general info or wizard data
+        const solicitationType = generalInfoValues.solicitationType || wizardData.method || '';
+        const solicitationUpper = solicitationType.toUpperCase();
+        
+        if (solicitationUpper.includes('RFQ') || solicitationUpper === 'RFQ') {
+          return evaluationMethodDetailsTemplates['RFQ'];
+        } else if (solicitationUpper.includes('ITB') || solicitationUpper === 'ITB') {
+          return evaluationMethodDetailsTemplates['ITB'];
+        } else if (solicitationUpper.includes('RFP') || solicitationUpper === 'RFP') {
+          return evaluationMethodDetailsTemplates['RFP'];
+        } else if (solicitationUpper.includes('EOI') || solicitationUpper === 'EOI') {
+          return evaluationMethodDetailsTemplates['EOI'];
+        }
+        return evaluationMethodDetailsTemplates['default'];
       }
       
       // ===== PARTICULARS - CONDITIONAL VISIBILITY HANDLERS =====
@@ -20978,93 +21496,15 @@
                 </div>
               </div>
               
-              <!-- Evaluation Criteria Table -->
-              <div style="background: var(--surface-0); border: 1px solid var(--surface-200); border-radius: var(--radius-md); overflow: hidden;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
-                  <thead>
-                    <tr style="background: var(--surface-50);">
-                      <th style="padding: 12px 14px; text-align: left; font-weight: 600; color: var(--text-secondary); border-bottom: 2px solid var(--surface-200); width: 70px;">ID</th>
-                      <th style="padding: 12px 14px; text-align: left; font-weight: 600; color: var(--text-secondary); border-bottom: 2px solid var(--surface-200); width: 130px;">Type</th>
-                      <th style="padding: 12px 14px; text-align: left; font-weight: 600; color: var(--text-secondary); border-bottom: 2px solid var(--surface-200);">Criteria</th>
-                      <th style="padding: 12px 14px; text-align: center; font-weight: 600; color: var(--text-secondary); border-bottom: 2px solid var(--surface-200); width: 90px;">Method</th>
-                      <th style="padding: 12px 14px; text-align: left; font-weight: 600; color: var(--text-secondary); border-bottom: 2px solid var(--surface-200); width: 160px;">Linked Forms</th>
-                      <th style="padding: 12px 14px; text-align: center; font-weight: 600; color: var(--text-secondary); border-bottom: 2px solid var(--surface-200); width: 80px;">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    ${allCriteria.map((criterion, idx) => {
-                      const isPredefined = criterion.isPredefined;
-                      const typeColor = criterion.type === 'Eligibility & Formal' ? 'var(--primary-500)' : 
-                                        criterion.type === 'Qualification criteria' ? 'var(--success-500)' : 
-                                        criterion.type === 'Technical criteria' ? 'var(--warning-500)' : 'var(--info-500)';
-                      const typeBg = criterion.type === 'Eligibility & Formal' ? 'var(--primary-50)' : 
-                                     criterion.type === 'Qualification criteria' ? 'var(--success-50)' : 
-                                     criterion.type === 'Technical criteria' ? 'var(--warning-50)' : 'var(--info-50)';
-                      const linkedForms = criterion.linkedForms || [];
-                      const hasLinks = linkedForms.length > 0;
-                      
-                      return `
-                        <tr style="background: ${idx % 2 === 0 ? 'var(--surface-0)' : 'var(--surface-50)'}; transition: background 0.15s;" onmouseover="this.style.background='var(--primary-50)'" onmouseout="this.style.background='${idx % 2 === 0 ? 'var(--surface-0)' : 'var(--surface-50)'}'">
-                          <td style="padding: 10px 14px; border-bottom: 1px solid var(--surface-100);">
-                            <span style="font-weight: 600; color: ${isPredefined ? 'var(--primary-600)' : 'var(--text-primary)'}; font-size: 12px;">${criterion.id}</span>
-                          </td>
-                          <td style="padding: 10px 14px; border-bottom: 1px solid var(--surface-100);">
-                            <span style="background: ${typeBg}; color: ${typeColor}; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; white-space: nowrap;">
-                              ${criterion.type}
-                            </span>
-                          </td>
-                          <td style="padding: 10px 14px; border-bottom: 1px solid var(--surface-100);">
-                            <div style="font-weight: 500; color: var(--text-primary); margin-bottom: 2px;">${criterion.criteria}</div>
-                            <div style="font-size: 11px; color: var(--text-muted); line-height: 1.4; max-width: 350px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${criterion.description}">${criterion.description}</div>
-                          </td>
-                          <td style="padding: 10px 14px; border-bottom: 1px solid var(--surface-100); text-align: center;">
-                            <span style="background: var(--surface-100); color: var(--text-secondary); padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 500;">${criterion.evaluationMethod}</span>
-                          </td>
-                          <td style="padding: 10px 14px; border-bottom: 1px solid var(--surface-100);">
-                            ${hasLinks ? `
-                              <div style="display: flex; flex-wrap: wrap; gap: 4px; align-items: center;">
-                                ${linkedForms.slice(0, 2).map(link => `
-                                  <span style="background: var(--info-50); color: var(--info-600); padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 500; display: inline-flex; align-items: center; gap: 3px;">
-                                    <i class="pi pi-file" style="font-size: 9px;"></i>
-                                    ${link.formName}${link.section ? ' → ' + link.section : ''}
-                                  </span>
-                                `).join('')}
-                                ${linkedForms.length > 2 ? `<span style="font-size: 10px; color: var(--text-muted);">+${linkedForms.length - 2} more</span>` : ''}
-                                <button class="btn-icon-xs" onclick="openLinkFormsModal('${criterion.id}')" title="Edit links" style="margin-left: 4px;">
-                                  <i class="pi pi-pencil" style="font-size: 10px;"></i>
-                                </button>
-                              </div>
-                            ` : `
-                              <button class="btn btn-ghost btn-xs" onclick="openLinkFormsModal('${criterion.id}')" style="font-size: 11px; padding: 4px 8px; color: var(--text-muted);">
-                                <i class="pi pi-link" style="margin-right: 4px;"></i> Link forms
-                              </button>
-                            `}
-                          </td>
-                          <td style="padding: 10px 14px; border-bottom: 1px solid var(--surface-100); text-align: center;">
-                            ${isPredefined ? `
-                              <span style="font-size: 10px; color: var(--text-muted); font-style: italic;">System</span>
-                            ` : `
-                              <div style="display: flex; gap: 4px; justify-content: center;">
-                                <button class="btn-icon-xs" onclick="openEvaluationCriterionModal('${criterion.id}')" title="Edit">
-                                  <i class="pi pi-pencil"></i>
-                                </button>
-                                <button class="btn-icon-xs danger" onclick="removeEvaluationCriterion('${criterion.id}')" title="Remove">
-                                  <i class="pi pi-trash"></i>
-                                </button>
-                              </div>
-                            `}
-                          </td>
-                        </tr>
-                      `;
-                    }).join('')}
-                  </tbody>
-                </table>
-              </div>
+              <!-- Evaluation Criteria - Grouped by Category (Section 1) -->
+              ${renderGroupedEvaluationCriteria(allCriteria, 'sec1')}
+              
+              <!-- SP Waiver Section - Shows when too few SP criteria -->
+              ${renderSPWaiverSection()}
               
               <div style="font-size: 11px; color: var(--text-muted); margin-top: var(--spacing-sm); display: flex; align-items: center; gap: 6px;">
                 <i class="pi pi-info-circle"></i> 
-                Link criteria to forms or sections to specify where suppliers should provide information for evaluation.
-              </div>
+                Click on category headers to expand/collapse. Configure criteria with evaluation methods, SP categories, and link to forms.
             </div>
           </div>
         `;
@@ -21102,12 +21542,20 @@
                       const onchangeAttr = field.onchange ? `onchange="${field.onchange}(this.value)"` : '';
                       
                       if (field.type === 'textarea') {
+                        // Special handling for evaluation method details - pre-fill based on solicitation type
+                        let textareaValue = field.value || '';
+                        let textareaOnchange = '';
+                        if (field.isEvaluationMethodDetails) {
+                          textareaValue = evaluationBlockValues.evaluationMethodDetails || getDefaultEvaluationMethodDetails();
+                          textareaOnchange = 'oninput="evaluationBlockValues.evaluationMethodDetails = this.value"';
+                        }
                         fieldHtml = `
                           <div class="form-group full-width">
                             <label class="form-label">
                               ${field.label} ${field.required ? '<span class="required">*</span>' : ''}
                             </label>
-                            <textarea class="form-textarea" ${field.readonly ? 'readonly' : ''} ${field.required ? 'required' : ''} placeholder="${field.placeholder || ''}">${field.value || ''}</textarea>
+                            <textarea class="form-textarea" ${field.readonly ? 'readonly' : ''} ${field.required ? 'required' : ''} placeholder="${field.placeholder || ''}" ${textareaOnchange} style="min-height: 150px;">${textareaValue}</textarea>
+                            ${field.isEvaluationMethodDetails ? '<span class="help-text"><i class="pi pi-info-circle" style="margin-right: 4px;"></i>Pre-filled based on solicitation method. You can modify this text as needed.</span>' : ''}
                             ${field.help ? '<span class="help-text">' + field.help + '</span>' : ''}
                           </div>
                         `;
@@ -21132,12 +21580,21 @@
                           </div>
                         `;
                       } else if (field.type === 'number') {
+                        // Get current value from evaluationBlockValues if applicable
+                        let numberValue = field.value || '';
+                        let numberOninput = '';
+                        if (field.id === 'maxPointsTechnical') {
+                          numberValue = evaluationBlockValues.maxPointsTechnical || '';
+                          numberOninput = 'oninput="updateMaxPointsTechnical(this.value)"';
+                        } else if (field.id === 'minPoints') {
+                          numberOninput = ''; // Regular field
+                        }
                         fieldHtml = `
                           <div class="form-group">
                             <label class="form-label">
                               ${field.label} ${field.required ? '<span class="required">*</span>' : ''}
                             </label>
-                            <input type="number" class="form-input" value="${field.value || ''}" placeholder="${field.placeholder || ''}" ${field.required ? 'required' : ''} ${field.readonly ? 'readonly' : ''} ${onchangeAttr} />
+                            <input type="number" class="form-input" value="${numberValue}" placeholder="${field.placeholder || ''}" ${field.required ? 'required' : ''} ${field.readonly ? 'readonly' : ''} ${onchangeAttr} ${numberOninput} />
                             ${field.help ? '<span class="help-text">' + field.help + '</span>' : ''}
                           </div>
                         `;
@@ -21192,98 +21649,99 @@
                     </div>
                   </div>
                   
-                  <!-- Evaluation Criteria Table -->
-                  <div style="background: var(--surface-0); border: 1px solid var(--surface-200); border-radius: var(--radius-md); overflow: hidden;">
-                    <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
-                      <thead>
-                        <tr style="background: var(--surface-50);">
-                          <th style="padding: 10px 12px; text-align: left; font-weight: 600; color: var(--text-secondary); border-bottom: 2px solid var(--surface-200); width: 70px;">ID</th>
-                          <th style="padding: 10px 12px; text-align: left; font-weight: 600; color: var(--text-secondary); border-bottom: 2px solid var(--surface-200); width: 120px;">Type</th>
-                          <th style="padding: 10px 12px; text-align: left; font-weight: 600; color: var(--text-secondary); border-bottom: 2px solid var(--surface-200);">Criteria</th>
-                          <th style="padding: 10px 12px; text-align: center; font-weight: 600; color: var(--text-secondary); border-bottom: 2px solid var(--surface-200); width: 80px;">Method</th>
-                          <th style="padding: 10px 12px; text-align: left; font-weight: 600; color: var(--text-secondary); border-bottom: 2px solid var(--surface-200); width: 150px;">Linked Forms</th>
-                          <th style="padding: 10px 12px; text-align: center; font-weight: 600; color: var(--text-secondary); border-bottom: 2px solid var(--surface-200); width: 70px;">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        ${evaluationCriteria.map((criterion, idx) => {
-                          const isPredefined = criterion.isPredefined;
-                          const typeColor = criterion.type === 'Eligibility & Formal' ? 'var(--primary-500)' : 
-                                            criterion.type === 'Qualification criteria' ? 'var(--success-500)' : 
-                                            criterion.type === 'Technical criteria' ? 'var(--warning-500)' : 'var(--info-500)';
-                          const typeBg = criterion.type === 'Eligibility & Formal' ? 'var(--primary-50)' : 
-                                         criterion.type === 'Qualification criteria' ? 'var(--success-50)' : 
-                                         criterion.type === 'Technical criteria' ? 'var(--warning-50)' : 'var(--info-50)';
-                          const linkedForms = criterion.linkedForms || [];
-                          const hasLinks = linkedForms.length > 0;
-                          
-                          return `
-                            <tr style="background: ${idx % 2 === 0 ? 'var(--surface-0)' : 'var(--surface-50)'};">
-                              <td style="padding: 10px 12px; border-bottom: 1px solid var(--surface-100);">
-                                <span style="font-weight: 600; color: ${isPredefined ? 'var(--primary-600)' : 'var(--text-primary)'}; font-size: 11px;">${criterion.id}</span>
-                              </td>
-                              <td style="padding: 10px 12px; border-bottom: 1px solid var(--surface-100);">
-                                <span style="background: ${typeBg}; color: ${typeColor}; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 500; display: inline-block;">
-                                  ${criterion.type}
-                                </span>
-                              </td>
-                              <td style="padding: 10px 12px; border-bottom: 1px solid var(--surface-100);">
-                                <div style="font-weight: 500; color: var(--text-primary); margin-bottom: 2px;">${criterion.criteria}</div>
-                                <div style="font-size: 11px; color: var(--text-muted); line-height: 1.3; max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${criterion.description}">${criterion.description}</div>
-                              </td>
-                              <td style="padding: 10px 12px; border-bottom: 1px solid var(--surface-100); text-align: center;">
-                                <span style="background: var(--surface-100); color: var(--text-secondary); padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 500;">${criterion.evaluationMethod}</span>
-                              </td>
-                              <td style="padding: 10px 12px; border-bottom: 1px solid var(--surface-100);">
-                                ${hasLinks ? `
-                                  <div style="display: flex; flex-wrap: wrap; gap: 3px; align-items: center;">
-                                    ${linkedForms.slice(0, 2).map(link => `
-                                      <span style="background: var(--info-50); color: var(--info-600); padding: 2px 5px; border-radius: 3px; font-size: 9px; font-weight: 500;">
-                                        ${link.formName}
-                                      </span>
-                                    `).join('')}
-                                    ${linkedForms.length > 2 ? `<span style="font-size: 9px; color: var(--text-muted);">+${linkedForms.length - 2}</span>` : ''}
-                                    <button class="btn-icon-xs" onclick="event.stopPropagation(); openLinkFormsModal('${criterion.id}')" title="Edit links" style="margin-left: 2px; min-width: 18px; height: 18px;">
-                                      <i class="pi pi-pencil" style="font-size: 9px;"></i>
-                                    </button>
-                                  </div>
-                                ` : `
-                                  <button onclick="event.stopPropagation(); openLinkFormsModal('${criterion.id}')" style="font-size: 10px; padding: 3px 6px; color: var(--text-muted); background: none; border: 1px dashed var(--surface-300); border-radius: 4px; cursor: pointer;">
-                                    <i class="pi pi-link" style="margin-right: 3px; font-size: 9px;"></i>Link
-                                  </button>
-                                `}
-                              </td>
-                              <td style="padding: 10px 12px; border-bottom: 1px solid var(--surface-100); text-align: center;">
-                                ${isPredefined ? `
-                                  <span style="font-size: 9px; color: var(--text-muted);">System</span>
-                                ` : `
-                                  <div style="display: flex; gap: 3px; justify-content: center;">
-                                    <button class="btn-icon-xs" onclick="event.stopPropagation(); openEvaluationCriterionModal('${criterion.id}')" title="Edit" style="min-width: 20px; height: 20px;">
-                                      <i class="pi pi-pencil" style="font-size: 10px;"></i>
-                                    </button>
-                                    <button class="btn-icon-xs danger" onclick="event.stopPropagation(); removeEvaluationCriterion('${criterion.id}')" title="Remove" style="min-width: 20px; height: 20px;">
-                                      <i class="pi pi-trash" style="font-size: 10px;"></i>
-                                    </button>
-                                  </div>
-                                `}
-                              </td>
-                            </tr>
-                          `;
-                        }).join('')}
-                      </tbody>
-                    </table>
-                  </div>
+                  <!-- Evaluation Criteria - Grouped by Category -->
+                  ${renderGroupedEvaluationCriteria(evaluationCriteria, 'sec2')}
                   
-                  <div style="font-size: 11px; color: var(--text-muted); margin-top: 8px; display: flex; align-items: center; gap: 4px;">
+                  <!-- SP Waiver Section - Shows when too few SP criteria -->
+                  ${renderSPWaiverSection()}
+                  
+                  <div style="font-size: 11px; color: var(--text-muted); margin-top: 12px; display: flex; align-items: center; gap: 6px;">
                     <i class="pi pi-info-circle"></i> 
-                    Link criteria to forms to specify where suppliers provide information for evaluation.
+                    Click on category headers to expand/collapse. Configure criteria with evaluation methods, SP categories, and link to forms.
+                                  </div>
+                                  </div>
+                                  </div>
+              
+                                  </div>
+          </div>
+        `;
+      }
+      
+      // Render SP Waiver Section
+      function renderSPWaiverSection() {
+        const spCount = countSPCriteria();
+        const needsWaiver = spCount < MIN_SP_CRITERIA_REQUIRED;
+        
+        if (!needsWaiver) {
+          // Show success message when SP criteria are sufficient
+          return `
+            <div style="margin-top: var(--spacing-md); padding: 12px 16px; background: var(--success-50); border: 1px solid var(--success-200); border-radius: var(--radius-md); display: flex; align-items: center; gap: 12px;">
+              <i class="pi pi-check-circle" style="color: var(--success-600); font-size: 18px;"></i>
+              <div>
+                <div style="font-weight: 600; color: var(--success-700); font-size: 13px;">Sustainable Procurement Criteria Met</div>
+                <div style="font-size: 12px; color: var(--success-600);">${spCount} criteria with SP categories configured</div>
                   </div>
+            </div>
+          `;
+        }
+        
+        // Show waiver field when SP criteria are insufficient
+        return `
+          <div style="margin-top: var(--spacing-md); padding: 16px; background: var(--warning-50); border: 1px solid var(--warning-300); border-radius: var(--radius-md); border-left: 4px solid var(--warning-500);">
+            <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+              <i class="pi pi-exclamation-triangle" style="color: var(--warning-600); font-size: 20px; margin-top: 2px;"></i>
+              <div>
+                <div style="font-weight: 600; color: var(--warning-700); font-size: 14px;">Sustainable Procurement Criteria Required</div>
+                <div style="font-size: 12px; color: var(--warning-600); margin-top: 4px;">
+                  This tender has <strong>${spCount}</strong> criteria with Sustainable Procurement categories. 
+                  At least <strong>${MIN_SP_CRITERIA_REQUIRED}</strong> ${MIN_SP_CRITERIA_REQUIRED === 1 ? 'criterion is' : 'criteria are'} required.
+                  </div>
+                <div style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">
+                  Either add SP categories to existing criteria or provide a waiver code below.
                 </div>
               </div>
-              
+            </div>
+            <div class="form-group" style="margin: 0;">
+              <label class="form-label" style="font-size: 12px; font-weight: 600; color: var(--warning-700);">
+                <i class="pi pi-key" style="margin-right: 6px;"></i>SP Criteria Waiver Code <span class="required">*</span>
+              </label>
+              <div style="display: flex; gap: 8px; align-items: center;">
+                <input 
+                  type="text" 
+                  class="form-input" 
+                  id="sp-waiver-code-input"
+                  value="${evaluationBlockValues.spWaiverCode || ''}" 
+                  placeholder="Enter SP waiver authorization code..." 
+                  oninput="updateSPWaiverCode(this.value)"
+                  style="flex: 1; border-color: var(--warning-400);"
+                />
+                <button class="btn btn-secondary btn-sm" onclick="validateSPWaiverCode()" title="Validate waiver code">
+                  <i class="pi pi-check"></i> Validate
+                </button>
+              </div>
+              <span class="help-text" style="font-size: 11px; color: var(--warning-600); margin-top: 6px;">
+                <i class="pi pi-info-circle" style="margin-right: 4px;"></i>
+                Contact your Procurement Authority to obtain an SP waiver code if sustainable procurement criteria cannot be included.
+              </span>
             </div>
           </div>
         `;
+      }
+      
+      // Validate SP Waiver Code (placeholder - in real app would validate against backend)
+      window.validateSPWaiverCode = function() {
+        const code = evaluationBlockValues.spWaiverCode;
+        if (!code || code.trim() === '') {
+          showNotification('Please enter a waiver code', 'error');
+          return;
+        }
+        // In real implementation, this would validate against a backend service
+        // For now, just show a simulated validation
+        if (code.length >= 6) {
+          showNotification('Waiver code validated successfully', 'success');
+        } else {
+          showNotification('Invalid waiver code format. Code must be at least 6 characters.', 'error');
+        }
       }
 
       function renderParticularsSection(block, section, sectionIndex, isFirst) {
@@ -23152,40 +23610,94 @@
       }
       
       // ===== EVALUATION CRITERION MODAL FUNCTIONS =====
+      // Available forms for linking (mock data - in real app would come from form builder)
+      const availableFormsForLinking = [
+        { id: 'form-qualification', name: 'Qualification Form', type: 'qualification' },
+        { id: 'form-technical', name: 'Technical Proposal Form', type: 'technical' },
+        { id: 'form-financial', name: 'Financial Proposal Form', type: 'financial' },
+        { id: 'form-experience', name: 'Experience & References Form', type: 'qualification' },
+        { id: 'form-compliance', name: 'Compliance Declaration Form', type: 'eligibility' },
+        { id: 'form-sustainability', name: 'Sustainability Questionnaire', type: 'technical' }
+      ];
+      
       window.openEvaluationCriterionModal = function(criterionId = null) {
         const modal = document.getElementById('evaluation-criterion-modal');
         const titleEl = document.getElementById('eval-criterion-modal-title');
         const saveBtn = document.getElementById('eval-criterion-save-btn');
+        const idDisplay = document.getElementById('eval-criterion-id-display');
+        const idReadonly = document.getElementById('eval-criterion-id-readonly');
         
         // Reset form
         document.getElementById('eval-criterion-id').value = criterionId || '';
         document.getElementById('eval-criterion-name').value = '';
-        document.getElementById('eval-criterion-type').value = 'Qualification criteria';
+        document.getElementById('eval-criterion-category').value = 'Qualification';
         document.getElementById('eval-criterion-method').value = 'Pass/Fail';
         document.getElementById('eval-criterion-description').value = '';
-        document.querySelector('input[name="eval-criterion-applies"][value="entire"]').checked = true;
+        document.querySelector('input[name="eval-criterion-applies"][value="tender"]').checked = true;
         document.getElementById('eval-criterion-specific-section').style.display = 'none';
         
-        // Populate lots/products dropdown
+        // Reset max points
+        document.getElementById('eval-criterion-maxpoints-group').style.display = 'none';
+        document.getElementById('eval-criterion-maxpoints').value = '';
+        
+        // Update method options based on evaluation method (Cumulative analysis = Numeric allowed)
+        const isCumulativeAnalysis = updateCriterionMethodOptions();
+        
+        // Show/hide the method restriction notice
+        const methodNotice = document.getElementById('eval-criterion-method-notice');
+        if (methodNotice) {
+          if (!isCumulativeAnalysis) {
+            methodNotice.style.display = 'block';
+            methodNotice.innerHTML = '<i class="pi pi-info-circle" style="margin-right: 4px;"></i>Numeric scoring is only available when Evaluation Method is set to "Cumulative analysis"';
+          } else {
+            methodNotice.style.display = 'none';
+          }
+        }
+        
+        // Reset sustainable procurement checkboxes
+        document.querySelectorAll('.eval-sp-checkbox').forEach(cb => cb.checked = false);
+        
+        // Populate lots dropdown
         populateEvalCriterionLotsDropdown();
+        
+        // Populate linked forms checkboxes
+        populateEvalCriterionLinkedForms();
         
         if (criterionId) {
           // Edit mode
           titleEl.innerHTML = '<i class="pi pi-pencil"></i> Edit Evaluation Criterion';
           saveBtn.innerHTML = '<i class="pi pi-check"></i> Save Changes';
+          idDisplay.style.display = 'block';
+          idReadonly.value = criterionId;
           
           // Find and populate existing criterion
           const criterion = evaluationCriteria.find(c => c.id === criterionId);
           if (criterion) {
             document.getElementById('eval-criterion-name').value = criterion.criteria || '';
-            document.getElementById('eval-criterion-type').value = criterion.type || 'Qualification criteria';
+            document.getElementById('eval-criterion-category').value = criterion.category || criterion.type || 'Qualification';
             document.getElementById('eval-criterion-method').value = criterion.evaluationMethod || 'Pass/Fail';
             document.getElementById('eval-criterion-description').value = criterion.description || '';
             
-            if (criterion.appliesTo === 'specific') {
-              document.querySelector('input[name="eval-criterion-applies"][value="specific"]').checked = true;
+            // Max points
+            if (criterion.evaluationMethod === 'Numeric') {
+              document.getElementById('eval-criterion-maxpoints-group').style.display = 'block';
+              document.getElementById('eval-criterion-maxpoints').value = criterion.maxPoints || '';
+            }
+            
+            // Sustainable procurement categories
+            if (criterion.sustainableProcurement && criterion.sustainableProcurement.length > 0) {
+              criterion.sustainableProcurement.forEach(sp => {
+                const checkbox = document.querySelector(`.eval-sp-checkbox[value="${sp}"]`);
+                if (checkbox) checkbox.checked = true;
+              });
+            }
+            
+            // Apply to
+            const appliesTo = criterion.appliesTo || 'tender';
+            if (appliesTo === 'lots') {
+              document.querySelector('input[name="eval-criterion-applies"][value="lots"]').checked = true;
               document.getElementById('eval-criterion-specific-section').style.display = 'block';
-              // Select the lots/unspscCodes in the dropdown
+              // Select the lots in the dropdown
               const lotsSelect = document.getElementById('eval-criterion-lots');
               if (criterion.lots && criterion.lots.length > 0) {
                 Array.from(lotsSelect.options).forEach(opt => {
@@ -23195,11 +23707,20 @@
                 });
               }
             }
+            
+            // Linked forms
+            if (criterion.linkedForms && criterion.linkedForms.length > 0) {
+              criterion.linkedForms.forEach(lf => {
+                const checkbox = document.querySelector(`.eval-linked-form-checkbox[value="${lf.formId}"]`);
+                if (checkbox) checkbox.checked = true;
+              });
+            }
           }
         } else {
           // Add mode
           titleEl.innerHTML = '<i class="pi pi-plus-circle"></i> Add Evaluation Criterion';
           saveBtn.innerHTML = '<i class="pi pi-check"></i> Add Criterion';
+          idDisplay.style.display = 'none';
         }
         
         modal.style.display = 'flex';
@@ -23212,11 +23733,78 @@
       
       window.toggleEvalCriterionAppliesTo = function(value) {
         const specificSection = document.getElementById('eval-criterion-specific-section');
-        if (value === 'specific') {
+        if (value === 'lots') {
           specificSection.style.display = 'block';
         } else {
           specificSection.style.display = 'none';
         }
+      }
+      
+      window.toggleMaxPointsField = function(method) {
+        const maxPointsGroup = document.getElementById('eval-criterion-maxpoints-group');
+        if (method === 'Numeric') {
+          maxPointsGroup.style.display = 'block';
+        } else {
+          maxPointsGroup.style.display = 'none';
+          document.getElementById('eval-criterion-maxpoints').value = '';
+        }
+      }
+      
+      // Update the method dropdown options based on evaluation method (Cumulative analysis allows Numeric)
+      window.updateCriterionMethodOptions = function() {
+        const methodSelect = document.getElementById('eval-criterion-method');
+        if (!methodSelect) return;
+        
+        const isCumulativeAnalysis = evaluationBlockValues.evaluationMethod === 'Cumulative analysis';
+        const currentValue = methodSelect.value;
+        
+        // Clear and rebuild options
+        methodSelect.innerHTML = '';
+        
+        // Pass/Fail is always available
+        const passFail = document.createElement('option');
+        passFail.value = 'Pass/Fail';
+        passFail.textContent = 'Pass/Fail';
+        methodSelect.appendChild(passFail);
+        
+        // Numeric is only available for Cumulative analysis
+        if (isCumulativeAnalysis) {
+          const numeric = document.createElement('option');
+          numeric.value = 'Numeric';
+          numeric.textContent = 'Numeric';
+          methodSelect.appendChild(numeric);
+        }
+        
+        // Restore selection if still valid, otherwise default to Pass/Fail
+        if (currentValue === 'Numeric' && isCumulativeAnalysis) {
+          methodSelect.value = 'Numeric';
+        } else {
+          methodSelect.value = 'Pass/Fail';
+          // Hide max points if we forced to Pass/Fail
+          toggleMaxPointsField('Pass/Fail');
+        }
+        
+        return isCumulativeAnalysis;
+      }
+      
+      // Check if Numeric method is allowed
+      window.isNumericMethodAllowed = function() {
+        return evaluationBlockValues.evaluationMethod === 'Cumulative analysis';
+      }
+      
+      // Count criteria with Sustainable Procurement categories
+      window.countSPCriteria = function() {
+        return evaluationCriteria.filter(c => c.sustainableProcurement && c.sustainableProcurement.length > 0).length;
+      }
+      
+      // Check if SP waiver is needed (too few SP criteria)
+      window.isSPWaiverNeeded = function() {
+        return countSPCriteria() < MIN_SP_CRITERIA_REQUIRED;
+      }
+      
+      // Update SP waiver code
+      window.updateSPWaiverCode = function(value) {
+        evaluationBlockValues.spWaiverCode = value;
       }
       
       function populateEvalCriterionLotsDropdown() {
@@ -23227,36 +23815,47 @@
         if (lots.length > 0) {
           lots.forEach(lot => {
             const option = document.createElement('option');
-            option.value = `lot-${lot.id}`;
-            option.textContent = `📦 Lot: ${lot.description || 'No description'}`;
+            option.value = lot.id;
+            option.textContent = `📦 Lot ${lot.id}: ${lot.description || 'No description'}`;
             lotsSelect.appendChild(option);
           });
         }
         
-        // Add UNSPSC codes from requisition lines
-        requisitionLines.forEach(line => {
-          const option = document.createElement('option');
-          option.value = `unspsc-${line.unspscCode}`;
-          option.textContent = `🏷️ ${line.unspscCode} - ${line.unspscDescription}`;
-          lotsSelect.appendChild(option);
-        });
-        
         if (lotsSelect.options.length === 0) {
           const option = document.createElement('option');
           option.value = '';
-          option.textContent = 'No lots or products available';
+          option.textContent = 'No lots available - create lots first';
           option.disabled = true;
           lotsSelect.appendChild(option);
         }
       }
       
+      function populateEvalCriterionLinkedForms() {
+        const container = document.getElementById('eval-criterion-linked-forms-container');
+        if (!container) return;
+        
+        if (availableFormsForLinking.length === 0) {
+          container.innerHTML = '<div style="font-size: 11px; color: var(--text-muted); padding: 8px;">No forms available for linking</div>';
+          return;
+        }
+        
+        container.innerHTML = availableFormsForLinking.map(form => `
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 4px 0; font-size: 12px;">
+            <input type="checkbox" class="eval-linked-form-checkbox" value="${form.id}" />
+            <span style="flex: 1;">${form.name}</span>
+            <span style="font-size: 10px; color: var(--text-muted); background: var(--surface-100); padding: 1px 5px; border-radius: 3px;">${form.type}</span>
+          </label>
+        `).join('');
+      }
+      
       window.saveEvaluationCriterion = function() {
         const criterionId = document.getElementById('eval-criterion-id').value;
         const name = document.getElementById('eval-criterion-name').value.trim();
-        const type = document.getElementById('eval-criterion-type').value;
+        const category = document.getElementById('eval-criterion-category').value;
         const method = document.getElementById('eval-criterion-method').value;
         const description = document.getElementById('eval-criterion-description').value.trim();
         const appliesTo = document.querySelector('input[name="eval-criterion-applies"]:checked').value;
+        const maxPoints = document.getElementById('eval-criterion-maxpoints').value;
         
         // Validation
         if (!name) {
@@ -23271,19 +23870,45 @@
           return;
         }
         
-        // Get selected lots/products if specific
+        // Validate Numeric method is only allowed with Cumulative analysis
+        if (method === 'Numeric' && evaluationBlockValues.evaluationMethod !== 'Cumulative analysis') {
+          alert('Numeric evaluation method is only allowed when the Evaluation Method is set to "Cumulative analysis". Please change the method to Pass/Fail or update the Evaluation Method first.');
+          return;
+        }
+        
+        if (method === 'Numeric' && !maxPoints) {
+          alert('Please enter maximum points for numeric evaluation method.');
+          document.getElementById('eval-criterion-maxpoints').focus();
+          return;
+        }
+        
+        // Get selected sustainable procurement categories
+        const selectedSP = [];
+        document.querySelectorAll('.eval-sp-checkbox:checked').forEach(cb => {
+          selectedSP.push(cb.value);
+        });
+        
+        // Get selected lots if lot level
         let selectedLots = [];
-        let selectedUnspscCodes = [];
-        if (appliesTo === 'specific') {
+        if (appliesTo === 'lots') {
           const lotsSelect = document.getElementById('eval-criterion-lots');
           Array.from(lotsSelect.selectedOptions).forEach(opt => {
-            if (opt.value.startsWith('lot-')) {
-              selectedLots.push(opt.value.replace('lot-', ''));
-            } else if (opt.value.startsWith('unspsc-')) {
-              selectedUnspscCodes.push(opt.value.replace('unspsc-', ''));
-            }
+            if (opt.value) selectedLots.push(opt.value);
           });
         }
+        
+        // Get selected linked forms
+        const selectedLinkedForms = [];
+        document.querySelectorAll('.eval-linked-form-checkbox:checked').forEach(cb => {
+          const form = availableFormsForLinking.find(f => f.id === cb.value);
+          if (form) {
+            selectedLinkedForms.push({
+              formId: form.id,
+              formName: form.name,
+              formType: form.type
+            });
+          }
+        });
         
         if (criterionId) {
           // Edit existing criterion
@@ -23292,12 +23917,15 @@
             evaluationCriteria[index] = {
               ...evaluationCriteria[index],
               criteria: name,
-              type: type,
+              category: category,
+              type: category, // Keep type for backwards compatibility
               evaluationMethod: method,
+              maxPoints: method === 'Numeric' ? parseInt(maxPoints) : null,
               description: description,
+              sustainableProcurement: selectedSP,
               appliesTo: appliesTo,
               lots: selectedLots,
-              unspscCodes: selectedUnspscCodes
+              linkedForms: selectedLinkedForms
             };
             showNotification('Criterion updated successfully', 'success');
           }
@@ -23305,13 +23933,16 @@
           // Add new criterion
           const newCriterion = {
             id: `CUST-${String(evaluationCriteriaIdCounter++).padStart(3, '0')}`,
-            type: type,
+            category: category,
+            type: category, // Keep type for backwards compatibility
             criteria: name,
             description: description,
             evaluationMethod: method,
+            maxPoints: method === 'Numeric' ? parseInt(maxPoints) : null,
+            sustainableProcurement: selectedSP,
             appliesTo: appliesTo,
             lots: selectedLots,
-            unspscCodes: selectedUnspscCodes,
+            linkedForms: selectedLinkedForms,
             isPredefined: false
           };
           evaluationCriteria.push(newCriterion);
@@ -24046,9 +24677,9 @@
       </div>
     </div>
 
-    <!-- Evaluation Criterion Modal -->
+    <!-- Evaluation Criterion Modal - Enhanced with all fields -->
     <div class="req-modal" id="evaluation-criterion-modal" onclick="if(event.target === this) closeEvaluationCriterionModal()">
-      <div class="req-modal-content" style="max-width: 550px;">
+      <div class="req-modal-content" style="max-width: 700px; max-height: 90vh; overflow-y: auto;">
         <div class="req-modal-header">
           <span class="req-modal-title" id="eval-criterion-modal-title"><i class="pi pi-plus-circle"></i> Add Evaluation Criterion</span>
           <button class="modal-close-btn" onclick="closeEvaluationCriterionModal()">✕</button>
@@ -24056,62 +24687,184 @@
         <div class="req-modal-body" style="padding: var(--spacing-lg);">
           <input type="hidden" id="eval-criterion-id" />
           
-          <!-- Criteria Name -->
+          <!-- ID (auto-generated, shown in edit mode) -->
+          <div class="form-group" id="eval-criterion-id-display" style="display: none;">
+            <label class="form-label">Criterion ID</label>
+            <input type="text" id="eval-criterion-id-readonly" class="form-input" readonly style="background: var(--surface-50); color: var(--text-muted);" />
+          </div>
+          
+          <!-- Category & Criteria Name Row -->
+          <div style="display: grid; grid-template-columns: 180px 1fr; gap: var(--spacing-md);">
+            <div class="form-group">
+              <label class="form-label">Category <span class="required-indicator">*</span></label>
+              <select id="eval-criterion-category" class="form-select">
+                <option value="Eligibility & Formal">Eligibility & Formal</option>
+                <option value="Qualification">Qualification</option>
+                <option value="Technical">Technical</option>
+              </select>
+            </div>
           <div class="form-group">
             <label class="form-label">Criteria Name <span class="required-indicator">*</span></label>
             <input type="text" id="eval-criterion-name" class="form-input" placeholder="e.g., ISO Certification, Financial Capacity, etc." />
-          </div>
-          
-          <!-- Type & Method Row -->
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-md); margin-top: var(--spacing-md);">
-            <div class="form-group">
-              <label class="form-label">Type <span class="required-indicator">*</span></label>
-              <select id="eval-criterion-type" class="form-select">
-                <option value="Qualification criteria">Qualification criteria</option>
-                <option value="Technical criteria">Technical criteria</option>
-                <option value="Shortlisting criteria">Shortlisting criteria</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Evaluation Method <span class="required-indicator">*</span></label>
-              <select id="eval-criterion-method" class="form-select">
-                <option value="Pass/Fail">Pass/Fail</option>
-                <option value="Scoring (0-100)">Scoring (0-100)</option>
-                <option value="Weighted Scoring">Weighted Scoring</option>
-                <option value="Ranking">Ranking</option>
-              </select>
             </div>
           </div>
           
           <!-- Description -->
           <div class="form-group" style="margin-top: var(--spacing-md);">
-            <label class="form-label">Description <span class="required-indicator">*</span></label>
+            <label class="form-label">Criteria Description <span class="required-indicator">*</span></label>
             <textarea id="eval-criterion-description" class="form-textarea" placeholder="Describe how this criterion will be evaluated..." style="min-height: 80px;"></textarea>
+            </div>
+          
+          <!-- Method & Max Points Row -->
+          <div style="display: grid; grid-template-columns: 1fr 120px; gap: var(--spacing-md); margin-top: var(--spacing-md);">
+            <div class="form-group">
+              <label class="form-label">Evaluation Method <span class="required-indicator">*</span></label>
+              <select id="eval-criterion-method" class="form-select" onchange="toggleMaxPointsField(this.value)">
+                <option value="Pass/Fail">Pass/Fail</option>
+                <option value="Numeric">Numeric</option>
+              </select>
+              <div id="eval-criterion-method-notice" style="display: none; font-size: 11px; color: var(--info-600); background: var(--info-50); padding: 6px 10px; border-radius: var(--radius-sm); margin-top: 6px; border-left: 3px solid var(--info-400);">
+                <i class="pi pi-info-circle" style="margin-right: 4px;"></i>Numeric scoring is only available when Evaluation Method is set to "Cumulative analysis"
+              </div>
+            </div>
+            <div class="form-group" id="eval-criterion-maxpoints-group" style="display: none;">
+              <label class="form-label">Max Points <span class="required-indicator">*</span></label>
+              <input type="number" id="eval-criterion-maxpoints" class="form-input" placeholder="e.g., 100" min="1" max="1000" />
+            </div>
           </div>
           
-          <!-- Applies To -->
+          <!-- Sustainable Procurement Category -->
           <div class="form-group" style="margin-top: var(--spacing-md);">
-            <label class="form-label">Applies To <span class="required-indicator">*</span></label>
+            <label class="form-label">Sustainable Procurement Category</label>
+            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 6px;">Select one or more sustainable procurement categories (optional)</div>
+            <div id="eval-criterion-sp-container" style="max-height: 180px; overflow-y: auto; border: 1px solid var(--surface-200); border-radius: var(--radius-sm); padding: var(--spacing-sm); background: var(--surface-50);">
+              <!-- Gender and Social Inclusion -->
+              <div style="margin-bottom: 8px;">
+                <div style="font-weight: 600; font-size: 11px; color: var(--success-700); margin-bottom: 4px; padding: 2px 6px; background: var(--success-50); border-radius: 3px; display: inline-block;">
+                  <i class="pi pi-users" style="font-size: 10px; margin-right: 4px;"></i>Gender and Social Inclusion
+                </div>
+                <div style="padding-left: 12px;">
+                  <label style="display: flex; align-items: flex-start; gap: 6px; cursor: pointer; padding: 3px 0; font-size: 12px;">
+                    <input type="checkbox" class="eval-sp-checkbox" value="Gender and Social Inclusion - Equality opportunity, Diversity and inclusion" style="margin-top: 2px;" />
+                    <span>Equality opportunity, Diversity and inclusion</span>
+                  </label>
+                  <label style="display: flex; align-items: flex-start; gap: 6px; cursor: pointer; padding: 3px 0; font-size: 12px;">
+                    <input type="checkbox" class="eval-sp-checkbox" value="Gender and Social Inclusion - Gender and social inclusion mainstreaming" style="margin-top: 2px;" />
+                    <span>Gender and social inclusion mainstreaming</span>
+                  </label>
+                  <label style="display: flex; align-items: flex-start; gap: 6px; cursor: pointer; padding: 3px 0; font-size: 12px;">
+                    <input type="checkbox" class="eval-sp-checkbox" value="Gender and Social Inclusion - Labor opportunities for women and/or traditionally disadvantaged groups" style="margin-top: 2px;" />
+                    <span>Labor opportunities for women and/or traditionally disadvantaged groups</span>
+                  </label>
+                  <label style="display: flex; align-items: flex-start; gap: 6px; cursor: pointer; padding: 3px 0; font-size: 12px;">
+                    <input type="checkbox" class="eval-sp-checkbox" value="Gender and Social Inclusion - Youth inclusion and partnership with youth" style="margin-top: 2px;" />
+                    <span>Youth inclusion and partnership with youth</span>
+                  </label>
+                </div>
+              </div>
+              <!-- Health and Safety -->
+              <div style="margin-bottom: 8px;">
+                <div style="font-weight: 600; font-size: 11px; color: var(--warning-700); margin-bottom: 4px; padding: 2px 6px; background: var(--warning-50); border-radius: 3px; display: inline-block;">
+                  <i class="pi pi-heart" style="font-size: 10px; margin-right: 4px;"></i>Health and Safety
+                </div>
+                <div style="padding-left: 12px;">
+                  <label style="display: flex; align-items: flex-start; gap: 6px; cursor: pointer; padding: 3px 0; font-size: 12px;">
+                    <input type="checkbox" class="eval-sp-checkbox" value="Health and Safety - Emergency preparedness" style="margin-top: 2px;" />
+                    <span>Emergency preparedness</span>
+                  </label>
+                  <label style="display: flex; align-items: flex-start; gap: 6px; cursor: pointer; padding: 3px 0; font-size: 12px;">
+                    <input type="checkbox" class="eval-sp-checkbox" value="Health and Safety - Incidents/accidents tracking system" style="margin-top: 2px;" />
+                    <span>Incidents/accidents tracking system</span>
+                  </label>
+                  <label style="display: flex; align-items: flex-start; gap: 6px; cursor: pointer; padding: 3px 0; font-size: 12px;">
+                    <input type="checkbox" class="eval-sp-checkbox" value="Health and Safety - Security and safety of workers" style="margin-top: 2px;" />
+                    <span>Security and safety of workers</span>
+                  </label>
+                </div>
+              </div>
+              <!-- Labor Standards -->
+              <div style="margin-bottom: 8px;">
+                <div style="font-weight: 600; font-size: 11px; color: var(--danger-700); margin-bottom: 4px; padding: 2px 6px; background: var(--danger-50); border-radius: 3px; display: inline-block;">
+                  <i class="pi pi-briefcase" style="font-size: 10px; margin-right: 4px;"></i>Labor Standards
+                </div>
+                <div style="padding-left: 12px;">
+                  <label style="display: flex; align-items: flex-start; gap: 6px; cursor: pointer; padding: 3px 0; font-size: 12px;">
+                    <input type="checkbox" class="eval-sp-checkbox" value="Labor Standards - Child Labor" style="margin-top: 2px;" />
+                    <span>Child Labor</span>
+                  </label>
+                  <label style="display: flex; align-items: flex-start; gap: 6px; cursor: pointer; padding: 3px 0; font-size: 12px;">
+                    <input type="checkbox" class="eval-sp-checkbox" value="Labor Standards - Forced labour and human trafficking" style="margin-top: 2px;" />
+                    <span>Forced labour and human trafficking</span>
+                  </label>
+                  <label style="display: flex; align-items: flex-start; gap: 6px; cursor: pointer; padding: 3px 0; font-size: 12px;">
+                    <input type="checkbox" class="eval-sp-checkbox" value="Labor Standards - Grievance mechanism" style="margin-top: 2px;" />
+                    <span>Grievance mechanism</span>
+                  </label>
+                  <label style="display: flex; align-items: flex-start; gap: 6px; cursor: pointer; padding: 3px 0; font-size: 12px;">
+                    <input type="checkbox" class="eval-sp-checkbox" value="Labor Standards - Hiring of local labour" style="margin-top: 2px;" />
+                    <span>Hiring of local labour</span>
+                  </label>
+                  <label style="display: flex; align-items: flex-start; gap: 6px; cursor: pointer; padding: 3px 0; font-size: 12px;">
+                    <input type="checkbox" class="eval-sp-checkbox" value="Labor Standards - Labor risks along the supply chain" style="margin-top: 2px;" />
+                    <span>Labor risks along the supply chain</span>
+                  </label>
+                  <label style="display: flex; align-items: flex-start; gap: 6px; cursor: pointer; padding: 3px 0; font-size: 12px;">
+                    <input type="checkbox" class="eval-sp-checkbox" value="Labor Standards - Suppliers and Contractors selection and management" style="margin-top: 2px;" />
+                    <span>Suppliers and Contractors selection and management</span>
+                  </label>
+                </div>
+              </div>
+              <!-- Resource Efficiency -->
+              <div>
+                <div style="font-weight: 600; font-size: 11px; color: var(--info-700); margin-bottom: 4px; padding: 2px 6px; background: var(--info-50); border-radius: 3px; display: inline-block;">
+                  <i class="pi pi-globe" style="font-size: 10px; margin-right: 4px;"></i>Resource Efficiency
+                </div>
+                <div style="padding-left: 12px;">
+                  <label style="display: flex; align-items: flex-start; gap: 6px; cursor: pointer; padding: 3px 0; font-size: 12px;">
+                    <input type="checkbox" class="eval-sp-checkbox" value="Resource Efficiency - Energy efficiency measures" style="margin-top: 2px;" />
+                    <span>Energy efficiency measures</span>
+                  </label>
+                  <label style="display: flex; align-items: flex-start; gap: 6px; cursor: pointer; padding: 3px 0; font-size: 12px;">
+                    <input type="checkbox" class="eval-sp-checkbox" value="Resource Efficiency - Water conservation and management" style="margin-top: 2px;" />
+                    <span>Water conservation and management</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Apply To Section -->
+          <div class="form-group" style="margin-top: var(--spacing-md);">
+            <label class="form-label">Apply To <span class="required-indicator">*</span></label>
             <div style="display: flex; gap: var(--spacing-lg); margin-top: 6px;">
               <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-                <input type="radio" name="eval-criterion-applies" value="entire" checked onchange="toggleEvalCriterionAppliesTo(this.value)" />
-                <span>Entire Tender</span>
+                <input type="radio" name="eval-criterion-applies" value="tender" checked onchange="toggleEvalCriterionAppliesTo(this.value)" />
+                <span><i class="pi pi-globe" style="font-size: 11px; margin-right: 4px;"></i>Tender Level</span>
               </label>
               <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-                <input type="radio" name="eval-criterion-applies" value="specific" onchange="toggleEvalCriterionAppliesTo(this.value)" />
-                <span>Specific Lots/Products</span>
+                <input type="radio" name="eval-criterion-applies" value="lots" onchange="toggleEvalCriterionAppliesTo(this.value)" />
+                <span><i class="pi pi-th-large" style="font-size: 11px; margin-right: 4px;"></i>Lot Level</span>
               </label>
             </div>
           </div>
           
-          <!-- Specific Selection (hidden by default) -->
+          <!-- Lot Selection (hidden by default) -->
           <div id="eval-criterion-specific-section" style="display: none; margin-top: var(--spacing-md); padding: var(--spacing-md); background: var(--surface-50); border-radius: var(--radius-sm); border: 1px solid var(--surface-200);">
             <div class="form-group">
-              <label class="form-label" style="font-size: 12px;">Select Lots/Products</label>
+              <label class="form-label" style="font-size: 12px;">Select Lots</label>
               <select id="eval-criterion-lots" class="form-select" multiple size="4" style="width: 100%;">
                 <!-- Populated dynamically -->
               </select>
-              <span class="help-text" style="font-size: 11px;">Hold Ctrl/Cmd to select multiple items</span>
+              <span class="help-text" style="font-size: 11px;">Hold Ctrl/Cmd to select multiple lots</span>
+            </div>
+          </div>
+          
+          <!-- Linked Forms Section -->
+          <div class="form-group" style="margin-top: var(--spacing-md);">
+            <label class="form-label">Linked Forms</label>
+            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 6px;">Link this criterion to specific forms where suppliers will provide information (optional)</div>
+            <div id="eval-criterion-linked-forms-container" style="border: 1px solid var(--surface-200); border-radius: var(--radius-sm); padding: var(--spacing-sm); background: var(--surface-50); max-height: 120px; overflow-y: auto;">
+              <!-- Populated dynamically with available forms -->
             </div>
           </div>
         </div>
@@ -24139,40 +24892,60 @@
 
     <!-- Evaluation Criteria Library Modal -->
     <div class="req-modal" id="eval-criteria-library-modal" onclick="if(event.target === this) closeCriteriaLibraryModal()">
-      <div class="req-modal-content" style="max-width: 700px;">
+      <div class="req-modal-content" style="max-width: 900px; max-height: 90vh;">
         <div class="req-modal-header">
           <span class="req-modal-title"><i class="pi pi-book" style="margin-right: 8px;"></i>Evaluation Criteria Library</span>
           <button class="modal-close-btn" onclick="closeCriteriaLibraryModal()">✕</button>
         </div>
-        <div class="req-modal-body" style="padding: var(--spacing-lg);">
-          <!-- Search -->
-          <div class="criteria-library-search">
-            <input type="text" id="eval-criteria-library-search" class="form-input" placeholder="Search criteria by name or description..." oninput="filterCriteriaLibrary(this.value)" style="width: 100%;" />
+        <div class="req-modal-body" style="padding: var(--spacing-lg); overflow-y: auto;">
+          <!-- Info Banner -->
+          <div style="background: var(--info-50); border: 1px solid var(--info-200); border-radius: var(--radius-md); padding: 12px 16px; margin-bottom: var(--spacing-md); display: flex; align-items: flex-start; gap: 10px;">
+            <i class="pi pi-info-circle" style="color: var(--info-600); font-size: 16px; margin-top: 2px;"></i>
+            <div style="font-size: 12px; color: var(--info-800); line-height: 1.5;">
+              Select criteria from the library to add to your tender. You can customize the criteria (description, method, max points, sustainable procurement categories, and linked forms) after adding them.
+            </div>
           </div>
           
-          <!-- Filter Buttons -->
-          <div class="criteria-library-filters">
-            <button class="criteria-filter-btn active" onclick="filterCriteriaByCategory('all', this)">All</button>
-            <button class="criteria-filter-btn" onclick="filterCriteriaByCategory('Eligibility & Formal', this)">Eligibility & Formal</button>
-            <button class="criteria-filter-btn" onclick="filterCriteriaByCategory('Qualification', this)">Qualification</button>
-            <button class="criteria-filter-btn" onclick="filterCriteriaByCategory('Technical', this)">Technical</button>
-            <button class="criteria-filter-btn" onclick="filterCriteriaByCategory('Financial', this)">Financial</button>
+          <!-- Search and Filter Row -->
+          <div style="display: flex; gap: var(--spacing-md); align-items: center; margin-bottom: var(--spacing-md); flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 250px;">
+              <div style="position: relative;">
+                <i class="pi pi-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 13px;"></i>
+                <input type="text" id="eval-criteria-library-search" class="form-input" placeholder="Search by name, description or SP category..." oninput="filterCriteriaLibrary(this.value)" style="width: 100%; padding-left: 36px;" />
+              </div>
+            </div>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+              <button class="criteria-filter-btn active" onclick="filterCriteriaByCategory('all', this)" style="font-size: 11px; padding: 6px 12px;">All</button>
+              <button class="criteria-filter-btn" onclick="filterCriteriaByCategory('Eligibility & Formal', this)" style="font-size: 11px; padding: 6px 12px; background: var(--primary-50); color: var(--primary-700); border: 1px solid var(--primary-200);">Eligibility</button>
+              <button class="criteria-filter-btn" onclick="filterCriteriaByCategory('Qualification', this)" style="font-size: 11px; padding: 6px 12px; background: var(--success-50); color: var(--success-700); border: 1px solid var(--success-200);">Qualification</button>
+              <button class="criteria-filter-btn" onclick="filterCriteriaByCategory('Technical', this)" style="font-size: 11px; padding: 6px 12px; background: var(--warning-50); color: var(--warning-700); border: 1px solid var(--warning-200);">Technical</button>
+            </div>
+          </div>
+          
+          <!-- Legend -->
+          <div style="display: flex; gap: 16px; margin-bottom: var(--spacing-md); font-size: 11px; color: var(--text-muted); flex-wrap: wrap;">
+            <span><i class="pi pi-check-square" style="margin-right: 4px;"></i>Pass/Fail = Go/No-Go criteria</span>
+            <span><i class="pi pi-chart-bar" style="margin-right: 4px;"></i>Numeric = Scored criteria</span>
+            <span><i class="pi pi-leaf" style="margin-right: 4px; color: var(--success-600);"></i>SP = Sustainable Procurement linked</span>
           </div>
           
           <!-- Criteria Grid -->
-          <div class="criteria-library-grid" id="eval-criteria-library-grid">
+          <div class="criteria-library-grid" id="eval-criteria-library-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 12px; max-height: 450px; overflow-y: auto; padding-right: 4px;">
             <!-- Populated dynamically -->
           </div>
           
           <!-- Selected count -->
-          <div id="eval-criteria-library-selected-info" style="margin-top: var(--spacing-md); padding: var(--spacing-sm) var(--spacing-md); background: var(--primary-50); border-radius: var(--radius-sm); display: none;">
+          <div id="eval-criteria-library-selected-info" style="margin-top: var(--spacing-md); padding: 12px 16px; background: var(--primary-50); border: 1px solid var(--primary-200); border-radius: var(--radius-md); display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
             <span style="font-size: 13px; color: var(--primary-700);">
               <i class="pi pi-check-circle" style="margin-right: 6px;"></i>
               <strong id="eval-criteria-library-selected-count">0</strong> criteria selected
             </span>
+              <button class="btn btn-ghost btn-xs" onclick="clearLibrarySelection()" style="font-size: 11px;">Clear Selection</button>
           </div>
         </div>
-        <div class="req-modal-footer">
+        </div>
+        <div class="req-modal-footer" style="border-top: 1px solid var(--surface-200); padding: 12px 20px;">
           <button class="btn btn-ghost btn-sm" onclick="closeCriteriaLibraryModal()">Cancel</button>
           <button class="btn btn-primary btn-sm" onclick="addSelectedCriteriaFromLibrary()" id="add-eval-criteria-from-library-btn" disabled>
             <i class="pi pi-plus"></i> Add Selected (<span id="add-eval-criteria-count">0</span>)
