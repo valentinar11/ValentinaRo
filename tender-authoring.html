@@ -9188,7 +9188,7 @@
               fields: [
                 { id: 'evaluationMethod', label: 'Evaluation method', type: 'select', required: true, options: ['Select...', 'Lowest priced substantially compliant offer', 'Lowest priced most technically acceptable offer', 'Cumulative analysis'], onchange: 'updateEvaluationMethodInEvaluation' },
                 { id: 'weightage', label: 'Weightage of technical and financial proposals', type: 'select', required: false, options: ['Select...', '50% technical / 50% financial', '60% technical / 40% financial', '70% technical / 30% financial', '80% technical / 20% financial'], conditionalVisibility: { field: 'evaluationMethod', value: 'Cumulative analysis' } },
-                { id: 'minPoints', label: 'Minimum Points for Technical compliance', type: 'number', required: false, value: '', placeholder: 'Range from 40% to 100%', conditionalVisibility: { field: 'evaluationMethod', value: 'Cumulative analysis' } },
+                { id: 'minPoints', label: 'Minimum passing technical threshold', type: 'number', required: false, value: '', placeholder: 'Range from 40% to 100%', conditionalVisibility: { field: 'evaluationMethod', value: 'Cumulative analysis' } },
                 { id: 'maxPointsTechnical', label: 'Maximum points for technical evaluation', type: 'number', required: false, value: '', placeholder: 'e.g., 1000', conditionalVisibility: { field: 'evaluationMethod', value: 'Cumulative analysis' } },
                 { id: 'evaluationMethodDetails', label: 'Evaluation method details', type: 'textarea', required: false, value: '', placeholder: 'Evaluation method details will be pre-filled based on solicitation method...', isEvaluationMethodDetails: true },
               ],
@@ -19337,7 +19337,10 @@
             // Actions
             html += '<td style="padding: 8px; border-bottom: 1px solid var(--surface-100); text-align: center;">';
             if (isPredefined) {
+              html += '<div style="display: flex; gap: 3px; justify-content: center; align-items: center;">';
               html += '<span style="font-size: 8px; color: var(--text-muted); background: var(--surface-100); padding: 2px 5px; border-radius: 3px;">System</span>';
+              html += '<button class="btn-icon-xs danger" onclick="removeEvaluationCriterion(\'' + criterion.id + '\')" title="Remove" style="min-width: 20px; height: 20px;"><i class="pi pi-trash" style="font-size: 9px;"></i></button>';
+              html += '</div>';
             } else {
               html += '<div style="display: flex; gap: 3px; justify-content: center;">';
               html += '<button class="btn-icon-xs" onclick="openEvaluationCriterionModal(\'' + criterion.id + '\')" title="Edit" style="min-width: 20px; height: 20px;"><i class="pi pi-pencil" style="font-size: 9px;"></i></button>';
