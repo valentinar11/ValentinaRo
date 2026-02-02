@@ -10090,6 +10090,8 @@
         exclusivity: '',
         alternativeOffers: '',
         advancePaymentAllowed: '',
+        advancePaymentPercentage: '',
+        advancePaymentJustification: '',
         advancePaymentSecurity: '',
         liquidatedDamages: '',
         performanceSecurity: '',
@@ -20494,6 +20496,20 @@
         restoreProjectDetailsSectionStates();
       }
       
+      window.handleAdvancePaymentJustification = function(value) {
+        saveProjectDetailsSectionStates();
+        particularsValues.advancePaymentJustification = value;
+        renderCurrentBlock();
+        restoreProjectDetailsSectionStates();
+      }
+      
+      window.handleAdvancePaymentPercentage = function(value) {
+        saveProjectDetailsSectionStates();
+        particularsValues.advancePaymentPercentage = value;
+        renderCurrentBlock();
+        restoreProjectDetailsSectionStates();
+      }
+      
       window.updateBidderEligibility = function(value) {
         saveProjectDetailsSectionStates();
         particularsValues.bidderEligibility = value;
@@ -22185,7 +22201,7 @@
                 </div>
                 ` : ''}
                 
-                <div class="form-group">
+                <div class="form-group full-width">
                   <label class="form-label">Advance payment allowed?</label>
                   <select class="form-select" onchange="updateAdvancePaymentAllowed(this.value)" onclick="event.stopPropagation()">
                     <option value="">Select...</option>
@@ -22193,41 +22209,78 @@
                     <option value="Yes">Yes</option>
                   </select>
                   <div style="margin-top: 8px; padding: 12px; background: var(--info-50); border-left: 3px solid var(--info-400); border-radius: var(--radius-sm); font-size: 13px; color: var(--text-secondary);">
-                    ℹ️ <strong>Advance Payment Policy:</strong> As per UNOPS policy, advance payments may be considered under specific circumstances and require appropriate justification and security.
+                    ℹ️ This selection cannot be changed after tender closes. Prior to tender closure, changes to this section will trigger an amendment. Advance payments refer to payments made prior to receipt of goods or performance of any contractual service or works. UNOPS FRRs, in rule 122.20 stipulate that except where normal, commercial practice or the best interests of UNOPS so require, no contract shall be made on behalf of UNOPS that requires payment(s) in advance of the delivery of products or the performance of contractual services. Please refer to Section 11.1.4 of Procurement Manual: Advance payments for more information on Advance Payments.
                   </div>
                 </div>
                 
                 ${particularsValues.advancePaymentAllowed === 'Yes' ? `
                   <div class="form-group full-width">
-                    <label class="form-label onclick="event.stopPropagation()" >Justification/background for advance payment</label>
-                    <textarea class="form-textarea" placeholder="Provide justification for advance payment..." style="min-height: 80px;"></textarea>
-                  </div>
-                  
-                  <div class="form-group full-width">
-                    <label class="form-label">Additional rationale / specific information</label>
-                    <textarea class="form-textarea" placeholder="Provide additional rationale..." style="min-height: 60px;"></textarea>
-                  </div>
-                  
-                  <div class="form-group">
-                    <label class="form-label">Advance payment percentage requested</label>
-                    <select class="form-select">
-                      <option>Select...</option>
-                      <option>Up to 20%</option>
-                      <option>Up to 30%</option>
-                      <option>Up to 40%</option>
-                      <option>Other (requires exception)</option>
+                    <label class="form-label" onclick="event.stopPropagation()">Justification/background for advance payment</label>
+                    <select class="form-select" onchange="handleAdvancePaymentJustification(this.value)" onclick="event.stopPropagation()">
+                      <option value="" ${!particularsValues.advancePaymentJustification ? 'selected' : ''}>Select...</option>
+                      <option value="mobilisation" ${particularsValues.advancePaymentJustification === 'mobilisation' ? 'selected' : ''}>(i) Mobilisation costs (works), (Please review the BoQ)</option>
+                      <option value="operational" ${particularsValues.advancePaymentJustification === 'operational' ? 'selected' : ''}>(ii) Operational set-up costs (services/support)</option>
+                      <option value="design" ${particularsValues.advancePaymentJustification === 'design' ? 'selected' : ''}>(iii) Design or production initiation (goods)</option>
+                      <option value="lease" ${particularsValues.advancePaymentJustification === 'lease' ? 'selected' : ''}>(iv) Lease or utility prepayment</option>
+                      <option value="others" ${particularsValues.advancePaymentJustification === 'others' ? 'selected' : ''}>(v) Others (specify below)</option>
                     </select>
                   </div>
                   
+                  <div class="form-group full-width" id="otherJustificationContainer" style="display: ${particularsValues.advancePaymentJustification === 'others' ? 'block' : 'none'};">
+                    <label class="form-label" onclick="event.stopPropagation()">Please specify other justification</label>
+                    <textarea class="form-textarea" placeholder="Specify other justification for advance payment..." style="min-height: 80px;"></textarea>
+                  </div>
+                  
                   <div class="form-group full-width">
-                    <label class="form-label">Exception justification (upload CFO approval + Jira link)</label>
+                    <label class="form-label">Advance payment additional information/specific rationale</label>
+                    <textarea class="form-textarea" placeholder="Provide advance payment additional information/specific rationale..." style="min-height: 60px;"></textarea>
+                  </div>
+                  
+                  <div class="form-group full-width">
+                    <label class="form-label">Maximum Advance Payment as a percentage of estimated contract value</label>
+                    <select class="form-select" onchange="handleAdvancePaymentPercentage(this.value)" onclick="event.stopPropagation()">
+                      <option value="" ${!particularsValues.advancePaymentPercentage ? 'selected' : ''}>Select...</option>
+                      <option value="1" ${particularsValues.advancePaymentPercentage === '1' ? 'selected' : ''}>Up to 1%</option>
+                      <option value="2" ${particularsValues.advancePaymentPercentage === '2' ? 'selected' : ''}>Up to 2%</option>
+                      <option value="3" ${particularsValues.advancePaymentPercentage === '3' ? 'selected' : ''}>Up to 3%</option>
+                      <option value="4" ${particularsValues.advancePaymentPercentage === '4' ? 'selected' : ''}>Up to 4%</option>
+                      <option value="5" ${particularsValues.advancePaymentPercentage === '5' ? 'selected' : ''}>Up to 5%</option>
+                      <option value="6" ${particularsValues.advancePaymentPercentage === '6' ? 'selected' : ''}>Up to 6%</option>
+                      <option value="7" ${particularsValues.advancePaymentPercentage === '7' ? 'selected' : ''}>Up to 7%</option>
+                      <option value="8" ${particularsValues.advancePaymentPercentage === '8' ? 'selected' : ''}>Up to 8%</option>
+                      <option value="9" ${particularsValues.advancePaymentPercentage === '9' ? 'selected' : ''}>Up to 9%</option>
+                      <option value="10" ${particularsValues.advancePaymentPercentage === '10' ? 'selected' : ''}>Up to 10%</option>
+                      <option value="11" ${particularsValues.advancePaymentPercentage === '11' ? 'selected' : ''}>Up to 11%</option>
+                      <option value="12" ${particularsValues.advancePaymentPercentage === '12' ? 'selected' : ''}>Up to 12%</option>
+                      <option value="13" ${particularsValues.advancePaymentPercentage === '13' ? 'selected' : ''}>Up to 13%</option>
+                      <option value="14" ${particularsValues.advancePaymentPercentage === '14' ? 'selected' : ''}>Up to 14%</option>
+                      <option value="15" ${particularsValues.advancePaymentPercentage === '15' ? 'selected' : ''}>Up to 15%</option>
+                      <option value="16" ${particularsValues.advancePaymentPercentage === '16' ? 'selected' : ''}>Up to 16%</option>
+                      <option value="17" ${particularsValues.advancePaymentPercentage === '17' ? 'selected' : ''}>Up to 17%</option>
+                      <option value="18" ${particularsValues.advancePaymentPercentage === '18' ? 'selected' : ''}>Up to 18%</option>
+                      <option value="19" ${particularsValues.advancePaymentPercentage === '19' ? 'selected' : ''}>Up to 19%</option>
+                      <option value="20" ${particularsValues.advancePaymentPercentage === '20' ? 'selected' : ''}>Up to 20%</option>
+                      <option value="21" ${particularsValues.advancePaymentPercentage === '21' ? 'selected' : ''}>Up to 21%</option>
+                      <option value="22" ${particularsValues.advancePaymentPercentage === '22' ? 'selected' : ''}>Up to 22%</option>
+                      <option value="23" ${particularsValues.advancePaymentPercentage === '23' ? 'selected' : ''}>Up to 23%</option>
+                      <option value="24" ${particularsValues.advancePaymentPercentage === '24' ? 'selected' : ''}>Up to 24%</option>
+                      <option value="25" ${particularsValues.advancePaymentPercentage === '25' ? 'selected' : ''}>Up to 25%</option>
+                      <option value="26+" ${particularsValues.advancePaymentPercentage === '26+' ? 'selected' : ''}>26%+ of estimated contract value or above USD 500K</option>
+                    </select>
+                    <div style="margin-top: 8px; padding: 12px; background: var(--info-50); border-left: 3px solid var(--info-400); border-radius: var(--radius-sm); font-size: 13px; color: var(--text-secondary);">
+                      ℹ️ Select "Up to %" of estimated contract value for advance payment. If estimated value of prepayment is above USD 500K or 25% of estimated contract value whichever is lower, CFO approval is required, as per FRR 122.20.a.
+                    </div>
+                  </div>
+                  
+                  <div class="form-group full-width" id="exceptionJustificationContainer" style="display: ${particularsValues.advancePaymentPercentage === '26+' ? 'block' : 'none'};">
+                    <label class="form-label">Exception justification for estimated value of Advance Payment above USD 500K or 26%+ of estimated contract value</label>
                     <div style="display: flex; gap: var(--spacing-md); align-items: center; margin-bottom: var(--spacing-sm);">
                       <input type="file" class="form-input" accept=".pdf,.doc,.docx" style="flex: 1;" />
                       <button class="btn btn-secondary btn-sm" type="button">📎 Upload CFO Approval</button>
                     </div>
-                    <input type="text" class="form-input" placeholder="Enter Jira link" style="margin-top: 8px;" />
-                    <div style="margin-top: 8px; padding: 10px; background: var(--warning-50); border-left: 3px solid var(--warning-500); border-radius: var(--radius-sm); font-size: 12px; color: var(--text-secondary);">
-                      ⚠️ <strong>Advisory:</strong> Advance payments exceeding standard thresholds require CFO approval and documented exception.
+                    <input type="text" class="form-input" placeholder="Enter Service Point ticket link with approval" style="margin-top: 8px;" />
+                    <div style="margin-top: 8px; padding: 10px; background: var(--info-50); border-left: 3px solid var(--info-400); border-radius: var(--radius-sm); font-size: 12px; color: var(--text-secondary);">
+                      ℹ️ Please kindly complete <a href="https://docs.google.com/document/d/1b-rgJohJhkQF7EwciGzh2PTVcCXclcYhqPBqI48itVo/edit?tab=t.0#heading=h.tmq4lqybq4bw" target="_blank" style="color: var(--primary-600); text-decoration: underline;">this form</a> & submit the request through <a href="https://unops.atlassian.net/servicedesk/customer/portal/76/group/537/create/3370" target="_blank" style="color: var(--primary-600); text-decoration: underline;">Service Point/Finance/ticket type: FRR122.20.a.)</a>. Add link to Service Point ticket with approval.
                     </div>
                   </div>
                   
@@ -22239,11 +22292,16 @@
                       <option value="Yes">Yes</option>
                     </select>
                     <div style="margin-top: 8px; padding: 10px; background: var(--info-50); border-left: 3px solid var(--info-400); border-radius: var(--radius-sm); font-size: 12px; color: var(--text-secondary);">
-                      ℹ️ Advance payment security (bank guarantee or similar) is typically required to protect UNOPS interests.
+                      ℹ️ An advance payment security is mandatory when the value to be paid exceeds USD 250,000 but is also recommended for smaller amounts.
                     </div>
                   </div>
                   
                   ${particularsValues.advancePaymentSecurity === 'Yes' ? `
+                    <div class="form-group full-width">
+                      <label class="form-label">Advance Payment Security requirements</label>
+                      <textarea class="form-textarea" placeholder="Specify advance payment security requirements..." style="min-height: 80px;"></textarea>
+                    </div>
+                    
                     <div class="form-group">
                       <label class="form-label">Deadline for provision of security – Date</label>
                       <input type="date" class="form-input" />
