@@ -4966,6 +4966,60 @@
         color: var(--danger-600);
       }
 
+      /* Mandatory Toggle Switch */
+      .mandatory-toggle {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-shrink: 0;
+      }
+
+      .mandatory-toggle-switch {
+        position: relative;
+        width: 36px;
+        height: 20px;
+        background: var(--surface-300);
+        border-radius: 10px;
+        cursor: pointer;
+        transition: background 0.2s ease;
+      }
+
+      .mandatory-toggle-switch.active {
+        background: var(--primary-500);
+      }
+
+      .mandatory-toggle-switch::after {
+        content: '';
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 16px;
+        height: 16px;
+        background: white;
+        border-radius: 50%;
+        transition: transform 0.2s ease;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+      }
+
+      .mandatory-toggle-switch.active::after {
+        transform: translateX(16px);
+      }
+
+      .mandatory-toggle-label {
+        font-size: 11px;
+        font-weight: 500;
+        color: var(--text-secondary);
+        min-width: 60px;
+      }
+
+      .mandatory-toggle-label.mandatory {
+        color: var(--primary-600);
+      }
+
+      .mandatory-toggle-label.optional {
+        color: var(--text-muted);
+      }
+
       .requirement-actions {
         display: flex;
         gap: var(--spacing-sm);
@@ -15903,11 +15957,18 @@
           return `
             <div class="req-attributes-compact">
               ${attachmentHtml}
+              <div style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-sm); padding: 6px 10px; margin-bottom: 8px; font-size: 10px; color: var(--text-secondary);">
+                <strong>Compliance Requirements:</strong> Lines marked as "Mandatory" require suppliers to confirm compliance.
+              </div>
               <div class="attributes-grid">
                 ${req.attributes.map((attr, idx) => `
                   <div class="attr-row">
                     <input type="text" class="attr-input attr-name" value="${attr.name}" placeholder="Attribute name" onchange="updateAttributeName('${unspsc.code}', ${idx}, this.value)" onclick="event.stopPropagation()" />
                     <input type="text" class="attr-input attr-value" value="${attr.value}" placeholder="Value" onchange="updateAttributeValue('${unspsc.code}', ${idx}, this.value)" onclick="event.stopPropagation()" />
+                    <div class="mandatory-toggle" style="margin: 0 4px;" title="Toggle whether this requirement is mandatory for suppliers to comply" onclick="event.stopPropagation()">
+                      <div class="mandatory-toggle-switch ${attr.isMandatory !== false ? 'active' : ''}" onclick="event.stopPropagation(); toggleAttributeMandatoryInline('${unspsc.code}', ${idx})"></div>
+                      <span class="mandatory-toggle-label ${attr.isMandatory !== false ? 'mandatory' : 'optional'}">${attr.isMandatory !== false ? 'Mandatory' : 'Optional'}</span>
+                    </div>
                     <button class="attr-remove" onclick="event.stopPropagation(); removeAttributeInline('${unspsc.code}', ${idx})">×</button>
                   </div>
                 `).join('')}
@@ -15946,10 +16007,19 @@
         }
         
         productRequirements[unspscCode].requirementType = 'attributes';
-        productRequirements[unspscCode].attributes.push({ name: '', value: '' });
+        productRequirements[unspscCode].attributes.push({ name: '', value: '', isMandatory: true });
         
         // Update just the body content
         updateProductReqBodyContent(unspscCode);
+      }
+      
+      // Toggle mandatory status for product attribute (inline version)
+      window.toggleAttributeMandatoryInline = function(unspscCode, index) {
+        if (productRequirements[unspscCode] && productRequirements[unspscCode].attributes[index]) {
+          const current = productRequirements[unspscCode].attributes[index].isMandatory;
+          productRequirements[unspscCode].attributes[index].isMandatory = current === false ? true : !current;
+          updateProductReqBodyContent(unspscCode);
+        }
       }
       
       window.addDescriptionFieldInline = function(unspscCode) {
@@ -16178,6 +16248,9 @@
               <div style="background: var(--success-50); border: 1px solid var(--success-200); border-radius: var(--radius-sm); padding: 8px 12px; margin-bottom: var(--spacing-sm); font-size: 11px; color: var(--success-700);">
                 <strong>💰 Priced:</strong> Each line added here will be part of the financial bid. Suppliers will be required to provide a price.
               </div>
+              <div style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-sm); padding: 8px 12px; margin-bottom: var(--spacing-sm); font-size: 11px; color: var(--text-secondary);">
+                <strong>Compliance Requirements:</strong> Lines marked as "Mandatory" require suppliers to confirm compliance.
+              </div>
               ${tenderAuthorConfig.serviceDescriptions.length === 0 ? `
                 <div style="text-align: center; padding: var(--spacing-md); color: var(--text-muted); font-size: 12px; border: 1px dashed var(--surface-300); border-radius: var(--radius-sm);">
                   No service lines. Click "+ Add" to create one.
@@ -16205,6 +16278,10 @@
                           ${productsAndServices.map(prod => `<option value="${prod.id}" ${service.targetId === prod.id ? 'selected' : ''}>${prod.unspscCode} - ${prod.description || prod.unspscDescription}</option>`).join('')}
                         </select>
                       ` : ''}
+                      <div class="mandatory-toggle" title="Toggle whether this requirement is mandatory for suppliers to comply">
+                        <div class="mandatory-toggle-switch ${service.isMandatory !== false ? 'active' : ''}" onclick="toggleServiceLineMandatory(${idx})"></div>
+                        <span class="mandatory-toggle-label ${service.isMandatory !== false ? 'mandatory' : 'optional'}">${service.isMandatory !== false ? 'Mandatory' : 'Optional'}</span>
+                      </div>
                       <button class="btn-icon-sm" onclick="removeServiceLine(${idx})" style="font-size: 12px;">×</button>
                     </div>
                   `).join('')}
@@ -16222,6 +16299,9 @@
             <div class="subsection-body">
               <div style="background: var(--info-50); border: 1px solid var(--info-200); border-radius: var(--radius-sm); padding: 8px 12px; margin-bottom: var(--spacing-sm); font-size: 11px; color: var(--info-700);">
                 <strong>ℹ️ Not Priced:</strong> Delivery and specific requirements are informational conditions and do not require suppliers to provide a separate price.
+              </div>
+              <div style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-sm); padding: 8px 12px; margin-bottom: var(--spacing-sm); font-size: 11px; color: var(--text-secondary);">
+                <strong>Compliance Requirements:</strong> Lines marked as "Mandatory" require suppliers to confirm compliance.
               </div>
               ${tenderAuthorConfig.specificRequirements.length === 0 ? `
                 <div style="text-align: center; padding: var(--spacing-md); color: var(--text-muted); font-size: 12px; border: 1px dashed var(--surface-300); border-radius: var(--radius-sm);">
@@ -16259,6 +16339,10 @@
                           ${productsAndServices.map(prod => `<option value="${prod.id}" ${req.targetId === prod.id ? 'selected' : ''}>${prod.unspscCode} - ${prod.description || prod.unspscDescription}</option>`).join('')}
                         </select>
                       ` : ''}
+                      <div class="mandatory-toggle" title="Toggle whether this requirement is mandatory for suppliers to comply">
+                        <div class="mandatory-toggle-switch ${req.isMandatory !== false ? 'active' : ''}" onclick="toggleSpecificRequirementMandatory(${idx})"></div>
+                        <span class="mandatory-toggle-label ${req.isMandatory !== false ? 'mandatory' : 'optional'}">${req.isMandatory !== false ? 'Mandatory' : 'Optional'}</span>
+                      </div>
                       <button class="btn-icon-sm" onclick="removeSpecificRequirement(${idx})" style="font-size: 12px;">×</button>
                     </div>
                   `).join('')}
@@ -16447,6 +16531,9 @@
                                 </div>
                               </div>
                             ` : `
+                              <div style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-sm); padding: 8px 12px; margin-bottom: var(--spacing-sm); font-size: 11px; color: var(--text-secondary);">
+                                <strong>Compliance Requirements:</strong> Lines marked as "Mandatory" require suppliers to confirm compliance.
+                              </div>
                               <div class="requirement-attributes-list">
                                 ${req.attributes.map((attr, idx) => `
                                   <div class="requirement-attribute-item">
@@ -16456,6 +16543,10 @@
                                       </div>
                                       <div class="attribute-value">
                                         <input type="text" class="attribute-value-input" value="${attr.value}" placeholder="Value (e.g., Laser (Monochrome))" onchange="updateAttributeValue('${unspsc.code}', ${idx}, this.value)" />
+                                      </div>
+                                      <div class="mandatory-toggle" title="Toggle whether this requirement is mandatory for suppliers to comply">
+                                        <div class="mandatory-toggle-switch ${attr.isMandatory !== false ? 'active' : ''}" onclick="toggleAttributeMandatory('${unspsc.code}', ${idx})"></div>
+                                        <span class="mandatory-toggle-label ${attr.isMandatory !== false ? 'mandatory' : 'optional'}">${attr.isMandatory !== false ? 'Mandatory' : 'Optional'}</span>
                                       </div>
                                       <button class="btn-icon-sm" onclick="removeAttribute('${unspsc.code}', ${idx})" title="Remove">✖</button>
                                     </div>
@@ -16488,6 +16579,7 @@
         productRequirements[unspscCode].attributes.push({
           name: '',
           value: '',
+          isMandatory: true, // Default to mandatory
         });
         
         renderCurrentBlock();
@@ -16653,6 +16745,15 @@
       window.updateAttributeValue = function(unspscCode, index, newValue) {
         if (productRequirements[unspscCode] && productRequirements[unspscCode].attributes[index]) {
           productRequirements[unspscCode].attributes[index].value = newValue;
+        }
+      }
+      
+      // Toggle mandatory status for product attribute
+      window.toggleAttributeMandatory = function(unspscCode, index) {
+        if (productRequirements[unspscCode] && productRequirements[unspscCode].attributes[index]) {
+          const current = productRequirements[unspscCode].attributes[index].isMandatory;
+          productRequirements[unspscCode].attributes[index].isMandatory = current === false ? true : !current;
+          renderCurrentBlock();
         }
       }
       
@@ -20563,7 +20664,7 @@
       const PREDEFINED_REQUIREMENT_NAMES = ['Delivery Time', 'Delivery Place', 'Consignee Details'];
       
       let tenderAuthorConfig = {
-        serviceDescriptions: [], // [{ name, description }]
+        serviceDescriptions: [], // [{ name, description, applyTo, targetId, isMandatory }]
         deliveryConfig: {
           deliveryTime: '',
           deliveryPlace: '',
@@ -20571,10 +20672,10 @@
           consigneeDetails: '',
         },
         specificRequirements: [
-          { name: 'Delivery Time', description: '', applyTo: 'all', targetId: '', isPredefined: true },
-          { name: 'Delivery Place', description: '', applyTo: 'all', targetId: '', isPredefined: true },
-          { name: 'Consignee Details', description: '', applyTo: 'all', targetId: '', isPredefined: true }
-        ], // [{ name, description, applyTo: 'all'|'lot'|'product', targetId }]
+          { name: 'Delivery Time', description: '', applyTo: 'all', targetId: '', isPredefined: true, isMandatory: true },
+          { name: 'Delivery Place', description: '', applyTo: 'all', targetId: '', isPredefined: true, isMandatory: true },
+          { name: 'Consignee Details', description: '', applyTo: 'all', targetId: '', isPredefined: true, isMandatory: true }
+        ], // [{ name, description, applyTo: 'all'|'lot'|'product', targetId, isMandatory }]
       };
       
       function renderTenderAuthorConfigSection(block, section, sectionIndex, isFirst) {
@@ -20727,6 +20828,7 @@
           description: '',
           applyTo: 'all', // 'all', 'lot', or 'product'
           targetId: '', // ID of specific lot or product if applyTo is not 'all'
+          isMandatory: true, // Default to mandatory
         });
         renderCurrentBlock();
       }
@@ -20750,6 +20852,15 @@
         renderCurrentBlock();
       }
       
+      // Toggle mandatory status for service line
+      window.toggleServiceLineMandatory = function(idx) {
+        if (tenderAuthorConfig.serviceDescriptions[idx]) {
+          const current = tenderAuthorConfig.serviceDescriptions[idx].isMandatory;
+          tenderAuthorConfig.serviceDescriptions[idx].isMandatory = current === false ? true : !current;
+          renderCurrentBlock();
+        }
+      }
+      
       // ===== SPECIFIC REQUIREMENTS MANAGEMENT =====
       window.addSpecificRequirement = function() {
         tenderAuthorConfig.specificRequirements.push({
@@ -20757,7 +20868,8 @@
           description: '',
           applyTo: 'all', // 'all', 'lot', or 'product'
           targetId: '',
-          isPredefined: false
+          isPredefined: false,
+          isMandatory: true, // Default to mandatory
         });
         renderCurrentBlock();
       }
@@ -20795,6 +20907,15 @@
       window.removeSpecificRequirement = function(idx) {
         tenderAuthorConfig.specificRequirements.splice(idx, 1);
         renderCurrentBlock();
+      }
+      
+      // Toggle mandatory status for specific requirement
+      window.toggleSpecificRequirementMandatory = function(idx) {
+        if (tenderAuthorConfig.specificRequirements[idx]) {
+          const current = tenderAuthorConfig.specificRequirements[idx].isMandatory;
+          tenderAuthorConfig.specificRequirements[idx].isMandatory = current === false ? true : !current;
+          renderCurrentBlock();
+        }
       }
       
       window.updateAllowedIncoterms = function(selectElement) {
