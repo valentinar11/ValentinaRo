@@ -1,0 +1,2854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNOPS PDJ · Notification Templates</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/primeicons@6.0.1/primeicons.css">
+    <style>
+        :root {
+            /* UNOPS Primary Colors */
+            --primary-50: #e6f7ff;
+            --primary-100: #bae7ff;
+            --primary-200: #7dd3fc;
+            --primary-300: #38bdf8;
+            --primary-400: #0ea5e9;
+            --primary-500: #0092D1;
+            --primary-600: #0284c7;
+            --primary-700: #0369a1;
+            --primary-800: #003a56;
+            --primary-900: #001d2b;
+
+            /* Surface Colors */
+            --surface-0: #ffffff;
+            --surface-50: #f5f8fb;
+            --surface-100: #ebf1f8;
+            --surface-200: #dde8f2;
+            --surface-300: #cfdfec;
+            --surface-400: #a3a3a3;
+            --surface-600: #95a7ba;
+            --surface-800: #596170;
+            --surface-900: #3b3e4a;
+
+            /* Semantic Colors */
+            --success-50: #d2e7cd;
+            --success-100: #e8f5e9;
+            --success-500: #4c9f38;
+            --success-600: #4c9f38;
+            
+            --info-50: #bfe4f4;
+            --info-100: #e3f2fd;
+            --info-500: #2196f3;
+            
+            --warning-50: #f9d6c3;
+            --warning-100: #fff3e0;
+            --warning-500: #e85c0e;
+            
+            --danger-50: #f6cac6;
+            --danger-100: #fee2e2;
+            --danger-500: #da291c;
+
+            --purple-50: #f3e8ff;
+            --purple-100: #e9d5ff;
+            --purple-500: #9333ea;
+
+            /* Text Colors */
+            --text-primary: var(--surface-900);
+            --text-secondary: var(--surface-800);
+            --text-muted: var(--surface-600);
+
+            /* Spacing */
+            --spacing-xs: 6px;
+            --spacing-sm: 12px;
+            --spacing-md: 20px;
+            --spacing-lg: 28px;
+            --spacing-xl: 36px;
+
+            /* Border Radius */
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+
+            /* Shadows */
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.08);
+            --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Lato', 'Noto Sans', system-ui, sans-serif;
+            background: var(--surface-50);
+            color: var(--text-primary);
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: var(--surface-0);
+            border-bottom: 1px solid var(--surface-200);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--spacing-md) var(--spacing-xl);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 20px;
+            letter-spacing: 0.12em;
+            color: var(--primary-400);
+        }
+
+        .portal-badge {
+            background: var(--primary-400);
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            margin-left: auto;
+            margin-right: var(--spacing-lg);
+        }
+
+        .header-action-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            background: transparent;
+            border: none;
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .header-action-btn:hover {
+            background: var(--surface-100);
+        }
+
+        .header-action-btn i {
+            font-size: 20px;
+            color: var(--text-muted);
+        }
+
+        .header-action-btn:hover i {
+            color: var(--primary-500);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: var(--danger-500);
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            min-width: 18px;
+            height: 18px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 5px;
+            border: 2px solid white;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .user-info {
+            text-align: right;
+        }
+
+        .user-company {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .user-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--primary-100);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--primary-600);
+            cursor: pointer;
+        }
+
+        /* App Container */
+        .app-container {
+            display: flex;
+            min-height: calc(100vh - 65px);
+        }
+
+        /* Sidebar - Matching tender-authoring */
+        .sidebar {
+            width: 300px;
+            min-width: 300px;
+            max-width: 300px;
+            background-color: #0192D1;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            overflow-y: auto;
+        }
+
+        .sidebar-menu {
+            flex: 1;
+            padding: 16px 0;
+        }
+
+        .menu-section {
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .menu-section-title {
+            padding: 8px 20px 12px 20px;
+            font-size: 11px;
+            font-weight: 700;
+            color: rgba(255,255,255,0.5);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .menu-item:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        .menu-item.active {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            border-left: 3px solid white;
+            padding-left: 17px;
+        }
+
+        .menu-item.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .menu-item.disabled:hover {
+            background-color: transparent;
+        }
+
+        .menu-item i {
+            font-size: 18px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .menu-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            margin-right: 8px;
+        }
+
+        .menu-icon i {
+            font-size: 14px;
+        }
+
+        /* Menu Group Styles for Collapsible Sidebar */
+        .menu-group {
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .menu-group-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.7);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .menu-group-header:hover {
+            color: white;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .menu-group-header i {
+            font-size: 12px;
+            transition: transform 0.2s;
+        }
+
+        .menu-group.collapsed .menu-group-header i.pi-chevron-down {
+            transform: rotate(-90deg);
+        }
+
+        .menu-group.collapsed .menu-group-items {
+            display: none;
+        }
+
+        .menu-group-items {
+            padding-left: 12px;
+        }
+
+        .menu-group-items .menu-item {
+            padding: 10px 20px 10px 28px;
+            font-size: 13px;
+            border-left: none;
+        }
+
+        .menu-group-items .menu-item.active {
+            background: rgba(255,255,255,0.15);
+            border-left: none;
+            border-radius: 0 4px 4px 0;
+            margin-right: 8px;
+        }
+
+        .menu-divider {
+            height: 1px;
+            background: rgba(255,255,255,0.15);
+            margin: var(--spacing-md) 0;
+        }
+
+        /* Nested Submenu inside menu-group-items */
+        .menu-subgroup {
+            margin: 4px 0;
+        }
+
+        .menu-subgroup-header {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px 10px 28px;
+            font-size: 13px;
+            color: rgba(255,255,255,0.85);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .menu-subgroup-header:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        .menu-subgroup-header .menu-icon {
+            margin-right: 8px;
+        }
+
+        .menu-subgroup-header > span:not(.menu-icon) {
+            flex: 1;
+        }
+
+        .menu-subgroup-header i.pi-chevron-down {
+            font-size: 10px;
+            transition: transform 0.2s;
+            margin-left: auto;
+        }
+
+        .menu-subgroup.collapsed .menu-subgroup-header i.pi-chevron-down {
+            transform: rotate(-90deg);
+        }
+
+        .menu-subgroup.collapsed .menu-subgroup-items {
+            display: none;
+        }
+
+        .menu-subgroup-items {
+            padding-left: 16px;
+        }
+
+        .menu-subgroup-items .menu-item {
+            padding: 8px 20px 8px 36px;
+            font-size: 12px;
+        }
+
+        .menu-subgroup-items .menu-item.active {
+            background: rgba(255,255,255,0.15);
+            border-radius: 0 4px 4px 0;
+            margin-right: 8px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Page Header */
+        .page-header {
+            background: var(--surface-0);
+            padding: var(--spacing-md) var(--spacing-xl);
+            border-bottom: 1px solid var(--surface-200);
+        }
+
+        .page-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .page-title-section {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .page-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .page-subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .page-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 16px;
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            text-decoration: none;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--primary-500);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-600);
+        }
+
+        .btn-secondary {
+            background: var(--surface-100);
+            color: var(--text-primary);
+            border: 1px solid var(--surface-200);
+        }
+
+        .btn-secondary:hover {
+            background: var(--surface-200);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--surface-200);
+        }
+
+        .btn-ghost:hover {
+            background: var(--surface-100);
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 13px;
+        }
+
+        .btn i {
+            font-size: 14px;
+        }
+
+        /* Tab Navigation */
+        .tab-navigation {
+            display: flex;
+            gap: 0;
+            background: var(--surface-0);
+            border-bottom: 1px solid var(--surface-200);
+            padding: 0 var(--spacing-xl);
+        }
+
+        .tab-item {
+            padding: 14px 24px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tab-item:hover {
+            color: var(--text-primary);
+            background: var(--surface-50);
+        }
+
+        .tab-item.active {
+            color: var(--primary-500);
+            border-bottom-color: var(--primary-500);
+        }
+
+        .tab-item i {
+            font-size: 16px;
+        }
+
+        .tab-count {
+            background: var(--surface-200);
+            color: var(--text-secondary);
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .tab-item.active .tab-count {
+            background: var(--primary-100);
+            color: var(--primary-600);
+        }
+
+        /* Content Area */
+        .content-area {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+            background: var(--surface-50);
+        }
+
+        /* Events Panel */
+        .events-panel {
+            width: 320px;
+            min-width: 320px;
+            background: var(--surface-0);
+            border-right: 1px solid var(--surface-200);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .events-search {
+            padding: var(--spacing-md);
+            border-bottom: 1px solid var(--surface-200);
+        }
+
+        .search-input-wrapper {
+            position: relative;
+        }
+
+        .search-input-wrapper i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 12px 10px 38px;
+            border: 1px solid var(--surface-200);
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-500);
+            box-shadow: 0 0 0 3px var(--primary-50);
+        }
+
+        .events-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: var(--spacing-sm);
+        }
+
+        .event-card {
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 4px;
+            border: 1px solid transparent;
+        }
+
+        .event-card:hover {
+            background: var(--surface-50);
+        }
+
+        .event-card.active {
+            background: var(--primary-50);
+            border-color: var(--primary-200);
+        }
+
+        .event-card-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: var(--spacing-sm);
+        }
+
+        .event-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            line-height: 1.4;
+        }
+
+        .event-card.active .event-name {
+            color: var(--primary-700);
+        }
+
+        .event-toggle {
+            position: relative;
+            width: 36px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        .event-toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--surface-300);
+            transition: 0.3s;
+            border-radius: 20px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 14px;
+            width: 14px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+
+        .event-toggle input:checked + .toggle-slider {
+            background-color: var(--success-500);
+        }
+
+        .event-toggle input:checked + .toggle-slider:before {
+            transform: translateX(16px);
+        }
+
+        .event-meta {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-top: 6px;
+        }
+
+        .event-code {
+            font-size: 11px;
+            font-family: 'Consolas', monospace;
+            color: var(--text-muted);
+            background: var(--surface-100);
+            padding: 2px 6px;
+            border-radius: var(--radius-sm);
+        }
+
+        .event-status {
+            font-size: 11px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .status-indicator {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        .status-indicator.enabled {
+            background: var(--success-500);
+        }
+
+        .status-indicator.disabled {
+            background: var(--surface-400);
+        }
+
+        /* Channel Indicators on Event Cards */
+        .event-channels {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .channel-badge {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 10px;
+            padding: 3px 8px;
+            border-radius: 10px;
+            background: var(--surface-100);
+            color: var(--text-muted);
+        }
+
+        .channel-badge.enabled {
+            background: var(--success-50);
+            color: var(--success-600);
+        }
+
+        .channel-badge.disabled {
+            background: var(--surface-100);
+            color: var(--surface-400);
+        }
+
+        .channel-badge i {
+            font-size: 10px;
+        }
+
+        /* Channel Toggle in Editor */
+        .channel-toggle {
+            display: flex;
+            background: var(--surface-100);
+            border-radius: var(--radius-md);
+            padding: 3px;
+            gap: 2px;
+        }
+
+        .channel-toggle-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: var(--radius-sm);
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .channel-toggle-btn:hover {
+            color: var(--text-primary);
+        }
+
+        .channel-toggle-btn.active {
+            background: var(--surface-0);
+            color: var(--text-primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .channel-toggle-btn i {
+            font-size: 14px;
+        }
+
+        .channel-toggle-btn .channel-status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success-500);
+        }
+
+        .channel-toggle-btn .channel-status.disabled {
+            background: var(--surface-400);
+        }
+
+        /* In-App Notification Preview */
+        .inapp-preview {
+            background: var(--surface-50);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+            display: flex;
+            justify-content: center;
+        }
+
+        .inapp-preview-notification {
+            background: var(--surface-0);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            padding: var(--spacing-md);
+            display: flex;
+            gap: var(--spacing-sm);
+            max-width: 380px;
+            width: 100%;
+            position: relative;
+        }
+
+        .inapp-preview-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .inapp-preview-icon i {
+            font-size: 18px;
+        }
+
+        .inapp-preview-icon.info {
+            background: var(--info-100);
+            color: var(--info-500);
+        }
+
+        .inapp-preview-icon.success {
+            background: var(--success-100);
+            color: var(--success-500);
+        }
+
+        .inapp-preview-icon.warning {
+            background: var(--warning-100);
+            color: var(--warning-500);
+        }
+
+        .inapp-preview-icon.error {
+            background: var(--danger-100);
+            color: var(--danger-500);
+        }
+
+        .inapp-preview-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .inapp-preview-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .inapp-preview-message {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+            margin-bottom: 6px;
+        }
+
+        .inapp-preview-message .highlight {
+            background: var(--warning-50);
+            color: var(--warning-500);
+            padding: 1px 4px;
+            border-radius: 2px;
+        }
+
+        .inapp-preview-time {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .inapp-preview-close {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: var(--radius-sm);
+        }
+
+        .inapp-preview-close:hover {
+            background: var(--surface-100);
+            color: var(--text-primary);
+        }
+
+        /* Editor Panel */
+        .editor-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .editor-toolbar {
+            background: var(--surface-0);
+            padding: var(--spacing-md) var(--spacing-lg);
+            border-bottom: 1px solid var(--surface-200);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .editor-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .editor-title i {
+            color: var(--primary-500);
+        }
+
+        .editor-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+            align-items: center;
+        }
+
+        .translation-link {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: var(--primary-500);
+            text-decoration: none;
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+            transition: all 0.2s;
+        }
+
+        .translation-link:hover {
+            background: var(--primary-50);
+            color: var(--primary-600);
+        }
+
+        .translation-link i {
+            font-size: 14px;
+        }
+
+        .editor-body {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Template Form */
+        .template-form {
+            flex: 1;
+            overflow-y: auto;
+            padding: var(--spacing-lg);
+        }
+
+        .form-section {
+            background: var(--surface-0);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--surface-200);
+            margin-bottom: var(--spacing-md);
+            overflow: hidden;
+        }
+
+        .form-section-header {
+            padding: var(--spacing-md) var(--spacing-lg);
+            background: var(--surface-50);
+            border-bottom: 1px solid var(--surface-200);
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .form-section-header i {
+            color: var(--text-muted);
+        }
+
+        .form-section-body {
+            padding: var(--spacing-lg);
+        }
+
+        .form-group {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--surface-200);
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-500);
+            box-shadow: 0 0 0 3px var(--primary-50);
+        }
+
+        .form-input.readonly {
+            background: var(--surface-50);
+            color: var(--text-muted);
+            cursor: not-allowed;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-md);
+        }
+
+        .form-hint {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* Compact Form Layout for Email Header */
+        .compact-form-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .compact-form-row {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .compact-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-muted);
+            min-width: 60px;
+            text-align: right;
+        }
+
+        .compact-input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid var(--surface-200);
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .compact-input:focus {
+            outline: none;
+            border-color: var(--primary-500);
+            box-shadow: 0 0 0 2px var(--primary-50);
+        }
+
+        .compact-input.readonly {
+            background: var(--surface-50);
+            color: var(--text-secondary);
+            cursor: default;
+        }
+
+        .input-with-tags {
+            position: relative;
+            flex: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-with-tags .form-input,
+        .input-with-tags .compact-input {
+            padding-right: 50px;
+            width: 100%;
+        }
+
+        .insert-tag-btn {
+            position: absolute;
+            right: 6px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--primary-50);
+            border: none;
+            color: var(--primary-500);
+            padding: 4px 8px;
+            border-radius: var(--radius-sm);
+            font-size: 11px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .insert-tag-btn:hover {
+            background: var(--primary-100);
+        }
+
+        /* Rich Text Editor */
+        .rich-editor-container {
+            border: 1px solid var(--surface-200);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+        }
+
+        .rich-editor-toolbar {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            padding: 8px 12px;
+            background: var(--surface-50);
+            border-bottom: 1px solid var(--surface-200);
+            flex-wrap: wrap;
+        }
+
+        .toolbar-btn {
+            min-width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 0 6px;
+        }
+
+        .toolbar-btn:hover {
+            background: var(--surface-200);
+            color: var(--text-primary);
+        }
+
+        .toolbar-btn.active {
+            background: var(--primary-100);
+            color: var(--primary-600);
+        }
+
+        .toolbar-btn i {
+            font-size: 14px;
+        }
+
+        .toolbar-btn .text-icon {
+            font-size: 14px;
+            font-weight: 700;
+            font-family: Georgia, 'Times New Roman', serif;
+        }
+
+        .toolbar-btn .text-icon.italic {
+            font-style: italic;
+        }
+
+        .toolbar-btn .text-icon.underline {
+            text-decoration: underline;
+        }
+
+        .toolbar-btn .text-icon.strikethrough {
+            text-decoration: line-through;
+        }
+
+        .toolbar-divider {
+            width: 1px;
+            height: 24px;
+            background: var(--surface-200);
+            margin: 0 8px;
+        }
+
+        .rich-editor-content {
+            min-height: 250px;
+            padding: var(--spacing-md);
+            font-size: 14px;
+            line-height: 1.6;
+            outline: none;
+        }
+
+        .rich-editor-content:focus {
+            background: var(--surface-0);
+        }
+
+        .rich-editor-content p {
+            margin-bottom: 12px;
+        }
+
+        .rich-editor-content .tag-placeholder {
+            background: var(--info-100);
+            color: var(--info-500);
+            padding: 2px 8px;
+            border-radius: var(--radius-sm);
+            font-family: 'Consolas', monospace;
+            font-size: 13px;
+        }
+
+        /* Attachments Section */
+        .attachments-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .attachment-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm) var(--spacing-md);
+            background: var(--surface-50);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--surface-200);
+        }
+
+        .attachment-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-sm);
+            background: var(--danger-50);
+            color: var(--danger-500);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .attachment-icon i {
+            font-size: 18px;
+        }
+
+        .attachment-info {
+            flex: 1;
+        }
+
+        .attachment-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .attachment-size {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .attachment-remove {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: var(--radius-sm);
+            transition: all 0.2s;
+        }
+
+        .attachment-remove:hover {
+            color: var(--danger-500);
+            background: var(--danger-50);
+        }
+
+        .add-attachment-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-md);
+            border: 2px dashed var(--surface-300);
+            border-radius: var(--radius-sm);
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+            font-family: inherit;
+            font-size: 14px;
+        }
+
+        .add-attachment-btn:hover {
+            border-color: var(--primary-300);
+            color: var(--primary-500);
+            background: var(--primary-50);
+        }
+
+        /* Tags Panel */
+        .tags-panel {
+            width: 280px;
+            min-width: 280px;
+            background: var(--surface-0);
+            border-left: 1px solid var(--surface-200);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tags-panel-header {
+            padding: var(--spacing-md) var(--spacing-lg);
+            border-bottom: 1px solid var(--surface-200);
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .tags-panel-header i {
+            color: var(--purple-500);
+        }
+
+        .tags-hint {
+            font-size: 12px;
+            font-weight: 400;
+            color: var(--text-muted);
+            margin-left: auto;
+        }
+
+        .tags-search {
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-bottom: 1px solid var(--surface-100);
+        }
+
+        .tags-search input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--surface-200);
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-family: inherit;
+        }
+
+        .tags-search input:focus {
+            outline: none;
+            border-color: var(--primary-500);
+        }
+
+        .tags-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: var(--spacing-sm);
+        }
+
+        .tags-category {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .tags-category-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            margin-bottom: 4px;
+        }
+
+        .tag-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: 8px var(--spacing-sm);
+            border-radius: var(--radius-sm);
+            cursor: grab;
+            transition: all 0.2s;
+            margin-bottom: 2px;
+        }
+
+        .tag-item:hover {
+            background: var(--purple-50);
+        }
+
+        .tag-item:active {
+            cursor: grabbing;
+        }
+
+        .tag-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: var(--radius-sm);
+            background: var(--purple-50);
+            color: var(--purple-500);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .tag-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .tag-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .tag-code {
+            font-size: 11px;
+            font-family: 'Consolas', monospace;
+            color: var(--text-muted);
+        }
+
+        .tag-drag-handle {
+            color: var(--surface-400);
+            font-size: 12px;
+        }
+
+        /* Preview Panel */
+        .preview-section {
+            background: var(--surface-0);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--surface-200);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .preview-header {
+            padding: var(--spacing-md) var(--spacing-lg);
+            border-bottom: 1px solid var(--surface-200);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .preview-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .preview-title i {
+            color: var(--text-muted);
+        }
+
+        .preview-toggle {
+            display: flex;
+            background: var(--surface-100);
+            border-radius: var(--radius-sm);
+            padding: 2px;
+        }
+
+        .preview-toggle-btn {
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: 500;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-radius: var(--radius-sm);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .preview-toggle-btn.active {
+            background: var(--surface-0);
+            color: var(--text-primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .preview-content {
+            padding: var(--spacing-lg);
+        }
+
+        .preview-email {
+            background: var(--surface-50);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--surface-200);
+            overflow: hidden;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .preview-email.mobile {
+            max-width: 375px;
+        }
+
+        .preview-email-header {
+            background: var(--surface-0);
+            padding: var(--spacing-md);
+            border-bottom: 1px solid var(--surface-200);
+        }
+
+        .preview-field {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .preview-field:last-child {
+            margin-bottom: 0;
+        }
+
+        .preview-field-label {
+            color: var(--text-muted);
+            min-width: 60px;
+        }
+
+        .preview-field-value {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .preview-email-body {
+            padding: var(--spacing-lg);
+            background: var(--surface-0);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .preview-email-body p {
+            margin-bottom: 12px;
+        }
+
+        .preview-email-body .highlight {
+            background: var(--warning-50);
+            color: var(--warning-500);
+            padding: 2px 6px;
+            border-radius: var(--radius-sm);
+        }
+
+        /* Last Modified Info */
+        .last-modified {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-md) var(--spacing-lg);
+            background: var(--surface-50);
+            border-top: 1px solid var(--surface-200);
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .last-modified i {
+            font-size: 14px;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--surface-0);
+            border-top: 1px solid var(--surface-200);
+            padding: var(--spacing-md) var(--spacing-xl);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .footer-left {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .footer-right {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-lg);
+        }
+
+        .footer-link {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-link:hover {
+            color: var(--primary-500);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: var(--surface-0);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 480px;
+            box-shadow: var(--shadow-md);
+            transform: scale(0.95);
+            transition: transform 0.2s;
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            padding: var(--spacing-lg);
+            border-bottom: 1px solid var(--surface-200);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .modal-close {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: var(--radius-sm);
+        }
+
+        .modal-close:hover {
+            color: var(--text-primary);
+            background: var(--surface-100);
+        }
+
+        .modal-body {
+            padding: var(--spacing-lg);
+        }
+
+        .modal-footer {
+            padding: var(--spacing-lg);
+            border-top: 1px solid var(--surface-200);
+            display: flex;
+            justify-content: flex-end;
+            gap: var(--spacing-sm);
+        }
+
+        /* Empty State */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-xl);
+            text-align: center;
+        }
+
+        .empty-state-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: var(--surface-100);
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .empty-state-icon i {
+            font-size: 28px;
+        }
+
+        .empty-state-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .empty-state-text {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--surface-100);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--surface-300);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--surface-400);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-top">
+            <div class="logo-container">
+                <div class="logo">UNOPS</div>
+                <span class="portal-badge">Procurement</span>
+                <span style="color: var(--surface-400); margin: 0 8px; font-size: 18px;">|</span>
+                <span style="color: var(--primary-500); font-weight: 600; font-size: 14px;">System Settings</span>
+            </div>
+            <div class="header-actions">
+                <button class="header-action-btn">
+                    <i class="pi pi-search"></i>
+                </button>
+                <button class="header-action-btn">
+                    <i class="pi pi-bell"></i>
+                    <span class="notification-badge">3</span>
+                </button>
+                <button class="header-action-btn">
+                    <i class="pi pi-question-circle"></i>
+                </button>
+            </div>
+            <div class="user-menu">
+                <div class="user-info">
+                    <div class="user-company">UNOPS HQ</div>
+                    <div class="user-name">System Administrator</div>
+                </div>
+                <div class="user-avatar">SA</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- App Container -->
+    <div class="app-container">
+        <!-- Sidebar - Matching tender-authoring -->
+        <aside class="sidebar">
+          <nav class="sidebar-menu">
+            <!-- Administrative Applications -->
+            <div class="menu-section">
+              <div class="menu-section-title">Administrative Applications</div>
+              
+              <!-- System Settings -->
+              <div class="menu-group">
+                <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                  <span><i class="pi pi-cog"></i> System Settings</span>
+                  <i class="pi pi-chevron-down"></i>
+                </div>
+                <div class="menu-group-items">
+                  <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-users"></i></span><span>User Role Management</span></a>
+                  <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-id-card"></i></span><span>Role Management</span></a>
+                  <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-sliders-h"></i></span><span>Attribute Management</span></a>
+                  <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-database"></i></span><span>Data Management</span></a>
+                  <a class="menu-item" href="translation-management.html"><span class="menu-icon"><i class="pi pi-language"></i></span><span>Translations</span></a>
+                  <!-- Notifications Submenu -->
+                  <div class="menu-subgroup">
+                    <div class="menu-subgroup-header" onclick="toggleSubMenuGroup(this)">
+                      <span class="menu-icon"><i class="pi pi-bell"></i></span>
+                      <span>Notifications</span>
+                      <i class="pi pi-chevron-down"></i>
+                    </div>
+                    <div class="menu-subgroup-items">
+                      <a class="menu-item active" href="email-template-management.html"><span class="menu-icon"><i class="pi pi-envelope"></i></span><span>Notification Templates</span></a>
+                      <a class="menu-item" href="email-log.html"><span class="menu-icon"><i class="pi pi-history"></i></span><span>Email Log</span></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Components -->
+              <div class="menu-group collapsed">
+                <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                  <span><i class="pi pi-box"></i> Components</span>
+                  <i class="pi pi-chevron-down"></i>
+                </div>
+                <div class="menu-group-items">
+                  <a class="menu-item" href="components-library.html"><span class="menu-icon"><i class="pi pi-list"></i></span><span>Evaluation Criteria Library</span></a>
+                  <a class="menu-item"><span class="menu-icon"><i class="pi pi-cog"></i></span><span>Specifications Library</span></a>
+                </div>
+              </div>
+              
+              <!-- Forms -->
+              <div class="menu-group collapsed">
+                <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                  <span><i class="pi pi-file-edit"></i> Forms</span>
+                  <i class="pi pi-chevron-down"></i>
+                </div>
+                <div class="menu-group-items">
+                  <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-folder"></i></span><span>Forms Library</span></a>
+                  <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-pencil"></i></span><span>Form Builder</span></a>
+                </div>
+              </div>
+              
+              <!-- Processes -->
+              <div class="menu-group collapsed">
+                <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                  <span><i class="pi pi-sitemap"></i> Processes</span>
+                  <i class="pi pi-chevron-down"></i>
+                </div>
+                <div class="menu-group-items">
+                  <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-list"></i></span><span>Process Library</span></a>
+                </div>
+              </div>
+              
+              <!-- Templates -->
+              <div class="menu-group collapsed">
+                <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                  <span><i class="pi pi-copy"></i> Templates</span>
+                  <i class="pi pi-chevron-down"></i>
+                </div>
+                <div class="menu-group-items">
+                  <a class="menu-item" href="template-library.html"><span class="menu-icon"><i class="pi pi-folder"></i></span><span>Templates Library</span></a>
+                  <a class="menu-item" href="template-builder-workspace.html"><span class="menu-icon"><i class="pi pi-pencil"></i></span><span>Template Builder</span></a>
+                </div>
+              </div>
+            </div>
+            
+            <div class="menu-divider"></div>
+            
+            <!-- Business Applications -->
+            <div class="menu-section">
+              <div class="menu-section-title">Business Applications</div>
+              
+              <!-- eTendering -->
+              <div class="menu-group collapsed">
+                <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                  <span><i class="pi pi-briefcase"></i> eTendering</span>
+                  <i class="pi pi-chevron-down"></i>
+                </div>
+                <div class="menu-group-items">
+                  <a class="menu-item" href="tender-dashboard-complete.html"><span class="menu-icon"><i class="pi pi-chart-bar"></i></span><span>Overview</span></a>
+                  <a class="menu-item" href="tender-dashboard-complete.html"><span class="menu-icon"><i class="pi pi-folder-open"></i></span><span>Tenders</span></a>
+                  <a class="menu-item" href="tender-authoring.html"><span class="menu-icon"><i class="pi pi-plus"></i></span><span>Create Tender</span></a>
+                </div>
+              </div>
+              
+              <!-- Award & Review -->
+              <div class="menu-group collapsed">
+                <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                  <span><i class="pi pi-check-square"></i> Award & Review</span>
+                  <i class="pi pi-chevron-down"></i>
+                </div>
+                <div class="menu-group-items">
+                  <a class="menu-item" href="CPC.html"><span class="menu-icon"><i class="pi pi-chart-bar"></i></span><span>Overview</span></a>
+                  <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-folder"></i></span><span>Cases</span></a>
+                  <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-calendar"></i></span><span>Meetings</span></a>
+                  <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-users"></i></span><span>Pool Management</span></a>
+                  <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-comments"></i></span><span>Q&A</span></a>
+                </div>
+              </div>
+              
+              <!-- DRiVE -->
+              <div class="menu-group collapsed">
+                <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                  <span><i class="pi pi-shield"></i> DRiVE</span>
+                  <i class="pi pi-chevron-down"></i>
+                </div>
+                <div class="menu-group-items">
+                  <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-chart-bar"></i></span><span>Overview</span></a>
+                  <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-inbox"></i></span><span>Response Library</span></a>
+                  <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-check-circle"></i></span><span>Verification</span></a>
+                  <a class="menu-item" href="capa-interactive-mockup.html"><span class="menu-icon"><i class="pi pi-exclamation-triangle"></i></span><span>CAPA</span></a>
+                  <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-question-circle"></i></span><span>Questionnaire Management</span></a>
+                  <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-chart-line"></i></span><span>Risk Management</span></a>
+                </div>
+              </div>
+              
+              <!-- Contracts -->
+              <div class="menu-group collapsed">
+                <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                  <span><i class="pi pi-file"></i> Contracts</span>
+                  <i class="pi pi-chevron-down"></i>
+                </div>
+                <div class="menu-group-items">
+                  <a class="menu-item disabled"><span class="menu-icon"><i class="pi pi-list"></i></span><span>Contract Management</span></a>
+                </div>
+              </div>
+              
+              <!-- Supplier Management -->
+              <div class="menu-group collapsed">
+                <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                  <span><i class="pi pi-truck"></i> Supplier Management</span>
+                  <i class="pi pi-chevron-down"></i>
+                </div>
+                <div class="menu-group-items">
+                  <a class="menu-item" href="supplier-management-procurement.html"><span class="menu-icon"><i class="pi pi-building"></i></span><span>Suppliers</span></a>
+                </div>
+              </div>
+            </div>
+          </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="page-header-row">
+                    <div class="page-title-section">
+                        <div>
+                            <h1 class="page-title">Notification Templates</h1>
+                            <p class="page-subtitle">Configure email and in-app notifications for system events</p>
+                        </div>
+                    </div>
+                    <div class="page-actions">
+                        <button class="btn btn-secondary" onclick="openTestEmailModal()">
+                            <i class="pi pi-send"></i>
+                            Send Test Email
+                        </button>
+                        <button class="btn btn-primary">
+                            <i class="pi pi-save"></i>
+                            Save Changes
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Navigation -->
+            <div class="tab-navigation">
+                <div class="tab-item active">
+                    <i class="pi pi-file-edit"></i>
+                    eTendering
+                    <span class="tab-count">52</span>
+                </div>
+                <div class="tab-item">
+                    <i class="pi pi-car"></i>
+                    DRiVE
+                    <span class="tab-count">38</span>
+                </div>
+                <div class="tab-item">
+                    <i class="pi pi-user"></i>
+                    User Management
+                    <span class="tab-count">12</span>
+                </div>
+                <div class="tab-item">
+                    <i class="pi pi-building"></i>
+                    Supplier Portal
+                    <span class="tab-count">24</span>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="content-area">
+                <!-- Events Panel -->
+                <div class="events-panel">
+                    <div class="events-search">
+                        <div class="search-input-wrapper">
+                            <i class="pi pi-search"></i>
+                            <input type="text" class="search-input" placeholder="Search events...">
+                        </div>
+                    </div>
+                    <div class="events-list">
+                        <!-- Event Cards -->
+                        <div class="event-card active">
+                            <div class="event-card-header">
+                                <span class="event-name">Tender Submission Received</span>
+                            </div>
+                            <div class="event-meta">
+                                <span class="event-code">TENDER_SUBMIT</span>
+                            </div>
+                            <div class="event-channels">
+                                <span class="channel-badge enabled"><i class="pi pi-envelope"></i> Email</span>
+                                <span class="channel-badge enabled"><i class="pi pi-bell"></i> In-App</span>
+                            </div>
+                        </div>
+
+                        <div class="event-card">
+                            <div class="event-card-header">
+                                <span class="event-name">Tender Opening Notification</span>
+                            </div>
+                            <div class="event-meta">
+                                <span class="event-code">TENDER_OPEN</span>
+                            </div>
+                            <div class="event-channels">
+                                <span class="channel-badge enabled"><i class="pi pi-envelope"></i> Email</span>
+                                <span class="channel-badge enabled"><i class="pi pi-bell"></i> In-App</span>
+                            </div>
+                        </div>
+
+                        <div class="event-card">
+                            <div class="event-card-header">
+                                <span class="event-name">Award Decision Notification</span>
+                            </div>
+                            <div class="event-meta">
+                                <span class="event-code">AWARD_DECISION</span>
+                            </div>
+                            <div class="event-channels">
+                                <span class="channel-badge enabled"><i class="pi pi-envelope"></i> Email</span>
+                                <span class="channel-badge enabled"><i class="pi pi-bell"></i> In-App</span>
+                            </div>
+                        </div>
+
+                        <div class="event-card">
+                            <div class="event-card-header">
+                                <span class="event-name">Clarification Request</span>
+                            </div>
+                            <div class="event-meta">
+                                <span class="event-code">CLARIF_REQ</span>
+                            </div>
+                            <div class="event-channels">
+                                <span class="channel-badge enabled"><i class="pi pi-envelope"></i> Email</span>
+                                <span class="channel-badge disabled"><i class="pi pi-bell"></i> In-App</span>
+                            </div>
+                        </div>
+
+                        <div class="event-card">
+                            <div class="event-card-header">
+                                <span class="event-name">Clarification Response</span>
+                            </div>
+                            <div class="event-meta">
+                                <span class="event-code">CLARIF_RESP</span>
+                            </div>
+                            <div class="event-channels">
+                                <span class="channel-badge disabled"><i class="pi pi-envelope"></i> Email</span>
+                                <span class="channel-badge disabled"><i class="pi pi-bell"></i> In-App</span>
+                            </div>
+                        </div>
+
+                        <div class="event-card">
+                            <div class="event-card-header">
+                                <span class="event-name">Tender Amendment Published</span>
+                            </div>
+                            <div class="event-meta">
+                                <span class="event-code">TENDER_AMEND</span>
+                            </div>
+                            <div class="event-channels">
+                                <span class="channel-badge enabled"><i class="pi pi-envelope"></i> Email</span>
+                                <span class="channel-badge enabled"><i class="pi pi-bell"></i> In-App</span>
+                            </div>
+                        </div>
+
+                        <div class="event-card">
+                            <div class="event-card-header">
+                                <span class="event-name">Deadline Reminder (24h)</span>
+                            </div>
+                            <div class="event-meta">
+                                <span class="event-code">DEADLINE_24H</span>
+                            </div>
+                            <div class="event-channels">
+                                <span class="channel-badge enabled"><i class="pi pi-envelope"></i> Email</span>
+                                <span class="channel-badge enabled"><i class="pi pi-bell"></i> In-App</span>
+                            </div>
+                        </div>
+
+                        <div class="event-card">
+                            <div class="event-card-header">
+                                <span class="event-name">Deadline Reminder (48h)</span>
+                            </div>
+                            <div class="event-meta">
+                                <span class="event-code">DEADLINE_48H</span>
+                            </div>
+                            <div class="event-channels">
+                                <span class="channel-badge enabled"><i class="pi pi-envelope"></i> Email</span>
+                                <span class="channel-badge disabled"><i class="pi pi-bell"></i> In-App</span>
+                            </div>
+                        </div>
+
+                        <div class="event-card">
+                            <div class="event-card-header">
+                                <span class="event-name">Evaluation Complete</span>
+                            </div>
+                            <div class="event-meta">
+                                <span class="event-code">EVAL_COMPLETE</span>
+                            </div>
+                            <div class="event-channels">
+                                <span class="channel-badge enabled"><i class="pi pi-envelope"></i> Email</span>
+                                <span class="channel-badge enabled"><i class="pi pi-bell"></i> In-App</span>
+                            </div>
+                        </div>
+
+                        <div class="event-card">
+                            <div class="event-card-header">
+                                <span class="event-name">Contract Award Notification</span>
+                            </div>
+                            <div class="event-meta">
+                                <span class="event-code">CONTRACT_AWARD</span>
+                            </div>
+                            <div class="event-channels">
+                                <span class="channel-badge enabled"><i class="pi pi-envelope"></i> Email</span>
+                                <span class="channel-badge enabled"><i class="pi pi-bell"></i> In-App</span>
+                            </div>
+                        </div>
+
+                        <div class="event-card">
+                            <div class="event-card-header">
+                                <span class="event-name">Bid Bond Release</span>
+                            </div>
+                            <div class="event-meta">
+                                <span class="event-code">BID_BOND_REL</span>
+                            </div>
+                            <div class="event-channels">
+                                <span class="channel-badge enabled"><i class="pi pi-envelope"></i> Email</span>
+                                <span class="channel-badge disabled"><i class="pi pi-bell"></i> In-App</span>
+                            </div>
+                        </div>
+
+                        <div class="event-card">
+                            <div class="event-card-header">
+                                <span class="event-name">Tender Cancellation Notice</span>
+                            </div>
+                            <div class="event-meta">
+                                <span class="event-code">TENDER_CANCEL</span>
+                            </div>
+                            <div class="event-channels">
+                                <span class="channel-badge enabled"><i class="pi pi-envelope"></i> Email</span>
+                                <span class="channel-badge enabled"><i class="pi pi-bell"></i> In-App</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Editor Panel -->
+                <div class="editor-panel">
+                    <div class="editor-toolbar">
+                        <div class="editor-title">
+                            <i class="pi pi-megaphone"></i>
+                            Tender Submission Received
+                        </div>
+                        <div class="channel-toggle">
+                            <button class="channel-toggle-btn active" onclick="switchChannel('email')">
+                                <i class="pi pi-envelope"></i>
+                                Email
+                                <span class="channel-status"></span>
+                            </button>
+                            <button class="channel-toggle-btn" onclick="switchChannel('inapp')">
+                                <i class="pi pi-bell"></i>
+                                In-App
+                                <span class="channel-status"></span>
+                            </button>
+                        </div>
+                        <div class="editor-actions">
+                            <a href="#" class="translation-link">
+                                <i class="pi pi-globe"></i>
+                                Manage Translations
+                            </a>
+                        </div>
+                    </div>
+                    <div class="editor-body">
+                        <!-- Email Template Form -->
+                        <div class="template-form" id="emailEditorForm">
+                            <!-- Email Header (Recipients & Subject) - Compact -->
+                            <div class="form-section">
+                                <div class="form-section-body" style="padding: var(--spacing-md);">
+                                    <div class="compact-form-grid">
+                                        <div class="compact-form-row">
+                                            <label class="compact-label">To:</label>
+                                            <input type="text" class="compact-input readonly" value="{{supplier_email}}" readonly title="System-defined based on event context">
+                                        </div>
+                                        <div class="compact-form-row">
+                                            <label class="compact-label">CC:</label>
+                                            <input type="text" class="compact-input" placeholder="Add CC recipients...">
+                                        </div>
+                                        <div class="compact-form-row">
+                                            <label class="compact-label">BCC:</label>
+                                            <input type="text" class="compact-input" placeholder="Add BCC recipients...">
+                                        </div>
+                                        <div class="compact-form-row">
+                                            <label class="compact-label">Subject:</label>
+                                            <div class="input-with-tags" style="flex: 1;">
+                                                <input type="text" class="compact-input" value="Submission Received: {{tender_reference}} - {{tender_title}}" style="padding-right: 50px;">
+                                                <button class="insert-tag-btn">+ Tag</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Body Section -->
+                            <div class="form-section">
+                                <div class="form-section-header">
+                                    <i class="pi pi-align-left"></i>
+                                    Email Body
+                                </div>
+                                <div class="form-section-body">
+                                    <div class="rich-editor-container">
+                                        <div class="rich-editor-toolbar">
+                                            <button class="toolbar-btn" title="Bold">
+                                                <span class="text-icon" style="font-weight: 700;">B</span>
+                                            </button>
+                                            <button class="toolbar-btn" title="Italic">
+                                                <span class="text-icon italic">I</span>
+                                            </button>
+                                            <button class="toolbar-btn" title="Underline">
+                                                <span class="text-icon underline">U</span>
+                                            </button>
+                                            <button class="toolbar-btn" title="Strikethrough">
+                                                <span class="text-icon strikethrough">S</span>
+                                            </button>
+                                            <span class="toolbar-divider"></span>
+                                            <button class="toolbar-btn" title="Heading">
+                                                <span style="font-weight: 700; font-size: 13px;">H</span>
+                                            </button>
+                                            <button class="toolbar-btn" title="Bullet List">
+                                                <i class="pi pi-list"></i>
+                                            </button>
+                                            <button class="toolbar-btn" title="Numbered List">
+                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <line x1="10" y1="6" x2="21" y2="6"></line>
+                                                    <line x1="10" y1="12" x2="21" y2="12"></line>
+                                                    <line x1="10" y1="18" x2="21" y2="18"></line>
+                                                    <text x="4" y="7" font-size="6" fill="currentColor" stroke="none">1</text>
+                                                    <text x="4" y="13" font-size="6" fill="currentColor" stroke="none">2</text>
+                                                    <text x="4" y="19" font-size="6" fill="currentColor" stroke="none">3</text>
+                                                </svg>
+                                            </button>
+                                            <span class="toolbar-divider"></span>
+                                            <button class="toolbar-btn" title="Align Left">
+                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                                                    <line x1="3" y1="12" x2="15" y2="12"></line>
+                                                    <line x1="3" y1="18" x2="18" y2="18"></line>
+                                                </svg>
+                                            </button>
+                                            <button class="toolbar-btn" title="Align Center">
+                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                                                    <line x1="6" y1="12" x2="18" y2="12"></line>
+                                                    <line x1="4" y1="18" x2="20" y2="18"></line>
+                                                </svg>
+                                            </button>
+                                            <button class="toolbar-btn" title="Align Right">
+                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                                                    <line x1="9" y1="12" x2="21" y2="12"></line>
+                                                    <line x1="6" y1="18" x2="21" y2="18"></line>
+                                                </svg>
+                                            </button>
+                                            <span class="toolbar-divider"></span>
+                                            <button class="toolbar-btn" title="Link">
+                                                <i class="pi pi-link"></i>
+                                            </button>
+                                            <button class="toolbar-btn" title="Image">
+                                                <i class="pi pi-image"></i>
+                                            </button>
+                                            <span class="toolbar-divider"></span>
+                                            <button class="toolbar-btn" title="Insert Tag" style="background: var(--purple-50); color: var(--purple-500);">
+                                                <i class="pi pi-code"></i>
+                                            </button>
+                                        </div>
+                                        <div class="rich-editor-content" contenteditable="true">
+                                            <p>Dear <span class="tag-placeholder">{{supplier_name}}</span>,</p>
+                                            <p>We are pleased to confirm that your submission for the following tender has been successfully received:</p>
+                                            <p><strong>Tender Reference:</strong> <span class="tag-placeholder">{{tender_reference}}</span><br>
+                                            <strong>Tender Title:</strong> <span class="tag-placeholder">{{tender_title}}</span><br>
+                                            <strong>Submission Date:</strong> <span class="tag-placeholder">{{submission_date}}</span><br>
+                                            <strong>Submission ID:</strong> <span class="tag-placeholder">{{submission_id}}</span></p>
+                                            <p>Please note that this is an automated confirmation of receipt. The evaluation of submissions will begin after the tender closing date: <span class="tag-placeholder">{{closing_date}}</span>.</p>
+                                            <p>If you have any questions regarding your submission, please contact the procurement team at <span class="tag-placeholder">{{procurement_email}}</span>.</p>
+                                            <p>Best regards,<br>
+                                            <span class="tag-placeholder">{{organization_name}}</span><br>
+                                            Procurement Team</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Attachments Section -->
+                            <div class="form-section">
+                                <div class="form-section-header">
+                                    <i class="pi pi-paperclip"></i>
+                                    Attachments
+                                </div>
+                                <div class="form-section-body">
+                                    <div class="attachments-list">
+                                        <div class="attachment-item">
+                                            <div class="attachment-icon">
+                                                <i class="pi pi-file-pdf"></i>
+                                            </div>
+                                            <div class="attachment-info">
+                                                <div class="attachment-name">Submission_Guidelines.pdf</div>
+                                                <div class="attachment-size">245 KB</div>
+                                            </div>
+                                            <button class="attachment-remove">
+                                                <i class="pi pi-times"></i>
+                                            </button>
+                                        </div>
+                                        <button class="add-attachment-btn">
+                                            <i class="pi pi-plus"></i>
+                                            Add Attachment
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Preview Section -->
+                            <div class="preview-section">
+                                <div class="preview-header">
+                                    <div class="preview-title">
+                                        <i class="pi pi-eye"></i>
+                                        Email Preview
+                                    </div>
+                                    <div class="preview-toggle">
+                                        <button class="preview-toggle-btn active" onclick="setPreviewMode('desktop')">
+                                            <i class="pi pi-desktop"></i>
+                                            Desktop
+                                        </button>
+                                        <button class="preview-toggle-btn" onclick="setPreviewMode('mobile')">
+                                            <i class="pi pi-mobile"></i>
+                                            Mobile
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="preview-content">
+                                    <div class="preview-email" id="previewEmail">
+                                        <div class="preview-email-header">
+                                            <div class="preview-field">
+                                                <span class="preview-field-label">From:</span>
+                                                <span class="preview-field-value">noreply@unops.org</span>
+                                            </div>
+                                            <div class="preview-field">
+                                                <span class="preview-field-label">To:</span>
+                                                <span class="preview-field-value">supplier@company.com</span>
+                                            </div>
+                                            <div class="preview-field">
+                                                <span class="preview-field-label">Subject:</span>
+                                                <span class="preview-field-value">Submission Received: RFQ-2026-001 - IT Equipment Supply</span>
+                                            </div>
+                                        </div>
+                                        <div class="preview-email-body">
+                                            <p>Dear <span class="highlight">Acme Corporation</span>,</p>
+                                            <p>We are pleased to confirm that your submission for the following tender has been successfully received:</p>
+                                            <p><strong>Tender Reference:</strong> <span class="highlight">RFQ-2026-001</span><br>
+                                            <strong>Tender Title:</strong> <span class="highlight">IT Equipment Supply</span><br>
+                                            <strong>Submission Date:</strong> <span class="highlight">11 Feb 2026, 14:32 UTC</span><br>
+                                            <strong>Submission ID:</strong> <span class="highlight">SUB-78945612</span></p>
+                                            <p>Please note that this is an automated confirmation of receipt. The evaluation of submissions will begin after the tender closing date: <span class="highlight">28 Feb 2026, 17:00 UTC</span>.</p>
+                                            <p>If you have any questions regarding your submission, please contact the procurement team at <span class="highlight">procurement@unops.org</span>.</p>
+                                            <p>Best regards,<br>
+                                            <span class="highlight">UNOPS</span><br>
+                                            Procurement Team</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Last Modified -->
+                            <div class="last-modified">
+                                <i class="pi pi-clock"></i>
+                                Last modified by <strong>John Smith</strong> on <strong>10 Feb 2026, 09:45</strong>
+                            </div>
+                        </div>
+
+                        <!-- In-App Notification Form (Hidden by default) -->
+                        <div class="template-form" id="inappEditorForm" style="display: none;">
+                            <!-- Enable Toggle -->
+                            <div class="form-section">
+                                <div class="form-section-body" style="padding: var(--spacing-md);">
+                                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                                        <div>
+                                            <div style="font-size: 14px; font-weight: 600; color: var(--text-primary);">Enable In-App Notification</div>
+                                            <div style="font-size: 12px; color: var(--text-muted);">Show notification in the app when this event occurs</div>
+                                        </div>
+                                        <label class="event-toggle">
+                                            <input type="checkbox" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Notification Content -->
+                            <div class="form-section">
+                                <div class="form-section-header">
+                                    <i class="pi pi-bell"></i>
+                                    Notification Content
+                                </div>
+                                <div class="form-section-body">
+                                    <div class="form-group">
+                                        <label class="form-label">Title</label>
+                                        <div class="input-with-tags">
+                                            <input type="text" class="form-input" value="Submission Received" style="padding-right: 50px;">
+                                            <button class="insert-tag-btn">+ Tag</button>
+                                        </div>
+                                        <span class="form-hint">Keep it short and actionable (max 60 characters)</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Message</label>
+                                        <div class="input-with-tags">
+                                            <textarea class="form-input" rows="3" style="padding-right: 50px; resize: vertical;">Your submission for {{tender_reference}} has been received successfully.</textarea>
+                                            <button class="insert-tag-btn" style="top: 16px; transform: none;">+ Tag</button>
+                                        </div>
+                                        <span class="form-hint">Brief description shown in the notification (max 150 characters)</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Notification Settings -->
+                            <div class="form-section">
+                                <div class="form-section-header">
+                                    <i class="pi pi-cog"></i>
+                                    Settings
+                                </div>
+                                <div class="form-section-body">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label class="form-label">Icon</label>
+                                            <select class="form-input">
+                                                <option value="check">✓ Success (Green)</option>
+                                                <option value="info" selected>ℹ Info (Blue)</option>
+                                                <option value="warning">⚠ Warning (Orange)</option>
+                                                <option value="error">✕ Error (Red)</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Priority</label>
+                                            <select class="form-input">
+                                                <option value="low">Low</option>
+                                                <option value="normal" selected>Normal</option>
+                                                <option value="high">High</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Action Link (Optional)</label>
+                                        <div class="input-with-tags">
+                                            <input type="text" class="form-input" value="{{submission_link}}" placeholder="Link to open when notification is clicked" style="padding-right: 50px;">
+                                            <button class="insert-tag-btn">+ Tag</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Preview -->
+                            <div class="form-section">
+                                <div class="form-section-header">
+                                    <i class="pi pi-eye"></i>
+                                    Notification Preview
+                                </div>
+                                <div class="form-section-body">
+                                    <div class="inapp-preview">
+                                        <div class="inapp-preview-notification">
+                                            <div class="inapp-preview-icon info">
+                                                <i class="pi pi-info-circle"></i>
+                                            </div>
+                                            <div class="inapp-preview-content">
+                                                <div class="inapp-preview-title">Submission Received</div>
+                                                <div class="inapp-preview-message">Your submission for <span class="highlight">RFQ-2026-001</span> has been received successfully.</div>
+                                                <div class="inapp-preview-time">Just now</div>
+                                            </div>
+                                            <button class="inapp-preview-close"><i class="pi pi-times"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Last Modified -->
+                            <div class="last-modified">
+                                <i class="pi pi-clock"></i>
+                                Last modified by <strong>John Smith</strong> on <strong>10 Feb 2026, 09:45</strong>
+                            </div>
+                        </div>
+
+                        <!-- Tags Panel -->
+                        <div class="tags-panel">
+                            <div class="tags-panel-header">
+                                <i class="pi pi-code"></i>
+                                Available Tags
+                                <span class="tags-hint">Drag to insert</span>
+                            </div>
+                            <div class="tags-search">
+                                <input type="text" placeholder="Search tags...">
+                            </div>
+                            <div class="tags-list">
+                                <!-- Supplier Tags -->
+                                <div class="tags-category">
+                                    <div class="tags-category-title">Supplier Information</div>
+                                    <div class="tag-item" draggable="true">
+                                        <div class="tag-icon"><i class="pi pi-user"></i></div>
+                                        <div class="tag-details">
+                                            <div class="tag-name">Supplier Name</div>
+                                            <div class="tag-code">{{supplier_name}}</div>
+                                        </div>
+                                        <i class="pi pi-bars tag-drag-handle"></i>
+                                    </div>
+                                    <div class="tag-item" draggable="true">
+                                        <div class="tag-icon"><i class="pi pi-envelope"></i></div>
+                                        <div class="tag-details">
+                                            <div class="tag-name">Supplier Email</div>
+                                            <div class="tag-code">{{supplier_email}}</div>
+                                        </div>
+                                        <i class="pi pi-bars tag-drag-handle"></i>
+                                    </div>
+                                    <div class="tag-item" draggable="true">
+                                        <div class="tag-icon"><i class="pi pi-building"></i></div>
+                                        <div class="tag-details">
+                                            <div class="tag-name">Company Name</div>
+                                            <div class="tag-code">{{company_name}}</div>
+                                        </div>
+                                        <i class="pi pi-bars tag-drag-handle"></i>
+                                    </div>
+                                </div>
+
+                                <!-- Tender Tags -->
+                                <div class="tags-category">
+                                    <div class="tags-category-title">Tender Details</div>
+                                    <div class="tag-item" draggable="true">
+                                        <div class="tag-icon"><i class="pi pi-hashtag"></i></div>
+                                        <div class="tag-details">
+                                            <div class="tag-name">Tender Reference</div>
+                                            <div class="tag-code">{{tender_reference}}</div>
+                                        </div>
+                                        <i class="pi pi-bars tag-drag-handle"></i>
+                                    </div>
+                                    <div class="tag-item" draggable="true">
+                                        <div class="tag-icon"><i class="pi pi-file"></i></div>
+                                        <div class="tag-details">
+                                            <div class="tag-name">Tender Title</div>
+                                            <div class="tag-code">{{tender_title}}</div>
+                                        </div>
+                                        <i class="pi pi-bars tag-drag-handle"></i>
+                                    </div>
+                                    <div class="tag-item" draggable="true">
+                                        <div class="tag-icon"><i class="pi pi-calendar"></i></div>
+                                        <div class="tag-details">
+                                            <div class="tag-name">Closing Date</div>
+                                            <div class="tag-code">{{closing_date}}</div>
+                                        </div>
+                                        <i class="pi pi-bars tag-drag-handle"></i>
+                                    </div>
+                                    <div class="tag-item" draggable="true">
+                                        <div class="tag-icon"><i class="pi pi-map-marker"></i></div>
+                                        <div class="tag-details">
+                                            <div class="tag-name">Delivery Location</div>
+                                            <div class="tag-code">{{delivery_location}}</div>
+                                        </div>
+                                        <i class="pi pi-bars tag-drag-handle"></i>
+                                    </div>
+                                </div>
+
+                                <!-- Submission Tags -->
+                                <div class="tags-category">
+                                    <div class="tags-category-title">Submission Details</div>
+                                    <div class="tag-item" draggable="true">
+                                        <div class="tag-icon"><i class="pi pi-id-card"></i></div>
+                                        <div class="tag-details">
+                                            <div class="tag-name">Submission ID</div>
+                                            <div class="tag-code">{{submission_id}}</div>
+                                        </div>
+                                        <i class="pi pi-bars tag-drag-handle"></i>
+                                    </div>
+                                    <div class="tag-item" draggable="true">
+                                        <div class="tag-icon"><i class="pi pi-clock"></i></div>
+                                        <div class="tag-details">
+                                            <div class="tag-name">Submission Date</div>
+                                            <div class="tag-code">{{submission_date}}</div>
+                                        </div>
+                                        <i class="pi pi-bars tag-drag-handle"></i>
+                                    </div>
+                                </div>
+
+                                <!-- Organization Tags -->
+                                <div class="tags-category">
+                                    <div class="tags-category-title">Organization</div>
+                                    <div class="tag-item" draggable="true">
+                                        <div class="tag-icon"><i class="pi pi-briefcase"></i></div>
+                                        <div class="tag-details">
+                                            <div class="tag-name">Organization Name</div>
+                                            <div class="tag-code">{{organization_name}}</div>
+                                        </div>
+                                        <i class="pi pi-bars tag-drag-handle"></i>
+                                    </div>
+                                    <div class="tag-item" draggable="true">
+                                        <div class="tag-icon"><i class="pi pi-envelope"></i></div>
+                                        <div class="tag-details">
+                                            <div class="tag-name">Procurement Email</div>
+                                            <div class="tag-code">{{procurement_email}}</div>
+                                        </div>
+                                        <i class="pi pi-bars tag-drag-handle"></i>
+                                    </div>
+                                    <div class="tag-item" draggable="true">
+                                        <div class="tag-icon"><i class="pi pi-link"></i></div>
+                                        <div class="tag-details">
+                                            <div class="tag-name">Portal URL</div>
+                                            <div class="tag-code">{{portal_url}}</div>
+                                        </div>
+                                        <i class="pi pi-bars tag-drag-handle"></i>
+                                    </div>
+                                </div>
+
+                                <!-- Links Tags -->
+                                <div class="tags-category">
+                                    <div class="tags-category-title">Action Links</div>
+                                    <div class="tag-item" draggable="true">
+                                        <div class="tag-icon"><i class="pi pi-external-link"></i></div>
+                                        <div class="tag-details">
+                                            <div class="tag-name">View Tender Link</div>
+                                            <div class="tag-code">{{tender_link}}</div>
+                                        </div>
+                                        <i class="pi pi-bars tag-drag-handle"></i>
+                                    </div>
+                                    <div class="tag-item" draggable="true">
+                                        <div class="tag-icon"><i class="pi pi-external-link"></i></div>
+                                        <div class="tag-details">
+                                            <div class="tag-name">View Submission Link</div>
+                                            <div class="tag-code">{{submission_link}}</div>
+                                        </div>
+                                        <i class="pi pi-bars tag-drag-handle"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Test Email Modal -->
+    <div class="modal-overlay" id="testEmailModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Send Test Email</h3>
+                <button class="modal-close" onclick="closeTestEmailModal()">
+                    <i class="pi pi-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Recipient Email Address</label>
+                    <input type="email" class="form-input" placeholder="Enter email address..." value="admin@unops.org">
+                    <span class="form-hint">The test email will be sent with sample data to this address</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" onclick="closeTestEmailModal()">Cancel</button>
+                <button class="btn btn-primary">
+                    <i class="pi pi-send"></i>
+                    Send Test
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle menu group collapse/expand
+        function toggleMenuGroup(header) {
+            const group = header.parentElement;
+            group.classList.toggle('collapsed');
+        }
+
+        // Toggle submenu group collapse/expand
+        function toggleSubMenuGroup(header) {
+            const group = header.parentElement;
+            group.classList.toggle('collapsed');
+        }
+
+        // Switch between Email and In-App channel
+        function switchChannel(channel) {
+            const emailForm = document.getElementById('emailEditorForm');
+            const inappForm = document.getElementById('inappEditorForm');
+            const toggleBtns = document.querySelectorAll('.channel-toggle-btn');
+            
+            toggleBtns.forEach(btn => btn.classList.remove('active'));
+            event.target.closest('.channel-toggle-btn').classList.add('active');
+            
+            if (channel === 'email') {
+                emailForm.style.display = '';
+                inappForm.style.display = 'none';
+            } else {
+                emailForm.style.display = 'none';
+                inappForm.style.display = '';
+            }
+        }
+
+        // Toggle preview mode
+        function setPreviewMode(mode) {
+            const previewEmail = document.getElementById('previewEmail');
+            const buttons = document.querySelectorAll('.preview-toggle-btn');
+            
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.closest('.preview-toggle-btn').classList.add('active');
+            
+            if (mode === 'mobile') {
+                previewEmail.classList.add('mobile');
+            } else {
+                previewEmail.classList.remove('mobile');
+            }
+        }
+
+        // Modal functions
+        function openTestEmailModal() {
+            document.getElementById('testEmailModal').classList.add('active');
+        }
+
+        function closeTestEmailModal() {
+            document.getElementById('testEmailModal').classList.remove('active');
+        }
+
+        // Close modal on overlay click
+        document.getElementById('testEmailModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeTestEmailModal();
+            }
+        });
+
+        // Event card selection
+        document.querySelectorAll('.event-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                if (e.target.closest('.event-toggle')) return; // Don't trigger on toggle click
+                
+                document.querySelectorAll('.event-card').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Tab switching
+        document.querySelectorAll('.tab-item').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Search functionality
+        const searchInput = document.querySelector('.events-search .search-input');
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            document.querySelectorAll('.event-card').forEach(card => {
+                const eventName = card.querySelector('.event-name').textContent.toLowerCase();
+                const eventCode = card.querySelector('.event-code').textContent.toLowerCase();
+                
+                if (eventName.includes(searchTerm) || eventCode.includes(searchTerm)) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // Tag search functionality
+        const tagSearchInput = document.querySelector('.tags-search input');
+        tagSearchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            document.querySelectorAll('.tag-item').forEach(tag => {
+                const tagName = tag.querySelector('.tag-name').textContent.toLowerCase();
+                const tagCode = tag.querySelector('.tag-code').textContent.toLowerCase();
+                
+                if (tagName.includes(searchTerm) || tagCode.includes(searchTerm)) {
+                    tag.style.display = '';
+                } else {
+                    tag.style.display = 'none';
+                }
+            });
+        });
+
+        // Drag and drop for tags
+        document.querySelectorAll('.tag-item').forEach(tag => {
+            tag.addEventListener('dragstart', function(e) {
+                const tagCode = this.querySelector('.tag-code').textContent;
+                e.dataTransfer.setData('text/plain', tagCode);
+            });
+        });
+
+        // Allow drop on rich editor
+        const richEditor = document.querySelector('.rich-editor-content');
+        richEditor.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.style.background = 'var(--primary-50)';
+        });
+
+        richEditor.addEventListener('dragleave', function(e) {
+            this.style.background = '';
+        });
+
+        richEditor.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.style.background = '';
+            
+            const tagCode = e.dataTransfer.getData('text/plain');
+            const span = document.createElement('span');
+            span.className = 'tag-placeholder';
+            span.textContent = tagCode;
+            
+            // Insert at cursor position or at end
+            const selection = window.getSelection();
+            if (selection.rangeCount > 0) {
+                const range = selection.getRangeAt(0);
+                range.insertNode(span);
+                range.setStartAfter(span);
+                range.setEndAfter(span);
+                selection.removeAllRanges();
+                selection.addRange(range);
+            } else {
+                this.appendChild(span);
+            }
+        });
+    </script>
+</body>
+</html>
