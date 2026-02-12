@@ -9386,6 +9386,14 @@
       let productsAndServices = []; // Refined products/services for suppliers (right container)
       let lots = []; // Created lots: [{ id, description, unspscCodes: [{ code, description }] }]
       let allowPartialQuotations = ''; // 'Yes' or 'No' - determines if lots section is visible
+      // Part 3 UNSPSC compliance: key = 'req-' + lineId or 'prod-' + itemId, value = { option: 'notOnNoBuy'|'onNoBuy', justification?: string, pgWaiverCode?: string }
+      let part3ComplianceConfirmations = {};
+      // Mock Part 3 No Buy List description/comment per UNSPSC code (read-only when option B selected)
+      const part3NoBuyListInfo = {
+        '25101500': { description: 'Motor vehicles - No Buy List item. Requires PG waiver if procured.', comment: 'Standard restriction for vehicle fleet.' },
+        '25101600': { description: 'Trucks and vans - No Buy List item.', comment: 'Fleet vehicles restriction.' },
+        '42131500': { description: 'Medical instruments - No Buy List item. Special approval required.', comment: 'Medical equipment compliance.' }
+      };
       
       // Available requisition lines from ERP (centralized source for both Products and Services AND Lots)
       const availableRequisitionLines = [
@@ -9402,6 +9410,8 @@
         { id: 'REQ-LINE-011', unspscCode: '43211707', unspscDescription: 'Computer mice', description: 'Wireless mice', quantity: 75, unitOfMeasure: 'Unit', amount: 2250, currency: 'USD', unitPrice: 30, workPackageGLA: 'WP-2024-IT-004', donorFundingSourceGLA: 'EU Contribution', procurementOfficial: 'Michael Chen' },
         { id: 'REQ-LINE-012', unspscCode: '72151500', unspscDescription: 'Building cleaning services', description: 'Office cleaning services', quantity: 12, unitOfMeasure: 'Month', amount: 24000, currency: 'USD', unitPrice: 2000, workPackageGLA: 'WP-2024-FAC-001', donorFundingSourceGLA: 'UNDP Core Funds', procurementOfficial: 'Emma Wilson' },
         { id: 'REQ-LINE-013', unspscCode: '78111800', unspscDescription: 'Passenger transport', description: 'Staff transportation services', quantity: 1, unitOfMeasure: 'Service', amount: 18000, currency: 'USD', unitPrice: 18000, workPackageGLA: 'WP-2024-TRN-001', donorFundingSourceGLA: 'Japan Trust Fund', procurementOfficial: 'Emma Wilson' },
+        { id: 'REQ-LINE-014', unspscCode: '43232100', unspscDescription: 'Network security equipment', description: 'Firewall and security appliances', quantity: 5, unitOfMeasure: 'Unit', amount: 15000, currency: 'USD', unitPrice: 3000, workPackageGLA: 'WP-2024-IT-005', donorFundingSourceGLA: 'UNDP Core Funds', procurementOfficial: 'Michael Chen' },
+        { id: 'REQ-LINE-015', unspscCode: '42131500', unspscDescription: 'Medical instruments', description: 'Diagnostic medical instruments', quantity: 10, unitOfMeasure: 'Unit', amount: 25000, currency: 'USD', unitPrice: 2500, workPackageGLA: 'WP-2024-HEALTH-001', donorFundingSourceGLA: 'WHO Grant', procurementOfficial: 'Sarah Johnson' },
       ];
       
       // Available oneUNOPS Projects (mock data for Project ID search and auto-population)
@@ -9419,8 +9429,8 @@
       ];
       
       // Master UNSPSC Codes List (from oneUNOPS master data)
-      // Category 2: Requires additional review/approval
-      // Category 3: High-risk items requiring special handling
+      // Category 2: Requires additional review/approval. partCategoryName = e.g. "Part 2: ICT equipment", partComment = additional comment.
+      // Category 3: High-risk items requiring special handling.
       const masterUnspscCodes = [
         { code: '43000000', description: 'Information Technology Broadcasting and Telecommunications' },
         { code: '43211503', description: 'Laptop computers' },
@@ -9432,7 +9442,7 @@
         { code: '43212105', description: 'Computer monitors' },
         { code: '43222609', description: 'Network switches' },
         { code: '43222619', description: 'Wireless access points' },
-        { code: '43232100', description: 'Network security equipment', category: 2 },
+        { code: '43232100', description: 'Network security equipment', category: 2, partCategoryName: 'Part 2: ICT equipment', partComment: 'See UNOPS do-not-buy list for guidance.' },
         { code: '43233000', description: 'Data storage equipment' },
         { code: '44121700', description: 'Office supplies' },
         { code: '44111500', description: 'Office furniture' },
@@ -9440,25 +9450,30 @@
         { code: '56101600', description: 'Office chairs' },
         { code: '72151500', description: 'Building cleaning services' },
         { code: '78111800', description: 'Passenger transport' },
-        { code: '80111600', description: 'Temporary personnel services', category: 2 },
+        { code: '80111600', description: 'Temporary personnel services', category: 2, partCategoryName: 'Part 2: Services', partComment: 'See UNOPS do-not-buy list for guidance.' },
         { code: '81111500', description: 'Software development services' },
         { code: '81111812', description: 'Network installation & configuration service' },
         { code: '81112000', description: 'Data processing services' },
         { code: '82101500', description: 'Advertising services' },
         { code: '82111700', description: 'Public relations services' },
-        { code: '84111500', description: 'Accounting services', category: 2 },
+        { code: '84111500', description: 'Accounting services', category: 2, partCategoryName: 'Part 2: Services', partComment: 'See UNOPS do-not-buy list for guidance.' },
         { code: '86101700', description: 'Training and educational facilities' },
         { code: '90101600', description: 'Hotels and lodging' },
         { code: '90111500', description: 'Restaurant services' },
-        { code: '25101500', description: 'Motor vehicles', category: 3 },
-        { code: '25101600', description: 'Trucks and vans', category: 3 },
+        { code: '25101500', description: 'Motor vehicles', category: 3, partCategoryName: 'Part 3: Vehicles', partComment: 'Category from the UNOPS do-not-buy list. Waiver required if procured.' },
+        { code: '25101600', description: 'Trucks and vans', category: 3, partCategoryName: 'Part 3: Vehicles', partComment: 'Category from the UNOPS do-not-buy list. Waiver required if procured.' },
+        { code: '25101925', description: 'Sign truck', category: 2, partCategoryName: 'Part 2: Vehicles', partComment: 'The illuminated signs on sign trucks often use various types of bulbs, including incandescent ones, for visibility. Please note that incandescent or fluorescent light bulbs are in the UNOPS "do-not-buy" list.' },
+        { code: '26111601', description: 'Diesel generators', category: 3, partCategoryName: 'Part 3: Diesel generators', partComment: 'Product description directly mentions diesel generators - category from the UNOPS "do-not-buy" list.' },
+        { code: '26131501', description: 'Diesel power plants', category: 3, partCategoryName: 'Part 3: Diesel generators', partComment: 'Product description directly mentions diesel generators - category from the UNOPS "do-not-buy" list.' },
         { code: '26111700', description: 'Batteries' },
         { code: '31162800', description: 'Fasteners' },
         { code: '39121000', description: 'Lamps and light bulbs' },
         { code: '40141700', description: 'Air handling equipment' },
-        { code: '41111500', description: 'Laboratory equipment', category: 2 },
-        { code: '42131500', description: 'Medical instruments', category: 3 },
-        { code: '46171500', description: 'Safety equipment', category: 2 },
+        { code: '41111500', description: 'Laboratory equipment', category: 2, partCategoryName: 'Part 2: Laboratory equipment', partComment: 'See UNOPS do-not-buy list for guidance.' },
+        { code: '42131500', description: 'Medical instruments', category: 3, partCategoryName: 'Part 3: Medical devices', partComment: 'Category from the UNOPS do-not-buy list. Waiver required if procured.' },
+        { code: '42183037', description: 'Chart projectors', category: 2, partCategoryName: 'Part 2: Medical devices', partComment: 'Many older film and slide projectors, as well as some overhead projectors, use bright incandescent or halogen bulbs as their light source. Please note that incandescent or fluorescent light bulbs are in the UNOPS "do-not-buy" list.' },
+        { code: '45111600', description: 'Projectors and supplies', category: 2, partCategoryName: 'Part 2: ICT equipment', partComment: 'Many older film and slide projectors, as well as some overhead projectors, use bright incandescent or halogen bulbs as their light source. Please note that incandescent or fluorescent light bulbs are in the UNOPS "do-not-buy" list.' },
+        { code: '46171500', description: 'Safety equipment', category: 2, partCategoryName: 'Part 2: Safety equipment', partComment: 'See UNOPS do-not-buy list for guidance.' },
         { code: '47131500', description: 'Cleaning equipment' },
         { code: '48101500', description: 'Food service equipment' },
         { code: '55101500', description: 'Printed publications' },
@@ -9468,6 +9483,44 @@
       window.getUnspscCategory = function(code) {
         const item = masterUnspscCodes.find(u => u.code === code);
         return item ? item.category : null;
+      };
+      
+      // Helper: get Part 2/3 category name and comment for flag info modal
+      window.getPart23Info = function(code) {
+        const item = masterUnspscCodes.find(u => u.code === code);
+        if (!item || (item.category !== 2 && item.category !== 3)) return null;
+        return {
+          category: item.category,
+          partCategoryName: item.partCategoryName || (item.category === 2 ? 'Part 2: ' + (item.description || 'See list') : 'Part 3: ' + (item.description || 'See list')),
+          partComment: item.partComment || 'See UNOPS do-not-buy list for details.'
+        };
+      };
+      
+      window.openPart23InfoModal = function(unspscCode) {
+        const info = getPart23Info(unspscCode);
+        if (!info) return;
+        const master = masterUnspscCodes.find(c => c.code === unspscCode);
+        document.getElementById('part23-info-code').textContent = unspscCode + ' · ' + (master ? master.description : '');
+        document.getElementById('part23-info-category-name').textContent = info.partCategoryName;
+        document.getElementById('part23-info-comment').textContent = info.partComment;
+        const block = document.getElementById('part23-info-accent-block');
+        const badge = document.getElementById('part23-info-badge');
+        if (info.category === 3) {
+          block.style.borderLeftColor = 'var(--danger-500)';
+          block.style.background = 'var(--danger-50)';
+          badge.textContent = 'Part 3';
+          badge.style.color = 'var(--danger-700)';
+        } else {
+          block.style.borderLeftColor = 'var(--warning-500)';
+          block.style.background = 'var(--warning-50)';
+          badge.textContent = 'Part 2';
+          badge.style.color = 'var(--warning-700)';
+        }
+        document.getElementById('part23-info-modal').style.display = 'flex';
+      };
+      
+      window.closePart23InfoModal = function() {
+        document.getElementById('part23-info-modal').style.display = 'none';
       };
       
       // Product Requirements (per UNSPSC code)
@@ -11746,9 +11799,31 @@
         const pendingCount = productsAndServices.filter(p => !allAssignedCodes.includes(p.unspscCode)).length;
         const isLotComplete = productsAndServices.length > 0 && pendingCount === 0;
         
+        // Part 3 UNSPSC: items requiring compliance confirmation (requisition lines + products)
+        const part3ReqKeys = requisitionLines.filter(l => getUnspscCategory(l.unspscCode) === 3).map(l => 'req-' + l.id);
+        const part3ProdKeys = productsAndServices.filter(p => getUnspscCategory(p.unspscCode) === 3).map(p => 'prod-' + p.id);
+        const part3AllKeys = part3ReqKeys.concat(part3ProdKeys);
+        const part3UnconfirmedKeys = part3AllKeys.filter(k => !part3ComplianceConfirmations[k]);
+        const part3UnconfirmedCount = part3UnconfirmedKeys.length;
+        const part3TotalCount = part3AllKeys.length;
+        
         return `
           <div class="general-info-container">
             <div class="general-info-body">
+              <!-- Part 3 Submission Blocking Banner -->
+              ${part3TotalCount > 0 && part3UnconfirmedCount > 0 ? `
+              <div class="category-warning category-3" style="margin-bottom: var(--spacing-md);" role="alert">
+                <span class="category-icon" style="color: var(--danger-500);"><i class="pi pi-exclamation-triangle" style="font-size: 20px;"></i></span>
+                <div style="flex: 1;">
+                  <strong style="color: var(--danger-700);">Tender submission is blocked</strong>
+                  <p style="font-size: 12px; color: var(--text-primary); margin: 4px 0 0 0;">Until ALL Part 3 items have compliance confirmation completed. <strong>${part3UnconfirmedCount}</strong> item(s) require confirmation. Complete compliance for each Part 3 item (red flag) below.</p>
+                </div>
+              </div>
+              ` : (part3TotalCount > 0 && part3UnconfirmedCount === 0 ? `
+              <div style="margin-bottom: var(--spacing-md); padding: var(--spacing-sm) var(--spacing-md); background: var(--success-100); border: 1px solid var(--success-500); border-radius: var(--radius-md); font-size: 12px; color: var(--success-700);">
+                <i class="pi pi-check-circle" style="margin-right: 6px;"></i>All Part 3 items have compliance confirmation completed. Tender submission is not blocked.
+              </div>
+              ` : '')}
               <!-- Summary Stats -->
               <div class="summary-stats-row">
                 <div class="stat-item">
@@ -11814,6 +11889,7 @@
                     <span class="badge badge-info" style="margin-left: 6px; font-size: 10px;">${requisitionLines.length}</span>
                   </div>
                   <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                      <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); addAllReqLinesToProductsServices()" title="Add all requisition lines to Products &amp; Services"><i class="pi pi-arrow-right" style="margin-right: 4px;"></i> Add all to P&amp;S</button>
                       <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); openAddRequisitionLinesModal()"><i class="pi pi-plus"></i> Add</button>
                     <div class="collapsible-toggle">▼</div>
                   </div>
@@ -11833,13 +11909,22 @@
                   </div>
                   ` : `
                     <div id="req-lines-container" style="display: flex; flex-direction: column; gap: var(--spacing-xs);">
-                      ${requisitionLines.map(line => `
+                      ${requisitionLines.map(line => {
+                        const partCategory = getUnspscCategory(line.unspscCode);
+                        const part2 = partCategory === 2;
+                        const part3 = partCategory === 3;
+                        const part3Key = 'req-' + line.id;
+                        const part3Confirmed = part3 && part3ComplianceConfirmations[part3Key];
+                        const part3OnNoBuy = part3Confirmed && part3ComplianceConfirmations[part3Key].option === 'onNoBuy';
+                        return `
                         <div class="req-line-card" draggable="true" ondragstart="dragReqLine(event, '${line.id}')" data-line-id="${line.id}" style="padding: var(--spacing-sm); background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-sm); cursor: grab; transition: all 0.2s;">
                           <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                             <div style="flex: 1;">
-                              <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 2px;">
+                              <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 2px; flex-wrap: wrap;">
                                 <span style="font-family: monospace; font-size: 11px; color: var(--primary-600); font-weight: 600;">${line.unspscCode}</span>
                                 <span style="font-size: 10px; color: var(--text-muted);">${line.id}</span>
+                                ${part2 ? `<span role="button" tabindex="0" class="unspsc-part-flag part2" title="Part 2 Category – click for details" style="display: inline-flex; align-items: center; color: var(--warning-600); cursor: pointer;" aria-label="Part 2 Category" onclick="event.stopPropagation(); openPart23InfoModal('${line.unspscCode}');" onkeydown="if(event.key==='Enter'||event.key===' ') { event.preventDefault(); openPart23InfoModal('${line.unspscCode}'); }"><i class="pi pi-flag-fill" style="font-size: 12px;"></i></span>` : ''}
+                                ${part3 ? (part3Confirmed ? (part3OnNoBuy ? `<span role="button" tabindex="0" class="unspsc-part-flag part3" title="Part 3 Category – click for details" style="display: inline-flex; align-items: center; color: var(--danger-500); cursor: pointer;" aria-label="Part 3 Category" onclick="event.stopPropagation(); openPart23InfoModal('${line.unspscCode}');" onkeydown="if(event.key==='Enter'||event.key===' ') { event.preventDefault(); openPart23InfoModal('${line.unspscCode}'); }"><i class="pi pi-flag-fill" style="font-size: 12px;"></i></span><span role="button" tabindex="0" onclick="event.stopPropagation(); openPart3ComplianceModal('${line.id}', 'req', '${line.unspscCode}', true);" onkeydown="if(event.key==='Enter'||event.key===' ') { event.preventDefault(); openPart3ComplianceModal('${line.id}', 'req', '${line.unspscCode}', true); }" style="font-size: 9px; padding: 1px 4px; background: var(--warning-100); color: var(--warning-700); border-radius: 3px; cursor: pointer; border: 1px solid var(--warning-300);" title="View waiver details"><i class="pi pi-unlock" style="font-size: 8px;"></i> Part 3 – Waiver</span>` : `<span role="button" tabindex="0" onclick="event.stopPropagation(); openPart3ComplianceModal('${line.id}', 'req', '${line.unspscCode}', true);" onkeydown="if(event.key==='Enter'||event.key===' ') { event.preventDefault(); openPart3ComplianceModal('${line.id}', 'req', '${line.unspscCode}', true); }" style="font-size: 9px; padding: 1px 4px; background: var(--success-100); color: var(--success-700); border-radius: 3px; cursor: pointer; border: 1px solid transparent;" title="View confirmation details"><i class="pi pi-check" style="font-size: 8px;"></i> Part 3 cleared</span>`) : `<span role="button" tabindex="0" class="unspsc-part-flag part3" title="Part 3 Category – click for details" style="display: inline-flex; align-items: center; color: var(--danger-500); cursor: pointer;" aria-label="Part 3 Category" onclick="event.stopPropagation(); openPart23InfoModal('${line.unspscCode}');" onkeydown="if(event.key==='Enter'||event.key===' ') { event.preventDefault(); openPart23InfoModal('${line.unspscCode}'); }"><i class="pi pi-flag-fill" style="font-size: 12px;"></i></span><button type="button" class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); openPart3ComplianceModal('${line.id}', 'req', '${line.unspscCode}');" style="font-size: 9px; padding: 1px 6px; color: var(--danger-600);">Complete compliance</button>`) : ''}
                               </div>
                               <div style="font-size: 12px; color: var(--text-primary); font-weight: 500; margin-bottom: 2px;">${line.unspscDescription}</div>
                               ${line.description ? `<div style="font-size: 10px; color: var(--text-secondary); margin-bottom: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 280px;" title="${line.description.replace(/"/g, '&quot;')}">${line.description}</div>` : ''}
@@ -11855,7 +11940,7 @@
                             </div>
                           </div>
                         </div>
-                      `).join('')}
+                      `; }).join('')}
                 </div>
                   `}
               </div>
@@ -11897,6 +11982,12 @@
                       ${productsAndServices.map(item => {
                         const isAssigned = allAssignedCodes.includes(item.unspscCode);
                         const leftBorderColor = showLotsSection ? (isAssigned ? 'var(--success-500)' : 'var(--warning-500)') : 'var(--success-500)';
+                        const partCategory = getUnspscCategory(item.unspscCode);
+                        const part2 = partCategory === 2;
+                        const part3 = partCategory === 3;
+                        const part3Key = 'prod-' + item.id;
+                        const part3Confirmed = part3 && part3ComplianceConfirmations[part3Key];
+                        const part3OnNoBuy = part3Confirmed && part3ComplianceConfirmations[part3Key].option === 'onNoBuy';
                         return `
                         <div class="ps-item-card" data-item-id="${item.id}" style="padding: var(--spacing-sm); background: var(--surface-0); border: 1px solid var(--surface-200); border-left: 4px solid ${leftBorderColor}; border-radius: var(--radius-sm); transition: all 0.2s;">
                           <div style="display: flex; justify-content: space-between; align-items: flex-start;">
@@ -11904,6 +11995,8 @@
                               <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 2px; flex-wrap: wrap;">
                                 <span style="font-family: monospace; font-size: 11px; color: var(--primary-600); font-weight: 600;">${item.unspscCode}</span>
                                 ${item.linkedRequisitionId ? `<span style="font-size: 9px; padding: 1px 4px; background: var(--primary-100); color: var(--primary-700); border-radius: 3px;" title="Linked to requisition ${item.linkedRequisitionId}"><i class="pi pi-link" style="font-size: 8px;"></i> ${item.linkedRequisitionId}</span>` : `<span style="font-size: 9px; padding: 1px 4px; background: var(--info-100); color: var(--info-700); border-radius: 3px;"><i class="pi pi-star" style="font-size: 8px;"></i> New</span>`}
+                                ${part2 ? `<span role="button" tabindex="0" class="unspsc-part-flag part2" title="Part 2 Category – click for details" style="display: inline-flex; align-items: center; color: var(--warning-600); cursor: pointer;" aria-label="Part 2 Category" onclick="event.stopPropagation(); openPart23InfoModal('${item.unspscCode}');" onkeydown="if(event.key==='Enter'||event.key===' ') { event.preventDefault(); openPart23InfoModal('${item.unspscCode}'); }"><i class="pi pi-flag-fill" style="font-size: 12px;"></i></span>` : ''}
+                                ${part3 ? (part3Confirmed ? (part3OnNoBuy ? `<span role="button" tabindex="0" class="unspsc-part-flag part3" title="Part 3 Category – click for details" style="display: inline-flex; align-items: center; color: var(--danger-500); cursor: pointer;" aria-label="Part 3 Category" onclick="event.stopPropagation(); openPart23InfoModal('${item.unspscCode}');" onkeydown="if(event.key==='Enter'||event.key===' ') { event.preventDefault(); openPart23InfoModal('${item.unspscCode}'); }"><i class="pi pi-flag-fill" style="font-size: 12px;"></i></span><span role="button" tabindex="0" onclick="event.stopPropagation(); openPart3ComplianceModal('${item.id}', 'prod', '${item.unspscCode}', true);" onkeydown="if(event.key==='Enter'||event.key===' ') { event.preventDefault(); openPart3ComplianceModal('${item.id}', 'prod', '${item.unspscCode}', true); }" style="font-size: 9px; padding: 1px 4px; background: var(--warning-100); color: var(--warning-700); border-radius: 3px; cursor: pointer; border: 1px solid var(--warning-300);" title="View waiver details"><i class="pi pi-unlock" style="font-size: 8px;"></i> Part 3 – Waiver</span>` : `<span role="button" tabindex="0" onclick="event.stopPropagation(); openPart3ComplianceModal('${item.id}', 'prod', '${item.unspscCode}', true);" onkeydown="if(event.key==='Enter'||event.key===' ') { event.preventDefault(); openPart3ComplianceModal('${item.id}', 'prod', '${item.unspscCode}', true); }" style="font-size: 9px; padding: 1px 4px; background: var(--success-100); color: var(--success-700); border-radius: 3px; cursor: pointer; border: 1px solid transparent;" title="View confirmation details"><i class="pi pi-check" style="font-size: 8px;"></i> Part 3 cleared</span>`) : `<span role="button" tabindex="0" class="unspsc-part-flag part3" title="Part 3 Category – click for details" style="display: inline-flex; align-items: center; color: var(--danger-500); cursor: pointer;" aria-label="Part 3 Category" onclick="event.stopPropagation(); openPart23InfoModal('${item.unspscCode}');" onkeydown="if(event.key==='Enter'||event.key===' ') { event.preventDefault(); openPart23InfoModal('${item.unspscCode}'); }"><i class="pi pi-flag-fill" style="font-size: 12px;"></i></span><button type="button" class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); openPart3ComplianceModal('${item.id}', 'prod', '${item.unspscCode}');" style="font-size: 9px; padding: 1px 6px; color: var(--danger-600);">Complete compliance</button>`) : ''}
                                 ${showLotsSection ? (isAssigned 
                                   ? `<span style="font-size: 9px; padding: 1px 4px; background: var(--success-100); color: var(--success-700); border-radius: 3px;"><i class="pi pi-check" style="font-size: 8px;"></i> In Lot</span>`
                                   : `<span style="font-size: 9px; padding: 1px 4px; background: var(--warning-100); color: var(--warning-700); border-radius: 3px;"><i class="pi pi-exclamation-triangle" style="font-size: 8px;"></i> Pending</span>`) : ''}
@@ -11970,7 +12063,8 @@
                         <thead>
                           <tr>
                             <th style="width: 60px;">Lot</th>
-                            <th style="width: 250px;">Description</th>
+                            <th style="width: 180px;">Name</th>
+                            <th style="width: 180px;">Description</th>
                             <th>Products</th>
                             <th style="width: 50px;">Actions</th>
                           </tr>
@@ -11979,7 +12073,8 @@
                           ${lots.map((lot, lotIndex) => `
                             <tr data-lot-id="${lot.id}">
                               <td><span class="lot-number-badge">${lotIndex + 1}</span></td>
-                              <td><span class="lot-desc-cell" title="${lot.description || ''}">${lot.description || '-'}</span></td>
+                              <td><span class="lot-desc-cell" title="${(lot.name || '').replace(/"/g, '&quot;')}">${lot.name || '-'}</span></td>
+                              <td><span class="lot-desc-cell" title="${(lot.description || '').replace(/"/g, '&quot;')}">${lot.description || '-'}</span></td>
                               <td>
                                 <div class="lot-products-cell">
                             ${lot.unspscCodes.length === 0 ? `
@@ -12037,12 +12132,14 @@
       }
       
       window.createNewLot = function() {
-        const lotDesc = prompt('Enter lot description:');
-        if (!lotDesc) return;
+        const lotName = prompt('Enter lot name:');
+        if (!lotName) return;
+        const lotDesc = prompt('Enter lot description (optional):', '');
         
         const newLot = {
           id: 'lot-' + Date.now(),
-          description: lotDesc,
+          name: lotName.trim(),
+          description: (lotDesc && lotDesc.trim()) || '',
           unspscCodes: [], // Array of { code, description }
         };
         
@@ -12090,11 +12187,10 @@
           return;
         }
         
-        // Prompt for lot description with default value
+        const lotName = prompt('Enter name for the consolidated lot:', 'Consolidated Lot');
+        if (!lotName) return; // User cancelled
         const defaultDesc = 'Consolidated lot containing all requisition lines (' + requisitionLines.length + ' items)';
-        const lotDesc = prompt('Enter description for the consolidated lot:', defaultDesc);
-        
-        if (!lotDesc) return; // User cancelled
+        const lotDesc = prompt('Enter description (optional):', defaultDesc);
         
         // Calculate total estimated value from all requisition lines
         const totalValue = requisitionLines.reduce((sum, line) => sum + (line.amount || 0), 0);
@@ -12102,7 +12198,8 @@
         // Create a single lot with all requisition lines as products
         const newLot = {
           id: 'lot-' + Date.now(),
-          description: lotDesc,
+          name: lotName.trim(),
+          description: (lotDesc && lotDesc.trim()) || '',
           unspscCodes: requisitionLines.map(line => ({
             code: line.unspscCode,
             description: line.unspscDescription,
@@ -12150,6 +12247,10 @@
         if (!confirm(confirmMsg)) {
           return;
         }
+        
+        // Clear Part 3 compliance confirmations for this req line and linked products
+        delete part3ComplianceConfirmations['req-' + lineId];
+        linkedProducts.forEach(p => { delete part3ComplianceConfirmations['prod-' + p.id]; });
         
         // Get UNSPSC codes of linked products to remove from lots
         const unspscCodesToRemove = linkedProducts.map(p => p.unspscCode);
@@ -12202,11 +12303,37 @@
         showNotification('Added to Products and Services', 'success');
       }
       
+      // Quick Action: Add all requisition lines to Products & Services
+      window.addAllReqLinesToProductsServices = function() {
+        if (requisitionLines.length === 0) {
+          showNotification('No requisition lines to add. Add requisition lines first.', 'warning');
+          return;
+        }
+        const existingLinkedIds = new Set(productsAndServices.map(p => p.linkedRequisitionId).filter(Boolean));
+        const toAdd = requisitionLines.filter(l => !existingLinkedIds.has(l.id));
+        if (toAdd.length === 0) {
+          showNotification('All requisition lines are already in Products & Services', 'info');
+          return;
+        }
+        const baseId = 'ps-' + Date.now();
+        toAdd.forEach((reqLine, i) => {
+          productsAndServices.push({
+            ...reqLine,
+            id: baseId + '-' + i + '-' + Math.random().toString(36).substr(2, 5),
+            linkedRequisitionId: reqLine.id
+          });
+        });
+        renderCurrentBlock();
+        showNotification(`Added ${toAdd.length} requisition line(s) to Products & Services`, 'success');
+      }
+      
       // Remove Product/Service
       window.removeProductService = function(itemId) {
         if (!confirm('Are you sure you want to remove this item from Products and Services?')) {
           return;
         }
+        
+        delete part3ComplianceConfirmations['prod-' + itemId];
         
         // Also remove from any lots
         const item = productsAndServices.find(p => p.id === itemId);
@@ -12407,11 +12534,18 @@
         } else {
           modalBody.innerHTML = linesToShow.map(line => {
             const isSelected = selectedReqLinesForAdd.some(l => l.id === line.id);
+            const partCat = getUnspscCategory(line.unspscCode);
+            const part2 = partCat === 2;
+            const part3 = partCat === 3;
             return `
             <div class="req-line-option ${isSelected ? 'selected' : ''}" data-line-id="${line.id}" data-line='${JSON.stringify(line).replace(/'/g, "&#39;")}'>
               <input type="checkbox" id="req-add-${line.id}" ${isSelected ? 'checked' : ''} onclick="event.stopPropagation(); toggleReqLineForAdd('${line.id}')" />
               <div class="req-line-details" onclick="toggleReqLineForAdd('${line.id}')">
-                <div class="req-line-code">${line.unspscCode}</div>
+                <div class="req-line-code" style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                  ${line.unspscCode}
+                  ${part2 ? `<span role="button" tabindex="0" title="Part 2 Category – click for details" style="color: var(--warning-600); cursor: pointer;" onclick="event.stopPropagation(); openPart23InfoModal('${line.unspscCode}');"><i class="pi pi-flag-fill" style="font-size: 11px;"></i></span>` : ''}
+                  ${part3 ? `<span role="button" tabindex="0" title="Part 3 Category – click for details" style="color: var(--danger-500); cursor: pointer;" onclick="event.stopPropagation(); openPart23InfoModal('${line.unspscCode}');"><i class="pi pi-flag-fill" style="font-size: 11px;"></i></span>` : ''}
+                </div>
                 <div class="req-line-desc">${line.unspscDescription}</div>
                 <div style="font-size: 10px; color: var(--text-muted); margin-top: 4px;">
                   <strong>${line.id}</strong> • ${line.quantity} ${line.unitOfMeasure} • ${line.currency} ${line.amount.toLocaleString()}
@@ -12522,6 +12656,99 @@
         reqLinesAvailableToShow = [];
       }
       
+      // ===== PART 3 UNSPSC COMPLIANCE MODAL =====
+      let part3ModalContext = null; // { itemId, type: 'req'|'prod', unspscCode, unspscDescription }
+      
+      window.openPart3ComplianceModal = function(itemId, type, unspscCode, openForView) {
+        const key = type === 'req' ? 'req-' + itemId : 'prod-' + itemId;
+        const existing = part3ComplianceConfirmations[key];
+        const master = masterUnspscCodes.find(c => c.code === unspscCode);
+        const desc = master ? master.description : unspscCode;
+        part3ModalContext = { itemId, type, unspscCode, unspscDescription: desc };
+        document.getElementById('part3-modal-item-label').textContent = (desc || unspscCode) + ' (' + unspscCode + ')';
+        document.querySelectorAll('input[name="part3Option"]').forEach(r => { r.checked = false; });
+        document.getElementById('part3-justification').value = '';
+        document.getElementById('part3-pg-waiver-code').value = '';
+        document.getElementById('part3-justification-wrap').style.display = 'none';
+        document.getElementById('part3-nobuy-wrap').style.display = 'none';
+        document.getElementById('part3-validation-msg').style.display = 'none';
+        const info = part3NoBuyListInfo[unspscCode];
+        if (info) {
+          document.getElementById('part3-nobuy-description').textContent = info.description;
+          document.getElementById('part3-nobuy-comment').textContent = info.comment;
+        } else {
+          document.getElementById('part3-nobuy-description').textContent = 'Part 3 – No Buy List item. See policy for details.';
+          document.getElementById('part3-nobuy-comment').textContent = '—';
+        }
+        if (existing) {
+          if (existing.option === 'notOnNoBuy') {
+            document.getElementById('part3-opt-not-on').checked = true;
+            document.getElementById('part3-justification').value = existing.justification || '';
+            document.getElementById('part3-justification-wrap').style.display = 'block';
+          } else {
+            document.getElementById('part3-opt-on').checked = true;
+            document.getElementById('part3-pg-waiver-code').value = existing.pgWaiverCode || '';
+            document.getElementById('part3-nobuy-wrap').style.display = 'block';
+          }
+        }
+        updatePart3CharCount();
+        document.getElementById('part3-compliance-modal').style.display = 'flex';
+      };
+      
+      window.closePart3ComplianceModal = function() {
+        document.getElementById('part3-compliance-modal').style.display = 'none';
+        part3ModalContext = null;
+        renderCurrentBlock();
+      }
+      
+      window.togglePart3OptionFields = function(option) {
+        document.getElementById('part3-justification-wrap').style.display = option === 'notOnNoBuy' ? 'block' : 'none';
+        document.getElementById('part3-nobuy-wrap').style.display = option === 'onNoBuy' ? 'block' : 'none';
+        document.getElementById('part3-validation-msg').style.display = 'none';
+      };
+      
+      window.updatePart3CharCount = function() {
+        const ta = document.getElementById('part3-justification');
+        const span = document.getElementById('part3-char-count');
+        if (ta && span) {
+          const len = (ta.value || '').length;
+          span.textContent = len + ' / 2000 characters' + (len > 0 && len < 50 ? ' (minimum 50 required)' : '');
+        }
+      };
+      
+      window.savePart3Compliance = function() {
+        const optNot = document.getElementById('part3-opt-not-on');
+        const optOn = document.getElementById('part3-opt-on');
+        const justification = (document.getElementById('part3-justification').value || '').trim();
+        const pgWaiverCode = (document.getElementById('part3-pg-waiver-code').value || '').trim();
+        const msgEl = document.getElementById('part3-validation-msg');
+        msgEl.style.display = 'none';
+        
+        if (!part3ModalContext) return;
+        const key = part3ModalContext.type === 'req' ? 'req-' + part3ModalContext.itemId : 'prod-' + part3ModalContext.itemId;
+        
+        if (optNot.checked) {
+          if (justification.length < 50 || justification.length > 2000) {
+            msgEl.textContent = 'Justification must be between 50 and 2000 characters.';
+            msgEl.style.display = 'block';
+            return;
+          }
+          part3ComplianceConfirmations[key] = { option: 'notOnNoBuy', justification: justification };
+        } else if (optOn.checked) {
+          if (!pgWaiverCode) {
+            msgEl.textContent = 'PG Waiver Code is required when the item is on the No Buy List.';
+            msgEl.style.display = 'block';
+            return;
+          }
+          part3ComplianceConfirmations[key] = { option: 'onNoBuy', pgWaiverCode: pgWaiverCode };
+        } else {
+          msgEl.textContent = 'Please select option A or B.';
+          msgEl.style.display = 'block';
+          return;
+        }
+        closePart3ComplianceModal();
+      };
+      
       window.addSelectedRequisitionLines = function() {
         if (selectedReqLinesForAdd.length === 0) {
           showNotification('Please select at least one requisition line', 'warning');
@@ -12552,13 +12779,12 @@
           return;
         }
         
-        // Create one lot per unassigned product
+        // Create one lot per unassigned product: name = product description, description empty
         unassignedProducts.forEach((product, index) => {
-          const lotNumber = lots.length + index + 1;
           lots.push({
             id: 'lot-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5),
-            name: `Lot ${lotNumber}`,
-            description: product.unspscDescription,
+            name: product.unspscDescription || `Lot ${lots.length + index + 1}`,
+            description: '',
             unspscCodes: [{
               code: product.unspscCode,
               description: product.unspscDescription
@@ -12601,18 +12827,18 @@
       // Download Lots Template
       window.downloadLotsTemplate = function() {
         // Create CSV template content
-        const templateHeaders = ['Lot Description', 'UNSPSC Code', 'Product Description', 'Quantity', 'Estimated Value (USD)'];
+        const templateHeaders = ['Lot Name', 'Lot Description', 'UNSPSC Code', 'Product Description', 'Quantity', 'Estimated Value (USD)'];
         const exampleRows = [
-          ['All IT hardware items', '43211503', 'Laptop computers', '50', '75000'],
-          ['All IT hardware items', '43212105', 'Computer monitors', '50', '15000'],
-          ['General office supplies', '44121700', 'Office supplies', '100', '5000'],
-          ['Office furniture items', '56101500', 'Office desks', '25', '12500'],
+          ['IT Hardware', 'All IT hardware items', '43211503', 'Laptop computers', '50', '75000'],
+          ['IT Hardware', 'All IT hardware items', '43212105', 'Computer monitors', '50', '15000'],
+          ['Office Supplies', 'General office supplies', '44121700', 'Office supplies', '100', '5000'],
+          ['Furniture', 'Office furniture items', '56101500', 'Office desks', '25', '12500'],
         ];
         
         // Build CSV content
         let csvContent = templateHeaders.join(',') + '\n';
         csvContent += '# Instructions: Fill in the rows below. Each row represents one product in a lot.\n';
-        csvContent += '# Products with the same Lot Description will be grouped into the same lot.\n';
+        csvContent += '# Products with the same Lot Name will be grouped into the same lot. Lot Name is required; Lot Description is optional.\n';
         csvContent += '# Delete these instruction lines before uploading.\n';
         exampleRows.forEach(row => {
           csvContent += row.map(cell => `"${cell}"`).join(',') + '\n';
@@ -12650,7 +12876,7 @@
             
             // Skip header row
             const dataLines = lines.slice(1);
-            const lotsMap = new Map(); // Group by lot description
+            const lotsMap = new Map(); // Group by lot name
             
             dataLines.forEach(line => {
               // Parse CSV line (handle quoted values)
@@ -12659,20 +12885,28 @@
               
               // Clean values (remove quotes)
               const cleanValues = values.map(v => v.replace(/^"|"$/g, '').trim());
+              // New format: Lot Name, Lot Description, UNSPSC Code, Product Description, Quantity, Estimated Value
+              // Old format (backward compat): Lot Description, UNSPSC Code, Product Description, Quantity, Estimated Value
+              const hasNameColumn = cleanValues.length >= 6;
+              const lotName = cleanValues[0] || '';
+              const lotDesc = hasNameColumn ? (cleanValues[1] || '') : lotName;
+              const unspscCode = hasNameColumn ? cleanValues[2] : cleanValues[1];
+              const productDesc = hasNameColumn ? (cleanValues[3] || '') : (cleanValues[2] || '');
+              const quantity = hasNameColumn ? (cleanValues[4] || '1') : (cleanValues[3] || '1');
+              const estimatedValue = hasNameColumn ? (cleanValues[5] || '0') : (cleanValues[4] || '0');
               
-              const [lotDesc, unspscCode, productDesc, quantity, estimatedValue] = cleanValues;
+              if (!lotName || !unspscCode) return;
               
-              if (!lotDesc || !unspscCode) return;
-              
-              if (!lotsMap.has(lotDesc)) {
-                lotsMap.set(lotDesc, {
+              if (!lotsMap.has(lotName)) {
+                lotsMap.set(lotName, {
                   id: 'lot-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9),
-                  description: lotDesc,
+                  name: lotName,
+                  description: lotDesc || '',
                   unspscCodes: []
                 });
               }
               
-              const lot = lotsMap.get(lotDesc);
+              const lot = lotsMap.get(lotName);
               lot.unspscCodes.push({
                 code: unspscCode,
                 description: productDesc || '',
@@ -12723,7 +12957,8 @@
               <div style="border: 1px solid var(--surface-200); border-radius: var(--radius-sm); margin-bottom: var(--spacing-sm); overflow: hidden;">
                 <div style="background: var(--surface-50); padding: var(--spacing-sm) var(--spacing-md); border-bottom: 1px solid var(--surface-200); display: flex; justify-content: space-between; align-items: center;">
                   <div>
-                    <span style="font-weight: 600; font-size: 13px;">${lot.description || 'No description'}</span>
+                    <span style="font-weight: 600; font-size: 13px;">${lot.name || lot.description || 'Unnamed lot'}</span>
+                    ${lot.description ? `<div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">${lot.description}</div>` : ''}
                   </div>
                   <span style="font-size: 11px; color: var(--text-muted);">${lot.unspscCodes.length} product(s)</span>
                 </div>
@@ -13143,6 +13378,7 @@
         if (!lot) return;
         
         document.getElementById('edit-lot-id').value = lotId;
+        document.getElementById('edit-lot-name-input').value = lot.name || '';
         document.getElementById('edit-lot-desc-input').value = lot.description || '';
         
         document.getElementById('edit-lot-modal').style.display = 'flex';
@@ -13156,7 +13392,12 @@
         const lotId = document.getElementById('edit-lot-id').value;
         const lot = lots.find(l => l.id === lotId);
         if (!lot) return;
-        
+        const name = document.getElementById('edit-lot-name-input').value.trim();
+        if (!name) {
+          alert('Please enter a lot name.');
+          return;
+        }
+        lot.name = name;
         lot.description = document.getElementById('edit-lot-desc-input').value.trim();
         
         closeEditLotModal();
@@ -23570,7 +23811,9 @@
         const productTextInput = document.getElementById('new-ps-product-text');
         const qtyInput = document.getElementById('new-ps-qty');
         const uomSelect = document.getElementById('new-ps-uom');
-        const valueInput = document.getElementById('new-ps-value');
+        const currencySelect = document.getElementById('new-ps-currency');
+        const unitPriceInput = document.getElementById('new-ps-unit-price');
+        const deliveryDateInput = document.getElementById('new-ps-delivery-date');
         const linkedReqSelect = document.getElementById('new-ps-linked-req');
         const categoryIndicator = document.getElementById('unspsc-category-indicator');
         if (unspscInput) unspscInput.value = '';
@@ -23589,13 +23832,15 @@
         initUnspscDropdown();
         if (qtyInput) qtyInput.value = '1';
         if (uomSelect) uomSelect.value = 'Unit';
-        if (valueInput) valueInput.value = '';
+        if (currencySelect) currencySelect.value = 'USD';
+        if (unitPriceInput) unitPriceInput.value = '';
+        if (deliveryDateInput) deliveryDateInput.value = '';
         
-        // Populate linked requisition dropdown from requisitionLines (left column)
+        // Populate linked requisition dropdown from requisitionLines (left column) with data-currency for prefill
         if (linkedReqSelect) {
           linkedReqSelect.innerHTML = '<option value="">-- None (New Product) --</option>' +
             requisitionLines.map(line => `
-              <option value="${line.id}" data-official="${line.procurementOfficial || ''}">
+              <option value="${line.id}" data-official="${(line.procurementOfficial || '').replace(/"/g, '&quot;')}" data-currency="${line.currency || 'USD'}">
                 ${line.id} - ${line.unspscCode} (${line.unspscDescription.substring(0, 30)}${line.unspscDescription.length > 30 ? '...' : ''})
               </option>
             `).join('');
@@ -23898,15 +24143,33 @@
         }
       };
       
+      window.prefillCurrencyFromLinkedReq = function() {
+        const linkedReqSelect = document.getElementById('new-ps-linked-req');
+        const currencySelect = document.getElementById('new-ps-currency');
+        if (!linkedReqSelect || !currencySelect) return;
+        const opt = linkedReqSelect.options[linkedReqSelect.selectedIndex];
+        const currency = opt && opt.getAttribute('data-currency');
+        if (currency) {
+          if (currencySelect.querySelector('option[value="' + currency + '"]')) {
+            currencySelect.value = currency;
+          } else {
+            currencySelect.value = currencySelect.options[0].value;
+          }
+        }
+      };
+      
       window.addNewProductService = function() {
         const unspsc = document.getElementById('new-ps-unspsc').value.trim();
         const desc = document.getElementById('new-ps-desc').value.trim();
         const productText = document.getElementById('new-ps-product-text').value.trim();
         const qty = parseInt(document.getElementById('new-ps-qty').value) || 1;
         const uom = document.getElementById('new-ps-uom').value;
-        const value = parseFloat(document.getElementById('new-ps-value').value) || 0;
+        const currency = (document.getElementById('new-ps-currency') && document.getElementById('new-ps-currency').value) || 'USD';
+        const unitPrice = parseFloat(document.getElementById('new-ps-unit-price').value) || 0;
+        const deliveryDate = (document.getElementById('new-ps-delivery-date') && document.getElementById('new-ps-delivery-date').value) || '';
         const linkedReqSelect = document.getElementById('new-ps-linked-req');
         const linkedReqId = linkedReqSelect ? linkedReqSelect.value : '';
+        const amount = qty * unitPrice;
         
         // Get procurement official from linked requisition if selected
         let procurementOfficial = 'Not assigned';
@@ -23939,8 +24202,10 @@
           description: productText || '',
           quantity: qty,
           unitOfMeasure: uom,
-          amount: value,
-          currency: 'USD',
+          currency: currency,
+          unitPrice: unitPrice,
+          amount: amount,
+          deliveryDate: deliveryDate || undefined,
           procurementOfficial: procurementOfficial,
           linkedRequisitionId: linkedReqId || null,
         };
@@ -24024,8 +24289,9 @@
       
       window.openCreateLotModal = function() {
         document.getElementById('create-lot-modal').style.display = 'flex';
+        document.getElementById('new-lot-name-input').value = '';
         document.getElementById('new-lot-desc-input').value = '';
-        setTimeout(() => document.getElementById('new-lot-desc-input').focus(), 100);
+        setTimeout(() => document.getElementById('new-lot-name-input').focus(), 100);
       }
       
       window.closeCreateLotModal = function() {
@@ -24033,15 +24299,17 @@
       }
       
       window.createLotFromModal = function() {
+        const lotName = document.getElementById('new-lot-name-input').value.trim();
         const lotDesc = document.getElementById('new-lot-desc-input').value.trim();
-        if (!lotDesc) {
-          alert('Please enter a lot description.');
+        if (!lotName) {
+          alert('Please enter a lot name.');
           return;
         }
         
         const newLot = {
           id: 'lot-' + Date.now(),
-          description: lotDesc,
+          name: lotName,
+          description: lotDesc || '',
           unspscCodes: [],
         };
         
@@ -24960,6 +25228,78 @@
       </div>
     </div>
 
+    <!-- Part 2 / Part 3 UNSPSC Info Modal (click on flag to show category name + comment) -->
+    <div class="req-modal" id="part23-info-modal" onclick="if(event.target === this) closePart23InfoModal()">
+      <div class="req-modal-content" style="max-width: 480px;">
+        <div class="req-modal-header" id="part23-info-modal-header">
+          <span class="req-modal-title"><i class="pi pi-info-circle" style="margin-right: 6px;"></i>UNSPSC Part 2 / Part 3 information</span>
+          <button class="modal-close-btn" onclick="closePart23InfoModal()">✕</button>
+        </div>
+        <div class="req-modal-body" style="padding: var(--spacing-md);">
+          <p id="part23-info-code" style="font-size: 11px; color: var(--text-muted); margin-bottom: var(--spacing-md); font-family: monospace;"></p>
+          <div id="part23-info-accent-block" style="margin-bottom: var(--spacing-md); padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--radius-sm); border-left: 4px solid var(--surface-300);">
+            <span id="part23-info-badge" style="font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-right: 8px;"></span>
+            <span id="part23-info-category-name" style="font-size: 14px; font-weight: 600; color: var(--text-primary);"></span>
+          </div>
+          <p style="font-size: 11px; font-weight: 600; color: var(--text-secondary); margin-bottom: 4px;">Additional comment</p>
+          <p id="part23-info-comment" style="font-size: 12px; color: var(--text-secondary); line-height: 1.5; white-space: pre-wrap; margin: 0;"></p>
+        </div>
+        <div class="req-modal-footer">
+          <button class="btn btn-primary btn-sm" onclick="closePart23InfoModal()">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Part 3 Category - Compliance Confirmation Modal -->
+    <div class="req-modal" id="part3-compliance-modal" onclick="if(event.target === this) closePart3ComplianceModal()">
+      <div class="req-modal-content" style="max-width: 560px;">
+        <div class="req-modal-header">
+          <span class="req-modal-title"><i class="pi pi-info-circle" style="margin-right: 6px;"></i>Part 3 Category – Compliance Confirmation</span>
+          <button class="modal-close-btn" onclick="closePart3ComplianceModal()">✕</button>
+        </div>
+        <div class="req-modal-body" style="padding: var(--spacing-md);">
+          <div style="margin-bottom: var(--spacing-md); padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--radius-sm); border-left: 4px solid var(--danger-500); background: var(--danger-50);">
+            <span style="font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-right: 8px; color: var(--danger-700);">Part 3</span>
+            <span id="part3-modal-item-label" style="font-size: 13px; color: var(--text-primary); font-weight: 500;"></span>
+          </div>
+          <p style="font-size: 11px; color: var(--text-secondary); margin-bottom: var(--spacing-sm);">You must select one of the following options:</p>
+          <div class="form-group" style="margin-bottom: var(--spacing-md);">
+            <label class="radio-option" style="display: flex; align-items: flex-start; gap: var(--spacing-sm); cursor: pointer; padding: var(--spacing-sm); border: 1px solid var(--surface-300); border-radius: var(--radius-md); margin-bottom: var(--spacing-sm);">
+              <input type="radio" name="part3Option" value="notOnNoBuy" id="part3-opt-not-on" onchange="togglePart3OptionFields('notOnNoBuy')" style="margin-top: 3px; accent-color: var(--primary-500);">
+              <div style="flex: 1;">
+                <strong style="font-size: 12px;">A) I confirm the item is NOT on the 'No Buy List'</strong>
+                <div id="part3-justification-wrap" style="margin-top: var(--spacing-sm); display: none;">
+                  <label class="form-label" style="font-size: 11px;">Justification <span class="required">*</span> (50–2000 characters)</label>
+                  <textarea id="part3-justification" rows="3" maxlength="2000" placeholder="Enter justification..." style="width: 100%; padding: 8px; border: 1px solid var(--surface-300); border-radius: var(--radius-sm); font-size: 12px; resize: vertical;" oninput="updatePart3CharCount()"></textarea>
+                  <span id="part3-char-count" style="font-size: 10px; color: var(--text-muted);"></span>
+                </div>
+              </div>
+            </label>
+            <label class="radio-option" style="display: flex; align-items: flex-start; gap: var(--spacing-sm); cursor: pointer; padding: var(--spacing-sm); border: 1px solid var(--surface-300); border-radius: var(--radius-md);">
+              <input type="radio" name="part3Option" value="onNoBuy" id="part3-opt-on" onchange="togglePart3OptionFields('onNoBuy')" style="margin-top: 3px; accent-color: var(--primary-500);">
+              <div style="flex: 1;">
+                <strong style="font-size: 12px;">B) I confirm the item IS on the 'No Buy List'</strong>
+                <div id="part3-nobuy-wrap" style="margin-top: var(--spacing-sm); display: none;">
+                  <div style="padding: var(--spacing-sm); background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-sm); margin-bottom: var(--spacing-sm); font-size: 11px;">
+                    <div style="font-weight: 600; margin-bottom: 4px;">Part 3 description &amp; comment</div>
+                    <div id="part3-nobuy-description" style="color: var(--text-primary);"></div>
+                    <div id="part3-nobuy-comment" style="color: var(--text-secondary); margin-top: 4px;"></div>
+                  </div>
+                  <label class="form-label" style="font-size: 11px;">PG Waiver Code <span class="required">*</span></label>
+                  <input type="text" id="part3-pg-waiver-code" placeholder="Enter PG Waiver Code" style="width: 100%; padding: 6px 8px; border: 1px solid var(--surface-300); border-radius: var(--radius-sm); font-size: 12px;">
+                </div>
+              </div>
+            </label>
+          </div>
+          <div id="part3-validation-msg" style="display: none; font-size: 11px; color: var(--danger-600); margin-top: var(--spacing-sm);"></div>
+        </div>
+        <div class="req-modal-footer">
+          <button class="btn btn-ghost btn-sm" onclick="closePart3ComplianceModal()">Cancel</button>
+          <button class="btn btn-primary btn-sm" onclick="savePart3Compliance()"><i class="pi pi-check" style="margin-right: 4px;"></i>Save confirmation</button>
+        </div>
+      </div>
+    </div>
+
     <!-- Add Products and Services Modal -->
     <div class="req-modal" id="add-products-services-modal" onclick="if(event.target === this) closeAddProductsServicesModal()">
       <div class="req-modal-content" style="max-width: 600px;">
@@ -25001,6 +25341,14 @@
           <!-- Create New Product/Service Tab -->
           <div class="product-modal-tab-content" id="ps-tab-new-product" style="padding: var(--spacing-md);">
             <div class="new-product-form">
+              <div class="form-group">
+                <label class="form-label">Linked Requisition</label>
+                <select id="new-ps-linked-req" class="form-select" style="font-size: 13px;" onchange="prefillCurrencyFromLinkedReq()">
+                  <option value="">-- None (New Product) --</option>
+                  <!-- Options will be populated dynamically -->
+                </select>
+                <span class="help-text">Optional. If linked, currency is prefilled from the requisition line.</span>
+              </div>
               <div class="form-group">
                 <label class="form-label">UNSPSC Code <span class="required">*</span></label>
                 <div class="unspsc-search-container">
@@ -25051,17 +25399,27 @@
                   </select>
                 </div>
               </div>
-              <div class="form-group">
-                <label class="form-label">Estimated Value (USD)</label>
-                <input type="number" id="new-ps-value" class="form-input" placeholder="0.00" min="0" step="0.01" style="font-size: 13px;" />
+              <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-md);">
+                <div class="form-group">
+                  <label class="form-label">Currency</label>
+                  <select id="new-ps-currency" class="form-select" style="font-size: 13px;">
+                    <option value="USD">USD</option>
+                    <option value="EUR">EUR</option>
+                    <option value="GBP">GBP</option>
+                    <option value="CHF">CHF</option>
+                    <option value="JPY">JPY</option>
+                    <option value="CAD">CAD</option>
+                    <option value="AUD">AUD</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Unit Price</label>
+                  <input type="number" id="new-ps-unit-price" class="form-input" placeholder="0.00" min="0" step="0.01" style="font-size: 13px;" />
+                </div>
               </div>
               <div class="form-group">
-                <label class="form-label">Linked Requisition <span class="required">*</span></label>
-                <select id="new-ps-linked-req" class="form-select" style="font-size: 13px;" required>
-                  <option value="">-- Select requisition line --</option>
-                  <!-- Options will be populated dynamically -->
-                </select>
-                <span class="help-text">Select the requisition line this product is linked to</span>
+                <label class="form-label">Delivery Date</label>
+                <input type="date" id="new-ps-delivery-date" class="form-input" style="font-size: 13px;" />
               </div>
             </div>
           </div>
@@ -25082,8 +25440,12 @@
         </div>
         <div class="req-modal-body" style="padding: var(--spacing-md);">
           <div class="form-group">
-            <label class="form-label">Description <span class="required">*</span></label>
-            <textarea id="new-lot-desc-input" class="form-textarea" placeholder="Brief description of this lot..." style="min-height: 80px; font-size: 13px;"></textarea>
+            <label class="form-label">Name <span class="required">*</span></label>
+            <input type="text" id="new-lot-name-input" class="form-input" placeholder="Enter lot name" style="font-size: 13px;" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Description</label>
+            <textarea id="new-lot-desc-input" class="form-textarea" placeholder="Brief description (optional)..." style="min-height: 80px; font-size: 13px;"></textarea>
           </div>
         </div>
         <div class="req-modal-footer">
@@ -25126,8 +25488,12 @@
         <div class="req-modal-body" style="padding: var(--spacing-md);">
           <input type="hidden" id="edit-lot-id" />
           <div class="form-group">
-            <label class="form-label">Description <span class="required">*</span></label>
-            <textarea id="edit-lot-desc-input" class="form-textarea" placeholder="Brief description of this lot..." style="min-height: 80px; font-size: 13px;"></textarea>
+            <label class="form-label">Name <span class="required">*</span></label>
+            <input type="text" id="edit-lot-name-input" class="form-input" placeholder="Enter lot name" style="font-size: 13px;" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Description</label>
+            <textarea id="edit-lot-desc-input" class="form-textarea" placeholder="Brief description (optional)..." style="min-height: 80px; font-size: 13px;"></textarea>
           </div>
         </div>
         <div class="req-modal-footer">

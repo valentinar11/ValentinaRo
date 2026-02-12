@@ -6693,329 +6693,228 @@
 
             <!-- Tenders List View -->
             <div class="view-section" id="view-tenders-list" style="display: none;">
-                <div class="page-header" style="margin-bottom: var(--spacing-xl);">
+                <div class="page-header" style="margin-bottom: var(--spacing-lg);">
                     <h1 class="page-title">Tenders</h1>
                     <p class="page-subtitle">View and manage all procurement tenders</p>
                 </div>
-
-                <!-- Tenders Filter Bar -->
-                <div class="filter-bar">
-                    <div class="filter-group">
-                        <span class="filter-label">Status:</span>
-                        <select class="filter-select" id="tenders-list-status-filter" onchange="filterTendersListTable()">
-                            <option value="all">All Statuses</option>
-                            <option value="draft">Draft</option>
-                            <option value="pre-clearance">Pre-Clearance</option>
-                            <option value="approval">Pending Approval</option>
-                            <option value="tme-signed">TME Signed</option>
-                            <option value="active">Posted/Active</option>
-                            <option value="closed">Closed</option>
-                            <option value="bid-opening">Bid Opening</option>
-                            <option value="evaluation">Evaluation</option>
-                            <option value="award">Award Recommendation</option>
-                            <option value="finalized">Finalized</option>
-                            <option value="cancelled">Cancelled</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <span class="filter-label">Type:</span>
-                        <select class="filter-select" id="tenders-list-type-filter" onchange="filterTendersListTable()">
-                            <option value="all">All Types</option>
-                            <option value="ITB">ITB</option>
-                            <option value="RFQ">RFQ</option>
-                            <option value="RFP">RFP</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <span class="filter-label">Sort by:</span>
-                        <select class="filter-select" id="tenders-list-sort" onchange="sortTendersListTable()">
-                            <option value="recent">Most Recent</option>
-                            <option value="deadline">Deadline</option>
-                            <option value="value-desc">Value (High to Low)</option>
-                            <option value="value-asc">Value (Low to High)</option>
-                            <option value="reference">Reference</option>
-                        </select>
-                    </div>
-                    <div style="flex: 1;"></div>
-                    <input type="text" id="tenders-list-search" placeholder="Search tenders..." class="filter-select" style="width: 250px;" onkeyup="filterTendersListTable()">
+                <div style="display: flex; justify-content: flex-end; align-items: center; margin-bottom: var(--spacing-lg);">
                     <button class="btn btn-primary" onclick="document.getElementById('menu-tendering-create').click()">
                         <i class="pi pi-plus"></i>
                         Create New Tender
                     </button>
                 </div>
 
-                <!-- Summary Stats -->
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--spacing-md); margin-bottom: var(--spacing-xl);">
-                    <div style="background: var(--surface-0); border: 1px solid var(--surface-200); border-radius: var(--radius-md); padding: var(--spacing-md); text-align: center;">
-                        <div style="font-size: 24px; font-weight: 700; color: var(--primary-500);">13</div>
-                        <div style="font-size: 12px; color: var(--text-muted);">Total Tenders</div>
-                    </div>
-                    <div style="background: var(--info-50); border: 1px solid var(--info-200); border-radius: var(--radius-md); padding: var(--spacing-md); text-align: center;">
-                        <div style="font-size: 24px; font-weight: 700; color: var(--info-500);">4</div>
-                        <div style="font-size: 12px; color: var(--text-muted);">Active</div>
-                    </div>
-                    <div style="background: var(--warning-50); border: 1px solid var(--warning-200); border-radius: var(--radius-md); padding: var(--spacing-md); text-align: center;">
-                        <div style="font-size: 24px; font-weight: 700; color: var(--warning-500);">3</div>
-                        <div style="font-size: 12px; color: var(--text-muted);">In Review</div>
-                    </div>
-                    <div style="background: var(--success-50); border: 1px solid var(--success-200); border-radius: var(--radius-md); padding: var(--spacing-md); text-align: center;">
-                        <div style="font-size: 24px; font-weight: 700; color: var(--success-500);">2</div>
-                        <div style="font-size: 12px; color: var(--text-muted);">Finalized</div>
-                    </div>
-                    <div style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-md); padding: var(--spacing-md); text-align: center;">
-                        <div style="font-size: 24px; font-weight: 700; color: var(--text-secondary);">1</div>
-                        <div style="font-size: 12px; color: var(--text-muted);">Draft</div>
+                <!-- Tenders Filter Panel -->
+                <div style="background: var(--surface-0); border: 1px solid var(--surface-200); border-radius: var(--radius-lg); margin-bottom: var(--spacing-xl); overflow: hidden;">
+                    <button type="button" id="tenders-filter-toggle" onclick="toggleTendersFilterPanel()" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: var(--spacing-md) var(--spacing-lg); font-weight: 600; color: var(--text-primary); background: var(--surface-50); border: none; cursor: pointer; font-size: 14px; text-align: left;">
+                        <span><i class="pi pi-filter" style="margin-right: 8px;"></i>Filters</span>
+                        <i class="pi pi-chevron-down" id="tenders-filter-chevron"></i>
+                    </button>
+                    <div id="tenders-filter-panel" style="display: none; padding: var(--spacing-lg); border-top: 1px solid var(--surface-200);">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: var(--spacing-lg);">
+                            <div class="filter-field">
+                                <label style="display: block; font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px;">Tender type</label>
+                                <select class="filter-select" id="tenders-list-type-filter" onchange="filterTendersListTable()" style="width: 100%; padding: 8px 12px; border: 1px solid var(--surface-300); border-radius: var(--radius-md); font-size: 14px;">
+                                    <option value="all">All</option>
+                                    <option value="ITB">ITB</option>
+                                    <option value="RFQ">RFQ</option>
+                                    <option value="RFP">RFP</option>
+                                </select>
+                            </div>
+                            <div class="filter-field">
+                                <label style="display: block; font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px;">Reference</label>
+                                <input type="text" id="tenders-filter-reference" placeholder="Enter part of reference" style="width: 100%; padding: 8px 12px; border: 1px solid var(--surface-300); border-radius: var(--radius-md); font-size: 14px;" onkeyup="filterTendersListTable()">
+                            </div>
+                            <div class="filter-field">
+                                <label style="display: block; font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px;">Title</label>
+                                <input type="text" id="tenders-filter-title" placeholder="Enter part of title" style="width: 100%; padding: 8px 12px; border: 1px solid var(--surface-300); border-radius: var(--radius-md); font-size: 14px;" onkeyup="filterTendersListTable()">
+                            </div>
+                            <div class="filter-field">
+                                <label style="display: block; font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px;">Created between</label>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <input type="date" id="tenders-filter-created-from" style="flex: 1; padding: 8px 12px; border: 1px solid var(--surface-300); border-radius: var(--radius-md); font-size: 14px;">
+                                    <span style="color: var(--text-muted); font-size: 13px;">and</span>
+                                    <input type="date" id="tenders-filter-created-to" style="flex: 1; padding: 8px 12px; border: 1px solid var(--surface-300); border-radius: var(--radius-md); font-size: 14px;">
+                                </div>
+                            </div>
+                            <div class="filter-field">
+                                <label style="display: block; font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px;">Posted between</label>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <input type="date" id="tenders-filter-posted-from" style="flex: 1; padding: 8px 12px; border: 1px solid var(--surface-300); border-radius: var(--radius-md); font-size: 14px;">
+                                    <span style="color: var(--text-muted); font-size: 13px;">and</span>
+                                    <input type="date" id="tenders-filter-posted-to" style="flex: 1; padding: 8px 12px; border: 1px solid var(--surface-300); border-radius: var(--radius-md); font-size: 14px;">
+                                </div>
+                            </div>
+                            <div class="filter-field">
+                                <label style="display: block; font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px;">Deadline between</label>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <input type="date" id="tenders-filter-deadline-from" style="flex: 1; padding: 8px 12px; border: 1px solid var(--surface-300); border-radius: var(--radius-md); font-size: 14px;">
+                                    <span style="color: var(--text-muted); font-size: 13px;">and</span>
+                                    <input type="date" id="tenders-filter-deadline-to" style="flex: 1; padding: 8px 12px; border: 1px solid var(--surface-300); border-radius: var(--radius-md); font-size: 14px;">
+                                </div>
+                            </div>
+                            <div class="filter-field">
+                                <label style="display: block; font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px;">Status</label>
+                                <select class="filter-select" id="tenders-list-status-filter" onchange="filterTendersListTable()" style="width: 100%; padding: 8px 12px; border: 1px solid var(--surface-300); border-radius: var(--radius-md); font-size: 14px;">
+                                    <option value="all">All Statuses</option>
+                                    <option value="draft">Draft</option>
+                                    <option value="pre-clearance">Pre-Clearance</option>
+                                    <option value="approval">Pending Approval</option>
+                                    <option value="tme-signed">TME Signed</option>
+                                    <option value="active">Posted/Active</option>
+                                    <option value="closed">Closed</option>
+                                    <option value="bid-opening">Bid Opening</option>
+                                    <option value="evaluation">Evaluation</option>
+                                    <option value="award">Award Recommendation</option>
+                                    <option value="finalized">Finalized</option>
+                                    <option value="finalized-award">Finalized - award approved</option>
+                                    <option value="cancelled">Cancelled</option>
+                                </select>
+                            </div>
+                            <div class="filter-field">
+                                <label style="display: block; font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px;">Created by</label>
+                                <input type="text" id="tenders-filter-created-by" placeholder="Enter name" style="width: 100%; padding: 8px 12px; border: 1px solid var(--surface-300); border-radius: var(--radius-md); font-size: 14px;" onkeyup="filterTendersListTable()">
+                            </div>
+                            <div class="filter-field">
+                                <label style="display: block; font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px;">Org. unit</label>
+                                <input type="text" id="tenders-filter-org-unit" placeholder="Enter the Organization Unit for this procurement event" style="width: 100%; padding: 8px 12px; border: 1px solid var(--surface-300); border-radius: var(--radius-md); font-size: 14px;" onkeyup="filterTendersListTable()">
+                            </div>
+                            <div class="filter-field">
+                                <label style="display: block; font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px;">Competition type</label>
+                                <input type="text" id="tenders-filter-competition-type" placeholder="Enter competition type" style="width: 100%; padding: 8px 12px; border: 1px solid var(--surface-300); border-radius: var(--radius-md); font-size: 14px;" onkeyup="filterTendersListTable()">
+                            </div>
+                            <div class="filter-field">
+                                <label style="display: block; font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px;">Country</label>
+                                <select class="filter-select" id="tenders-filter-country" onchange="filterTendersListTable()" style="width: 100%; padding: 8px 12px; border: 1px solid var(--surface-300); border-radius: var(--radius-md); font-size: 14px;">
+                                    <option value="all">All countries</option>
+                                    <option value="AR">Argentina</option>
+                                    <option value="GT">Guatemala</option>
+                                    <option value="KE">Kenya</option>
+                                    <option value="MM">Myanmar</option>
+                                </select>
+                                <input type="text" id="tenders-filter-country-text" placeholder="Enter country" style="width: 100%; margin-top: 6px; padding: 8px 12px; border: 1px solid var(--surface-300); border-radius: var(--radius-md); font-size: 14px;" onkeyup="filterTendersListTable()">
+                            </div>
+                            <div class="filter-field" style="grid-column: 1 / -1;">
+                                <label style="display: block; font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px;">UNSPSC (code or description)</label>
+                                <input type="text" id="tenders-filter-unspsc" placeholder="Enter part of code or description" style="width: 100%; max-width: 400px; padding: 8px 12px; border: 1px solid var(--surface-300); border-radius: var(--radius-md); font-size: 14px;" onkeyup="filterTendersListTable()">
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: flex-end; gap: var(--spacing-sm); margin-top: var(--spacing-lg); padding-top: var(--spacing-md); border-top: 1px solid var(--surface-200);">
+                            <button type="button" class="btn btn-ghost" onclick="clearTendersFilters()">Clear filters</button>
+                            <button type="button" class="btn btn-primary" onclick="filterTendersListTable()">Apply filters</button>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Tenders Table -->
-                <div style="background: var(--surface-0); border: 1px solid var(--surface-200); border-radius: var(--radius-lg); overflow: hidden;">
-                    <table id="tenders-list-table" style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                <div style="background: var(--surface-0); border: 1px solid var(--surface-200); border-radius: var(--radius-lg); overflow-x: auto;">
+                    <table id="tenders-list-table" style="width: 100%; min-width: 1400px; border-collapse: collapse; font-size: 13px;">
                         <thead>
                             <tr style="background: var(--surface-50); border-bottom: 2px solid var(--surface-200);">
-                                <th style="padding: 12px 16px; text-align: left; font-weight: 600; color: var(--text-primary);">Reference</th>
-                                <th style="padding: 12px 16px; text-align: left; font-weight: 600; color: var(--text-primary);">Title</th>
-                                <th style="padding: 12px 16px; text-align: center; font-weight: 600; color: var(--text-primary);">Type</th>
-                                <th style="padding: 12px 16px; text-align: center; font-weight: 600; color: var(--text-primary);">Status</th>
-                                <th style="padding: 12px 16px; text-align: right; font-weight: 600; color: var(--text-primary);">Est. Value</th>
-                                <th style="padding: 12px 16px; text-align: center; font-weight: 600; color: var(--text-primary);">Deadline</th>
-                                <th style="padding: 12px 16px; text-align: center; font-weight: 600; color: var(--text-primary);">Bids</th>
-                                <th style="padding: 12px 16px; text-align: center; font-weight: 600; color: var(--text-primary);">Actions</th>
+                                <th data-sort-key="reference" onclick="sortTendersListByColumn('reference')" style="padding: 12px 16px; text-align: left; font-weight: 600; color: var(--text-primary); white-space: nowrap; cursor: pointer; user-select: none;"><span>Reference</span> <i class="pi pi-sort" style="font-size: 10px; margin-left: 4px; opacity: 0.7;"></i></th>
+                                <th data-sort-key="title" onclick="sortTendersListByColumn('title')" style="padding: 12px 16px; text-align: left; font-weight: 600; color: var(--text-primary); cursor: pointer; user-select: none;"><span>Title</span> <i class="pi pi-sort" style="font-size: 10px; margin-left: 4px; opacity: 0.7;"></i></th>
+                                <th data-sort-key="method" onclick="sortTendersListByColumn('method')" style="padding: 12px 16px; text-align: center; font-weight: 600; color: var(--text-primary); white-space: nowrap; cursor: pointer; user-select: none;"><span>Method</span> <i class="pi pi-sort" style="font-size: 10px; margin-left: 4px; opacity: 0.7;"></i></th>
+                                <th data-sort-key="status" onclick="sortTendersListByColumn('status')" style="padding: 12px 16px; text-align: center; font-weight: 600; color: var(--text-primary); white-space: nowrap; cursor: pointer; user-select: none;"><span>Status</span> <i class="pi pi-sort" style="font-size: 10px; margin-left: 4px; opacity: 0.7;"></i></th>
+                                <th data-sort-key="competition-type" onclick="sortTendersListByColumn('competition-type')" style="padding: 12px 16px; text-align: left; font-weight: 600; color: var(--text-primary); white-space: nowrap; cursor: pointer; user-select: none;"><span>Competition type</span> <i class="pi pi-sort" style="font-size: 10px; margin-left: 4px; opacity: 0.7;"></i></th>
+                                <th data-sort-key="org-unit" onclick="sortTendersListByColumn('org-unit')" style="padding: 12px 16px; text-align: left; font-weight: 600; color: var(--text-primary); white-space: nowrap; cursor: pointer; user-select: none;"><span>Organizational unit</span> <i class="pi pi-sort" style="font-size: 10px; margin-left: 4px; opacity: 0.7;"></i></th>
+                                <th data-sort-key="created-by" onclick="sortTendersListByColumn('created-by')" style="padding: 12px 16px; text-align: left; font-weight: 600; color: var(--text-primary); white-space: nowrap; cursor: pointer; user-select: none;"><span>Created by</span> <i class="pi pi-sort" style="font-size: 10px; margin-left: 4px; opacity: 0.7;"></i></th>
+                                <th data-sort-key="created-date" onclick="sortTendersListByColumn('created-date')" style="padding: 12px 16px; text-align: left; font-weight: 600; color: var(--text-primary); white-space: nowrap; cursor: pointer; user-select: none;"><span>Created date</span> <i class="pi pi-sort" style="font-size: 10px; margin-left: 4px; opacity: 0.7;"></i></th>
+                                <th data-sort-key="posted-date" onclick="sortTendersListByColumn('posted-date')" style="padding: 12px 16px; text-align: left; font-weight: 600; color: var(--text-primary); white-space: nowrap; cursor: pointer; user-select: none;"><span>Posted date</span> <i class="pi pi-sort" style="font-size: 10px; margin-left: 4px; opacity: 0.7;"></i></th>
+                                <th data-sort-key="deadline" onclick="sortTendersListByColumn('deadline')" style="padding: 12px 16px; text-align: left; font-weight: 600; color: var(--text-primary); white-space: nowrap; cursor: pointer; user-select: none;"><span>Deadline</span> <i class="pi pi-sort" style="font-size: 10px; margin-left: 4px; opacity: 0.7;"></i></th>
+                                <th data-sort-key="est-value" onclick="sortTendersListByColumn('est-value')" style="padding: 12px 16px; text-align: right; font-weight: 600; color: var(--text-primary); white-space: nowrap; cursor: pointer; user-select: none;"><span>Est Value USD</span> <i class="pi pi-sort" style="font-size: 10px; margin-left: 4px; opacity: 0.7;"></i></th>
+                                <th data-sort-key="bids" onclick="sortTendersListByColumn('bids')" style="padding: 12px 16px; text-align: center; font-weight: 600; color: var(--text-primary); white-space: nowrap; cursor: pointer; user-select: none;"><span>Bids</span> <i class="pi pi-sort" style="font-size: 10px; margin-left: 4px; opacity: 0.7;"></i></th>
+                                <th style="padding: 12px 16px; text-align: center; font-weight: 600; color: var(--text-primary); white-space: nowrap;">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="tenders-list-tbody">
-                            <!-- Row 1: Active -->
-                            <tr class="tender-row" data-status="active" data-type="RFQ" data-value="250000" data-deadline="2024-12-15" style="border-bottom: 1px solid var(--surface-100);">
-                                <td style="padding: 12px 16px; font-weight: 600; color: var(--primary-500);">RFQ/2024/001</td>
-                                <td style="padding: 12px 16px;">
-                                    <div style="font-weight: 500;">Supply of Medical Equipment</div>
-                                    <div style="font-size: 11px; color: var(--text-muted);">Posted: 15 Nov 2024</div>
-                                </td>
-                                <td style="padding: 12px 16px; text-align: center;"><span style="padding: 2px 8px; background: var(--primary-50); color: var(--primary-500); border-radius: 4px; font-size: 11px; font-weight: 600;">RFQ</span></td>
-                                <td style="padding: 12px 16px; text-align: center;"><span class="status-badge active">Active</span></td>
-                                <td style="padding: 12px 16px; text-align: right; font-weight: 500;">$250,000</td>
-                                <td style="padding: 12px 16px; text-align: center;">15 Dec 2024</td>
-                                <td style="padding: 12px 16px; text-align: center;">3 / 12</td>
-                                <td style="padding: 12px 16px; text-align: center;">
-                                    <button class="btn btn-secondary btn-sm" onclick="showTenderDetails({id: 'RFQ/2024/001', title: 'Supply of Medical Equipment', status: 'Posted', statusKey: 'active'})" style="padding: 4px 8px;">
-                                        <i class="pi pi-eye"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <!-- Row 2: Active -->
-                            <tr class="tender-row" data-status="active" data-type="ITB" data-value="1500000" data-deadline="2025-01-10" style="background: var(--surface-50); border-bottom: 1px solid var(--surface-100);">
-                                <td style="padding: 12px 16px; font-weight: 600; color: var(--primary-500);">ITB/2024/045</td>
-                                <td style="padding: 12px 16px;">
-                                    <div style="font-weight: 500;">Construction of Office Building</div>
-                                    <div style="font-size: 11px; color: var(--text-muted);">Posted: 10 Nov 2024</div>
-                                </td>
-                                <td style="padding: 12px 16px; text-align: center;"><span style="padding: 2px 8px; background: var(--success-50); color: var(--success-500); border-radius: 4px; font-size: 11px; font-weight: 600;">ITB</span></td>
-                                <td style="padding: 12px 16px; text-align: center;"><span class="status-badge active">Active</span></td>
-                                <td style="padding: 12px 16px; text-align: right; font-weight: 500;">$1,500,000</td>
-                                <td style="padding: 12px 16px; text-align: center;">10 Jan 2025</td>
-                                <td style="padding: 12px 16px; text-align: center;">7 / 25</td>
-                                <td style="padding: 12px 16px; text-align: center;">
-                                    <button class="btn btn-secondary btn-sm" onclick="showTenderDetails({id: 'ITB/2024/045', title: 'Construction of Office Building', status: 'Posted', statusKey: 'active'})" style="padding: 4px 8px;">
-                                        <i class="pi pi-eye"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <!-- Row 3: Pending Approval -->
-                            <tr class="tender-row" data-status="approval" data-type="RFP" data-value="500000" data-deadline="" style="border-bottom: 1px solid var(--surface-100);">
-                                <td style="padding: 12px 16px; font-weight: 600; color: var(--primary-500);">RFP/2024/078</td>
-                                <td style="padding: 12px 16px;">
-                                    <div style="font-weight: 500;">IT Infrastructure Services</div>
-                                    <div style="font-size: 11px; color: var(--text-muted);">Submitted: 28 Nov 2024</div>
-                                </td>
-                                <td style="padding: 12px 16px; text-align: center;"><span style="padding: 2px 8px; background: var(--warning-50); color: var(--warning-500); border-radius: 4px; font-size: 11px; font-weight: 600;">RFP</span></td>
-                                <td style="padding: 12px 16px; text-align: center;"><span class="status-badge review">Pending Approval</span></td>
-                                <td style="padding: 12px 16px; text-align: right; font-weight: 500;">$500,000</td>
-                                <td style="padding: 12px 16px; text-align: center; color: var(--text-muted);">-</td>
-                                <td style="padding: 12px 16px; text-align: center; color: var(--text-muted);">-</td>
-                                <td style="padding: 12px 16px; text-align: center;">
-                                    <button class="btn btn-secondary btn-sm" onclick="showTenderDetails({id: 'RFP/2024/078', title: 'IT Infrastructure Services', status: 'Pending Approval', statusKey: 'approval'})" style="padding: 4px 8px;">
-                                        <i class="pi pi-eye"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <!-- Row 4: Active -->
-                            <tr class="tender-row" data-status="active" data-type="RFQ" data-value="850000" data-deadline="2024-12-20" style="background: var(--surface-50); border-bottom: 1px solid var(--surface-100);">
-                                <td style="padding: 12px 16px; font-weight: 600; color: var(--primary-500);">RFQ/2024/102</td>
-                                <td style="padding: 12px 16px;">
-                                    <div style="font-weight: 500;">Vehicle Fleet Procurement</div>
-                                    <div style="font-size: 11px; color: var(--text-muted);">Posted: 20 Nov 2024</div>
-                                </td>
-                                <td style="padding: 12px 16px; text-align: center;"><span style="padding: 2px 8px; background: var(--primary-50); color: var(--primary-500); border-radius: 4px; font-size: 11px; font-weight: 600;">RFQ</span></td>
-                                <td style="padding: 12px 16px; text-align: center;"><span class="status-badge active">Active</span></td>
-                                <td style="padding: 12px 16px; text-align: right; font-weight: 500;">$850,000</td>
-                                <td style="padding: 12px 16px; text-align: center;">20 Dec 2024</td>
-                                <td style="padding: 12px 16px; text-align: center;">1 / 8</td>
-                                <td style="padding: 12px 16px; text-align: center;">
-                                    <button class="btn btn-secondary btn-sm" onclick="showTenderDetails({id: 'RFQ/2024/102', title: 'Vehicle Fleet Procurement', status: 'Posted', statusKey: 'active'})" style="padding: 4px 8px;">
-                                        <i class="pi pi-eye"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <!-- Row 5: Draft -->
-                            <tr class="tender-row" data-status="draft" data-type="RFP" data-value="120000" data-deadline="" style="border-bottom: 1px solid var(--surface-100);">
-                                <td style="padding: 12px 16px; font-weight: 600; color: var(--text-muted);">DRAFT-2024-156</td>
-                                <td style="padding: 12px 16px;">
-                                    <div style="font-weight: 500;">Consulting Services - HR Management</div>
-                                    <div style="font-size: 11px; color: var(--text-muted);">Created: 25 Nov 2024 • 75% complete</div>
-                                </td>
+                            <!-- Example row 1 -->
+                            <tr class="tender-row" data-status="draft" data-type="RFP" data-reference="SK_TEST_RFP - copy" data-created="2024-12-11" style="border-bottom: 1px solid var(--surface-100);">
+                                <td style="padding: 12px 16px; font-weight: 600; color: var(--primary-500);">SK_TEST_RFP - copy</td>
+                                <td style="padding: 12px 16px;">RFP</td>
                                 <td style="padding: 12px 16px; text-align: center;"><span style="padding: 2px 8px; background: var(--warning-50); color: var(--warning-500); border-radius: 4px; font-size: 11px; font-weight: 600;">RFP</span></td>
                                 <td style="padding: 12px 16px; text-align: center;"><span class="status-badge draft">Draft</span></td>
+                                <td style="padding: 12px 16px; color: var(--text-muted);">N/A</td>
+                                <td style="padding: 12px 16px;">LCR, SCMCO, Argentina</td>
+                                <td style="padding: 12px 16px;">Valentina ROSSI</td>
+                                <td style="padding: 12px 16px;">2024-12-11 14:23 UTC</td>
+                                <td style="padding: 12px 16px; color: var(--text-muted);">N/A</td>
+                                <td style="padding: 12px 16px; color: var(--text-muted);">N/A</td>
+                                <td style="padding: 12px 16px; text-align: right; font-weight: 500;">$85,000</td>
+                                <td style="padding: 12px 16px; text-align: center; color: var(--text-muted);">—</td>
+                                <td style="padding: 12px 16px; text-align: center;">
+                                    <button class="btn btn-primary btn-sm" style="padding: 4px 8px;"><i class="pi pi-pencil"></i></button>
+                                </td>
+                            </tr>
+                            <!-- Example row 2 -->
+                            <tr class="tender-row" data-status="draft" data-type="ITB" data-reference="SK TEST LOT - copy" data-created="2025-02-05" style="background: var(--surface-50); border-bottom: 1px solid var(--surface-100);">
+                                <td style="padding: 12px 16px; font-weight: 600; color: var(--primary-500);">SK TEST LOT - copy</td>
+                                <td style="padding: 12px 16px;">ITB</td>
+                                <td style="padding: 12px 16px; text-align: center;"><span style="padding: 2px 8px; background: var(--success-50); color: var(--success-500); border-radius: 4px; font-size: 11px; font-weight: 600;">ITB</span></td>
+                                <td style="padding: 12px 16px; text-align: center;"><span class="status-badge draft">Draft</span></td>
+                                <td style="padding: 12px 16px; color: var(--text-muted);">N/A</td>
+                                <td style="padding: 12px 16px;">LCR, SCMCO, Argentina</td>
+                                <td style="padding: 12px 16px;">Valentina ROSSI</td>
+                                <td style="padding: 12px 16px;">2025-02-05 09:00 UTC</td>
+                                <td style="padding: 12px 16px; color: var(--text-muted);">N/A</td>
+                                <td style="padding: 12px 16px; color: var(--text-muted);">N/A</td>
                                 <td style="padding: 12px 16px; text-align: right; font-weight: 500;">$120,000</td>
-                                <td style="padding: 12px 16px; text-align: center; color: var(--text-muted);">-</td>
-                                <td style="padding: 12px 16px; text-align: center; color: var(--text-muted);">-</td>
+                                <td style="padding: 12px 16px; text-align: center; color: var(--text-muted);">—</td>
                                 <td style="padding: 12px 16px; text-align: center;">
-                                    <button class="btn btn-primary btn-sm" style="padding: 4px 8px;">
-                                        <i class="pi pi-pencil"></i>
-                                    </button>
+                                    <button class="btn btn-primary btn-sm" style="padding: 4px 8px;"><i class="pi pi-pencil"></i></button>
                                 </td>
                             </tr>
-                            <!-- Row 6: Pre-Clearance -->
-                            <tr class="tender-row" data-status="pre-clearance" data-type="ITB" data-value="350000" data-deadline="" style="background: var(--surface-50); border-bottom: 1px solid var(--surface-100);">
-                                <td style="padding: 12px 16px; font-weight: 600; color: var(--primary-500);">ITB/2024/089</td>
-                                <td style="padding: 12px 16px;">
-                                    <div style="font-weight: 500;">Laboratory Equipment Procurement</div>
-                                    <div style="font-size: 11px; color: var(--text-muted);">Submitted: 29 Nov 2024</div>
-                                </td>
+                            <!-- Example row 3 -->
+                            <tr class="tender-row" data-status="draft" data-type="ITB" data-reference="Testing TME amendment - copy" data-created="2025-07-11" style="border-bottom: 1px solid var(--surface-100);">
+                                <td style="padding: 12px 16px; font-weight: 600; color: var(--primary-500);">Testing TME amendment - copy</td>
+                                <td style="padding: 12px 16px;">ITB</td>
                                 <td style="padding: 12px 16px; text-align: center;"><span style="padding: 2px 8px; background: var(--success-50); color: var(--success-500); border-radius: 4px; font-size: 11px; font-weight: 600;">ITB</span></td>
-                                <td style="padding: 12px 16px; text-align: center;"><span class="status-badge" style="background: var(--info-50); color: var(--info-400);">Pre-Clearance</span></td>
-                                <td style="padding: 12px 16px; text-align: right; font-weight: 500;">$350,000</td>
-                                <td style="padding: 12px 16px; text-align: center; color: var(--text-muted);">-</td>
-                                <td style="padding: 12px 16px; text-align: center; color: var(--text-muted);">-</td>
+                                <td style="padding: 12px 16px; text-align: center;"><span class="status-badge draft">Draft</span></td>
+                                <td style="padding: 12px 16px; color: var(--text-muted);">N/A</td>
+                                <td style="padding: 12px 16px;">LCR, GTCO, Guatemala</td>
+                                <td style="padding: 12px 16px;">Valentina ROSSI</td>
+                                <td style="padding: 12px 16px;">2025-07-11 09:33 UTC</td>
+                                <td style="padding: 12px 16px; color: var(--text-muted);">N/A</td>
+                                <td style="padding: 12px 16px; color: var(--text-muted);">N/A</td>
+                                <td style="padding: 12px 16px; text-align: right; font-weight: 500;">$250,000</td>
+                                <td style="padding: 12px 16px; text-align: center; color: var(--text-muted);">—</td>
                                 <td style="padding: 12px 16px; text-align: center;">
-                                    <button class="btn btn-secondary btn-sm" onclick="showTenderDetails({id: 'ITB/2024/089', title: 'Laboratory Equipment Procurement', status: 'Pre-Clearance', statusKey: 'pre-clearance'})" style="padding: 4px 8px;">
-                                        <i class="pi pi-eye"></i>
-                                    </button>
+                                    <button class="btn btn-primary btn-sm" style="padding: 4px 8px;"><i class="pi pi-pencil"></i></button>
                                 </td>
                             </tr>
-                            <!-- Row 7: TME Signed -->
-                            <tr class="tender-row" data-status="tme-signed" data-type="RFQ" data-value="180000" data-deadline="" style="border-bottom: 1px solid var(--surface-100);">
-                                <td style="padding: 12px 16px; font-weight: 600; color: var(--primary-500);">RFQ/2024/115</td>
-                                <td style="padding: 12px 16px;">
-                                    <div style="font-weight: 500;">Furniture and Office Supplies</div>
-                                    <div style="font-size: 11px; color: var(--text-muted);">TME Signed: 27 Nov 2024</div>
-                                </td>
+                            <!-- Example row 4 -->
+                            <tr class="tender-row" data-status="draft" data-type="RFQ" data-reference="RFQ Goods/Services - Corporate template v2016.1 [ENGLISH] - copy - copy" data-created="2026-02-09" style="background: var(--surface-50); border-bottom: 1px solid var(--surface-100);">
+                                <td style="padding: 12px 16px; font-weight: 600; color: var(--primary-500);">RFQ Goods/Services - Corporate template v2016.1 [ENGLISH] - copy - copy</td>
+                                <td style="padding: 12px 16px;">RFQ</td>
                                 <td style="padding: 12px 16px; text-align: center;"><span style="padding: 2px 8px; background: var(--primary-50); color: var(--primary-500); border-radius: 4px; font-size: 11px; font-weight: 600;">RFQ</span></td>
-                                <td style="padding: 12px 16px; text-align: center;"><span class="status-badge" style="background: var(--success-50); color: var(--success-500);">TME Signed</span></td>
+                                <td style="padding: 12px 16px; text-align: center;"><span class="status-badge draft">Draft</span></td>
+                                <td style="padding: 12px 16px; color: var(--text-muted);">N/A</td>
+                                <td style="padding: 12px 16px;">AFR, ESAMCO, East and Southern Africa MCO</td>
+                                <td style="padding: 12px 16px;">Valentina ROSSI</td>
+                                <td style="padding: 12px 16px;">2026-02-09 10:55 UTC</td>
+                                <td style="padding: 12px 16px; color: var(--text-muted);">N/A</td>
+                                <td style="padding: 12px 16px; color: var(--text-muted);">N/A</td>
+                                <td style="padding: 12px 16px; text-align: right; font-weight: 500;">$45,000</td>
+                                <td style="padding: 12px 16px; text-align: center; color: var(--text-muted);">—</td>
+                                <td style="padding: 12px 16px; text-align: center;">
+                                    <button class="btn btn-primary btn-sm" style="padding: 4px 8px;"><i class="pi pi-pencil"></i></button>
+                                </td>
+                            </tr>
+                            <!-- Example row 5: Finalized - award approved -->
+                            <tr class="tender-row" data-status="finalized-award" data-type="RFP" data-reference="RFP generators" data-created="2015-12-10" data-posted="2015-12-10" data-deadline="2015-12-10" style="border-bottom: 1px solid var(--surface-100);">
+                                <td style="padding: 12px 16px; font-weight: 600; color: var(--primary-500);">RFP/2015/gen</td>
+                                <td style="padding: 12px 16px;">RFP generators</td>
+                                <td style="padding: 12px 16px; text-align: center;"><span style="padding: 2px 8px; background: var(--warning-50); color: var(--warning-500); border-radius: 4px; font-size: 11px; font-weight: 600;">RFP</span></td>
+                                <td style="padding: 12px 16px; text-align: center;"><span class="status-badge" style="background: #c8e6c9; color: #2e7d32;">Finalized - award approved</span></td>
+                                <td style="padding: 12px 16px; color: var(--text-muted);">N/A</td>
+                                <td style="padding: 12px 16px;">PG, Operations</td>
+                                <td style="padding: 12px 16px;">Laszlo GOBOLYOS</td>
+                                <td style="padding: 12px 16px;">2015-12-10 10:38 UTC</td>
+                                <td style="padding: 12px 16px;">2015-12-10 10:41 UTC</td>
+                                <td style="padding: 12px 16px;">2015-12-10 17:37 UTC</td>
                                 <td style="padding: 12px 16px; text-align: right; font-weight: 500;">$180,000</td>
-                                <td style="padding: 12px 16px; text-align: center; color: var(--text-muted);">-</td>
-                                <td style="padding: 12px 16px; text-align: center; color: var(--text-muted);">-</td>
+                                <td style="padding: 12px 16px; text-align: center;">3</td>
                                 <td style="padding: 12px 16px; text-align: center;">
-                                    <button class="btn btn-success btn-sm" style="padding: 4px 8px;">
-                                        <i class="pi pi-send"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <!-- Row 8: Closed -->
-                            <tr class="tender-row" data-status="closed" data-type="ITB" data-value="2500000" data-deadline="2024-11-25" style="background: var(--surface-50); border-bottom: 1px solid var(--surface-100);">
-                                <td style="padding: 12px 16px; font-weight: 600; color: var(--primary-500);">ITB/2024/034</td>
-                                <td style="padding: 12px 16px;">
-                                    <div style="font-weight: 500;">Water Infrastructure Development</div>
-                                    <div style="font-size: 11px; color: var(--text-muted);">Closed: 25 Nov 2024</div>
-                                </td>
-                                <td style="padding: 12px 16px; text-align: center;"><span style="padding: 2px 8px; background: var(--success-50); color: var(--success-500); border-radius: 4px; font-size: 11px; font-weight: 600;">ITB</span></td>
-                                <td style="padding: 12px 16px; text-align: center;"><span class="status-badge closed">Closed</span></td>
-                                <td style="padding: 12px 16px; text-align: right; font-weight: 500;">$2,500,000</td>
-                                <td style="padding: 12px 16px; text-align: center;">25 Nov 2024</td>
-                                <td style="padding: 12px 16px; text-align: center;">9</td>
-                                <td style="padding: 12px 16px; text-align: center;">
-                                    <button class="btn btn-secondary btn-sm" onclick="showTenderDetails({id: 'ITB/2024/034', title: 'Water Infrastructure Development', status: 'Closed', statusKey: 'closed'})" style="padding: 4px 8px;">
-                                        <i class="pi pi-eye"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <!-- Row 9: Bid Opening -->
-                            <tr class="tender-row" data-status="bid-opening" data-type="RFP" data-value="650000" data-deadline="2024-11-20" style="border-bottom: 1px solid var(--surface-100);">
-                                <td style="padding: 12px 16px; font-weight: 600; color: var(--primary-500);">RFP/2024/067</td>
-                                <td style="padding: 12px 16px;">
-                                    <div style="font-weight: 500;">Security Services Contract</div>
-                                    <div style="font-size: 11px; color: var(--text-muted);">Opening Started: 22 Nov 2024</div>
-                                </td>
-                                <td style="padding: 12px 16px; text-align: center;"><span style="padding: 2px 8px; background: var(--warning-50); color: var(--warning-500); border-radius: 4px; font-size: 11px; font-weight: 600;">RFP</span></td>
-                                <td style="padding: 12px 16px; text-align: center;"><span class="status-badge" style="background: #fff3cd; color: #856404;">Bid Opening</span></td>
-                                <td style="padding: 12px 16px; text-align: right; font-weight: 500;">$650,000</td>
-                                <td style="padding: 12px 16px; text-align: center;">20 Nov 2024</td>
-                                <td style="padding: 12px 16px; text-align: center;">6</td>
-                                <td style="padding: 12px 16px; text-align: center;">
-                                    <button class="btn btn-secondary btn-sm" onclick="showBidOpening('RFP/2024/067', 'Security Services Contract', 'RFP')" style="padding: 4px 8px;">
-                                        <i class="pi pi-folder-open"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <!-- Row 10: Evaluation -->
-                            <tr class="tender-row" data-status="evaluation" data-type="ITB" data-value="480000" data-deadline="2024-11-10" style="background: var(--surface-50); border-bottom: 1px solid var(--surface-100);">
-                                <td style="padding: 12px 16px; font-weight: 600; color: var(--primary-500);">ITB/2024/023</td>
-                                <td style="padding: 12px 16px;">
-                                    <div style="font-weight: 500;">Medical Supplies - Emergency Response</div>
-                                    <div style="font-size: 11px; color: var(--text-muted);">Evaluation: 65% complete</div>
-                                </td>
-                                <td style="padding: 12px 16px; text-align: center;"><span style="padding: 2px 8px; background: var(--success-50); color: var(--success-500); border-radius: 4px; font-size: 11px; font-weight: 600;">ITB</span></td>
-                                <td style="padding: 12px 16px; text-align: center;"><span class="status-badge" style="background: #e3f2fd; color: #1565c0;">Evaluation</span></td>
-                                <td style="padding: 12px 16px; text-align: right; font-weight: 500;">$480,000</td>
-                                <td style="padding: 12px 16px; text-align: center;">10 Nov 2024</td>
-                                <td style="padding: 12px 16px; text-align: center;">5</td>
-                                <td style="padding: 12px 16px; text-align: center;">
-                                    <button class="btn btn-secondary btn-sm" onclick="showTenderDetails({id: 'ITB/2024/023', title: 'Medical Supplies - Emergency Response', status: 'Evaluation', statusKey: 'evaluation'})" style="padding: 4px 8px;">
-                                        <i class="pi pi-eye"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <!-- Row 11: Award Recommendation -->
-                            <tr class="tender-row" data-status="award" data-type="RFQ" data-value="310000" data-deadline="2024-10-25" style="border-bottom: 1px solid var(--surface-100);">
-                                <td style="padding: 12px 16px; font-weight: 600; color: var(--primary-500);">RFQ/2024/055</td>
-                                <td style="padding: 12px 16px;">
-                                    <div style="font-weight: 500;">IT Equipment and Software Licenses</div>
-                                    <div style="font-size: 11px; color: var(--text-muted);">Pending Signature</div>
-                                </td>
-                                <td style="padding: 12px 16px; text-align: center;"><span style="padding: 2px 8px; background: var(--primary-50); color: var(--primary-500); border-radius: 4px; font-size: 11px; font-weight: 600;">RFQ</span></td>
-                                <td style="padding: 12px 16px; text-align: center;"><span class="status-badge" style="background: #f3e5f5; color: #7b1fa2;">Award</span></td>
-                                <td style="padding: 12px 16px; text-align: right; font-weight: 500;">$310,000</td>
-                                <td style="padding: 12px 16px; text-align: center;">25 Oct 2024</td>
-                                <td style="padding: 12px 16px; text-align: center;">4</td>
-                                <td style="padding: 12px 16px; text-align: center;">
-                                    <button class="btn btn-secondary btn-sm" onclick="showTenderDetails({id: 'RFQ/2024/055', title: 'IT Equipment and Software Licenses', status: 'Award Recommendation', statusKey: 'award'})" style="padding: 4px 8px;">
-                                        <i class="pi pi-eye"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <!-- Row 12: Finalized -->
-                            <tr class="tender-row" data-status="finalized" data-type="ITB" data-value="3200000" data-deadline="2024-09-30" style="background: var(--surface-50); border-bottom: 1px solid var(--surface-100);">
-                                <td style="padding: 12px 16px; font-weight: 600; color: var(--primary-500);">ITB/2024/012</td>
-                                <td style="padding: 12px 16px;">
-                                    <div style="font-weight: 500;">Construction - School Building</div>
-                                    <div style="font-size: 11px; color: var(--text-muted);">Awarded to: BuildCo International</div>
-                                </td>
-                                <td style="padding: 12px 16px; text-align: center;"><span style="padding: 2px 8px; background: var(--success-50); color: var(--success-500); border-radius: 4px; font-size: 11px; font-weight: 600;">ITB</span></td>
-                                <td style="padding: 12px 16px; text-align: center;"><span class="status-badge" style="background: #c8e6c9; color: #2e7d32;">Finalized</span></td>
-                                <td style="padding: 12px 16px; text-align: right; font-weight: 500;">$3,200,000</td>
-                                <td style="padding: 12px 16px; text-align: center;">30 Sep 2024</td>
-                                <td style="padding: 12px 16px; text-align: center;">6</td>
-                                <td style="padding: 12px 16px; text-align: center;">
-                                    <button class="btn btn-secondary btn-sm" onclick="showTenderDetails({id: 'ITB/2024/012', title: 'Construction - School Building', status: 'Finalized', statusKey: 'finalized'})" style="padding: 4px 8px;">
-                                        <i class="pi pi-eye"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <!-- Row 13: Cancelled -->
-                            <tr class="tender-row" data-status="cancelled" data-type="RFP" data-value="95000" data-deadline="" style="border-bottom: 1px solid var(--surface-100);">
-                                <td style="padding: 12px 16px; font-weight: 600; color: var(--text-muted);">RFP/2024/091</td>
-                                <td style="padding: 12px 16px;">
-                                    <div style="font-weight: 500; color: var(--text-muted);">Training Services - Capacity Building</div>
-                                    <div style="font-size: 11px; color: var(--text-muted);">Cancelled: Budget Constraints</div>
-                                </td>
-                                <td style="padding: 12px 16px; text-align: center;"><span style="padding: 2px 8px; background: var(--warning-50); color: var(--warning-500); border-radius: 4px; font-size: 11px; font-weight: 600;">RFP</span></td>
-                                <td style="padding: 12px 16px; text-align: center;"><span class="status-badge" style="background: var(--danger-50); color: var(--danger-500);">Cancelled</span></td>
-                                <td style="padding: 12px 16px; text-align: right; font-weight: 500; color: var(--text-muted);">$95,000</td>
-                                <td style="padding: 12px 16px; text-align: center; color: var(--text-muted);">-</td>
-                                <td style="padding: 12px 16px; text-align: center; color: var(--text-muted);">14 interested</td>
-                                <td style="padding: 12px 16px; text-align: center;">
-                                    <button class="btn btn-secondary btn-sm" onclick="showTenderDetails({id: 'RFP/2024/091', title: 'Training Services - Capacity Building', status: 'Cancelled', statusKey: 'cancelled'})" style="padding: 4px 8px;">
-                                        <i class="pi pi-eye"></i>
-                                    </button>
+                                    <button class="btn btn-secondary btn-sm" onclick="showTenderDetails({id: 'RFP/2015/gen', title: 'RFP generators', status: 'Finalized - award approved', statusKey: 'finalized-award'})" style="padding: 4px 8px;"><i class="pi pi-eye"></i></button>
                                 </td>
                             </tr>
                         </tbody>
@@ -7025,7 +6924,7 @@
                 <!-- Pagination -->
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-top: var(--spacing-lg); padding: var(--spacing-md); background: var(--surface-0); border: 1px solid var(--surface-200); border-radius: var(--radius-md);">
                     <div style="font-size: 13px; color: var(--text-muted);">
-                        Showing <strong>1-13</strong> of <strong>13</strong> tenders
+                        Showing <strong>1-5</strong> of <strong>5</strong> tenders
                     </div>
                     <div style="display: flex; gap: var(--spacing-xs);">
                         <button class="btn btn-ghost btn-sm" disabled style="padding: 6px 12px;">Previous</button>
@@ -13406,10 +13305,38 @@
             });
         }
         
+        function toggleTendersFilterPanel() {
+            const panel = document.getElementById('tenders-filter-panel');
+            const chevron = document.getElementById('tenders-filter-chevron');
+            if (panel.style.display === 'none' || !panel.style.display) {
+                panel.style.display = 'block';
+                if (chevron) chevron.className = 'pi pi-chevron-up';
+            } else {
+                panel.style.display = 'none';
+                if (chevron) chevron.className = 'pi pi-chevron-down';
+            }
+        }
+        
+        function clearTendersFilters() {
+            const ids = ['tenders-filter-reference', 'tenders-filter-title', 'tenders-filter-created-from', 'tenders-filter-created-to', 'tenders-filter-posted-from', 'tenders-filter-posted-to', 'tenders-filter-deadline-from', 'tenders-filter-deadline-to', 'tenders-filter-created-by', 'tenders-filter-org-unit', 'tenders-filter-competition-type', 'tenders-filter-country-text', 'tenders-filter-unspsc'];
+            ids.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = '';
+            });
+            const statusEl = document.getElementById('tenders-list-status-filter');
+            const typeEl = document.getElementById('tenders-list-type-filter');
+            const countryEl = document.getElementById('tenders-filter-country');
+            if (statusEl) statusEl.value = 'all';
+            if (typeEl) typeEl.value = 'all';
+            if (countryEl) countryEl.value = 'all';
+            filterTendersListTable();
+        }
+        
         function filterTendersListTable() {
-            const statusFilter = document.getElementById('tenders-list-status-filter').value;
-            const typeFilter = document.getElementById('tenders-list-type-filter').value;
-            const searchTerm = document.getElementById('tenders-list-search').value.toLowerCase();
+            const statusFilter = document.getElementById('tenders-list-status-filter')?.value || 'all';
+            const typeFilter = document.getElementById('tenders-list-type-filter')?.value || 'all';
+            const refTerm = (document.getElementById('tenders-filter-reference')?.value || '').toLowerCase();
+            const titleTerm = (document.getElementById('tenders-filter-title')?.value || '').toLowerCase();
             
             const rows = document.querySelectorAll('#tenders-list-tbody .tender-row');
             let visibleCount = 0;
@@ -13417,13 +13344,15 @@
             rows.forEach((row, index) => {
                 const status = row.getAttribute('data-status');
                 const type = row.getAttribute('data-type');
+                const reference = (row.getAttribute('data-reference') || row.querySelector('td')?.textContent || '').toLowerCase();
                 const text = row.textContent.toLowerCase();
                 
                 const statusMatch = statusFilter === 'all' || status === statusFilter;
                 const typeMatch = typeFilter === 'all' || type === typeFilter;
-                const searchMatch = searchTerm === '' || text.includes(searchTerm);
+                const refMatch = refTerm === '' || reference.includes(refTerm);
+                const titleMatch = titleTerm === '' || text.includes(titleTerm);
                 
-                if (statusMatch && typeMatch && searchMatch) {
+                if (statusMatch && typeMatch && refMatch && titleMatch) {
                     row.style.display = '';
                     row.style.background = visibleCount % 2 === 0 ? '' : 'var(--surface-50)';
                     visibleCount++;
@@ -13433,40 +13362,47 @@
             });
         }
         
-        function sortTendersListTable() {
-            const sortBy = document.getElementById('tenders-list-sort').value;
+        var tendersListSortKey = '';
+        var tendersListSortDir = 1; // 1 = asc, -1 = desc
+        function sortTendersListByColumn(columnKey) {
+            if (tendersListSortKey === columnKey) tendersListSortDir = -tendersListSortDir;
+            else { tendersListSortKey = columnKey; tendersListSortDir = 1; }
             const tbody = document.getElementById('tenders-list-tbody');
             const rows = Array.from(tbody.querySelectorAll('.tender-row'));
-            
+            const keyToIndex = { 'reference': 0, 'title': 1, 'method': 2, 'status': 3, 'competition-type': 4, 'org-unit': 5, 'created-by': 6, 'created-date': 7, 'posted-date': 8, 'deadline': 9, 'est-value': 10, 'bids': 11 };
+            const colIdx = keyToIndex[columnKey];
+            if (colIdx === undefined) return;
+            function getCellVal(row) {
+                const cells = row.querySelectorAll('td');
+                const cell = cells[colIdx];
+                if (!cell) return '';
+                const t = cell.textContent.trim();
+                if (columnKey === 'est-value') return parseFloat(t.replace(/[$,]/g, '')) || 0;
+                if (columnKey === 'bids') return parseInt(t.replace(/\D/g, ''), 10) || (t === '—' ? -1 : 0);
+                if (columnKey === 'created-date' && row.getAttribute('data-created')) return row.getAttribute('data-created');
+                if (columnKey === 'deadline' && row.getAttribute('data-deadline')) return row.getAttribute('data-deadline') || '';
+                if (columnKey === 'method') return (row.getAttribute('data-type') || t);
+                if (columnKey === 'status') return (row.getAttribute('data-status') || t);
+                return t;
+            }
             rows.sort((a, b) => {
-                switch (sortBy) {
-                    case 'recent':
-                        return 0; // Keep original order (most recent first)
-                    case 'deadline':
-                        const deadlineA = a.getAttribute('data-deadline') || '9999-99-99';
-                        const deadlineB = b.getAttribute('data-deadline') || '9999-99-99';
-                        return deadlineA.localeCompare(deadlineB);
-                    case 'value-desc':
-                        const valueDescA = parseInt(a.getAttribute('data-value')) || 0;
-                        const valueDescB = parseInt(b.getAttribute('data-value')) || 0;
-                        return valueDescB - valueDescA;
-                    case 'value-asc':
-                        const valueAscA = parseInt(a.getAttribute('data-value')) || 0;
-                        const valueAscB = parseInt(b.getAttribute('data-value')) || 0;
-                        return valueAscA - valueAscB;
-                    case 'reference':
-                        const refA = a.querySelector('td').textContent;
-                        const refB = b.querySelector('td').textContent;
-                        return refA.localeCompare(refB);
-                    default:
-                        return 0;
-                }
+                const va = getCellVal(a);
+                const vb = getCellVal(b);
+                let cmp = 0;
+                if (typeof va === 'number' && typeof vb === 'number') cmp = va - vb;
+                else cmp = String(va).localeCompare(String(vb), undefined, { numeric: true });
+                return tendersListSortDir * cmp;
             });
-            
-            // Re-append rows in sorted order
             rows.forEach((row, index) => {
                 row.style.background = index % 2 === 0 ? '' : 'var(--surface-50)';
                 tbody.appendChild(row);
+            });
+            document.querySelectorAll('#tenders-list-table thead th[data-sort-key]').forEach(th => {
+                const icon = th.querySelector('i');
+                if (!icon) return;
+                const key = th.getAttribute('data-sort-key');
+                if (key !== tendersListSortKey) { icon.className = 'pi pi-sort'; icon.style.opacity = '0.7'; }
+                else { icon.className = tendersListSortDir === 1 ? 'pi pi-sort-up' : 'pi pi-sort-down'; icon.style.opacity = '1'; }
             });
         }
 
