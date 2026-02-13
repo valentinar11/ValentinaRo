@@ -12669,6 +12669,8 @@
         document.querySelectorAll('input[name="part3Option"]').forEach(r => { r.checked = false; });
         document.getElementById('part3-justification').value = '';
         document.getElementById('part3-pg-waiver-code').value = '';
+        const commentUserEl = document.getElementById('part3-nobuy-comment-user');
+        if (commentUserEl) commentUserEl.value = '';
         document.getElementById('part3-justification-wrap').style.display = 'none';
         document.getElementById('part3-nobuy-wrap').style.display = 'none';
         document.getElementById('part3-validation-msg').style.display = 'none';
@@ -12688,6 +12690,7 @@
           } else {
             document.getElementById('part3-opt-on').checked = true;
             document.getElementById('part3-pg-waiver-code').value = existing.pgWaiverCode || '';
+            if (commentUserEl) commentUserEl.value = existing.comment || '';
             document.getElementById('part3-nobuy-wrap').style.display = 'block';
           }
         }
@@ -12727,6 +12730,7 @@
         if (!part3ModalContext) return;
         const key = part3ModalContext.type === 'req' ? 'req-' + part3ModalContext.itemId : 'prod-' + part3ModalContext.itemId;
         
+        const commentUser = (document.getElementById('part3-nobuy-comment-user') && document.getElementById('part3-nobuy-comment-user').value || '').trim();
         if (optNot.checked) {
           if (justification.length < 50 || justification.length > 2000) {
             msgEl.textContent = 'Justification must be between 50 and 2000 characters.';
@@ -12735,12 +12739,7 @@
           }
           part3ComplianceConfirmations[key] = { option: 'notOnNoBuy', justification: justification };
         } else if (optOn.checked) {
-          if (!pgWaiverCode) {
-            msgEl.textContent = 'PG Waiver Code is required when the item is on the No Buy List.';
-            msgEl.style.display = 'block';
-            return;
-          }
-          part3ComplianceConfirmations[key] = { option: 'onNoBuy', pgWaiverCode: pgWaiverCode };
+          part3ComplianceConfirmations[key] = { option: 'onNoBuy', pgWaiverCode: pgWaiverCode || '', comment: commentUser || '' };
         } else {
           msgEl.textContent = 'Please select option A or B.';
           msgEl.style.display = 'block';
@@ -24144,18 +24143,7 @@
       };
       
       window.prefillCurrencyFromLinkedReq = function() {
-        const linkedReqSelect = document.getElementById('new-ps-linked-req');
-        const currencySelect = document.getElementById('new-ps-currency');
-        if (!linkedReqSelect || !currencySelect) return;
-        const opt = linkedReqSelect.options[linkedReqSelect.selectedIndex];
-        const currency = opt && opt.getAttribute('data-currency');
-        if (currency) {
-          if (currencySelect.querySelector('option[value="' + currency + '"]')) {
-            currencySelect.value = currency;
-          } else {
-            currencySelect.value = currencySelect.options[0].value;
-          }
-        }
+        // Currency is fixed USD and read-only in Create New; no prefill needed.
       };
       
       window.addNewProductService = function() {
@@ -25285,8 +25273,10 @@
                     <div id="part3-nobuy-description" style="color: var(--text-primary);"></div>
                     <div id="part3-nobuy-comment" style="color: var(--text-secondary); margin-top: 4px;"></div>
                   </div>
-                  <label class="form-label" style="font-size: 11px;">PG Waiver Code <span class="required">*</span></label>
+                  <label class="form-label" style="font-size: 11px;">Waiver (optional)</label>
                   <input type="text" id="part3-pg-waiver-code" placeholder="Enter PG Waiver Code" style="width: 100%; padding: 6px 8px; border: 1px solid var(--surface-300); border-radius: var(--radius-sm); font-size: 12px;">
+                  <label class="form-label" style="font-size: 11px; margin-top: var(--spacing-sm); display: block;">Comment (optional)</label>
+                  <textarea id="part3-nobuy-comment-user" rows="2" placeholder="Enter comment..." style="width: 100%; padding: 6px 8px; border: 1px solid var(--surface-300); border-radius: var(--radius-sm); font-size: 12px; resize: vertical;"></textarea>
                 </div>
               </div>
             </label>
@@ -25343,11 +25333,11 @@
             <div class="new-product-form">
               <div class="form-group">
                 <label class="form-label">Linked Requisition</label>
-                <select id="new-ps-linked-req" class="form-select" style="font-size: 13px;" onchange="prefillCurrencyFromLinkedReq()">
+                <select id="new-ps-linked-req" class="form-select" style="font-size: 13px;">
                   <option value="">-- None (New Product) --</option>
                   <!-- Options will be populated dynamically -->
                 </select>
-                <span class="help-text">Optional. If linked, currency is prefilled from the requisition line.</span>
+                <span class="help-text">Optional. Link to a requisition line for reference.</span>
               </div>
               <div class="form-group">
                 <label class="form-label">UNSPSC Code <span class="required">*</span></label>
@@ -25402,15 +25392,8 @@
               <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-md);">
                 <div class="form-group">
                   <label class="form-label">Currency</label>
-                  <select id="new-ps-currency" class="form-select" style="font-size: 13px;">
-                    <option value="USD">USD</option>
-                    <option value="EUR">EUR</option>
-                    <option value="GBP">GBP</option>
-                    <option value="CHF">CHF</option>
-                    <option value="JPY">JPY</option>
-                    <option value="CAD">CAD</option>
-                    <option value="AUD">AUD</option>
-                  </select>
+                  <div id="new-ps-currency-display" style="padding: 10px 12px; background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: 8px; font-size: 14px; color: var(--text-secondary);">USD</div>
+                  <input type="hidden" id="new-ps-currency" value="USD" />
                 </div>
                 <div class="form-group">
                   <label class="form-label">Unit Price</label>
