@@ -991,14 +991,199 @@
         .editor-body {
             flex: 1;
             display: flex;
+            flex-direction: row;
             overflow: hidden;
+            min-height: 0;
+        }
+
+        .editor-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            min-width: 0;
+            min-height: 0;
         }
 
         /* Template Form */
         .template-form {
             flex: 1;
+            display: flex;
+            flex-direction: column;
             overflow-y: auto;
             padding: var(--spacing-lg);
+            min-height: 0;
+        }
+
+        .event-description-block {
+            background: var(--surface-50);
+            border: 1px solid var(--surface-200);
+            border-radius: var(--radius-md);
+            padding: 6px var(--spacing-md);
+            margin-bottom: var(--spacing-sm);
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+        }
+
+        .event-description-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            flex-shrink: 0;
+        }
+
+        .event-description-label i {
+            color: var(--primary-500);
+        }
+
+        .event-description-text {
+            font-size: 12px;
+            line-height: 1.4;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        /* Translations bar: default language + optional variants */
+        .translations-bar {
+            background: var(--surface-0);
+            border: 1px solid var(--surface-200);
+            border-radius: var(--radius-md);
+            padding: 6px var(--spacing-md);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .translations-bar-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .translations-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .translations-label i {
+            color: var(--primary-500);
+        }
+
+        .translations-hint {
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 1.3;
+        }
+
+        .translations-bar-row {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .default-language-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .default-language-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .default-language-select {
+            padding: 4px 8px;
+            border: 1px solid var(--surface-200);
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            color: var(--text-primary);
+            background: var(--surface-0);
+            min-width: 120px;
+        }
+
+        .default-language-select:focus {
+            outline: none;
+            border-color: var(--primary-500);
+        }
+
+        .language-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .language-tab {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border: 1px solid var(--surface-200);
+            border-radius: var(--radius-sm);
+            background: var(--surface-0);
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .language-tab:hover {
+            border-color: var(--primary-300);
+            color: var(--primary-600);
+            background: var(--primary-50);
+        }
+
+        .language-tab.active {
+            border-color: var(--primary-500);
+            background: var(--primary-50);
+            color: var(--primary-700);
+        }
+
+        .language-tab.add-language {
+            border-style: dashed;
+            color: var(--text-muted);
+        }
+
+        .language-tab.add-language:hover {
+            border-color: var(--primary-400);
+            color: var(--primary-600);
+        }
+
+        .language-tab-removable .pi-times {
+            margin-left: 4px;
+            font-size: 10px;
+            opacity: 0.6;
+        }
+
+        .language-tab-removable:hover .pi-times {
+            opacity: 1;
+            color: var(--error-500, #dc2626);
+        }
+
+        .editor-actions-hint {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .editing-language-note {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-left: auto;
+        }
+
+        .editing-language-note strong {
+            color: var(--text-secondary);
         }
 
         .form-section {
@@ -1395,20 +1580,6 @@
             flex: 1;
             overflow-y: auto;
             padding: var(--spacing-sm);
-        }
-
-        .tags-category {
-            margin-bottom: var(--spacing-md);
-        }
-
-        .tags-category-title {
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            padding: var(--spacing-xs) var(--spacing-sm);
-            margin-bottom: 4px;
         }
 
         .tag-item {
@@ -2194,31 +2365,52 @@
                             </button>
                         </div>
                         <div class="editor-actions">
-                            <a href="#" class="translation-link">
-                                <i class="pi pi-globe"></i>
-                                Manage Translations
-                            </a>
+                            <span class="editor-actions-hint">Translations are edited below per language.</span>
                         </div>
                     </div>
                     <div class="editor-body">
+                        <!-- Editor content (left) -->
+                        <div class="editor-content">
+                        <!-- Event description (from event info - read-only) -->
+                        <div class="event-description-block">
+                            <div class="event-description-label">
+                                <i class="pi pi-info-circle"></i>
+                                About this event
+                            </div>
+                            <p class="event-description-text">Sent when a supplier successfully submits a response to a tender. Recipients (To, CC, BCC) are determined by the system from the event context and cannot be edited here.</p>
+                        </div>
+
+                        <!-- Translations: default language + optional variants -->
+                        <div class="translations-bar">
+                            <div class="translations-bar-header">
+                                <span class="translations-label"><i class="pi pi-globe"></i> Template languages</span>
+                                <span class="translations-hint">Subject and content below are for the selected language. Default is used when no translation exists.</span>
+                            </div>
+                            <div class="translations-bar-row">
+                                <div class="default-language-row">
+                                    <label class="default-language-label" for="defaultLanguage">Default</label>
+                                    <select id="defaultLanguage" class="default-language-select" title="Language used when no translation exists">
+                                        <option value="en" selected>English</option>
+                                        <option value="fr">Français</option>
+                                        <option value="es">Español</option>
+                                    </select>
+                                </div>
+                                <div class="language-tabs">
+                                    <button type="button" class="language-tab active" aria-pressed="true">English (default)</button>
+                                    <button type="button" class="language-tab language-tab-removable">Français <i class="pi pi-times" aria-hidden="true"></i></button>
+                                    <button type="button" class="language-tab language-tab-removable">Español <i class="pi pi-times" aria-hidden="true"></i></button>
+                                    <button type="button" class="language-tab add-language" title="Add another language"><i class="pi pi-plus"></i> Add language</button>
+                                </div>
+                                <span class="editing-language-note">Editing: <strong>English (default)</strong></span>
+                            </div>
+                        </div>
+
                         <!-- Email Template Form -->
                         <div class="template-form" id="emailEditorForm">
-                            <!-- Email Header (Recipients & Subject) - Compact -->
+                            <!-- Subject -->
                             <div class="form-section">
                                 <div class="form-section-body" style="padding: var(--spacing-md);">
                                     <div class="compact-form-grid">
-                                        <div class="compact-form-row">
-                                            <label class="compact-label">To:</label>
-                                            <input type="text" class="compact-input readonly" value="{{supplier_email}}" readonly title="System-defined based on event context">
-                                        </div>
-                                        <div class="compact-form-row">
-                                            <label class="compact-label">CC:</label>
-                                            <input type="text" class="compact-input" placeholder="Add CC recipients...">
-                                        </div>
-                                        <div class="compact-form-row">
-                                            <label class="compact-label">BCC:</label>
-                                            <input type="text" class="compact-input" placeholder="Add BCC recipients...">
-                                        </div>
                                         <div class="compact-form-row">
                                             <label class="compact-label">Subject:</label>
                                             <div class="input-with-tags" style="flex: 1;">
@@ -2514,8 +2706,9 @@
                                 Last modified by <strong>John Smith</strong> on <strong>10 Feb 2026, 09:45</strong>
                             </div>
                         </div>
+                        </div>
 
-                        <!-- Tags Panel -->
+                        <!-- Tags Panel (right) -->
                         <div class="tags-panel">
                             <div class="tags-panel-header">
                                 <i class="pi pi-code"></i>
@@ -2526,141 +2719,117 @@
                                 <input type="text" placeholder="Search tags...">
                             </div>
                             <div class="tags-list">
-                                <!-- Supplier Tags -->
-                                <div class="tags-category">
-                                    <div class="tags-category-title">Supplier Information</div>
-                                    <div class="tag-item" draggable="true">
-                                        <div class="tag-icon"><i class="pi pi-user"></i></div>
-                                        <div class="tag-details">
-                                            <div class="tag-name">Supplier Name</div>
-                                            <div class="tag-code">{{supplier_name}}</div>
-                                        </div>
-                                        <i class="pi pi-bars tag-drag-handle"></i>
+                                <div class="tag-item" draggable="true">
+                                    <div class="tag-icon"><i class="pi pi-user"></i></div>
+                                    <div class="tag-details">
+                                        <div class="tag-name">Supplier Name</div>
+                                        <div class="tag-code">{{supplier_name}}</div>
                                     </div>
-                                    <div class="tag-item" draggable="true">
-                                        <div class="tag-icon"><i class="pi pi-envelope"></i></div>
-                                        <div class="tag-details">
-                                            <div class="tag-name">Supplier Email</div>
-                                            <div class="tag-code">{{supplier_email}}</div>
-                                        </div>
-                                        <i class="pi pi-bars tag-drag-handle"></i>
-                                    </div>
-                                    <div class="tag-item" draggable="true">
-                                        <div class="tag-icon"><i class="pi pi-building"></i></div>
-                                        <div class="tag-details">
-                                            <div class="tag-name">Company Name</div>
-                                            <div class="tag-code">{{company_name}}</div>
-                                        </div>
-                                        <i class="pi pi-bars tag-drag-handle"></i>
-                                    </div>
+                                    <i class="pi pi-bars tag-drag-handle"></i>
                                 </div>
-
-                                <!-- Tender Tags -->
-                                <div class="tags-category">
-                                    <div class="tags-category-title">Tender Details</div>
-                                    <div class="tag-item" draggable="true">
-                                        <div class="tag-icon"><i class="pi pi-hashtag"></i></div>
-                                        <div class="tag-details">
-                                            <div class="tag-name">Tender Reference</div>
-                                            <div class="tag-code">{{tender_reference}}</div>
-                                        </div>
-                                        <i class="pi pi-bars tag-drag-handle"></i>
+                                <div class="tag-item" draggable="true">
+                                    <div class="tag-icon"><i class="pi pi-envelope"></i></div>
+                                    <div class="tag-details">
+                                        <div class="tag-name">Supplier Email</div>
+                                        <div class="tag-code">{{supplier_email}}</div>
                                     </div>
-                                    <div class="tag-item" draggable="true">
-                                        <div class="tag-icon"><i class="pi pi-file"></i></div>
-                                        <div class="tag-details">
-                                            <div class="tag-name">Tender Title</div>
-                                            <div class="tag-code">{{tender_title}}</div>
-                                        </div>
-                                        <i class="pi pi-bars tag-drag-handle"></i>
-                                    </div>
-                                    <div class="tag-item" draggable="true">
-                                        <div class="tag-icon"><i class="pi pi-calendar"></i></div>
-                                        <div class="tag-details">
-                                            <div class="tag-name">Closing Date</div>
-                                            <div class="tag-code">{{closing_date}}</div>
-                                        </div>
-                                        <i class="pi pi-bars tag-drag-handle"></i>
-                                    </div>
-                                    <div class="tag-item" draggable="true">
-                                        <div class="tag-icon"><i class="pi pi-map-marker"></i></div>
-                                        <div class="tag-details">
-                                            <div class="tag-name">Delivery Location</div>
-                                            <div class="tag-code">{{delivery_location}}</div>
-                                        </div>
-                                        <i class="pi pi-bars tag-drag-handle"></i>
-                                    </div>
+                                    <i class="pi pi-bars tag-drag-handle"></i>
                                 </div>
-
-                                <!-- Submission Tags -->
-                                <div class="tags-category">
-                                    <div class="tags-category-title">Submission Details</div>
-                                    <div class="tag-item" draggable="true">
-                                        <div class="tag-icon"><i class="pi pi-id-card"></i></div>
-                                        <div class="tag-details">
-                                            <div class="tag-name">Submission ID</div>
-                                            <div class="tag-code">{{submission_id}}</div>
-                                        </div>
-                                        <i class="pi pi-bars tag-drag-handle"></i>
+                                <div class="tag-item" draggable="true">
+                                    <div class="tag-icon"><i class="pi pi-building"></i></div>
+                                    <div class="tag-details">
+                                        <div class="tag-name">Company Name</div>
+                                        <div class="tag-code">{{company_name}}</div>
                                     </div>
-                                    <div class="tag-item" draggable="true">
-                                        <div class="tag-icon"><i class="pi pi-clock"></i></div>
-                                        <div class="tag-details">
-                                            <div class="tag-name">Submission Date</div>
-                                            <div class="tag-code">{{submission_date}}</div>
-                                        </div>
-                                        <i class="pi pi-bars tag-drag-handle"></i>
-                                    </div>
+                                    <i class="pi pi-bars tag-drag-handle"></i>
                                 </div>
-
-                                <!-- Organization Tags -->
-                                <div class="tags-category">
-                                    <div class="tags-category-title">Organization</div>
-                                    <div class="tag-item" draggable="true">
-                                        <div class="tag-icon"><i class="pi pi-briefcase"></i></div>
-                                        <div class="tag-details">
-                                            <div class="tag-name">Organization Name</div>
-                                            <div class="tag-code">{{organization_name}}</div>
-                                        </div>
-                                        <i class="pi pi-bars tag-drag-handle"></i>
+                                <div class="tag-item" draggable="true">
+                                    <div class="tag-icon"><i class="pi pi-hashtag"></i></div>
+                                    <div class="tag-details">
+                                        <div class="tag-name">Tender Reference</div>
+                                        <div class="tag-code">{{tender_reference}}</div>
                                     </div>
-                                    <div class="tag-item" draggable="true">
-                                        <div class="tag-icon"><i class="pi pi-envelope"></i></div>
-                                        <div class="tag-details">
-                                            <div class="tag-name">Procurement Email</div>
-                                            <div class="tag-code">{{procurement_email}}</div>
-                                        </div>
-                                        <i class="pi pi-bars tag-drag-handle"></i>
-                                    </div>
-                                    <div class="tag-item" draggable="true">
-                                        <div class="tag-icon"><i class="pi pi-link"></i></div>
-                                        <div class="tag-details">
-                                            <div class="tag-name">Portal URL</div>
-                                            <div class="tag-code">{{portal_url}}</div>
-                                        </div>
-                                        <i class="pi pi-bars tag-drag-handle"></i>
-                                    </div>
+                                    <i class="pi pi-bars tag-drag-handle"></i>
                                 </div>
-
-                                <!-- Links Tags -->
-                                <div class="tags-category">
-                                    <div class="tags-category-title">Action Links</div>
-                                    <div class="tag-item" draggable="true">
-                                        <div class="tag-icon"><i class="pi pi-external-link"></i></div>
-                                        <div class="tag-details">
-                                            <div class="tag-name">View Tender Link</div>
-                                            <div class="tag-code">{{tender_link}}</div>
-                                        </div>
-                                        <i class="pi pi-bars tag-drag-handle"></i>
+                                <div class="tag-item" draggable="true">
+                                    <div class="tag-icon"><i class="pi pi-file"></i></div>
+                                    <div class="tag-details">
+                                        <div class="tag-name">Tender Title</div>
+                                        <div class="tag-code">{{tender_title}}</div>
                                     </div>
-                                    <div class="tag-item" draggable="true">
-                                        <div class="tag-icon"><i class="pi pi-external-link"></i></div>
-                                        <div class="tag-details">
-                                            <div class="tag-name">View Submission Link</div>
-                                            <div class="tag-code">{{submission_link}}</div>
-                                        </div>
-                                        <i class="pi pi-bars tag-drag-handle"></i>
+                                    <i class="pi pi-bars tag-drag-handle"></i>
+                                </div>
+                                <div class="tag-item" draggable="true">
+                                    <div class="tag-icon"><i class="pi pi-calendar"></i></div>
+                                    <div class="tag-details">
+                                        <div class="tag-name">Closing Date</div>
+                                        <div class="tag-code">{{closing_date}}</div>
                                     </div>
+                                    <i class="pi pi-bars tag-drag-handle"></i>
+                                </div>
+                                <div class="tag-item" draggable="true">
+                                    <div class="tag-icon"><i class="pi pi-map-marker"></i></div>
+                                    <div class="tag-details">
+                                        <div class="tag-name">Delivery Location</div>
+                                        <div class="tag-code">{{delivery_location}}</div>
+                                    </div>
+                                    <i class="pi pi-bars tag-drag-handle"></i>
+                                </div>
+                                <div class="tag-item" draggable="true">
+                                    <div class="tag-icon"><i class="pi pi-id-card"></i></div>
+                                    <div class="tag-details">
+                                        <div class="tag-name">Submission ID</div>
+                                        <div class="tag-code">{{submission_id}}</div>
+                                    </div>
+                                    <i class="pi pi-bars tag-drag-handle"></i>
+                                </div>
+                                <div class="tag-item" draggable="true">
+                                    <div class="tag-icon"><i class="pi pi-clock"></i></div>
+                                    <div class="tag-details">
+                                        <div class="tag-name">Submission Date</div>
+                                        <div class="tag-code">{{submission_date}}</div>
+                                    </div>
+                                    <i class="pi pi-bars tag-drag-handle"></i>
+                                </div>
+                                <div class="tag-item" draggable="true">
+                                    <div class="tag-icon"><i class="pi pi-briefcase"></i></div>
+                                    <div class="tag-details">
+                                        <div class="tag-name">Organization Name</div>
+                                        <div class="tag-code">{{organization_name}}</div>
+                                    </div>
+                                    <i class="pi pi-bars tag-drag-handle"></i>
+                                </div>
+                                <div class="tag-item" draggable="true">
+                                    <div class="tag-icon"><i class="pi pi-envelope"></i></div>
+                                    <div class="tag-details">
+                                        <div class="tag-name">Procurement Email</div>
+                                        <div class="tag-code">{{procurement_email}}</div>
+                                    </div>
+                                    <i class="pi pi-bars tag-drag-handle"></i>
+                                </div>
+                                <div class="tag-item" draggable="true">
+                                    <div class="tag-icon"><i class="pi pi-link"></i></div>
+                                    <div class="tag-details">
+                                        <div class="tag-name">Portal URL</div>
+                                        <div class="tag-code">{{portal_url}}</div>
+                                    </div>
+                                    <i class="pi pi-bars tag-drag-handle"></i>
+                                </div>
+                                <div class="tag-item" draggable="true">
+                                    <div class="tag-icon"><i class="pi pi-external-link"></i></div>
+                                    <div class="tag-details">
+                                        <div class="tag-name">View Tender Link</div>
+                                        <div class="tag-code">{{tender_link}}</div>
+                                    </div>
+                                    <i class="pi pi-bars tag-drag-handle"></i>
+                                </div>
+                                <div class="tag-item" draggable="true">
+                                    <div class="tag-icon"><i class="pi pi-external-link"></i></div>
+                                    <div class="tag-details">
+                                        <div class="tag-name">View Submission Link</div>
+                                        <div class="tag-code">{{submission_link}}</div>
+                                    </div>
+                                    <i class="pi pi-bars tag-drag-handle"></i>
                                 </div>
                             </div>
                         </div>
