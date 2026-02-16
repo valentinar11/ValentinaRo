@@ -9578,7 +9578,8 @@
         procurementReviewer: null,
         procurementAuthority: null,
         technicalExperts: [],
-        tmeBypass: 'applicable', // 'applicable' | 'bypass_procurement' | 'bypass_waiver'
+        tmeBypass: 'applicable', // 'applicable' | 'bypass_waiver' | 'not_required'
+        tmeBypassWaiver: '', // waiver reference when bypass_waiver
         bidOpeningPanel: [],
         evaluationTeam: [
           { name: 'John Smith', email: 'john.smith@unops.org', avatar: 'JS', panelRole: 'Procurement Official', approved: true },
@@ -15516,30 +15517,42 @@
                           <div class="team-role-icon"><i class="pi pi-cog"></i></div>
                           <div class="team-role-title">Technical Matter Expert(s)</div>
                         </div>
-                        <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); openAddTeamMemberModal('technicalExperts')" ${teamMembers.tmeBypass !== 'applicable' ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''}>
+                      </div>
+                      <!-- TME Sign-off (dropdown first) -->
+                      <div style="margin-bottom: var(--spacing-sm); padding-bottom: var(--spacing-sm); border-bottom: 1px dashed var(--surface-200);">
+                        <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                          <span style="font-size: 11px; font-weight: 600; color: var(--text-secondary);">TME sign-off:</span>
+                          <select class="form-input" style="font-size: 11px; padding: 4px 8px; border-radius: 4px; min-width: 280px;" onchange="event.stopPropagation(); updateTmeBypass(this.value)" onclick="event.stopPropagation()">
+                            <option value="applicable" ${teamMembers.tmeBypass === 'applicable' ? 'selected' : ''}>Required – I will assign TME(s)</option>
+                            <option value="bypass_waiver" ${teamMembers.tmeBypass === 'bypass_waiver' ? 'selected' : ''}>Required but bypassing – I will provide a waiver</option>
+                            <option value="not_required" ${teamMembers.tmeBypass === 'not_required' ? 'selected' : ''}>Not required by policy – no TME(s) to assign</option>
+                          </select>
+                          ${teamMembers.tmeBypass === 'bypass_waiver' ? '<span class="badge badge-warning" style="font-size: 9px;"><i class="pi pi-exclamation-triangle" style="font-size: 9px;"></i> Bypassed</span>' : ''}
+                          ${teamMembers.tmeBypass === 'not_required' ? '<span class="badge" style="font-size: 9px; background: var(--surface-200); color: var(--text-secondary);">Not required</span>' : ''}
+                        </div>
+                        ${teamMembers.tmeBypass === 'bypass_waiver' ? `
+                        <div style="margin-top: var(--spacing-sm);">
+                          <label class="form-label" style="font-size: 11px; font-weight: 600; color: var(--text-secondary); display: block; margin-bottom: 4px;">Waiver reference <span class="required">*</span></label>
+                          <input type="text" class="form-input" placeholder="Enter waiver reference or code" value="${(teamMembers.tmeBypassWaiver || '').replace(/"/g, '&quot;')}" oninput="event.stopPropagation(); teamMembers.tmeBypassWaiver = this.value" onclick="event.stopPropagation()" style="width: 100%; font-size: 12px; padding: 6px 8px; border-radius: 4px; border: 1px solid var(--surface-300);">
+                        </div>
+                        ` : ''}
+                      </div>
+                      ${teamMembers.tmeBypass === 'applicable' ? `
+                      <!-- Assigned TME(s) (only when Required – I will assign TME(s)) -->
+                      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                        <span style="font-size: 11px; font-weight: 600; color: var(--text-secondary);">Assigned TME(s)</span>
+                        <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); openAddTeamMemberModal('technicalExperts')">
                           <i class="pi pi-plus"></i> Add Expert
                         </button>
                       </div>
-                      <div class="team-role-content" style="${teamMembers.tmeBypass !== 'applicable' ? 'opacity: 0.5; pointer-events: none;' : ''}">
+                      <div class="team-role-content">
                         ${teamMembers.technicalExperts && teamMembers.technicalExperts.length > 0 ? 
                           teamMembers.technicalExperts.map((expert, idx) => renderTeamMemberCard(expert, 'Expert', true, `removeTechnicalExpert(${idx})`)).join('') :
                           `<div class="team-empty-slot">No technical experts assigned</div>`
                         }
                       </div>
                       <span class="help-text">Provides technical guidance and specifications. You can add multiple technical experts.</span>
-                      
-                      <!-- TME Bypass Options -->
-                      <div style="margin-top: var(--spacing-sm); padding-top: var(--spacing-sm); border-top: 1px dashed var(--surface-200);">
-                        <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
-                          <span style="font-size: 11px; font-weight: 600; color: var(--text-secondary);">TME Sign-off:</span>
-                          <select class="form-input" style="font-size: 11px; padding: 4px 8px; border-radius: 4px; min-width: 220px;" onchange="event.stopPropagation(); updateTmeBypass(this.value)" onclick="event.stopPropagation()">
-                            <option value="applicable" ${teamMembers.tmeBypass === 'applicable' ? 'selected' : ''}>TME sign-off applicable</option>
-                            <option value="bypass_procurement" ${teamMembers.tmeBypass === 'bypass_procurement' ? 'selected' : ''}>Bypass - Procurement requirements</option>
-                            <option value="bypass_waiver" ${teamMembers.tmeBypass === 'bypass_waiver' ? 'selected' : ''}>Bypass - Waiver</option>
-                          </select>
-                          ${teamMembers.tmeBypass !== 'applicable' ? '<span class="badge badge-warning" style="font-size: 9px;"><i class="pi pi-exclamation-triangle" style="font-size: 9px;"></i> Bypassed</span>' : ''}
-                        </div>
-                      </div>
+                      ` : ''}
                     </div>
                     <!-- Bid Opening Panel -->
                     <div class="team-role-card">
