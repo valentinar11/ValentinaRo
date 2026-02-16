@@ -4398,6 +4398,99 @@
             background: transparent;
         }
 
+        /* Overview My Tenders tabs */
+        .overview-mytenders-tab {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border: none;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: color 0.2s, border-color 0.2s, background 0.2s;
+        }
+        .overview-mytenders-tab:hover {
+            color: var(--text-primary);
+        }
+        .overview-mytenders-tab.active {
+            color: var(--primary-600);
+            border-bottom-color: var(--primary-500);
+            font-weight: 600;
+        }
+        .overview-mytenders-tab-badge {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 10px;
+            background: var(--surface-200);
+            color: var(--text-muted);
+        }
+        .overview-mytenders-tab.active .overview-mytenders-tab-badge {
+            background: var(--primary-100);
+            color: var(--primary-600);
+        }
+
+        .overview-mytenders-tabs {
+            display: flex;
+            gap: 0;
+            border-bottom: 1px solid var(--surface-200);
+            padding: 0 var(--spacing-md);
+            background: var(--surface-50);
+            margin-bottom: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* My Tenders card: stacked layout so table is never next to search */
+        .overview-mytenders-card {
+            display: flex;
+            flex-direction: column;
+        }
+        .overview-mytenders-card .overview-mytenders-card-header {
+            flex-shrink: 0;
+        }
+        .overview-mytenders-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+            align-items: center;
+            width: 100%;
+            margin-bottom: var(--spacing-md);
+            padding-bottom: var(--spacing-sm);
+            border-bottom: 1px solid var(--surface-200);
+        }
+        .overview-mytenders-search {
+            padding: 8px 12px;
+            border: 1px solid var(--surface-300);
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            min-width: 200px;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+        .overview-mytenders-status {
+            padding: 8px 12px;
+            border: 1px solid var(--surface-300);
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            min-width: 160px;
+            box-sizing: border-box;
+        }
+        .overview-mytenders-table-wrap {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 0;
+        }
+        .overview-mytenders-card #overview-my-tenders-table {
+            width: 100%;
+            min-width: 600px;
+        }
+
         .tender-tab-panel .info-description-box {
             background: var(--surface-50);
             border-radius: var(--radius-sm);
@@ -6467,12 +6560,13 @@
             </div>
 
             <!-- My Tenders Card -->
-            <div class="card" id="tenderGrid">
-                <div class="card-header">
+            <div class="card overview-mytenders-card" id="tenderGrid">
+                <div class="card-header overview-mytenders-card-header">
                     <h2 class="card-title"><i class="pi pi-list"></i>My Tenders</h2>
-                    <div style="display: flex; gap: var(--spacing-sm); align-items: center;">
-                        <input type="search" placeholder="Search tenders..." style="padding: 8px 12px; border: 1px solid var(--surface-300); border-radius: var(--radius-md); width: 250px; font-size: 14px;">
-                        <select style="padding: 8px 12px; border: 1px solid var(--surface-300); border-radius: var(--radius-md); font-size: 14px;" onchange="filterTenders()">
+                </div>
+                <div class="overview-mytenders-toolbar">
+                    <input type="search" id="overview-my-tenders-search" placeholder="Search tenders..." class="overview-mytenders-search" oninput="filterOverviewMyTenders()">
+                    <select id="overview-my-tenders-status" class="overview-mytenders-status" onchange="filterOverviewMyTenders()">
                         <option value="all">All Statuses</option>
                         <option value="draft">Draft</option>
                         <option value="pre-clearance">Pre-Clearance</option>
@@ -6487,9 +6581,19 @@
                         <option value="cancelled">Cancelled</option>
                     </select>
                 </div>
-            </div>
-
-                <table class="tender-table">
+                <!-- My Tenders tabs: Active / Archived -->
+                <div class="overview-mytenders-tabs">
+                    <button type="button" class="overview-mytenders-tab active" id="tab-my-tenders-active" onclick="switchOverviewMyTendersTab('active')" aria-selected="true">
+                        <span>Active tenders</span>
+                        <span class="overview-mytenders-tab-badge" id="badge-my-tenders-active">0</span>
+                    </button>
+                    <button type="button" class="overview-mytenders-tab" id="tab-my-tenders-archived" onclick="switchOverviewMyTendersTab('archived')" aria-selected="false">
+                        <span>Archived tenders</span>
+                        <span class="overview-mytenders-tab-badge" id="badge-my-tenders-archived">0</span>
+                    </button>
+                </div>
+                <div class="overview-mytenders-table-wrap">
+                <table class="tender-table" id="overview-my-tenders-table">
                     <thead>
                         <tr>
                             <th>Reference / Title</th>
@@ -6499,8 +6603,8 @@
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr data-status="active" onclick="showTenderDetails({id: 'RFQ/2024/001', title: 'Supply of Medical Equipment', status: 'Posted', statusKey: 'active'})">
+                    <tbody id="overview-my-tenders-tbody">
+                        <tr class="overview-tender-row" data-status="active" data-tab="active" onclick="showTenderDetails({id: 'RFQ/2024/001', title: 'Supply of Medical Equipment', status: 'Posted', statusKey: 'active'})">
                             <td>
                                 <div class="tender-ref">RFQ/2024/001</div>
                                 <div class="tender-title-cell">Supply of Medical Equipment</div>
@@ -6515,7 +6619,7 @@
                             </td>
                             <td><button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); showTenderDetails({id: 'RFQ/2024/001', title: 'Supply of Medical Equipment', status: 'Posted', statusKey: 'active'})">View Details</button></td>
                         </tr>
-                        <tr data-status="active" onclick="showTenderDetails({id: 'ITB/2024/045', title: 'Construction of Office Building', status: 'Posted', statusKey: 'active'})">
+                        <tr class="overview-tender-row" data-status="active" data-tab="active" onclick="showTenderDetails({id: 'ITB/2024/045', title: 'Construction of Office Building', status: 'Posted', statusKey: 'active'})">
                             <td>
                                 <div class="tender-ref">ITB/2024/045</div>
                                 <div class="tender-title-cell">Construction of Office Building</div>
@@ -6530,7 +6634,7 @@
                             </td>
                             <td><button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); showTenderDetails({id: 'ITB/2024/045', title: 'Construction of Office Building', status: 'Posted', statusKey: 'active'})">View Details</button></td>
                         </tr>
-                        <tr data-status="approval" onclick="showTenderDetails({id: 'RFP/2024/078', title: 'IT Infrastructure Services', status: 'Pending Approval', statusKey: 'approval'})">
+                        <tr class="overview-tender-row" data-status="approval" data-tab="active" onclick="showTenderDetails({id: 'RFP/2024/078', title: 'IT Infrastructure Services', status: 'Pending Approval', statusKey: 'approval'})">
                             <td>
                                 <div class="tender-ref">RFP/2024/078</div>
                                 <div class="tender-title-cell">IT Infrastructure Services</div>
@@ -6544,7 +6648,7 @@
                             </td>
                             <td><button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); showTenderDetails({id: 'RFP/2024/078', title: 'IT Infrastructure Services', status: 'Pending Approval', statusKey: 'approval'})">Review</button></td>
                         </tr>
-                        <tr data-status="active" onclick="showTenderDetails({id: 'RFQ/2024/102', title: 'Vehicle Fleet Procurement', status: 'Posted', statusKey: 'active'})">
+                        <tr class="overview-tender-row" data-status="active" data-tab="active" onclick="showTenderDetails({id: 'RFQ/2024/102', title: 'Vehicle Fleet Procurement', status: 'Posted', statusKey: 'active'})">
                             <td>
                                 <div class="tender-ref">RFQ/2024/102</div>
                                 <div class="tender-title-cell">Vehicle Fleet Procurement</div>
@@ -6559,7 +6663,7 @@
                             </td>
                             <td><button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); showTenderDetails({id: 'RFQ/2024/102', title: 'Vehicle Fleet Procurement', status: 'Posted', statusKey: 'active'})">View Details</button></td>
                         </tr>
-                        <tr data-status="draft" onclick="showTenderDetails({id: 'DRAFT-2024-156', title: 'Consulting Services - HR Management', status: 'Draft', statusKey: 'draft'})">
+                        <tr class="overview-tender-row" data-status="draft" data-tab="active" onclick="showTenderDetails({id: 'DRAFT-2024-156', title: 'Consulting Services - HR Management', status: 'Draft', statusKey: 'draft'})">
                             <td>
                                 <div class="tender-ref" style="color: var(--text-muted);">DRAFT-2024-156</div>
                                 <div class="tender-title-cell" style="color: var(--text-secondary);">Consulting Services - HR Management</div>
@@ -6573,7 +6677,7 @@
                             </td>
                             <td><button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();">Continue Editing</button></td>
                         </tr>
-                        <tr data-status="pre-clearance" onclick="showTenderDetails({id: 'ITB/2024/089', title: 'Laboratory Equipment Procurement', status: 'Pre-Clearance', statusKey: 'pre-clearance'})">
+                        <tr class="overview-tender-row" data-status="pre-clearance" data-tab="active" onclick="showTenderDetails({id: 'ITB/2024/089', title: 'Laboratory Equipment Procurement', status: 'Pre-Clearance', statusKey: 'pre-clearance'})">
                             <td>
                                 <div class="tender-ref">ITB/2024/089</div>
                                 <div class="tender-title-cell">Laboratory Equipment Procurement</div>
@@ -6587,7 +6691,7 @@
                             </td>
                             <td><button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); showTenderDetails({id: 'ITB/2024/089', title: 'Laboratory Equipment Procurement', status: 'Pre-Clearance', statusKey: 'pre-clearance'})">View Details</button></td>
                         </tr>
-                        <tr data-status="tme-signed" onclick="showTenderDetails({id: 'RFQ/2024/115', title: 'Furniture and Office Supplies', status: 'TME Signed', statusKey: 'tme-signed'})">
+                        <tr class="overview-tender-row" data-status="tme-signed" data-tab="active" onclick="showTenderDetails({id: 'RFQ/2024/115', title: 'Furniture and Office Supplies', status: 'TME Signed', statusKey: 'tme-signed'})">
                             <td>
                                 <div class="tender-ref">RFQ/2024/115</div>
                                 <div class="tender-title-cell">Furniture and Office Supplies</div>
@@ -6601,7 +6705,7 @@
                             </td>
                             <td><button class="btn btn-primary btn-sm" onclick="event.stopPropagation();">Publish</button></td>
                         </tr>
-                        <tr data-status="closed" onclick="showTenderDetails({id: 'ITB/2024/034', title: 'Water Infrastructure Development', status: 'Closed', statusKey: 'closed'})">
+                        <tr class="overview-tender-row" data-status="closed" data-tab="active" onclick="showTenderDetails({id: 'ITB/2024/034', title: 'Water Infrastructure Development', status: 'Closed', statusKey: 'closed'})">
                             <td>
                                 <div class="tender-ref">ITB/2024/034</div>
                                 <div class="tender-title-cell">Water Infrastructure Development</div>
@@ -6615,7 +6719,7 @@
                             </td>
                             <td><button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); showBidOpening('ITB/2024/034', 'Water Infrastructure Development', 'ITB')">Start Bid Opening</button></td>
                         </tr>
-                        <tr data-status="bid-opening" onclick="showTenderDetails({id: 'RFP/2024/067', title: 'Security Services Contract', status: 'Bid Opening', statusKey: 'bid-opening', type: 'RFP'})">
+                        <tr class="overview-tender-row" data-status="bid-opening" data-tab="active" onclick="showTenderDetails({id: 'RFP/2024/067', title: 'Security Services Contract', status: 'Bid Opening', statusKey: 'bid-opening', type: 'RFP'})">
                             <td>
                                 <div class="tender-ref">RFP/2024/067</div>
                                 <div class="tender-title-cell">Security Services Contract</div>
@@ -6629,7 +6733,7 @@
                             </td>
                             <td><button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); showBidOpening('RFP/2024/067', 'Security Services Contract', 'RFP')">Continue Opening</button></td>
                         </tr>
-                        <tr data-status="evaluation" onclick="showTenderDetails({id: 'ITB/2024/023', title: 'Medical Supplies - Emergency Response', status: 'Evaluation', statusKey: 'evaluation'})">
+                        <tr class="overview-tender-row" data-status="evaluation" data-tab="active" onclick="showTenderDetails({id: 'ITB/2024/023', title: 'Medical Supplies - Emergency Response', status: 'Evaluation', statusKey: 'evaluation'})">
                             <td>
                                 <div class="tender-ref">ITB/2024/023</div>
                                 <div class="tender-title-cell">Medical Supplies - Emergency Response</div>
@@ -6643,7 +6747,7 @@
                             </td>
                             <td><button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); showEvaluation('ITB/2024/023', 'Medical Supplies - Emergency Response', 'evaluator')">Continue Evaluation</button></td>
                         </tr>
-                        <tr data-status="award" onclick="showTenderDetails({id: 'RFQ/2024/055', title: 'IT Equipment and Software Licenses', status: 'Award Recommendation', statusKey: 'award'})">
+                        <tr class="overview-tender-row" data-status="award" data-tab="active" onclick="showTenderDetails({id: 'RFQ/2024/055', title: 'IT Equipment and Software Licenses', status: 'Award Recommendation', statusKey: 'award'})">
                             <td>
                                 <div class="tender-ref">RFQ/2024/055</div>
                                 <div class="tender-title-cell">IT Equipment and Software Licenses</div>
@@ -6657,7 +6761,7 @@
                             </td>
                             <td><button class="btn btn-primary btn-sm" onclick="event.stopPropagation();">Sign Report</button></td>
                         </tr>
-                        <tr data-status="finalized" onclick="showTenderDetails({id: 'ITB/2024/012', title: 'Construction - School Building', status: 'Finalized', statusKey: 'finalized'})">
+                        <tr class="overview-tender-row" data-status="finalized" data-tab="archived" onclick="showTenderDetails({id: 'ITB/2024/012', title: 'Construction - School Building', status: 'Finalized', statusKey: 'finalized'})">
                             <td>
                                 <div class="tender-ref">ITB/2024/012</div>
                                 <div class="tender-title-cell">Construction - School Building</div>
@@ -6671,7 +6775,7 @@
                             </td>
                             <td><button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); showTenderDetails({id: 'ITB/2024/012', title: 'Construction - School Building', status: 'Finalized', statusKey: 'finalized'})">View Details</button></td>
                         </tr>
-                        <tr data-status="cancelled" style="opacity: 0.7;" onclick="showTenderDetails({id: 'RFP/2024/091', title: 'Training Services - Capacity Building', status: 'Cancelled', statusKey: 'cancelled'})">
+                        <tr class="overview-tender-row" data-status="cancelled" data-tab="archived" style="opacity: 0.7;" onclick="showTenderDetails({id: 'RFP/2024/091', title: 'Training Services - Capacity Building', status: 'Cancelled', statusKey: 'cancelled'})">
                             <td>
                                 <div class="tender-ref" style="color: var(--text-muted);">RFP/2024/091</div>
                                 <div class="tender-title-cell" style="color: var(--text-muted);">Training Services - Capacity Building</div>
@@ -6687,6 +6791,25 @@
                         </tr>
                     </tbody>
                 </table>
+                <!-- My Tenders pagination -->
+                <div class="overview-mytenders-pagination" id="overview-my-tenders-pagination" style="display: flex; align-items: center; justify-content: space-between; padding: var(--spacing-md) var(--spacing-lg); border-top: 1px solid var(--surface-200); background: var(--surface-50); flex-wrap: wrap; gap: var(--spacing-sm);">
+                    <div class="overview-mytenders-pagination-info" id="overview-my-tenders-pagination-info" style="font-size: 13px; color: var(--text-muted);">Showing 0–0 of 0</div>
+                    <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                        <label for="overview-my-tenders-pagesize" style="font-size: 13px; color: var(--text-secondary);">Rows per page</label>
+                        <select id="overview-my-tenders-pagesize" style="padding: 6px 10px; border: 1px solid var(--surface-300); border-radius: var(--radius-md); font-size: 13px;" onchange="setOverviewMyTendersPageSize(parseInt(this.value, 10)); filterOverviewMyTenders();">
+                            <option value="5">5</option>
+                            <option value="10" selected>10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                        </select>
+                        <div class="overview-mytenders-pagination-buttons" style="display: flex; align-items: center; gap: 4px;">
+                            <button type="button" class="btn btn-ghost btn-sm" id="overview-my-tenders-prev" onclick="overviewMyTendersPrevPage()" aria-label="Previous page" style="min-width: 36px;"> <i class="pi pi-chevron-left"></i> </button>
+                            <span id="overview-my-tenders-page-nums" style="font-size: 13px; color: var(--text-secondary); padding: 0 8px;">Page 1</span>
+                            <button type="button" class="btn btn-ghost btn-sm" id="overview-my-tenders-next" onclick="overviewMyTendersNextPage()" aria-label="Next page" style="min-width: 36px;"> <i class="pi pi-chevron-right"></i> </button>
+                        </div>
+                    </div>
+                </div>
+                </div>
             </div>
             </div>
             <!-- End Dashboard View -->
@@ -14797,6 +14920,102 @@
                 }
             });
         }
+
+        // Overview My Tenders: tabs (active / archived) + pagination
+        var overviewMyTendersCurrentTab = 'active';
+        var overviewMyTendersPage = 1;
+        var overviewMyTendersPageSize = 10;
+
+        function switchOverviewMyTendersTab(tab) {
+            overviewMyTendersCurrentTab = tab;
+            overviewMyTendersPage = 1;
+            document.querySelectorAll('.overview-mytenders-tab').forEach(function (el) {
+                el.classList.toggle('active', el.id === 'tab-my-tenders-' + tab);
+                el.setAttribute('aria-selected', el.id === 'tab-my-tenders-' + tab ? 'true' : 'false');
+            });
+            filterOverviewMyTenders();
+        }
+
+        function filterOverviewMyTenders() {
+            var searchEl = document.getElementById('overview-my-tenders-search');
+            var statusEl = document.getElementById('overview-my-tenders-status');
+            var searchTerm = (searchEl && searchEl.value || '').toLowerCase().trim();
+            var statusFilter = (statusEl && statusEl.value) || 'all';
+            var rows = document.querySelectorAll('#overview-my-tenders-tbody .overview-tender-row');
+            var tab = overviewMyTendersCurrentTab;
+            var activeCount = 0, archivedCount = 0;
+            var visibleForTab = [];
+
+            rows.forEach(function (row) {
+                var rowTab = row.getAttribute('data-tab');
+                var status = row.getAttribute('data-status');
+                var text = row.textContent.toLowerCase();
+                var statusMatch = statusFilter === 'all' || status === statusFilter;
+                var searchMatch = !searchTerm || text.indexOf(searchTerm) !== -1;
+                if (rowTab === 'active') activeCount++;
+                else archivedCount++;
+
+                var show = (rowTab === tab) && statusMatch && searchMatch;
+                row.setAttribute('data-filtered', show ? '1' : '0');
+                if (show) visibleForTab.push(row);
+            });
+
+            document.getElementById('badge-my-tenders-active').textContent = activeCount;
+            document.getElementById('badge-my-tenders-archived').textContent = archivedCount;
+            renderOverviewMyTendersPage(visibleForTab);
+        }
+
+        function renderOverviewMyTendersPage(visibleRows) {
+            if (!visibleRows) {
+                var rows = document.querySelectorAll('#overview-my-tenders-tbody .overview-tender-row');
+                visibleRows = Array.prototype.filter.call(rows, function (r) { return r.getAttribute('data-filtered') === '1'; });
+            }
+            var total = visibleRows.length;
+            var totalPages = Math.max(1, Math.ceil(total / overviewMyTendersPageSize));
+            if (overviewMyTendersPage > totalPages) overviewMyTendersPage = totalPages;
+            var start = (overviewMyTendersPage - 1) * overviewMyTendersPageSize;
+            var end = Math.min(start + overviewMyTendersPageSize, total);
+
+            visibleRows.forEach(function (row, i) {
+                row.style.display = (i >= start && i < end) ? '' : 'none';
+            });
+
+            var infoEl = document.getElementById('overview-my-tenders-pagination-info');
+            if (infoEl) infoEl.textContent = total === 0 ? 'Showing 0 of 0' : 'Showing ' + (start + 1) + '–' + end + ' of ' + total;
+
+            var pageNumsEl = document.getElementById('overview-my-tenders-page-nums');
+            if (pageNumsEl) pageNumsEl.textContent = 'Page ' + overviewMyTendersPage + ' of ' + totalPages;
+
+            var prevBtn = document.getElementById('overview-my-tenders-prev');
+            var nextBtn = document.getElementById('overview-my-tenders-next');
+            if (prevBtn) prevBtn.disabled = overviewMyTendersPage <= 1;
+            if (nextBtn) nextBtn.disabled = overviewMyTendersPage >= totalPages;
+        }
+
+        function setOverviewMyTendersPageSize(size) {
+            overviewMyTendersPageSize = size;
+            overviewMyTendersPage = 1;
+        }
+
+        function overviewMyTendersPrevPage() {
+            if (overviewMyTendersPage > 1) {
+                overviewMyTendersPage--;
+                filterOverviewMyTenders();
+            }
+        }
+
+        function overviewMyTendersNextPage() {
+            var rows = document.querySelectorAll('#overview-my-tenders-tbody .overview-tender-row[data-filtered="1"]');
+            var totalPages = Math.max(1, Math.ceil(rows.length / overviewMyTendersPageSize));
+            if (overviewMyTendersPage < totalPages) {
+                overviewMyTendersPage++;
+                filterOverviewMyTenders();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            filterOverviewMyTenders();
+        });
 
         // Sidebar Toggle
         function toggleSidebar() {
