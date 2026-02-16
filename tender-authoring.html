@@ -9505,6 +9505,8 @@
         document.getElementById('part23-info-comment').textContent = info.partComment;
         const block = document.getElementById('part23-info-accent-block');
         const badge = document.getElementById('part23-info-badge');
+        const part2IntroEl = document.getElementById('part23-info-part2-intro');
+        if (part2IntroEl) part2IntroEl.style.display = info.category === 2 ? 'block' : 'none';
         if (info.category === 3) {
           block.style.borderLeftColor = 'var(--danger-500)';
           block.style.background = 'var(--danger-50)';
@@ -11816,7 +11818,7 @@
                 <span class="category-icon" style="color: var(--danger-500);"><i class="pi pi-exclamation-triangle" style="font-size: 20px;"></i></span>
                 <div style="flex: 1;">
                   <strong style="color: var(--danger-700);">Tender submission is blocked</strong>
-                  <p style="font-size: 12px; color: var(--text-primary); margin: 4px 0 0 0;">Until ALL Part 3 items have compliance confirmation completed. <strong>${part3UnconfirmedCount}</strong> item(s) require confirmation. Complete compliance for each Part 3 item (red flag) below.</p>
+                  <p style="font-size: 12px; color: var(--text-primary); margin: 4px 0 0 0;">Until ALL Part 3 items have compliance confirmation completed. <strong>${part3UnconfirmedCount}</strong> item(s) require confirmation. Confirm item category for each Part 3 item (red flag) below.</p>
                 </div>
               </div>
               ` : (part3TotalCount > 0 && part3UnconfirmedCount === 0 ? `
@@ -12674,6 +12676,8 @@
         document.getElementById('part3-justification-wrap').style.display = 'none';
         document.getElementById('part3-nobuy-wrap').style.display = 'none';
         document.getElementById('part3-validation-msg').style.display = 'none';
+        document.getElementById('part3-comment-part3').checked = true;
+        togglePart3CommentSource('part3Comment');
         const info = part3NoBuyListInfo[unspscCode];
         if (info) {
           document.getElementById('part3-nobuy-description').textContent = info.description;
@@ -12691,7 +12695,11 @@
             document.getElementById('part3-opt-on').checked = true;
             document.getElementById('part3-pg-waiver-code').value = existing.pgWaiverCode || '';
             if (commentUserEl) commentUserEl.value = existing.comment || '';
+            const src = existing.commentSource || 'part3Comment';
+            document.getElementById('part3-comment-part3').checked = (src === 'part3Comment');
+            document.getElementById('part3-comment-other').checked = (src === 'otherComment');
             document.getElementById('part3-nobuy-wrap').style.display = 'block';
+            togglePart3CommentSource(src);
           }
         }
         updatePart3CharCount();
@@ -12707,6 +12715,20 @@
       window.togglePart3OptionFields = function(option) {
         document.getElementById('part3-justification-wrap').style.display = option === 'notOnNoBuy' ? 'block' : 'none';
         document.getElementById('part3-nobuy-wrap').style.display = option === 'onNoBuy' ? 'block' : 'none';
+        document.getElementById('part3-validation-msg').style.display = 'none';
+        if (option === 'onNoBuy') {
+          document.getElementById('part3-comment-part3').checked = true;
+          togglePart3CommentSource('part3Comment');
+        }
+      };
+      
+      window.togglePart3CommentSource = function(source) {
+        const part3Block = document.getElementById('part3-part3-comment-block');
+        const userWrap = document.getElementById('part3-nobuy-comment-user-wrap');
+        if (part3Block && userWrap) {
+          part3Block.style.display = source === 'part3Comment' ? 'block' : 'none';
+          userWrap.style.display = source === 'otherComment' ? 'block' : 'none';
+        }
         document.getElementById('part3-validation-msg').style.display = 'none';
       };
       
@@ -12731,6 +12753,8 @@
         const key = part3ModalContext.type === 'req' ? 'req-' + part3ModalContext.itemId : 'prod-' + part3ModalContext.itemId;
         
         const commentUser = (document.getElementById('part3-nobuy-comment-user') && document.getElementById('part3-nobuy-comment-user').value || '').trim();
+        const commentSourcePart3 = document.getElementById('part3-comment-part3') && document.getElementById('part3-comment-part3').checked;
+        const commentSource = commentSourcePart3 ? 'part3Comment' : 'otherComment';
         if (optNot.checked) {
           if (justification.length < 50 || justification.length > 2000) {
             msgEl.textContent = 'Justification must be between 50 and 2000 characters.';
@@ -12739,7 +12763,12 @@
           }
           part3ComplianceConfirmations[key] = { option: 'notOnNoBuy', justification: justification };
         } else if (optOn.checked) {
-          part3ComplianceConfirmations[key] = { option: 'onNoBuy', pgWaiverCode: pgWaiverCode || '', comment: commentUser || '' };
+          if (!pgWaiverCode) {
+            msgEl.textContent = 'Waiver is required when the item is on the No Buy List.';
+            msgEl.style.display = 'block';
+            return;
+          }
+          part3ComplianceConfirmations[key] = { option: 'onNoBuy', pgWaiverCode: pgWaiverCode, comment: commentUser || '', commentSource: commentSource };
         } else {
           msgEl.textContent = 'Please select option A or B.';
           msgEl.style.display = 'block';
@@ -25229,6 +25258,7 @@
             <span id="part23-info-badge" style="font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-right: 8px;"></span>
             <span id="part23-info-category-name" style="font-size: 14px; font-weight: 600; color: var(--text-primary);"></span>
           </div>
+          <p id="part23-info-part2-intro" style="display: none; font-size: 11px; color: var(--text-primary); line-height: 1.4; margin: 0 0 var(--spacing-md) 0;">This product is part of Part 2 of the SP Framework. Specific procurement requirements will be enforced in this tender.</p>
           <p style="font-size: 11px; font-weight: 600; color: var(--text-secondary); margin-bottom: 4px;">Additional comment</p>
           <p id="part23-info-comment" style="font-size: 12px; color: var(--text-secondary); line-height: 1.5; white-space: pre-wrap; margin: 0;"></p>
         </div>
@@ -25247,8 +25277,9 @@
         </div>
         <div class="req-modal-body" style="padding: var(--spacing-md);">
           <div style="margin-bottom: var(--spacing-md); padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--radius-sm); border-left: 4px solid var(--danger-500); background: var(--danger-50);">
-            <span style="font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-right: 8px; color: var(--danger-700);">Part 3</span>
-            <span id="part3-modal-item-label" style="font-size: 13px; color: var(--text-primary); font-weight: 500;"></span>
+            <div style="font-size: 13px; font-weight: 600; color: var(--danger-700); margin-bottom: 4px;">Part 3 category flagged – No Buy list</div>
+            <p style="font-size: 11px; color: var(--text-primary); margin: 0 0 6px 0; line-height: 1.4;">The selected product is part of Part 3 (products that should not be purchased as per section 3.4 of Sustainable Procurement Framework – Annex 1 of the Procurement Manual).</p>
+            <span id="part3-modal-item-label" style="font-size: 12px; color: var(--text-primary); font-weight: 500;"></span>
           </div>
           <p style="font-size: 11px; color: var(--text-secondary); margin-bottom: var(--spacing-sm);">You must select one of the following options:</p>
           <div class="form-group" style="margin-bottom: var(--spacing-md);">
@@ -25268,15 +25299,26 @@
               <div style="flex: 1;">
                 <strong style="font-size: 12px;">B) I confirm the item IS on the 'No Buy List'</strong>
                 <div id="part3-nobuy-wrap" style="margin-top: var(--spacing-sm); display: none;">
-                  <div style="padding: var(--spacing-sm); background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-sm); margin-bottom: var(--spacing-sm); font-size: 11px;">
+                  <p style="font-size: 11px; color: var(--text-secondary); margin-bottom: 6px;">Comment:</p>
+                  <label class="radio-option" style="display: flex; align-items: flex-start; gap: var(--spacing-sm); cursor: pointer; margin-bottom: 6px;">
+                    <input type="radio" name="part3CommentSource" value="part3Comment" id="part3-comment-part3" onchange="togglePart3CommentSource('part3Comment')" style="margin-top: 3px; accent-color: var(--primary-500);">
+                    <span style="font-size: 12px;">Use Part 3 comment</span>
+                  </label>
+                  <label class="radio-option" style="display: flex; align-items: flex-start; gap: var(--spacing-sm); cursor: pointer; margin-bottom: var(--spacing-sm);">
+                    <input type="radio" name="part3CommentSource" value="otherComment" id="part3-comment-other" onchange="togglePart3CommentSource('otherComment')" style="margin-top: 3px; accent-color: var(--primary-500);">
+                    <span style="font-size: 12px;">Add another comment</span>
+                  </label>
+                  <div id="part3-part3-comment-block" style="padding: var(--spacing-sm); background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-sm); margin-bottom: var(--spacing-sm); font-size: 11px;">
                     <div style="font-weight: 600; margin-bottom: 4px;">Part 3 description &amp; comment</div>
                     <div id="part3-nobuy-description" style="color: var(--text-primary);"></div>
                     <div id="part3-nobuy-comment" style="color: var(--text-secondary); margin-top: 4px;"></div>
                   </div>
-                  <label class="form-label" style="font-size: 11px;">Waiver (optional)</label>
+                  <div id="part3-nobuy-comment-user-wrap" style="display: none; margin-bottom: var(--spacing-sm);">
+                    <label class="form-label" style="font-size: 11px;">Comment</label>
+                    <textarea id="part3-nobuy-comment-user" rows="2" placeholder="Enter comment..." style="width: 100%; padding: 6px 8px; border: 1px solid var(--surface-300); border-radius: var(--radius-sm); font-size: 12px; resize: vertical;"></textarea>
+                  </div>
+                  <label class="form-label" style="font-size: 11px;">Waiver <span class="required">*</span></label>
                   <input type="text" id="part3-pg-waiver-code" placeholder="Enter PG Waiver Code" style="width: 100%; padding: 6px 8px; border: 1px solid var(--surface-300); border-radius: var(--radius-sm); font-size: 12px;">
-                  <label class="form-label" style="font-size: 11px; margin-top: var(--spacing-sm); display: block;">Comment (optional)</label>
-                  <textarea id="part3-nobuy-comment-user" rows="2" placeholder="Enter comment..." style="width: 100%; padding: 6px 8px; border: 1px solid var(--surface-300); border-radius: var(--radius-sm); font-size: 12px; resize: vertical;"></textarea>
                 </div>
               </div>
             </label>
@@ -25285,7 +25327,7 @@
         </div>
         <div class="req-modal-footer">
           <button class="btn btn-ghost btn-sm" onclick="closePart3ComplianceModal()">Cancel</button>
-          <button class="btn btn-primary btn-sm" onclick="savePart3Compliance()"><i class="pi pi-check" style="margin-right: 4px;"></i>Save confirmation</button>
+          <button class="btn btn-primary btn-sm" onclick="savePart3Compliance()"><i class="pi pi-check" style="margin-right: 4px;"></i>Confirm item category</button>
         </div>
       </div>
     </div>
