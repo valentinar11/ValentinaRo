@@ -23238,15 +23238,6 @@
                 <div class="collapsible-body" onclick="event.stopPropagation()">
                   <div class="form-grid-3col">
                     
-                    <!-- Language of the Contract -->
-                    <div class="form-group full-width">
-                      <label class="form-label">Language of the Contract</label>
-                      <select class="form-select" onchange="updateContractProvision('languageOfContract', this.value)" onclick="event.stopPropagation()">
-                        ${CONTRACT_LANGUAGES.map(l => `<option value="${l.value}" ${contractProvisionsValues.languageOfContract === l.value ? 'selected' : ''}>${l.label}</option>`).join('')}
-                      </select>
-                      <span class="help-text">Language in which the contract will be issued</span>
-                    </div>
-                    
                     <!-- General Conditions of Contract (dropdown) -->
                     <div class="form-group full-width">
                       <label class="form-label">General Conditions of Contract</label>
@@ -23314,11 +23305,18 @@
                       </button>
                     </div>
                     
-                    <!-- UNOPS Sample Contract (link) -->
-                    <div class="form-group full-width">
+                    <!-- Language of the Contract + UNOPS Sample Contract (template by language) -->
+                    <div class="form-group">
+                      <label class="form-label">Language of the Contract</label>
+                      <select class="form-select" onchange="updateContractProvision('languageOfContract', this.value)" onclick="event.stopPropagation()">
+                        ${CONTRACT_LANGUAGES.map(l => `<option value="${l.value}" ${contractProvisionsValues.languageOfContract === l.value ? 'selected' : ''}>${l.label}</option>`).join('')}
+                      </select>
+                      <span class="help-text">Language for the contract; the system will provide the relevant template</span>
+                    </div>
+                    <div class="form-group">
                       <label class="form-label">UNOPS Sample Contract</label>
                       <input type="url" class="form-input" placeholder="https://... or link to sample PDF" value="${contractProvisionsValues.sampleContractLink || ''}" onchange="updateContractProvision('sampleContractLink', this.value)" onclick="event.stopPropagation()" />
-                      <span class="help-text">Link to sample contract or PDF template</span>
+                      <span class="help-text">Sample contract or PDF template (based on contract type and language selected)</span>
                     </div>
                     
                   </div>
