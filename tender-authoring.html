@@ -3730,6 +3730,148 @@
         color: var(--success-500);
       }
 
+      /* Special Conditions of Contract table */
+      .special-conditions-wrap {
+        overflow-x: auto;
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-lg);
+        background: var(--surface-0);
+        box-shadow: var(--shadow-sm);
+      }
+      .special-conditions-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+      .special-conditions-table thead th {
+        padding: 14px 16px;
+        text-align: left;
+        font-weight: 600;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--text-secondary);
+        background: var(--surface-100);
+        border-bottom: 1px solid var(--surface-300);
+      }
+      .special-conditions-table thead th:first-child { border-radius: var(--radius-lg) 0 0 0; }
+      .special-conditions-table thead th:last-child { border-radius: 0 var(--radius-lg) 0 0; width: 72px; text-align: center; }
+      .special-conditions-table tbody tr {
+        border-bottom: 1px solid var(--surface-200);
+        vertical-align: top;
+        transition: background-color var(--transition-fast);
+      }
+      .special-conditions-table tbody tr:nth-child(even) { background: var(--surface-50); }
+      .special-conditions-table tbody tr:nth-child(odd) { background: var(--surface-0); }
+      .special-conditions-table tbody tr:hover { background: var(--surface-100); }
+      .special-conditions-table tbody tr:last-child { border-bottom: none; }
+      .special-conditions-table td {
+        padding: 12px 16px;
+      }
+      .special-conditions-table .cell-title { width: 18%; min-width: 140px; }
+      .special-conditions-table .cell-description { min-width: 280px; }
+      .special-conditions-table .cell-clause { width: 14%; min-width: 120px; }
+      .special-conditions-table .cell-type { width: 100px; }
+      .special-conditions-table .cell-actions { width: 72px; text-align: center; vertical-align: middle; }
+      .special-conditions-table .table-input,
+      .special-conditions-table .table-textarea {
+        width: 100%;
+        min-width: 0;
+        padding: 8px 12px;
+        font-size: 13px;
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-sm);
+        background: var(--surface-0);
+        transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+      }
+      .special-conditions-table .table-textarea {
+        min-height: 56px;
+        resize: vertical;
+        line-height: 1.45;
+      }
+      .special-conditions-table .table-input:focus,
+      .special-conditions-table .table-textarea:focus {
+        outline: none;
+        border-color: var(--primary-500);
+        box-shadow: 0 0 0 2px rgba(0, 146, 209, 0.15);
+      }
+      .special-conditions-table .table-input[readonly],
+      .special-conditions-table .table-textarea[readonly] {
+        background: var(--surface-50);
+        color: var(--text-secondary);
+        cursor: default;
+      }
+      .special-conditions-table .table-readonly-text {
+        display: block;
+        padding: 8px 0;
+        font-size: 13px;
+        color: var(--text-muted);
+        min-height: 34px;
+      }
+      .special-conditions-table .table-select {
+        width: 100%;
+        min-width: 0;
+        padding: 6px 28px 6px 10px;
+        font-size: 12px;
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-sm);
+        background: var(--surface-0);
+        color: var(--text-primary);
+        cursor: pointer;
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath fill='%23596170' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 8px center;
+      }
+      .special-conditions-table .type-badge {
+        display: inline-block;
+        padding: 4px 10px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        border-radius: 999px;
+      }
+      .special-conditions-table .type-badge.DRIVE { background: var(--primary-100); color: var(--primary-700); }
+      .special-conditions-table .type-badge.Special { background: var(--surface-200); color: var(--surface-800); }
+      .special-conditions-table .type-badge.Custom { background: var(--purple-50); color: var(--purple-700); }
+      .special-conditions-table .btn-remove {
+        font-size: 12px;
+        color: var(--danger-500);
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 4px 8px;
+        border-radius: var(--radius-sm);
+        transition: background var(--transition-fast), color var(--transition-fast);
+      }
+      .special-conditions-table .btn-remove:hover {
+        background: var(--danger-50);
+        color: var(--danger-600);
+      }
+      .special-conditions-add {
+        margin-top: 12px;
+        padding: 12px 16px;
+        width: 100%;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--primary-600);
+        background: var(--surface-50);
+        border: 2px dashed var(--surface-300);
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: border-color var(--transition-fast), background var(--transition-fast), color var(--transition-fast);
+      }
+      .special-conditions-add:hover {
+        background: var(--primary-50);
+        border-color: var(--primary-300);
+        color: var(--primary-700);
+      }
+
       /* Input with Icon */
       .input-with-icon {
         position: relative;
@@ -9558,18 +9700,51 @@
         vendorListFilter: ''
       };
       
+      // Predefined DRIVE clauses (Standardized Contract Clauses for Supply Chain Risk)
+      const PREDEFINED_DRIVE_CLAUSES = [
+        { id: 'drive-1', title: 'Forced Labour (ID documentation)', type: 'DRIVE', clauseInGCC: '', description: 'Upon signature of the Contract, the Contractor shall establish and implement a process for handling ID documentation of its Personnel (as defined in Article 2 of the UNOPS General Conditions of Contract), which adheres to international standards, namely, that no original ID documentation should ever be kept by the Contractor. In cases where ID documentation is needed, only a copy of the original should be retained by the Contractor for record-keeping purposes during the life of the Contract.', isPredefined: true },
+        { id: 'drive-2', title: 'Forced Labour (Salary Payments)', type: 'DRIVE', clauseInGCC: '', description: 'Upon signature of the Contract, the Contractor shall implement measures to ensure that salaries are paid directly to its Personnel and not through an intermediary.', isPredefined: true },
+        { id: 'drive-3', title: 'Child Labour (age verification)', type: 'DRIVE', clauseInGCC: '', description: 'Upon signature of the Contract, the Contractor shall establish and implement a policy and process for age verification of its new and current Personnel. The policy and process shall include specific provisions on how age verification is carried out, and ensuring that any current and new Personnel under the age of eighteen (18) years are not working under conditions considered to be child labour as defined by the International Labor Organization ("ILO").', isPredefined: true },
+        { id: 'drive-4', title: 'Child Labour (roles and types of work)', type: 'DRIVE', clauseInGCC: '', description: 'Upon signature of the Contract, the Contractor shall provide UNOPS with a report specifying the exact roles and types of work carried out by any of its Personnel under the age of eighteen (18) years. If not already in place, the Contractor shall establish and implement a policy and process for Personnel under eighteen (18) years to ensure that they are not carrying out work that is mentally, physically, socially, or morally dangerous and harmful to children; and/or interferes with their schooling, as defined by the ILO.', isPredefined: true },
+        { id: 'drive-5', title: 'Conflict of Interest (withdraw)', type: 'DRIVE', clauseInGCC: '', description: 'Upon signature of the Contract, the Contractor shall assess, and provide UNOPS with an overview of, the situations where the Contractor is in real, perceived, and potential conflicts of interest, and immediately withdraw from those situations.', isPredefined: true },
+        { id: 'drive-6', title: 'Conflict of Interest (policy)', type: 'DRIVE', clauseInGCC: '', description: 'Upon signature of the Contract, the Contractor shall establish and implement a policy and process for addressing conflicts of interest. The policy and process shall include specific provisions on how to avoid potential conflicts of interest, and minimum training requirements on the subject matter for Personnel.', isPredefined: true },
+        { id: 'drive-7', title: 'Corruption (Bribery – overview)', type: 'DRIVE', clauseInGCC: '', description: 'Upon signature of the Contract, the Contractor shall assess, and provide UNOPS with an overview of, the situations where the Contractor has been implicated in matters of corruption or bribery and has been part of the engagement.', isPredefined: true },
+        { id: 'drive-8', title: 'Corruption (Bribery – policy)', type: 'DRIVE', clauseInGCC: '', description: 'Upon signature of the Contract, the Contractor shall establish and implement a policy and process for addressing bribery and corruption. The policy and process shall include specific provisions on how to handle situations and engagements where bribery and corruption might be expected, and minimum training requirements on the subject matter for Personnel.', isPredefined: true },
+        { id: 'drive-9', title: 'Corruption (Gifts and Hospitality – overview)', type: 'DRIVE', clauseInGCC: '', description: 'Upon signature of the Contract, the Contractor shall assess the current contracts where they have provided excessive gifts & hospitality and withdraw from them. An overview of the situations where this is the case should be provided to UNOPS.', isPredefined: true },
+        { id: 'drive-10', title: 'Corruption (Gifts and Hospitality – policy)', type: 'DRIVE', clauseInGCC: '', description: 'Upon signature of the Contract, the Contractor shall establish and implement a policy and process for addressing corruption relating to gifts and hospitality. The policy and process shall include specific provisions on how to handle situations and engagements where excessive gifts and hospitality might be expected, and minimum training requirements on the subject matter for Personnel.', isPredefined: true },
+        { id: 'drive-11', title: 'Health and Safety (no PPE)', type: 'DRIVE', clauseInGCC: '', description: 'Upon signature of the Contract the Contractor shall assess where Personal Protective Equipment ("PPE") is needed, and issue PPEs to all Personnel working in the affected areas. The assessment shall be documented and sent to UNOPS, together with documentation confirming that the PPEs have been issued to the above-mentioned Personnel.', isPredefined: true },
+        { id: 'drive-12', title: 'Health and Safety (no training)', type: 'DRIVE', clauseInGCC: '', description: 'Upon signature of the Contract, the Contractor shall establish and implement a schedule for regular health and safety training to its Personnel. The health and safety training shall be delivered to all relevant Personnel, and be held at least once during the Contract period.', isPredefined: true },
+        { id: 'drive-13', title: 'Health and Safety (fire safety – evacuation)', type: 'DRIVE', clauseInGCC: '', description: 'Upon signature of the Contract, the Contractor shall hold an evacuation drill, to ensure that Personnel know where to go in the event of an emergency. The evacuation drill shall be thoroughly documented and an attendance list should be signed by everyone participating. A regular evacuation drill shall be put in place and should be held at least once a year.', isPredefined: true },
+        { id: 'drive-14', title: 'Health and Safety (fire safety – equipment)', type: 'DRIVE', clauseInGCC: '', description: 'Upon signature of the Contract, the Contractor shall install firefighting equipment on the Contract site(s). An assessment shall be carried out to ensure that the equipment can service the entire site(s) and all Personnel shall be trained in handling the equipment.', isPredefined: true },
+        { id: 'drive-15', title: 'Regulatory Issues', type: 'DRIVE', clauseInGCC: '', description: 'Upon signature of the Contract, the Contractor shall put in place specific measures to address the issue that they were fined for. An overview of the situations where this is the case should be provided to UNOPS.', isPredefined: true },
+        { id: 'drive-16', title: 'PSEA', type: 'DRIVE', clauseInGCC: '', description: 'Upon signature of the Contract, the Contractor shall conduct training on Preventing Sexual Exploitation and Abuse ("PSEA") for all its Personnel, both current and new. The training should ensure that Personnel understand what PSEA is, which PSEA risks are specific to the Contractor, and how to mitigate these risks. The Contractor shall also, upon signature of the Contract, establish and implement a Code of Conduct (or otherwise add to an existing one), to ensure that all Personnel understand that there is zero tolerance for inaction on allegations of PSEA.', isPredefined: true }
+      ];
+
       // Contract Provisions settings
       let contractProvisionsValues = {
+        languageOfContract: 'en',
         generalConditions: '',
-        specialConditions: '',
-        sampleContract: '',
-        contractClausesKPIs: '',
-        contractClausesDrive: '',
-        performanceSecurityRequired: '',
-        performanceSecurityDetails: '',
-        advancePaymentRequired: '',
-        advancePaymentDetails: ''
+        generalConditionsLink: '',
+        specialConditionsClauses: JSON.parse(JSON.stringify(PREDEFINED_DRIVE_CLAUSES)),
+        sampleContractLink: ''
       };
+
+      // GCC link by contract type (read-only; replace with real UNOPS URLs when available)
+      const GENERAL_CONDITIONS_LINKS = {
+        goods: 'https://content.unops.org/publications/UNOPS-General-Conditions-Contract-Provision-of-Goods_en.pdf',
+        services: 'https://content.unops.org/publications/UNOPS-General-Conditions-Contract-Provision-of-Services_en.pdf',
+        'goods-and-services': 'https://content.unops.org/publications/UNOPS-General-Conditions-Contract-Provision-of-Goods-and-Services_en.pdf'
+      };
+
+      const CONTRACT_LANGUAGES = [
+        { value: 'en', label: 'English' },
+        { value: 'es', label: 'Spanish' },
+        { value: 'fr', label: 'French' },
+        { value: 'ar', label: 'Arabic' },
+        { value: 'zh', label: 'Chinese' },
+        { value: 'ru', label: 'Russian' },
+        { value: 'pt', label: 'Portuguese' }
+      ];
       
       // Team Members
       let teamMembers = {
@@ -13492,15 +13667,12 @@
           total = 3;
           completed = 0;
         } else if (sectionType === 'contract-provisions') {
-          total = 7;
+          total = 4;
           completed = 0;
+          if (contractProvisionsValues.languageOfContract) completed++;
           if (contractProvisionsValues.generalConditions) completed++;
-          if (contractProvisionsValues.specialConditions) completed++;
-          if (contractProvisionsValues.sampleContract) completed++;
-          if (contractProvisionsValues.contractClausesKPIs) completed++;
-          if (contractProvisionsValues.contractClausesDrive) completed++;
-          if (contractProvisionsValues.performanceSecurityRequired) completed++;
-          if (contractProvisionsValues.advancePaymentRequired) completed++;
+          if (contractProvisionsValues.specialConditionsClauses && contractProvisionsValues.specialConditionsClauses.length > 0) completed++;
+          if (contractProvisionsValues.sampleContractLink) completed++;
         } else if (sectionType === 'competition-type') {
           total = 1;
           completed = competitionValues.competitionType ? 1 : 0;
@@ -15180,28 +15352,46 @@
       }
       
       window.updateContractProvision = function(field, value) {
-        const needsRerender = ['performanceSecurityRequired', 'advancePaymentRequired'].includes(field);
-        
-        if (needsRerender) {
-          saveProjectDetailsSectionStates();
+        const needsRerender = ['generalConditions'].includes(field);
+        if (field === 'generalConditions') {
+          contractProvisionsValues.generalConditionsLink = GENERAL_CONDITIONS_LINKS[value] || '';
         }
-        
+        if (needsRerender) saveProjectDetailsSectionStates();
         contractProvisionsValues[field] = value;
-        
         if (needsRerender) {
           renderCurrentBlock();
           restoreProjectDetailsSectionStates();
         }
-      }
+      };
+
+      window.addSpecialConditionClause = function() {
+        contractProvisionsValues.specialConditionsClauses.push({
+          id: 'custom-' + Date.now(),
+          title: '',
+          description: '',
+          clauseInGCC: '',
+          type: 'Special',
+          isPredefined: false
+        });
+        saveProjectDetailsSectionStates();
+        renderCurrentBlock();
+        restoreProjectDetailsSectionStates();
+      };
+
+      window.removeSpecialConditionClause = function(id) {
+        contractProvisionsValues.specialConditionsClauses = contractProvisionsValues.specialConditionsClauses.filter(c => c.id !== id);
+        saveProjectDetailsSectionStates();
+        renderCurrentBlock();
+        restoreProjectDetailsSectionStates();
+      };
+
+      window.updateSpecialConditionClause = function(id, field, value) {
+        const clause = contractProvisionsValues.specialConditionsClauses.find(c => c.id === id);
+        if (clause) clause[field] = value;
+      };
       
       window.formatContractText = function(editorId, command) {
-        const editorMap = {
-          'specialConditions': 'contract-special-conditions-editor',
-          'clausesKPIs': 'contract-clauses-kpis-editor',
-          'clausesDrive': 'contract-clauses-drive-editor',
-          'perfSecurityDetails': 'contract-perf-security-editor',
-          'advancePaymentDetails': 'contract-advance-payment-editor'
-        };
+        const editorMap = {};
         
         const editor = document.getElementById(editorMap[editorId]);
         if (editor) {
@@ -23048,178 +23238,88 @@
                 <div class="collapsible-body" onclick="event.stopPropagation()">
                   <div class="form-grid-3col">
                     
-                    <!-- UNOPS General Conditions of Contract -->
+                    <!-- Language of the Contract -->
                     <div class="form-group full-width">
-                      <label class="form-label">UNOPS General Conditions of Contract</label>
+                      <label class="form-label">Language of the Contract</label>
+                      <select class="form-select" onchange="updateContractProvision('languageOfContract', this.value)" onclick="event.stopPropagation()">
+                        ${CONTRACT_LANGUAGES.map(l => `<option value="${l.value}" ${contractProvisionsValues.languageOfContract === l.value ? 'selected' : ''}>${l.label}</option>`).join('')}
+                      </select>
+                      <span class="help-text">Language in which the contract will be issued</span>
+                    </div>
+                    
+                    <!-- General Conditions of Contract (dropdown) -->
+                    <div class="form-group full-width">
+                      <label class="form-label">General Conditions of Contract</label>
                       <select class="form-select" onchange="updateContractProvision('generalConditions', this.value)" onclick="event.stopPropagation()">
                         <option value="">Select...</option>
-                        <option value="goods" ${contractProvisionsValues.generalConditions === 'goods' ? 'selected' : ''}>General Conditions for Goods</option>
-                        <option value="services" ${contractProvisionsValues.generalConditions === 'services' ? 'selected' : ''}>General Conditions for Services</option>
-                        <option value="works" ${contractProvisionsValues.generalConditions === 'works' ? 'selected' : ''}>General Conditions for Works</option>
-                        <option value="consultancy" ${contractProvisionsValues.generalConditions === 'consultancy' ? 'selected' : ''}>General Conditions for Consultancy</option>
+                        <option value="goods" ${contractProvisionsValues.generalConditions === 'goods' ? 'selected' : ''}>UNOPS General Conditions of Contract Contracts for the Provision of Goods</option>
+                        <option value="services" ${contractProvisionsValues.generalConditions === 'services' ? 'selected' : ''}>UNOPS General Conditions of Contract Contracts for the Provision of Services</option>
+                        <option value="goods-and-services" ${contractProvisionsValues.generalConditions === 'goods-and-services' ? 'selected' : ''}>UNOPS General Conditions of Contract Contracts for the Provision of Goods and Services</option>
                       </select>
                       <span class="help-text">Select applicable UNOPS General Conditions</span>
                     </div>
                     
-                    <!-- UNOPS Special Conditions of Contract -->
+                    <!-- UNOPS General Conditions of Contract (read-only link) -->
                     <div class="form-group full-width">
-                      <label class="form-label">UNOPS Special Conditions of Contract</label>
-                      <div class="rich-text-box" style="border: 1px solid var(--surface-300); border-radius: var(--radius-md); overflow: hidden;">
-                        <div class="rich-text-toolbar-mini" style="display: flex; gap: 4px; padding: 8px; background: var(--surface-100); border-bottom: 1px solid var(--surface-300);">
-                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('specialConditions', 'bold')" title="Bold"><strong>B</strong></button>
-                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('specialConditions', 'italic')" title="Italic"><em>I</em></button>
-                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('specialConditions', 'underline')" title="Underline"><u>U</u></button>
-                          <span style="width: 1px; background: var(--surface-300); margin: 0 4px;"></span>
-                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('specialConditions', 'insertUnorderedList')" title="Bullet List">•</button>
-                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('specialConditions', 'insertOrderedList')" title="Numbered List">1.</button>
-                        </div>
-                        <div 
-                          id="contract-special-conditions-editor"
-                          class="rich-text-content" 
-                          contenteditable="true"
-                          style="min-height: 120px; padding: 12px; font-size: 13px; line-height: 1.5;"
-                          onclick="event.stopPropagation()"
-                          onblur="updateContractProvision('specialConditions', this.innerHTML)"
-                          placeholder="Enter special conditions that modify or supplement the General Conditions..."
-                        >${contractProvisionsValues.specialConditions}</div>
+                      <label class="form-label">UNOPS General Conditions of Contract</label>
+                      <div class="form-input" style="background: var(--surface-100); color: var(--text-secondary); cursor: default; display: flex; align-items: center; min-height: 2.25rem;" readonly>
+                        ${(contractProvisionsValues.generalConditionsLink || GENERAL_CONDITIONS_LINKS[contractProvisionsValues.generalConditions] || '') ? `<a href="${contractProvisionsValues.generalConditionsLink || GENERAL_CONDITIONS_LINKS[contractProvisionsValues.generalConditions]}" target="_blank" rel="noopener" style="color: var(--primary-500); text-decoration: underline;">${contractProvisionsValues.generalConditionsLink || GENERAL_CONDITIONS_LINKS[contractProvisionsValues.generalConditions]}</a>` : '<span style="color: var(--text-muted);">Select a contract type above to show the link</span>'}
                       </div>
-                      <span class="help-text">Add any special conditions specific to this contract</span>
+                      <span class="help-text">Link to the General Conditions document (based on selected contract type)</span>
                     </div>
                     
-                    <!-- UNOPS Sample Contract -->
+                    <!-- UNOPS Special Conditions of Contract (table) -->
+                    <div class="form-group full-width" style="grid-column: 1 / -1;">
+                      <label class="form-label">UNOPS Special Conditions of Contract</label>
+                      <p class="help-text" style="margin-bottom: 12px;">Standardized Contract Clauses are included by default. Add custom clauses as needed.</p>
+                      <div class="special-conditions-wrap">
+                        <table class="special-conditions-table">
+                          <thead>
+                            <tr>
+                              <th class="cell-title">Title / Risk area</th>
+                              <th class="cell-description">Special Condition of Contract</th>
+                              <th class="cell-clause">Clause in GCC (optional)</th>
+                              <th class="cell-type">Type</th>
+                              <th class="cell-actions"></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            ${contractProvisionsValues.specialConditionsClauses.map((clause) => `
+                            <tr>
+                              <td class="cell-title">
+                                <input type="text" class="table-input" placeholder="Title" value="${(clause.title || '').replace(/"/g, '&quot;')}" onchange="updateSpecialConditionClause('${clause.id}', 'title', this.value)" onclick="event.stopPropagation()" ${clause.isPredefined ? 'readonly' : ''} />
+                              </td>
+                              <td class="cell-description">
+                                <textarea class="table-textarea" placeholder="Description" rows="2" onchange="updateSpecialConditionClause('${clause.id}', 'description', this.value)" onclick="event.stopPropagation()" ${clause.isPredefined ? 'readonly' : ''}>${(clause.description || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</textarea>
+                              </td>
+                              <td class="cell-clause">
+                                ${clause.isPredefined ? `<span class="table-readonly-text">${(clause.clauseInGCC || '—').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</span>` : `<input type="text" class="table-input" placeholder="e.g. Article no." value="${(clause.clauseInGCC || '').replace(/"/g, '&quot;')}" onchange="updateSpecialConditionClause('${clause.id}', 'clauseInGCC', this.value)" onclick="event.stopPropagation()" />`}
+                              </td>
+                              <td class="cell-type">
+                                ${clause.isPredefined ? `<span class="type-badge ${clause.type}">${clause.type === 'DRIVE' ? 'DRiVE' : clause.type}</span>` : `<select class="table-select" onchange="updateSpecialConditionClause('${clause.id}', 'type', this.value)" onclick="event.stopPropagation()">
+                                  <option value="DRIVE" ${clause.type === 'DRIVE' ? 'selected' : ''}>DRiVE</option>
+                                  <option value="Special" ${clause.type === 'Special' ? 'selected' : ''}>Special</option>
+                                </select>`}
+                              </td>
+                              <td class="cell-actions">
+                                ${!clause.isPredefined ? `<button type="button" class="btn-remove" onclick="event.stopPropagation(); removeSpecialConditionClause('${clause.id}')" title="Remove clause">Remove</button>` : '<span style="color: var(--text-muted); font-size: 11px;">—</span>'}
+                              </td>
+                            </tr>
+                            `).join('')}
+                          </tbody>
+                        </table>
+                      </div>
+                      <button type="button" class="special-conditions-add" onclick="event.stopPropagation(); addSpecialConditionClause()">
+                        <span class="pi pi-plus" style="font-size: 14px;"></span> Add custom clause
+                      </button>
+                    </div>
+                    
+                    <!-- UNOPS Sample Contract (link) -->
                     <div class="form-group full-width">
                       <label class="form-label">UNOPS Sample Contract</label>
-                      <select class="form-select" onchange="updateContractProvision('sampleContract', this.value)" onclick="event.stopPropagation()">
-                        <option value="">Select template...</option>
-                        <option value="purchase-order" ${contractProvisionsValues.sampleContract === 'purchase-order' ? 'selected' : ''}>Purchase Order (PO)</option>
-                        <option value="contract-goods" ${contractProvisionsValues.sampleContract === 'contract-goods' ? 'selected' : ''}>Contract for Goods</option>
-                        <option value="contract-services" ${contractProvisionsValues.sampleContract === 'contract-services' ? 'selected' : ''}>Contract for Services</option>
-                        <option value="contract-works" ${contractProvisionsValues.sampleContract === 'contract-works' ? 'selected' : ''}>Contract for Works</option>
-                        <option value="lta" ${contractProvisionsValues.sampleContract === 'lta' ? 'selected' : ''}>Long-Term Agreement (LTA)</option>
-                        <option value="bpa" ${contractProvisionsValues.sampleContract === 'bpa' ? 'selected' : ''}>Blanket Purchase Agreement (BPA)</option>
-                      </select>
-                      <span class="help-text">Select the applicable contract template</span>
+                      <input type="url" class="form-input" placeholder="https://... or link to sample PDF" value="${contractProvisionsValues.sampleContractLink || ''}" onchange="updateContractProvision('sampleContractLink', this.value)" onclick="event.stopPropagation()" />
+                      <span class="help-text">Link to sample contract or PDF template</span>
                     </div>
-                    
-                    <!-- Contract clauses and KPIs (SP criteria) -->
-                    <div class="form-group full-width">
-                      <label class="form-label">Contract Clauses and KPIs (SP Criteria)</label>
-                      <div class="rich-text-box" style="border: 1px solid var(--surface-300); border-radius: var(--radius-md); overflow: hidden;">
-                        <div class="rich-text-toolbar-mini" style="display: flex; gap: 4px; padding: 8px; background: var(--surface-100); border-bottom: 1px solid var(--surface-300);">
-                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('clausesKPIs', 'bold')" title="Bold"><strong>B</strong></button>
-                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('clausesKPIs', 'italic')" title="Italic"><em>I</em></button>
-                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('clausesKPIs', 'underline')" title="Underline"><u>U</u></button>
-                          <span style="width: 1px; background: var(--surface-300); margin: 0 4px;"></span>
-                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('clausesKPIs', 'insertUnorderedList')" title="Bullet List">•</button>
-                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('clausesKPIs', 'insertOrderedList')" title="Numbered List">1.</button>
-                        </div>
-                        <div 
-                          id="contract-clauses-kpis-editor"
-                          class="rich-text-content" 
-                          contenteditable="true"
-                          style="min-height: 120px; padding: 12px; font-size: 13px; line-height: 1.5;"
-                          onclick="event.stopPropagation()"
-                          onblur="updateContractProvision('contractClausesKPIs', this.innerHTML)"
-                          placeholder="Define contract clauses and Key Performance Indicators based on Sustainable Procurement criteria..."
-                        >${contractProvisionsValues.contractClausesKPIs}</div>
-                      </div>
-                      <span class="help-text">Define KPIs and clauses aligned with Sustainable Procurement criteria</span>
-                    </div>
-                    
-                    <!-- Contract clauses (DRiVE/Risk app) -->
-                    <div class="form-group full-width">
-                      <label class="form-label">Contract Clauses (DRiVE/Risk App)</label>
-                      <div class="rich-text-box" style="border: 1px solid var(--surface-300); border-radius: var(--radius-md); overflow: hidden;">
-                        <div class="rich-text-toolbar-mini" style="display: flex; gap: 4px; padding: 8px; background: var(--surface-100); border-bottom: 1px solid var(--surface-300);">
-                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('clausesDrive', 'bold')" title="Bold"><strong>B</strong></button>
-                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('clausesDrive', 'italic')" title="Italic"><em>I</em></button>
-                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('clausesDrive', 'underline')" title="Underline"><u>U</u></button>
-                          <span style="width: 1px; background: var(--surface-300); margin: 0 4px;"></span>
-                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('clausesDrive', 'insertUnorderedList')" title="Bullet List">•</button>
-                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('clausesDrive', 'insertOrderedList')" title="Numbered List">1.</button>
-                        </div>
-                        <div 
-                          id="contract-clauses-drive-editor"
-                          class="rich-text-content" 
-                          contenteditable="true"
-                          style="min-height: 120px; padding: 12px; font-size: 13px; line-height: 1.5;"
-                          onclick="event.stopPropagation()"
-                          onblur="updateContractProvision('contractClausesDrive', this.innerHTML)"
-                          placeholder="Enter contract clauses from DRiVE/Risk application..."
-                        >${contractProvisionsValues.contractClausesDrive}</div>
-                      </div>
-                      <span class="help-text">Import or define clauses from DRiVE/Risk application</span>
-                    </div>
-                    
-                    <!-- Performance Security / Bank Guarantee -->
-                    <div class="form-group">
-                      <label class="form-label">Performance Security / Bank Guarantee</label>
-                      <select class="form-select" onchange="updateContractProvision('performanceSecurityRequired', this.value)" onclick="event.stopPropagation()">
-                        <option value="">Select...</option>
-                        <option value="not-required" ${contractProvisionsValues.performanceSecurityRequired === 'not-required' ? 'selected' : ''}>Not Required</option>
-                        <option value="required" ${contractProvisionsValues.performanceSecurityRequired === 'required' ? 'selected' : ''}>Required</option>
-                      </select>
-                    </div>
-                    
-                    ${contractProvisionsValues.performanceSecurityRequired === 'required' ? `
-                    <div class="form-group full-width">
-                      <label class="form-label">Performance Security Details</label>
-                      <div class="rich-text-box" style="border: 1px solid var(--surface-300); border-radius: var(--radius-md); overflow: hidden;">
-                        <div class="rich-text-toolbar-mini" style="display: flex; gap: 4px; padding: 8px; background: var(--surface-100); border-bottom: 1px solid var(--surface-300);">
-                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('perfSecurityDetails', 'bold')" title="Bold"><strong>B</strong></button>
-                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('perfSecurityDetails', 'italic')" title="Italic"><em>I</em></button>
-                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('perfSecurityDetails', 'underline')" title="Underline"><u>U</u></button>
-                          <span style="width: 1px; background: var(--surface-300); margin: 0 4px;"></span>
-                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('perfSecurityDetails', 'insertUnorderedList')" title="Bullet List">•</button>
-                        </div>
-                        <div 
-                          id="contract-perf-security-editor"
-                          class="rich-text-content" 
-                          contenteditable="true"
-                          style="min-height: 100px; padding: 12px; font-size: 13px; line-height: 1.5;"
-                          onclick="event.stopPropagation()"
-                          onblur="updateContractProvision('performanceSecurityDetails', this.innerHTML)"
-                          placeholder="Specify performance security requirements (amount, percentage, format, validity period, etc.)..."
-                        >${contractProvisionsValues.performanceSecurityDetails}</div>
-                      </div>
-                      <span class="help-text">Define the performance security/bank guarantee requirements</span>
-                    </div>
-                    ` : ''}
-                    
-                    <!-- Advance Payment -->
-                    <div class="form-group">
-                      <label class="form-label">Advance Payment</label>
-                      <select class="form-select" onchange="updateContractProvision('advancePaymentRequired', this.value)" onclick="event.stopPropagation()">
-                        <option value="">Select...</option>
-                        <option value="not-allowed" ${contractProvisionsValues.advancePaymentRequired === 'not-allowed' ? 'selected' : ''}>Not Allowed</option>
-                        <option value="allowed" ${contractProvisionsValues.advancePaymentRequired === 'allowed' ? 'selected' : ''}>Allowed</option>
-                      </select>
-                    </div>
-                    
-                    ${contractProvisionsValues.advancePaymentRequired === 'allowed' ? `
-                    <div class="form-group full-width">
-                      <label class="form-label">Advance Payment Details</label>
-                      <div class="rich-text-box" style="border: 1px solid var(--surface-300); border-radius: var(--radius-md); overflow: hidden;">
-                        <div class="rich-text-toolbar-mini" style="display: flex; gap: 4px; padding: 8px; background: var(--surface-100); border-bottom: 1px solid var(--surface-300);">
-                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('advancePaymentDetails', 'bold')" title="Bold"><strong>B</strong></button>
-                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('advancePaymentDetails', 'italic')" title="Italic"><em>I</em></button>
-                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('advancePaymentDetails', 'underline')" title="Underline"><u>U</u></button>
-                          <span style="width: 1px; background: var(--surface-300); margin: 0 4px;"></span>
-                          <button type="button" class="tb-btn" onclick="event.stopPropagation(); formatContractText('advancePaymentDetails', 'insertUnorderedList')" title="Bullet List">•</button>
-                        </div>
-                        <div 
-                          id="contract-advance-payment-editor"
-                          class="rich-text-content" 
-                          contenteditable="true"
-                          style="min-height: 100px; padding: 12px; font-size: 13px; line-height: 1.5;"
-                          onclick="event.stopPropagation()"
-                          onblur="updateContractProvision('advancePaymentDetails', this.innerHTML)"
-                          placeholder="Specify advance payment terms (percentage, conditions, guarantee requirements, etc.)..."
-                        >${contractProvisionsValues.advancePaymentDetails}</div>
-                      </div>
-                      <span class="help-text">Define the advance payment terms and conditions</span>
-                    </div>
-                    ` : ''}
                     
                   </div>
                 </div>
