@@ -8556,6 +8556,34 @@
         flex-wrap: wrap;
       }
       
+      .eval-criteria-library-tab {
+        transition: color 0.2s, border-color 0.2s;
+      }
+      .eval-criteria-library-tab:hover {
+        color: var(--primary-600);
+      }
+      .eval-criteria-library-tab.active {
+        color: var(--primary-600);
+        border-bottom-color: var(--primary-500) !important;
+      }
+      .eval-criteria-library-tab-pane {
+        display: none;
+      }
+      .eval-criteria-library-tab-pane.active {
+        display: block;
+      }
+      
+      .suggested-criteria-hint:hover {
+        background: var(--warning-100) !important;
+        border-color: var(--warning-300) !important;
+        color: var(--warning-800) !important;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+      }
+      .suggested-criteria-hint:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px var(--warning-400);
+      }
+      
       .criteria-filter-btn {
         padding: 4px 12px;
         font-size: 12px;
@@ -10305,6 +10333,28 @@
           sustainableProcurement: ['Health and Safety - Emergency preparedness', 'Health and Safety - Incidents/accidents tracking system', 'Health and Safety - Security and safety of workers'],
           linkedFormsSuggestion: ['form-qualification']
         }
+      ];
+      
+      // Suggested criteria by UNSPSC (Category and Evaluation Method = Any; author must set before adding)
+      // unspscPrefixes: array of 2-digit UNSPSC segment prefixes that trigger this suggestion (e.g. '43' = ICT). Empty = show for any.
+      const suggestedCriteriaByUnspsc = [
+        { id: 'SP-001', name: 'SP - Low emission vehicles and transport', description: '(A) Lease/rental of vehicles: The bidder shall demonstrate that there is a Policy/Directive in place on the preferred purchase of low emission vehicles/ fuel-efficient vehicles (B) The bidder shall demonstrate that the use of alternative fuels (biodiesel, ethanol, hydrogen) and alternative drive systems (electricity, hybrid, plug-in hybrid) within the organisation are the preferred options (C) The bidder shall provide details on the emission reduction technology used in the vehicle (D) The bidder shall ensure that emission levels of the vehicles meet international standards, preferably Euro 6 for new vehicles (E) The bidder shall provide details on how energy/fuel consumption, mileage, and resulting emissions can be monitored and reported', category: 'Any', evaluationMethod: 'Any', sustainabilityCategory1: 'Climate Change Impact', sustainabilityCategory2: 'Emissions from vehicles and transport', linkedFormSuggestion: 'form-sustainability-transport', unspscPrefixes: ['78', '25'] },
+        { id: 'SP-002', name: 'SP - Water conservation and management', description: '(A) The bidder shall demonstrate its efforts to reduce water use in the provision of the services and in the production of the goods (B) The bidder shall demonstrate how water used in the organisation is tracked and monitored.', category: 'Any', evaluationMethod: 'Any', sustainabilityCategory1: 'Resource Efficiency', sustainabilityCategory2: 'Water conservation and management', linkedFormSuggestion: 'form-sustainability', unspscPrefixes: [] },
+        { id: 'SP-003', name: 'SP - Sustainable packaging', description: '(A) The bidder shall demonstrate that packaging material includes recycled content (e.g. recycled cardboard) and that use of single-use plastic is avoided or minimised (B) The bidder shall present its current approach to packaging reduction and avoidance of single-use plastics (through an action plan) with targets/milestones and current achievement levels while ensuring the safe delivery of products. (C) The bidder shall ensure that the products offered shall be delivered in bulk packaging (D) The bidder shall provide the following information: what percentage of the packaging is suitable for reuse; what percentage of the packaging is suitable for recycling; what system is in operation to reuse the packaging (e.g. a pooling system or deposit system); what system is in operation to properly recycle the packaging; whether multi-layers and composite packaging are used', category: 'Any', evaluationMethod: 'Any', sustainabilityCategory1: 'Environmental sustainability', sustainabilityCategory2: 'Sustainable packaging', linkedFormSuggestion: 'form-sustainability', unspscPrefixes: [] },
+        { id: 'SP-004', name: 'SP - Responsible sourcing of resources and products', description: '(A) The bidder shall provide supporting documentation with details on how they ensure that raw materials and/or products are from known and legal sources, and produced in an environmentally friendly and socially acceptable manner, i.e. under working conditions compatible with international standards (UN Supplier Code of Conduct) and with minimal impact on the environment, climate, and local ecosystem (B) For products with a high risk for conflict minerals, the bidder shall provide documentation that addresses and ensures the minimisation and where practical, elimination of the use of conflict minerals in the product offered.', category: 'Any', evaluationMethod: 'Any', sustainabilityCategory1: 'Environment, Social and Governance management systems', sustainabilityCategory2: 'Responsible sourcing of resources and products', linkedFormSuggestion: 'form-compliance', unspscPrefixes: [] },
+        { id: 'SP-005', name: 'SP - Recycled content in bio-based components (ICT)', description: 'For ICT equipment, e.g. laptops/computers: (A) Use of bio-based or sustainable materials - Products submitted must contain a minimum recycled content in bio-based components. (B) Recycled content in plastic components - Products submitted must contain a minimum recycled content in plastic components. Evaluation details: For Qualification criteria - minimum recycled content should be 10%, for Technical criteria accumulating points should be tied to higher percentage of recycled content', category: 'Any', evaluationMethod: 'Any', sustainabilityCategory1: 'Environmental sustainability', sustainabilityCategory2: 'Biodiversity impacts', linkedFormSuggestion: 'form-technical-ict', unspscPrefixes: ['43'] },
+        { id: 'SP-006', name: 'SP - Recyclable packaging (ICT)', description: 'For ICT equipment, e.g. laptops/computers: A percentage by weight of the packaging must be recyclable using existing technologies. Evaluation details: For Qualification criteria - minimum percentage of recyclable content of packaging should be 50%, for Technical criteria accumulating points should be tied to higher percentage of recyclable content', category: 'Any', evaluationMethod: 'Any', sustainabilityCategory1: 'Environmental sustainability', sustainabilityCategory2: 'Sustainable packaging', linkedFormSuggestion: 'form-technical-ict', unspscPrefixes: ['43'] },
+        { id: 'SP-007', name: 'SP - ICT ecolabel and product carbon footprint', description: 'Mandatory criteria for HQ procurement of ICT equipment, e.g. laptops/computers. All products must be certified under Ecolabel Tier I EPEAT (attaining Climate+ criteria), or Ecolabel Tier I TCO Certified (Generation 9 or above), or an equivalent ISO 14024 Ecolabel Tier I with comparable environmental criteria for the full duration of the contract. Products must have a cradle-to-grave life cycle assessment (LCA) or product carbon footprint (PCF). Suppliers are required to disclose the results in a standardized format.', category: 'Any', evaluationMethod: 'Any', sustainabilityCategory1: 'Climate Change Impact', sustainabilityCategory2: 'Carbon footprint reduction efforts', linkedFormSuggestion: 'form-technical-ict', unspscPrefixes: ['43'] },
+        { id: 'SP-008', name: 'SP - Emergency preparedness', description: 'Bidder shall provide supporting documentation that demonstrates the procedures that are in place to address emergency events within their organisation', category: 'Any', evaluationMethod: 'Any', sustainabilityCategory1: 'Health and Safety', sustainabilityCategory2: 'Emergency preparedness', linkedFormSuggestion: 'form-qualification', unspscPrefixes: [] },
+        { id: 'SP-009', name: 'SP - Women-owned businesses (WOB)', description: 'Bidders shall demonstrate that at least 51% of ownership and management positions held by one or more women.', category: 'Any', evaluationMethod: 'Any', sustainabilityCategory1: 'Gender and Social Inclusion', sustainabilityCategory2: 'Engaging women-owned businesses (WOB)', linkedFormSuggestion: 'form-qualification', unspscPrefixes: [] },
+        { id: 'SP-010', name: 'SP - Gender and social inclusion mainstreaming', description: 'Gender mainstreaming is the process of taking into consideration women\'s and men\'s specific needs, concerns, interests, knowledge, and experiences in the design and execution of all planned actions, so that women and men can benefit equally. For this tender the bidder shall provide a practical plan (or demonstrate experience) for implementing gender mainstreaming (and/or social inclusion) activities during the execution of the contract, from planning to closure.', category: 'Any', evaluationMethod: 'Any', sustainabilityCategory1: 'Gender and Social Inclusion', sustainabilityCategory2: 'Gender and social inclusion mainstreaming', linkedFormSuggestion: 'form-sustainability', unspscPrefixes: [] },
+        { id: 'SP-011', name: 'SP - Venues and infrastructure accessibility', description: 'The bidder shall ensure that venues/Infrastructure is designed to be accessible for persons living with disabilities (for example ramps, railings, handrails, lifts, larger restrooms and appropriate fixtures, a venue at ground level, etc.). Signage, assistive technology', category: 'Any', evaluationMethod: 'Any', sustainabilityCategory1: 'Disability inclusion', sustainabilityCategory2: 'Venues and infrastructures - accessibility for the disabled', linkedFormSuggestion: 'form-technical', unspscPrefixes: ['72', '71'] },
+        { id: 'SP-012', name: 'SP - Supplier competencies (design services)', description: 'The bidder shall prove their experience with sustainable design and construction by providing documentary evidence (past and present) of having included the following sustainability considerations in their designs.', category: 'Any', evaluationMethod: 'Any', sustainabilityCategory1: 'Environment, Social and Governance management systems', sustainabilityCategory2: 'Supplier\'s competencies and experience (design services)', linkedFormSuggestion: 'form-technical', unspscPrefixes: ['72', '71'] },
+        { id: 'SP-013', name: 'SP - Climate change adaptation and resilience (design)', description: 'The bidder shall provide a method statement (and/or experience) setting out how it has assessed risks associated with climate change, what those potential risks are, and how they will be managed so as to maximise as much as possible climate resilience final output of the project.', category: 'Any', evaluationMethod: 'Any', sustainabilityCategory1: 'Climate Change Impact', sustainabilityCategory2: 'Climate change adaptation and resilience (design services)', linkedFormSuggestion: 'form-technical', unspscPrefixes: ['72', '71'] },
+        { id: 'SP-014', name: 'SP - Disability inclusion in events', description: 'The bidder shall provide a method statement describing their approach or an assessment for disability inclusion as part of the organising of the event. The statement or assessment should address: Accessible advertising, Targeted advertising, Questionnaire on disability disclosure or requirements, Venue (Visibility, Acoustics, Mobility, Assistive technology), Need for assistive persons (Sign Language Interpretation, Mobility support), Displays, accessible documents, information desks, Food options and dietary requirements', category: 'Any', evaluationMethod: 'Any', sustainabilityCategory1: 'Disability inclusion', sustainabilityCategory2: 'Events', linkedFormSuggestion: 'form-technical', unspscPrefixes: ['81', '92'] },
+        { id: 'SP-015', name: 'SP - Biodiversity impacts', description: 'The bidder shall provide details on their understanding, experience, and achievements in ensuring that extracted or harvested materials used in production, manufacturing processes, final products and/or services provided have minimal adverse biodiversity impacts', category: 'Any', evaluationMethod: 'Any', sustainabilityCategory1: 'Environmental sustainability', sustainabilityCategory2: 'Biodiversity impacts', linkedFormSuggestion: 'form-sustainability', unspscPrefixes: [] },
+        { id: 'SP-016', name: 'SP - Carbon footprint reduction efforts', description: 'The bidder shall provide documentation which outlines their approach, strategy, and/or current efforts to reduce the carbon footprint of their organisation', category: 'Any', evaluationMethod: 'Any', sustainabilityCategory1: 'Climate Change Impact', sustainabilityCategory2: 'Carbon footprint reduction efforts', linkedFormSuggestion: 'form-sustainability', unspscPrefixes: [] },
+        { id: 'SP-017', name: 'SP - Life cycle costing analysis', description: 'The price of the offered product will be evaluated on the basis of Life Cycle Costing (LCC). In an LCC evaluation, all costs that occur over a product\'s lifetime are added, hence, providing a more comprehensive cost estimate. Bidders are requested to fill in the respective costs as required in the price schedule form.', category: 'Any', evaluationMethod: 'Any', sustainabilityCategory1: 'Environmental sustainability', sustainabilityCategory2: 'Lifecycle costing analysis', linkedFormSuggestion: 'form-financial', unspscPrefixes: [] }
       ];
       
       // Sustainable Procurement Categories
@@ -19817,13 +19867,17 @@
       
       // ===== CRITERIA LIBRARY FUNCTIONS =====
       let selectedLibraryCriteria = [];
+      let selectedSuggestedCriteria = [];
       let criteriaLibraryFilter = 'all';
       let criteriaLibrarySearchTerm = '';
+      let criteriaLibraryActiveTab = 'library'; // 'library' | 'suggested'
       
-      window.openCriteriaLibraryModal = function() {
+      window.openCriteriaLibraryModal = function(openSuggestedTab) {
         selectedLibraryCriteria = [];
+        selectedSuggestedCriteria = [];
         criteriaLibraryFilter = 'all';
         criteriaLibrarySearchTerm = '';
+        criteriaLibraryActiveTab = (openSuggestedTab === true) ? 'suggested' : 'library';
         
         // Reset search input
         const searchInput = document.getElementById('eval-criteria-library-search');
@@ -19835,17 +19889,94 @@
           if (btn.textContent === 'All') btn.classList.add('active');
         });
         
+        // Update tab UI
+        document.querySelectorAll('.eval-criteria-library-tab').forEach(t => t.classList.remove('active'));
+        const tabEl = document.getElementById('eval-criteria-library-tab-' + criteriaLibraryActiveTab);
+        if (tabEl) tabEl.classList.add('active');
+        document.querySelectorAll('.eval-criteria-library-tab-pane').forEach(p => p.classList.remove('active'));
+        const paneEl = document.getElementById('eval-criteria-library-pane-' + criteriaLibraryActiveTab);
+        if (paneEl) paneEl.classList.add('active');
+        
         renderCriteriaLibrary();
+        renderSuggestedCriteria();
         updateCriteriaLibrarySelectedInfo();
         
         const modal = document.getElementById('eval-criteria-library-modal');
         if (modal) modal.style.display = 'flex';
       }
       
+      window.switchCriteriaLibraryTab = function(tabId) {
+        criteriaLibraryActiveTab = tabId;
+        document.querySelectorAll('.eval-criteria-library-tab').forEach(t => t.classList.remove('active'));
+        const tabEl = document.getElementById('eval-criteria-library-tab-' + tabId);
+        if (tabEl) tabEl.classList.add('active');
+        document.querySelectorAll('.eval-criteria-library-tab-pane').forEach(p => p.classList.remove('active'));
+        const paneEl = document.getElementById('eval-criteria-library-pane-' + tabId);
+        if (paneEl) paneEl.classList.add('active');
+        if (tabId === 'suggested') renderSuggestedCriteria();
+        else renderCriteriaLibrary();
+        updateCriteriaLibrarySelectedInfo();
+      }
+      
+      function getSuggestedCriteriaForCurrentUnspsc() {
+        // Demo: show all 17 suggested criteria regardless of UNSPSC
+        return suggestedCriteriaByUnspsc.slice();
+      }
+      
+      function renderSuggestedCriteria() {
+        const grid = document.getElementById('eval-criteria-library-suggested-grid');
+        if (!grid) return;
+        const suggested = getSuggestedCriteriaForCurrentUnspsc();
+        
+        if (suggested.length === 0) {
+          grid.innerHTML = `
+            <div class="criteria-library-empty" style="text-align: center; padding: var(--spacing-2xl); color: var(--text-muted);">
+              <i class="pi pi-search criteria-library-empty-icon" style="font-size: 48px; margin-bottom: var(--spacing-md); opacity: 0.5;"></i>
+              <p class="criteria-library-empty-text">No suggested criteria available</p>
+            </div>
+          `;
+          return;
+        }
+        
+        const isSelected = (id) => selectedSuggestedCriteria.includes(id);
+        grid.innerHTML = suggested.map(c => {
+          const selected = isSelected(c.id);
+          const spLabel = [c.sustainabilityCategory1, c.sustainabilityCategory2].filter(Boolean).join(' – ');
+          return `
+            <div class="criteria-library-item suggested-criterion ${selected ? 'selected' : ''}" onclick="toggleSuggestedCriterionSelection('${c.id}')" style="padding: 12px; border: 2px solid ${selected ? 'var(--primary-500)' : 'var(--surface-200)'}; border-radius: var(--radius-md); background: ${selected ? 'var(--primary-50)' : 'var(--surface-0)'}; cursor: pointer; transition: all 0.2s;">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                <div style="flex: 1;">
+                  <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                    <span style="font-size: 10px; color: var(--text-muted); font-family: monospace; background: var(--surface-100); padding: 1px 4px; border-radius: 3px;">${c.id}</span>
+                    <span style="background: var(--warning-50); color: var(--warning-700); padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 600;"><i class="pi pi-bolt" style="font-size: 10px; margin-right: 4px;"></i>Category & Method: set before adding</span>
+                  </div>
+                  <div style="font-weight: 600; color: var(--text-primary); font-size: 13px; line-height: 1.3;">${c.name}</div>
+                </div>
+                <div style="display: flex; align-items: center;">${selected ? '<i class="pi pi-check-circle" style="color: var(--primary-500); font-size: 18px;"></i>' : '<i class="pi pi-circle" style="color: var(--surface-300); font-size: 18px;"></i>'}</div>
+              </div>
+              <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.4; margin-bottom: 8px;">${(c.description || '').length > 140 ? c.description.substring(0, 140) + '...' : c.description}</div>
+              <div style="display: flex; flex-wrap: wrap; gap: 6px; font-size: 10px;">
+                <span style="background: var(--success-50); color: var(--success-700); padding: 3px 8px; border-radius: 4px;"><i class="pi pi-leaf" style="margin-right: 4px;"></i>${spLabel || 'SP'}</span>
+                ${c.linkedFormSuggestion ? '<span style="background: var(--info-50); color: var(--info-700); padding: 3px 8px; border-radius: 4px;"><i class="pi pi-link" style="margin-right: 4px;"></i>Linked form</span>' : ''}
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+      
+      window.toggleSuggestedCriterionSelection = function(id) {
+        const idx = selectedSuggestedCriteria.indexOf(id);
+        if (idx === -1) selectedSuggestedCriteria.push(id);
+        else selectedSuggestedCriteria.splice(idx, 1);
+        renderSuggestedCriteria();
+        updateCriteriaLibrarySelectedInfo();
+      }
+      
       window.closeCriteriaLibraryModal = function() {
         const modal = document.getElementById('eval-criteria-library-modal');
         if (modal) modal.style.display = 'none';
         selectedLibraryCriteria = [];
+        selectedSuggestedCriteria = [];
       }
       
       window.filterCriteriaLibrary = function(searchTerm) {
@@ -19865,7 +19996,9 @@
       
       window.clearLibrarySelection = function() {
         selectedLibraryCriteria = [];
+        selectedSuggestedCriteria = [];
         renderCriteriaLibrary();
+        renderSuggestedCriteria();
         updateCriteriaLibrarySelectedInfo();
       }
       
@@ -20148,8 +20281,9 @@
         const countSpan = document.getElementById('eval-criteria-library-selected-count');
         const addBtn = document.getElementById('add-eval-criteria-from-library-btn');
         const addCountSpan = document.getElementById('add-eval-criteria-count');
-        
-        const count = selectedLibraryCriteria.length;
+        const addBtnLabel = document.getElementById('add-eval-criteria-from-library-label');
+        const isSuggestedTab = criteriaLibraryActiveTab === 'suggested';
+        const count = isSuggestedTab ? selectedSuggestedCriteria.length : selectedLibraryCriteria.length;
         
         if (infoDiv) {
           infoDiv.style.display = count > 0 ? 'block' : 'none';
@@ -20163,9 +20297,17 @@
         if (addCountSpan) {
           addCountSpan.textContent = count;
         }
+        if (addBtnLabel) {
+          addBtnLabel.textContent = isSuggestedTab ? 'Configure & Add Selected' : 'Add Selected';
+        }
       }
       
       window.addSelectedCriteriaFromLibrary = function() {
+        if (criteriaLibraryActiveTab === 'suggested') {
+          if (selectedSuggestedCriteria.length === 0) return;
+          openSuggestedCriteriaConfigureModal();
+          return;
+        }
         if (selectedLibraryCriteria.length === 0) return;
         
         const isCumulativeAnalysis = evaluationBlockValues.evaluationMethod === 'Cumulative analysis';
@@ -20220,6 +20362,93 @@
           } else {
             showNotification(`${addedCount} criteria added from library`, 'success');
           }
+        }
+      }
+      
+      // Suggested criteria: configure Category + Evaluation Method before adding
+      function openSuggestedCriteriaConfigureModal() {
+        const modal = document.getElementById('suggested-criteria-configure-modal');
+        const tbody = document.getElementById('suggested-criteria-configure-tbody');
+        if (!modal || !tbody) return;
+        const items = selectedSuggestedCriteria.map(id => suggestedCriteriaByUnspsc.find(s => s.id === id)).filter(Boolean);
+        tbody.innerHTML = items.map((s, i) => {
+          const catId = 'suggested-cat-' + s.id;
+          const methodId = 'suggested-method-' + s.id;
+          return `
+            <tr>
+              <td style="padding: 10px; vertical-align: top;">
+                <div style="font-weight: 600; font-size: 12px;">${s.name}</div>
+                <div style="font-size: 10px; color: var(--text-muted); margin-top: 4px;">${(s.description || '').substring(0, 80)}...</div>
+              </td>
+              <td style="padding: 8px;">
+                <select class="form-select" id="${catId}" style="width: 100%; font-size: 12px; padding: 6px 8px;">
+                  <option value="">Select category...</option>
+                  ${evaluationCriteriaCategories.map(c => '<option value="' + c + '">' + c + '</option>').join('')}
+                </select>
+              </td>
+              <td style="padding: 8px;">
+                <select class="form-select" id="${methodId}" style="width: 100%; font-size: 12px; padding: 6px 8px;">
+                  <option value="">Select method...</option>
+                  <option value="Pass/Fail">Pass/Fail</option>
+                  <option value="Numeric">Numeric</option>
+                </select>
+              </td>
+            </tr>
+          `;
+        }).join('');
+        modal.style.display = 'flex';
+      }
+      
+      window.closeSuggestedCriteriaConfigureModal = function() {
+        const modal = document.getElementById('suggested-criteria-configure-modal');
+        if (modal) modal.style.display = 'none';
+      }
+      
+      window.confirmSuggestedCriteriaConfigure = function() {
+        const items = selectedSuggestedCriteria.map(id => suggestedCriteriaByUnspsc.find(s => s.id === id)).filter(Boolean);
+        const isCumulativeAnalysis = evaluationBlockValues.evaluationMethod === 'Cumulative analysis';
+        let added = 0;
+        let skipped = 0;
+        for (const s of items) {
+          const category = (document.getElementById('suggested-cat-' + s.id) || {}).value;
+          const method = (document.getElementById('suggested-method-' + s.id) || {}).value;
+          if (!category || !method) {
+            if (typeof showNotification === 'function') showNotification('Set Category and Evaluation Method for each criterion', 'warning');
+            return;
+          }
+          if (method === 'Numeric' && !isCumulativeAnalysis) {
+            skipped++;
+            continue;
+          }
+          const newCriterion = {
+            id: 'SP-' + String(evaluationCriteriaIdCounter++).padStart(3, '0'),
+            criteria: s.name,
+            category: category,
+            type: category,
+            description: s.description,
+            evaluationMethod: method,
+            maxPoints: method === 'Numeric' ? 10 : null,
+            sustainableProcurement: [s.sustainabilityCategory1, s.sustainabilityCategory2].filter(Boolean).map(c => (c || '').trim()).filter(Boolean),
+            appliesTo: 'tender',
+            lots: [],
+            unspscCodes: [],
+            linkedForms: s.linkedFormSuggestion ? [s.linkedFormSuggestion] : [],
+            isPredefined: false,
+            fromSuggested: true,
+            suggestedId: s.id
+          };
+          evaluationCriteria.push(newCriterion);
+          added++;
+        }
+        closeSuggestedCriteriaConfigureModal();
+        closeCriteriaLibraryModal();
+        selectedSuggestedCriteria = [];
+        saveEvaluationSectionStates();
+        renderCurrentBlock();
+        restoreEvaluationSectionStates();
+        if (typeof showNotification === 'function') {
+          if (skipped > 0 && added > 0) showNotification(`${added} suggested criteria added. ${skipped} Numeric skipped (requires Cumulative analysis).`, 'warning');
+          else if (added > 0) showNotification(`${added} suggested criteria added. Set max points if Numeric.`, 'success');
         }
       }
       
@@ -22372,6 +22601,8 @@
                     <span style="color: var(--text-muted);">(${predefinedCriteria.length} predefined, ${customCriteria.length} custom)</span>
                   </span>
                 </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  ${(function(){ var n = getSuggestedCriteriaForCurrentUnspsc().length; return n > 0 ? '<button type="button" class="suggested-criteria-hint" onclick="openCriteriaLibraryModal(true);" title="View suggested criteria for this tender" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; font-size: 12px; font-weight: 500; color: var(--warning-700); background: var(--warning-50); border: 1px solid var(--warning-200); border-radius: var(--radius-md); cursor: pointer; transition: all 0.2s;"><i class="pi pi-bolt" style="font-size: 14px;"></i><span>' + n + ' suggested</span></button>' : ''; })()}
                 <div class="criterion-add-dropdown" id="criterion-add-dropdown-1">
                   <button class="btn btn-primary btn-sm dropdown-toggle" onclick="toggleCriterionAddDropdown('criterion-add-dropdown-1')">
                     <i class="pi pi-plus"></i> Add Criterion <i class="pi pi-chevron-down" style="font-size: 10px; margin-left: 4px;"></i>
@@ -22384,7 +22615,11 @@
                     <button class="dropdown-item" onclick="openCriteriaLibraryModal(); closeCriterionAddDropdowns();">
                       <i class="pi pi-book"></i> Browse Library
                     </button>
+                    <button class="dropdown-item" onclick="openCriteriaLibraryModal(true); closeCriterionAddDropdowns();" title="Suggested criteria based on UNSPSC codes in Requisition & Lots">
+                      <i class="pi pi-bolt" style="color: var(--warning-600); font-size: 14px;"></i> Suggested for this tender
+                    </button>
                   </div>
+                </div>
                 </div>
               </div>
               
@@ -22525,18 +22760,24 @@
                         <strong>${evaluationCriteria.filter(c => !c.isPredefined).length}</strong> custom
                       </span>
                     </div>
-                    <div class="criterion-add-dropdown" id="criterion-add-dropdown-2">
-                      <button class="btn btn-primary btn-sm dropdown-toggle" onclick="event.stopPropagation(); toggleCriterionAddDropdown('criterion-add-dropdown-2')">
-                        <i class="pi pi-plus"></i> Add Criterion <i class="pi pi-chevron-down" style="font-size: 10px; margin-left: 4px;"></i>
-                      </button>
-                      <div class="dropdown-menu">
-                        <button class="dropdown-item" onclick="event.stopPropagation(); openEvaluationCriterionModal(); closeCriterionAddDropdowns();">
-                          <i class="pi pi-plus-circle"></i> Create New
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      ${(function(){ var n = getSuggestedCriteriaForCurrentUnspsc().length; return n > 0 ? '<button type="button" class="suggested-criteria-hint" onclick="event.stopPropagation(); openCriteriaLibraryModal(true);" title="View suggested criteria for this tender" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; font-size: 12px; font-weight: 500; color: var(--warning-700); background: var(--warning-50); border: 1px solid var(--warning-200); border-radius: var(--radius-md); cursor: pointer; transition: all 0.2s;"><i class="pi pi-bolt" style="font-size: 14px;"></i><span>' + n + ' suggested</span></button>' : ''; })()}
+                      <div class="criterion-add-dropdown" id="criterion-add-dropdown-2">
+                        <button class="btn btn-primary btn-sm dropdown-toggle" onclick="event.stopPropagation(); toggleCriterionAddDropdown('criterion-add-dropdown-2')">
+                          <i class="pi pi-plus"></i> Add Criterion <i class="pi pi-chevron-down" style="font-size: 10px; margin-left: 4px;"></i>
                         </button>
-                        <div class="dropdown-divider"></div>
-                        <button class="dropdown-item" onclick="event.stopPropagation(); openCriteriaLibraryModal(); closeCriterionAddDropdowns();">
-                          <i class="pi pi-book"></i> Browse Library
-                        </button>
+                        <div class="dropdown-menu">
+                          <button class="dropdown-item" onclick="event.stopPropagation(); openEvaluationCriterionModal(); closeCriterionAddDropdowns();">
+                            <i class="pi pi-plus-circle"></i> Create New
+                          </button>
+                          <div class="dropdown-divider"></div>
+                          <button class="dropdown-item" onclick="event.stopPropagation(); openCriteriaLibraryModal(); closeCriterionAddDropdowns();">
+                            <i class="pi pi-book"></i> Browse Library
+                          </button>
+                          <button class="dropdown-item" onclick="event.stopPropagation(); openCriteriaLibraryModal(true); closeCriterionAddDropdowns();" title="Suggested criteria based on UNSPSC codes in Requisition & Lots">
+                            <i class="pi pi-bolt" style="color: var(--warning-600); font-size: 14px;"></i> Suggested for this tender
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -25862,58 +26103,110 @@
           <button class="modal-close-btn" onclick="closeCriteriaLibraryModal()">✕</button>
         </div>
         <div class="req-modal-body" style="padding: var(--spacing-lg); overflow-y: auto;">
-          <!-- Info Banner -->
-          <div style="background: var(--info-50); border: 1px solid var(--info-200); border-radius: var(--radius-md); padding: 12px 16px; margin-bottom: var(--spacing-md); display: flex; align-items: flex-start; gap: 10px;">
-            <i class="pi pi-info-circle" style="color: var(--info-600); font-size: 16px; margin-top: 2px;"></i>
-            <div style="font-size: 12px; color: var(--info-800); line-height: 1.5;">
-              Select criteria from the library to add to your tender. You can customize the criteria (description, method, max points, sustainable procurement categories, and linked forms) after adding them.
-            </div>
+          <!-- Tabs: Library | Suggested -->
+          <div style="display: flex; gap: 0; margin-bottom: var(--spacing-md); border-bottom: 1px solid var(--surface-200);">
+            <button type="button" class="eval-criteria-library-tab active" id="eval-criteria-library-tab-library" onclick="switchCriteriaLibraryTab('library')" style="padding: 10px 16px; font-size: 13px; font-weight: 500; color: var(--text-secondary); background: none; border: none; border-bottom: 2px solid transparent; margin-bottom: -1px; cursor: pointer;">
+              <i class="pi pi-book" style="margin-right: 6px;"></i>Library
+            </button>
+            <button type="button" class="eval-criteria-library-tab" id="eval-criteria-library-tab-suggested" onclick="switchCriteriaLibraryTab('suggested')" style="padding: 10px 16px; font-size: 13px; font-weight: 500; color: var(--text-secondary); background: none; border: none; border-bottom: 2px solid transparent; margin-bottom: -1px; cursor: pointer;">
+              <i class="pi pi-bolt" style="margin-right: 6px; color: var(--warning-600); font-size: 14px;"></i>Suggested
+            </button>
           </div>
           
-          <!-- Search and Filter Row -->
-          <div style="display: flex; gap: var(--spacing-md); align-items: center; margin-bottom: var(--spacing-md); flex-wrap: wrap;">
-            <div style="flex: 1; min-width: 250px;">
-              <div style="position: relative;">
-                <i class="pi pi-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 13px;"></i>
-                <input type="text" id="eval-criteria-library-search" class="form-input" placeholder="Search by name, description or SP category..." oninput="filterCriteriaLibrary(this.value)" style="width: 100%; padding-left: 36px;" />
+          <!-- Tab pane: Library -->
+          <div class="eval-criteria-library-tab-pane active" id="eval-criteria-library-pane-library">
+            <!-- Info Banner -->
+            <div style="background: var(--info-50); border: 1px solid var(--info-200); border-radius: var(--radius-md); padding: 12px 16px; margin-bottom: var(--spacing-md); display: flex; align-items: flex-start; gap: 10px;">
+              <i class="pi pi-info-circle" style="color: var(--info-600); font-size: 16px; margin-top: 2px;"></i>
+              <div style="font-size: 12px; color: var(--info-800); line-height: 1.5;">
+                Select criteria from the library to add to your tender. You can customize the criteria (description, method, max points, sustainable procurement categories, and linked forms) after adding them.
               </div>
             </div>
-            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-              <button class="criteria-filter-btn active" onclick="filterCriteriaByCategory('all', this)" style="font-size: 11px; padding: 6px 12px;">All</button>
-              <button class="criteria-filter-btn" onclick="filterCriteriaByCategory('Eligibility & Formal', this)" style="font-size: 11px; padding: 6px 12px; background: #f0f4f8; color: #5b7c99; border: 1px solid #d9e2ec;">Eligibility</button>
-              <button class="criteria-filter-btn" onclick="filterCriteriaByCategory('Qualification', this)" style="font-size: 11px; padding: 6px 12px; background: #f0f4f8; color: #627d98; border: 1px solid #d9e2ec;">Qualification</button>
-              <button class="criteria-filter-btn" onclick="filterCriteriaByCategory('Technical', this)" style="font-size: 11px; padding: 6px 12px; background: #f0f4f8; color: #486581; border: 1px solid #d9e2ec;">Technical</button>
+            <!-- Search and Filter Row -->
+            <div style="display: flex; gap: var(--spacing-md); align-items: center; margin-bottom: var(--spacing-md); flex-wrap: wrap;">
+              <div style="flex: 1; min-width: 250px;">
+                <div style="position: relative;">
+                  <i class="pi pi-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 13px;"></i>
+                  <input type="text" id="eval-criteria-library-search" class="form-input" placeholder="Search by name, description or SP category..." oninput="filterCriteriaLibrary(this.value)" style="width: 100%; padding-left: 36px;" />
+                </div>
+              </div>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                <button class="criteria-filter-btn active" onclick="filterCriteriaByCategory('all', this)" style="font-size: 11px; padding: 6px 12px;">All</button>
+                <button class="criteria-filter-btn" onclick="filterCriteriaByCategory('Eligibility & Formal', this)" style="font-size: 11px; padding: 6px 12px; background: #f0f4f8; color: #5b7c99; border: 1px solid #d9e2ec;">Eligibility</button>
+                <button class="criteria-filter-btn" onclick="filterCriteriaByCategory('Qualification', this)" style="font-size: 11px; padding: 6px 12px; background: #f0f4f8; color: #627d98; border: 1px solid #d9e2ec;">Qualification</button>
+                <button class="criteria-filter-btn" onclick="filterCriteriaByCategory('Technical', this)" style="font-size: 11px; padding: 6px 12px; background: #f0f4f8; color: #486581; border: 1px solid #d9e2ec;">Technical</button>
+              </div>
+            </div>
+            <!-- Legend -->
+            <div style="display: flex; gap: 16px; margin-bottom: var(--spacing-md); font-size: 11px; color: var(--text-muted); flex-wrap: wrap;">
+              <span><i class="pi pi-check-square" style="margin-right: 4px;"></i>Pass/Fail = Go/No-Go criteria</span>
+              <span><i class="pi pi-chart-bar" style="margin-right: 4px;"></i>Numeric = Scored criteria</span>
+              <span><i class="pi pi-leaf" style="margin-right: 4px; color: var(--success-600);"></i>SP = Sustainable Procurement linked</span>
+            </div>
+            <!-- Criteria Grid -->
+            <div class="criteria-library-grid" id="eval-criteria-library-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 12px; max-height: 450px; overflow-y: auto; padding-right: 4px;">
+              <!-- Populated dynamically -->
             </div>
           </div>
           
-          <!-- Legend -->
-          <div style="display: flex; gap: 16px; margin-bottom: var(--spacing-md); font-size: 11px; color: var(--text-muted); flex-wrap: wrap;">
-            <span><i class="pi pi-check-square" style="margin-right: 4px;"></i>Pass/Fail = Go/No-Go criteria</span>
-            <span><i class="pi pi-chart-bar" style="margin-right: 4px;"></i>Numeric = Scored criteria</span>
-            <span><i class="pi pi-leaf" style="margin-right: 4px; color: var(--success-600);"></i>SP = Sustainable Procurement linked</span>
-          </div>
-          
-          <!-- Criteria Grid -->
-          <div class="criteria-library-grid" id="eval-criteria-library-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 12px; max-height: 450px; overflow-y: auto; padding-right: 4px;">
-            <!-- Populated dynamically -->
+          <!-- Tab pane: Suggested (by UNSPSC) - visibility controlled by .active class only -->
+          <div class="eval-criteria-library-tab-pane" id="eval-criteria-library-pane-suggested">
+            <div style="background: var(--warning-50); border: 1px solid var(--warning-200); border-radius: var(--radius-md); padding: 12px 16px; margin-bottom: var(--spacing-md); display: flex; align-items: flex-start; gap: 10px;">
+              <i class="pi pi-bolt" style="color: var(--warning-600); font-size: 16px; margin-top: 2px;"></i>
+              <div style="font-size: 12px; color: var(--warning-800); line-height: 1.5;">
+                <strong>Suggested for this tender</strong> — these criteria are part of the Library and are suggested here based on your tender (e.g. UNSPSC). Category and Evaluation Method are empty by default; you must set them for each criterion before adding.
+              </div>
+            </div>
+            <div class="criteria-library-grid" id="eval-criteria-library-suggested-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 12px; max-height: 450px; overflow-y: auto; padding-right: 4px;">
+              <!-- Populated dynamically -->
+            </div>
           </div>
           
           <!-- Selected count -->
           <div id="eval-criteria-library-selected-info" style="margin-top: var(--spacing-md); padding: 12px 16px; background: var(--primary-50); border: 1px solid var(--primary-200); border-radius: var(--radius-md); display: none;">
             <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span style="font-size: 13px; color: var(--primary-700);">
-              <i class="pi pi-check-circle" style="margin-right: 6px;"></i>
-              <strong id="eval-criteria-library-selected-count">0</strong> criteria selected
-            </span>
+              <span style="font-size: 13px; color: var(--primary-700);">
+                <i class="pi pi-check-circle" style="margin-right: 6px;"></i>
+                <strong id="eval-criteria-library-selected-count">0</strong> criteria selected
+              </span>
               <button class="btn btn-ghost btn-xs" onclick="clearLibrarySelection()" style="font-size: 11px;">Clear Selection</button>
+            </div>
           </div>
-        </div>
         </div>
         <div class="req-modal-footer" style="border-top: 1px solid var(--surface-200); padding: 12px 20px;">
           <button class="btn btn-ghost btn-sm" onclick="closeCriteriaLibraryModal()">Cancel</button>
           <button class="btn btn-primary btn-sm" onclick="addSelectedCriteriaFromLibrary()" id="add-eval-criteria-from-library-btn" disabled>
-            <i class="pi pi-plus"></i> Add Selected (<span id="add-eval-criteria-count">0</span>)
+            <i class="pi pi-plus"></i> <span id="add-eval-criteria-from-library-label">Add Selected</span> (<span id="add-eval-criteria-count">0</span>)
           </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Configure Suggested Criteria (Category + Evaluation Method) Modal -->
+    <div class="req-modal" id="suggested-criteria-configure-modal" onclick="if(event.target === this) closeSuggestedCriteriaConfigureModal()" style="display: none;">
+      <div class="req-modal-content" style="max-width: 700px;">
+        <div class="req-modal-header">
+          <span class="req-modal-title"><i class="pi pi-bolt" style="margin-right: 8px; color: var(--warning-600); font-size: 16px;"></i>Configure suggested criteria</span>
+          <button class="modal-close-btn" onclick="closeSuggestedCriteriaConfigureModal()">✕</button>
+        </div>
+        <div class="req-modal-body" style="padding: var(--spacing-lg);">
+          <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--spacing-md);">Set Category and Evaluation Method for each criterion before adding to the tender.</p>
+          <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+              <thead>
+                <tr style="background: var(--surface-50); border-bottom: 1px solid var(--surface-200);">
+                  <th style="padding: 10px; text-align: left; font-weight: 600;">Criterion</th>
+                  <th style="padding: 10px; width: 180px;">Category</th>
+                  <th style="padding: 10px; width: 140px;">Evaluation Method</th>
+                </tr>
+              </thead>
+              <tbody id="suggested-criteria-configure-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="req-modal-footer" style="border-top: 1px solid var(--surface-200); padding: 12px 20px;">
+          <button class="btn btn-ghost btn-sm" onclick="closeSuggestedCriteriaConfigureModal()">Cancel</button>
+          <button class="btn btn-primary btn-sm" onclick="confirmSuggestedCriteriaConfigure()"><i class="pi pi-check"></i> Add to tender</button>
         </div>
       </div>
     </div>
