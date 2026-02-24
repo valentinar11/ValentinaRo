@@ -662,6 +662,121 @@
             font-size: 18px;
         }
 
+        /* Action Required carousel (Overview) */
+        .action-required-carousel {
+            position: relative;
+            overflow: hidden;
+        }
+        .action-required-track {
+            display: flex;
+            gap: var(--spacing-sm);
+            overflow-x: auto;
+            overflow-y: hidden;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            padding: var(--spacing-xs) 0;
+            margin: 0 36px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .action-required-track::-webkit-scrollbar {
+            display: none;
+        }
+        .action-required-carousel .action-required-card {
+            flex: 0 0 auto;
+            min-width: 280px;
+            max-width: 280px;
+            scroll-snap-align: start;
+        }
+        .action-required-prev,
+        .action-required-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid var(--surface-300);
+            background: var(--surface-0);
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            transition: background 0.2s, color 0.2s, border-color 0.2s;
+            box-shadow: var(--shadow-sm);
+        }
+        .action-required-prev:hover:not(:disabled),
+        .action-required-next:hover:not(:disabled) {
+            background: var(--surface-100);
+            color: var(--primary-500);
+            border-color: var(--primary-300);
+        }
+        .action-required-prev:disabled,
+        .action-required-next:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        .action-required-prev { left: 0; }
+        .action-required-next { right: 0; }
+        .action-required-card {
+            display: flex;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm) var(--spacing-md);
+            background: var(--surface-50);
+            border: 1px solid var(--surface-200);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+            align-items: flex-start;
+        }
+        .action-required-card:hover {
+            background: var(--surface-0);
+            box-shadow: var(--shadow-sm);
+        }
+        .action-required-card-accent-warning { border-left: 3px solid var(--warning-500); }
+        .action-required-card-accent-info { border-left: 3px solid var(--info-500); }
+        .action-required-card-accent-success { border-left: 3px solid var(--success-500); }
+        .action-required-card-accent-primary { border-left: 3px solid var(--primary-500); }
+        .action-required-card-icon { font-size: 16px; flex-shrink: 0; margin-top: 2px; }
+        .action-required-card-body { flex: 1; min-width: 0; }
+        .action-required-card-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 2px;
+        }
+        .action-required-card-ref {
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--primary-500);
+        }
+        .action-required-card-status {
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        .action-required-card-step {
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+        .action-required-card-instruction {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        .action-required-card-created {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
         /* Tender Table */
         .tender-table {
             width: 100%;
@@ -4498,6 +4613,155 @@
         }
 
         /* ===== CLARIFICATIONS TAB STYLES ===== */
+        .clarifications-top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--spacing-md);
+            padding: var(--spacing-sm) var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+            background: var(--surface-50);
+            border: 1px solid var(--surface-100);
+            border-radius: var(--radius-md);
+            font-size: 13px;
+        }
+        .clarifications-stats-inline {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+        .clarification-deadline-inline {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            font-size: 12px;
+        }
+        .clarification-deadline-inline i {
+            color: var(--info-600);
+            font-size: 14px;
+        }
+        .clarification-deadline-label {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        .clarification-deadline-value {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+        .clarification-answer .answer-meta {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: 4px;
+        }
+        .clarification-answer .answer-label {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--success-600);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .clarification-answer .answer-label i {
+            font-size: 11px;
+        }
+        .clarification-answer .answer-date {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+        .clarifications-search {
+            padding: 6px 10px 6px 28px;
+            font-size: 12px;
+            border: 1px solid var(--surface-200);
+            border-radius: var(--radius-sm);
+            background: var(--surface-0) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23999' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'/%3E%3C/svg%3E") no-repeat 8px center;
+            min-width: 140px;
+        }
+        .clarifications-search:focus {
+            outline: none;
+            border-color: var(--primary-300);
+        }
+        .clarifications-quick-filters {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            margin-bottom: var(--spacing-md);
+            flex-wrap: wrap;
+        }
+        /* Clarifications: row 1 = actions (same look as header bar), aligned right */
+        .clarifications-toolbar-actions-row {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: var(--spacing-sm);
+        }
+        .clarifications-toolbar-actions-row .action-bar-right {
+            flex-shrink: 0;
+        }
+        .clarifications-toolbar-filters-row {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm) 0;
+            border-bottom: 1px solid var(--surface-100);
+            margin-bottom: var(--spacing-md);
+            flex-wrap: wrap;
+        }
+        .clarifications-toolbar-filters-row .quick-filters-label {
+            margin-left: var(--spacing-xs);
+            margin-right: 2px;
+        }
+        .quick-filters-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-right: 4px;
+        }
+        .quick-filter-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            font-size: 12px;
+            border: 1px solid var(--surface-200);
+            border-radius: var(--radius-sm);
+            background: var(--surface-0);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .quick-filter-btn:hover {
+            border-color: var(--surface-300);
+            background: var(--surface-50);
+            color: var(--text-primary);
+        }
+        .quick-filter-btn.active {
+            border-color: var(--primary-400);
+            background: var(--primary-50);
+            color: var(--primary-700);
+            font-weight: 500;
+        }
+        .quick-filter-btn i {
+            font-size: 11px;
+        }
+        .clarifications-selection-bar {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            padding: var(--spacing-sm) var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+            background: var(--primary-50);
+            border: 1px solid var(--primary-200);
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            color: var(--text-primary);
+        }
+        .clarifications-selection-bar .selection-count {
+            font-weight: 700;
+            color: var(--primary-700);
+        }
         .clarifications-stats-bar {
             display: flex;
             align-items: center;
@@ -4507,6 +4771,9 @@
             border-radius: var(--radius-md);
             margin-bottom: var(--spacing-md);
             border: 1px solid var(--surface-100);
+        }
+        .clarifications-top-bar .clarifications-stat {
+            margin: 0;
         }
 
         .clarifications-stat {
@@ -4547,18 +4814,14 @@
         }
 
         .clarifications-toolbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             margin-bottom: var(--spacing-md);
-            padding: var(--spacing-sm) 0;
-            border-bottom: 1px solid var(--surface-100);
         }
 
         .toolbar-left, .toolbar-right {
             display: flex;
             align-items: center;
             gap: var(--spacing-sm);
+            flex-wrap: wrap;
         }
 
         .filter-select-compact {
@@ -4779,7 +5042,10 @@
             line-height: 1.5;
         }
 
+        /* Answer aligned right (chat-like: supplier question left, our answer right) */
         .clarification-answer {
+            margin-left: auto;
+            max-width: 90%;
             background: var(--success-50);
             padding: var(--spacing-sm) var(--spacing-md);
             border-radius: var(--radius-sm);
@@ -6522,39 +6788,59 @@
                 <div class="card-header">
                     <h2 class="card-title"><i class="pi pi-bell"></i>Action Required</h2>
                     <span style="font-size: 12px; font-weight: 500; color: var(--text-muted);">4 items</span>
+                </div>
+                <div class="action-required-carousel" id="action-required-carousel">
+                    <button type="button" class="action-required-prev" id="action-required-prev" aria-label="Previous actions" title="Previous"><i class="pi pi-chevron-left"></i></button>
+                    <button type="button" class="action-required-next" id="action-required-next" aria-label="Next actions" title="Next"><i class="pi pi-chevron-right"></i></button>
+                    <div class="action-required-track" id="action-required-track">
+                    <div class="action-required-card action-required-card-accent-warning" onclick="showTenderDetails({id: 'ITB/2024/089', title: 'Laboratory Equipment Procurement', status: 'Pre-Clearance', statusKey: 'pre-clearance'})">
+                        <i class="pi pi-check-square action-required-card-icon" style="color: var(--warning-500);"></i>
+                        <div class="action-required-card-body">
+                            <div class="action-required-card-head">
+                                <span class="action-required-card-ref">ITB/2024/089</span>
+                                <span class="action-required-card-status" style="background: var(--warning-100); color: var(--warning-700);">Pre-Clearance</span>
+                            </div>
+                            <div class="action-required-card-step">Pre-Clearance Approval</div>
+                            <div class="action-required-card-instruction">Approve or reject the tender package for clearance.</div>
+                            <span class="action-required-card-created">Created 18 Feb 2025</span>
                         </div>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--spacing-sm);">
-                    <div style="display: flex; align-items: center; gap: var(--spacing-sm); padding: var(--spacing-sm) var(--spacing-md); background: var(--surface-50); border: 1px solid var(--surface-200); border-left: 3px solid var(--warning-500); border-radius: var(--radius-sm); cursor: pointer; transition: all 0.2s;" onclick="showTenderDetails({id: 'ITB/2024/089', title: 'Laboratory Equipment Procurement', status: 'Pre-Clearance', statusKey: 'pre-clearance'})">
-                        <i class="pi pi-check-square" style="color: var(--warning-500); font-size: 16px;"></i>
-                        <div style="flex: 1; min-width: 0;">
-                            <div style="font-weight: 600; font-size: 13px; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">ITB/2024/089 - Approval Required</div>
-                            <div style="font-size: 11px; color: var(--text-muted);">Laboratory Equipment • Due Today</div>
-                        </div>
-                        <span style="padding: 2px 8px; background: var(--warning-100); color: var(--warning-700); border-radius: 10px; font-size: 10px; font-weight: 600;">Urgent</span>
                     </div>
-                    <div style="display: flex; align-items: center; gap: var(--spacing-sm); padding: var(--spacing-sm) var(--spacing-md); background: var(--surface-50); border: 1px solid var(--surface-200); border-left: 3px solid var(--info-500); border-radius: var(--radius-sm); cursor: pointer; transition: all 0.2s;" onclick="goToClarificationsTab('RFQ/2024/001', 'Supply of Medical Equipment')">
-                        <i class="pi pi-comments" style="color: var(--info-500); font-size: 16px;"></i>
-                        <div style="flex: 1; min-width: 0;">
-                            <div style="font-weight: 600; font-size: 13px; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">RFQ/2024/001 - 5 Clarifications</div>
-                            <div style="font-size: 11px; color: var(--text-muted);">Medical Equipment • Respond</div>
+                    <div class="action-required-card action-required-card-accent-info" onclick="goToClarificationsTab('RFQ/2024/001', 'Supply of Medical Equipment')">
+                        <i class="pi pi-comments action-required-card-icon" style="color: var(--info-500);"></i>
+                        <div class="action-required-card-body">
+                            <div class="action-required-card-head">
+                                <span class="action-required-card-ref">RFQ/2024/001</span>
+                                <span class="action-required-card-status" style="background: var(--info-100); color: var(--info-700);">Posted</span>
+                            </div>
+                            <div class="action-required-card-step">Clarifications</div>
+                            <div class="action-required-card-instruction">Respond to 5 pending clarification requests from bidders.</div>
+                            <span class="action-required-card-created">Created 12 Feb 2025</span>
                         </div>
-                        <span style="padding: 2px 8px; background: var(--info-100); color: var(--info-700); border-radius: 10px; font-size: 10px; font-weight: 600;">5 new</span>
                     </div>
-                    <div style="display: flex; align-items: center; gap: var(--spacing-sm); padding: var(--spacing-sm) var(--spacing-md); background: var(--surface-50); border: 1px solid var(--surface-200); border-left: 3px solid var(--success-500); border-radius: var(--radius-sm); cursor: pointer; transition: all 0.2s;" onclick="openBidOpeningFromDashboard('ITB/2024/067')">
-                        <i class="pi pi-envelope-open" style="color: var(--success-500); font-size: 16px;"></i>
-                        <div style="flex: 1; min-width: 0;">
-                            <div style="font-weight: 600; font-size: 13px; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">ITB/2024/067 - Bid Opening</div>
-                            <div style="font-size: 11px; color: var(--text-muted);">Construction Materials • 8 bids</div>
+                    <div class="action-required-card action-required-card-accent-success" onclick="openBidOpeningFromDashboard('ITB/2024/067')">
+                        <i class="pi pi-envelope-open action-required-card-icon" style="color: var(--success-500);"></i>
+                        <div class="action-required-card-body">
+                            <div class="action-required-card-head">
+                                <span class="action-required-card-ref">ITB/2024/067</span>
+                                <span class="action-required-card-status" style="background: var(--success-100); color: var(--success-700);">Bid Opening</span>
+                            </div>
+                            <div class="action-required-card-step">Bid Opening</div>
+                            <div class="action-required-card-instruction">Conduct bid opening; 8 bids received and ready to open.</div>
+                            <span class="action-required-card-created">Created 05 Feb 2025</span>
                         </div>
-                        <span style="padding: 2px 8px; background: var(--success-100); color: var(--success-700); border-radius: 10px; font-size: 10px; font-weight: 600;">Ready</span>
                     </div>
-                    <div style="display: flex; align-items: center; gap: var(--spacing-sm); padding: var(--spacing-sm) var(--spacing-md); background: var(--surface-50); border: 1px solid var(--surface-200); border-left: 3px solid var(--primary-500); border-radius: var(--radius-sm); cursor: pointer; transition: all 0.2s;" onclick="continueEvaluation('RFP/2024/045')">
-                        <i class="pi pi-chart-line" style="color: var(--primary-500); font-size: 16px;"></i>
-                        <div style="flex: 1; min-width: 0;">
-                            <div style="font-weight: 600; font-size: 13px; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">RFP/2024/045 - Evaluation</div>
-                            <div style="font-size: 11px; color: var(--text-muted);">IT Infrastructure • 65% done</div>
+                    <div class="action-required-card action-required-card-accent-primary" onclick="continueEvaluation('RFP/2024/045')">
+                        <i class="pi pi-chart-line action-required-card-icon" style="color: var(--primary-500);"></i>
+                        <div class="action-required-card-body">
+                            <div class="action-required-card-head">
+                                <span class="action-required-card-ref">RFP/2024/045</span>
+                                <span class="action-required-card-status" style="background: var(--primary-100); color: var(--primary-700);">Evaluation</span>
+                            </div>
+                            <div class="action-required-card-step">Evaluation Panel Approval</div>
+                            <div class="action-required-card-instruction">Complete and sign the evaluation report (65% done).</div>
+                            <span class="action-required-card-created">Created 10 Feb 2025</span>
                         </div>
-                        <span style="padding: 2px 8px; background: var(--primary-100); color: var(--primary-700); border-radius: 10px; font-size: 10px; font-weight: 600;">65%</span>
+                    </div>
                     </div>
                 </div>
             </div>
@@ -7245,10 +7531,10 @@
                             </div>
                         </div>
 
-                        <!-- Tender Information Tabs -->
+                        <!-- Tender Information Tabs (same order & labels as tender-authoring, read-only view) -->
                         <div class="tender-tabs-nav" id="tabs-info">
                             <button class="tender-tab-btn active" onclick="switchTab('tab-general', this)">
-                                <i class="pi pi-file"></i> General
+                                <i class="pi pi-file"></i> General Information
                             </button>
                             <button class="tender-tab-btn" onclick="switchTab('tab-project', this)">
                                 <i class="pi pi-briefcase"></i> Project & Tender Details
@@ -7260,16 +7546,16 @@
                                 <i class="pi pi-check-square"></i> Requirements
                             </button>
                             <button class="tender-tab-btn" onclick="switchTab('tab-content', this)">
-                                <i class="pi pi-folder-open"></i> Tender Documents & Forms
+                                <i class="pi pi-upload"></i> Tender Documents & Forms
                             </button>
                             <button class="tender-tab-btn" onclick="switchTab('tab-evaluation', this)">
                                 <i class="pi pi-chart-bar"></i> Evaluation
                             </button>
                             <button class="tender-tab-btn" onclick="switchTab('tab-competition', this)">
-                                <i class="pi pi-users"></i> Competition
+                                <i class="pi pi-flag"></i> Competition
                             </button>
                             <button class="tender-tab-btn" onclick="switchTab('tab-team', this)">
-                                <i class="pi pi-user-edit"></i> Team
+                                <i class="pi pi-users"></i> Team
                             </button>
                         </div>
 
@@ -7278,11 +7564,11 @@
                             <button class="tender-tab-btn" onclick="switchTab('tab-workflow', this)">
                                 <i class="pi pi-sitemap"></i> Workflow
                             </button>
-                            <button class="tender-tab-btn" onclick="switchTab('tab-amendments', this)">
-                                <i class="pi pi-pencil"></i> Amendments <span class="tab-badge">2</span>
-                            </button>
                             <button class="tender-tab-btn" onclick="switchTab('tab-clarifications', this)">
                                 <i class="pi pi-comments"></i> Clarifications <span class="tab-badge">5</span>
+                            </button>
+                            <button class="tender-tab-btn" onclick="switchTab('tab-amendments', this)">
+                                <i class="pi pi-pencil"></i> Amendments <span class="tab-badge">2</span>
                             </button>
                             <button class="tender-tab-btn" onclick="switchTab('tab-submissions', this)">
                                 <i class="pi pi-upload"></i> Submissions <span class="tab-badge">3</span>
@@ -7295,8 +7581,9 @@
                             </button>
                         </div>
 
-                        <!-- Tab Panel: General Information -->
+                        <!-- Tab Panel: General Information (read-only mirror of authoring Basic Information) -->
                         <div id="tab-general" class="tender-tab-panel active">
+                            <div style="font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 6px;"><i class="pi pi-file" style="margin-right: 4px;"></i> Basic Information</div>
                             <div class="info-grid-2col">
                                 <div class="info-row">
                                     <div class="info-label">Reference</div>
@@ -7307,7 +7594,7 @@
                                     <div class="info-value">Supply and Delivery of Medical Equipment and Supplies</div>
                                 </div>
                                 <div class="info-row">
-                                    <div class="info-label">Sourcing Type</div>
+                                    <div class="info-label">Sourcing or Solicitation</div>
                                     <div class="info-value"><span class="status-badge status-info">Solicitation</span></div>
                                 </div>
                                 <div class="info-row">
@@ -7323,7 +7610,15 @@
                                     <div class="info-value"><span class="status-badge status-neutral">Goods</span></div>
                                 </div>
                                 <div class="info-row">
-                                    <div class="info-label">Beneficiary Countries</div>
+                                    <div class="info-label">Description</div>
+                                    <div class="info-value" style="grid-column: 2 / -1;">—</div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">Organizational Unit</div>
+                                    <div class="info-value">UNOPS Myanmar Multi-Country Office</div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">Beneficiary country(ies)</div>
                                     <div class="info-value">
                                         <div class="country-tags">
                                             <span class="country-tag">Afghanistan</span>
@@ -7337,16 +7632,100 @@
                                     <div class="info-value">Online Only</div>
                                 </div>
                                 <div class="info-row">
+                                    <div class="info-label">Waiver for Bid Receipt Modality</div>
+                                    <div class="info-value">—</div>
+                                </div>
+                                <div class="info-row">
                                     <div class="info-label">EPP (Emergency Procurement)</div>
                                     <div class="info-value">No</div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">EPP Authorization (Jira Link)</div>
+                                    <div class="info-value">—</div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">EPP Authorization End Date</div>
+                                    <div class="info-value">—</div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">Scope of EPP Approval</div>
+                                    <div class="info-value">—</div>
                                 </div>
                                 <div class="info-row">
                                     <div class="info-label">Medicine / Medical Equipment</div>
                                     <div class="info-value">Yes</div>
                                 </div>
                                 <div class="info-row">
+                                    <div class="info-label">Policy Exception for Medicine/Medical Equipment (Annex 2 Jira Link)</div>
+                                    <div class="info-value">JIRA-HEALTH-042</div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">Contract Amendment</div>
+                                    <div class="info-value">No</div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">Procurement Lifecycle & Related Processes</div>
+                                    <div class="info-value">—</div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">Is this a Retender?</div>
+                                    <div class="info-value">No</div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">Lessons Learned from Previous Process</div>
+                                    <div class="info-value">—</div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">Design Review Documentation</div>
+                                    <div class="info-value">—</div>
+                                </div>
+                                <div class="info-row">
                                     <div class="info-label">UN Collaboration</div>
                                     <div class="info-value">No</div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">UN Collaboration Type</div>
+                                    <div class="info-value">—</div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">UN Agencies</div>
+                                    <div class="info-value">—</div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">Is this Procurement of Innovation?</div>
+                                    <div class="info-value">No</div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">Is this a Lease</div>
+                                    <div class="info-value">No</div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">SRM Compliance Document</div>
+                                    <div class="info-value">—</div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">Has there been early market engagement/pre-tender consultation?</div>
+                                    <div class="info-value">Yes</div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">Was vendor training conducted prior to initiating this tender?</div>
+                                    <div class="info-value">No</div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">Type of Training</div>
+                                    <div class="info-value">—</div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">Number of vendors that attended the training</div>
+                                    <div class="info-value">—</div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">Comments on content of the training</div>
+                                    <div class="info-value">—</div>
+                                </div>
+                                <div class="info-row">
+                                    <div class="info-label">Training Documentation (optional)</div>
+                                    <div class="info-value">—</div>
                                 </div>
                                 <div class="info-row">
                                     <div class="info-label">Bid Validity Period</div>
@@ -7354,16 +7733,16 @@
                                 </div>
                             </div>
                             <div class="info-description-box" style="margin-top: var(--spacing-md);">
-                                <div class="info-label" style="margin-bottom: var(--spacing-xs);">Description</div>
+                                <div class="info-label" style="margin-bottom: var(--spacing-xs);">Description (full text)</div>
                                 <p style="line-height: 1.6; color: var(--text-secondary); margin: 0;">
                                     UNOPS requires the supply and delivery of medical equipment for healthcare facilities in three countries. The procurement includes diagnostic equipment, patient monitoring systems, surgical lighting, and anesthesia machines. All equipment must meet international quality standards (ISO 13485, CE marking) and include installation, commissioning, and training services.
                                 </p>
                             </div>
                         </div>
 
-                        <!-- Tab Panel: Project & Tender Details -->
+                        <!-- Tab Panel: Project & Tender Details (read-only mirror of authoring) -->
                         <div id="tab-project" class="tender-tab-panel">
-                            <div style="font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 6px;">Project Information</div>
+                            <div style="font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 6px;"><i class="pi pi-briefcase" style="margin-right: 4px;"></i> Project Information</div>
                             <div class="info-grid-2col">
                                 <div class="info-row">
                                     <div class="info-label">Work Package (GLA)</div>
@@ -7387,7 +7766,7 @@
                                 </div>
                             </div>
 
-                            <div style="font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em; margin: var(--spacing-md) 0 6px;">Tender Particulars</div>
+                            <div style="font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em; margin: var(--spacing-md) 0 6px;"><i class="pi pi-sliders-h" style="margin-right: 4px;"></i> Particulars</div>
                             <div class="particulars-grid">
                                 <div class="particular-item">
                                     <div class="particular-label">Bid Security</div>
@@ -7459,9 +7838,10 @@
                             </div>
                         </div>
 
-                        <!-- Tab Panel: Requisition & Lots -->
+                        <!-- Tab Panel: Requisition & Lots (read-only mirror of authoring: Requisition & Lots Management) -->
                         <div id="tab-requisition" class="tender-tab-panel">
-                            <div style="font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 6px;">Requisition Information</div>
+                            <div style="font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 6px;"><i class="pi pi-list" style="margin-right: 4px;"></i> Requisition & Lots Management</div>
+                            <div style="font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em; margin: var(--spacing-md) 0 6px;">Requisition Information</div>
                             <div class="info-grid-2col" style="margin-bottom: var(--spacing-lg);">
                                 <div class="info-row">
                                     <div class="info-label">Requisition Number</div>
@@ -7562,9 +7942,9 @@
                             </div>
                         </div>
 
-                        <!-- Tab Panel: Requirements -->
+                        <!-- Tab Panel: Requirements (read-only mirror of authoring: Scope, Product Requirements, Other requirements) -->
                         <div id="tab-requirements" class="tender-tab-panel">
-                            <div style="font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 6px;">Scope and Objectives</div>
+                            <div style="font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 6px;"><i class="pi pi-check-square" style="margin-right: 4px;"></i> Scope and objectives</div>
                             <div class="info-description-box" style="margin-bottom: var(--spacing-md);">
                                 <p style="line-height: 1.6; color: var(--text-secondary); margin: 0;">
                                     The objective of this solicitation is to procure high-quality medical equipment for healthcare facilities in Afghanistan, Bangladesh, and Ethiopia as part of the Healthcare Capacity Building Initiative. The supplier shall provide complete solutions including equipment delivery, installation, commissioning, user training, and warranty services. All products must be manufactured in accordance with international standards and obtain necessary certifications for medical devices.
@@ -7706,6 +8086,13 @@
                                         <span class="spec-detail-value">Minimum 2 years parts and labor</span>
                                     </div>
                                 </div>
+                            </div>
+
+                            <div style="font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em; margin: var(--spacing-lg) 0 6px;"><i class="pi pi-list" style="margin-right: 4px;"></i> Other requirements</div>
+                            <div class="info-description-box" style="margin-bottom: var(--spacing-md);">
+                                <p style="line-height: 1.6; color: var(--text-secondary); margin: 0;">
+                                    Additional terms, special conditions, and bid response requirements as configured for this tender. See Tender Documents & Forms for required submission forms.
+                                </p>
                             </div>
                         </div>
 
@@ -8122,9 +8509,14 @@
                             </div>
                         </div>
 
-                        <!-- Tab Panel: Content -->
+                        <!-- Tab Panel: Tender Documents & Forms (read-only mirror of authoring: Bid Response Requirements, Documents) -->
                         <div id="tab-content" class="tender-tab-panel">
-                            <div style="font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 6px;">Tender Documents</div>
+                            <div style="font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 6px;"><i class="pi pi-upload" style="margin-right: 4px;"></i> Bid Response Requirements</div>
+                            <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--spacing-md);">
+                                Suppliers must complete and submit: Offer Form (Form A), Price Schedule, Technical Proposal, and Compliance & Declarations form. All forms are included in the tender package below.
+                            </p>
+
+                            <div style="font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em; margin: var(--spacing-lg) 0 6px;"><i class="pi pi-folder-open" style="margin-right: 4px;"></i> Tender Documents</div>
                             <p style="font-size: 11px; color: var(--text-muted); margin-bottom: var(--spacing-md);">
                                 Download the complete tender package or individual documents below.
                             </p>
@@ -8207,12 +8599,11 @@
                             </div>
                         </div>
 
-                        <!-- Tab Panel: Team -->
+                        <!-- Tab Panel: Team (read-only mirror of authoring: Team Members) -->
                         <div id="tab-team" class="tender-tab-panel">
-                            <!-- Procurement Roles Section -->
                             <div class="team-subsection">
                                 <div class="team-subsection-header">
-                                    <span class="team-subsection-title">Procurement Roles</span>
+                                    <span class="team-subsection-title"><i class="pi pi-users" style="margin-right: 6px;"></i> Team Members</span>
                                 </div>
                                 <div class="team-roles-grid">
                                     <!-- Process Author -->
@@ -8387,74 +8778,105 @@
 
                         <!-- Tab Panel: Clarifications -->
                         <div id="tab-clarifications" class="tender-tab-panel">
-                            <!-- Elegant Stats Bar -->
-                            <div class="clarifications-stats-bar">
-                                <div class="clarifications-stat">
-                                    <i class="pi pi-comments"></i>
-                                    <span class="stat-value">5</span>
-                                    <span class="stat-label">Total</span>
+                            <!-- One line: stats (left) + deadline (right) -->
+                            <div class="clarifications-top-bar">
+                                <div class="clarifications-stats-inline">
+                                    <div class="clarifications-stat">
+                                        <i class="pi pi-comments"></i>
+                                        <span class="stat-value">5</span>
+                                        <span class="stat-label">Total</span>
+                                    </div>
+                                    <div class="stat-divider"></div>
+                                    <div class="clarifications-stat">
+                                        <i class="pi pi-check-circle"></i>
+                                        <span class="stat-value">3</span>
+                                        <span class="stat-label">Answered</span>
+                                    </div>
+                                    <div class="stat-divider"></div>
+                                    <div class="clarifications-stat pending">
+                                        <i class="pi pi-clock"></i>
+                                        <span class="stat-value">2</span>
+                                        <span class="stat-label">Pending</span>
+                                    </div>
+                                    <div class="stat-divider"></div>
+                                    <div class="clarifications-stat">
+                                        <i class="pi pi-link"></i>
+                                        <span class="stat-value">1</span>
+                                        <span class="stat-label">Grouped</span>
+                                    </div>
                                 </div>
-                                <div class="stat-divider"></div>
-                                <div class="clarifications-stat">
-                                    <i class="pi pi-check-circle"></i>
-                                    <span class="stat-value">3</span>
-                                    <span class="stat-label">Answered</span>
-                                </div>
-                                <div class="stat-divider"></div>
-                                <div class="clarifications-stat pending">
-                                    <i class="pi pi-clock"></i>
-                                    <span class="stat-value">2</span>
-                                    <span class="stat-label">Pending</span>
-                                </div>
-                                <div class="stat-divider"></div>
-                                <div class="clarifications-stat">
-                                    <i class="pi pi-link"></i>
-                                    <span class="stat-value">1</span>
-                                    <span class="stat-label">Grouped</span>
+                                <div class="clarification-deadline-inline">
+                                    <i class="pi pi-calendar"></i>
+                                    <span class="clarification-deadline-label">Clarification deadline:</span>
+                                    <span class="clarification-deadline-value">10 January 2025, 17:00 (local time)</span>
                                 </div>
                             </div>
 
-                            <!-- Actions Bar -->
-                            <div class="clarifications-toolbar">
-                                <div class="toolbar-left">
-                                    <button class="btn btn-secondary btn-sm" onclick="groupSelectedQuestions()">
-                                        <i class="pi pi-link"></i> Group Selected
+                            <!-- Row 1: Actions (same look as Download Tender Package / Clarifications / Amend), aligned right -->
+                            <div class="clarifications-toolbar-actions-row">
+                                <div class="action-bar-right">
+                                    <button class="btn btn-secondary" onclick="createTenderClarification()">
+                                        <i class="pi pi-plus"></i> Create tender clarification
                                     </button>
-                                    <button class="btn btn-ghost btn-sm" onclick="exportClarifications()">
+                                    <button class="btn btn-secondary" onclick="groupSelectedQuestions()">
+                                        <i class="pi pi-link"></i> Group selected
+                                    </button>
+                                    <button class="btn btn-secondary" onclick="exportClarifications()">
                                         <i class="pi pi-download"></i> Export
                                     </button>
                                 </div>
-                                <div class="toolbar-right">
-                                    <select class="filter-select-compact" onchange="filterClarifications(this.value, 'status')">
-                                        <option value="all">All Status</option>
-                                        <option value="pending">Pending</option>
-                                        <option value="answered">Answered</option>
-                                    </select>
-                                    <select class="filter-select-compact" onchange="filterClarifications(this.value, 'visibility')">
-                                        <option value="all">All Visibility</option>
-                                        <option value="public">Public</option>
-                                        <option value="private">Private</option>
-                                    </select>
-                                </div>
-                                </div>
-                                
+                            </div>
+                            <!-- Row 2: Filters + Show -->
+                            <div class="clarifications-toolbar-filters-row">
+                                <input type="search" class="clarifications-search" placeholder="Search…" aria-label="Search clarifications" oninput="filterClarificationsSearch(this.value)">
+                                <select class="filter-select-compact" onchange="filterClarifications(this.value, 'supplier')" title="Filter by supplier">
+                                    <option value="all">All suppliers</option>
+                                    <option value="medsupply">MedSupply Ltd.</option>
+                                    <option value="medtech">MedTech Inc.</option>
+                                </select>
+                                <select class="filter-select-compact" onchange="filterClarifications(this.value, 'theme')" title="Filter by theme">
+                                    <option value="all">All themes</option>
+                                    <option value="general">General Information</option>
+                                    <option value="technical">Technical Specifications</option>
+                                </select>
+                                <select class="filter-select-compact" onchange="filterClarifications(this.value, 'status')" title="Filter by status">
+                                    <option value="all">All status</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="answered">Answered</option>
+                                </select>
+                                <select class="filter-select-compact" onchange="filterClarifications(this.value, 'date')" title="Filter by date">
+                                    <option value="all">Any date</option>
+                                    <option value="dec2024">December 2024</option>
+                                    <option value="jan2025">January 2025</option>
+                                </select>
+                                <span class="quick-filters-label">Show:</span>
+                                <button type="button" class="quick-filter-btn active" data-filter="all" onclick="setClarificationQuickFilter('all', this)">All</button>
+                                <button type="button" class="quick-filter-btn" data-filter="pending" onclick="setClarificationQuickFilter('pending', this)"><i class="pi pi-clock"></i> Pending to be answered</button>
+                                <button type="button" class="quick-filter-btn" data-filter="answered" onclick="setClarificationQuickFilter('answered', this)"><i class="pi pi-check"></i> Answered</button>
+                            </div>
+                            <!-- Selection bar: create amendment from clarification response(s) (shown when answered items selected) -->
+                            <div class="clarifications-selection-bar" id="clarifications-selection-bar" style="display: none;">
+                                <span class="selection-count" id="clarifications-selected-count">0</span> clarification response(s) selected
+                                <button type="button" class="btn btn-secondary btn-sm" onclick="createAmendmentFromClarifications()">
+                                    <i class="pi pi-pencil"></i> Create a tender amendment from the clarification response(s)
+                                </button>
+                            </div>
                             <!-- Questions List -->
                             <div class="clarifications-list">
-                                <!-- Question 1 - Answered, Public -->
-                                <div class="clarification-item answered">
+                                <!-- Question 1 - Answered -->
+                                <div class="clarification-item answered" data-status="answered">
                                     <div class="clarification-checkbox">
-                                        <input type="checkbox" class="question-checkbox">
+                                        <input type="checkbox" class="question-checkbox clarification-select-answered" data-status="answered" onchange="updateClarificationSelectionBar()">
                                         </div>
                                     <div class="clarification-content">
                                         <div class="clarification-header">
                                             <div class="clarification-meta">
                                                 <span class="question-id">Q#001</span>
                                                 <span class="question-date">5 Dec 2024 • General Information</span>
-                                    </div>
+                                            </div>
                                             <div class="clarification-badges">
-                                                <span class="visibility-badge public"><i class="pi pi-globe"></i> Public</span>
                                                 <span class="status-badge answered"><i class="pi pi-check"></i> Answered</span>
-                                    </div>
+                                            </div>
                                         </div>
                                         <div class="clarification-supplier">
                                             <i class="pi pi-building"></i> Supplier A (MedSupply Ltd.)
@@ -8464,28 +8886,30 @@
                                             <p>Can alternative brands be proposed for ultrasound probes as long as they meet the specifications?</p>
                                         </div>
                                         <div class="clarification-answer">
-                                            <div class="answer-label"><i class="pi pi-check-circle"></i> Answer</div>
+                                            <div class="answer-meta">
+                                                <span class="answer-label"><i class="pi pi-check-circle"></i> Answer</span>
+                                                <span class="answer-date">8 Dec 2024</span>
+                                            </div>
                                             <p>Yes, alternative brands are acceptable provided they meet or exceed all specified technical requirements.</p>
                                         </div>
                                     </div>
                                 </div>
                                 
                                 <!-- Question 2 & 3 - Grouped, Answered -->
-                                <div class="clarification-item answered grouped">
+                                <div class="clarification-item answered grouped" data-status="answered">
                                     <div class="clarification-checkbox">
-                                        <input type="checkbox" class="question-checkbox">
+                                        <input type="checkbox" class="question-checkbox clarification-select-answered" data-status="answered" onchange="updateClarificationSelectionBar()">
                                         </div>
                                     <div class="clarification-content">
                                         <div class="clarification-header">
                                             <div class="clarification-meta">
                                                 <span class="question-id">Q#002, Q#003</span>
                                                 <span class="group-badge"><i class="pi pi-link"></i> Grouped</span>
-                                        </div>
+                                            </div>
                                             <div class="clarification-badges">
-                                                <span class="visibility-badge public"><i class="pi pi-globe"></i> Public</span>
                                                 <span class="status-badge answered"><i class="pi pi-check"></i> Answered</span>
-                                    </div>
-                                    </div>
+                                            </div>
+                                        </div>
                                         <div class="clarification-supplier">
                                             <i class="pi pi-building"></i> Supplier B, Supplier C • 6-7 Dec 2024
                                         </div>
@@ -8498,13 +8922,16 @@
                                             <p>Can delivery be split across multiple shipments within the 90-day window?</p>
                                         </div>
                                         <div class="clarification-answer">
-                                            <div class="answer-label"><i class="pi pi-check-circle"></i> Combined Answer</div>
+                                            <div class="answer-meta">
+                                                <span class="answer-label"><i class="pi pi-check-circle"></i> Combined Answer</span>
+                                                <span class="answer-date">9 Dec 2024</span>
+                                            </div>
                                             <p>Yes, partial deliveries are acceptable. Equipment may be delivered in multiple shipments as long as all items arrive within the specified delivery period for each category.</p>
                                         </div>
                                     </div>
                                 </div>
                                 
-                                <!-- Question 4 - Private (Evaluation Phase), Pending -->
+                                <!-- Question 4 - Pending (Evaluation Phase) -->
                                 <div class="clarification-item pending private-question">
                                     <div class="clarification-checkbox">
                                         <input type="checkbox" class="question-checkbox">
@@ -8514,11 +8941,10 @@
                                             <div class="clarification-meta">
                                                 <span class="question-id">Q#004</span>
                                                 <span class="question-date">10 Dec 2024 • Technical Specifications</span>
-                                    </div>
+                                            </div>
                                             <div class="clarification-badges">
-                                                <span class="visibility-badge private"><i class="pi pi-lock"></i> Private</span>
                                                 <span class="status-badge pending"><i class="pi pi-clock"></i> Pending</span>
-                                    </div>
+                                            </div>
                                         </div>
                                         <div class="clarification-supplier">
                                             <i class="pi pi-building"></i> Supplier A (MedSupply Ltd.) • <span class="eval-phase-tag">Evaluation Phase</span>
@@ -8526,22 +8952,17 @@
                                         <div class="clarification-question">
                                             <div class="question-label"><i class="pi pi-question-circle"></i> Question</div>
                                             <p>We noticed our submitted specifications deviate slightly from requirement T-003. Can we provide clarification on why our solution still meets the functional requirements?</p>
-                                </div>
-                                
+                                        </div>
                                         <!-- Response Area -->
                                         <div class="clarification-response-area">
                                             <div class="response-header">
                                                 <span class="response-label"><i class="pi pi-reply"></i> Your Response</span>
                                                 <div class="response-actions">
-                                                    <select class="visibility-select" onchange="setQuestionVisibility('Q004', this.value)">
-                                                        <option value="private" selected>🔒 Private</option>
-                                                        <option value="public">🌐 Public</option>
-                                                    </select>
                                                     <button class="btn btn-ghost btn-sm" onclick="referToPreviousAnswer('Q004')">
                                                         <i class="pi pi-link"></i> Refer to Previous
                                                     </button>
-                                        </div>
-                                    </div>
+                                                </div>
+                                            </div>
                                             <textarea class="response-textarea" rows="3" placeholder="Enter your response..."></textarea>
                                             <div class="response-footer">
                                                 <button class="btn btn-ghost btn-sm" onclick="saveDraftAnswer('Q004')">
@@ -8555,7 +8976,7 @@
                                 </div>
                             </div>
 
-                                <!-- Question 5 - Public, Pending -->
+                                <!-- Question 5 - Pending -->
                                 <div class="clarification-item pending">
                                     <div class="clarification-checkbox">
                                         <input type="checkbox" class="question-checkbox">
@@ -8567,7 +8988,6 @@
                                                 <span class="question-date">11 Dec 2024 • General Information</span>
                                             </div>
                                             <div class="clarification-badges">
-                                                <span class="visibility-badge public"><i class="pi pi-globe"></i> Public</span>
                                                 <span class="status-badge pending"><i class="pi pi-clock"></i> Pending</span>
                                             </div>
                                         </div>
@@ -8578,19 +8998,14 @@
                                             <div class="question-label"><i class="pi pi-question-circle"></i> Question</div>
                                             <p>What is the minimum warranty requirement for anesthesia machines? The tender document mentions "minimum 2 years" but the specs say "2-3 years".</p>
                                         </div>
-                                        
                                         <!-- Response Area -->
                                         <div class="clarification-response-area">
                                             <div class="response-header">
                                                 <span class="response-label"><i class="pi pi-reply"></i> Your Response</span>
                                                 <div class="response-actions">
-                                                    <select class="visibility-select" onchange="setQuestionVisibility('Q005', this.value)">
-                                                        <option value="public" selected>🌐 Public</option>
-                                                        <option value="private">🔒 Private</option>
-                                                    </select>
                                                     <button class="btn btn-ghost btn-sm" onclick="referToPreviousAnswer('Q005')">
                                                         <i class="pi pi-link"></i> Refer to Previous
-                            </button>
+                                                    </button>
                                                 </div>
                                             </div>
                                             <textarea class="response-textarea" rows="3" placeholder="Enter your response..."></textarea>
@@ -15015,7 +15430,32 @@
 
         document.addEventListener('DOMContentLoaded', function () {
             filterOverviewMyTenders();
+            initActionRequiredCarousel();
         });
+
+        function initActionRequiredCarousel() {
+            var track = document.getElementById('action-required-track');
+            var prevBtn = document.getElementById('action-required-prev');
+            var nextBtn = document.getElementById('action-required-next');
+            if (!track || !prevBtn || !nextBtn) return;
+            var cardWidth = 280;
+            var gap = 12;
+            var step = cardWidth + gap;
+            function updateButtons() {
+                var sl = track.scrollLeft;
+                var maxScroll = track.scrollWidth - track.clientWidth;
+                prevBtn.disabled = sl <= 1;
+                nextBtn.disabled = maxScroll <= 1 || sl >= maxScroll - 1;
+            }
+            prevBtn.addEventListener('click', function () {
+                track.scrollBy({ left: -step, behavior: 'smooth' });
+            });
+            nextBtn.addEventListener('click', function () {
+                track.scrollBy({ left: step, behavior: 'smooth' });
+            });
+            track.addEventListener('scroll', updateButtons);
+            updateButtons();
+        }
 
         // Sidebar Toggle
         function toggleSidebar() {
@@ -21000,13 +21440,69 @@
                     if (value === 'pending' && !item.classList.contains('pending')) show = false;
                     if (value === 'answered' && !item.classList.contains('answered')) show = false;
                 }
-                if (type === 'visibility' && value !== 'all') {
-                    const badge = item.querySelector('.visibility-badge');
-                    if (value === 'public' && !badge.classList.contains('public')) show = false;
-                    if (value === 'private' && !badge.classList.contains('private')) show = false;
+                if (type === 'supplier' && value !== 'all') {
+                    const supplierEl = item.querySelector('.clarification-supplier');
+                    const text = supplierEl ? supplierEl.textContent.toLowerCase() : '';
+                    if (value === 'medsupply' && !text.includes('medsupply')) show = false;
+                    if (value === 'medtech' && !text.includes('medtech')) show = false;
+                }
+                if (type === 'theme' && value !== 'all') {
+                    const meta = item.querySelector('.question-date, .clarification-meta');
+                    const text = meta ? meta.textContent.toLowerCase() : '';
+                    if (value === 'general' && !text.includes('general')) show = false;
+                    if (value === 'technical' && !text.includes('technical')) show = false;
+                }
+                if (type === 'date' && value !== 'all') {
+                    const meta = item.querySelector('.question-date');
+                    const text = meta ? meta.textContent : '';
+                    if (value === 'dec2024' && !text.includes('Dec 2024')) show = false;
+                    if (value === 'jan2025' && !text.includes('Jan 2025')) show = false;
                 }
                 item.style.display = show ? 'flex' : 'none';
             });
+        }
+
+        function filterClarificationsSearch(query) {
+            const q = (query || '').trim().toLowerCase();
+            const items = document.querySelectorAll('.clarification-item');
+            items.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                item.style.display = !q || text.includes(q) ? 'flex' : 'none';
+            });
+        }
+
+        function setClarificationQuickFilter(filter, btn) {
+            document.querySelectorAll('#tab-clarifications .quick-filter-btn').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            const items = document.querySelectorAll('.clarification-item');
+            items.forEach(item => {
+                let show = true;
+                if (filter === 'pending') show = item.classList.contains('pending');
+                else if (filter === 'answered') show = item.classList.contains('answered');
+                else if (filter === 'grouped') show = item.classList.contains('grouped');
+                item.style.display = show ? 'flex' : 'none';
+            });
+        }
+
+        function updateClarificationSelectionBar() {
+            const checkboxes = document.querySelectorAll('.clarification-select-answered:checked');
+            const bar = document.getElementById('clarifications-selection-bar');
+            const countEl = document.getElementById('clarifications-selected-count');
+            if (!bar || !countEl) return;
+            const n = checkboxes.length;
+            bar.style.display = n > 0 ? 'flex' : 'none';
+            countEl.textContent = n;
+        }
+
+        function createAmendmentFromClarifications() {
+            // Mockup: navigate to Amendments tab (full flow not implemented)
+            const amendmentsBtn = document.querySelector('.tender-tab-btn[onclick*="tab-amendments"]');
+            if (amendmentsBtn) amendmentsBtn.click();
+            showToast('Create amendment from clarification(s) — not implemented in mockup.');
+        }
+
+        function createTenderClarification() {
+            showToast('Create tender clarification — not implemented in mockup.');
         }
 
         function exportClarifications() {
