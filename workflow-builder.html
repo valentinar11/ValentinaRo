@@ -102,7 +102,9 @@
     .canvas-node .node-delete:hover { background: var(--danger-50); color: var(--danger-500); }
     .canvas-node .node-connect-handle { position: absolute; right: -6px; top: 50%; transform: translateY(-50%); width: 12px; height: 12px; border-radius: 50%; background: var(--primary-500); cursor: crosshair; opacity: 0.7; border: 2px solid white; box-shadow: 0 0 0 1px var(--surface-300); }
     .canvas-node .node-connect-handle:hover { opacity: 1; }
-    .canvas-edges { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+    .canvas-node { z-index: 2; }
+    .canvas-edges { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; z-index: 0; }
+    .canvas-edges svg, .canvas-edges path { pointer-events: none; }
     .canvas-edges svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: visible; }
     .canvas-edges path { fill: none; stroke: var(--surface-600); stroke-width: 2; stroke-linecap: round; }
     .properties-panel { width: 320px; flex-shrink: 0; background: var(--surface-0); border: 1px solid var(--surface-200); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-card); display: flex; flex-direction: column; }
@@ -141,11 +143,23 @@
     </aside>
     <main class="main-content">
       <h1 class="page-title">Workflow Builder</h1>
-      <p class="page-subtitle">Configure workflows and link them to entities (Tender, Amendment, etc.). Drag nodes onto the canvas and connect them.</p>
+      <p class="page-subtitle">Configure workflow definitions (versioned blueprint: Draft → Published → Archived). Link to entities and trigger events; drag nodes onto the canvas and connect them. Instances run against a definition version with token-based execution.</p>
       <div class="workflow-top-bar">
         <div class="form-group">
           <label>Workflow name</label>
           <input type="text" value="Tender Publication Approval" />
+        </div>
+        <div class="form-group">
+          <label>Definition status</label>
+          <select id="workflow-status" title="Immutable versioned lifecycle: Draft (editable) → Published (immutable) → Archived">
+            <option value="Draft" selected>Draft</option>
+            <option value="Published">Published</option>
+            <option value="Archived">Archived</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Version</label>
+          <input type="text" id="workflow-version" value="1" readonly title="Definition version; new version created when publishing from Draft" style="min-width: 60px;" />
         </div>
         <div class="form-group">
           <label>Linked to entity</label>
@@ -172,6 +186,7 @@
       <div class="builder-layout">
         <div class="node-palette">
           <div class="node-palette-title">Nodes</div>
+          <p class="prop-hint" style="padding: 0 4px 8px;">Start, End, ManualTask, ServiceTask, Wait, ExclusiveGateway, ParallelFork, ParallelJoin.</p>
           <div class="palette-item" draggable="true" data-type="start" data-label="Start"><span class="node-icon"><i class="pi pi-play"></i></span><span>Start</span></div>
           <div class="palette-item" draggable="true" data-type="end" data-label="End"><span class="node-icon"><i class="pi pi-stop"></i></span><span>End</span></div>
           <div class="palette-item" draggable="true" data-type="manual" data-label="Manual Task"><span class="node-icon"><i class="pi pi-user"></i></span><span>Manual Task</span></div>
@@ -219,6 +234,8 @@
         <div class="properties-panel">
           <div class="properties-panel-header">Properties</div>
           <div class="workflow-meta">
+            <div class="prop-row"><label>Definition status</label><span id="prop-status">Draft</span></div>
+            <div class="prop-row"><label>Version</label><span id="prop-version">1</span></div>
             <div class="prop-row"><label>Linked to entity</label><span class="entity-badge" id="prop-entity">Tender</span></div>
             <div class="prop-row"><label>Trigger event</label><span id="prop-trigger">TENDER_CREATED</span></div>
           </div>
@@ -261,6 +278,7 @@
             </div>
             <div class="prop-row" id="prop-condition-row" style="display:none;">
               <label>Edge condition</label>
+              <p class="prop-hint">Structured JSONB: operators (equals, in, greaterThan, etc.) and compound logic (all/any). Pure evaluation — no arbitrary code.</p>
               <textarea id="prop-condition" placeholder='{"field":"outcome","operator":"equals","value":"APPROVE"}' rows="2"></textarea>
             </div>
             <div class="prop-row" id="prop-wait-event-row" style="display:none;">
@@ -467,9 +485,14 @@
       sel.value = '';
     });
 
+    function getTypeDisplayName(type) {
+      var names = { start: 'Start', end: 'End', manual: 'Manual Task', service: 'Service Task', gateway: 'Exclusive Gateway', wait: 'Wait', fork: 'Parallel Fork', join: 'Parallel Join' };
+      return names[type] || type;
+    }
+
     function showProperties(type, label, id) {
       selectedNodeId = id;
-      document.getElementById('prop-type').value = label;
+      document.getElementById('prop-type').value = getTypeDisplayName(type);
       document.getElementById('prop-label').value = label;
       document.getElementById('prop-instructions-row').style.display = type === 'manual' ? '' : 'none';
       document.getElementById('prop-role-row').style.display = (type === 'manual' || type === 'wait') ? '' : 'none';
@@ -606,13 +629,8 @@
         (type !== 'end' ? '<span class="node-connect-handle" title="Drag to connect" data-source="' + id + '"></span>' : '') +
         '<span class="node-delete" onclick="deleteNode(\'' + id + '\')"><i class="pi pi-trash"></i></span>';
       node.innerHTML = inner;
-      node.addEventListener('click', function(ev) {
-        if (ev.target.closest('.node-delete') || ev.target.closest('.node-connect-handle')) return;
-        canvas.querySelectorAll('.canvas-node').forEach(function(n) { n.classList.remove('selected'); });
-        this.classList.add('selected');
-        showProperties(type, getNodeLabel(this), id);
-      });
       canvas.appendChild(node);
+      bindNodeClick(node);
       if (placeholder.parentNode) placeholder.remove();
       updateCanvasPlaceholder();
       renderEdges();
@@ -641,15 +659,36 @@
     document.getElementById('workflow-trigger').addEventListener('change', function() {
       document.getElementById('prop-trigger').textContent = this.value;
     });
+    document.getElementById('workflow-status').addEventListener('change', function() {
+      document.getElementById('prop-status').textContent = this.value;
+    });
+    document.getElementById('workflow-version').addEventListener('input', function() {
+      document.getElementById('prop-version').textContent = this.value || '1';
+    });
+    // Sync workflow definition status and version to properties panel on load
+    document.getElementById('prop-status').textContent = document.getElementById('workflow-status').value;
+    document.getElementById('prop-version').textContent = document.getElementById('workflow-version').value || '1';
 
-    canvas.querySelectorAll('.canvas-node').forEach(function(node) {
+    // Delegation: any click on a node updates the properties panel
+    canvas.addEventListener('click', function(ev) {
+      var node = ev.target.closest('.canvas-node');
+      if (!node) return;
+      if (ev.target.closest('.node-delete') || ev.target.closest('.node-connect-handle')) return;
+      canvas.querySelectorAll('.canvas-node').forEach(function(n) { n.classList.remove('selected'); });
+      node.classList.add('selected');
+      showProperties(node.dataset.type, getNodeLabel(node), node.dataset.id);
+    });
+
+    // Explicit click on every existing node (ensures pre-existing canvas nodes always work)
+    function bindNodeClick(node) {
       node.addEventListener('click', function(ev) {
         if (ev.target.closest('.node-delete') || ev.target.closest('.node-connect-handle')) return;
         canvas.querySelectorAll('.canvas-node').forEach(function(n) { n.classList.remove('selected'); });
-        this.classList.add('selected');
-        showProperties(this.dataset.type, getNodeLabel(this), this.dataset.id);
+        node.classList.add('selected');
+        showProperties(node.dataset.type, getNodeLabel(node), node.dataset.id);
       });
-    });
+    }
+    canvas.querySelectorAll('.canvas-node').forEach(bindNodeClick);
 
     canvas.addEventListener('scroll', renderEdges);
     window.addEventListener('resize', renderEdges);
