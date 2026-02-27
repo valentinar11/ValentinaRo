@@ -759,10 +759,11 @@ display: block;
 }
 
 .main-content {
-max-width: 1400px;
+max-width: 100%;
 margin: 0 auto;
 padding: var(--spacing-xl);
 width: 100%;
+box-sizing: border-box;
 }
 
 .page-header {
@@ -818,7 +819,7 @@ background: var(--surface-0);
 border-radius: var(--radius-md);
 padding: var(--spacing-md);
 box-shadow: var(--shadow-sm);
-border: 1px solid var(--surface-200);
+border: 1px solid var(--surface-100);
 display: flex;
 align-items: center;
 gap: var(--spacing-md);
@@ -895,7 +896,7 @@ background: var(--surface-0);
 border-radius: var(--radius-md);
 padding: var(--spacing-lg);
 box-shadow: var(--shadow-sm);
-border: 1px solid var(--surface-200);
+border: 1px solid var(--surface-100);
 margin-bottom: var(--spacing-md);
 }
 
@@ -905,7 +906,7 @@ align-items: center;
 justify-content: space-between;
 margin-bottom: var(--spacing-md);
 padding-bottom: var(--spacing-sm);
-border-bottom: 1px solid var(--surface-200);
+border-bottom: 1px solid var(--surface-100);
 flex-wrap: wrap;
 gap: var(--spacing-sm);
 }
@@ -1038,6 +1039,142 @@ color: var(--danger-500);
 .status-not-awarded {
 background: var(--surface-100);
 color: var(--text-muted);
+}
+
+/* Action Required panel (Overview) */
+.action-required-carousel {
+position: relative;
+overflow: hidden;
+}
+.action-required-track {
+display: flex;
+gap: var(--spacing-sm);
+overflow-x: auto;
+overflow-y: hidden;
+scroll-snap-type: x mandatory;
+scroll-behavior: smooth;
+padding: var(--spacing-xs) 0;
+margin: 0 36px;
+scrollbar-width: none;
+-ms-overflow-style: none;
+}
+.action-required-track::-webkit-scrollbar {
+display: none;
+}
+.action-required-carousel .action-required-card {
+flex: 0 0 auto;
+min-width: 280px;
+max-width: 280px;
+scroll-snap-align: start;
+}
+.action-required-prev,
+.action-required-next {
+position: absolute;
+top: 50%;
+transform: translateY(-50%);
+width: 32px;
+height: 32px;
+border-radius: 50%;
+border: 1px solid var(--surface-300);
+background: var(--surface-0);
+color: var(--text-secondary);
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+z-index: 2;
+transition: background 0.2s, color 0.2s, border-color 0.2s;
+box-shadow: var(--shadow-sm);
+}
+.action-required-prev:hover:not(:disabled),
+.action-required-next:hover:not(:disabled) {
+background: var(--surface-100);
+color: var(--primary-500);
+border-color: var(--primary-300);
+}
+.action-required-prev:disabled,
+.action-required-next:disabled {
+opacity: 0.4;
+cursor: not-allowed;
+}
+.action-required-prev { left: 0; }
+.action-required-next { right: 0; }
+.action-required-card {
+display: flex;
+gap: var(--spacing-sm);
+padding: var(--spacing-sm) var(--spacing-md);
+background: var(--surface-50);
+border: 1px solid var(--surface-100);
+border-radius: var(--radius-sm);
+cursor: pointer;
+transition: all 0.2s;
+text-align: left;
+align-items: flex-start;
+}
+.action-required-card:hover {
+background: var(--surface-0);
+box-shadow: var(--shadow-sm);
+}
+.action-required-card-accent-warning { border-left: 3px solid var(--warning-500); }
+.action-required-card-accent-info { border-left: 3px solid var(--info-400); }
+.action-required-card-accent-success { border-left: 3px solid var(--success-500); }
+.action-required-card-accent-primary { border-left: 3px solid var(--primary-500); }
+.action-required-card-icon { font-size: 16px; flex-shrink: 0; margin-top: 2px; }
+.action-required-card-body { flex: 1; min-width: 0; }
+.action-required-card-head {
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 8px;
+margin-bottom: 2px;
+}
+.action-required-card-ref {
+font-weight: 600;
+font-size: 13px;
+color: var(--primary-500);
+}
+.action-required-card-status {
+padding: 2px 6px;
+border-radius: 10px;
+font-size: 10px;
+font-weight: 600;
+flex-shrink: 0;
+}
+.action-required-card-step {
+font-weight: 600;
+font-size: 13px;
+color: var(--text-primary);
+margin-bottom: 2px;
+}
+.action-required-card-instruction {
+font-size: 12px;
+color: var(--text-secondary);
+margin-bottom: 4px;
+}
+.action-required-card-created {
+font-size: 11px;
+color: var(--text-muted);
+}
+
+/* Table pagination */
+.table-pagination {
+background: var(--surface-50);
+padding: var(--spacing-sm) var(--spacing-md);
+display: flex;
+justify-content: space-between;
+align-items: center;
+border-top: 1px solid var(--surface-100);
+font-size: 12px;
+color: var(--text-secondary);
+}
+.table-pagination .pagination-controls {
+display: flex;
+align-items: center;
+gap: 4px;
+}
+.table-pagination .btn-ghost.btn-sm:disabled {
+opacity: 0.5;
+cursor: not-allowed;
 }
 
 /* Document Download List */
@@ -5293,8 +5430,8 @@ Submit Question
 <div id="main-content-dashboard" class="main-content">
 <div class="page-header">
 <div>
-<h1 class="page-title">Dashboard</h1>
-<p class="page-subtitle">Welcome back! Here's an overview of your tender activities</p>
+<h1 class="page-title">Tendering Overview</h1>
+<p class="page-subtitle">Welcome back! Here's an overview of your tender activities.</p>
 </div>
 </div>
 
@@ -5337,9 +5474,59 @@ Submit Question
 </div>
 </div>
 
+<!-- Action Required panel -->
+<div class="card" style="margin-bottom: var(--spacing-lg);">
+<div class="card-header">
+<h2 class="card-title"><i class="pi pi-bell"></i>Action Required</h2>
+<span style="font-size: 12px; font-weight: 500; color: var(--text-muted);">3 items</span>
+</div>
+<div class="action-required-carousel" id="supplier-action-required-carousel">
+<button type="button" class="action-required-prev" id="supplier-action-prev" aria-label="Previous actions" title="Previous"><i class="pi pi-chevron-left"></i></button>
+<button type="button" class="action-required-next" id="supplier-action-next" aria-label="Next actions" title="Next"><i class="pi pi-chevron-right"></i></button>
+<div class="action-required-track" id="supplier-action-required-track">
+<div class="action-required-card action-required-card-accent-warning" onclick="selectTenderForBid('UNOPS/ITB/2025/001')">
+<i class="pi pi-pencil action-required-card-icon" style="color: var(--warning-500);"></i>
+<div class="action-required-card-body">
+<div class="action-required-card-head">
+<span class="action-required-card-ref">UNOPS/ITB/2025/001</span>
+<span class="action-required-card-status" style="background: var(--warning-50); color: var(--warning-500);">In Progress</span>
+</div>
+<div class="action-required-card-step">Complete your bid</div>
+<div class="action-required-card-instruction">Bid draft saved. Submit before deadline (15 Jan 2025).</div>
+<span class="action-required-card-created">Last saved 10 Jan 2025</span>
+</div>
+</div>
+<div class="action-required-card action-required-card-accent-info" onclick="viewTenderDetails('UNOPS/RFQ/2024/089')">
+<i class="pi pi-comments action-required-card-icon" style="color: var(--info-400);"></i>
+<div class="action-required-card-body">
+<div class="action-required-card-head">
+<span class="action-required-card-ref">UNOPS/RFQ/2024/089</span>
+<span class="action-required-card-status" style="background: var(--info-50); color: var(--info-400);">Open</span>
+</div>
+<div class="action-required-card-step">Clarification published</div>
+<div class="action-required-card-instruction">Buyer published an answer to a clarification request. Review before submitting.</div>
+<span class="action-required-card-created">Published 8 Jan 2025</span>
+</div>
+</div>
+<div class="action-required-card action-required-card-accent-primary" onclick="selectTenderForBid('UNOPS/ITB/2025/001')">
+<i class="pi pi-clock action-required-card-icon" style="color: var(--primary-500);"></i>
+<div class="action-required-card-body">
+<div class="action-required-card-head">
+<span class="action-required-card-ref">UNOPS/ITB/2025/001</span>
+<span class="action-required-card-status" style="background: var(--primary-100); color: var(--primary-600);">Deadline soon</span>
+</div>
+<div class="action-required-card-step">Deadline in 5 days</div>
+<div class="action-required-card-instruction">Submission deadline 15 Jan 2025. Complete and submit your bid.</div>
+<span class="action-required-card-created">Deadline 15 Jan 2025</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+
 <div class="card">
 <div class="card-header">
-<h2 class="card-title"><i class="pi pi-list"></i>All My Tenders</h2>
+<h2 class="card-title"><i class="pi pi-list"></i>My Tenders</h2>
 <div style="display: flex; gap: var(--spacing-sm); align-items: center;">
 <input type="search" placeholder="Search tenders..." style="padding: 8px 12px; border: 1px solid var(--surface-300); border-radius: var(--radius-md); width: 250px; font-size: 14px;">
 <select style="padding: 8px 12px; border: 1px solid var(--surface-300); border-radius: var(--radius-md); font-size: 14px;">
@@ -5353,7 +5540,8 @@ Submit Question
 </div>
 </div>
 
-<table class="tender-table">
+<div class="tender-table-wrapper">
+<table class="tender-table" id="my-tenders-table">
 <thead>
 <tr>
 <th>Reference / Title</th>
@@ -5365,8 +5553,8 @@ Submit Question
 <th>Actions</th>
 </tr>
 </thead>
-<tbody>
-<tr onclick="viewTenderDetails('UNOPS/ITB/2025/001')">
+<tbody id="my-tenders-tbody">
+<tr data-row-index="0" onclick="viewTenderDetails('UNOPS/ITB/2025/001')">
 <td>
 <div class="tender-ref">UNOPS/ITB/2025/001</div>
 <div class="tender-title-cell">Medical Equipment Supply</div>
@@ -5383,7 +5571,7 @@ Submit Question
 <td><span class="status-badge status-open">Open</span></td>
 <td><button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); selectTenderForBid('UNOPS/ITB/2025/001')">Continue Bid</button></td>
 </tr>
-<tr onclick="viewTenderDetails('UNOPS/RFQ/2024/089')">
+<tr data-row-index="1" onclick="viewTenderDetails('UNOPS/RFQ/2024/089')">
 <td>
 <div class="tender-ref">UNOPS/RFQ/2024/089</div>
 <div class="tender-title-cell">Office Supplies and Stationery</div>
@@ -5399,7 +5587,7 @@ Submit Question
 <td><span class="status-badge status-open">Open</span></td>
 <td><button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); selectTenderForBid('UNOPS/RFQ/2024/089')">Continue Bid</button></td>
 </tr>
-<tr onclick="viewTenderDetails('UNOPS/ITB/2024/072')">
+<tr data-row-index="2" onclick="viewTenderDetails('UNOPS/ITB/2024/072')">
 <td>
 <div class="tender-ref">UNOPS/ITB/2024/072</div>
 <div class="tender-title-cell">IT Infrastructure Services</div>
@@ -5415,7 +5603,7 @@ Submit Question
 <td><span class="status-badge status-not-awarded">Not Awarded</span></td>
 <td><button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); viewTenderDetails('UNOPS/ITB/2024/072')">View Details</button></td>
 </tr>
-<tr onclick="viewTenderDetails('UNOPS/RFP/2024/055')">
+<tr data-row-index="3" onclick="viewTenderDetails('UNOPS/RFP/2024/055')">
 <td>
 <div class="tender-ref">UNOPS/RFP/2024/055</div>
 <div class="tender-title-cell">Consulting Services - Project Management</div>
@@ -5431,7 +5619,7 @@ Submit Question
 <td><span class="status-badge status-cancelled">Cancelled</span></td>
 <td><button class="btn btn-ghost btn-sm" onclick="event.stopPropagation(); viewTenderDetails('UNOPS/RFP/2024/055')">View Details</button></td>
 </tr>
-<tr onclick="viewTenderDetails('UNOPS/ITB/2024/041')">
+<tr data-row-index="4" onclick="viewTenderDetails('UNOPS/ITB/2024/041')">
 <td>
 <div class="tender-ref">UNOPS/ITB/2024/041</div>
 <div class="tender-title-cell">Vehicle Fleet Procurement</div>
@@ -5449,6 +5637,15 @@ Submit Question
 </tr>
         </tbody>
         </table>
+        <div class="table-pagination" id="my-tenders-pagination">
+          <div class="pagination-info">Showing <span id="my-tenders-range">1 - 3</span> of <span id="my-tenders-total">5</span></div>
+          <div class="pagination-controls">
+            <button type="button" class="btn btn-ghost btn-sm" id="my-tenders-prev" aria-label="Previous page" onclick="changeSupplierTablePage('my-tenders', 'prev')"><i class="pi pi-chevron-left"></i></button>
+            <span style="font-size: 12px; color: var(--text-secondary); padding: 0 8px;">Page <span id="my-tenders-page-num">1</span> of <span id="my-tenders-page-total">2</span></span>
+            <button type="button" class="btn btn-ghost btn-sm" id="my-tenders-next" aria-label="Next page" onclick="changeSupplierTablePage('my-tenders', 'next')"><i class="pi pi-chevron-right"></i></button>
+          </div>
+        </div>
+      </div>
       </div>
 
       <!-- Open Procurement Events Section -->
@@ -5468,8 +5665,9 @@ Submit Question
             </select>
           </div>
         </div>
-
-        <table class="tender-table">
+        <div class="card-body">
+        <div class="tender-table-wrapper">
+        <table class="tender-table" id="open-tenders-table">
           <thead>
             <tr>
               <th>Reference / Title</th>
@@ -5481,8 +5679,8 @@ Submit Question
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody>
-            <tr onclick="viewTenderDetails('UNOPS/RFP/2025/015')">
+          <tbody id="open-tenders-tbody">
+            <tr data-row-index="0" onclick="viewTenderDetails('UNOPS/RFP/2025/015')">
               <td>
                 <div class="tender-ref">UNOPS/RFP/2025/015</div>
                 <div class="tender-title-cell">IT Infrastructure Services</div>
@@ -5499,7 +5697,7 @@ Submit Question
               </td>
               <td><button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); expressInterest('UNOPS/RFP/2025/015')">Express Interest</button></td>
             </tr>
-            <tr onclick="viewTenderDetails('UNOPS/ITB/2025/002')">
+            <tr data-row-index="1" onclick="viewTenderDetails('UNOPS/ITB/2025/002')">
               <td>
                 <div class="tender-ref">UNOPS/ITB/2025/002</div>
                 <div class="tender-title-cell">Construction Materials Supply</div>
@@ -5516,7 +5714,7 @@ Submit Question
               </td>
               <td><button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); expressInterest('UNOPS/ITB/2025/002')">Express Interest</button></td>
             </tr>
-            <tr onclick="viewTenderDetails('UNOPS/RFQ/2025/033')">
+            <tr data-row-index="2" onclick="viewTenderDetails('UNOPS/RFQ/2025/033')">
               <td>
                 <div class="tender-ref">UNOPS/RFQ/2025/033</div>
                 <div class="tender-title-cell">Office Furniture and Equipment</div>
@@ -5533,7 +5731,7 @@ Submit Question
               </td>
               <td><button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); expressInterest('UNOPS/RFQ/2025/033')">Express Interest</button></td>
             </tr>
-            <tr onclick="viewTenderDetails('UNOPS/ITB/2025/007')">
+            <tr data-row-index="3" onclick="viewTenderDetails('UNOPS/ITB/2025/007')">
               <td>
                 <div class="tender-ref">UNOPS/ITB/2025/007</div>
                 <div class="tender-title-cell">Laboratory Equipment and Supplies</div>
@@ -5550,7 +5748,7 @@ Submit Question
               </td>
               <td><button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); expressInterest('UNOPS/ITB/2025/007')">Express Interest</button></td>
             </tr>
-            <tr onclick="viewTenderDetails('UNOPS/RFP/2025/019')">
+            <tr data-row-index="4" onclick="viewTenderDetails('UNOPS/RFP/2025/019')">
               <td>
                 <div class="tender-ref">UNOPS/RFP/2025/019</div>
                 <div class="tender-title-cell">Consulting Services - Project Management</div>
@@ -5569,6 +5767,16 @@ Submit Question
             </tr>
           </tbody>
         </table>
+        <div class="table-pagination" id="open-tenders-pagination">
+          <div class="pagination-info">Showing <span id="open-tenders-range">1 - 3</span> of <span id="open-tenders-total">5</span></div>
+          <div class="pagination-controls">
+            <button type="button" class="btn btn-ghost btn-sm" id="open-tenders-prev" aria-label="Previous page" onclick="changeSupplierTablePage('open-tenders', 'prev')"><i class="pi pi-chevron-left"></i></button>
+            <span style="font-size: 12px; color: var(--text-secondary); padding: 0 8px;">Page <span id="open-tenders-page-num">1</span> of <span id="open-tenders-page-total">2</span></span>
+            <button type="button" class="btn btn-ghost btn-sm" id="open-tenders-next" aria-label="Next page" onclick="changeSupplierTablePage('open-tenders', 'next')"><i class="pi pi-chevron-right"></i></button>
+          </div>
+        </div>
+        </div>
+        </div>
       </div>
     </div>
   </div>
@@ -10347,6 +10555,76 @@ function updateBidViewForTender(ref) {
         if (techBidSimplified) techBidSimplified.style.display = 'none';
     }
 }
+
+// Action Required carousel (supplier dashboard)
+(function initSupplierActionRequiredCarousel() {
+    var track = document.getElementById('supplier-action-required-track');
+    var prevBtn = document.getElementById('supplier-action-prev');
+    var nextBtn = document.getElementById('supplier-action-next');
+    if (!track || !prevBtn || !nextBtn) return;
+    var cardWidth = 280 + 12;
+    prevBtn.addEventListener('click', function() { track.scrollBy({ left: -cardWidth * 2, behavior: 'smooth' }); });
+    nextBtn.addEventListener('click', function() { track.scrollBy({ left: cardWidth * 2, behavior: 'smooth' }); });
+    track.addEventListener('scroll', function() {
+        prevBtn.disabled = track.scrollLeft <= 2;
+        nextBtn.disabled = track.scrollLeft >= track.scrollWidth - track.clientWidth - 2;
+    });
+    prevBtn.disabled = true;
+})();
+
+// Tender table pagination (supplier dashboard)
+var SUPPLIER_PAGE_SIZE = 3;
+var supplierMyTendersPage = 1;
+var supplierOpenTendersPage = 1;
+
+function changeSupplierTablePage(tableKey, dir) {
+    var tbodyId = tableKey === 'my-tenders' ? 'my-tenders-tbody' : 'open-tenders-tbody';
+    var tbody = document.getElementById(tbodyId);
+    if (!tbody) return;
+    var rows = Array.prototype.slice.call(tbody.querySelectorAll('tr[data-row-index]'));
+    var total = rows.length;
+    var totalPages = Math.max(1, Math.ceil(total / SUPPLIER_PAGE_SIZE));
+    if (tableKey === 'my-tenders') {
+        if (dir === 'next' && supplierMyTendersPage < totalPages) supplierMyTendersPage++;
+        if (dir === 'prev' && supplierMyTendersPage > 1) supplierMyTendersPage--;
+        updateSupplierTablePage('my-tenders', supplierMyTendersPage, total, totalPages);
+    } else {
+        if (dir === 'next' && supplierOpenTendersPage < totalPages) supplierOpenTendersPage++;
+        if (dir === 'prev' && supplierOpenTendersPage > 1) supplierOpenTendersPage--;
+        updateSupplierTablePage('open-tenders', supplierOpenTendersPage, total, totalPages);
+    }
+}
+
+function updateSupplierTablePage(tableKey, page, total, totalPages) {
+    var tbodyId = tableKey === 'my-tenders' ? 'my-tenders-tbody' : 'open-tenders-tbody';
+    var tbody = document.getElementById(tbodyId);
+    if (!tbody) return;
+    var rows = Array.prototype.slice.call(tbody.querySelectorAll('tr[data-row-index]'));
+    var start = (page - 1) * SUPPLIER_PAGE_SIZE;
+    var end = Math.min(start + SUPPLIER_PAGE_SIZE, total);
+    rows.forEach(function(row, i) {
+        row.style.display = (i >= start && i < end) ? '' : 'none';
+    });
+    document.getElementById(tableKey + '-range').textContent = total === 0 ? '0 - 0' : (start + 1) + ' - ' + end;
+    document.getElementById(tableKey + '-total').textContent = total;
+    document.getElementById(tableKey + '-page-num').textContent = page;
+    document.getElementById(tableKey + '-page-total').textContent = totalPages;
+    var prevBtn = document.getElementById(tableKey + '-prev');
+    var nextBtn = document.getElementById(tableKey + '-next');
+    if (prevBtn) prevBtn.disabled = page <= 1;
+    if (nextBtn) nextBtn.disabled = page >= totalPages;
+}
+
+(function initSupplierDashboardPagination() {
+    var myRows = document.querySelectorAll('#my-tenders-tbody tr[data-row-index]');
+    var openRows = document.querySelectorAll('#open-tenders-tbody tr[data-row-index]');
+    var myTotal = myRows.length;
+    var openTotal = openRows.length;
+    var myPages = Math.max(1, Math.ceil(myTotal / SUPPLIER_PAGE_SIZE));
+    var openPages = Math.max(1, Math.ceil(openTotal / SUPPLIER_PAGE_SIZE));
+    updateSupplierTablePage('my-tenders', 1, myTotal, myPages);
+    updateSupplierTablePage('open-tenders', 1, openTotal, openPages);
+})();
 
 // =====================================================================
 // ENHANCED SUPPLIER BID FORMS - PROGRESS TRACKER FUNCTIONALITY
