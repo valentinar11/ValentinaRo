@@ -12956,6 +12956,39 @@
         </div>
     </div>
 
+    <!-- Create Tender Clarification Modal -->
+    <div class="modal-overlay" id="createTenderClarificationModal">
+        <div class="modal" style="max-width: 520px;">
+            <div class="modal-header">
+                <h2 class="modal-title">
+                    <i class="pi pi-plus"></i>
+                    <span>Create tender clarification</span>
+                </h2>
+                <button class="modal-close" onclick="closeCreateTenderClarificationModal()" aria-label="Close">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label required" for="clarification-theme">Theme</label>
+                    <select id="clarification-theme" class="form-select" aria-required="true">
+                        <option value="">Select theme…</option>
+                        <option value="general">General Information</option>
+                        <option value="technical">Technical Specifications</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label required" for="clarification-answer">Answer</label>
+                    <textarea id="clarification-answer" class="form-textarea" rows="4" placeholder="Enter the clarification answer…" aria-required="true"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" onclick="closeCreateTenderClarificationModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="submitCreateTenderClarification()">
+                    <i class="pi pi-check"></i> Create
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Clarifications Modal -->
     <div class="modal-overlay" id="clarificationsModal">
         <div class="modal" style="max-width: 1000px;">
@@ -21502,7 +21535,28 @@
         }
 
         function createTenderClarification() {
-            showToast('Create tender clarification — not implemented in mockup.');
+            document.getElementById('clarification-theme').value = '';
+            document.getElementById('clarification-answer').value = '';
+            document.getElementById('createTenderClarificationModal').classList.add('active');
+        }
+
+        function closeCreateTenderClarificationModal() {
+            document.getElementById('createTenderClarificationModal').classList.remove('active');
+        }
+
+        function submitCreateTenderClarification() {
+            var theme = document.getElementById('clarification-theme').value;
+            var answer = document.getElementById('clarification-answer').value.trim();
+            if (!theme) {
+                showToast('Please select a theme.');
+                return;
+            }
+            if (!answer) {
+                showToast('Please enter an answer.');
+                return;
+            }
+            closeCreateTenderClarificationModal();
+            showToast('Tender clarification created.');
         }
 
         function exportClarifications() {
