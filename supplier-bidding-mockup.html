@@ -4151,7 +4151,7 @@ justify-content: flex-end;
 }
 
 .clarification-item {
-background: var(--surface-50);
+background: var(--surface-0);
 border: 1px solid var(--surface-200);
 border-radius: var(--radius-sm);
 padding: var(--spacing-sm) var(--spacing-md);
@@ -4167,6 +4167,17 @@ display: flex;
 justify-content: space-between;
 align-items: center;
 margin-bottom: 6px;
+gap: var(--spacing-sm);
+}
+.clarification-header-left {
+display: flex;
+align-items: center;
+gap: var(--spacing-sm);
+flex: 1;
+min-width: 0;
+}
+.clarification-header-left .clarification-meta-line {
+margin: 0;
 }
 
 .clarification-number {
@@ -4216,6 +4227,69 @@ text-transform: uppercase;
 color: var(--text-muted);
 margin-bottom: 3px;
 letter-spacing: 0.03em;
+}
+
+.clarification-deadline-banner {
+display: flex;
+align-items: center;
+gap: var(--spacing-sm);
+padding: var(--spacing-sm) var(--spacing-md);
+background: var(--info-50);
+border: 1px solid var(--primary-200);
+border-radius: var(--radius-sm);
+margin-bottom: var(--spacing-md);
+font-size: 13px;
+color: var(--text-primary);
+}
+.clarification-deadline-banner i {
+color: var(--primary-500);
+font-size: 18px;
+}
+.clarification-deadline-banner strong {
+color: var(--primary-600);
+}
+.clarification-meta {
+display: flex;
+flex-wrap: wrap;
+align-items: center;
+gap: 8px 16px;
+font-size: 11px;
+color: var(--text-muted);
+margin-bottom: 6px;
+}
+.clarification-meta span {
+display: inline-flex;
+align-items: center;
+gap: 4px;
+}
+.clarification-meta i {
+font-size: 10px;
+color: var(--text-muted);
+}
+.clarification-theme {
+font-weight: 500;
+color: var(--primary-600);
+}
+.clarification-meta-line {
+font-size: 12px;
+color: var(--text-muted);
+}
+.clarification-status {
+font-size: 11px;
+font-weight: 600;
+text-transform: uppercase;
+letter-spacing: 0.03em;
+padding: 2px 8px;
+border-radius: 4px;
+}
+.clarification-status.answered {
+background: var(--success-50);
+color: var(--success-500);
+}
+.clarification-answer-date {
+font-size: 11px;
+color: var(--text-muted);
+margin-bottom: 4px;
 }
 
 .amendment-item {
@@ -5153,7 +5227,7 @@ width: 100%;
 </button>
 <button class="quick-action-btn" onclick="openClarificationsSidebar()">
 <span>💬</span>
-<span class="quick-action-tooltip">Ask Clarification</span>
+<span class="quick-action-tooltip">Request a clarification</span>
 </button>
 </div>
 
@@ -5373,7 +5447,7 @@ View Full Tender Details
 <div class="sidebar-panel" id="clarifications-sidebar">
 <div class="sidebar-panel-header">
 <div>
-<div class="sidebar-panel-title">Ask Clarification</div>
+<div class="sidebar-panel-title">Request a clarification</div>
 <div style="font-size: 13px; opacity: 0.9;">UNOPS/ITB/2025/001</div>
 </div>
 <button class="modal-close" style="color: white;" onclick="closeSidebar('clarifications-sidebar')">×</button>
@@ -5385,9 +5459,9 @@ View Full Tender Details
 </div>
 
 <div class="form-group" style="margin-bottom: var(--spacing-lg);">
-<label class="form-label">Related Section <span class="required">*</span></label>
+<label class="form-label">Theme <span class="required">*</span></label>
 <select class="form-select">
-<option>Select section...</option>
+<option>Select theme...</option>
 <option>General Information</option>
 <option>Technical Specifications</option>
 <option>Pricing</option>
@@ -5401,7 +5475,7 @@ View Full Tender Details
 </div>
 
 <button class="btn btn-primary" style="width: 100%; margin-bottom: var(--spacing-xl);" onclick="submitClarificationQuick()">
-Submit Question
+Submit request
 </button>
 
 <hr style="border: none; border-top: 1px solid var(--surface-200); margin: var(--spacing-xl) 0;">
@@ -5410,15 +5484,20 @@ Submit Question
 
 <div class="clarification-item">
 <div class="clarification-header">
-<span class="clarification-number">Q #003</span>
-<span class="clarification-date">9 Dec 2024</span>
+<div class="clarification-header-left">
+<span class="clarification-number">Q#001</span>
+<span class="clarification-meta-line">5 Dec 2024 • General Information</span>
+</div>
+<span class="clarification-status answered">Answered</span>
 </div>
 <div class="clarification-question">
-<p style="font-size: 13px;">Can ultrasound machines be from different manufacturers?</p>
+<div class="clarification-label">Question</div>
+<p style="font-size: 13px;">Can alternative brands be proposed for ultrasound probes as long as they meet the specifications?</p>
 </div>
 <div class="clarification-answer">
 <div class="clarification-label">Answer</div>
-<p style="font-size: 13px;">Yes, acceptable if meeting ISO standards.</p>
+<div class="clarification-answer-date">8 Dec 2024</div>
+<p style="font-size: 13px;">Yes, alternative brands are acceptable provided they meet or exceed all specified technical requirements.</p>
 </div>
 </div>
 </div>
@@ -5839,7 +5918,7 @@ Submit Question
     </div>
     <div class="action-bar-right">
       <button class="btn btn-secondary" onclick="openModal('ask-clarification-modal')">
-        <i class="pi pi-comment"></i> Ask Question
+        <i class="pi pi-comment"></i> Request a clarification
       </button>
       <button class="btn btn-primary" onclick="selectTenderForBid('UNOPS/ITB/2025/001')">
         <i class="pi pi-send"></i> Continue Bid
@@ -6882,23 +6961,28 @@ Submit Question
 
   <!-- Tab Panel: Clarifications -->
   <div id="tab-clarifications" class="tender-tab-panel">
-    <div style="display: flex; justify-content: flex-end; margin-bottom: var(--spacing-sm);">
-      <button class="btn btn-link btn-sm" onclick="openModal('ask-clarification-modal')"><i class="pi pi-plus" style="font-size: 10px;"></i> Ask a Question</button>
-</div>
-<div class="clarification-item">
-<div class="clarification-header">
-        <span class="clarification-number"><i class="pi pi-question-circle" style="font-size: 10px; margin-right: 4px;"></i>Q #003</span>
-<span class="clarification-date">9 Dec 2024</span>
-</div>
-<div class="clarification-question">
-        <div class="clarification-label"><i class="pi pi-question" style="font-size: 9px; margin-right: 3px;"></i>Question</div>
-        <p>Can ultrasound machines be from different manufacturers?</p>
-</div>
-<div class="clarification-answer">
-        <div class="clarification-label"><i class="pi pi-check" style="font-size: 9px; margin-right: 3px;"></i>Answer</div>
-        <p>Yes, acceptable if meeting ISO standards.</p>
-</div>
-</div>
+    <div class="clarification-deadline-banner">
+      <i class="pi pi-calendar" aria-hidden="true"></i>
+      <span><strong>Clarification deadline:</strong> Questions must be submitted by <strong>10 January 2025, 23:59</strong> (local time). Answers will be published to all bidders.</span>
+    </div>
+    <div class="clarification-item">
+      <div class="clarification-header">
+        <div class="clarification-header-left">
+          <span class="clarification-number">Q#001</span>
+          <span class="clarification-meta-line">5 Dec 2024 • General Information</span>
+        </div>
+        <span class="clarification-status answered">Answered</span>
+      </div>
+      <div class="clarification-question">
+        <div class="clarification-label">Question</div>
+        <p>Can alternative brands be proposed for ultrasound probes as long as they meet the specifications?</p>
+      </div>
+      <div class="clarification-answer">
+        <div class="clarification-label">Answer</div>
+        <div class="clarification-answer-date">8 Dec 2024</div>
+        <p>Yes, alternative brands are acceptable provided they meet or exceed all specified technical requirements.</p>
+      </div>
+    </div>
   </div> <!-- End tab-clarifications -->
 
   <!-- Tab Panel: Award Evaluation -->
@@ -9897,7 +9981,7 @@ Submission Requirements
 <div class="modal-header">
 <h3 class="modal-title">
 <i class="pi pi-comment"></i>
-<span>Ask a Clarification Question</span>
+<span>Request a clarification</span>
 </h3>
 <button class="modal-close" onclick="closeModal('ask-clarification-modal')">×</button>
 </div>
@@ -9911,7 +9995,7 @@ Submission Requirements
 </div>
 
 <div class="form-group" style="margin-bottom: var(--spacing-lg);">
-<label class="form-label">Related Section <span class="required">*</span></label>
+<label class="form-label">Theme <span class="required">*</span></label>
 <select class="form-select">
 <option>Select...</option>
 <option>General Information</option>
@@ -9927,7 +10011,7 @@ Submission Requirements
 </div>
 <div class="modal-footer">
 <button class="btn btn-ghost" onclick="closeModal('ask-clarification-modal')">Cancel</button>
-<button class="btn btn-primary" onclick="submitClarification()"><i class="pi pi-send" style="margin-right: 8px;"></i>Submit Question</button>
+<button class="btn btn-primary" onclick="submitClarification()"><i class="pi pi-send" style="margin-right: 8px;"></i>Submit request</button>
 </div>
 </div>
 </div>
