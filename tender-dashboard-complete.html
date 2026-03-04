@@ -5224,6 +5224,81 @@
             border-left-color: var(--info-400);
         }
 
+        /* Grouped questions summary (optional, shown to suppliers) */
+        .grouped-summary-block {
+            background: linear-gradient(135deg, var(--primary-50) 0%, var(--surface-50) 100%);
+            border: 1px solid var(--primary-200);
+            border-left: 4px solid var(--primary-400);
+            border-radius: var(--radius-sm);
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+        }
+        .grouped-summary-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-sm);
+        }
+        .grouped-summary-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--primary-600);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .grouped-summary-label i {
+            font-size: 12px;
+        }
+        .grouped-summary-optional {
+            font-size: 10px;
+            color: var(--text-muted);
+            font-weight: 400;
+            text-transform: none;
+            letter-spacing: normal;
+        }
+        .grouped-summary-text {
+            font-size: 13px;
+            color: var(--text-primary);
+            line-height: 1.5;
+            margin: 0;
+        }
+        .grouped-summary-hint {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 6px;
+            font-style: italic;
+        }
+        .grouped-summary-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            margin-top: var(--spacing-sm);
+        }
+        .grouped-summary-edit textarea {
+            width: 100%;
+            min-height: 70px;
+            padding: var(--spacing-sm);
+            font-size: 13px;
+            border: 1px solid var(--primary-200);
+            border-radius: var(--radius-sm);
+            resize: vertical;
+            font-family: inherit;
+            line-height: 1.5;
+            box-sizing: border-box;
+        }
+        .grouped-summary-edit textarea:focus {
+            outline: none;
+            border-color: var(--primary-400);
+            box-shadow: 0 0 0 2px var(--primary-50);
+        }
+        .grouped-summary-empty {
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
         /* ===== SUBMISSIONS LOCKED NOTICE ===== */
         .submissions-locked-notice {
             display: flex;
@@ -9009,6 +9084,30 @@
                                         </div>
                                         <div class="clarification-supplier">
                                             <i class="pi pi-building"></i> Supplier B (UNGM: 234567), Supplier C (UNGM: 345678) • 6 Dec 2024, 10:45 UTC / 7 Dec 2024, 16:20 UTC
+                                        </div>
+                                        <!-- Grouped Questions Summary (optional, displayed to suppliers) -->
+                                        <div class="grouped-summary-block" data-group-id="GRP001">
+                                            <div class="grouped-summary-header">
+                                                <span class="grouped-summary-label">
+                                                    <i class="pi pi-list"></i> Summary for suppliers
+                                                    <span class="grouped-summary-optional">(optional)</span>
+                                                </span>
+                                            </div>
+                                            <div class="grouped-summary-view">
+                                                <p class="grouped-summary-text">Multiple suppliers have asked about delivery flexibility, specifically whether partial deliveries are allowed and if shipments can be split within the delivery window.</p>
+                                                <p class="grouped-summary-hint">This summary is shown to all suppliers instead of individual questions. Individual questions are preserved below for internal reference.</p>
+                                                <div class="grouped-summary-actions">
+                                                    <button type="button" class="btn btn-ghost btn-sm" onclick="toggleEditGroupedSummary('GRP001')"><i class="pi pi-pencil"></i> Edit Summary</button>
+                                                    <button type="button" class="btn btn-ghost btn-sm" onclick="clearGroupedSummary('GRP001')"><i class="pi pi-times"></i> Remove Summary</button>
+                                                </div>
+                                            </div>
+                                            <div class="grouped-summary-edit" style="display: none;">
+                                                <textarea class="grouped-summary-textarea" rows="3" placeholder="Write a summary of the grouped questions to display to all suppliers (optional)...">Multiple suppliers have asked about delivery flexibility, specifically whether partial deliveries are allowed and if shipments can be split within the delivery window.</textarea>
+                                                <div class="grouped-summary-actions">
+                                                    <button type="button" class="btn btn-primary btn-sm" onclick="saveGroupedSummary('GRP001')"><i class="pi pi-check"></i> Save</button>
+                                                    <button type="button" class="btn btn-ghost btn-sm" onclick="cancelEditGroupedSummary('GRP001')">Cancel</button>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="question-original-internal" data-question-id="Q002">
                                             <div class="question-label"><i class="pi pi-lock"></i> Original (Q#002) — internal</div>
@@ -21676,6 +21775,69 @@
             textarea.value = block.querySelector('.question-displayed-text') ? block.querySelector('.question-displayed-text').textContent : '';
             view.style.display = 'block';
             edit.style.display = 'none';
+        }
+
+        function toggleEditGroupedSummary(groupId) {
+            const block = document.querySelector(`.grouped-summary-block[data-group-id="${groupId}"]`);
+            if (!block) return;
+            const view = block.querySelector('.grouped-summary-view');
+            const edit = block.querySelector('.grouped-summary-edit');
+            const textarea = block.querySelector('.grouped-summary-textarea');
+            if (!view || !edit || !textarea) return;
+            const currentText = block.querySelector('.grouped-summary-text');
+            textarea.value = currentText && !currentText.classList.contains('grouped-summary-empty') ? currentText.textContent : '';
+            view.style.display = 'none';
+            edit.style.display = 'block';
+            textarea.focus();
+        }
+
+        function saveGroupedSummary(groupId) {
+            const block = document.querySelector(`.grouped-summary-block[data-group-id="${groupId}"]`);
+            if (!block) return;
+            const view = block.querySelector('.grouped-summary-view');
+            const edit = block.querySelector('.grouped-summary-edit');
+            const textarea = block.querySelector('.grouped-summary-textarea');
+            const textEl = block.querySelector('.grouped-summary-text');
+            const hintEl = block.querySelector('.grouped-summary-hint');
+            if (!view || !edit || !textarea || !textEl) return;
+            const newText = textarea.value.trim();
+            if (newText) {
+                textEl.textContent = newText;
+                textEl.classList.remove('grouped-summary-empty');
+                if (hintEl) hintEl.textContent = 'This summary is shown to all suppliers instead of individual questions. Individual questions are preserved below for internal reference.';
+            } else {
+                textEl.textContent = 'No summary provided. Individual questions will be shown to suppliers.';
+                textEl.classList.add('grouped-summary-empty');
+                if (hintEl) hintEl.textContent = 'Add a summary to consolidate these questions for suppliers.';
+            }
+            view.style.display = 'block';
+            edit.style.display = 'none';
+            showToast('✅ Grouped summary updated');
+        }
+
+        function cancelEditGroupedSummary(groupId) {
+            const block = document.querySelector(`.grouped-summary-block[data-group-id="${groupId}"]`);
+            if (!block) return;
+            const view = block.querySelector('.grouped-summary-view');
+            const edit = block.querySelector('.grouped-summary-edit');
+            if (!view || !edit) return;
+            view.style.display = 'block';
+            edit.style.display = 'none';
+        }
+
+        function clearGroupedSummary(groupId) {
+            const block = document.querySelector(`.grouped-summary-block[data-group-id="${groupId}"]`);
+            if (!block) return;
+            const textEl = block.querySelector('.grouped-summary-text');
+            const hintEl = block.querySelector('.grouped-summary-hint');
+            const textarea = block.querySelector('.grouped-summary-textarea');
+            if (textEl) {
+                textEl.textContent = 'No summary provided. Individual questions will be shown to suppliers.';
+                textEl.classList.add('grouped-summary-empty');
+            }
+            if (hintEl) hintEl.textContent = 'Add a summary to consolidate these questions for suppliers.';
+            if (textarea) textarea.value = '';
+            showToast('🗑️ Summary removed');
         }
 
         function filterClarifications(value, type) {
