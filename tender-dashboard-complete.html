@@ -5006,6 +5006,31 @@
             font-size: 12px;
         }
 
+        .supplier-ungm-id {
+            font-size: 10px;
+            color: var(--text-muted);
+            background: var(--surface-100);
+            padding: 2px 6px;
+            border-radius: var(--radius-sm);
+            font-weight: 500;
+        }
+
+        .supplier-sanction-flag {
+            font-size: 10px;
+            color: var(--danger-500);
+            background: var(--danger-50);
+            padding: 2px 6px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .supplier-sanction-flag i {
+            font-size: 10px;
+        }
+
         .eval-phase-tag {
             color: var(--warning-600);
             font-weight: 500;
@@ -5143,6 +5168,60 @@
             justify-content: flex-end;
             gap: var(--spacing-sm);
             margin-top: var(--spacing-sm);
+        }
+
+        /* Original vs displayed question (author can rephrase for suppliers) */
+        .question-original-internal {
+            background: var(--surface-100);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--radius-sm);
+            margin-bottom: var(--spacing-sm);
+            border-left: 3px solid var(--surface-600);
+        }
+        .question-original-internal .question-label {
+            color: var(--text-muted);
+        }
+        .question-displayed-to-suppliers {
+            background: var(--surface-50);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--radius-sm);
+            margin-bottom: var(--spacing-sm);
+            border-left: 3px solid var(--primary-400);
+        }
+        .question-displayed-to-suppliers .question-label {
+            color: var(--primary-600);
+        }
+        .question-displayed-hint {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 6px;
+            line-height: 1.4;
+        }
+        .question-displayed-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            margin-top: 6px;
+        }
+        .question-displayed-edit textarea {
+            width: 100%;
+            min-height: 60px;
+            padding: var(--spacing-sm);
+            font-size: 13px;
+            border: 1px solid var(--surface-200);
+            border-radius: var(--radius-sm);
+            resize: vertical;
+            font-family: inherit;
+            line-height: 1.5;
+            box-sizing: border-box;
+        }
+        .question-displayed-edit textarea:focus {
+            outline: none;
+            border-color: var(--primary-300);
+        }
+        .question-displayed-rephrased .question-displayed-to-suppliers {
+            background: var(--info-50);
+            border-left-color: var(--info-400);
         }
 
         /* ===== SUBMISSIONS LOCKED NOTICE ===== */
@@ -8872,7 +8951,7 @@
                                         <div class="clarification-header">
                                             <div class="clarification-meta">
                                                 <span class="question-id">Q#001</span>
-                                                <span class="question-date">5 Dec 2024 • General Information</span>
+                                                <span class="question-date">5 Dec 2024, 14:32 UTC • General Information</span>
                                             </div>
                                             <div class="clarification-badges">
                                                 <span class="status-badge answered"><i class="pi pi-check"></i> Answered</span>
@@ -8880,15 +8959,33 @@
                                         </div>
                                         <div class="clarification-supplier">
                                             <i class="pi pi-building"></i> Supplier A (MedSupply Ltd.)
+                                            <span class="supplier-ungm-id">UNGM: 123456</span>
                                         </div>
-                                        <div class="clarification-question">
-                                            <div class="question-label"><i class="pi pi-question-circle"></i> Question</div>
-                                            <p>Can alternative brands be proposed for ultrasound probes as long as they meet the specifications?</p>
+                                        <div class="question-original-internal" data-question-id="Q001">
+                                            <div class="question-label"><i class="pi pi-lock"></i> Original question (internal)</div>
+                                            <p class="question-original-text">Can alternative brands be proposed for ultrasound probes as long as they meet the specifications?</p>
+                                        </div>
+                                        <div class="question-displayed-to-suppliers" data-question-id="Q001">
+                                            <div class="question-label"><i class="pi pi-globe"></i> Question displayed to suppliers</div>
+                                            <div class="question-displayed-view">
+                                                <p class="question-displayed-text">Can alternative brands be proposed for ultrasound probes as long as they meet the specifications?</p>
+                                                <p class="question-displayed-hint">Same as original. Use Edit to rephrase if the question contained sensitive info.</p>
+                                                <div class="question-displayed-actions">
+                                                    <button type="button" class="btn btn-ghost btn-sm" onclick="toggleEditDisplayedQuestion('Q001')" aria-label="Edit question for suppliers"><i class="pi pi-pencil"></i> Edit</button>
+                                                </div>
+                                            </div>
+                                            <div class="question-displayed-edit" style="display: none;">
+                                                <textarea class="question-displayed-textarea" rows="3" placeholder="Rephrase the question to show to all suppliers (leave as is if no sensitive info)">Can alternative brands be proposed for ultrasound probes as long as they meet the specifications?</textarea>
+                                                <div class="question-displayed-actions">
+                                                    <button type="button" class="btn btn-primary btn-sm" onclick="saveDisplayedQuestion('Q001')"><i class="pi pi-check"></i> Save</button>
+                                                    <button type="button" class="btn btn-ghost btn-sm" onclick="cancelEditDisplayedQuestion('Q001')">Cancel</button>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="clarification-answer">
                                             <div class="answer-meta">
                                                 <span class="answer-label"><i class="pi pi-check-circle"></i> Answer</span>
-                                                <span class="answer-date">8 Dec 2024</span>
+                                                <span class="answer-date">8 Dec 2024, 09:15 UTC</span>
                                             </div>
                                             <p>Yes, alternative brands are acceptable provided they meet or exceed all specified technical requirements.</p>
                                         </div>
@@ -8911,20 +9008,52 @@
                                             </div>
                                         </div>
                                         <div class="clarification-supplier">
-                                            <i class="pi pi-building"></i> Supplier B, Supplier C • 6-7 Dec 2024
+                                            <i class="pi pi-building"></i> Supplier B (UNGM: 234567), Supplier C (UNGM: 345678) • 6 Dec 2024, 10:45 UTC / 7 Dec 2024, 16:20 UTC
                                         </div>
-                                        <div class="clarification-question">
-                                            <div class="question-label"><i class="pi pi-question-circle"></i> Question (Q#002)</div>
-                                            <p>Is partial delivery acceptable for different equipment types?</p>
+                                        <div class="question-original-internal" data-question-id="Q002">
+                                            <div class="question-label"><i class="pi pi-lock"></i> Original (Q#002) — internal</div>
+                                            <p class="question-original-text">Is partial delivery acceptable for different equipment types?</p>
                                         </div>
-                                        <div class="clarification-question">
-                                            <div class="question-label"><i class="pi pi-question-circle"></i> Question (Q#003)</div>
-                                            <p>Can delivery be split across multiple shipments within the 90-day window?</p>
+                                        <div class="question-displayed-to-suppliers" data-question-id="Q002">
+                                            <div class="question-label"><i class="pi pi-globe"></i> Displayed to suppliers (Q#002)</div>
+                                            <div class="question-displayed-view">
+                                                <p class="question-displayed-text">Is partial delivery acceptable for different equipment types?</p>
+                                                <div class="question-displayed-actions">
+                                                    <button type="button" class="btn btn-ghost btn-sm" onclick="toggleEditDisplayedQuestion('Q002')"><i class="pi pi-pencil"></i> Edit</button>
+                                                </div>
+                                            </div>
+                                            <div class="question-displayed-edit" style="display: none;">
+                                                <textarea class="question-displayed-textarea" rows="2">Is partial delivery acceptable for different equipment types?</textarea>
+                                                <div class="question-displayed-actions">
+                                                    <button type="button" class="btn btn-primary btn-sm" onclick="saveDisplayedQuestion('Q002')"><i class="pi pi-check"></i> Save</button>
+                                                    <button type="button" class="btn btn-ghost btn-sm" onclick="cancelEditDisplayedQuestion('Q002')">Cancel</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="question-original-internal" data-question-id="Q003">
+                                            <div class="question-label"><i class="pi pi-lock"></i> Original (Q#003) — internal</div>
+                                            <p class="question-original-text">Can delivery be split across multiple shipments within the 90-day window?</p>
+                                        </div>
+                                        <div class="question-displayed-to-suppliers" data-question-id="Q003">
+                                            <div class="question-label"><i class="pi pi-globe"></i> Displayed to suppliers (Q#003)</div>
+                                            <div class="question-displayed-view">
+                                                <p class="question-displayed-text">Can delivery be split across multiple shipments within the 90-day window?</p>
+                                                <div class="question-displayed-actions">
+                                                    <button type="button" class="btn btn-ghost btn-sm" onclick="toggleEditDisplayedQuestion('Q003')"><i class="pi pi-pencil"></i> Edit</button>
+                                                </div>
+                                            </div>
+                                            <div class="question-displayed-edit" style="display: none;">
+                                                <textarea class="question-displayed-textarea" rows="2">Can delivery be split across multiple shipments within the 90-day window?</textarea>
+                                                <div class="question-displayed-actions">
+                                                    <button type="button" class="btn btn-primary btn-sm" onclick="saveDisplayedQuestion('Q003')"><i class="pi pi-check"></i> Save</button>
+                                                    <button type="button" class="btn btn-ghost btn-sm" onclick="cancelEditDisplayedQuestion('Q003')">Cancel</button>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="clarification-answer">
                                             <div class="answer-meta">
                                                 <span class="answer-label"><i class="pi pi-check-circle"></i> Combined Answer</span>
-                                                <span class="answer-date">9 Dec 2024</span>
+                                                <span class="answer-date">9 Dec 2024, 11:30 UTC</span>
                                             </div>
                                             <p>Yes, partial deliveries are acceptable. Equipment may be delivered in multiple shipments as long as all items arrive within the specified delivery period for each category.</p>
                                         </div>
@@ -8940,18 +9069,37 @@
                                         <div class="clarification-header">
                                             <div class="clarification-meta">
                                                 <span class="question-id">Q#004</span>
-                                                <span class="question-date">10 Dec 2024 • Technical Specifications</span>
+                                                <span class="question-date">10 Dec 2024, 08:47 UTC • Technical Specifications</span>
                                             </div>
                                             <div class="clarification-badges">
                                                 <span class="status-badge pending"><i class="pi pi-clock"></i> Pending</span>
                                             </div>
                                         </div>
                                         <div class="clarification-supplier">
-                                            <i class="pi pi-building"></i> Supplier A (MedSupply Ltd.) • <span class="eval-phase-tag">Evaluation Phase</span>
+                                            <i class="pi pi-building"></i> Supplier A (MedSupply Ltd.)
+                                            <span class="supplier-ungm-id">UNGM: 123456</span>
+                                            • <span class="eval-phase-tag">Evaluation Phase</span>
                                         </div>
-                                        <div class="clarification-question">
-                                            <div class="question-label"><i class="pi pi-question-circle"></i> Question</div>
-                                            <p>We noticed our submitted specifications deviate slightly from requirement T-003. Can we provide clarification on why our solution still meets the functional requirements?</p>
+                                        <div class="question-original-internal" data-question-id="Q004">
+                                            <div class="question-label"><i class="pi pi-lock"></i> Original question (internal)</div>
+                                            <p class="question-original-text">We noticed our submitted specifications deviate slightly from requirement T-003. Can we provide clarification on why our solution still meets the functional requirements?</p>
+                                        </div>
+                                        <div class="question-displayed-to-suppliers question-displayed-rephrased" data-question-id="Q004">
+                                            <div class="question-label"><i class="pi pi-globe"></i> Question displayed to suppliers</div>
+                                            <div class="question-displayed-view">
+                                                <p class="question-displayed-text">Can a bidder provide clarification on why their solution meets the functional requirements when specifications deviate slightly from requirement T-003?</p>
+                                                <p class="question-displayed-hint">Rephrased to remove supplier-specific wording (&quot;our submitted&quot;, &quot;we&quot;) so it can be shown to all suppliers.</p>
+                                                <div class="question-displayed-actions">
+                                                    <button type="button" class="btn btn-ghost btn-sm" onclick="toggleEditDisplayedQuestion('Q004')"><i class="pi pi-pencil"></i> Edit</button>
+                                                </div>
+                                            </div>
+                                            <div class="question-displayed-edit" style="display: none;">
+                                                <textarea class="question-displayed-textarea" rows="3" placeholder="Rephrase to remove sensitive info">Can a bidder provide clarification on why their solution meets the functional requirements when specifications deviate slightly from requirement T-003?</textarea>
+                                                <div class="question-displayed-actions">
+                                                    <button type="button" class="btn btn-primary btn-sm" onclick="saveDisplayedQuestion('Q004')"><i class="pi pi-check"></i> Save</button>
+                                                    <button type="button" class="btn btn-ghost btn-sm" onclick="cancelEditDisplayedQuestion('Q004')">Cancel</button>
+                                                </div>
+                                            </div>
                                         </div>
                                         <!-- Response Area -->
                                         <div class="clarification-response-area">
@@ -8985,7 +9133,7 @@
                                         <div class="clarification-header">
                                             <div class="clarification-meta">
                                                 <span class="question-id">Q#005</span>
-                                                <span class="question-date">11 Dec 2024 • General Information</span>
+                                                <span class="question-date">11 Dec 2024, 15:03 UTC • General Information</span>
                                             </div>
                                             <div class="clarification-badges">
                                                 <span class="status-badge pending"><i class="pi pi-clock"></i> Pending</span>
@@ -8993,10 +9141,29 @@
                                         </div>
                                         <div class="clarification-supplier">
                                             <i class="pi pi-building"></i> Supplier D (MedTech Inc.)
+                                            <span class="supplier-ungm-id">UNGM: 456789</span>
+                                            <span class="supplier-sanction-flag"><i class="pi pi-exclamation-triangle"></i> Sanction</span>
                                         </div>
-                                        <div class="clarification-question">
-                                            <div class="question-label"><i class="pi pi-question-circle"></i> Question</div>
-                                            <p>What is the minimum warranty requirement for anesthesia machines? The tender document mentions "minimum 2 years" but the specs say "2-3 years".</p>
+                                        <div class="question-original-internal" data-question-id="Q005">
+                                            <div class="question-label"><i class="pi pi-lock"></i> Original question (internal)</div>
+                                            <p class="question-original-text">What is the minimum warranty requirement for anesthesia machines? The tender document mentions "minimum 2 years" but the specs say "2-3 years".</p>
+                                        </div>
+                                        <div class="question-displayed-to-suppliers" data-question-id="Q005">
+                                            <div class="question-label"><i class="pi pi-globe"></i> Question displayed to suppliers</div>
+                                            <div class="question-displayed-view">
+                                                <p class="question-displayed-text">What is the minimum warranty requirement for anesthesia machines? The tender document mentions "minimum 2 years" but the specs say "2-3 years".</p>
+                                                <p class="question-displayed-hint">Same as original. Use Edit to rephrase if the question contained sensitive info.</p>
+                                                <div class="question-displayed-actions">
+                                                    <button type="button" class="btn btn-ghost btn-sm" onclick="toggleEditDisplayedQuestion('Q005')"><i class="pi pi-pencil"></i> Edit</button>
+                                                </div>
+                                            </div>
+                                            <div class="question-displayed-edit" style="display: none;">
+                                                <textarea class="question-displayed-textarea" rows="3" placeholder="Rephrase the question to show to all suppliers">What is the minimum warranty requirement for anesthesia machines? The tender document mentions "minimum 2 years" but the specs say "2-3 years".</textarea>
+                                                <div class="question-displayed-actions">
+                                                    <button type="button" class="btn btn-primary btn-sm" onclick="saveDisplayedQuestion('Q005')"><i class="pi pi-check"></i> Save</button>
+                                                    <button type="button" class="btn btn-ghost btn-sm" onclick="cancelEditDisplayedQuestion('Q005')">Cancel</button>
+                                                </div>
+                                            </div>
                                         </div>
                                         <!-- Response Area -->
                                         <div class="clarification-response-area">
@@ -21463,6 +21630,52 @@
 
         function saveDraftAnswer(questionId) {
             showToast('💾 Draft saved');
+        }
+
+        function toggleEditDisplayedQuestion(questionId) {
+            const block = document.querySelector(`.question-displayed-to-suppliers[data-question-id="${questionId}"]`);
+            if (!block) return;
+            const view = block.querySelector('.question-displayed-view');
+            const edit = block.querySelector('.question-displayed-edit');
+            const textarea = block.querySelector('.question-displayed-textarea');
+            if (!view || !edit || !textarea) return;
+            view.style.display = 'none';
+            edit.style.display = 'block';
+            textarea.value = block.querySelector('.question-displayed-text') ? block.querySelector('.question-displayed-text').textContent : '';
+            textarea.focus();
+        }
+
+        function saveDisplayedQuestion(questionId) {
+            const block = document.querySelector(`.question-displayed-to-suppliers[data-question-id="${questionId}"]`);
+            if (!block) return;
+            const view = block.querySelector('.question-displayed-view');
+            const edit = block.querySelector('.question-displayed-edit');
+            const textarea = block.querySelector('.question-displayed-textarea');
+            const textEl = block.querySelector('.question-displayed-text');
+            if (!view || !edit || !textarea || !textEl) return;
+            const newText = textarea.value.trim();
+            const container = block.closest('.clarification-content');
+            const originalEl = container ? container.querySelector(`.question-original-internal[data-question-id="${questionId}"] .question-original-text`) : null;
+            textEl.textContent = newText || (originalEl ? originalEl.textContent : '') || '';
+            if (newText) block.classList.add('question-displayed-rephrased');
+            else block.classList.remove('question-displayed-rephrased');
+            const hint = block.querySelector('.question-displayed-hint');
+            if (hint) hint.textContent = newText ? 'Rephrased for suppliers. Original kept internally.' : 'Same as original. Use Edit to rephrase if the question contained sensitive info.';
+            view.style.display = 'block';
+            edit.style.display = 'none';
+            showToast('✅ Question for suppliers updated');
+        }
+
+        function cancelEditDisplayedQuestion(questionId) {
+            const block = document.querySelector(`.question-displayed-to-suppliers[data-question-id="${questionId}"]`);
+            if (!block) return;
+            const view = block.querySelector('.question-displayed-view');
+            const edit = block.querySelector('.question-displayed-edit');
+            const textarea = block.querySelector('.question-displayed-textarea');
+            if (!view || !edit) return;
+            textarea.value = block.querySelector('.question-displayed-text') ? block.querySelector('.question-displayed-text').textContent : '';
+            view.style.display = 'block';
+            edit.style.display = 'none';
         }
 
         function filterClarifications(value, type) {
