@@ -4825,7 +4825,28 @@ gap: var(--spacing-sm);
 
 .supplier-compliance-response {
     display: flex;
+    flex-wrap: wrap;
     gap: var(--spacing-xs);
+    align-items: flex-start;
+}
+.supplier-compliance-comments {
+    width: 100%;
+    margin-top: var(--spacing-xs);
+}
+.supplier-compliance-comments label {
+    display: block;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+}
+.supplier-compliance-comments textarea {
+    width: 100%;
+    min-height: 60px;
+    padding: 8px 12px;
+    border: 1px solid var(--surface-300);
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    resize: vertical;
 }
 
 .supplier-radio-option {
@@ -4933,6 +4954,14 @@ gap: var(--spacing-sm);
 
 .supplier-declaration-box ol li {
     margin-bottom: 4px;
+}
+.declaration-prefill {
+    background: var(--info-50);
+    color: var(--primary-700);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-weight: 600;
+    font-size: 10px;
 }
 
 .supplier-declaration-list {
@@ -9199,84 +9228,150 @@ Submission Requirements
       <div class="supplier-compliance-item">
         <div class="supplier-compliance-number">1</div>
         <div class="supplier-compliance-content">
-          <div class="supplier-compliance-title">Bankruptcy or Legal Proceedings</div>
-          <div class="supplier-compliance-description">Has the entity or individual declared bankruptcy, or been involved in bankruptcy or receivership proceedings, or is there any judgment or pending legal action against them?</div>
+          <div class="supplier-compliance-description">Has the entity or individual declared bankruptcy, or been involved in bankruptcy or receivership proceedings, or is there any judgment or pending legal action against them, which could impair operations in the foreseeable future;</div>
         </div>
         <div class="supplier-compliance-response">
-          <label class="supplier-radio-option"><input type="radio" name="disclosure1" value="no"><span>No</span></label>
-          <label class="supplier-radio-option"><input type="radio" name="disclosure1" value="yes"><span>Yes</span></label>
+          <label class="supplier-radio-option"><input type="radio" name="disclosure1" value="no" onchange="document.getElementById('disclosure1-comments').style.display='none';"><span>No</span></label>
+          <label class="supplier-radio-option"><input type="radio" name="disclosure1" value="yes" onchange="document.getElementById('disclosure1-comments').style.display='block';"><span>Yes</span></label>
+          <div class="supplier-compliance-comments" id="disclosure1-comments" style="display: none;">
+            <label>If the response is 'Yes', provide an explanation here.</label>
+            <textarea placeholder="Provide an explanation..." rows="3"></textarea>
+          </div>
         </div>
       </div>
 
       <div class="supplier-compliance-item">
         <div class="supplier-compliance-number">2</div>
         <div class="supplier-compliance-content">
-          <div class="supplier-compliance-title">Tax and Social Security</div>
-          <div class="supplier-compliance-description">Has the entity or individual been found in breach of obligations relating to the payment of taxes or social security contributions?</div>
+          <div class="supplier-compliance-description">Has the entity or individual been found (or is awaiting a judgment or administrative decision) in breach of their obligations relating to the payment of taxes or social security contributions?</div>
         </div>
         <div class="supplier-compliance-response">
-          <label class="supplier-radio-option"><input type="radio" name="disclosure2" value="no"><span>No</span></label>
-          <label class="supplier-radio-option"><input type="radio" name="disclosure2" value="yes"><span>Yes</span></label>
+          <label class="supplier-radio-option"><input type="radio" name="disclosure2" value="no" onchange="document.getElementById('disclosure2-comments').style.display='none';"><span>No</span></label>
+          <label class="supplier-radio-option"><input type="radio" name="disclosure2" value="yes" onchange="document.getElementById('disclosure2-comments').style.display='block';"><span>Yes</span></label>
+          <div class="supplier-compliance-comments" id="disclosure2-comments" style="display: none;">
+            <label>If the response is 'Yes', provide an explanation here.</label>
+            <textarea placeholder="Provide an explanation..." rows="3"></textarea>
+          </div>
         </div>
       </div>
 
       <div class="supplier-compliance-item">
         <div class="supplier-compliance-number">3</div>
         <div class="supplier-compliance-content">
-          <div class="supplier-compliance-title">Misconduct and Ethical Violations</div>
-          <div class="supplier-compliance-description">Has the entity or individual been found guilty of misconduct for the violation of applicable laws, regulations or ethical standards?</div>
+          <div class="supplier-compliance-description">Has the entity or individual been found (or is awaiting a judgment or administrative decision) guilty of misconduct for the violation of applicable laws, regulations or ethical standards of the profession to which they belong?</div>
         </div>
         <div class="supplier-compliance-response">
-          <label class="supplier-radio-option"><input type="radio" name="disclosure3" value="no"><span>No</span></label>
-          <label class="supplier-radio-option"><input type="radio" name="disclosure3" value="yes"><span>Yes</span></label>
+          <label class="supplier-radio-option"><input type="radio" name="disclosure3" value="no" onchange="document.getElementById('disclosure3-comments').style.display='none';"><span>No</span></label>
+          <label class="supplier-radio-option"><input type="radio" name="disclosure3" value="yes" onchange="document.getElementById('disclosure3-comments').style.display='block';"><span>Yes</span></label>
+          <div class="supplier-compliance-comments" id="disclosure3-comments" style="display: none;">
+            <label>If the response is 'Yes', provide an explanation here.</label>
+            <textarea placeholder="Provide an explanation..." rows="3"></textarea>
+          </div>
         </div>
       </div>
 
       <div class="supplier-compliance-item">
         <div class="supplier-compliance-number">4</div>
         <div class="supplier-compliance-content">
-          <div class="supplier-compliance-title">Proscribed Practices</div>
-          <div class="supplier-compliance-description">Has the entity or individual engaged in any Proscribed Practices (corrupt practice, fraudulent practice, coercive practice, collusive practice, unethical practice, obstruction)?</div>
+          <div class="supplier-compliance-description">Has the entity or individual engaged, or attempted to engage, in any Proscribed Practices in the past? For the purposes of this provision, &quot;Proscribed Practices&quot; are defined in the UNOPS Operational Instruction on Vendor Sanctions and include the following: A corrupt practice: the offering, giving, receiving, or soliciting, directly or indirectly, anything of value to influence improperly the actions of another party; A fraudulent practice: any act or omission, including a misrepresentation, that knowingly or recklessly misleads, or attempts to mislead, a party to obtain a financial or other benefit or to avoid an obligation; A coercive practice: an act or omission that impairs or harms, or threatens to impair or harm, directly or indirectly, any party or the property of the party to improperly influence the actions of a party; A collusive practice: an arrangement between two or more parties designed to achieve an improper purpose, including influencing improperly the actions of another party; An unethical practice: Conduct or behaviour that is contrary to the conflict of interest, gifts and hospitality, post-employment provisions or other published requirements of doing business with UNOPS; and Obstruction: Acts or omissions by a Vendor that prevent or hinder UNOPS from investigating instances of possible Proscribed Practices.</div>
         </div>
         <div class="supplier-compliance-response">
-          <label class="supplier-radio-option"><input type="radio" name="disclosure4" value="no"><span>No</span></label>
-          <label class="supplier-radio-option"><input type="radio" name="disclosure4" value="yes"><span>Yes</span></label>
+          <label class="supplier-radio-option"><input type="radio" name="disclosure4" value="no" onchange="document.getElementById('disclosure4-comments').style.display='none';"><span>No</span></label>
+          <label class="supplier-radio-option"><input type="radio" name="disclosure4" value="yes" onchange="document.getElementById('disclosure4-comments').style.display='block';"><span>Yes</span></label>
+          <div class="supplier-compliance-comments" id="disclosure4-comments" style="display: none;">
+            <label>If the response is 'Yes', provide an explanation here.</label>
+            <textarea placeholder="Provide an explanation..." rows="3"></textarea>
+          </div>
         </div>
       </div>
 
       <div class="supplier-compliance-item">
         <div class="supplier-compliance-number">5</div>
         <div class="supplier-compliance-content">
-          <div class="supplier-compliance-title">Conflict of Interest</div>
-          <div class="supplier-compliance-description">Does the entity or individual have a conflict of interest that may prevent them from entering into an agreement with UNOPS?</div>
+          <div class="supplier-compliance-description">Has the entity or individual unduly obtained, or attempted to unduly obtain, any confidential information in connection with this procurement process and any agreement that may be awarded as a result of this process?</div>
         </div>
         <div class="supplier-compliance-response">
-          <label class="supplier-radio-option"><input type="radio" name="disclosure5" value="no"><span>No</span></label>
-          <label class="supplier-radio-option"><input type="radio" name="disclosure5" value="yes"><span>Yes</span></label>
+          <label class="supplier-radio-option"><input type="radio" name="disclosure5" value="no" onchange="document.getElementById('disclosure5-comments').style.display='none';"><span>No</span></label>
+          <label class="supplier-radio-option"><input type="radio" name="disclosure5" value="yes" onchange="document.getElementById('disclosure5-comments').style.display='block';"><span>Yes</span></label>
+          <div class="supplier-compliance-comments" id="disclosure5-comments" style="display: none;">
+            <label>If the response is 'Yes', provide an explanation here.</label>
+            <textarea placeholder="Provide an explanation..." rows="3"></textarea>
+          </div>
         </div>
       </div>
 
       <div class="supplier-compliance-item">
         <div class="supplier-compliance-number">6</div>
         <div class="supplier-compliance-content">
-          <div class="supplier-compliance-title">Serious Offences</div>
-          <div class="supplier-compliance-description">Has the entity or individual been found to be involved in: Fraudulent practice, Corrupt practice, Money laundering, Terrorist financing, Child labour, or Human trafficking?</div>
+          <div class="supplier-compliance-description">Does the entity or individual have a conflict of interest, as provided in the Instructions to bidders, Article 4 &quot;Bidder eligibility&quot;, that may prevent them from entering into an agreement with UNOPS, or that may in any way jeopardize their performance in carrying out their obligations under the agreement?</div>
         </div>
         <div class="supplier-compliance-response">
-          <label class="supplier-radio-option"><input type="radio" name="disclosure6" value="no"><span>No</span></label>
-          <label class="supplier-radio-option"><input type="radio" name="disclosure6" value="yes"><span>Yes</span></label>
+          <label class="supplier-radio-option"><input type="radio" name="disclosure6" value="no" onchange="document.getElementById('disclosure6-comments').style.display='none';"><span>No</span></label>
+          <label class="supplier-radio-option"><input type="radio" name="disclosure6" value="yes" onchange="document.getElementById('disclosure6-comments').style.display='block';"><span>Yes</span></label>
+          <div class="supplier-compliance-comments" id="disclosure6-comments" style="display: none;">
+            <label>If the response is 'Yes', provide an explanation here.</label>
+            <textarea placeholder="Provide an explanation..." rows="3"></textarea>
+          </div>
         </div>
       </div>
 
       <div class="supplier-compliance-item">
         <div class="supplier-compliance-number">7</div>
         <div class="supplier-compliance-content">
-          <div class="supplier-compliance-title">Performance Issues</div>
-          <div class="supplier-compliance-description">Has the entity or individual had significant performance issues that led to early termination of a contract or application of penalties?</div>
+          <div class="supplier-compliance-description">Has the entity or individual been found (or is awaiting a judgment or administrative decision) to be involved in any of the following: Fraudulent practice; Corrupt practice; Affiliation with a criminal organization; Money laundering; Terrorist financing; Child labour; or Human trafficking?</div>
         </div>
         <div class="supplier-compliance-response">
-          <label class="supplier-radio-option"><input type="radio" name="disclosure7" value="no"><span>No</span></label>
-          <label class="supplier-radio-option"><input type="radio" name="disclosure7" value="yes"><span>Yes</span></label>
+          <label class="supplier-radio-option"><input type="radio" name="disclosure7" value="no" onchange="document.getElementById('disclosure7-comments').style.display='none';"><span>No</span></label>
+          <label class="supplier-radio-option"><input type="radio" name="disclosure7" value="yes" onchange="document.getElementById('disclosure7-comments').style.display='block';"><span>Yes</span></label>
+          <div class="supplier-compliance-comments" id="disclosure7-comments" style="display: none;">
+            <label>If the response is 'Yes', provide an explanation here.</label>
+            <textarea placeholder="Provide an explanation..." rows="3"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="supplier-compliance-item">
+        <div class="supplier-compliance-number">8</div>
+        <div class="supplier-compliance-content">
+          <div class="supplier-compliance-description">Has the entity or individual had significant performance issues in the past that led to the early termination of a legal commitment or the application of damages or other contractual penalties, or that were discovered following inspections, audits or investigations?</div>
+        </div>
+        <div class="supplier-compliance-response">
+          <label class="supplier-radio-option"><input type="radio" name="disclosure8" value="no" onchange="document.getElementById('disclosure8-comments').style.display='none';"><span>No</span></label>
+          <label class="supplier-radio-option"><input type="radio" name="disclosure8" value="yes" onchange="document.getElementById('disclosure8-comments').style.display='block';"><span>Yes</span></label>
+          <div class="supplier-compliance-comments" id="disclosure8-comments" style="display: none;">
+            <label>If the response is 'Yes', provide an explanation here.</label>
+            <textarea placeholder="Provide an explanation..." rows="3"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="supplier-compliance-item">
+        <div class="supplier-compliance-number">9</div>
+        <div class="supplier-compliance-content">
+          <div class="supplier-compliance-description">Has the entity or individual committed any financial irregularity, resulting from an act or omission or the inclusion of an unjustified item of expenditure outside a contractual engagement that had the effect of prejudicing their use of public funds?</div>
+        </div>
+        <div class="supplier-compliance-response">
+          <label class="supplier-radio-option"><input type="radio" name="disclosure9" value="no" onchange="document.getElementById('disclosure9-comments').style.display='none';"><span>No</span></label>
+          <label class="supplier-radio-option"><input type="radio" name="disclosure9" value="yes" onchange="document.getElementById('disclosure9-comments').style.display='block';"><span>Yes</span></label>
+          <div class="supplier-compliance-comments" id="disclosure9-comments" style="display: none;">
+            <label>If the response is 'Yes', provide an explanation here.</label>
+            <textarea placeholder="Provide an explanation..." rows="3"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="supplier-compliance-item">
+        <div class="supplier-compliance-number">10</div>
+        <div class="supplier-compliance-content">
+          <div class="supplier-compliance-description">Has the entity or individual been found (or is awaiting a judgment or administrative decision) to have created an entity in a different jurisdiction with the intent of circumventing fiscal, social or any other legal obligations in the jurisdiction of their registered office, central administration or principal place of business?</div>
+        </div>
+        <div class="supplier-compliance-response">
+          <label class="supplier-radio-option"><input type="radio" name="disclosure10" value="no" onchange="document.getElementById('disclosure10-comments').style.display='none';"><span>No</span></label>
+          <label class="supplier-radio-option"><input type="radio" name="disclosure10" value="yes" onchange="document.getElementById('disclosure10-comments').style.display='block';"><span>Yes</span></label>
+          <div class="supplier-compliance-comments" id="disclosure10-comments" style="display: none;">
+            <label>If the response is 'Yes', provide an explanation here.</label>
+            <textarea placeholder="Provide an explanation..." rows="3"></textarea>
+          </div>
         </div>
       </div>
 
@@ -9287,23 +9382,25 @@ Submission Requirements
 
       <div class="supplier-declaration-box" style="margin-bottom: var(--spacing-md);">
         <p style="font-weight: 600; margin-bottom: var(--spacing-xs); font-size: 12px;">We, the undersigned, declare that:</p>
-        <ol style="line-height: 1.5; padding-left: var(--spacing-sm); margin: 0; font-size: 11px;">
-          <li style="margin-bottom: 3px;">We have examined and have no reservations to the bidding documents, including amendments:
-            <span style="background: var(--info-50); padding: 2px 6px; border-radius: 3px; margin-left: 4px; font-size: 10px;">No. 01 - Dec 5, 2025</span>
+        <ol style="line-height: 1.6; padding-left: var(--spacing-sm); margin: 0; font-size: 11px;" class="declaration-list">
+          <li style="margin-bottom: 6px;">We have examined and have no reservations to the bidding documents, including amendments No.: <span class="declaration-prefill" title="System prefill: from published amendments">No. 01 – 5 Dec 2025</span>;</li>
+          <li style="margin-bottom: 6px;">We offer to supply in conformity with the bidding documents, including the UNOPS General Conditions of Contract, and in accordance with the delivery schedules specified in the Schedule of Requirements.</li>
+          <li style="margin-bottom: 6px;">The total price of our bid, excluding any discounts offered in item (d) below, is: <span class="declaration-prefill" title="System prefill: from Financial Bid totals">USD 247,500.00 (two hundred forty-seven thousand five hundred US dollars)</span>.</li>
+          <li style="margin-bottom: 6px;"><strong>The discounts offered and the methodology for their application are:</strong>
+            <ul style="margin: 4px 0 0 1em; padding-left: 1em;">
+              <li style="margin-bottom: 4px;"><strong>Discounts:</strong> If our bid is accepted, the following discounts shall apply. <span class="declaration-prefill" title="System prefill: from Financial Bid – Discounts section">2% early payment discount if invoice paid within 14 days (applies to Lot 1 and Lot 2); 1.5% volume discount on total order value (Schedule of Requirements, All Lots).</span></li>
+              <li style="margin-bottom: 4px;"><strong>Methodology of application of the discounts:</strong> The discounts shall be applied using the following method: <span class="declaration-prefill" title="System prefill: from Financial Bid – discount methodology">Early payment discount deducted from invoice total when payment is made within 14 days; volume discount applied to the total bid value before any other deductions.</span></li>
+            </ul>
           </li>
-          <li style="margin-bottom: 3px;">We offer to supply in conformity with the bidding documents, including the UNOPS General Conditions of Contract;</li>
-          <li style="margin-bottom: 3px;">The total price of our bid, excluding any discounts offered below, is: 
-            <span style="background: var(--info-50); padding: 2px 6px; border-radius: 3px; margin: 0 3px; font-weight: 600; font-size: 10px;">USD 0.00</span>
-          </li>
-          <li style="margin-bottom: 3px;">Our bid shall be valid for the period of time of <span style="background: var(--info-50); padding: 1px 4px; border-radius: 3px; font-size: 10px;">90</span> days from the date fixed for the bid submission deadline;</li>
-          <li style="margin-bottom: 3px;">If our bid is accepted, we commit to obtain a performance security in accordance with the General Conditions;</li>
-          <li style="margin-bottom: 3px;">We have no conflict of interest in any activity that would put us in conflict with UNOPS;</li>
-          <li style="margin-bottom: 3px;">We have not declared bankruptcy, are not involved in bankruptcy proceedings;</li>
-          <li style="margin-bottom: 3px;">Our firm confirms that we have not been associated with the preparation of these tender documents;</li>
-          <li style="margin-bottom: 3px;">We embrace the principles of the United Nations Supplier Code of Conduct;</li>
-          <li style="margin-bottom: 3px;">Our firm has not been declared ineligible by UNOPS or included in UN suspension lists;</li>
-          <li style="margin-bottom: 3px;">We have not offered and will not offer any gifts or favours in exchange for this ITB;</li>
-          <li>We understand that you are not bound to accept the lowest evaluated bid.</li>
+          <li style="margin-bottom: 6px;">Our bid shall be valid for the period of time of <span class="declaration-prefill" title="System prefill: from Tender Particulars – Period of Validity of Bids">90</span> days from the date fixed for the bid submission deadline as set out in the ITB, and it shall remain binding upon us and may be accepted at any time before the expiration of that period.</li>
+          <li style="margin-bottom: 6px;">If our bid is accepted, and if so requested in the Tender Particulars section, we commit to obtain a performance security in accordance with Instructions to Bidders Article 34 and the General Conditions of Contract.</li>
+          <li style="margin-bottom: 6px;">We have no conflict of interest in any activity that would put it, if selected for this assignment, in a conflict of interest with UNOPS.</li>
+          <li style="margin-bottom: 6px;">We have not declared bankruptcy, are not involved in bankruptcy or receivership proceedings, and there is no judgment or pending legal action against them that could impair their operations in the foreseeable future.</li>
+          <li style="margin-bottom: 6px;">Our firm confirms that the Bidder and sub-contractors have not been associated, or had been involved in any way, directly or indirectly, with the preparation of the design, terms of references and/or other documents used as a part of this solicitation.</li>
+          <li style="margin-bottom: 6px;">We embrace the principles of the United Nations Supplier Code of Conduct and adhere to the principles of the United Nations Global Compact.</li>
+          <li style="margin-bottom: 6px;">Our firm, its affiliates or subsidiaries – including any subcontractors or suppliers for any part of the contract – has not been declared ineligible by UNOPS, nor is included in the suspended/ineligibility list of the UN/PD, other UN Agencies, the UN Security Council, and the World Bank, in accordance with Instructions to Bidders Article 4, Eligibility.</li>
+          <li style="margin-bottom: 6px;">We have not offered and will not offer fees, gifts and/or favours of kind in exchange for this ITB and will not engage in any such activity during the performance of any contract awarded.</li>
+          <li style="margin-bottom: 0;">We understand that you are not bound to accept the lowest evaluated bid or any other bid that you may receive.</li>
         </ol>
       </div>
 
