@@ -9748,13 +9748,33 @@
         { id: 'drive-16', title: 'PSEA', type: 'DRIVE', clauseInGCC: '', description: 'Upon signature of the Contract, the Contractor shall conduct training on Preventing Sexual Exploitation and Abuse ("PSEA") for all its Personnel, both current and new. The training should ensure that Personnel understand what PSEA is, which PSEA risks are specific to the Contractor, and how to mitigate these risks. The Contractor shall also, upon signature of the Contract, establish and implement a Code of Conduct (or otherwise add to an existing one), to ensure that all Personnel understand that there is zero tolerance for inaction on allegations of PSEA.', isPredefined: true }
       ];
 
+      // Contract types for "Contract to be awarded" (multi-select); mapping drives GCC options
+      const CONTRACT_TYPES = [
+        { value: 'purchase-order', label: 'Purchase Order' },
+        { value: 'lta', label: 'Long-term Agreement (LTA)' },
+        { value: 'bpa', label: 'Blanket Purchase Agreement (BPA)' },
+        { value: 'service', label: 'Service Contract' },
+        { value: 'works', label: 'Works Contract' }
+      ];
+
       // Contract Provisions settings
       let contractProvisionsValues = {
+        contractToBeAwarded: [],
         languageOfContract: 'en',
         generalConditions: '',
+        generalConditionsMulti: [],
         generalConditionsLink: '',
-        specialConditionsClauses: JSON.parse(JSON.stringify(PREDEFINED_DRIVE_CLAUSES)),
-        sampleContractLink: ''
+        contractDocumentDisplay: '',
+        specialConditionsClauses: [],
+        driveClauses: JSON.parse(JSON.stringify(PREDEFINED_DRIVE_CLAUSES)),
+        sampleContractLink: '',
+        // Demo: default uploads for GCC and Sample Contract (author can remove or add)
+        gccDocuments: [
+          { id: 'gcc-doc-1', name: 'UNOPS General Conditions - Provision of Goods (EN).pdf' }
+        ],
+        sampleContractDocuments: [
+          { id: 'sample-doc-1', name: 'UNOPS Sample Contract - Goods and Services (EN).pdf' }
+        ]
       };
 
       // GCC link by contract type (read-only; replace with real UNOPS URLs when available)
@@ -9772,6 +9792,13 @@
         { value: 'zh', label: 'Chinese' },
         { value: 'ru', label: 'Russian' },
         { value: 'pt', label: 'Portuguese' }
+      ];
+
+      // Language options for Contract section only (EN, FR, SP)
+      const CONTRACT_LANGUAGE_OPTIONS = [
+        { value: 'en', label: 'English (EN)' },
+        { value: 'fr', label: 'French (FR)' },
+        { value: 'es', label: 'Spanish (SP)' }
       ];
       
       // Team Members
@@ -13719,10 +13746,10 @@
         } else if (sectionType === 'contract-provisions') {
           total = 4;
           completed = 0;
+          if (contractProvisionsValues.contractToBeAwarded && contractProvisionsValues.contractToBeAwarded.length > 0) completed++;
           if (contractProvisionsValues.languageOfContract) completed++;
-          if (contractProvisionsValues.generalConditions) completed++;
-          if (contractProvisionsValues.specialConditionsClauses && contractProvisionsValues.specialConditionsClauses.length > 0) completed++;
-          if (contractProvisionsValues.sampleContractLink) completed++;
+          if (contractProvisionsValues.generalConditions || (contractProvisionsValues.generalConditionsMulti && contractProvisionsValues.generalConditionsMulti.length > 0) || (contractProvisionsValues.contractToBeAwarded || []).includes('works')) completed++;
+          if ((contractProvisionsValues.specialConditionsClauses && contractProvisionsValues.specialConditionsClauses.length > 0) || (contractProvisionsValues.driveClauses && contractProvisionsValues.driveClauses.length > 0)) completed++;
         } else if (sectionType === 'competition-type') {
           total = 1;
           completed = competitionValues.competitionType ? 1 : 0;
@@ -15414,9 +15441,28 @@
         }
       };
 
+      window.updateContractToBeAwarded = function(selectEl) {
+        const selected = Array.from(selectEl.selectedOptions).map(o => o.value);
+        contractProvisionsValues.contractToBeAwarded = selected;
+        saveProjectDetailsSectionStates();
+        renderCurrentBlock();
+        restoreProjectDetailsSectionStates();
+      };
+
+      window.updateGCCMulti = function(selectEl) {
+        const selected = Array.from(selectEl.selectedOptions).map(o => o.value);
+        contractProvisionsValues.generalConditionsMulti = selected;
+        contractProvisionsValues.generalConditions = selected[0] || '';
+        contractProvisionsValues.generalConditionsLink = selected[0] ? (GENERAL_CONDITIONS_LINKS[selected[0]] || '') : '';
+        saveProjectDetailsSectionStates();
+        renderCurrentBlock();
+        restoreProjectDetailsSectionStates();
+      };
+
       window.addSpecialConditionClause = function() {
+        if (!contractProvisionsValues.specialConditionsClauses) contractProvisionsValues.specialConditionsClauses = [];
         contractProvisionsValues.specialConditionsClauses.push({
-          id: 'custom-' + Date.now(),
+          id: 'custom-special-' + Date.now(),
           title: '',
           description: '',
           clauseInGCC: '',
@@ -15429,15 +15475,77 @@
       };
 
       window.removeSpecialConditionClause = function(id) {
-        contractProvisionsValues.specialConditionsClauses = contractProvisionsValues.specialConditionsClauses.filter(c => c.id !== id);
+        contractProvisionsValues.specialConditionsClauses = (contractProvisionsValues.specialConditionsClauses || []).filter(c => c.id !== id);
         saveProjectDetailsSectionStates();
         renderCurrentBlock();
         restoreProjectDetailsSectionStates();
       };
 
       window.updateSpecialConditionClause = function(id, field, value) {
-        const clause = contractProvisionsValues.specialConditionsClauses.find(c => c.id === id);
+        const clause = (contractProvisionsValues.specialConditionsClauses || []).find(c => c.id === id);
         if (clause) clause[field] = value;
+      };
+
+      window.addDriveClause = function() {
+        if (!contractProvisionsValues.driveClauses) contractProvisionsValues.driveClauses = [];
+        contractProvisionsValues.driveClauses.push({
+          id: 'custom-drive-' + Date.now(),
+          title: '',
+          description: '',
+          type: 'DRIVE',
+          isPredefined: false
+        });
+        saveProjectDetailsSectionStates();
+        renderCurrentBlock();
+        restoreProjectDetailsSectionStates();
+      };
+
+      window.removeDriveClause = function(id) {
+        contractProvisionsValues.driveClauses = (contractProvisionsValues.driveClauses || []).filter(c => c.id !== id);
+        saveProjectDetailsSectionStates();
+        renderCurrentBlock();
+        restoreProjectDetailsSectionStates();
+      };
+
+      window.updateDriveClause = function(id, field, value) {
+        const clause = (contractProvisionsValues.driveClauses || []).find(c => c.id === id);
+        if (clause) clause[field] = value;
+      };
+
+      window.removeGccDocument = function(id) {
+        contractProvisionsValues.gccDocuments = (contractProvisionsValues.gccDocuments || []).filter(d => d.id !== id);
+        saveProjectDetailsSectionStates();
+        renderCurrentBlock();
+        restoreProjectDetailsSectionStates();
+      };
+
+      window.removeSampleContractDocument = function(id) {
+        contractProvisionsValues.sampleContractDocuments = (contractProvisionsValues.sampleContractDocuments || []).filter(d => d.id !== id);
+        saveProjectDetailsSectionStates();
+        renderCurrentBlock();
+        restoreProjectDetailsSectionStates();
+      };
+
+      window.addGccDocumentFromFile = function(inputEl) {
+        const file = inputEl && inputEl.files && inputEl.files[0];
+        if (!file) return;
+        if (!contractProvisionsValues.gccDocuments) contractProvisionsValues.gccDocuments = [];
+        contractProvisionsValues.gccDocuments.push({ id: 'gcc-doc-' + Date.now(), name: file.name });
+        inputEl.value = '';
+        saveProjectDetailsSectionStates();
+        renderCurrentBlock();
+        restoreProjectDetailsSectionStates();
+      };
+
+      window.addSampleContractDocumentFromFile = function(inputEl) {
+        const file = inputEl && inputEl.files && inputEl.files[0];
+        if (!file) return;
+        if (!contractProvisionsValues.sampleContractDocuments) contractProvisionsValues.sampleContractDocuments = [];
+        contractProvisionsValues.sampleContractDocuments.push({ id: 'sample-doc-' + Date.now(), name: file.name });
+        inputEl.value = '';
+        saveProjectDetailsSectionStates();
+        renderCurrentBlock();
+        restoreProjectDetailsSectionStates();
       };
       
       window.formatContractText = function(editorId, command) {
@@ -23149,26 +23257,6 @@
                 </div>
                 
                 <div class="form-group">
-                  <label class="form-label">Type of contract to be awarded</label>
-                  <select class="form-select">
-                    <option>Select...</option>
-                    <option>Purchase Order</option>
-                    <option>Long-term Agreement (LTA)</option>
-                    <option>Blanket Purchase Agreement (BPA)</option>
-                    <option>Service Contract</option>
-                  </select>
-                </div>
-                
-                <div class="form-group">
-                  <label class="form-label">General Conditions of Contract</label>
-                  <select class="form-select">
-                    <option>UNOPS General Conditions</option>
-                    <option>Custom General Conditions</option>
-                  </select>
-                  <span class="help-text">Pre-filled with UNOPS standard terms</span>
-                </div>
-                
-                <div class="form-group">
                   <label class="form-label">Public bid/proposal opening</label>
                   <select class="form-select">
                     <option>Select...</option>
@@ -23479,31 +23567,57 @@
                 <div class="collapsible-body" onclick="event.stopPropagation()">
                   <div class="form-grid-3col">
                     
-                    <!-- General Conditions of Contract (dropdown) -->
+                    <!-- Contract to be awarded (multi-select) - first field -->
+                    <div class="form-group full-width">
+                      <label class="form-label">Contract to be awarded</label>
+                      <select class="form-select" multiple size="5" onchange="updateContractToBeAwarded(this)" onclick="event.stopPropagation()">
+                        ${CONTRACT_TYPES.map(t => `<option value="${t.value}" ${(contractProvisionsValues.contractToBeAwarded || []).includes(t.value) ? 'selected' : ''}>${t.label}</option>`).join('')}
+                      </select>
+                    </div>
+                    
+                    <!-- Language of the contract: EN, FR, SP (single select) -->
+                    <div class="form-group">
+                      <label class="form-label">Language of the contract</label>
+                      <select class="form-select" onchange="updateContractProvision('languageOfContract', this.value)" onclick="event.stopPropagation()">
+                        ${CONTRACT_LANGUAGE_OPTIONS.map(l => `<option value="${l.value}" ${contractProvisionsValues.languageOfContract === l.value ? 'selected' : ''}>${l.label}</option>`).join('')}
+                      </select>
+                    </div>
+                    
+                    <!-- General Conditions of Contract (after contract doc); depends on contract to be awarded; single or multi; works → see specific GCCs -->
                     <div class="form-group full-width">
                       <label class="form-label">General Conditions of Contract</label>
-                      <select class="form-select" onchange="updateContractProvision('generalConditions', this.value)" onclick="event.stopPropagation()">
-                        <option value="">Select...</option>
-                        <option value="goods" ${contractProvisionsValues.generalConditions === 'goods' ? 'selected' : ''}>UNOPS General Conditions of Contract Contracts for the Provision of Goods</option>
-                        <option value="services" ${contractProvisionsValues.generalConditions === 'services' ? 'selected' : ''}>UNOPS General Conditions of Contract Contracts for the Provision of Services</option>
-                        <option value="goods-and-services" ${contractProvisionsValues.generalConditions === 'goods-and-services' ? 'selected' : ''}>UNOPS General Conditions of Contract Contracts for the Provision of Goods and Services</option>
-                      </select>
-                      <span class="help-text">Select applicable UNOPS General Conditions</span>
+                      ${(contractProvisionsValues.contractToBeAwarded || []).includes('works') ? `
+                        <div class="form-input" style="background: var(--surface-100); color: var(--text-secondary); padding: 0.5rem 0.75rem; font-style: italic;">See specific GCCs in the contract</div>
+                      ` : `
+                        <select class="form-select" multiple size="4" onchange="updateGCCMulti(this)" onclick="event.stopPropagation()">
+                          <option value="goods" ${(contractProvisionsValues.generalConditionsMulti || []).includes('goods') ? 'selected' : ''}>UNOPS General Conditions – Provision of Goods</option>
+                          <option value="services" ${(contractProvisionsValues.generalConditionsMulti || []).includes('services') ? 'selected' : ''}>UNOPS General Conditions – Provision of Services</option>
+                          <option value="goods-and-services" ${(contractProvisionsValues.generalConditionsMulti || []).includes('goods-and-services') ? 'selected' : ''}>UNOPS General Conditions – Goods and Services</option>
+                        </select>
+                      `}
                     </div>
                     
-                    <!-- UNOPS General Conditions of Contract (read-only link) -->
+                    <!-- General Conditions of Contract Document (uploads list; demo: one default) -->
                     <div class="form-group full-width">
-                      <label class="form-label">UNOPS General Conditions of Contract</label>
-                      <div class="form-input" style="background: var(--surface-100); color: var(--text-secondary); cursor: default; display: flex; align-items: center; min-height: 2.25rem;" readonly>
-                        ${(contractProvisionsValues.generalConditionsLink || GENERAL_CONDITIONS_LINKS[contractProvisionsValues.generalConditions] || '') ? `<a href="${contractProvisionsValues.generalConditionsLink || GENERAL_CONDITIONS_LINKS[contractProvisionsValues.generalConditions]}" target="_blank" rel="noopener" style="color: var(--primary-500); text-decoration: underline;">${contractProvisionsValues.generalConditionsLink || GENERAL_CONDITIONS_LINKS[contractProvisionsValues.generalConditions]}</a>` : '<span style="color: var(--text-muted);">Select a contract type above to show the link</span>'}
+                      <label class="form-label">General Conditions of Contract Document</label>
+                      <div style="display: flex; flex-direction: column; gap: var(--spacing-sm);">
+                        ${(contractProvisionsValues.gccDocuments || []).map((doc) => `
+                          <div style="display: flex; align-items: center; gap: var(--spacing-sm); padding: 0.5rem 0.75rem; background: var(--surface-100); border-radius: var(--radius-sm);">
+                            <span class="pi pi-file-pdf" style="color: var(--text-secondary);"></span>
+                            <span style="flex: 1; font-size: 14px;">${(doc.name || 'Document').replace(/</g, '&lt;')}</span>
+                            <button type="button" class="btn-remove" onclick="event.stopPropagation(); removeGccDocument('${doc.id}')" title="Remove">Remove</button>
+                          </div>
+                        `).join('')}
+                        <div style="display: flex; gap: var(--spacing-md); align-items: center; flex-wrap: wrap;">
+                          <input type="file" class="form-input" accept=".pdf,.doc,.docx" style="flex: 1; min-width: 200px;" id="gcc-doc-input" onchange="addGccDocumentFromFile(this)" onclick="event.stopPropagation()" />
+                          <button type="button" class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); document.getElementById('gcc-doc-input').click()">Add another</button>
+                        </div>
                       </div>
-                      <span class="help-text">Link to the General Conditions document (based on selected contract type)</span>
                     </div>
                     
-                    <!-- UNOPS Special Conditions of Contract (table) -->
-                    <div class="form-group full-width" style="grid-column: 1 / -1;">
-                      <label class="form-label">UNOPS Special Conditions of Contract</label>
-                      <p class="help-text" style="margin-bottom: 12px;">Standardized Contract Clauses are included by default. Add custom clauses as needed.</p>
+                    <!-- ========== UNOPS SPECIAL CONDITIONS OF CONTRACT (separate section) ========== -->
+                    <div class="form-group full-width" style="grid-column: 1 / -1; border-top: 2px solid var(--surface-200); padding-top: var(--spacing-lg); margin-top: var(--spacing-md);">
+                      <h4 style="font-size: 16px; font-weight: 600; margin-bottom: var(--spacing-md);">UNOPS Special conditions of contract</h4>
                       <div class="special-conditions-wrap">
                         <table class="special-conditions-table">
                           <thead>
@@ -23516,25 +23630,22 @@
                             </tr>
                           </thead>
                           <tbody>
-                            ${contractProvisionsValues.specialConditionsClauses.map((clause) => `
+                            ${(contractProvisionsValues.specialConditionsClauses || []).map((clause) => `
                             <tr>
                               <td class="cell-title">
-                                <input type="text" class="table-input" placeholder="Title" value="${(clause.title || '').replace(/"/g, '&quot;')}" onchange="updateSpecialConditionClause('${clause.id}', 'title', this.value)" onclick="event.stopPropagation()" ${clause.isPredefined ? 'readonly' : ''} />
+                                <input type="text" class="table-input" placeholder="Title" value="${(clause.title || '').replace(/"/g, '&quot;')}" onchange="updateSpecialConditionClause('${clause.id}', 'title', this.value)" onclick="event.stopPropagation()" />
                               </td>
                               <td class="cell-description">
-                                <textarea class="table-textarea" placeholder="Description" rows="2" onchange="updateSpecialConditionClause('${clause.id}', 'description', this.value)" onclick="event.stopPropagation()" ${clause.isPredefined ? 'readonly' : ''}>${(clause.description || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</textarea>
+                                <textarea class="table-textarea" placeholder="Description" rows="2" onchange="updateSpecialConditionClause('${clause.id}', 'description', this.value)" onclick="event.stopPropagation()">${(clause.description || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</textarea>
                               </td>
                               <td class="cell-clause">
-                                ${clause.isPredefined ? `<span class="table-readonly-text">${(clause.clauseInGCC || '—').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</span>` : `<input type="text" class="table-input" placeholder="e.g. Article no." value="${(clause.clauseInGCC || '').replace(/"/g, '&quot;')}" onchange="updateSpecialConditionClause('${clause.id}', 'clauseInGCC', this.value)" onclick="event.stopPropagation()" />`}
+                                <input type="text" class="table-input" placeholder="e.g. Article no." value="${(clause.clauseInGCC || '').replace(/"/g, '&quot;')}" onchange="updateSpecialConditionClause('${clause.id}', 'clauseInGCC', this.value)" onclick="event.stopPropagation()" />
                               </td>
                               <td class="cell-type">
-                                ${clause.isPredefined ? `<span class="type-badge ${clause.type}">${clause.type === 'DRIVE' ? 'DRiVE' : clause.type}</span>` : `<select class="table-select" onchange="updateSpecialConditionClause('${clause.id}', 'type', this.value)" onclick="event.stopPropagation()">
-                                  <option value="DRIVE" ${clause.type === 'DRIVE' ? 'selected' : ''}>DRiVE</option>
-                                  <option value="Special" ${clause.type === 'Special' ? 'selected' : ''}>Special</option>
-                                </select>`}
+                                <span class="type-badge Special">Special</span>
                               </td>
                               <td class="cell-actions">
-                                ${!clause.isPredefined ? `<button type="button" class="btn-remove" onclick="event.stopPropagation(); removeSpecialConditionClause('${clause.id}')" title="Remove clause">Remove</button>` : '<span style="color: var(--text-muted); font-size: 11px;">—</span>'}
+                                <button type="button" class="btn-remove" onclick="event.stopPropagation(); removeSpecialConditionClause('${clause.id}')" title="Remove clause">Remove</button>
                               </td>
                             </tr>
                             `).join('')}
@@ -23542,22 +23653,67 @@
                         </table>
                       </div>
                       <button type="button" class="special-conditions-add" onclick="event.stopPropagation(); addSpecialConditionClause()">
-                        <span class="pi pi-plus" style="font-size: 14px;"></span> Add custom clause
+                        <span class="pi pi-plus" style="font-size: 14px;"></span> Add custom condition
                       </button>
                     </div>
                     
-                    <!-- Language of the Contract + UNOPS Sample Contract (template by language) -->
-                    <div class="form-group">
-                      <label class="form-label">Language of the Contract</label>
-                      <select class="form-select" onchange="updateContractProvision('languageOfContract', this.value)" onclick="event.stopPropagation()">
-                        ${CONTRACT_LANGUAGES.map(l => `<option value="${l.value}" ${contractProvisionsValues.languageOfContract === l.value ? 'selected' : ''}>${l.label}</option>`).join('')}
-                      </select>
-                      <span class="help-text">Language for the contract; the system will provide the relevant template</span>
+                    <!-- ========== DRiVE CLAUSES (separate section) ========== -->
+                    <div class="form-group full-width" style="grid-column: 1 / -1; border-top: 2px solid var(--surface-200); padding-top: var(--spacing-lg); margin-top: var(--spacing-md);">
+                      <h4 style="font-size: 16px; font-weight: 600; margin-bottom: var(--spacing-sm);">Standardized Contract Clauses for Supply Chain Risk</h4>
+                      <p style="margin-bottom: 12px; font-size: 14px; line-height: 1.5; color: var(--text-secondary);">
+                        UNOPS is assessing vendors for supply chain risks based on their responses to the DRiVE questionnaire. The answers provided may prompt requests for clarification and verification based on UNOPS' assessment, and depending on the additional information UNOPS receives from the clarification/verification, additional clauses may be included to supplement the KPIs on sustainability in the contract. The standard clauses for each of the areas that are assessed can be found here below. There may be slight differences between the standard clause, and the one added to the contract.
+                      </p>
+                      <div class="special-conditions-wrap">
+                        <table class="special-conditions-table">
+                          <thead>
+                            <tr>
+                              <th class="cell-title">Title / Risk area</th>
+                              <th class="cell-description">Clause</th>
+                              <th class="cell-type">Type</th>
+                              <th class="cell-actions"></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            ${(contractProvisionsValues.driveClauses || []).map((clause) => `
+                            <tr>
+                              <td class="cell-title">
+                                <input type="text" class="table-input" placeholder="Title" value="${(clause.title || '').replace(/"/g, '&quot;')}" onchange="updateDriveClause('${clause.id}', 'title', this.value)" onclick="event.stopPropagation()" ${clause.isPredefined ? 'readonly' : ''} />
+                              </td>
+                              <td class="cell-description">
+                                <textarea class="table-textarea" placeholder="Description" rows="2" onchange="updateDriveClause('${clause.id}', 'description', this.value)" onclick="event.stopPropagation()" ${clause.isPredefined ? 'readonly' : ''}>${(clause.description || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</textarea>
+                              </td>
+                              <td class="cell-type">
+                                <span class="type-badge DRIVE">DRiVE</span>
+                              </td>
+                              <td class="cell-actions">
+                                ${!clause.isPredefined ? `<button type="button" class="btn-remove" onclick="event.stopPropagation(); removeDriveClause('${clause.id}')" title="Remove clause">Remove</button>` : '<span style="color: var(--text-muted); font-size: 11px;">—</span>'}
+                              </td>
+                            </tr>
+                            `).join('')}
+                          </tbody>
+                        </table>
+                      </div>
+                      <button type="button" class="special-conditions-add" onclick="event.stopPropagation(); addDriveClause()">
+                        <span class="pi pi-plus" style="font-size: 14px;"></span> Add custom DRiVE clause
+                      </button>
                     </div>
-                    <div class="form-group">
+                    
+                    <!-- UNOPS Sample Contract (uploads list; demo: one default) -->
+                    <div class="form-group full-width" style="grid-column: 1 / -1;">
                       <label class="form-label">UNOPS Sample Contract</label>
-                      <input type="url" class="form-input" placeholder="https://... or link to sample PDF" value="${contractProvisionsValues.sampleContractLink || ''}" onchange="updateContractProvision('sampleContractLink', this.value)" onclick="event.stopPropagation()" />
-                      <span class="help-text">Sample contract or PDF template (based on contract type and language selected)</span>
+                      <div style="display: flex; flex-direction: column; gap: var(--spacing-sm);">
+                        ${(contractProvisionsValues.sampleContractDocuments || []).map((doc) => `
+                          <div style="display: flex; align-items: center; gap: var(--spacing-sm); padding: 0.5rem 0.75rem; background: var(--surface-100); border-radius: var(--radius-sm);">
+                            <span class="pi pi-file-pdf" style="color: var(--text-secondary);"></span>
+                            <span style="flex: 1; font-size: 14px;">${(doc.name || 'Document').replace(/</g, '&lt;')}</span>
+                            <button type="button" class="btn-remove" onclick="event.stopPropagation(); removeSampleContractDocument('${doc.id}')" title="Remove">Remove</button>
+                          </div>
+                        `).join('')}
+                        <div style="display: flex; gap: var(--spacing-md); align-items: center; flex-wrap: wrap;">
+                          <input type="file" class="form-input" accept=".pdf,.doc,.docx" style="flex: 1; min-width: 200px;" id="sample-contract-input" onchange="addSampleContractDocumentFromFile(this)" onclick="event.stopPropagation()" />
+                          <button type="button" class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); document.getElementById('sample-contract-input').click()">Add another</button>
+                        </div>
+                      </div>
                     </div>
                     
                   </div>
