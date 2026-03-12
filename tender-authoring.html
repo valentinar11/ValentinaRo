@@ -15486,20 +15486,6 @@
         if (clause) clause[field] = value;
       };
 
-      window.addDriveClause = function() {
-        if (!contractProvisionsValues.driveClauses) contractProvisionsValues.driveClauses = [];
-        contractProvisionsValues.driveClauses.push({
-          id: 'custom-drive-' + Date.now(),
-          title: '',
-          description: '',
-          type: 'DRIVE',
-          isPredefined: false
-        });
-        saveProjectDetailsSectionStates();
-        renderCurrentBlock();
-        restoreProjectDetailsSectionStates();
-      };
-
       window.removeDriveClause = function(id) {
         contractProvisionsValues.driveClauses = (contractProvisionsValues.driveClauses || []).filter(c => c.id !== id);
         saveProjectDetailsSectionStates();
@@ -23711,9 +23697,6 @@
                           </tbody>
                         </table>
                       </div>
-                      <button type="button" class="special-conditions-add" onclick="event.stopPropagation(); addDriveClause()">
-                        <span class="pi pi-plus" style="font-size: 14px;"></span> Add custom DRiVE clause
-                      </button>
                     </div>
                     
                   </div>
