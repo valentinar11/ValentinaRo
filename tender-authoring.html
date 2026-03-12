@@ -23567,15 +23567,15 @@
                 <div class="collapsible-body" onclick="event.stopPropagation()">
                   <div class="form-grid-3col">
                     
-                    <!-- Contract to be awarded (multi-select) - first field -->
-                    <div class="form-group full-width">
+                    <!-- Row 1: Contract to be awarded (col 1) | Language (col 2) | UNOPS Sample Contract (col 3) -->
+                    <div class="form-group">
                       <label class="form-label">Contract to be awarded</label>
                       <select class="form-select" multiple size="5" onchange="updateContractToBeAwarded(this)" onclick="event.stopPropagation()">
                         ${CONTRACT_TYPES.map(t => `<option value="${t.value}" ${(contractProvisionsValues.contractToBeAwarded || []).includes(t.value) ? 'selected' : ''}>${t.label}</option>`).join('')}
                       </select>
                     </div>
                     
-                    <!-- Language of the contract: EN, FR, SP (single select) -->
+                    <!-- Language of the contract: EN, FR, SP (column 2) -->
                     <div class="form-group">
                       <label class="form-label">Language of the contract</label>
                       <select class="form-select" onchange="updateContractProvision('languageOfContract', this.value)" onclick="event.stopPropagation()">
@@ -23583,8 +23583,26 @@
                       </select>
                     </div>
                     
-                    <!-- General Conditions of Contract (after contract doc); depends on contract to be awarded; single or multi; works → see specific GCCs -->
-                    <div class="form-group full-width">
+                    <!-- UNOPS Sample Contract (column 3) -->
+                    <div class="form-group">
+                      <label class="form-label">UNOPS Sample Contract</label>
+                      <div style="display: flex; flex-direction: column; gap: var(--spacing-sm);">
+                        ${(contractProvisionsValues.sampleContractDocuments || []).map((doc) => `
+                          <div style="display: flex; align-items: center; gap: var(--spacing-sm); padding: 0.5rem 0.75rem; background: var(--surface-100); border-radius: var(--radius-sm);">
+                            <span class="pi pi-file-pdf" style="color: var(--text-secondary);"></span>
+                            <span style="flex: 1; font-size: 14px;">${(doc.name || 'Document').replace(/</g, '&lt;')}</span>
+                            <button type="button" class="btn-remove" onclick="event.stopPropagation(); removeSampleContractDocument('${doc.id}')" title="Remove">Remove</button>
+                          </div>
+                        `).join('')}
+                        <div style="display: flex; gap: var(--spacing-md); align-items: center; flex-wrap: wrap;">
+                          <input type="file" class="form-input" accept=".pdf,.doc,.docx" style="flex: 1; min-width: 200px;" id="sample-contract-input" onchange="addSampleContractDocumentFromFile(this)" onclick="event.stopPropagation()" />
+                          <button type="button" class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); document.getElementById('sample-contract-input').click()">Add another</button>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <!-- General Conditions of Contract (col 1) | GCC Document (col 2) -->
+                    <div class="form-group">
                       <label class="form-label">General Conditions of Contract</label>
                       ${(contractProvisionsValues.contractToBeAwarded || []).includes('works') ? `
                         <div class="form-input" style="background: var(--surface-100); color: var(--text-secondary); padding: 0.5rem 0.75rem; font-style: italic;">See specific GCCs in the contract</div>
@@ -23598,7 +23616,7 @@
                     </div>
                     
                     <!-- General Conditions of Contract Document (uploads list; demo: one default) -->
-                    <div class="form-group full-width">
+                    <div class="form-group">
                       <label class="form-label">General Conditions of Contract Document</label>
                       <div style="display: flex; flex-direction: column; gap: var(--spacing-sm);">
                         ${(contractProvisionsValues.gccDocuments || []).map((doc) => `
@@ -23696,24 +23714,6 @@
                       <button type="button" class="special-conditions-add" onclick="event.stopPropagation(); addDriveClause()">
                         <span class="pi pi-plus" style="font-size: 14px;"></span> Add custom DRiVE clause
                       </button>
-                    </div>
-                    
-                    <!-- UNOPS Sample Contract (uploads list; demo: one default) -->
-                    <div class="form-group full-width" style="grid-column: 1 / -1;">
-                      <label class="form-label">UNOPS Sample Contract</label>
-                      <div style="display: flex; flex-direction: column; gap: var(--spacing-sm);">
-                        ${(contractProvisionsValues.sampleContractDocuments || []).map((doc) => `
-                          <div style="display: flex; align-items: center; gap: var(--spacing-sm); padding: 0.5rem 0.75rem; background: var(--surface-100); border-radius: var(--radius-sm);">
-                            <span class="pi pi-file-pdf" style="color: var(--text-secondary);"></span>
-                            <span style="flex: 1; font-size: 14px;">${(doc.name || 'Document').replace(/</g, '&lt;')}</span>
-                            <button type="button" class="btn-remove" onclick="event.stopPropagation(); removeSampleContractDocument('${doc.id}')" title="Remove">Remove</button>
-                          </div>
-                        `).join('')}
-                        <div style="display: flex; gap: var(--spacing-md); align-items: center; flex-wrap: wrap;">
-                          <input type="file" class="form-input" accept=".pdf,.doc,.docx" style="flex: 1; min-width: 200px;" id="sample-contract-input" onchange="addSampleContractDocumentFromFile(this)" onclick="event.stopPropagation()" />
-                          <button type="button" class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); document.getElementById('sample-contract-input').click()">Add another</button>
-                        </div>
-                      </div>
                     </div>
                     
                   </div>
