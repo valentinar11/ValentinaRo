@@ -4617,6 +4617,17 @@ gap: var(--spacing-sm);
     border-left-color: var(--warning-500);
 }
 
+/* Read-only company details (Single Company / Lead Partner) */
+.supplier-readonly {
+    background: var(--surface-100) !important;
+    color: var(--text-primary);
+    cursor: not-allowed;
+    opacity: 0.95;
+}
+select.supplier-readonly {
+    appearance: none;
+}
+
 .supplier-info-banner.success {
     background: var(--success-50);
     border-left-color: var(--success-500);
@@ -7630,45 +7641,51 @@ Submission Requirements
         <div class="supplier-subsection-header">
           <strong><i class="pi pi-building"></i> Company Details</strong>
         </div>
+        <div class="supplier-info-banner" style="margin-bottom: var(--spacing-md);">
+          <span class="supplier-info-banner-icon">ℹ️</span>
+          <div>
+            <strong>Read-only.</strong> Company details are filled from your UNGM profile. To change this information, please update your company profile in <a href="#" style="color: var(--primary-600); font-weight: 600;">UNGM</a>.
+          </div>
+        </div>
 
         <div class="supplier-form-grid">
           <div class="supplier-form-field">
             <label><i class="pi pi-id-card"></i> Company Legal Name <span style="color: var(--danger-500);">*</span></label>
-            <input type="text" placeholder="Enter full legal name" value="Acme Corporation">
+            <input type="text" class="supplier-readonly" placeholder="Enter full legal name" value="Acme Corporation" readonly>
           </div>
 
           <div class="supplier-form-field">
             <label><i class="pi pi-verified"></i> UNGM Vendor ID <span style="color: var(--text-muted); font-weight: 400;">(if registered)</span></label>
-            <input type="text" placeholder="UNGM-XXXXXX" value="UNGM-284756">
+            <input type="text" class="supplier-readonly" placeholder="UNGM-XXXXXX" value="UNGM-284756" readonly>
           </div>
         </div>
 
         <div class="supplier-form-grid" style="margin-bottom: var(--spacing-sm);">
           <div class="supplier-form-field">
             <label><i class="pi pi-map-marker"></i> Address Line 1 <span style="color: var(--danger-500);">*</span> <span style="color: var(--text-muted); font-weight: 400; font-size: 11px;">(max 35 chars)</span></label>
-            <input type="text" placeholder="Street address" maxlength="35" value="123 Innovation Boulevard">
+            <input type="text" class="supplier-readonly" placeholder="Street address" maxlength="35" value="123 Innovation Boulevard" readonly>
           </div>
           <div class="supplier-form-field">
             <label><i class="pi pi-home"></i> House Number <span style="color: var(--text-muted); font-weight: 400; font-size: 11px;">(max 10 chars)</span></label>
-            <input type="text" placeholder="Building/House number" maxlength="10" value="Suite 500">
+            <input type="text" class="supplier-readonly" placeholder="Building/House number" maxlength="10" value="Suite 500" readonly>
           </div>
         </div>
 
         <div class="supplier-form-grid" style="margin-bottom: var(--spacing-sm);">
           <div class="supplier-form-field">
             <label><i class="pi pi-building"></i> City <span style="color: var(--danger-500);">*</span> <span style="color: var(--text-muted); font-weight: 400; font-size: 11px;">(max 35 chars)</span></label>
-            <input type="text" placeholder="City name" maxlength="35" value="New York">
+            <input type="text" class="supplier-readonly" placeholder="City name" maxlength="35" value="New York" readonly>
           </div>
           <div class="supplier-form-field">
             <label><i class="pi pi-inbox"></i> Postal Code <span style="color: var(--danger-500);">*</span> <span style="color: var(--text-muted); font-weight: 400; font-size: 11px;">(max 10 chars)</span></label>
-            <input type="text" placeholder="Postal/ZIP code" maxlength="10" value="10001">
+            <input type="text" class="supplier-readonly" placeholder="Postal/ZIP code" maxlength="10" value="10001" readonly>
           </div>
         </div>
 
         <div class="supplier-form-grid" style="margin-bottom: var(--spacing-sm);">
           <div class="supplier-form-field">
             <label><i class="pi pi-globe"></i> Country <span style="color: var(--danger-500);">*</span></label>
-            <select>
+            <select class="supplier-readonly" disabled>
               <option value="">Select country...</option>
               <option value="4">Afghanistan</option>
               <option value="8">Albania</option>
@@ -7705,15 +7722,31 @@ Submission Requirements
           </div>
           <div class="supplier-form-field">
             <label><i class="pi pi-envelope"></i> Primary Contact Email <span style="color: var(--danger-500);">*</span></label>
-            <input type="email" placeholder="contact@company.com" value="procurement@acmecorp.com">
+            <input type="email" class="supplier-readonly" placeholder="contact@company.com" value="procurement@acmecorp.com" readonly>
           </div>
         </div>
 
         <div class="supplier-form-grid">
           <div class="supplier-form-field">
             <label><i class="pi pi-phone"></i> Phone Number <span style="color: var(--danger-500);">*</span></label>
-            <input type="tel" placeholder="+X-XXX-XXX-XXXX" value="+1-212-555-0147">
+            <input type="tel" class="supplier-readonly" placeholder="+X-XXX-XXX-XXXX" value="+1-212-555-0147" readonly>
           </div>
+        </div>
+
+        <div class="supplier-form-field" style="margin-top: var(--spacing-sm);">
+          <label><i class="pi pi-file-check"></i> Certificate of Incorporation <span style="color: var(--danger-500);">*</span></label>
+          <div class="uploaded-file" style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-md); padding: var(--spacing-sm) var(--spacing-md); align-items: center;">
+            <div class="file-icon"><i class="pi pi-file-pdf" style="font-size: 22px; color: var(--danger-500);"></i></div>
+            <div class="file-info" style="flex: 1; min-width: 0;">
+              <div class="file-name" style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                Acme-Certificate-of-Incorporation.pdf
+                <span class="attachment-tag from-profile" style="border-radius: var(--radius-sm); white-space: nowrap;"><i class="pi pi-star-fill" style="font-size: 9px; margin-right: 2px;"></i> From profile</span>
+              </div>
+              <div class="file-size">892 KB • Uploaded from company profile</div>
+            </div>
+            <button type="button" class="file-remove" style="flex-shrink: 0;" title="Remove and upload a different file"><i class="pi pi-times" style="margin-right: 4px;"></i> Remove</button>
+          </div>
+          <div style="font-size: 11px; color: var(--text-muted); margin-top: 6px;">You can remove this file and upload a different Certificate of Incorporation if needed.</div>
         </div>
       </div>
 
@@ -7887,117 +7920,86 @@ Submission Requirements
       </div>
       <!-- END SIMPLIFIED TECHNICAL BID -->
 
-      <!-- DEFAULT TECHNICAL BID (for ITB/2025/001) -->
+      <!-- DEFAULT TECHNICAL BID (for ITB/2025/001) - Grouped by Lot then UNSPSC -->
       <div id="technical-bid-default">
-      <!-- Item 1: Technical Specifications -->
-      <div class="product-technical-section" data-product-id="42182104" data-product-name="Ultrasound Machines" style="background: var(--surface-50); padding: var(--spacing-sm); border-radius: var(--radius-sm); margin-bottom: var(--spacing-sm); border: 1px solid var(--surface-200);">
-        <div style="font-weight: 600; margin-bottom: var(--spacing-sm); color: var(--primary-700); background: var(--surface-100); padding: var(--spacing-xs) var(--spacing-sm); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: space-between; font-size: 12px;">
-          <div style="display: flex; align-items: center; gap: 6px;">
-            <i class="pi pi-tag" style="font-size: 11px;"></i> UNSPSC Code: 42182104 - Ultrasound Machines <span style="margin-left: 8px; background: var(--info-100); color: var(--info-700); padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600;">Qty: 5</span>
-          </div>
-          <!-- Per-product alternative offers removed - now using global alternative offer approach -->
-          <span style="font-size: 10px; color: var(--text-muted);"><i class="pi pi-info-circle"></i> Use tabs above for alternative offers</span>
+
+      <!-- Lot 1 (collapsible) -->
+      <div class="collapsible-section" style="margin-bottom: var(--spacing-md);">
+        <div class="section-header-collapsible" onclick="toggleTechnicalBidCollapse(this)">
+          <span style="font-weight: 600; font-size: 13px;"><i class="pi pi-folder-open" style="margin-right: 8px; color: var(--primary-500);"></i> Lot 1</span>
+          <span class="section-collapse-icon"><i class="pi pi-chevron-down"></i></span>
         </div>
-
-        <div class="supplier-form-grid">
-          <div class="supplier-form-field">
-            <label><i class="pi pi-box"></i> Brand/Model <span style="color: var(--danger-500);">*</span></label>
-            <input type="text" placeholder="Enter brand and model name">
-          </div>
-
-          <div class="supplier-form-field">
-            <label><i class="pi pi-globe"></i> Country of Origin <span style="color: var(--danger-500);">*</span></label>
-            <input type="text" placeholder="Manufacturing country">
-          </div>
-
-          <div class="supplier-form-field">
-            <label><i class="pi pi-building"></i> Manufacturer <span style="color: var(--danger-500);">*</span></label>
-            <div style="display: flex; gap: 8px;">
-              <input type="text" placeholder="Manufacturer name" style="flex: 1;">
-              <button class="btn btn-ghost" style="padding: 6px 10px; font-size: 10px; white-space: nowrap; color: var(--primary-600);" onclick="openReplicateManufacturerModal(this)" title="Apply to other items"><i class="pi pi-copy" style="margin-right: 3px;"></i> Apply to...</button>
+        <div class="section-collapsible-content">
+          <!-- UNSPSC 42182104 - Ultrasound Machines (Product 1, Lot 1) -->
+          <div class="collapsible-section" style="margin-bottom: var(--spacing-md);">
+            <div class="section-header-collapsible" onclick="toggleTechnicalBidCollapse(this)">
+              <span style="font-weight: 600; font-size: 12px;"><i class="pi pi-tag" style="margin-right: 6px; color: var(--primary-500);"></i> UNSPSC 42182104 – Ultrasound Machines</span>
+              <span style="margin-left: 8px; background: var(--info-100); color: var(--info-700); padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600;">Qty: 5</span>
+              <span class="section-collapse-icon" style="margin-left: auto;"><i class="pi pi-chevron-down"></i></span>
             </div>
-          </div>
-
-          <div class="supplier-form-field">
-            <label><i class="pi pi-verified"></i> Manufacturer UNGM ID <span style="color: var(--text-muted); font-weight: 400;">(if available)</span></label>
-            <input type="text" placeholder="UNGM-XXXXXX">
-          </div>
-
-          <div class="supplier-form-field">
-            <label><i class="pi pi-file-check"></i> Manufacturer's Authorization <span style="color: var(--danger-500);">*</span></label>
-            <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
-              <button class="btn btn-secondary btn-sm" style="font-size: 10px; padding: 4px 10px; white-space: nowrap;"><i class="pi pi-download" style="margin-right: 4px; font-size: 9px;"></i> Template</button>
-              <div style="flex: 1; border: 1px dashed var(--surface-300); border-radius: var(--radius-sm); padding: 6px 10px; background: var(--surface-50); display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 10px; color: var(--text-muted);">
-                <i class="pi pi-upload" style="font-size: 10px; color: var(--primary-500);"></i> Upload completed form
+            <div class="section-collapsible-content" style="background: var(--surface-50); padding: var(--spacing-md); border-radius: 0 0 var(--radius-sm) var(--radius-sm); border: 1px solid var(--surface-200); border-top: none;">
+              <div class="supplier-form-grid">
+                <div class="supplier-form-field">
+                  <label><i class="pi pi-box"></i> Brand/Model <span style="color: var(--danger-500);">*</span></label>
+                  <input type="text" placeholder="Enter brand and model name">
+                </div>
+                <div class="supplier-form-field">
+                  <label><i class="pi pi-globe"></i> Country of Origin <span style="color: var(--danger-500);">*</span></label>
+                  <select multiple size="4" style="width: 100%; padding: 6px 8px; font-size: 12px; border-radius: var(--radius-sm); border: 1px solid var(--surface-300);" title="Hold Ctrl (Windows) or Cmd (Mac) to select multiple">
+                    <option value="36">Australia</option>
+                    <option value="56">Belgium</option>
+                    <option value="124">Canada</option>
+                    <option value="156">China</option>
+                    <option value="208">Denmark</option>
+                    <option value="250">France</option>
+                    <option value="276">Germany</option>
+                    <option value="356">India</option>
+                    <option value="380">Italy</option>
+                    <option value="392">Japan</option>
+                    <option value="410">South Korea</option>
+                    <option value="528">Netherlands</option>
+                    <option value="724">Spain</option>
+                    <option value="752">Sweden</option>
+                    <option value="826">United Kingdom</option>
+                    <option value="840">United States</option>
+                  </select>
+                  <div style="font-size: 10px; color: var(--text-muted); margin-top: 4px;">Hold Ctrl (Windows) or Cmd (Mac) to select multiple countries</div>
+                </div>
               </div>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- Manufacturer Address - Structured Fields -->
-        <div style="margin-top: var(--spacing-sm); padding: var(--spacing-sm); background: var(--surface-50); border-radius: var(--radius-sm); border: 1px solid var(--surface-200);">
-          <div style="font-weight: 600; font-size: 11px; color: var(--text-secondary); margin-bottom: var(--spacing-xs); display: flex; align-items: center; gap: 6px;">
-            <i class="pi pi-map-marker" style="font-size: 10px;"></i> Manufacturer Address
-          </div>
-          <div class="supplier-form-grid" style="gap: var(--spacing-xs);">
-            <div class="supplier-form-field" style="margin-bottom: 0;">
-              <label style="font-size: 10px;"><i class="pi pi-map-marker"></i> Address Line 1 <span style="color: var(--text-muted); font-weight: 400;">(max 35)</span></label>
-              <input type="text" placeholder="Street address" maxlength="35" style="font-size: 11px; padding: 6px 8px;">
-            </div>
-            <div class="supplier-form-field" style="margin-bottom: 0;">
-              <label style="font-size: 10px;"><i class="pi pi-home"></i> House Number <span style="color: var(--text-muted); font-weight: 400;">(max 10)</span></label>
-              <input type="text" placeholder="Building/House #" maxlength="10" style="font-size: 11px; padding: 6px 8px;">
-            </div>
-          </div>
-          <div class="supplier-form-grid" style="gap: var(--spacing-xs); margin-top: var(--spacing-xs);">
-            <div class="supplier-form-field" style="margin-bottom: 0;">
-              <label style="font-size: 10px;"><i class="pi pi-building"></i> City <span style="color: var(--text-muted); font-weight: 400;">(max 35)</span></label>
-              <input type="text" placeholder="City name" maxlength="35" style="font-size: 11px; padding: 6px 8px;">
-            </div>
-            <div class="supplier-form-field" style="margin-bottom: 0;">
-              <label style="font-size: 10px;"><i class="pi pi-inbox"></i> Postal Code <span style="color: var(--text-muted); font-weight: 400;">(max 10)</span></label>
-              <input type="text" placeholder="Postal/ZIP code" maxlength="10" style="font-size: 11px; padding: 6px 8px;">
-            </div>
-          </div>
-          <div class="supplier-form-grid" style="gap: var(--spacing-xs); margin-top: var(--spacing-xs);">
-            <div class="supplier-form-field" style="margin-bottom: 0;">
-              <label style="font-size: 10px;"><i class="pi pi-globe"></i> Country</label>
-              <select style="font-size: 11px; padding: 6px 8px;">
-                <option value="">Select country...</option>
-                <option value="4">Afghanistan</option>
-                <option value="8">Albania</option>
-                <option value="12">Algeria</option>
-                <option value="32">Argentina</option>
-                <option value="36">Australia</option>
-                <option value="40">Austria</option>
-                <option value="56">Belgium</option>
-                <option value="76">Brazil</option>
-                <option value="124">Canada</option>
-                <option value="156">China</option>
-                <option value="208">Denmark</option>
-                <option value="246">Finland</option>
-                <option value="250">France</option>
-                <option value="276">Germany</option>
-                <option value="356">India</option>
-                <option value="380">Italy</option>
-                <option value="392">Japan</option>
-                <option value="410">South Korea</option>
-                <option value="484">Mexico</option>
-                <option value="528">Netherlands</option>
-                <option value="578">Norway</option>
-                <option value="616">Poland</option>
-                <option value="724">Spain</option>
-                <option value="752">Sweden</option>
-                <option value="756">Switzerland</option>
-                <option value="826">United Kingdom</option>
-                <option value="840">United States</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <!-- Subcontractors Section -->
+              <!-- Manufacturers (multiple, like subcontractors) -->
+              <div class="manufacturers-section" style="margin-top: var(--spacing-md); padding: var(--spacing-sm); background: var(--surface-100); border-radius: var(--radius-sm); border: 1px dashed var(--surface-300);">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--spacing-sm);">
+                  <div style="font-weight: 600; font-size: 12px; color: var(--text-secondary);"><i class="pi pi-building" style="font-size: 11px;"></i> Manufacturers <span style="color: var(--danger-500);">*</span></div>
+                  <button type="button" class="btn btn-secondary btn-sm" onclick="addManufacturer(this)" style="padding: 4px 10px; font-size: 10px;"><i class="pi pi-plus" style="font-size: 9px;"></i> Add Manufacturer</button>
+                </div>
+                <div class="manufacturers-list">
+                  <div class="manufacturer-entry" style="background: var(--surface-0); padding: var(--spacing-sm); border-radius: var(--radius-sm); border: 1px solid var(--surface-200); margin-bottom: var(--spacing-xs);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-xs);">
+                      <span style="font-size: 10px; font-weight: 600; color: var(--primary-600);"><i class="pi pi-building" style="margin-right: 4px;"></i> Manufacturer 1</span>
+                      <button type="button" class="btn btn-ghost btn-sm" onclick="removeManufacturer(this)" style="padding: 2px 6px; font-size: 9px; color: var(--danger-500);" title="Remove"><i class="pi pi-trash" style="font-size: 10px;"></i></button>
+                    </div>
+                    <div class="supplier-form-grid" style="gap: var(--spacing-xs);">
+                      <div class="supplier-form-field" style="margin-bottom: 0;"><label style="font-size: 10px;"><i class="pi pi-building"></i> Manufacturer Name</label><input type="text" placeholder="Manufacturer name" style="font-size: 11px; padding: 6px 8px;"></div>
+                      <div class="supplier-form-field" style="margin-bottom: 0;"><label style="font-size: 10px;"><i class="pi pi-globe"></i> Country of Origin</label><input type="text" placeholder="Manufacturing country" style="font-size: 11px; padding: 6px 8px;"></div>
+                      <div class="supplier-form-field" style="margin-bottom: 0;"><label style="font-size: 10px;"><i class="pi pi-verified"></i> UNGM ID (if available)</label><input type="text" placeholder="UNGM-XXXXXX" style="font-size: 11px; padding: 6px 8px;"></div>
+                    </div>
+                    <div style="margin-top: var(--spacing-xs); padding: var(--spacing-xs); background: var(--surface-50); border-radius: var(--radius-sm);">
+                      <div style="font-weight: 600; font-size: 9px; color: var(--text-muted); margin-bottom: 4px;">Address</div>
+                      <div class="supplier-form-grid" style="gap: var(--spacing-xs);">
+                        <div class="supplier-form-field" style="margin-bottom: 0;"><label style="font-size: 9px;">Address Line 1</label><input type="text" placeholder="Street address" maxlength="35" style="font-size: 10px; padding: 4px 6px;"></div>
+                        <div class="supplier-form-field" style="margin-bottom: 0;"><label style="font-size: 9px;">House Number</label><input type="text" placeholder="Building #" maxlength="10" style="font-size: 10px; padding: 4px 6px;"></div>
+                      </div>
+                      <div class="supplier-form-grid" style="gap: var(--spacing-xs); margin-top: 4px;">
+                        <div class="supplier-form-field" style="margin-bottom: 0;"><label style="font-size: 9px;">City</label><input type="text" placeholder="City" maxlength="35" style="font-size: 10px; padding: 4px 6px;"></div>
+                        <div class="supplier-form-field" style="margin-bottom: 0;"><label style="font-size: 9px;">Postal Code</label><input type="text" placeholder="Postal code" maxlength="10" style="font-size: 10px; padding: 4px 6px;"></div>
+                      </div>
+                      <div class="supplier-form-grid" style="gap: var(--spacing-xs); margin-top: 4px;"><div class="supplier-form-field" style="margin-bottom: 0;"><label style="font-size: 9px;">Country</label><select style="font-size: 10px; padding: 4px 6px;"><option value="">Select country...</option><option value="276">Germany</option><option value="392">Japan</option><option value="840">United States</option></select></div></div>
+                    </div>
+                    <div style="margin-top: 6px;"><label style="font-size: 9px;">Manufacturer's Authorization</label><div style="border: 1px dashed var(--surface-300); border-radius: var(--radius-sm); padding: 6px 10px; background: var(--surface-50); font-size: 10px; color: var(--text-muted);"><i class="pi pi-upload" style="font-size: 10px; color: var(--primary-500);"></i> Upload form</div></div>
+                  </div>
+                </div>
+              </div>
+              <!-- Subcontractors Section -->
         <div class="subcontractors-section" style="margin-top: var(--spacing-md); padding: var(--spacing-sm); background: var(--surface-100); border-radius: var(--radius-sm); border: 1px dashed var(--surface-300);">
           <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--spacing-sm);">
             <div style="font-weight: 600; font-size: 12px; color: var(--text-secondary); display: flex; align-items: center; gap: 6px;">
@@ -8023,6 +8025,10 @@ Submission Requirements
                 <div class="supplier-form-field" style="margin-bottom: 0;">
                   <label style="font-size: 10px;"><i class="pi pi-building"></i> Company Name</label>
                   <input type="text" placeholder="Subcontractor company name" style="font-size: 11px; padding: 6px 8px;">
+                </div>
+                <div class="supplier-form-field" style="margin-bottom: 0;">
+                  <label style="font-size: 10px;"><i class="pi pi-verified"></i> Subcontractor UNGM ID <span style="color: var(--text-muted); font-weight: 400;">(if registered)</span></label>
+                  <input type="text" placeholder="UNGM-XXXXXX" style="font-size: 11px; padding: 6px 8px;">
                 </div>
                 <div class="supplier-form-field" style="margin-bottom: 0;">
                   <label style="font-size: 10px;"><i class="pi pi-box"></i> Type of Work Subcontracted</label>
@@ -8180,16 +8186,138 @@ Submission Requirements
             Upload product catalogues, brochures, technical datasheets, or similar documentation for the goods offered.
           </div>
         </div>
+            </div>
+          </div>
+        </div>
       </div>
+      <!-- END Lot 1 -->
 
-      <!-- Legacy per-product alternative offers container (no longer used - see global alternative offer tabs above) -->
-      <div id="alternate-offers-container-42182104" class="alternate-offers-container" style="display: none;"></div>
-
-      <!-- Other Requirements - Priced Items -->
-      <div class="supplier-subsection-header">
-        <strong><i class="pi pi-briefcase"></i> Other Requirements - Priced Items</strong>
+      <!-- Lot 2 (collapsible) -->
+      <div class="collapsible-section" style="margin-bottom: var(--spacing-md);">
+        <div class="section-header-collapsible" onclick="toggleTechnicalBidCollapse(this)">
+          <span style="font-weight: 600; font-size: 13px;"><i class="pi pi-folder-open" style="margin-right: 8px; color: var(--success-600);"></i> Lot 2</span>
+          <span class="section-collapse-icon"><i class="pi pi-chevron-down"></i></span>
+        </div>
+        <div class="section-collapsible-content">
+          <!-- UNSPSC 42182108 - Patient Monitors (Product 2, Lot 2) -->
+          <div class="collapsible-section" style="margin-bottom: var(--spacing-md);">
+            <div class="section-header-collapsible" onclick="toggleTechnicalBidCollapse(this)">
+              <span style="font-weight: 600; font-size: 12px;"><i class="pi pi-tag" style="margin-right: 6px; color: var(--success-600);"></i> UNSPSC 42182108 – Patient Monitors</span>
+              <span style="margin-left: 8px; background: var(--success-100); color: var(--success-700); padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600;">Qty: 3</span>
+              <span class="section-collapse-icon" style="margin-left: auto;"><i class="pi pi-chevron-down"></i></span>
+            </div>
+            <div class="section-collapsible-content" style="background: var(--surface-50); padding: var(--spacing-md); border-radius: 0 0 var(--radius-sm) var(--radius-sm); border: 1px solid var(--surface-200); border-top: none;">
+              <div class="supplier-form-grid">
+                <div class="supplier-form-field">
+                  <label><i class="pi pi-box"></i> Brand/Model <span style="color: var(--danger-500);">*</span></label>
+                  <input type="text" placeholder="Enter brand and model name">
+                </div>
+                <div class="supplier-form-field">
+                  <label><i class="pi pi-globe"></i> Country of Origin <span style="color: var(--danger-500);">*</span></label>
+                  <select multiple size="4" style="width: 100%; padding: 6px 8px; font-size: 12px; border-radius: var(--radius-sm); border: 1px solid var(--surface-300);" title="Hold Ctrl (Windows) or Cmd (Mac) to select multiple">
+                    <option value="36">Australia</option>
+                    <option value="56">Belgium</option>
+                    <option value="124">Canada</option>
+                    <option value="156">China</option>
+                    <option value="208">Denmark</option>
+                    <option value="250">France</option>
+                    <option value="276">Germany</option>
+                    <option value="356">India</option>
+                    <option value="380">Italy</option>
+                    <option value="392">Japan</option>
+                    <option value="410">South Korea</option>
+                    <option value="528">Netherlands</option>
+                    <option value="724">Spain</option>
+                    <option value="752">Sweden</option>
+                    <option value="826">United Kingdom</option>
+                    <option value="840">United States</option>
+                  </select>
+                  <div style="font-size: 10px; color: var(--text-muted); margin-top: 4px;">Hold Ctrl (Windows) or Cmd (Mac) to select multiple countries</div>
+                </div>
+              </div>
+              <div class="manufacturers-section" style="margin-top: var(--spacing-md); padding: var(--spacing-sm); background: var(--surface-100); border-radius: var(--radius-sm); border: 1px dashed var(--surface-300);">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--spacing-sm);">
+                  <div style="font-weight: 600; font-size: 12px; color: var(--text-secondary);"><i class="pi pi-building" style="font-size: 11px;"></i> Manufacturers <span style="color: var(--danger-500);">*</span></div>
+                  <button type="button" class="btn btn-secondary btn-sm" onclick="addManufacturer(this)" style="padding: 4px 10px; font-size: 10px;"><i class="pi pi-plus" style="font-size: 9px;"></i> Add Manufacturer</button>
+                </div>
+                <div class="manufacturers-list">
+                  <div class="manufacturer-entry" style="background: var(--surface-0); padding: var(--spacing-sm); border-radius: var(--radius-sm); border: 1px solid var(--surface-200); margin-bottom: var(--spacing-xs);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-xs);">
+                      <span style="font-size: 10px; font-weight: 600; color: var(--primary-600);"><i class="pi pi-building" style="margin-right: 4px;"></i> Manufacturer 1</span>
+                      <button type="button" class="btn btn-ghost btn-sm" onclick="removeManufacturer(this)" style="padding: 2px 6px; font-size: 9px; color: var(--danger-500);" title="Remove"><i class="pi pi-trash" style="font-size: 10px;"></i></button>
+                    </div>
+                    <div class="supplier-form-grid" style="gap: var(--spacing-xs);">
+                      <div class="supplier-form-field" style="margin-bottom: 0;"><label style="font-size: 10px;"><i class="pi pi-building"></i> Manufacturer Name</label><input type="text" placeholder="Manufacturer name" style="font-size: 11px; padding: 6px 8px;"></div>
+                      <div class="supplier-form-field" style="margin-bottom: 0;"><label style="font-size: 10px;"><i class="pi pi-globe"></i> Country of Origin</label><input type="text" placeholder="Manufacturing country" style="font-size: 11px; padding: 6px 8px;"></div>
+                      <div class="supplier-form-field" style="margin-bottom: 0;"><label style="font-size: 10px;"><i class="pi pi-verified"></i> UNGM ID (if available)</label><input type="text" placeholder="UNGM-XXXXXX" style="font-size: 11px; padding: 6px 8px;"></div>
+                    </div>
+                    <div style="margin-top: var(--spacing-xs); padding: var(--spacing-xs); background: var(--surface-50); border-radius: var(--radius-sm);">
+                      <div style="font-weight: 600; font-size: 9px; color: var(--text-muted); margin-bottom: 4px;">Address</div>
+                      <div class="supplier-form-grid" style="gap: var(--spacing-xs);">
+                        <div class="supplier-form-field" style="margin-bottom: 0;"><label style="font-size: 9px;">Address Line 1</label><input type="text" placeholder="Street address" maxlength="35" style="font-size: 10px; padding: 4px 6px;"></div>
+                        <div class="supplier-form-field" style="margin-bottom: 0;"><label style="font-size: 9px;">House Number</label><input type="text" placeholder="Building #" maxlength="10" style="font-size: 10px; padding: 4px 6px;"></div>
+                      </div>
+                      <div class="supplier-form-grid" style="gap: var(--spacing-xs); margin-top: 4px;">
+                        <div class="supplier-form-field" style="margin-bottom: 0;"><label style="font-size: 9px;">City</label><input type="text" placeholder="City" maxlength="35" style="font-size: 10px; padding: 4px 6px;"></div>
+                        <div class="supplier-form-field" style="margin-bottom: 0;"><label style="font-size: 9px;">Postal Code</label><input type="text" placeholder="Postal code" maxlength="10" style="font-size: 10px; padding: 4px 6px;"></div>
+                      </div>
+                      <div class="supplier-form-grid" style="gap: var(--spacing-xs); margin-top: 4px;"><div class="supplier-form-field" style="margin-bottom: 0;"><label style="font-size: 9px;">Country</label><select style="font-size: 10px; padding: 4px 6px;"><option value="">Select country...</option><option value="276">Germany</option><option value="392">Japan</option><option value="840">United States</option></select></div></div>
+                    </div>
+                    <div style="margin-top: 6px;"><label style="font-size: 9px;">Manufacturer's Authorization</label><div style="border: 1px dashed var(--surface-300); border-radius: var(--radius-sm); padding: 6px 10px; background: var(--surface-50); font-size: 10px; color: var(--text-muted);"><i class="pi pi-upload" style="font-size: 10px; color: var(--primary-500);"></i> Upload form</div></div>
+                  </div>
+                </div>
+              </div>
+              <div class="subcontractors-section" style="margin-top: var(--spacing-md); padding: var(--spacing-sm); background: var(--surface-100); border-radius: var(--radius-sm); border: 1px dashed var(--surface-300);">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--spacing-sm);">
+                  <div style="font-weight: 600; font-size: 12px; color: var(--text-secondary);"><i class="pi pi-users" style="font-size: 11px;"></i> Subcontractors <span style="font-weight: 400; color: var(--text-muted);">(if applicable)</span></div>
+                  <button type="button" class="btn btn-secondary btn-sm" onclick="addSubcontractor(this)" style="padding: 4px 10px; font-size: 10px;"><i class="pi pi-plus" style="font-size: 9px;"></i> Add Subcontractor</button>
+                </div>
+                <div style="font-size: 10px; color: var(--text-secondary); margin-bottom: var(--spacing-sm); padding: 8px; background: var(--info-50); border-radius: var(--radius-sm); border-left: 3px solid var(--info-400);">
+                  <i class="pi pi-info-circle" style="margin-right: 6px; color: var(--info-500);"></i>
+                  Bidder must identify the names of all subcontractors/suppliers who will be providing goods/services under this contract and the type of work being subcontracted, if applicable.
+                </div>
+                <div class="subcontractors-list">
+                  <div class="subcontractor-entry" style="background: var(--surface-0); padding: var(--spacing-sm); border-radius: var(--radius-sm); border: 1px solid var(--surface-200); margin-bottom: var(--spacing-xs);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-xs);">
+                      <span style="font-size: 10px; font-weight: 600; color: var(--primary-600);"><i class="pi pi-user" style="margin-right: 4px;"></i> Subcontractor 1</span>
+                      <button type="button" class="btn btn-ghost btn-sm" onclick="removeSubcontractor(this)" style="padding: 2px 6px; font-size: 9px; color: var(--danger-500);" title="Remove"><i class="pi pi-trash" style="font-size: 10px;"></i></button>
+                    </div>
+                    <div class="supplier-form-grid" style="gap: var(--spacing-xs);">
+                      <div class="supplier-form-field" style="margin-bottom: 0;"><label style="font-size: 10px;"><i class="pi pi-building"></i> Company Name</label><input type="text" placeholder="Subcontractor company name" style="font-size: 11px; padding: 6px 8px;"></div>
+                      <div class="supplier-form-field" style="margin-bottom: 0;"><label style="font-size: 10px;"><i class="pi pi-verified"></i> Subcontractor UNGM ID <span style="color: var(--text-muted); font-weight: 400;">(if registered)</span></label><input type="text" placeholder="UNGM-XXXXXX" style="font-size: 11px; padding: 6px 8px;"></div>
+                      <div class="supplier-form-field" style="margin-bottom: 0;"><label style="font-size: 10px;"><i class="pi pi-box"></i> Type of Work Subcontracted</label><input type="text" placeholder="Describe goods/services provided" style="font-size: 11px; padding: 6px 8px;"></div>
+                    </div>
+                    <div class="supplier-form-grid" style="gap: var(--spacing-xs); margin-top: var(--spacing-xs);">
+                      <div class="supplier-form-field" style="margin-bottom: 0;"><label style="font-size: 10px;"><i class="pi pi-phone"></i> Contact</label><input type="text" placeholder="Phone / Email" style="font-size: 11px; padding: 6px 8px;"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="supplier-subsection-header" style="margin-top: var(--spacing-md);"><strong><i class="pi pi-list"></i> Requirements</strong></div>
+              <table class="supplier-smart-table">
+                <thead><tr><th style="width: 5%;">#</th><th style="width: 30%;">Item Specification (UNOPS Requirements)</th><th style="width: 12%;">Is quotation compliant?</th><th style="width: 26%;">Details of goods offered</th><th style="width: 27%;">Deviation from Requirements</th></tr></thead>
+                <tbody>
+                  <tr><td style="text-align: center; font-weight: 600;">1</td><td class="prefilled">Multi-parameter patient monitor with ECG, SpO2, NIBP, temperature</td><td><label style="display: flex; align-items: center; gap: 6px; cursor: pointer;"><input type="radio" name="techSpec_p2_1"> Yes</label><label style="display: flex; align-items: center; gap: 6px; cursor: pointer;"><input type="radio" name="techSpec_p2_1"> No</label></td><td><textarea placeholder="Describe your product's specifications" rows="2"></textarea></td><td><textarea placeholder="List any deviations" rows="2" style="background: var(--warning-50);"></textarea></td></tr>
+                  <tr><td style="text-align: center; font-weight: 600;">2</td><td class="prefilled">Minimum 12.1" display, touch screen</td><td><label style="display: flex; align-items: center; gap: 6px; cursor: pointer;"><input type="radio" name="techSpec_p2_2"> Yes</label><label style="display: flex; align-items: center; gap: 6px; cursor: pointer;"><input type="radio" name="techSpec_p2_2"> No</label></td><td><textarea placeholder="Describe your product's specifications" rows="2"></textarea></td><td><textarea placeholder="List any deviations" rows="2" style="background: var(--warning-50);"></textarea></td></tr>
+                </tbody>
+              </table>
+              <div class="supplier-form-field" style="margin-top: var(--spacing-md);">
+                <label><i class="pi pi-file-pdf" style="color: var(--primary-500);"></i> Product Catalogues or Similar</label>
+                <div style="border: 2px dashed var(--surface-300); border-radius: var(--radius-md); padding: var(--spacing-md); background: var(--surface-50); text-align: center; cursor: pointer; font-size: 13px;">Click to upload or drag and drop • PDF, DOC, DOCX, JPG, PNG (Max 10MB each)</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+      <!-- END Lot 2 -->
 
+      <!-- Other Requirements - Priced Items (not product-specific, once per bid) -->
+      <div class="collapsible-section" style="margin-bottom: var(--spacing-md);">
+        <div class="section-header-collapsible" onclick="toggleTechnicalBidCollapse(this)">
+          <span style="font-weight: 600; font-size: 13px;"><i class="pi pi-briefcase" style="margin-right: 8px; color: var(--primary-500);"></i> Other Requirements – Priced Items</span>
+          <span class="section-collapse-icon"><i class="pi pi-chevron-down"></i></span>
+        </div>
+        <div class="section-collapsible-content">
       <div style="overflow-x: auto;">
         <table class="supplier-smart-table">
           <thead>
@@ -8245,12 +8373,16 @@ Submission Requirements
           </tbody>
         </table>
       </div>
-
-      <!-- Other Requirements - Not Priced Items -->
-      <div class="supplier-subsection-header" style="margin-top: var(--spacing-xl);">
-        <strong><i class="pi pi-truck"></i> Other Requirements - Not Priced Items</strong>
+        </div>
       </div>
 
+      <!-- Other Requirements - Not Priced Items (not product-specific, once per bid) -->
+      <div class="collapsible-section" style="margin-bottom: var(--spacing-md);">
+        <div class="section-header-collapsible" onclick="toggleTechnicalBidCollapse(this)">
+          <span style="font-weight: 600; font-size: 13px;"><i class="pi pi-truck" style="margin-right: 8px; color: var(--primary-500);"></i> Other Requirements – Not Priced Items</span>
+          <span class="section-collapse-icon"><i class="pi pi-chevron-down"></i></span>
+        </div>
+        <div class="section-collapsible-content">
       <div style="overflow-x: auto;">
         <table class="supplier-smart-table">
           <thead>
@@ -8334,64 +8466,6 @@ Submission Requirements
           </tbody>
         </table>
       </div>
-
-      <!-- Custom Forms Section (Author-defined) -->
-      <div class="supplier-subsection-header" style="margin-top: var(--spacing-xl);">
-        <strong><i class="pi pi-file-edit"></i> Additional Forms</strong>
-        <span style="font-size: 11px; color: var(--text-muted); font-weight: 400; margin-left: 8px;">(Custom forms defined by the tender author)</span>
-      </div>
-
-      <!-- Custom Form A -->
-      <div style="border: 1px solid var(--surface-200); border-radius: var(--radius-md); margin-bottom: var(--spacing-sm); overflow: hidden;">
-        <div onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none'; this.querySelector('.custom-form-arrow').style.transform = this.nextElementSibling.style.display === 'none' ? 'rotate(0deg)' : 'rotate(180deg)';" style="display: flex; align-items: center; justify-content: space-between; padding: var(--spacing-sm) var(--spacing-md); background: var(--surface-50); cursor: pointer; transition: background 0.2s;">
-          <div style="display: flex; align-items: center; gap: 10px;">
-            <i class="pi pi-file" style="color: var(--primary-500);"></i>
-            <span style="font-weight: 600; font-size: 13px;">Custom Form A: Equipment Specifications Checklist</span>
-            <span style="background: var(--warning-100); color: var(--warning-700); padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600;">CUSTOM</span>
-          </div>
-          <i class="pi pi-chevron-down custom-form-arrow" style="font-size: 12px; color: var(--text-muted); transition: transform 0.2s;"></i>
-        </div>
-        <div style="display: none; padding: var(--spacing-md); background: white; border-top: 1px solid var(--surface-200);">
-          <div style="color: var(--text-muted); font-size: 12px; font-style: italic; text-align: center; padding: var(--spacing-lg);">
-            <i class="pi pi-info-circle" style="margin-right: 6px;"></i>
-            Custom form content defined by tender author will appear here.
-          </div>
-        </div>
-      </div>
-
-      <!-- Custom Form B -->
-      <div style="border: 1px solid var(--surface-200); border-radius: var(--radius-md); margin-bottom: var(--spacing-sm); overflow: hidden;">
-        <div onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none'; this.querySelector('.custom-form-arrow').style.transform = this.nextElementSibling.style.display === 'none' ? 'rotate(0deg)' : 'rotate(180deg)';" style="display: flex; align-items: center; justify-content: space-between; padding: var(--spacing-sm) var(--spacing-md); background: var(--surface-50); cursor: pointer; transition: background 0.2s;">
-          <div style="display: flex; align-items: center; gap: 10px;">
-            <i class="pi pi-file" style="color: var(--primary-500);"></i>
-            <span style="font-weight: 600; font-size: 13px;">Custom Form B: Environmental Compliance Declaration</span>
-            <span style="background: var(--warning-100); color: var(--warning-700); padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600;">CUSTOM</span>
-          </div>
-          <i class="pi pi-chevron-down custom-form-arrow" style="font-size: 12px; color: var(--text-muted); transition: transform 0.2s;"></i>
-        </div>
-        <div style="display: none; padding: var(--spacing-md); background: white; border-top: 1px solid var(--surface-200);">
-          <div style="color: var(--text-muted); font-size: 12px; font-style: italic; text-align: center; padding: var(--spacing-lg);">
-            <i class="pi pi-info-circle" style="margin-right: 6px;"></i>
-            Custom form content defined by tender author will appear here.
-          </div>
-        </div>
-      </div>
-
-      <!-- Custom Form C -->
-      <div style="border: 1px solid var(--surface-200); border-radius: var(--radius-md); margin-bottom: var(--spacing-sm); overflow: hidden;">
-        <div onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none'; this.querySelector('.custom-form-arrow').style.transform = this.nextElementSibling.style.display === 'none' ? 'rotate(0deg)' : 'rotate(180deg)';" style="display: flex; align-items: center; justify-content: space-between; padding: var(--spacing-sm) var(--spacing-md); background: var(--surface-50); cursor: pointer; transition: background 0.2s;">
-          <div style="display: flex; align-items: center; gap: 10px;">
-            <i class="pi pi-file" style="color: var(--primary-500);"></i>
-            <span style="font-weight: 600; font-size: 13px;">Custom Form C: Quality Assurance Questionnaire</span>
-            <span style="background: var(--warning-100); color: var(--warning-700); padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600;">CUSTOM</span>
-          </div>
-          <i class="pi pi-chevron-down custom-form-arrow" style="font-size: 12px; color: var(--text-muted); transition: transform 0.2s;"></i>
-        </div>
-        <div style="display: none; padding: var(--spacing-md); background: white; border-top: 1px solid var(--surface-200);">
-          <div style="color: var(--text-muted); font-size: 12px; font-style: italic; text-align: center; padding: var(--spacing-lg);">
-            <i class="pi pi-info-circle" style="margin-right: 6px;"></i>
-            Custom form content defined by tender author will appear here.
-          </div>
         </div>
       </div>
 
@@ -11697,6 +11771,10 @@ function addSubcontractor(buttonElement) {
                 <input type="text" placeholder="Subcontractor company name" style="font-size: 11px; padding: 6px 8px;">
             </div>
             <div class="supplier-form-field" style="margin-bottom: 0;">
+                <label style="font-size: 10px;"><i class="pi pi-verified"></i> Subcontractor UNGM ID <span style="color: var(--text-muted); font-weight: 400;">(if registered)</span></label>
+                <input type="text" placeholder="UNGM-XXXXXX" style="font-size: 11px; padding: 6px 8px;">
+            </div>
+            <div class="supplier-form-field" style="margin-bottom: 0;">
                 <label style="font-size: 10px;"><i class="pi pi-box"></i> Type of Work Subcontracted</label>
                 <input type="text" placeholder="Describe goods/services provided" style="font-size: 11px; padding: 6px 8px;">
             </div>
@@ -11775,6 +11853,59 @@ function renumberSubcontractors(subcontractorsList) {
         if (label) {
             label.innerHTML = `<i class="pi pi-user" style="margin-right: 4px;"></i> Subcontractor ${index + 1}`;
         }
+    });
+}
+
+function toggleTechnicalBidCollapse(header) {
+    const section = header.closest('.collapsible-section');
+    if (section) section.classList.toggle('collapsed');
+}
+
+function addManufacturer(buttonElement) {
+    const section = buttonElement.closest('.manufacturers-section');
+    const list = section.querySelector('.manufacturers-list');
+    const entries = list.querySelectorAll('.manufacturer-entry');
+    const newNumber = entries.length + 1;
+    const newEntry = document.createElement('div');
+    newEntry.className = 'manufacturer-entry';
+    newEntry.style.cssText = 'background: var(--surface-0); padding: var(--spacing-sm); border-radius: var(--radius-sm); border: 1px solid var(--surface-200); margin-bottom: var(--spacing-xs);';
+    newEntry.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-xs);">
+            <span style="font-size: 10px; font-weight: 600; color: var(--primary-600);"><i class="pi pi-building" style="margin-right: 4px;"></i> Manufacturer ${newNumber}</span>
+            <button type="button" class="btn btn-ghost btn-sm" onclick="removeManufacturer(this)" style="padding: 2px 6px; font-size: 9px; color: var(--danger-500);" title="Remove"><i class="pi pi-trash" style="font-size: 10px;"></i></button>
+        </div>
+        <div class="supplier-form-grid" style="gap: var(--spacing-xs);">
+            <div class="supplier-form-field" style="margin-bottom: 0;"><label style="font-size: 10px;"><i class="pi pi-building"></i> Manufacturer Name</label><input type="text" placeholder="Manufacturer name" style="font-size: 11px; padding: 6px 8px;"></div>
+            <div class="supplier-form-field" style="margin-bottom: 0;"><label style="font-size: 10px;"><i class="pi pi-globe"></i> Country of Origin</label><input type="text" placeholder="Manufacturing country" style="font-size: 11px; padding: 6px 8px;"></div>
+            <div class="supplier-form-field" style="margin-bottom: 0;"><label style="font-size: 10px;"><i class="pi pi-verified"></i> UNGM ID (if available)</label><input type="text" placeholder="UNGM-XXXXXX" style="font-size: 11px; padding: 6px 8px;"></div>
+        </div>
+        <div style="margin-top: var(--spacing-xs); padding: var(--spacing-xs); background: var(--surface-50); border-radius: var(--radius-sm);">
+            <div style="font-weight: 600; font-size: 9px; color: var(--text-muted); margin-bottom: 4px;">Address</div>
+            <div class="supplier-form-grid" style="gap: var(--spacing-xs);">
+                <div class="supplier-form-field" style="margin-bottom: 0;"><label style="font-size: 9px;">Address Line 1</label><input type="text" placeholder="Street address" maxlength="35" style="font-size: 10px; padding: 4px 6px;"></div>
+                <div class="supplier-form-field" style="margin-bottom: 0;"><label style="font-size: 9px;">House Number</label><input type="text" placeholder="Building #" maxlength="10" style="font-size: 10px; padding: 4px 6px;"></div>
+            </div>
+            <div class="supplier-form-grid" style="gap: var(--spacing-xs); margin-top: 4px;">
+                <div class="supplier-form-field" style="margin-bottom: 0;"><label style="font-size: 9px;">City</label><input type="text" placeholder="City" maxlength="35" style="font-size: 10px; padding: 4px 6px;"></div>
+                <div class="supplier-form-field" style="margin-bottom: 0;"><label style="font-size: 9px;">Postal Code</label><input type="text" placeholder="Postal code" maxlength="10" style="font-size: 10px; padding: 4px 6px;"></div>
+            </div>
+            <div class="supplier-form-grid" style="gap: var(--spacing-xs); margin-top: 4px;"><div class="supplier-form-field" style="margin-bottom: 0;"><label style="font-size: 9px;">Country</label><select style="font-size: 10px; padding: 4px 6px;"><option value="">Select country...</option><option value="276">Germany</option><option value="392">Japan</option><option value="840">United States</option></select></div></div>
+        </div>
+        <div style="margin-top: 6px;"><label style="font-size: 9px;">Manufacturer's Authorization</label><div style="border: 1px dashed var(--surface-300); border-radius: var(--radius-sm); padding: 6px 10px; background: var(--surface-50); font-size: 10px; color: var(--text-muted);"><i class="pi pi-upload" style="font-size: 10px; color: var(--primary-500);"></i> Upload form</div></div>
+    `;
+    list.appendChild(newEntry);
+    renumberManufacturers(list);
+}
+function removeManufacturer(buttonElement) {
+    const entry = buttonElement.closest('.manufacturer-entry');
+    const list = entry.parentElement;
+    entry.remove();
+    renumberManufacturers(list);
+}
+function renumberManufacturers(list) {
+    list.querySelectorAll('.manufacturer-entry').forEach((entry, i) => {
+        const label = entry.querySelector('span[style*="font-weight: 600"]');
+        if (label) label.innerHTML = `<i class="pi pi-building" style="margin-right: 4px;"></i> Manufacturer ${i + 1}`;
     });
 }
 
@@ -12127,10 +12258,14 @@ function createAlternateTechnicalSection(productId, productName, alternateNumber
                   <i class="pi pi-trash" style="font-size: 10px;"></i>
                 </button>
               </div>
-              <div class="supplier-form-grid cols-3" style="gap: var(--spacing-xs);">
+              <div class="supplier-form-grid" style="gap: var(--spacing-xs);">
                 <div class="supplier-form-field" style="margin-bottom: 0;">
                   <label style="font-size: 10px;"><i class="pi pi-building"></i> Company Name</label>
                   <input type="text" placeholder="Subcontractor company name" style="font-size: 11px; padding: 6px 8px;">
+                </div>
+                <div class="supplier-form-field" style="margin-bottom: 0;">
+                  <label style="font-size: 10px;"><i class="pi pi-verified"></i> Subcontractor UNGM ID <span style="color: var(--text-muted); font-weight: 400;">(if registered)</span></label>
+                  <input type="text" placeholder="UNGM-XXXXXX" style="font-size: 11px; padding: 6px 8px;">
                 </div>
                 <div class="supplier-form-field" style="margin-bottom: 0;">
                   <label style="font-size: 10px;"><i class="pi pi-phone"></i> Contact</label>
@@ -12334,49 +12469,60 @@ function addSupplierPartner() {
     partnerCard.className = 'supplier-partner-card' + (isLead ? ' lead' : '');
     partnerCard.id = 'supplier-partner-' + supplierPartnerCount;
     
+    const readonlyAttr = isLead ? ' class="supplier-readonly" readonly' : '';
+    const selectDisabled = isLead ? ' class="supplier-readonly" disabled' : '';
+    const ungmNote = isLead ? `
+        <div class="supplier-info-banner" style="margin-bottom: var(--spacing-sm);">
+            <span class="supplier-info-banner-icon">ℹ️</span>
+            <div>
+                <strong>Read-only.</strong> Lead partner details are filled from your UNGM profile. To change this information, please update your company profile in <a href="#" style="color: var(--primary-600); font-weight: 600;">UNGM</a>.
+            </div>
+        </div>
+    ` : '';
+
     partnerCard.innerHTML = `
         ${isLead ? '<div class="supplier-partner-badge"><i class="pi pi-star-fill" style="margin-right: 3px; font-size: 9px;"></i>LEAD PARTNER</div>' : ''}
         <div class="supplier-partner-header">
             <span style="font-size: 12px; font-weight: 600; color: var(--primary-500);"><i class="pi pi-user" style="margin-right: 6px; font-size: 11px;"></i>Partner ${supplierPartnerCount}</span>
         </div>
-        
+        ${ungmNote}
         <div class="supplier-form-grid">
             <div class="supplier-form-field">
                 <label><i class="pi pi-id-card"></i> Company Name <span style="color: var(--danger-500);">*</span></label>
-                <input type="text" placeholder="Enter company name" value="${prefillData.companyName}">
+                <input type="text" placeholder="Enter company name" value="${prefillData.companyName}"${readonlyAttr}>
             </div>
             <div class="supplier-form-field">
                 <label><i class="pi pi-verified"></i> UNGM ID (if registered)</label>
-                <input type="text" placeholder="UNGM-XXXXXX" value="${prefillData.ungmId}">
+                <input type="text" placeholder="UNGM-XXXXXX" value="${prefillData.ungmId}"${readonlyAttr}>
             </div>
         </div>
         
         <div class="supplier-form-grid" style="margin: var(--spacing-xs) 0;">
             <div class="supplier-form-field">
                 <label><i class="pi pi-map-marker"></i> Address Line 1 <span style="color: var(--danger-500);">*</span> <span style="color: var(--text-muted); font-weight: 400; font-size: 10px;">(max 35)</span></label>
-                <input type="text" placeholder="Street address" maxlength="35" value="${prefillData.addressLine1}">
+                <input type="text" placeholder="Street address" maxlength="35" value="${prefillData.addressLine1}"${readonlyAttr}>
             </div>
             <div class="supplier-form-field">
                 <label><i class="pi pi-home"></i> House Number <span style="color: var(--text-muted); font-weight: 400; font-size: 10px;">(max 10)</span></label>
-                <input type="text" placeholder="Building/House #" maxlength="10" value="${prefillData.houseNumber}">
+                <input type="text" placeholder="Building/House #" maxlength="10" value="${prefillData.houseNumber}"${readonlyAttr}>
             </div>
         </div>
         
         <div class="supplier-form-grid" style="margin: var(--spacing-xs) 0;">
             <div class="supplier-form-field">
                 <label><i class="pi pi-building"></i> City <span style="color: var(--danger-500);">*</span> <span style="color: var(--text-muted); font-weight: 400; font-size: 10px;">(max 35)</span></label>
-                <input type="text" placeholder="City name" maxlength="35" value="${prefillData.city}">
+                <input type="text" placeholder="City name" maxlength="35" value="${prefillData.city}"${readonlyAttr}>
             </div>
             <div class="supplier-form-field">
                 <label><i class="pi pi-inbox"></i> Postal Code <span style="color: var(--danger-500);">*</span> <span style="color: var(--text-muted); font-weight: 400; font-size: 10px;">(max 10)</span></label>
-                <input type="text" placeholder="Postal/ZIP code" maxlength="10" value="${prefillData.postalCode}">
+                <input type="text" placeholder="Postal/ZIP code" maxlength="10" value="${prefillData.postalCode}"${readonlyAttr}>
             </div>
         </div>
         
         <div class="supplier-form-grid" style="margin: var(--spacing-xs) 0;">
             <div class="supplier-form-field">
                 <label><i class="pi pi-globe"></i> Country <span style="color: var(--danger-500);">*</span></label>
-                <select>
+                <select${selectDisabled}>
                     <option value="">Select country...</option>
                     <option value="4">Afghanistan</option>
                     <option value="8">Albania</option>
@@ -12416,11 +12562,11 @@ function addSupplierPartner() {
         <div class="supplier-form-grid">
             <div class="supplier-form-field">
                 <label><i class="pi pi-phone"></i> Telephone Number <span style="color: var(--danger-500);">*</span></label>
-                <input type="tel" placeholder="+X-XXX-XXX-XXXX" value="${prefillData.phone}">
+                <input type="tel" placeholder="+X-XXX-XXX-XXXX" value="${prefillData.phone}"${readonlyAttr}>
             </div>
             <div class="supplier-form-field">
                 <label><i class="pi pi-envelope"></i> E-mail Address <span style="color: var(--danger-500);">*</span></label>
-                <input type="email" placeholder="email@company.com" value="${prefillData.email}">
+                <input type="email" placeholder="email@company.com" value="${prefillData.email}"${readonlyAttr}>
             </div>
         </div>
         
