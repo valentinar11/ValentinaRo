@@ -1031,6 +1031,217 @@ body {
 }
 
 /* ==========================================================================
+   UNGM PROFILE (READ-ONLY) SECTIONS
+   ========================================================================== */
+.ungm-notice {
+    background: var(--info-50);
+    border: 1px solid var(--info-400);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-xl);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+.ungm-notice i {
+    color: var(--info-400);
+    font-size: 20px;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+.ungm-notice a {
+    color: var(--primary-500);
+    font-weight: 500;
+}
+.ungm-section {
+    background: var(--surface-0);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--surface-200);
+    box-shadow: var(--shadow-card);
+    margin-bottom: var(--spacing-lg);
+    overflow: hidden;
+}
+.ungm-section-header {
+    padding: var(--spacing-md) var(--spacing-lg);
+    background: var(--surface-50);
+    border-bottom: 1px solid var(--surface-200);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: background 0.2s;
+    user-select: none;
+}
+.ungm-section-header:focus {
+    outline: 2px solid var(--primary-500);
+    outline-offset: 2px;
+}
+.ungm-section-header:hover {
+    background: var(--surface-100);
+}
+.ungm-section-header h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+.ungm-section-header h3 i {
+    color: var(--primary-500);
+}
+.ungm-section-header .pi-chevron-down {
+    font-size: 14px;
+    color: var(--text-muted);
+    transition: transform 0.2s ease;
+}
+.ungm-section.collapsed .ungm-section-header .pi-chevron-down {
+    transform: rotate(-90deg);
+}
+.ungm-section.collapsed .ungm-section-body {
+    display: none;
+}
+.ungm-section-body {
+    padding: var(--spacing-lg);
+}
+.ungm-field {
+    margin-bottom: var(--spacing-md);
+}
+.ungm-field:last-child {
+    margin-bottom: 0;
+}
+.ungm-field-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 4px;
+}
+.ungm-field-value {
+    font-size: 14px;
+    color: var(--text-primary);
+    line-height: 1.5;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--surface-100);
+}
+.ungm-field:last-child .ungm-field-value,
+.ungm-field-value.no-border { border-bottom: none; }
+.ungm-field-value.empty {
+    color: var(--text-muted);
+    font-style: italic;
+}
+.ungm-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-lg);
+}
+.ungm-grid-2 .ungm-field { margin-bottom: 0; }
+.ungm-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.ungm-list li {
+    padding: 6px 0;
+    border-bottom: 1px solid var(--surface-100);
+    font-size: 14px;
+    color: var(--text-primary);
+}
+.ungm-list li:last-child { border-bottom: none; }
+.ungm-subsection-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin: var(--spacing-md) 0 var(--spacing-sm);
+    padding-bottom: 4px;
+}
+.ungm-doc-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: var(--surface-50);
+    border: 1px solid var(--surface-200);
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    color: var(--primary-500);
+    text-decoration: none;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    transition: all 0.2s;
+}
+.ungm-doc-link:hover {
+    background: var(--primary-50);
+    border-color: var(--primary-200);
+}
+.ungm-doc-link i { font-size: 14px; }
+
+/* Nested collapsible (e.g. UNSPSC) */
+.ungm-collapsible-block {
+    margin-top: var(--spacing-md);
+    border: 1px solid var(--surface-200);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+.ungm-collapsible-block summary {
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--surface-50);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.ungm-collapsible-block summary::-webkit-details-marker { display: none; }
+.ungm-collapsible-block summary::after {
+    content: '';
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid var(--text-muted);
+    margin-left: 8px;
+    transition: transform 0.2s ease;
+}
+.ungm-collapsible-block[open] summary::after {
+    transform: rotate(180deg);
+}
+.ungm-collapsible-block .ungm-collapsible-body {
+    padding: var(--spacing-md);
+    background: var(--surface-0);
+    border-top: 1px solid var(--surface-200);
+    max-height: 240px;
+    overflow-y: auto;
+}
+
+/* Profile 2–3 column layout */
+.ungm-profile-top-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+}
+.ungm-profile-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-lg);
+}
+.ungm-profile-grid .ungm-section {
+    margin-bottom: 0;
+}
+@media (max-width: 768px) {
+    .ungm-profile-top-row { grid-template-columns: 1fr; }
+    .ungm-profile-grid { grid-template-columns: 1fr; }
+    .ungm-grid-2 { grid-template-columns: 1fr; }
+}
+
+/* ==========================================================================
    ANIMATIONS
    ========================================================================== */
 @keyframes fadeIn {
@@ -1042,6 +1253,97 @@ body {
 /* ==========================================================================
    RESPONSIVE
    ========================================================================== */
+/* ==========================================================================
+   FORM RESPONSES
+   ========================================================================== */
+.form-responses-intro {
+    margin-bottom: var(--spacing-xl);
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+.radio-group {
+    display: flex;
+    gap: var(--spacing-lg);
+    margin-top: 6px;
+}
+.radio-group label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--text-primary);
+    cursor: pointer;
+}
+.radio-group input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary-500);
+}
+.disclosure-question {
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-lg);
+    border-bottom: 1px solid var(--surface-200);
+}
+.disclosure-question:last-of-type { border-bottom: none; }
+.disclosure-question-text {
+    font-size: 14px;
+    color: var(--text-primary);
+    line-height: 1.5;
+    margin-bottom: var(--spacing-sm);
+}
+.disclosure-explanation {
+    margin-top: var(--spacing-md);
+    display: none;
+}
+.disclosure-explanation.visible { display: block; }
+.reference-block {
+    background: var(--surface-50);
+    border: 1px solid var(--surface-200);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+    position: relative;
+}
+.reference-block h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--primary-500);
+    margin-bottom: var(--spacing-md);
+}
+.reference-remove {
+    position: absolute;
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+    padding: 4px 10px;
+    font-size: 12px;
+    color: var(--text-muted);
+    background: transparent;
+    border: 1px solid var(--surface-300);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+.reference-remove:hover {
+    color: var(--danger-500);
+    border-color: var(--danger-500);
+}
+.add-reference-btn {
+    margin-top: var(--spacing-sm);
+}
+.financial-year-row {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md) 0;
+    border-bottom: 1px solid var(--surface-100);
+}
+.financial-year-row:last-child { border-bottom: none; }
+.financial-year-row label {
+    min-width: 80px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+.financial-year-row .form-input { flex: 1; max-width: 400px; }
+
 @media (max-width: 768px) {
     .header-actions { gap: 4px; }
     .header-action-label { display: none; }
@@ -1132,7 +1434,7 @@ body {
                     <span class="menu-icon"><i class="pi pi-user"></i></span>
                     <span>My Profile</span>
                 </a>
-                <a class="menu-item disabled" data-module="Form Responses">
+                <a class="menu-item" onclick="showView('formResponses')" data-module="Form Responses">
                     <span class="menu-icon"><i class="pi pi-file-edit"></i></span>
                     <span>Form Responses</span>
                 </a>
@@ -1368,14 +1670,14 @@ body {
             </div>
         </section>
 
-        <!-- Profile View -->
+        <!-- Profile View (UNGM read-only data) -->
         <section class="view-section" id="view-profile">
             <!-- Profile Header -->
             <div class="profile-header-card fade-in">
                 <div class="profile-avatar">AC</div>
                 <div class="profile-info">
-                    <h1 class="profile-name">Acme Corporation</h1>
-                    <p class="profile-company">IT Solutions & Services</p>
+                    <h1 class="profile-name">Acme LTD</h1>
+                    <p class="profile-company">UNGM #302658 · Data synced from UNGM</p>
                     <div class="profile-badges">
                         <span class="profile-badge verified"><i class="pi pi-check-circle"></i> UNGM Verified</span>
                         <span class="profile-badge ungm"><i class="pi pi-globe"></i> Level 2 Registration</span>
@@ -1383,86 +1685,562 @@ body {
                     </div>
                 </div>
                 <div class="profile-actions">
-                    <button class="btn btn-secondary"><i class="pi pi-pencil"></i> Edit Profile</button>
-                    <button class="btn btn-primary"><i class="pi pi-download"></i> Export Data</button>
+                    <a href="https://www.ungm.org" target="_blank" rel="noopener" class="btn btn-secondary"><i class="pi pi-external-link"></i> View on UNGM</a>
+                    <button class="btn btn-primary" onclick="showToast('Export coming soon')"><i class="pi pi-download"></i> Export Data</button>
                 </div>
             </div>
 
-            <!-- Profile Content -->
-            <div class="profile-grid">
+            <!-- UNGM read-only notice -->
+            <div class="ungm-notice">
+                <i class="pi pi-info-circle"></i>
+                <div>
+                    <strong>Read-only information</strong> — All data below is sourced from your <a href="https://www.ungm.org" target="_blank" rel="noopener">UNGM</a> registration. To update any details, please log in to UNGM and edit your supplier profile there. Changes will sync to this portal.
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: var(--spacing-sm); margin-bottom: var(--spacing-md);">
+                <button type="button" class="btn btn-ghost btn-sm" onclick="expandAllUngmSections()"><i class="pi pi-plus"></i> Expand all</button>
+                <button type="button" class="btn btn-ghost btn-sm" onclick="collapseAllUngmSections()"><i class="pi pi-minus"></i> Collapse all</button>
+            </div>
+
+            <!-- Company + User details (top row, 2 columns) -->
+            <div class="ungm-profile-top-row">
+                <!-- Company details -->
                 <div class="form-section">
                     <div class="form-section-header">
-                        <h3 class="form-section-title"><i class="pi pi-building"></i> Company Information</h3>
-                        <button class="btn btn-ghost btn-sm"><i class="pi pi-pencil"></i> Edit</button>
+                        <h3 class="form-section-title"><i class="pi pi-building"></i> Company details</h3>
                     </div>
                     <div class="form-section-body">
-                        <div class="form-group">
-                            <label class="form-label">Company Name</label>
-                            <input type="text" class="form-input" value="Acme Corporation" disabled>
+                        <div class="ungm-grid-2">
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">UNGM Number</div>
+                                <div class="ungm-field-value">302658</div>
+                            </div>
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">License Number</div>
+                                <div class="ungm-field-value">123456</div>
+                            </div>
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">Company Name</div>
+                                <div class="ungm-field-value">Acme LTD</div>
+                            </div>
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">Country</div>
+                                <div class="ungm-field-value">Kuwait</div>
+                            </div>
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">Company Type</div>
+                                <div class="ungm-field-value">Manufacturer</div>
+                            </div>
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">Number of Employees</div>
+                                <div class="ungm-field-value">258</div>
+                            </div>
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">Website</div>
+                                <div class="ungm-field-value">www.website.com</div>
+                            </div>
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">Established Year</div>
+                                <div class="ungm-field-value">2018</div>
+                            </div>
+                            <div class="ungm-field" style="grid-column: 1 / -1;">
+                                <div class="ungm-field-label">Address</div>
+                                <div class="ungm-field-value no-border">House 4, Street abcd, Building B, Kuwait City, 4541. Corporate country: Kuwait.</div>
+                            </div>
                         </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">UNGM Vendor ID</label>
-                                <input type="text" class="form-input" value="UNGM-2024-54321" disabled>
+                    </div>
+                </div>
+                <!-- User / Contact details -->
+                <div class="form-section">
+                    <div class="form-section-header">
+                        <h3 class="form-section-title"><i class="pi pi-user"></i> User / Contact details</h3>
+                    </div>
+                    <div class="form-section-body">
+                        <div class="ungm-subsection-title">Primary contact (from UNGM)</div>
+                        <div class="ungm-grid-2">
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">First Name</div>
+                                <div class="ungm-field-value">Diane</div>
                             </div>
-                            <div class="form-group">
-                                <label class="form-label">DUNS Number</label>
-                                <input type="text" class="form-input" value="98-765-4321" disabled>
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">Surname</div>
+                                <div class="ungm-field-value">Valentin-Sosson</div>
+                            </div>
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">Job Title</div>
+                                <div class="ungm-field-value">Sales Director</div>
+                            </div>
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">Role</div>
+                                <div class="ungm-field-value">Primary contact</div>
+                            </div>
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">Email</div>
+                                <div class="ungm-field-value">diane.valentin2@gmail.com</div>
+                            </div>
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">Telephone</div>
+                                <div class="ungm-field-value">Kuwait (+965) 54454544454545</div>
+                            </div>
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">Mobile</div>
+                                <div class="ungm-field-value">Kuwait (+965) 544544545</div>
                             </div>
                         </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">Year Established</label>
-                                <input type="text" class="form-input" value="2005" disabled>
+                    </div>
+                </div>
+            </div>
+
+            <!-- UNGM Profile Sections (collapsible, 2–3 column grid) -->
+            <div class="ungm-profile-grid">
+                <!-- General Information (merged: Registration + General Info + Company Name Changes; no overlap with Company details card) -->
+                <div class="ungm-section" data-ungm-section>
+                    <div class="ungm-section-header" role="button" tabindex="0" onclick="toggleUngmSection(this)" onkeydown="if(event.key==='Enter'||event.key===' ') { event.preventDefault(); toggleUngmSection(this); }">
+                        <h3><i class="pi pi-building"></i> General Information</h3>
+                        <i class="pi pi-chevron-down"></i>
+                    </div>
+                    <div class="ungm-section-body">
+                        <div class="ungm-grid-2">
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">Most Senior Official</div>
+                                <div class="ungm-field-value">Diane Valentin-Sosson</div>
                             </div>
-                            <div class="form-group">
-                                <label class="form-label">Number of Employees</label>
-                                <input type="text" class="form-input" value="100-250" disabled>
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">Parent Company</div>
+                                <div class="ungm-field-value">Acme corporate LTD</div>
+                            </div>
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">Company Telephone</div>
+                                <div class="ungm-field-value">Kuwait (+965) 646554645</div>
+                            </div>
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">Ownership Type</div>
+                                <div class="ungm-field-value">Privately-owned</div>
+                            </div>
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">Owners</div>
+                                <div class="ungm-field-value">Diane Valentin-Sosson</div>
+                            </div>
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">Women Ownership</div>
+                                <div class="ungm-field-value">WOB - 51% owned and controlled by women</div>
+                            </div>
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">Disability Inclusion</div>
+                                <div class="ungm-field-value">Disability-inclusive</div>
+                            </div>
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">Business Seminars Attended</div>
+                                <div class="ungm-field-value">None</div>
+                            </div>
+                            <div class="ungm-field" style="grid-column: 1 / -1;">
+                                <div class="ungm-field-label">Doing Business In (Countries)</div>
+                                <div class="ungm-field-value">International</div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="form-label">Business Type</label>
-                            <input type="text" class="form-input" value="Information Technology, Software Development, Consulting" disabled>
+                        <div class="ungm-field" style="margin-top: var(--spacing-md);">
+                            <div class="ungm-field-label">UNSPSC Categories</div>
+                            <details class="ungm-collapsible-block">
+                                <summary>View UNSPSC categories (25)</summary>
+                                <div class="ungm-collapsible-body">
+                                    <ul class="ungm-list">
+                                        <li>10150000 — Seeds and bulbs and seedlings and cuttings</li>
+                                        <li>10151500 — Vegetable seeds and seedlings</li>
+                                        <li>10151503 — Celery seeds or seedlings</li>
+                                        <li>10151504 — Chili seeds or seedlings</li>
+                                        <li>10151505 — Courgette seeds or seedlings</li>
+                                        <li>10151506 — Pea seeds or seedlings</li>
+                                        <li>10151507 — Cucumber seeds or seedlings</li>
+                                        <li>10151508 — Eggplant seeds or seedlings</li>
+                                        <li>10151509 — Endive seeds or seedlings</li>
+                                        <li>10151510 — Garlic seeds or seedlings</li>
+                                        <li>10151511 — Leek seeds or seedlings</li>
+                                        <li>10151512 — Lettuce seeds or seedlings</li>
+                                        <li>10151513 — Corn seeds or seedlings</li>
+                                        <li>10151514 — Melon seeds or seedlings</li>
+                                        <li>10151515 — Onion seeds or seedlings</li>
+                                        <li>10151517 — Spinach seeds or seedlings</li>
+                                        <li>10151518 — Tomato seeds or seedlings</li>
+                                        <li>10151520 — Chard seeds or seedlings</li>
+                                        <li>10151521 — Sweet pepper seeds or seedlings</li>
+                                        <li>10151522 — Beet seeds or seedlings</li>
+                                        <li>10151523 — Cauliflower seeds or seedlings</li>
+                                        <li>10151524 — Parsley seeds or seedlings</li>
+                                        <li>10151525 — Broccoli seeds or seedlings</li>
+                                        <li>10151526 — Cabbage seeds or seedlings</li>
+                                    </ul>
+                                </div>
+                            </details>
+                        </div>
+                        <div class="ungm-subsection-title" style="margin-top: var(--spacing-lg);">Company name changes</div>
+                        <div class="ungm-grid-2">
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">Previous Company Name</div>
+                                <div class="ungm-field-value">Acme Sup Ltd</div>
+                            </div>
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">Date of Change</div>
+                                <div class="ungm-field-value">25/04/2020</div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="form-section">
-                    <div class="form-section-header">
-                        <h3 class="form-section-title"><i class="pi pi-id-card"></i> Contact Information</h3>
-                        <button class="btn btn-ghost btn-sm"><i class="pi pi-pencil"></i> Edit</button>
+                <!-- Contacts -->
+                <div class="ungm-section" data-ungm-section>
+                    <div class="ungm-section-header" role="button" tabindex="0" onclick="toggleUngmSection(this)" onkeydown="if(event.key==='Enter'||event.key===' ') { event.preventDefault(); toggleUngmSection(this); }">
+                        <h3><i class="pi pi-users"></i> Contacts</h3>
+                        <i class="pi pi-chevron-down"></i>
                     </div>
-                    <div class="form-section-body">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">Primary Contact</label>
-                                <input type="text" class="form-input" value="John Smith" disabled>
+                    <div class="ungm-section-body">
+                        <div class="ungm-subsection-title">Primary contact</div>
+                        <div class="ungm-grid-2">
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">First Name</div>
+                                <div class="ungm-field-value">Diane</div>
                             </div>
-                            <div class="form-group">
-                                <label class="form-label">Job Title</label>
-                                <input type="text" class="form-input" value="Sales Director" disabled>
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">Surname</div>
+                                <div class="ungm-field-value">Valentin-Sosson</div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Email Address</label>
-                            <input type="email" class="form-input" value="john.smith@acmecorp.com" disabled>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">Phone Number</label>
-                                <input type="tel" class="form-input" value="+1 (555) 987-6543" disabled>
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">Email</div>
+                                <div class="ungm-field-value">diane.valentin2@gmail.com</div>
                             </div>
-                            <div class="form-group">
-                                <label class="form-label">Mobile</label>
-                                <input type="tel" class="form-input" value="+1 (555) 123-4567" disabled>
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">Telephone</div>
+                                <div class="ungm-field-value">Kuwait (+965) 54454544454545</div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Address</label>
-                            <input type="text" class="form-input" value="456 Tech Park Avenue, Suite 200, New York, NY 10001, USA" disabled>
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">Mobile</div>
+                                <div class="ungm-field-value">Kuwait (+965) 544544545</div>
+                            </div>
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">Role</div>
+                                <div class="ungm-field-value">Primary contact</div>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- Qualification (Levels 1, 2 & 3 merged) -->
+                <div class="ungm-section" data-ungm-section>
+                    <div class="ungm-section-header" role="button" tabindex="0" onclick="toggleUngmSection(this)" onkeydown="if(event.key==='Enter'||event.key===' ') { event.preventDefault(); toggleUngmSection(this); }">
+                        <h3><i class="pi pi-file-check"></i> Qualification (Levels 1, 2 &amp; 3)</h3>
+                        <i class="pi pi-chevron-down"></i>
+                    </div>
+                    <div class="ungm-section-body">
+                        <div class="ungm-subsection-title">Level 1</div>
+                        <div class="ungm-grid-2">
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">Company Owners</div>
+                                <div class="ungm-field-value">Marco LTD, MTD Corp.</div>
+                            </div>
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">Agents and Intermediaries</div>
+                                <div class="ungm-field-value">None</div>
+                            </div>
+                        </div>
+                        <div class="ungm-field" style="margin-top: var(--spacing-md);">
+                            <div class="ungm-field-label">Certificate of Incorporation</div>
+                            <div class="ungm-field-value"><a href="#" class="ungm-doc-link"><i class="pi pi-file-pdf"></i> Certificate of Incorporation</a></div>
+                        </div>
+                        <div class="ungm-field">
+                            <div class="ungm-field-label">Optional Documents</div>
+                            <div class="ungm-field-value no-border"><a href="#" class="ungm-doc-link"><i class="pi pi-file"></i> ISO 14000</a></div>
+                        </div>
+                        <div class="ungm-subsection-title">Vendor References</div>
+                        <div class="ungm-grid-2">
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">Company Name</div>
+                                <div class="ungm-field-value">Orbaris Ltd</div>
+                            </div>
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">Contact Name</div>
+                                <div class="ungm-field-value">Jason Lee</div>
+                            </div>
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">Email</div>
+                                <div class="ungm-field-value">jasonleeltd@gmail.com</div>
+                            </div>
+                        </div>
+                        <div class="ungm-subsection-title">Level 2</div>
+                        <div class="ungm-field">
+                            <div class="ungm-field-label">Reference Letter</div>
+                            <div class="ungm-field-value no-border"><a href="#" class="ungm-doc-link"><i class="pi pi-file-pdf"></i> Reference Letter</a></div>
+                        </div>
+                        <div class="ungm-subsection-title">Level 3 (Financial)</div>
+                        <div class="ungm-field">
+                            <div class="ungm-field-label">Financial Documents</div>
+                            <div class="ungm-field-value no-border">
+                                <a href="#" class="ungm-doc-link"><i class="pi pi-file-pdf"></i> Financial document 2025</a>
+                                <a href="#" class="ungm-doc-link"><i class="pi pi-file-pdf"></i> Financial document 2024</a>
+                                <a href="#" class="ungm-doc-link"><i class="pi pi-file-pdf"></i> Financial document 2023</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sanctions, Sanctioning Agencies & Performance Issues (merged) -->
+                <div class="ungm-section" data-ungm-section>
+                    <div class="ungm-section-header" role="button" tabindex="0" onclick="toggleUngmSection(this)" onkeydown="if(event.key==='Enter'||event.key===' ') { event.preventDefault(); toggleUngmSection(this); }">
+                        <h3><i class="pi pi-shield"></i> Sanctions, Agencies &amp; Performance</h3>
+                        <i class="pi pi-chevron-down"></i>
+                    </div>
+                    <div class="ungm-section-body">
+                        <div class="ungm-subsection-title">Sanctions</div>
+                        <div class="ungm-grid-2">
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">Type of Sanction</div>
+                                <div class="ungm-field-value">None</div>
+                            </div>
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">Sanction Owner</div>
+                                <div class="ungm-field-value">None</div>
+                            </div>
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">Start Date</div>
+                                <div class="ungm-field-value">—</div>
+                            </div>
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">End Date</div>
+                                <div class="ungm-field-value">—</div>
+                            </div>
+                            <div class="ungm-field" style="grid-column: 1 / -1;">
+                                <div class="ungm-field-label">Grounds</div>
+                                <div class="ungm-field-value">None</div>
+                            </div>
+                        </div>
+                        <div class="ungm-subsection-title">Sanctioning Agencies</div>
+                        <div class="ungm-grid-2">
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">Agency Abbreviation</div>
+                                <div class="ungm-field-value">None</div>
+                            </div>
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">Reason</div>
+                                <div class="ungm-field-value">None</div>
+                            </div>
+                        </div>
+                        <div class="ungm-subsection-title">Performance Issues</div>
+                        <div class="ungm-grid-2">
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">Reasons</div>
+                                <div class="ungm-field-value">None</div>
+                            </div>
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">Start Date</div>
+                                <div class="ungm-field-value">—</div>
+                            </div>
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">End Date</div>
+                                <div class="ungm-field-value">—</div>
+                            </div>
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">Additional Information</div>
+                                <div class="ungm-field-value">None</div>
+                            </div>
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">UN Organization Contact Name</div>
+                                <div class="ungm-field-value">None</div>
+                            </div>
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">UN Organization Email</div>
+                                <div class="ungm-field-value">None</div>
+                            </div>
+                            <div class="ungm-field">
+                                <div class="ungm-field-label">Agency Abbreviation</div>
+                                <div class="ungm-field-value">None</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Form Responses View -->
+        <section class="view-section" id="view-formResponses">
+            <div class="section-header" style="margin-bottom: var(--spacing-lg);">
+                <h2 class="section-title"><i class="pi pi-file-edit"></i> Form Responses</h2>
+            </div>
+            <p class="form-responses-intro">Complete the self-disclosure, performance statement and financial statements below. All fields marked with * are required.</p>
+
+            <!-- 1. Self Disclosure Form -->
+            <div class="form-section" style="margin-bottom: var(--spacing-xl);">
+                <div class="form-section-header">
+                    <h3 class="form-section-title"><i class="pi pi-list-check"></i> Self Disclosure Form</h3>
+                </div>
+                <div class="form-section-body">
+                    <div class="disclosure-question">
+                        <div class="disclosure-question-text"><strong>1.</strong> Has the entity or individual declared bankruptcy, or been involved in bankruptcy or receivership proceedings, or is there any judgment or pending legal action against them, which could impair operations in the foreseeable future?</div>
+                        <div class="radio-group">
+                            <label><input type="radio" name="q1" value="No" checked> No</label>
+                            <label><input type="radio" name="q1" value="Yes"> Yes</label>
+                        </div>
+                    </div>
+                    <div class="disclosure-question">
+                        <div class="disclosure-question-text"><strong>2.</strong> Has the entity or individual been found (or is awaiting a judgment or administrative decision) in breach of their obligations relating to the payment of taxes or social security contributions?</div>
+                        <div class="radio-group">
+                            <label><input type="radio" name="q2" value="No" checked> No</label>
+                            <label><input type="radio" name="q2" value="Yes"> Yes</label>
+                        </div>
+                    </div>
+                    <div class="disclosure-question">
+                        <div class="disclosure-question-text"><strong>3.</strong> Has the entity or individual been found (or is awaiting a judgment or administrative decision) guilty of misconduct for the violation of applicable laws, regulations or ethical standards of the profession to which they belong?</div>
+                        <div class="radio-group">
+                            <label><input type="radio" name="q3" value="No" checked> No</label>
+                            <label><input type="radio" name="q3" value="Yes"> Yes</label>
+                        </div>
+                    </div>
+                    <div class="disclosure-question">
+                        <div class="disclosure-question-text"><strong>4.</strong> Has the entity or individual engaged, or attempted to engage, in any Proscribed Practices in the past? For the purposes of this provision, "Proscribed Practices" are defined in the UNOPS Operational Instruction on Vendor Sanctions and include: corrupt practice, fraudulent practice, coercive practice, collusive practice, unethical practice, and obstruction.</div>
+                        <div class="radio-group">
+                            <label><input type="radio" name="q4" value="No" checked> No</label>
+                            <label><input type="radio" name="q4" value="Yes"> Yes</label>
+                        </div>
+                    </div>
+                    <div class="disclosure-question">
+                        <div class="disclosure-question-text"><strong>5.</strong> Has the entity or individual been subject to any administrative or judicial decision relating to professional conduct or eligibility to contract?</div>
+                        <div class="radio-group">
+                            <label><input type="radio" name="q5" value="No" checked> No</label>
+                            <label><input type="radio" name="q5" value="Yes"> Yes</label>
+                        </div>
+                    </div>
+                    <div class="disclosure-question">
+                        <div class="disclosure-question-text"><strong>6.</strong> Has the entity or individual failed to comply with any obligation to pay taxes, social security contributions or similar in the past three years?</div>
+                        <div class="radio-group">
+                            <label><input type="radio" name="q6" value="No" checked> No</label>
+                            <label><input type="radio" name="q6" value="Yes"> Yes</label>
+                        </div>
+                    </div>
+                    <div class="disclosure-question">
+                        <div class="disclosure-question-text"><strong>7.</strong> Has the entity or individual been found (or is awaiting a judgment or administrative decision) to be involved in any of the following: Fraudulent practice; Corrupt practice; Affiliation with a criminal organization; Money laundering; Terrorist financing; Child labour; or Human trafficking?</div>
+                        <div class="radio-group">
+                            <label><input type="radio" name="q7" value="No" checked> No</label>
+                            <label><input type="radio" name="q7" value="Yes"> Yes</label>
+                        </div>
+                    </div>
+                    <div class="disclosure-question">
+                        <div class="disclosure-question-text"><strong>8.</strong> Has the entity or individual had significant performance issues in the past that led to the early termination of a legal commitment or the application of damages or other contractual penalties, or that were discovered following inspections, audits or investigations?</div>
+                        <div class="radio-group">
+                            <label><input type="radio" name="q8" value="No" checked> No</label>
+                            <label><input type="radio" name="q8" value="Yes"> Yes</label>
+                        </div>
+                    </div>
+                    <div class="disclosure-question">
+                        <div class="disclosure-question-text"><strong>9.</strong> Has the entity or individual committed any financial irregularity, resulting from an act or omission or the inclusion of an unjustified item of expenditure outside a contractual engagement that had the effect of prejudicing their use of public funds?</div>
+                        <div class="radio-group">
+                            <label><input type="radio" name="q9" value="No" checked> No</label>
+                            <label><input type="radio" name="q9" value="Yes"> Yes</label>
+                        </div>
+                    </div>
+                    <div class="disclosure-question">
+                        <div class="disclosure-question-text"><strong>10.</strong> Has the entity or individual been found (or is awaiting a judgment or administrative decision) to have created an entity in a different jurisdiction with the intent of circumventing fiscal, social or any other legal obligations in the jurisdiction of their registered office, central administration or principal place of business? If yes, provide an explanation.</div>
+                        <div class="radio-group">
+                            <label><input type="radio" name="q10" value="No" checked> No</label>
+                            <label><input type="radio" name="q10" value="Yes"> Yes</label>
+                        </div>
+                        <div class="disclosure-explanation" id="q10-explanation">
+                            <label class="form-label">Explanation (required if Yes)</label>
+                            <textarea class="form-input" rows="4" placeholder="Provide details..."></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Performance Statement -->
+            <div class="form-section" style="margin-bottom: var(--spacing-xl);">
+                <div class="form-section-header">
+                    <h3 class="form-section-title"><i class="pi pi-briefcase"></i> Performance Statement</h3>
+                </div>
+                <div class="form-section-body">
+                    <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: var(--spacing-lg);">Add as many references as you need. Fields marked with * are required.</p>
+                    <div id="referencesContainer">
+                        <div class="reference-block" data-reference-index="0">
+                            <h4>Reference 1</h4>
+                            <button type="button" class="reference-remove" onclick="removeReference(this)" aria-label="Remove reference">Remove</button>
+                            <div class="form-group">
+                                <label class="form-label">Order placed by (Name of purchaser/organization) *</label>
+                                <input type="text" class="form-input" placeholder="Name of purchaser/organization">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Full address of purchaser *</label>
+                                <input type="text" class="form-input" placeholder="Complete address">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Order no *</label>
+                                    <input type="text" class="form-input" placeholder="Order/Contract number">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Date *</label>
+                                    <input type="text" class="form-input" placeholder="mm/dd/yyyy">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Description &amp; quantity of ordered items *</label>
+                                <input type="text" class="form-input" placeholder="Describe the items ordered and their quantities">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Value of Order *</label>
+                                    <input type="text" class="form-input" placeholder="USD 0.00">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Date of completion (As per Contract)</label>
+                                    <input type="text" class="form-input" placeholder="mm/dd/yyyy">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Date of completion (Actual)</label>
+                                    <input type="text" class="form-input" placeholder="mm/dd/yyyy">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Remarks indicating reasons of late delivery, if any</label>
+                                <textarea class="form-input" rows="2" placeholder="Explain any delays in delivery"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Was the supply of goods satisfactory? *</label>
+                                <div class="radio-group">
+                                    <label><input type="radio" name="satisfactory_0" value="Yes"> Yes</label>
+                                    <label><input type="radio" name="satisfactory_0" value="No"> No</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-secondary add-reference-btn" onclick="addReference()"><i class="pi pi-plus"></i> Add another reference</button>
+                </div>
+            </div>
+
+            <!-- 3. Financial Statements -->
+            <div class="form-section" style="margin-bottom: var(--spacing-xl);">
+                <div class="form-section-header">
+                    <h3 class="form-section-title"><i class="pi pi-wallet"></i> Financial Statements</h3>
+                </div>
+                <div class="form-section-body">
+                    <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: var(--spacing-lg);">Upload or link to financial statements for the following years.</p>
+                    <div class="financial-year-row">
+                        <label>2023</label>
+                        <input type="text" class="form-input" placeholder="Document link or upload">
+                        <button type="button" class="btn btn-ghost btn-sm"><i class="pi pi-upload"></i> Upload</button>
+                    </div>
+                    <div class="financial-year-row">
+                        <label>2024</label>
+                        <input type="text" class="form-input" placeholder="Document link or upload">
+                        <button type="button" class="btn btn-ghost btn-sm"><i class="pi pi-upload"></i> Upload</button>
+                    </div>
+                    <div class="financial-year-row">
+                        <label>2025</label>
+                        <input type="text" class="form-input" placeholder="Document link or upload">
+                        <button type="button" class="btn btn-ghost btn-sm"><i class="pi pi-upload"></i> Upload</button>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: var(--spacing-xl); padding-top: var(--spacing-lg); border-top: 1px solid var(--surface-200);">
+                <button type="button" class="btn btn-primary" onclick="showToast('Form responses saved successfully')"><i class="pi pi-check"></i> Save form responses</button>
+                <button type="button" class="btn btn-secondary" onclick="showToast('Draft saved')"><i class="pi pi-save"></i> Save as draft</button>
             </div>
         </section>
 
@@ -1512,16 +2290,114 @@ function showView(viewName) {
             item.classList.add('active');
         } else if (viewName === 'profile' && text === 'my profile') {
             item.classList.add('active');
+        } else if (viewName === 'formResponses' && text === 'form responses') {
+            item.classList.add('active');
         }
     });
     
     // Update module name in header
     const moduleNames = {
         'landing': 'Home',
-        'profile': 'My Profile'
+        'profile': 'My Profile',
+        'formResponses': 'Form Responses'
     };
     document.getElementById('currentModuleName').textContent = moduleNames[viewName] || viewName;
 }
+
+// ==================== UNGM PROFILE SECTIONS ====================
+
+function toggleUngmSection(header) {
+    const section = header.closest('.ungm-section');
+    if (section) section.classList.toggle('collapsed');
+}
+function expandAllUngmSections() {
+    document.querySelectorAll('.ungm-section').forEach(s => s.classList.remove('collapsed'));
+}
+function collapseAllUngmSections() {
+    document.querySelectorAll('.ungm-section').forEach(s => s.classList.add('collapsed'));
+}
+
+// ==================== FORM RESPONSES ====================
+
+let referenceCount = 1;
+function addReference() {
+    const container = document.getElementById('referencesContainer');
+    const index = referenceCount++;
+    const block = document.createElement('div');
+    block.className = 'reference-block';
+    block.setAttribute('data-reference-index', index);
+    block.innerHTML = `
+        <h4>Reference ${index + 1}</h4>
+        <button type="button" class="reference-remove" onclick="removeReference(this)" aria-label="Remove reference">Remove</button>
+        <div class="form-group">
+            <label class="form-label">Order placed by (Name of purchaser/organization) *</label>
+            <input type="text" class="form-input" placeholder="Name of purchaser/organization">
+        </div>
+        <div class="form-group">
+            <label class="form-label">Full address of purchaser *</label>
+            <input type="text" class="form-input" placeholder="Complete address">
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label class="form-label">Order no *</label>
+                <input type="text" class="form-input" placeholder="Order/Contract number">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Date *</label>
+                <input type="text" class="form-input" placeholder="mm/dd/yyyy">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Description & quantity of ordered items *</label>
+            <input type="text" class="form-input" placeholder="Describe the items ordered and their quantities">
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label class="form-label">Value of Order *</label>
+                <input type="text" class="form-input" placeholder="USD 0.00">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Date of completion (As per Contract)</label>
+                <input type="text" class="form-input" placeholder="mm/dd/yyyy">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Date of completion (Actual)</label>
+                <input type="text" class="form-input" placeholder="mm/dd/yyyy">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Remarks indicating reasons of late delivery, if any</label>
+            <textarea class="form-input" rows="2" placeholder="Explain any delays in delivery"></textarea>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Was the supply of goods satisfactory? *</label>
+            <div class="radio-group">
+                <label><input type="radio" name="satisfactory_${index}" value="Yes"> Yes</label>
+                <label><input type="radio" name="satisfactory_${index}" value="No"> No</label>
+            </div>
+        </div>
+    `;
+    container.appendChild(block);
+    renumberReferences();
+}
+function removeReference(btn) {
+    const container = document.getElementById('referencesContainer');
+    if (container.children.length <= 1) return;
+    btn.closest('.reference-block').remove();
+    renumberReferences();
+}
+function renumberReferences() {
+    document.querySelectorAll('#referencesContainer .reference-block').forEach((block, i) => {
+        block.querySelector('h4').textContent = 'Reference ' + (i + 1);
+    });
+}
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('input[name="q10"]').forEach(function(radio) {
+        radio.addEventListener('change', function() {
+            document.getElementById('q10-explanation').classList.toggle('visible', this.value === 'Yes');
+        });
+    });
+});
 
 // ==================== TOAST NOTIFICATION ====================
 
