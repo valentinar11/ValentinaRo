@@ -8538,35 +8538,19 @@ Submission Requirements
         <!-- Main Offer Content -->
         <div class="offer-content-panel active" id="financial-offer-main" data-offer-id="main">
 
-      <!-- Bid Currency Selection -->
-      <div class="supplier-subsection-header">
-        <strong><i class="pi pi-money-bill"></i> Bid Currency</strong>
-      </div>
-
-      <div style="background: var(--surface-50); padding: var(--spacing-md); border-radius: var(--radius-sm); border: 1px solid var(--surface-200); margin-bottom: var(--spacing-md);">
-        <div style="display: flex; align-items: center; gap: var(--spacing-md);">
-          <div style="flex: 0 0 auto;">
-            <label style="font-size: 12px; font-weight: 600; color: var(--text-primary); display: flex; align-items: center; gap: 6px;">
-              <i class="pi pi-globe" style="color: var(--primary-600);"></i>
-              Select Currency for this Offer
-            </label>
-          </div>
-          <div style="flex: 0 0 200px;">
-            <select class="bid-currency-select" style="width: 100%; padding: 10px 12px; border: 1px solid var(--surface-300); border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; background: var(--surface-0); color: var(--text-primary); cursor: pointer;" onchange="updateBidCurrency(this)">
-              <option value="USD" selected>USD - US Dollar</option>
-              <option value="EUR">EUR - Euro</option>
-              <option value="GBP">GBP - British Pound</option>
-              <option value="CHF">CHF - Swiss Franc</option>
-              <option value="JPY">JPY - Japanese Yen</option>
-              <option value="CAD">CAD - Canadian Dollar</option>
-              <option value="AUD">AUD - Australian Dollar</option>
-            </select>
-          </div>
-          <div style="flex: 1; font-size: 11px; color: var(--text-secondary); display: flex; align-items: center; gap: 6px;">
-            <i class="pi pi-info-circle"></i>
-            <span>All prices in this offer will be quoted in the selected currency. Alternative offers may use a different currency.</span>
-          </div>
-        </div>
+      <!-- Bid Currency (compact, secondary to Bid Summary and prices) -->
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: var(--spacing-md); padding: 8px 0; border-bottom: 1px solid #e5e7eb;">
+        <label style="font-size: 12px; font-weight: 500; color: #4b5563;">Currency for this offer</label>
+        <select class="bid-currency-select" style="min-width: 140px; padding: 6px 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px; background: #ffffff; color: #111827; cursor: pointer;" onchange="updateBidCurrency(this)">
+          <option value="USD" selected>USD - US Dollar</option>
+          <option value="EUR">EUR - Euro</option>
+          <option value="GBP">GBP - British Pound</option>
+          <option value="CHF">CHF - Swiss Franc</option>
+          <option value="JPY">JPY - Japanese Yen</option>
+          <option value="CAD">CAD - Canadian Dollar</option>
+          <option value="AUD">AUD - Australian Dollar</option>
+        </select>
+        <span style="font-size: 11px; color: #6b7280;">Prices in this offer use this currency. Other offers can use another.</span>
       </div>
 
       <!-- Bid Summary -->
@@ -8574,78 +8558,92 @@ Submission Requirements
         <strong><i class="pi pi-calculator"></i> Bid Summary</strong>
       </div>
 
-      <div style="background: var(--info-50); padding: var(--spacing-sm); border-radius: var(--radius-sm); border: 1px solid var(--info-200); margin-bottom: var(--spacing-md);">
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-sm);">
+      <div style="background: #ffffff; padding: var(--spacing-md); border-radius: var(--radius-sm); border: 1px solid #e5e7eb; margin-bottom: var(--spacing-md);">
+        <!-- Evaluation basis (read-only from tender) -->
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: var(--spacing-md); margin-bottom: var(--spacing-sm); padding-bottom: var(--spacing-sm); border-bottom: 1px solid #e5e7eb;">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span style="font-size: 12px; font-weight: 500; color: #374151;">Evaluation currency:</span>
+            <span id="evaluation-currency" style="font-size: 12px; font-weight: 600; color: #111827;">USD</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span style="font-size: 12px; font-weight: 500; color: #374151;">Evaluation Incoterm:</span>
+            <span id="evaluation-incoterm" style="font-size: 12px; font-weight: 600; color: #111827;">FCA</span>
+          </div>
+        </div>
+        <p style="font-size: 11px; color: #4b5563; margin: 0 0 var(--spacing-sm); line-height: 1.4;">
+          Bids may be submitted in accepted currencies and Incoterms; evaluation will be in the single currency and Incoterm above. Exchange rate used: as at bid closure date.
+        </p>
+
+        <!-- Totals -->
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-md);">
           <div>
-            <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 2px;">Total Bid Value (FCA)</div>
-            <div id="total-fca" class="total-display" style="font-size: 16px; font-weight: 700; color: var(--primary-600);">USD 0.00</div>
+            <div style="font-size: 11px; font-weight: 500; color: #374151; margin-bottom: 2px;">Total (FCA)</div>
+            <div id="total-fca" class="total-display" style="font-size: 15px; font-weight: 700; color: #111827;">USD 0.00</div>
           </div>
           <div>
-            <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 2px;">Total Bid Value (CPT)</div>
-            <div id="total-cpt" class="total-display" style="font-size: 16px; font-weight: 700; color: var(--primary-600);">USD 0.00</div>
+            <div style="font-size: 11px; font-weight: 500; color: #374151; margin-bottom: 2px;">Total (CPT)</div>
+            <div id="total-cpt" class="total-display" style="font-size: 15px; font-weight: 700; color: #111827;">USD 0.00</div>
           </div>
           <div>
-            <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 2px;">Total Bid Value (DPU)</div>
-            <div id="total-dpu" class="total-display" style="font-size: 16px; font-weight: 700; color: var(--primary-600);">USD 0.00</div>
+            <div style="font-size: 11px; font-weight: 500; color: #374151; margin-bottom: 2px;">Total (DPU)</div>
+            <div id="total-dpu" class="total-display" style="font-size: 15px; font-weight: 700; color: #111827;">USD 0.00</div>
           </div>
         </div>
 
         <!-- Collapsible Price Breakdown by Lot -->
-        <div style="margin-top: var(--spacing-sm); border-top: 1px solid var(--info-200); padding-top: var(--spacing-sm);">
-          <div onclick="toggleLotBreakdown()" style="cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding: 6px 0;">
-            <span style="font-size: 12px; font-weight: 600; color: var(--primary-700); display: flex; align-items: center; gap: 6px;">
+        <div style="margin-top: var(--spacing-sm); padding-top: var(--spacing-sm); border-top: 1px solid #e5e7eb;">
+          <div onclick="toggleLotBreakdown()" style="cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding: 4px 0;">
+            <span style="font-size: 12px; font-weight: 600; color: #111827; display: flex; align-items: center; gap: 6px;">
               <i class="pi pi-chart-pie" style="font-size: 11px;"></i> Price Breakdown by Lot
             </span>
-            <i id="lot-breakdown-arrow" class="pi pi-chevron-down" style="font-size: 10px; color: var(--primary-600); transition: transform 0.2s;"></i>
+            <i id="lot-breakdown-arrow" class="pi pi-chevron-down" style="font-size: 10px; color: #374151; transition: transform 0.2s;"></i>
           </div>
-          
-          <div id="lot-breakdown-content" style="display: none; margin-top: var(--spacing-xs);">
-            <table style="width: 100%; border-collapse: collapse; font-size: 11px; background: var(--surface-0); border-radius: var(--radius-sm); overflow: hidden;">
+          <div id="lot-breakdown-content" style="display: none; margin-top: 6px;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 11px; background: #ffffff; border-radius: var(--radius-sm); overflow: hidden; border: 1px solid #e5e7eb;">
               <thead>
                 <tr style="background: var(--surface-100);">
-                  <th style="padding: 8px 10px; text-align: left; font-weight: 600; border-bottom: 1px solid var(--surface-200);">Lot</th>
-                  <th style="padding: 8px 10px; text-align: right; font-weight: 600; border-bottom: 1px solid var(--surface-200);">Goods (FCA)</th>
-                  <th style="padding: 8px 10px; text-align: right; font-weight: 600; border-bottom: 1px solid var(--surface-200);">Other Requirements</th>
-                  <th style="padding: 8px 10px; text-align: right; font-weight: 600; border-bottom: 1px solid var(--surface-200);">Total</th>
+                  <th style="padding: 6px 10px; text-align: left; font-weight: 600; border-bottom: 1px solid var(--surface-200);">Lot</th>
+                  <th style="padding: 6px 10px; text-align: right; font-weight: 600; border-bottom: 1px solid var(--surface-200);">Items</th>
+                  <th style="padding: 6px 10px; text-align: right; font-weight: 600; border-bottom: 1px solid var(--surface-200);">Other Requirements</th>
+                  <th style="padding: 6px 10px; text-align: right; font-weight: 600; border-bottom: 1px solid var(--surface-200);">Total</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td style="padding: 8px 10px; border-bottom: 1px solid var(--surface-100);">
-                    <span style="background: var(--primary-100); color: var(--primary-700); padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600;">Lot 1</span>
+                  <td style="padding: 6px 10px; border-bottom: 1px solid var(--surface-100);">
+                    <span style="background: var(--primary-100); color: var(--primary-700); padding: 2px 6px; border-radius: 8px; font-size: 10px; font-weight: 600;">Lot 1</span>
                     <span style="margin-left: 6px; color: var(--text-secondary);">Medical Imaging Equipment</span>
                   </td>
-                  <td id="lot1-goods" style="padding: 8px 10px; text-align: right; border-bottom: 1px solid var(--surface-100);">USD 0.00</td>
-                  <td id="lot1-services" style="padding: 8px 10px; text-align: right; border-bottom: 1px solid var(--surface-100);">USD 0.00</td>
-                  <td id="lot1-total" style="padding: 8px 10px; text-align: right; font-weight: 700; color: var(--primary-600); border-bottom: 1px solid var(--surface-100);">USD 0.00</td>
+                  <td id="lot1-goods" style="padding: 6px 10px; text-align: right; border-bottom: 1px solid var(--surface-100);">USD 0.00</td>
+                  <td id="lot1-services" style="padding: 6px 10px; text-align: right; border-bottom: 1px solid var(--surface-100);">USD 0.00</td>
+                  <td id="lot1-total" style="padding: 6px 10px; text-align: right; font-weight: 700; color: var(--primary-600); border-bottom: 1px solid var(--surface-100);">USD 0.00</td>
                 </tr>
                 <tr>
-                  <td style="padding: 8px 10px; border-bottom: 1px solid var(--surface-100);">
-                    <span style="background: var(--success-100); color: var(--success-700); padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600;">Lot 2</span>
+                  <td style="padding: 6px 10px; border-bottom: 1px solid var(--surface-100);">
+                    <span style="background: var(--success-100); color: var(--success-700); padding: 2px 6px; border-radius: 8px; font-size: 10px; font-weight: 600;">Lot 2</span>
                     <span style="margin-left: 6px; color: var(--text-secondary);">Surgical Equipment</span>
                   </td>
-                  <td id="lot2-goods" style="padding: 8px 10px; text-align: right; border-bottom: 1px solid var(--surface-100);">USD 0.00</td>
-                  <td id="lot2-services" style="padding: 8px 10px; text-align: right; border-bottom: 1px solid var(--surface-100);">USD 0.00</td>
-                  <td id="lot2-total" style="padding: 8px 10px; text-align: right; font-weight: 700; color: var(--success-600); border-bottom: 1px solid var(--surface-100);">USD 0.00</td>
+                  <td id="lot2-goods" style="padding: 6px 10px; text-align: right; border-bottom: 1px solid var(--surface-100);">USD 0.00</td>
+                  <td id="lot2-services" style="padding: 6px 10px; text-align: right; border-bottom: 1px solid var(--surface-100);">USD 0.00</td>
+                  <td id="lot2-total" style="padding: 6px 10px; text-align: right; font-weight: 700; color: var(--success-600); border-bottom: 1px solid var(--surface-100);">USD 0.00</td>
                 </tr>
                 <tr style="background: var(--surface-50);">
-                  <td style="padding: 8px 10px; font-weight: 600;">Grand Total</td>
-                  <td id="grand-goods" style="padding: 8px 10px; text-align: right; font-weight: 600;">USD 0.00</td>
-                  <td id="grand-services" style="padding: 8px 10px; text-align: right; font-weight: 600;">USD 0.00</td>
-                  <td id="grand-total" style="padding: 8px 10px; text-align: right; font-weight: 700; color: var(--primary-700);">USD 0.00</td>
+                  <td style="padding: 6px 10px; font-weight: 600;">Grand Total</td>
+                  <td id="grand-goods" style="padding: 6px 10px; text-align: right; font-weight: 600;">USD 0.00</td>
+                  <td id="grand-services" style="padding: 6px 10px; text-align: right; font-weight: 600;">USD 0.00</td>
+                  <td id="grand-total" style="padding: 6px 10px; text-align: right; font-weight: 700; color: var(--primary-700);">USD 0.00</td>
                 </tr>
               </tbody>
             </table>
-            
-            <div style="font-size: 9px; color: var(--info-600); margin-top: var(--spacing-xs); display: flex; align-items: flex-start; gap: 4px;">
-              <i class="pi pi-info-circle" style="font-size: 10px; margin-top: 1px;"></i>
+            <p style="font-size: 11px; color: #4b5563; margin: 8px 0 0; display: flex; align-items: flex-start; gap: 4px;">
+              <i class="pi pi-info-circle" style="font-size: 10px; margin-top: 1px; flex-shrink: 0; color: #6b7280;"></i>
               <span>Services marked "All Lots" are split equally among applicable lots.</span>
-            </div>
+            </p>
           </div>
         </div>
       </div>
 
-      <!-- Prices for Items -->
+      <!-- Prices for Items – single table, lots and items (scales to many rows) -->
       <div class="supplier-subsection-header" style="display: flex; justify-content: space-between; align-items: center;">
         <strong><i class="pi pi-shopping-cart"></i> Prices for Items</strong>
         <div style="display: flex; gap: 8px;">
@@ -8661,50 +8659,45 @@ Submission Requirements
       <table class="supplier-smart-table" id="prices-for-goods-table">
         <thead>
           <tr>
-            <th style="width: 5%;">#</th>
-            <th style="width: 35%;">Item Description</th>
-            <th style="width: 15%;">Lot</th>
-            <th style="width: 10%;">Qty</th>
+            <th style="width: 4%;">#</th>
+            <th style="width: 28%;">Item Description</th>
+            <th style="width: 10%;">Quantity Required</th>
+            <th style="width: 10%;">Unit of measure</th>
+            <th style="width: 12%;">Quantity offered</th>
             <th style="width: 18%;">Unit Price</th>
-            <th style="width: 17%;">Total</th>
+            <th style="width: 18%;">Total</th>
           </tr>
         </thead>
         <tbody id="prices-for-goods-tbody">
+          <!-- Lot 1 group -->
+          <tr class="lot-group-header" style="background: var(--primary-50); border-bottom: 1px solid var(--primary-200);">
+            <td colspan="7" style="padding: 8px 12px; font-weight: 600; font-size: 12px; color: var(--primary-700);">
+              <i class="pi pi-folder-open" style="margin-right: 6px;"></i> Lot 1
+            </td>
+          </tr>
           <tr data-product-id="42182104" data-lot="lot1" data-is-original="true">
             <td style="font-weight: 600;">1</td>
             <td><strong>Ultrasound Machines</strong><div style="font-size: 0.85em; color: var(--text-muted);">UNSPSC: 42182104</div></td>
-            <td class="prefilled" style="text-align: center;"><span style="background: var(--primary-100); color: var(--primary-700); padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600;">Lot 1</span></td>
-            <td class="prefilled qty-cell" style="text-align: center; font-weight: 600;">5</td>
+            <td class="prefilled qty-required" style="text-align: center; font-weight: 600;">5</td>
+            <td class="unit-of-measure" style="text-align: center; color: var(--text-secondary);">Unit</td>
+            <td><input type="number" placeholder="5" min="0" step="1" class="qty-offered" value="5" oninput="calculateFinancialBid()" style="width: 100%;"></td>
             <td><input type="number" placeholder="0.00" step="0.01" class="price-fca" oninput="calculateFinancialBid()"></td>
             <td class="calculated row-total">0.00</td>
           </tr>
-          <tr data-product-id="42182108" data-lot="lot1" data-is-original="true">
+          <!-- Lot 2 group -->
+          <tr class="lot-group-header" style="background: var(--success-50); border-bottom: 1px solid var(--success-200);">
+            <td colspan="7" style="padding: 8px 12px; font-weight: 600; font-size: 12px; color: var(--success-700);">
+              <i class="pi pi-folder-open" style="margin-right: 6px;"></i> Lot 2
+            </td>
+          </tr>
+          <tr data-product-id="42182108" data-lot="lot2" data-is-original="true">
             <td style="font-weight: 600;">2</td>
             <td><strong>Patient Monitors</strong><div style="font-size: 0.85em; color: var(--text-muted);">UNSPSC: 42182108</div></td>
-            <td class="prefilled" style="text-align: center;"><span style="background: var(--primary-100); color: var(--primary-700); padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600;">Lot 1</span></td>
-            <td class="prefilled qty-cell" style="text-align: center; font-weight: 600;">20</td>
+            <td class="prefilled qty-required" style="text-align: center; font-weight: 600;">3</td>
+            <td class="unit-of-measure" style="text-align: center; color: var(--text-secondary);">Unit</td>
+            <td><input type="number" placeholder="3" min="0" step="1" class="qty-offered" value="3" oninput="calculateFinancialBid()" style="width: 100%;"></td>
             <td><input type="number" placeholder="0.00" step="0.01" class="price-fca" oninput="calculateFinancialBid()"></td>
             <td class="calculated row-total">0.00</td>
-          </tr>
-          <tr data-product-id="42192201" data-lot="lot2" data-is-original="true">
-            <td style="font-weight: 600;">3</td>
-            <td><strong>Surgical Lights</strong><div style="font-size: 0.85em; color: var(--text-muted);">UNSPSC: 42192201</div></td>
-            <td class="prefilled" style="text-align: center;"><span style="background: var(--success-100); color: var(--success-700); padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600;">Lot 2</span></td>
-            <td class="prefilled qty-cell" style="text-align: center; font-weight: 600;">8</td>
-            <td><input type="number" placeholder="0.00" step="0.01" class="price-fca" oninput="calculateFinancialBid()"></td>
-            <td class="calculated row-total">0.00</td>
-          </tr>
-          <tr data-product-id="42182101" data-lot="lot2" data-is-original="true">
-            <td style="font-weight: 600;">4</td>
-            <td><strong>Anesthesia Machines</strong><div style="font-size: 0.85em; color: var(--text-muted);">UNSPSC: 42182101</div></td>
-            <td class="prefilled" style="text-align: center;"><span style="background: var(--success-100); color: var(--success-700); padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600;">Lot 2</span></td>
-            <td class="prefilled qty-cell" style="text-align: center; font-weight: 600;">3</td>
-            <td><input type="number" placeholder="0.00" step="0.01" class="price-fca" oninput="calculateFinancialBid()"></td>
-            <td class="calculated row-total">0.00</td>
-          </tr>
-          <tr id="prices-for-goods-total-row" style="background: var(--surface-100);">
-            <td colspan="5" style="text-align: right; font-weight: 600; padding-right: var(--spacing-md);">Total Price of Items →</td>
-            <td class="calculated" style="font-weight: 700;">0.00</td>
           </tr>
         </tbody>
       </table>
@@ -12029,14 +12022,14 @@ function calculateFinancialBid() {
     let lot1Goods = { fca: 0, cpt: 0, dpu: 0 };
     let lot2Goods = { fca: 0, cpt: 0, dpu: 0 };
     
-    // Get all goods rows using data-lot attribute (within active panel if exists)
+    // Get all goods rows (single table; only count data rows with data-lot, not lot-group-header rows)
     const container = activePanel || document;
     const goodsRows = container.querySelectorAll('#prices-for-goods-tbody tr[data-lot], [id^="prices-for-goods-tbody"] tr[data-lot]');
     
     goodsRows.forEach(row => {
         const lot = row.getAttribute('data-lot');
-        const qtyCell = row.querySelector('.qty-cell');
-        const qty = parseFloat(qtyCell ? qtyCell.textContent.trim() : 0) || 0;
+        const qtyOfferedInput = row.querySelector('.qty-offered');
+        const qty = parseFloat(qtyOfferedInput ? qtyOfferedInput.value : 0) || 0;
         
         const fcaInput = row.querySelector('.price-fca');
         const cptInput = row.querySelector('.price-cpt');
@@ -12050,7 +12043,7 @@ function calculateFinancialBid() {
         const cpt = cptUnit * qty;
         const dpu = dpuUnit * qty;
         
-        // Update row total (using FCA as default)
+        // Update row total: Quantity offered × Unit price
         const totalCell = row.querySelector('.row-total');
         if (totalCell) {
             totalCell.textContent = fca.toFixed(2);
@@ -12372,49 +12365,43 @@ function createAlternateTechnicalSection(productId, productName, alternateNumber
 
 function addAlternateFinancialRow(productId, productName, alternateNumber) {
     const tbody = document.getElementById('prices-for-goods-tbody');
-    const totalRow = document.getElementById('prices-for-goods-total-row');
-    if (!tbody || !totalRow) return;
+    if (!tbody) return;
     
-    const uniqueId = `${productId}-alt-${alternateNumber}`;
+    const productRow = tbody.querySelector('tr[data-product-id="' + productId + '"][data-is-original="true"]');
+    const lot = productRow ? productRow.getAttribute('data-lot') : 'lot1';
+    const qtyRequiredEl = productRow ? productRow.querySelector('.qty-required') : null;
+    const qtyRequired = qtyRequiredEl ? qtyRequiredEl.textContent.trim() : '1';
+    const uomEl = productRow ? productRow.querySelector('.unit-of-measure') : null;
+    const uom = uomEl ? uomEl.textContent.trim() : 'Unit';
     
-    // Find the original product row to insert after it (or after its other alternates)
-    let insertAfterRow = null;
-    const rows = tbody.querySelectorAll('tr');
-    for (let i = rows.length - 1; i >= 0; i--) {
-        const row = rows[i];
-        if (row.getAttribute('data-product-id') === productId) {
-            insertAfterRow = row;
-            break;
-        }
-    }
+    const uniqueId = productId + '-alt-' + alternateNumber;
+    
+    let insertAfterRow = productRow;
+    const rows = tbody.querySelectorAll('tr[data-product-id="' + productId + '"], tr[id^="financial-row-' + productId + '-alt-"]');
+    rows.forEach(function(r) { if (r !== productRow) insertAfterRow = r; });
     
     const newRow = document.createElement('tr');
-    newRow.id = `financial-row-${uniqueId}`;
+    newRow.id = 'financial-row-' + uniqueId;
     newRow.setAttribute('data-product-id', productId);
+    newRow.setAttribute('data-lot', lot);
     newRow.setAttribute('data-alternate-number', alternateNumber);
     newRow.style.cssText = 'background: linear-gradient(135deg, var(--warning-50, #fff8e1) 0%, white 100%);';
     
-    newRow.innerHTML = `
-        <td style="font-weight: 600; color: var(--warning-700, #f57c00);">ALT</td>
-        <td>
-            <div style="display: flex; align-items: center; gap: 6px;">
-                <span style="background: var(--warning-500, #ff9800); color: white; padding: 2px 6px; border-radius: 8px; font-size: 9px; font-weight: 700;">ALT #${alternateNumber}</span>
-                <strong>${productName}</strong>
-            </div>
-            <div style="font-size: 0.85em; color: var(--warning-600, #fb8c00);">UNSPSC: ${productId} • Alternate Offer</div>
-        </td>
-        <td class="prefilled" style="text-align: center; font-weight: 600;">5</td>
-        <td><select><option>USD</option><option>EUR</option></select></td>
-        <td><input type="number" placeholder="0.00" step="0.01"></td>
-        <td><input type="number" placeholder="0.00" step="0.01"></td>
-        <td><input type="number" placeholder="0.00" step="0.01"></td>
-        <td class="calculated">0.00</td>
-    `;
+    newRow.innerHTML = '<td style="font-weight: 600; color: var(--warning-700, #f57c00);">ALT</td>' +
+        '<td><div style="display: flex; align-items: center; gap: 6px;">' +
+        '<span style="background: var(--warning-500, #ff9800); color: white; padding: 2px 6px; border-radius: 8px; font-size: 9px; font-weight: 700;">ALT #' + alternateNumber + '</span>' +
+        '<strong>' + productName + '</strong></div>' +
+        '<div style="font-size: 0.85em; color: var(--warning-600, #fb8c00);">UNSPSC: ' + productId + ' &bull; Alternate Offer</div></td>' +
+        '<td class="prefilled qty-required" style="text-align: center; font-weight: 600;">' + qtyRequired + '</td>' +
+        '<td class="unit-of-measure" style="text-align: center; color: var(--text-secondary);">' + uom + '</td>' +
+        '<td><input type="number" placeholder="' + qtyRequired + '" min="0" step="1" class="qty-offered" value="' + qtyRequired + '" oninput="calculateFinancialBid()" style="width: 100%;"></td>' +
+        '<td><input type="number" placeholder="0.00" step="0.01" class="price-fca" oninput="calculateFinancialBid()"></td>' +
+        '<td class="calculated row-total">0.00</td>';
     
-    if (insertAfterRow && insertAfterRow !== totalRow) {
+    if (insertAfterRow) {
         insertAfterRow.parentNode.insertBefore(newRow, insertAfterRow.nextSibling);
     } else {
-        tbody.insertBefore(newRow, totalRow);
+        tbody.appendChild(newRow);
     }
 }
 
