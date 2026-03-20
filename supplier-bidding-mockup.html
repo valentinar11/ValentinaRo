@@ -681,6 +681,45 @@ min-height: calc(100vh - 65px);
     color: var(--warning-600);
     margin-top: 2px;
 }
+
+.lot-offer-tab-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+.lot-offer-tab {
+    padding: 6px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    border: 1px solid var(--surface-300);
+    border-radius: var(--radius-md);
+    background: var(--surface-0);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+}
+.lot-offer-tab:hover {
+    border-color: var(--warning-400);
+    background: var(--warning-50);
+}
+.lot-offer-tab.active {
+    border-color: var(--warning-500);
+    background: linear-gradient(135deg, var(--warning-50) 0%, var(--surface-0) 100%);
+    color: var(--warning-800);
+}
+.lot-offer-panels .lot-offer-panel {
+    display: none;
+}
+.lot-offer-panels .lot-offer-panel.active {
+    display: block;
+}
+.technical-lot-block .add-lot-alt-btn {
+    flex-shrink: 0;
+}
+.lot-filter-hidden {
+    display: none !important;
+}
 .menu-group {
     margin-bottom: var(--spacing-xs);
 }
@@ -7827,17 +7866,14 @@ Submission Requirements
           </div>
           <div style="font-size: 11px; color: var(--text-muted);">
             <i class="pi pi-info-circle" style="margin-right: 4px;"></i>
-            Alternative offers duplicate all Technical &amp; Financial bid content
+            Alternative offers are per lot — use <strong>Add Alternative Offer</strong> in each lot header. Each alternative is tied to one lot; the Financial Bid shows only that lot when you edit the matching tab.
           </div>
         </div>
         <div class="offer-tabs">
-          <div class="offer-tab main-offer active" data-offer-id="main" onclick="switchOffer('technical', 'main')">
+          <div class="offer-tab main-offer active" data-offer-id="main" onclick="switchOffer('technical', 'main'); switchAllTechnicalLotsToMain();">
             <i class="pi pi-check-circle"></i>
             <span>Main Offer</span>
-          </div><div id="technical-alternate-tabs" style="display: contents;"></div>
-          <button type="button" class="add-alternate-offer-global-btn" onclick="addGlobalAlternateOffer()">
-            <i class="pi pi-plus-circle"></i> Add Alternative Offer
-          </button>
+          </div>
         </div>
       </div>
 
@@ -7924,12 +7960,21 @@ Submission Requirements
       <div id="technical-bid-default">
 
       <!-- Lot 1 (collapsible) -->
-      <div class="collapsible-section" style="margin-bottom: var(--spacing-md);">
-        <div class="section-header-collapsible" onclick="toggleTechnicalBidCollapse(this)">
-          <span style="font-weight: 600; font-size: 13px;"><i class="pi pi-folder-open" style="margin-right: 8px; color: var(--primary-500);"></i> Lot 1</span>
-          <span class="section-collapse-icon"><i class="pi pi-chevron-down"></i></span>
+      <div class="collapsible-section technical-lot-block" data-lot-id="lot1" style="margin-bottom: var(--spacing-md);">
+        <div class="section-header-collapsible">
+          <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; width: 100%; cursor: pointer;" onclick="toggleTechnicalBidCollapse(this.closest('.section-header-collapsible'))">
+            <span style="font-weight: 600; font-size: 13px;"><i class="pi pi-folder-open" style="margin-right: 8px; color: var(--primary-500);"></i> Lot 1 — Diagnostic Equipment</span>
+            <span class="section-collapse-icon"><i class="pi pi-chevron-down"></i></span>
+          </div>
+          <div class="lot-offer-tab-bar" onclick="event.stopPropagation();" style="width: 100%; margin-top: 8px; padding-top: 10px; border-top: 1px solid var(--surface-200);">
+            <button type="button" class="lot-offer-tab active" data-offer-key="main" onclick="switchTechnicalLotOffer('lot1','main')">Main offer</button>
+            <span id="technical-lot1-offer-tabs-extra" class="lot-offer-tabs-dynamic" style="display: contents;"></span>
+            <button type="button" class="add-lot-alt-btn btn btn-secondary btn-sm" onclick="addLotAlternateOffer('lot1')" style="margin-left: auto; font-size: 11px;"><i class="pi pi-plus-circle"></i> Add Alternative Offer</button>
+          </div>
         </div>
         <div class="section-collapsible-content">
+          <div class="lot-offer-panels" data-lot="lot1">
+            <div class="lot-offer-panel active" data-offer-key="main">
           <!-- UNSPSC 42182104 - Ultrasound Machines (Product 1, Lot 1) -->
           <div class="collapsible-section" style="margin-bottom: var(--spacing-md);">
             <div class="section-header-collapsible" onclick="toggleTechnicalBidCollapse(this)">
@@ -8188,17 +8233,28 @@ Submission Requirements
         </div>
             </div>
           </div>
+            </div>
+          </div>
         </div>
       </div>
       <!-- END Lot 1 -->
 
       <!-- Lot 2 (collapsible) -->
-      <div class="collapsible-section" style="margin-bottom: var(--spacing-md);">
-        <div class="section-header-collapsible" onclick="toggleTechnicalBidCollapse(this)">
-          <span style="font-weight: 600; font-size: 13px;"><i class="pi pi-folder-open" style="margin-right: 8px; color: var(--success-600);"></i> Lot 2</span>
-          <span class="section-collapse-icon"><i class="pi pi-chevron-down"></i></span>
+      <div class="collapsible-section technical-lot-block" data-lot-id="lot2" style="margin-bottom: var(--spacing-md);">
+        <div class="section-header-collapsible">
+          <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; width: 100%; cursor: pointer;" onclick="toggleTechnicalBidCollapse(this.closest('.section-header-collapsible'))">
+            <span style="font-weight: 600; font-size: 13px;"><i class="pi pi-folder-open" style="margin-right: 8px; color: var(--success-600);"></i> Lot 2 — Surgical Supplies</span>
+            <span class="section-collapse-icon"><i class="pi pi-chevron-down"></i></span>
+          </div>
+          <div class="lot-offer-tab-bar" onclick="event.stopPropagation();" style="width: 100%; margin-top: 8px; padding-top: 10px; border-top: 1px solid var(--surface-200);">
+            <button type="button" class="lot-offer-tab active" data-offer-key="main" onclick="switchTechnicalLotOffer('lot2','main')">Main offer</button>
+            <span id="technical-lot2-offer-tabs-extra" class="lot-offer-tabs-dynamic" style="display: contents;"></span>
+            <button type="button" class="add-lot-alt-btn btn btn-secondary btn-sm" onclick="addLotAlternateOffer('lot2')" style="margin-left: auto; font-size: 11px;"><i class="pi pi-plus-circle"></i> Add Alternative Offer</button>
+          </div>
         </div>
         <div class="section-collapsible-content">
+          <div class="lot-offer-panels" data-lot="lot2">
+            <div class="lot-offer-panel active" data-offer-key="main">
           <!-- UNSPSC 42182108 - Patient Monitors (Product 2, Lot 2) -->
           <div class="collapsible-section" style="margin-bottom: var(--spacing-md);">
             <div class="section-header-collapsible" onclick="toggleTechnicalBidCollapse(this)">
@@ -8307,6 +8363,8 @@ Submission Requirements
               </div>
             </div>
           </div>
+            </div>
+          </div>
         </div>
       </div>
       <!-- END Lot 2 -->
@@ -8318,6 +8376,7 @@ Submission Requirements
           <span class="section-collapse-icon"><i class="pi pi-chevron-down"></i></span>
         </div>
         <div class="section-collapsible-content">
+      <p style="font-size: 11px; color: var(--text-secondary); line-height: 1.45; margin: 0 0 var(--spacing-sm); max-width: 900px;">Pricing for these items is entered in the <strong>Financial Bid</strong>. The unit price you enter there applies in full to each product line in scope for the lot(s) shown — it is not split across lines.</p>
       <div style="overflow-x: auto;">
         <table class="supplier-smart-table">
           <thead>
@@ -8514,6 +8573,21 @@ Submission Requirements
         </div>
       </div>
 
+      <!-- Bid currency: one value for main + all alternative offers -->
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-bottom: 10px; padding: 6px 10px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px;">
+        <label for="financial-bid-currency-select" style="font-size: 11px; font-weight: 600; color: #374151;">Bid currency</label>
+        <select id="financial-bid-currency-select" class="bid-currency-select" style="min-width: 120px; padding: 4px 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 11px; background: #ffffff; color: #111827; cursor: pointer;" onchange="updateBidCurrency(this)" title="Applies to main offer and every alternative offer">
+          <option value="USD" selected>USD — US Dollar</option>
+          <option value="EUR">EUR — Euro</option>
+          <option value="GBP">GBP — British Pound</option>
+          <option value="CHF">CHF — Swiss Franc</option>
+          <option value="JPY">JPY — Japanese Yen</option>
+          <option value="CAD">CAD — Canadian Dollar</option>
+          <option value="AUD">AUD — Australian Dollar</option>
+        </select>
+        <span style="font-size: 10px; color: #6b7280; line-height: 1.3;">Same currency for all offers (main and alternatives).</span>
+      </div>
+
       <!-- Offer Tabs Navigation -->
       <div class="offer-tabs-container" id="financial-bid-offer-tabs">
         <div class="offer-tabs-header">
@@ -8522,7 +8596,7 @@ Submission Requirements
           </div>
           <div style="font-size: 11px; color: var(--text-muted);">
             <i class="pi pi-info-circle" style="margin-right: 4px;"></i>
-            Alternative offers duplicate all Technical &amp; Financial bid content
+            Tabs for <strong>alternative offers</strong> appear here when you add them from a lot header in the Technical Bid. Each tab shows pricing for <strong>that lot only</strong>.
           </div>
         </div>
         <div class="offer-tabs">
@@ -8537,21 +8611,6 @@ Submission Requirements
       <div class="offer-content-wrapper" id="financial-offer-content-wrapper">
         <!-- Main Offer Content -->
         <div class="offer-content-panel active" id="financial-offer-main" data-offer-id="main">
-
-      <!-- Bid Currency (compact, secondary to Bid Summary and prices) -->
-      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: var(--spacing-md); padding: 8px 0; border-bottom: 1px solid #e5e7eb;">
-        <label style="font-size: 12px; font-weight: 500; color: #4b5563;">Currency for this offer</label>
-        <select class="bid-currency-select" style="min-width: 140px; padding: 6px 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px; background: #ffffff; color: #111827; cursor: pointer;" onchange="updateBidCurrency(this)">
-          <option value="USD" selected>USD - US Dollar</option>
-          <option value="EUR">EUR - Euro</option>
-          <option value="GBP">GBP - British Pound</option>
-          <option value="CHF">CHF - Swiss Franc</option>
-          <option value="JPY">JPY - Japanese Yen</option>
-          <option value="CAD">CAD - Canadian Dollar</option>
-          <option value="AUD">AUD - Australian Dollar</option>
-        </select>
-        <span style="font-size: 11px; color: #6b7280;">Prices in this offer use this currency. Other offers can use another.</span>
-      </div>
 
       <!-- Bid Summary -->
       <div class="supplier-subsection-header">
@@ -8609,7 +8668,7 @@ Submission Requirements
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <tr data-breakdown-lot="lot1">
                   <td style="padding: 6px 10px; border-bottom: 1px solid var(--surface-100);">
                     <span style="background: var(--primary-100); color: var(--primary-700); padding: 2px 6px; border-radius: 8px; font-size: 10px; font-weight: 600;">Lot 1</span>
                     <span style="margin-left: 6px; color: var(--text-secondary);">Medical Imaging Equipment</span>
@@ -8618,7 +8677,7 @@ Submission Requirements
                   <td id="lot1-services" style="padding: 6px 10px; text-align: right; border-bottom: 1px solid var(--surface-100);">USD 0.00</td>
                   <td id="lot1-total" style="padding: 6px 10px; text-align: right; font-weight: 700; color: var(--primary-600); border-bottom: 1px solid var(--surface-100);">USD 0.00</td>
                 </tr>
-                <tr>
+                <tr data-breakdown-lot="lot2">
                   <td style="padding: 6px 10px; border-bottom: 1px solid var(--surface-100);">
                     <span style="background: var(--success-100); color: var(--success-700); padding: 2px 6px; border-radius: 8px; font-size: 10px; font-weight: 600;">Lot 2</span>
                     <span style="margin-left: 6px; color: var(--text-secondary);">Surgical Equipment</span>
@@ -8627,7 +8686,7 @@ Submission Requirements
                   <td id="lot2-services" style="padding: 6px 10px; text-align: right; border-bottom: 1px solid var(--surface-100);">USD 0.00</td>
                   <td id="lot2-total" style="padding: 6px 10px; text-align: right; font-weight: 700; color: var(--success-600); border-bottom: 1px solid var(--surface-100);">USD 0.00</td>
                 </tr>
-                <tr style="background: var(--surface-50);">
+                <tr class="financial-breakdown-grand" style="background: var(--surface-50);">
                   <td style="padding: 6px 10px; font-weight: 600;">Grand Total</td>
                   <td id="grand-goods" style="padding: 6px 10px; text-align: right; font-weight: 600;">USD 0.00</td>
                   <td id="grand-services" style="padding: 6px 10px; text-align: right; font-weight: 600;">USD 0.00</td>
@@ -8637,7 +8696,7 @@ Submission Requirements
             </table>
             <p style="font-size: 11px; color: #4b5563; margin: 8px 0 0; display: flex; align-items: flex-start; gap: 4px;">
               <i class="pi pi-info-circle" style="font-size: 10px; margin-top: 1px; flex-shrink: 0; color: #6b7280;"></i>
-              <span>Services marked "All Lots" are split equally among applicable lots.</span>
+              <span>Other requirements marked <strong>All Lots</strong> use the same unit price in full for each applicable lot in this breakdown (not divided across lots). The schedule total is still the sum of the lines you enter.</span>
             </p>
           </div>
         </div>
@@ -8670,7 +8729,7 @@ Submission Requirements
         </thead>
         <tbody id="prices-for-goods-tbody">
           <!-- Lot 1 group -->
-          <tr class="lot-group-header" style="background: var(--primary-50); border-bottom: 1px solid var(--primary-200);">
+          <tr class="lot-group-header" data-lot-group="lot1" style="background: var(--primary-50); border-bottom: 1px solid var(--primary-200);">
             <td colspan="7" style="padding: 8px 12px; font-weight: 600; font-size: 12px; color: var(--primary-700);">
               <i class="pi pi-folder-open" style="margin-right: 6px;"></i> Lot 1
             </td>
@@ -8685,7 +8744,7 @@ Submission Requirements
             <td class="calculated row-total">0.00</td>
           </tr>
           <!-- Lot 2 group -->
-          <tr class="lot-group-header" style="background: var(--success-50); border-bottom: 1px solid var(--success-200);">
+          <tr class="lot-group-header" data-lot-group="lot2" style="background: var(--success-50); border-bottom: 1px solid var(--success-200);">
             <td colspan="7" style="padding: 8px 12px; font-weight: 600; font-size: 12px; color: var(--success-700);">
               <i class="pi pi-folder-open" style="margin-right: 6px;"></i> Lot 2
             </td>
@@ -8706,6 +8765,9 @@ Submission Requirements
       <div class="supplier-subsection-header" style="margin-top: var(--spacing-xl);">
         <strong><i class="pi pi-wrench"></i> Other Requirements - Priced Items</strong>
       </div>
+      <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.5; margin: 0 0 var(--spacing-sm); max-width: 920px;">
+        Enter one <strong>unit price</strong> per line. That amount applies <strong>in full</strong> to each product line in every lot the requirement covers — it is <strong>not split</strong> across items. The <strong>Total</strong> column shows the line amount for this schedule; per-lot breakdown below attributes the same unit value to each applicable lot for evaluation.
+      </p>
 
       <table class="supplier-smart-table">
         <thead>
@@ -8714,7 +8776,7 @@ Submission Requirements
             <th style="width: 18%;">Name</th>
             <th style="width: 32%;">Description</th>
             <th style="width: 12%;">Apply To</th>
-            <th style="width: 18%;">Unit Price</th>
+            <th style="width: 18%;">Unit Price <span style="font-weight: 400; color: var(--text-muted); display: block; font-size: 10px;">(per line, applied in full per product in scope)</span></th>
             <th style="width: 15%;">Total</th>
           </tr>
         </thead>
@@ -8766,6 +8828,21 @@ Submission Requirements
         </div>
       </div>
 
+      <div style="margin-bottom: var(--spacing-md); padding: 8px 10px; background: var(--surface-50); border-radius: var(--radius-sm); border: 1px solid var(--surface-200);">
+        <div style="font-weight: 600; font-size: 11px; color: var(--text-primary); margin-bottom: 4px;"><i class="pi pi-map-marker" style="margin-right: 4px; font-size: 10px; color: var(--primary-500);"></i> Multiple destinations</div>
+        <p style="font-size: 10px; color: var(--text-secondary); margin: 0 0 6px; line-height: 1.35;">Download the template, complete it, upload the filled spreadsheet.</p>
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px;">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="alert('Downloading: Multiple_Destinations_Template.xlsx');" style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; font-size: 10px;">
+            <i class="pi pi-download" style="font-size: 10px;"></i> Download
+          </button>
+          <div class="supplier-upload-area" style="flex: 1; min-width: 160px; padding: 8px 10px; border: 1px dashed var(--surface-300); border-radius: var(--radius-sm); background: var(--surface-0); text-align: center; cursor: pointer;">
+            <div style="color: var(--primary-500); font-size: 12px; margin-bottom: 2px;"><i class="pi pi-cloud-upload"></i></div>
+            <div class="supplier-upload-text" style="font-weight: 600; font-size: 10px;">Upload completed file</div>
+            <div class="supplier-upload-hint" style="font-size: 9px; color: var(--text-muted); margin-top: 2px;">.xlsx / .xls · 10MB</div>
+          </div>
+        </div>
+      </div>
+
       <table class="supplier-smart-table">
         <thead>
           <tr>
@@ -8779,7 +8856,7 @@ Submission Requirements
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr data-shipment-lot="lot1">
             <td class="prefilled" style="font-weight: 600;">Ultrasound Machines</td>
             <td><input type="text" placeholder="City, Country"></td>
             <td><input type="text" placeholder="L×W×H cm"></td>
@@ -8788,7 +8865,7 @@ Submission Requirements
             <td><input type="text" placeholder="L×W×H cm"></td>
             <td><input type="text" placeholder="m³"></td>
           </tr>
-          <tr>
+          <tr data-shipment-lot="lot2">
             <td class="prefilled" style="font-weight: 600;">Patient Monitors</td>
             <td><input type="text" placeholder="City, Country"></td>
             <td><input type="text" placeholder="L×W×H cm"></td>
@@ -8797,7 +8874,7 @@ Submission Requirements
             <td><input type="text" placeholder="L×W×H cm"></td>
             <td><input type="text" placeholder="m³"></td>
           </tr>
-          <tr>
+          <tr data-shipment-lot="lot1">
             <td class="prefilled" style="font-weight: 600;">Surgical Lights</td>
             <td><input type="text" placeholder="City, Country"></td>
             <td><input type="text" placeholder="L×W×H cm"></td>
@@ -8806,7 +8883,7 @@ Submission Requirements
             <td><input type="text" placeholder="L×W×H cm"></td>
             <td><input type="text" placeholder="m³"></td>
           </tr>
-          <tr>
+          <tr data-shipment-lot="lot2">
             <td class="prefilled" style="font-weight: 600;">Anesthesia Machines</td>
             <td><input type="text" placeholder="City, Country"></td>
             <td><input type="text" placeholder="L×W×H cm"></td>
@@ -9697,7 +9774,7 @@ Submission Requirements
   </div>
   <div style="display: flex; gap: var(--spacing-md); align-items: center;">
   <button class="btn btn-secondary btn-sm" onclick="openModal('add-alternate-offer-modal')">
-  <span>📑</span> Add Alternative Offer
+  <span>📑</span> Alternative offers (per lot)
   </button>
   <span class="section-status status-incomplete">In Progress</span>
   </div>
@@ -10587,26 +10664,26 @@ Submission Requirements
 <i class="pi pi-lightbulb" style="color: var(--warning-500);"></i>
 <div>
 <strong style="color: var(--warning-700);">About Alternative Offers</strong>
-<p style="margin-top: 4px; font-size: 13px;">An alternative offer allows you to submit an additional bid alongside your primary (main) offer. This is useful when you can offer different product configurations, pricing options, or technical solutions.</p>
+<p style="margin-top: 4px; font-size: 13px;">Alternative offers are created <strong>per lot</strong> from the Technical Bid: use <strong>Add Alternative Offer</strong> in each lot header. Each alternative is for that lot only and adds a matching tab in the Financial Bid where pricing is limited to that lot.</p>
 </div>
 </div>
 
 <div style="background: var(--surface-50); border-radius: var(--radius-md); padding: var(--spacing-md); margin: var(--spacing-md) 0;">
-<h4 style="font-size: 13px; font-weight: 600; color: var(--primary-700); margin-bottom: var(--spacing-sm);"><i class="pi pi-list" style="margin-right: 6px;"></i> What will be duplicated:</h4>
+<h4 style="font-size: 13px; font-weight: 600; color: var(--primary-700); margin-bottom: var(--spacing-sm);"><i class="pi pi-list" style="margin-right: 6px;"></i> What happens when you add an alternative for a lot:</h4>
 <ul style="font-size: 12px; color: var(--text-secondary); margin: 0; padding-left: 20px; line-height: 1.8;">
-<li><strong>Technical Bid:</strong> All product specifications, compliance tables, manufacturer details</li>
-<li><strong>Financial Bid:</strong> All pricing for goods, services, delivery, and discounts</li>
+<li><strong>Technical Bid:</strong> A copy of that lot’s technical content opens under a new tab (Main offer / Alt 1, …) so you can edit specifications for that lot only.</li>
+<li><strong>Financial Bid:</strong> A new tab opens with pricing scoped to <strong>that lot only</strong> (items, other requirements, shipment rows, and breakdown for that lot).</li>
 </ul>
 </div>
 
 <div class="alert alert-info" style="background: var(--info-50);">
 <i class="pi pi-info-circle" style="color: var(--info-500);"></i>
-<div style="font-size: 12px;">You can switch between offers using the tabs at the top of the Technical Bid and Financial Bid sections.</div>
+<div style="font-size: 12px;">Switch between <strong>Main offer</strong> and <strong>Alt …</strong> in each lot header (Technical). Use the Financial Bid tabs to edit the main offer or each lot’s alternative.</div>
 </div>
 </div>
 <div class="modal-footer">
 <button class="btn btn-ghost" onclick="closeModal('add-alternate-offer-modal')">Cancel</button>
-<button class="btn btn-primary" onclick="createAlternateOffer()" style="background: linear-gradient(135deg, var(--warning-500) 0%, #f57c00 100%); border-color: var(--warning-500);"><i class="pi pi-plus-circle" style="margin-right: 8px;"></i>Create Alternative Offer</button>
+<button class="btn btn-primary" onclick="createAlternateOffer()" style="background: linear-gradient(135deg, var(--warning-500) 0%, #f57c00 100%); border-color: var(--warning-500);"><i class="pi pi-check" style="margin-right: 8px;"></i>Got it</button>
 </div>
 </div>
 </div>
@@ -11515,46 +11592,114 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// ========== GLOBAL ALTERNATIVE OFFER FUNCTIONALITY ==========
-let globalAlternateOfferCount = 0;
+// ========== LOT-LEVEL ALTERNATIVE OFFERS (Technical per lot; Financial = one tab per alt, that lot only) ==========
+let lotAltCounter = { lot1: 0, lot2: 0 };
 let activeOffer = { technical: 'main', financial: 'main' };
 
-function addGlobalAlternateOffer() {
-    globalAlternateOfferCount++;
-    const offerId = `alt-${globalAlternateOfferCount}`;
-    
-    // Add tab to Technical Bid
-    addOfferTab('technical', offerId, globalAlternateOfferCount);
-    
-    // Add tab to Financial Bid  
-    addOfferTab('financial', offerId, globalAlternateOfferCount);
-    
-    // Clone and add content panel to Technical Bid
-    createAlternateOfferPanel('technical', offerId, globalAlternateOfferCount);
-    
-    // Clone and add content panel to Financial Bid
-    createAlternateOfferPanel('financial', offerId, globalAlternateOfferCount);
-    
-    // Switch to the new alternative offer
-    switchOffer('technical', offerId);
-    switchOffer('financial', offerId);
-    
-    // Show success notification
-    showOfferNotification(`Alternative Offer #${globalAlternateOfferCount} created! You can now provide alternative specifications and pricing.`);
+function switchTechnicalLotOffer(lotKey, offerKey) {
+    const block = document.querySelector(`.technical-lot-block[data-lot-id="${lotKey}"]`);
+    if (!block) return;
+    block.querySelectorAll('.lot-offer-tab-bar .lot-offer-tab').forEach(t => {
+        const k = t.getAttribute('data-offer-key');
+        t.classList.toggle('active', k === offerKey);
+    });
+    block.querySelectorAll('.lot-offer-panels .lot-offer-panel').forEach(p => {
+        p.classList.toggle('active', p.getAttribute('data-offer-key') === offerKey);
+    });
 }
 
-function addOfferTab(section, offerId, offerNumber) {
+function switchAllTechnicalLotsToMain() {
+    document.querySelectorAll('.technical-lot-block[data-lot-id]').forEach(block => {
+        const lotKey = block.getAttribute('data-lot-id');
+        if (lotKey) switchTechnicalLotOffer(lotKey, 'main');
+    });
+}
+
+function addLotAlternateOffer(lotKey) {
+    if (!lotAltCounter[lotKey]) lotAltCounter[lotKey] = 0;
+    lotAltCounter[lotKey]++;
+    const seq = lotAltCounter[lotKey];
+    const offerId = `alt-${lotKey}-${seq}`;
+    const lotLabel = lotKey === 'lot1' ? 'Lot 1' : 'Lot 2';
+
+    const block = document.querySelector(`.technical-lot-block[data-lot-id="${lotKey}"]`);
+    if (!block) return;
+    const mainPanel = block.querySelector('.lot-offer-panels .lot-offer-panel[data-offer-key="main"]');
+    const panelsRoot = block.querySelector('.lot-offer-panels');
+    if (!mainPanel || !panelsRoot) return;
+
+    const clone = mainPanel.cloneNode(true);
+    clone.setAttribute('data-offer-key', offerId);
+    clone.classList.remove('active');
+    clone.querySelectorAll('[name]').forEach(el => {
+        const n = el.getAttribute('name');
+        if (n && !String(n).includes(offerId)) el.setAttribute('name', n + '-' + offerId);
+    });
+    const banner = document.createElement('div');
+    banner.className = 'alternate-offer-banner';
+    banner.innerHTML = `
+            <span class="alternate-offer-banner-icon">📑</span>
+            <div class="alternate-offer-banner-content">
+                <div class="alternate-offer-banner-title">Alternative offer — ${lotLabel} (#${seq})</div>
+                <div class="alternate-offer-banner-desc">Complete technical details for this alternative for ${lotLabel} only. A matching Financial Bid tab shows pricing for this lot only.</div>
+            </div>`;
+    clone.insertBefore(banner, clone.firstChild);
+    clone.querySelectorAll('input:not([type="radio"]):not([type="checkbox"]), textarea').forEach(el => {
+        if (!el.classList.contains('prefilled') && !el.readOnly) el.value = '';
+    });
+    clone.querySelectorAll('input[type="checkbox"]:not([disabled])').forEach(cb => { cb.checked = false; });
+    clone.querySelectorAll('input[type="radio"]').forEach(r => { r.checked = false; });
+    panelsRoot.appendChild(clone);
+
+    const extra = document.getElementById(`technical-${lotKey}-offer-tabs-extra`);
+    if (extra) {
+        const tab = document.createElement('button');
+        tab.type = 'button';
+        tab.className = 'lot-offer-tab';
+        tab.setAttribute('data-offer-key', offerId);
+        tab.innerHTML = `Alt ${seq}<span class="offer-tab-remove" style="margin-left:6px;opacity:0.7;" onclick="event.stopPropagation(); removeLotScopedAlternateOffer('${offerId}')" title="Remove"><i class="pi pi-times" style="font-size:9px;"></i></span>`;
+        tab.onclick = function(e) {
+            if (!e.target.closest('.offer-tab-remove')) switchTechnicalLotOffer(lotKey, offerId);
+        };
+        extra.appendChild(tab);
+    }
+
+    switchTechnicalLotOffer(lotKey, offerId);
+
+    addOfferTab('financial', offerId, `Alt — ${lotLabel}`);
+    createAlternateOfferPanel('financial', offerId, seq, lotKey);
+    switchOffer('financial', offerId);
+
+    showOfferNotification(`Alternative offer for ${lotLabel} created. Financial Bid switched to the tab for this lot only.`);
+}
+
+function applyFinancialLotFilter(panel, lotKey) {
+    if (!panel || !lotKey) return;
+    const other = lotKey === 'lot1' ? 'lot2' : 'lot1';
+    panel.querySelectorAll(`tr[data-lot="${other}"]`).forEach(r => r.classList.add('lot-filter-hidden'));
+    panel.querySelectorAll(`tr[data-lot-group="${other}"]`).forEach(r => r.classList.add('lot-filter-hidden'));
+    panel.querySelectorAll(`tr[data-breakdown-lot="${other}"]`).forEach(r => r.classList.add('lot-filter-hidden'));
+    panel.querySelectorAll(`tr[data-shipment-lot="${other}"]`).forEach(r => r.classList.add('lot-filter-hidden'));
+    panel.querySelectorAll('[id^="services-tbody"] tr[data-apply-to]').forEach(row => {
+        const a = row.getAttribute('data-apply-to');
+        if (a === other) row.classList.add('lot-filter-hidden');
+    });
+    const grand = panel.querySelector('.financial-breakdown-grand');
+    if (grand) grand.classList.add('lot-filter-hidden');
+}
+
+function addOfferTab(section, offerId, labelText) {
     const tabsContainer = document.getElementById(`${section}-alternate-tabs`);
     if (!tabsContainer) return;
-    
+
     const tab = document.createElement('div');
     tab.className = 'offer-tab alternate-offer';
     tab.id = `${section}-tab-${offerId}`;
     tab.setAttribute('data-offer-id', offerId);
     tab.innerHTML = `
         <i class="pi pi-bookmark"></i>
-        <span>Alt Offer ${offerNumber}</span>
-        <span class="offer-tab-remove" onclick="event.stopPropagation(); removeGlobalAlternateOffer('${offerId}')" title="Remove this alternative offer">
+        <span>${labelText}</span>
+        <span class="offer-tab-remove" onclick="event.stopPropagation(); removeLotScopedAlternateOffer('${offerId}')" title="Remove this alternative offer">
             <i class="pi pi-times" style="font-size: 10px;"></i>
         </span>
     `;
@@ -11566,7 +11711,7 @@ function addOfferTab(section, offerId, offerNumber) {
     tabsContainer.appendChild(tab);
 }
 
-function createAlternateOfferPanel(section, offerId, offerNumber) {
+function createAlternateOfferPanel(section, offerId, offerNumber, filterLotKey) {
     const panelsContainer = document.getElementById(`${section}-alternate-panels`);
     const mainPanel = document.getElementById(`${section}-offer-main`);
     if (!panelsContainer || !mainPanel) return;
@@ -11577,13 +11722,13 @@ function createAlternateOfferPanel(section, offerId, offerNumber) {
     newPanel.id = `${section}-offer-${offerId}`;
     newPanel.setAttribute('data-offer-id', offerId);
     
-    // Add alternative offer banner
+    const lotLabel = filterLotKey === 'lot1' ? 'Lot 1' : filterLotKey === 'lot2' ? 'Lot 2' : '';
     const banner = `
         <div class="alternate-offer-banner">
             <span class="alternate-offer-banner-icon">📑</span>
             <div class="alternate-offer-banner-content">
-                <div class="alternate-offer-banner-title">Alternative Offer #${offerNumber}</div>
-                <div class="alternate-offer-banner-desc">Provide alternative ${section === 'technical' ? 'specifications and technical details' : 'pricing and financial terms'} for this offer. All fields must be completed separately from your main offer.</div>
+                <div class="alternate-offer-banner-title">${section === 'financial' && lotLabel ? `Financial alternative — ${lotLabel}` : `Alternative Offer #${offerNumber}`}</div>
+                <div class="alternate-offer-banner-desc">${section === 'financial' && lotLabel ? `Pricing and tables below are limited to <strong>${lotLabel}</strong> only (one alternative offer = one lot).` : `Provide alternative ${section === 'technical' ? 'specifications and technical details' : 'pricing and financial terms'} for this offer. All fields must be completed separately from your main offer.`}</div>
             </div>
         </div>
     `;
@@ -11635,6 +11780,12 @@ function createAlternateOfferPanel(section, offerId, offerNumber) {
             field.textContent = '0.00';
         }
     });
+
+    if (section === 'financial' && filterLotKey) {
+        applyFinancialLotFilter(newPanel, filterLotKey);
+    }
+
+    calculateFinancialBid();
 }
 
 function switchOffer(section, offerId) {
@@ -11672,26 +11823,36 @@ function switchOffer(section, offerId) {
     });
 }
 
-function removeGlobalAlternateOffer(offerId) {
+function removeLotScopedAlternateOffer(offerId) {
     if (!confirm(`Are you sure you want to remove this alternative offer?\n\nAll data entered for this alternative offer will be lost.`)) {
         return;
     }
-    
-    // Remove tabs from both sections
-    ['technical', 'financial'].forEach(section => {
-        const tab = document.getElementById(`${section}-tab-${offerId}`);
-        if (tab) tab.remove();
-        
-        const panel = document.getElementById(`${section}-offer-${offerId}`);
+
+    const m = /^alt-(lot[12])-(\d+)$/.exec(offerId);
+    const lotKey = m ? m[1] : null;
+
+    if (lotKey) {
+        const block = document.querySelector(`.technical-lot-block[data-lot-id="${lotKey}"]`);
+        const panel = block && block.querySelector(`.lot-offer-panel[data-offer-key="${offerId}"]`);
         if (panel) panel.remove();
-        
-        // If this was the active offer, switch back to main
-        if (activeOffer[section] === offerId) {
-            switchOffer(section, 'main');
+        const tabBar = block && block.querySelector('.lot-offer-tab-bar');
+        if (tabBar) {
+            const t = tabBar.querySelector(`.lot-offer-tab[data-offer-key="${offerId}"]`);
+            if (t) t.remove();
         }
-    });
-    
+        switchTechnicalLotOffer(lotKey, 'main');
+    }
+
+    const finTab = document.getElementById(`financial-tab-${offerId}`);
+    if (finTab) finTab.remove();
+    const finPanel = document.getElementById(`financial-offer-${offerId}`);
+    if (finPanel) finPanel.remove();
+    if (activeOffer.financial === offerId) {
+        switchOffer('financial', 'main');
+    }
+
     showOfferNotification('Alternative offer removed successfully.');
+    calculateFinancialBid();
 }
 
 function showOfferNotification(message) {
@@ -11980,42 +12141,33 @@ function toggleLotBreakdown() {
     }
 }
 
-// Update Bid Currency for the current offer panel
+// Update bid currency everywhere (one currency for main + all alternative financial panels)
 function updateBidCurrency(selectElement) {
-    const panel = selectElement.closest('.offer-content-panel');
     const currency = selectElement.value;
-    
-    // Update all total displays in this panel to show the new currency
-    if (panel) {
+    document.querySelectorAll('#financial-offer-content-wrapper .offer-content-panel').forEach(panel => {
         const totalDisplays = panel.querySelectorAll('.total-display');
         totalDisplays.forEach(display => {
             const currentText = display.textContent;
             const numericValue = currentText.replace(/[^0-9.-]/g, '') || '0.00';
             display.textContent = currency + ' ' + parseFloat(numericValue).toFixed(2);
         });
-        
-        // Update calculated cells in tables
         const calculatedCells = panel.querySelectorAll('.calculated');
         calculatedCells.forEach(cell => {
             if (cell.textContent.trim() !== '' && !isNaN(parseFloat(cell.textContent.replace(/[^0-9.-]/g, '')))) {
                 const numericValue = cell.textContent.replace(/[^0-9.-]/g, '') || '0.00';
-                // Only update if it looks like a currency value
                 if (cell.textContent.match(/^[A-Z]{3}\s/)) {
                     cell.textContent = currency + ' ' + parseFloat(numericValue).toFixed(2);
                 }
             }
         });
-    }
-    
-    // Recalculate to update currency displays
+    });
     calculateFinancialBid();
 }
 
 // Financial Bid Calculation Functions
 function calculateFinancialBid() {
-    // Get current selected currency from the active panel
     const activePanel = document.querySelector('#financial-offer-content-wrapper .offer-content-panel.active');
-    const currencySelect = activePanel ? activePanel.querySelector('.bid-currency-select') : null;
+    const currencySelect = document.getElementById('financial-bid-currency-select');
     const currency = currencySelect ? currencySelect.value : 'USD';
     
     // Initialize lot totals
@@ -12027,6 +12179,7 @@ function calculateFinancialBid() {
     const goodsRows = container.querySelectorAll('#prices-for-goods-tbody tr[data-lot], [id^="prices-for-goods-tbody"] tr[data-lot]');
     
     goodsRows.forEach(row => {
+        if (row.classList.contains('lot-filter-hidden')) return;
         const lot = row.getAttribute('data-lot');
         const qtyOfferedInput = row.querySelector('.qty-offered');
         const qty = parseFloat(qtyOfferedInput ? qtyOfferedInput.value : 0) || 0;
@@ -12065,8 +12218,9 @@ function calculateFinancialBid() {
     let lot2Services = 0;
     let totalServices = 0;
     
-    const serviceRows = container.querySelectorAll('#services-tbody tr[data-apply-to], [id^="services-tbody"] tr[data-apply-to]');
+    const serviceRows = container.querySelectorAll('[id^="services-tbody"] tr[data-apply-to]');
     serviceRows.forEach(row => {
+        if (row.classList.contains('lot-filter-hidden')) return;
         const applyTo = row.getAttribute('data-apply-to');
         const priceInput = row.querySelector('input[type="number"]');
         const price = parseFloat(priceInput ? priceInput.value : 0) || 0;
@@ -12080,9 +12234,9 @@ function calculateFinancialBid() {
         totalServices += price;
         
         if (applyTo === 'all') {
-            // Split equally between lots
-            lot1Services += price / 2;
-            lot2Services += price / 2;
+            // Full unit price attributed to each applicable lot (not split across lots)
+            lot1Services += price;
+            lot2Services += price;
         } else if (applyTo === 'lot1') {
             lot1Services += price;
         } else if (applyTo === 'lot2') {
@@ -12097,8 +12251,7 @@ function calculateFinancialBid() {
     const lot1Total = lot1Goods.fca + lot1Services;
     const lot2Total = lot2Goods.fca + lot2Services;
     const grandGoods = lot1Goods.fca + lot2Goods.fca;
-    const grandServices = lot1Services + lot2Services;
-    const grandTotal = grandGoods + grandServices;
+    const grandTotal = grandGoods + totalServices;
     
     // Update lot breakdown table (within active panel)
     updateElementTextInPanel(activePanel, 'lot1-goods', currency + ' ' + lot1Goods.fca.toFixed(2));
@@ -12110,7 +12263,7 @@ function calculateFinancialBid() {
     updateElementTextInPanel(activePanel, 'lot2-total', currency + ' ' + lot2Total.toFixed(2));
     
     updateElementTextInPanel(activePanel, 'grand-goods', currency + ' ' + grandGoods.toFixed(2));
-    updateElementTextInPanel(activePanel, 'grand-services', currency + ' ' + grandServices.toFixed(2));
+    updateElementTextInPanel(activePanel, 'grand-services', currency + ' ' + totalServices.toFixed(2));
     updateElementTextInPanel(activePanel, 'grand-total', currency + ' ' + grandTotal.toFixed(2));
     
     // Update main bid summary totals
@@ -12120,8 +12273,11 @@ function calculateFinancialBid() {
 }
 
 function updateElementTextInPanel(panel, id, text) {
-    // Try to find element within panel first, then fallback to document
-    let el = panel ? panel.querySelector('#' + id) || panel.querySelector('[id$="-' + id + '"]') : null;
+    let el = null;
+    if (panel) {
+        const safeId = typeof CSS !== 'undefined' && CSS.escape ? CSS.escape(id) : id;
+        el = panel.querySelector('#' + safeId) || panel.querySelector('[id^="' + id + '-"]');
+    }
     if (!el) el = document.getElementById(id);
     if (el) el.textContent = text;
 }
@@ -12928,9 +13084,8 @@ alert('✅ Clarification submitted!');
 }
 
 function createAlternateOffer() {
-closeModal('add-alternate-offer-modal');
-    // Use the new global alternate offer function
-    addGlobalAlternateOffer();
+    closeModal('add-alternate-offer-modal');
+    showOfferNotification('Add alternative offers from each lot header in the Technical Bid (Add Alternative Offer). Each one creates a matching Financial tab for that lot only.');
 }
 
 function toggleCollapseSidebar(header) {
