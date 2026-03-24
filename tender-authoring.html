@@ -13737,9 +13737,10 @@
           total = 1;
           completed = 0;
         } else if (sectionType === 'other-req') {
-          total = 2;
+          total = 3;
           completed = tenderAuthorConfig.serviceDescriptions.length > 0 ? 1 : 0;
           completed += tenderAuthorConfig.specificRequirements.length > 0 ? 1 : 0;
+          completed += (tenderAuthorConfig.deliveryDestinations && tenderAuthorConfig.deliveryDestinations.length > 0) ? 1 : 0;
         } else if (sectionType === 'key-dates') {
           total = 3;
           completed = 0;
@@ -16949,8 +16950,32 @@
         event.target.value = '';
       }
       
+      const DELIVERY_DESTINATION_INCOTERMS = ['EXW', 'FCA', 'CPT', 'CIP', 'DAP', 'DPU', 'DDP', 'FAS', 'FOB', 'CFR', 'CIF'];
+      
       // Render Other Requirements Content (3-column layout)
       function renderOtherRequirementsContent() {
+        let unspscCodesToShow = [];
+        if (allowPartialQuotations === 'Yes') {
+          lots.forEach(lot => {
+            (lot.unspscCodes || []).forEach(unspsc => {
+              unspscCodesToShow.push({ code: unspsc.code, description: unspsc.description });
+            });
+          });
+        } else if (allowPartialQuotations === 'No') {
+          unspscCodesToShow = productsAndServices.map(item => ({
+            code: item.unspscCode,
+            description: item.unspscDescription,
+          }));
+        }
+        const uniqueUnspscForDest = [];
+        const seenDestCodes = new Set();
+        unspscCodesToShow.forEach(item => {
+          if (item.code && !seenDestCodes.has(item.code)) {
+            seenDestCodes.add(item.code);
+            uniqueUnspscForDest.push(item);
+          }
+        });
+
         return `
           <!-- Related requirement - Priced Items -->
           <div class="other-req-subsection">
@@ -17070,6 +17095,69 @@
                       <button class="btn-icon-sm" onclick="removeSpecificRequirement(${idx})" style="font-size: 12px;">×</button>
                     </div>
                   `}).join('')}
+                </div>
+              `}
+            </div>
+          </div>
+          
+          <!-- Delivery destinations (per Incoterm, assigned to products) -->
+          <div class="other-req-subsection" style="margin-top: var(--spacing-md);">
+            <div class="subsection-header">
+              <span class="subsection-title">Delivery destinations</span>
+              <button class="btn btn-secondary btn-sm" onclick="addDeliveryDestinationLine()"><i class="pi pi-plus"></i> Add line</button>
+            </div>
+            <div class="subsection-body">
+              <div style="background: var(--surface-100); border: 1px solid var(--surface-200); border-radius: var(--radius-sm); padding: 8px 12px; margin-bottom: var(--spacing-sm); font-size: 11px; color: var(--text-secondary);">
+                <strong style="color: var(--text-primary);">📍 Destinations:</strong> Add one line per destination rule. Choose the <strong>Incoterm</strong> that applies, describe the <strong>delivery destination</strong> (place, site, or address as required), and <strong>assign</strong> the line to the whole tender or to specific catalogue lines / products.
+              </div>
+              ${!tenderAuthorConfig.deliveryDestinations || tenderAuthorConfig.deliveryDestinations.length === 0 ? `
+                <div style="text-align: center; padding: var(--spacing-md); color: var(--text-muted); font-size: 12px; border: 1px dashed var(--surface-300); border-radius: var(--radius-sm);">
+                  No delivery destination lines. Click "+ Add line" to define destinations per Incoterm and link them to products.
+                </div>
+              ` : `
+                <div style="display: flex; flex-direction: column; gap: var(--spacing-sm);">
+                  ${tenderAuthorConfig.deliveryDestinations.map((row, idx) => {
+                    const applyToArray = Array.isArray(row.applyTo) ? row.applyTo : (row.applyTo ? [row.applyTo] : ['all']);
+                    const isEntireTender = applyToArray.includes('all');
+                    const selectedProducts = applyToArray.filter(v => String(v).startsWith('unspsc_'));
+                    let displayText = isEntireTender ? 'All products' : (selectedProducts.length === 1 ? '1 product' : selectedProducts.length + ' products');
+                    return `
+                    <div class="service-line-compact" style="flex-wrap: wrap; align-items: flex-start;">
+                      <select class="form-select" onchange="updateDeliveryDestinationLine(${idx}, 'incoterm', this.value)" style="flex: 0 0 auto; width: 100px; font-size: 12px; padding: 6px 10px;" title="Incoterm">
+                        <option value="">Incoterm…</option>
+                        ${DELIVERY_DESTINATION_INCOTERMS.map(ic => '<option value="' + ic + '"' + (row.incoterm === ic ? ' selected' : '') + '>' + ic + '</option>').join('')}
+                      </select>
+                      <input type="text" class="form-input" value="${(row.destination || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;')}" placeholder="Destination (place, site, address…)" onchange="updateDeliveryDestinationLine(${idx}, 'destination', this.value)" style="flex: 2; min-width: 180px; font-size: 12px; padding: 6px 10px;" />
+                      <div class="apply-to-multiselect" id="delivery-apply-to-${idx}">
+                        <div class="apply-to-trigger" onclick="toggleApplyToDropdown('delivery', ${idx})">
+                          <span class="apply-to-trigger-text">${displayText}</span>
+                          <span class="apply-to-trigger-arrow">▼</span>
+                        </div>
+                        <div class="apply-to-dropdown">
+                          <div class="apply-to-option ${isEntireTender ? 'selected' : ''}" onclick="toggleApplyToOption('delivery', ${idx}, 'all', this)">
+                            <input type="checkbox" ${isEntireTender ? 'checked' : ''} onclick="event.stopPropagation(); toggleApplyToOption('delivery', ${idx}, 'all', this.parentElement)" />
+                            <label>All products</label>
+                          </div>
+                          <div class="apply-to-divider"></div>
+                          ${uniqueUnspscForDest.length === 0 ? `
+                            <div class="apply-to-option" style="pointer-events: none; opacity: 0.6;">
+                              <span style="font-size: 11px; padding: 8px;">Add requisition/lot products first</span>
+                            </div>
+                          ` : uniqueUnspscForDest.map(unspsc => {
+                            const val = 'unspsc_' + unspsc.code;
+                            return `
+                            <div class="apply-to-option ${applyToArray.includes(val) ? 'selected' : ''}" onclick="toggleApplyToOption('delivery', ${idx}, '${val.replace(/'/g, "\\'")}', this)">
+                              <input type="checkbox" ${applyToArray.includes(val) ? 'checked' : ''} onclick="event.stopPropagation(); toggleApplyToOption('delivery', ${idx}, '${val.replace(/'/g, "\\'")}', this.parentElement)" />
+                              <label>${unspsc.code} — ${(unspsc.description || '').substring(0, 36)}${(unspsc.description || '').length > 36 ? '…' : ''}</label>
+                            </div>
+                          `;
+                          }).join('')}
+                        </div>
+                      </div>
+                      <button class="btn-icon-sm" onclick="removeDeliveryDestinationLine(${idx})" style="font-size: 12px;" title="Remove line">×</button>
+                    </div>
+                  `;
+                  }).join('')}
                 </div>
               `}
             </div>
@@ -21568,6 +21656,7 @@
       
       let tenderAuthorConfig = {
         serviceDescriptions: [], // [{ name, description, applyTo: ['all'] or ['lot_1', 'lot_2'], isMandatory }]
+        deliveryDestinations: [], // [{ incoterm, destination, applyTo: ['all'] or ['unspsc_CODE', ...] }]
         deliveryConfig: {
           deliveryTime: '',
           deliveryPlace: '',
@@ -21770,6 +21859,8 @@
         let dataArray;
         if (type === 'service') {
           dataArray = tenderAuthorConfig.serviceDescriptions;
+        } else if (type === 'delivery') {
+          dataArray = tenderAuthorConfig.deliveryDestinations;
         } else {
           dataArray = tenderAuthorConfig.specificRequirements;
         }
@@ -21886,6 +21977,31 @@
           renderCurrentBlock();
         }
       }
+      
+      window.addDeliveryDestinationLine = function() {
+        if (!tenderAuthorConfig.deliveryDestinations) {
+          tenderAuthorConfig.deliveryDestinations = [];
+        }
+        tenderAuthorConfig.deliveryDestinations.push({
+          incoterm: '',
+          destination: '',
+          applyTo: ['all'],
+        });
+        renderCurrentBlock();
+      };
+      
+      window.updateDeliveryDestinationLine = function(idx, field, value) {
+        if (tenderAuthorConfig.deliveryDestinations && tenderAuthorConfig.deliveryDestinations[idx]) {
+          tenderAuthorConfig.deliveryDestinations[idx][field] = value;
+        }
+      };
+      
+      window.removeDeliveryDestinationLine = function(idx) {
+        if (tenderAuthorConfig.deliveryDestinations) {
+          tenderAuthorConfig.deliveryDestinations.splice(idx, 1);
+        }
+        renderCurrentBlock();
+      };
       
       window.updateAllowedIncoterms = function(selectElement) {
         const selectedOptions = Array.from(selectElement.selectedOptions).map(option => option.value);
