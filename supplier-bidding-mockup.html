@@ -682,31 +682,133 @@ min-height: calc(100vh - 65px);
     margin-top: 2px;
 }
 
+/* Lot-level offer switcher: aligned with global offer tabs (main = primary, alt = warning) */
 .lot-offer-tab-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+.lot-offer-segments {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 8px;
 }
-.lot-offer-tab {
-    padding: 6px 12px;
-    font-size: 11px;
+.lot-offer-seg-main {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 36px;
+    padding: 0 14px;
+    font-size: 12px;
     font-weight: 600;
-    border: 1px solid var(--surface-300);
-    border-radius: var(--radius-md);
-    background: var(--surface-0);
+    font-family: inherit;
     color: var(--text-secondary);
+    background: var(--surface-0);
+    border: 2px solid var(--surface-300);
+    border-radius: var(--radius-md);
     cursor: pointer;
-    transition: background 0.15s, border-color 0.15s;
+    transition: border-color 0.2s, background 0.2s, color 0.2s, box-shadow 0.2s;
 }
-.lot-offer-tab:hover {
+.lot-offer-seg-main:hover {
+    border-color: var(--primary-300);
+    background: var(--primary-50);
+    color: var(--primary-600);
+}
+.lot-offer-seg-main.active {
+    border-color: var(--primary-500);
+    background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-600) 100%);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 146, 209, 0.28);
+}
+.lot-offer-seg-main.active i {
+    color: #fff;
+}
+.lot-offer-seg-main:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--surface-0), 0 0 0 4px var(--primary-500);
+}
+.lot-offer-seg-main.active:focus-visible {
+    box-shadow: 0 0 0 2px var(--surface-0), 0 0 0 4px var(--primary-500), 0 2px 8px rgba(0, 146, 209, 0.28);
+}
+/* Alt = label + dismiss in one pill */
+.lot-offer-pill {
+    display: inline-flex;
+    align-items: stretch;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 2px solid var(--surface-300);
+    background: var(--surface-0);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.lot-offer-pill:hover {
     border-color: var(--warning-400);
-    background: var(--warning-50);
 }
-.lot-offer-tab.active {
+.lot-offer-pill.active {
     border-color: var(--warning-500);
-    background: linear-gradient(135deg, var(--warning-50) 0%, var(--surface-0) 100%);
+    box-shadow: 0 2px 8px rgba(232, 92, 14, 0.22);
+}
+.lot-offer-seg-alt {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 12px;
+    min-height: 36px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: inherit;
+    color: var(--text-secondary);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+.lot-offer-pill:hover .lot-offer-seg-alt {
+    background: var(--warning-50);
     color: var(--warning-800);
+}
+.lot-offer-pill.active .lot-offer-seg-alt {
+    background: linear-gradient(135deg, var(--warning-500) 0%, #f57c00 100%);
+    color: #fff;
+}
+.lot-offer-pill.active .lot-offer-seg-alt i {
+    color: #fff;
+}
+.lot-offer-seg-dismiss {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    padding: 0 8px;
+    font-size: 14px;
+    line-height: 1;
+    font-family: inherit;
+    color: var(--text-muted);
+    background: var(--surface-100);
+    border: none;
+    border-left: 1px solid var(--surface-200);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+}
+.lot-offer-seg-dismiss:hover {
+    background: var(--danger-500);
+    color: #fff;
+}
+.lot-offer-pill.active .lot-offer-seg-dismiss {
+    color: rgba(255, 255, 255, 0.95);
+    background: rgba(0, 0, 0, 0.12);
+    border-left-color: rgba(255, 255, 255, 0.25);
+}
+.lot-offer-pill.active .lot-offer-seg-dismiss:hover {
+    background: rgba(0, 0, 0, 0.28);
+    color: #fff;
+}
+.lot-offer-seg-alt:focus-visible,
+.lot-offer-seg-dismiss:focus-visible {
+    outline: none;
+    box-shadow: inset 0 0 0 2px var(--primary-500);
 }
 .lot-offer-panels .lot-offer-panel {
     display: none;
@@ -716,6 +818,28 @@ min-height: calc(100vh - 65px);
 }
 .technical-lot-block .add-lot-alt-btn {
     flex-shrink: 0;
+    min-height: 36px;
+    padding: 0 12px;
+    font-size: 11px;
+    font-weight: 600;
+    border: 2px dashed var(--warning-400);
+    border-radius: var(--radius-md);
+    background: linear-gradient(135deg, var(--warning-50) 0%, var(--surface-0) 100%);
+    color: var(--warning-800);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: border-color 0.2s, background 0.2s;
+}
+.technical-lot-block .add-lot-alt-btn:hover {
+    border-color: var(--warning-500);
+    border-style: solid;
+    background: var(--warning-100);
+}
+.technical-lot-block .add-lot-alt-btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--surface-0), 0 0 0 4px var(--warning-500);
 }
 .lot-filter-hidden {
     display: none !important;
@@ -7967,9 +8091,11 @@ Submission Requirements
             <span class="section-collapse-icon"><i class="pi pi-chevron-down"></i></span>
           </div>
           <div class="lot-offer-tab-bar" onclick="event.stopPropagation();" style="width: 100%; margin-top: 8px; padding-top: 10px; border-top: 1px solid var(--surface-200);">
-            <button type="button" class="lot-offer-tab active" data-offer-key="main" onclick="switchTechnicalLotOffer('lot1','main')">Main offer</button>
-            <span id="technical-lot1-offer-tabs-extra" class="lot-offer-tabs-dynamic" style="display: contents;"></span>
-            <button type="button" class="add-lot-alt-btn btn btn-secondary btn-sm" onclick="addLotAlternateOffer('lot1')" style="margin-left: auto; font-size: 11px;"><i class="pi pi-plus-circle"></i> Add Alternative Offer</button>
+            <div class="lot-offer-segments">
+              <button type="button" class="lot-offer-seg-main active" data-offer-key="main" onclick="switchTechnicalLotOffer('lot1','main')"><i class="pi pi-check-circle" style="font-size: 13px;"></i><span>Main offer</span></button>
+              <span id="technical-lot1-offer-tabs-extra" class="lot-offer-tabs-dynamic" style="display: contents;"></span>
+            </div>
+            <button type="button" class="add-lot-alt-btn" onclick="addLotAlternateOffer('lot1')"><i class="pi pi-plus-circle" style="font-size: 12px;"></i><span>Add alternative</span></button>
           </div>
         </div>
         <div class="section-collapsible-content">
@@ -8247,9 +8373,11 @@ Submission Requirements
             <span class="section-collapse-icon"><i class="pi pi-chevron-down"></i></span>
           </div>
           <div class="lot-offer-tab-bar" onclick="event.stopPropagation();" style="width: 100%; margin-top: 8px; padding-top: 10px; border-top: 1px solid var(--surface-200);">
-            <button type="button" class="lot-offer-tab active" data-offer-key="main" onclick="switchTechnicalLotOffer('lot2','main')">Main offer</button>
-            <span id="technical-lot2-offer-tabs-extra" class="lot-offer-tabs-dynamic" style="display: contents;"></span>
-            <button type="button" class="add-lot-alt-btn btn btn-secondary btn-sm" onclick="addLotAlternateOffer('lot2')" style="margin-left: auto; font-size: 11px;"><i class="pi pi-plus-circle"></i> Add Alternative Offer</button>
+            <div class="lot-offer-segments">
+              <button type="button" class="lot-offer-seg-main active" data-offer-key="main" onclick="switchTechnicalLotOffer('lot2','main')"><i class="pi pi-check-circle" style="font-size: 13px;"></i><span>Main offer</span></button>
+              <span id="technical-lot2-offer-tabs-extra" class="lot-offer-tabs-dynamic" style="display: contents;"></span>
+            </div>
+            <button type="button" class="add-lot-alt-btn" onclick="addLotAlternateOffer('lot2')"><i class="pi pi-plus-circle" style="font-size: 12px;"></i><span>Add alternative</span></button>
           </div>
         </div>
         <div class="section-collapsible-content">
@@ -8981,64 +9109,79 @@ Submission Requirements
 
 
 
-      <!-- Section 1: Performance Statement -->
+      <!-- Performance Statement -->
       <div class="supplier-subsection-header">
-        <strong><i class="pi pi-chart-line"></i> Section 1: Performance Statement</strong>
+        <strong><i class="pi pi-chart-line"></i> Performance Statement</strong>
       </div>
 
       <div class="supplier-partner-card" style="margin-bottom: var(--spacing-sm);">
         <div class="supplier-partner-header">
           <span style="font-size: 12px; font-weight: 600; color: var(--primary-500);"><i class="pi pi-briefcase" style="margin-right: 6px; font-size: 11px;"></i> Reference 1</span>
         </div>
-        
-        <div class="supplier-form-grid">
-          <div class="supplier-form-field">
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-md);">
+          <div class="supplier-form-field" style="margin-bottom: 0;">
             <label><i class="pi pi-user"></i> Order placed by <span style="color: var(--danger-500);">*</span></label>
             <input type="text" placeholder="Name of purchaser/organization">
           </div>
-          <div class="supplier-form-field">
-            <label><i class="pi pi-map-marker"></i> Full address of purchaser <span style="color: var(--danger-500);">*</span></label>
-            <textarea placeholder="Complete address" rows="2"></textarea>
+          <div class="supplier-form-field" style="margin-bottom: 0;">
+            <label>Address Line 1 <span style="color: var(--danger-500);">*</span> <span style="font-weight: 400; color: var(--text-muted); font-size: 10px;">(max 35 chars)</span></label>
+            <input type="text" maxlength="35" placeholder="123 Innovation Boulevard">
           </div>
-        </div>
-        
-        <div class="supplier-form-grid">
-          <div class="supplier-form-field">
+          <div class="supplier-form-field" style="margin-bottom: 0;">
+            <label>House Number <span style="font-weight: 400; color: var(--text-muted); font-size: 10px;">(max 10 chars)</span></label>
+            <input type="text" maxlength="10" placeholder="Suite 500">
+          </div>
+          <div class="supplier-form-field" style="margin-bottom: 0;">
+            <label>City <span style="color: var(--danger-500);">*</span> <span style="font-weight: 400; color: var(--text-muted); font-size: 10px;">(max 35 chars)</span></label>
+            <input type="text" maxlength="35" placeholder="New York">
+          </div>
+          <div class="supplier-form-field" style="margin-bottom: 0;">
+            <label>Postal Code <span style="color: var(--danger-500);">*</span> <span style="font-weight: 400; color: var(--text-muted); font-size: 10px;">(max 10 chars)</span></label>
+            <input type="text" maxlength="10" placeholder="10001">
+          </div>
+          <div class="supplier-form-field" style="margin-bottom: 0;">
+            <label>Country <span style="color: var(--danger-500);">*</span></label>
+            <select>
+              <option value="">Select country...</option>
+              <option value="4">Afghanistan</option>
+              <option value="50">Bangladesh</option>
+              <option value="231">Ethiopia</option>
+              <option value="356">India</option>
+              <option value="404">Kenya</option>
+              <option value="840">United States</option>
+              <option value="826">United Kingdom</option>
+              <option value="124">Canada</option>
+              <option value="276">Germany</option>
+              <option value="392">Japan</option>
+              <option value="752">Sweden</option>
+              <option value="528">Netherlands</option>
+              <option value="724">Spain</option>
+              <option value="380">Italy</option>
+              <option value="250">France</option>
+            </select>
+          </div>
+          <div class="supplier-form-field" style="margin-bottom: 0;">
             <label><i class="pi pi-file"></i> Order no <span style="color: var(--danger-500);">*</span></label>
             <input type="text" placeholder="Order/Contract number">
           </div>
-          <div class="supplier-form-field">
+          <div class="supplier-form-field" style="margin-bottom: 0;">
             <label><i class="pi pi-calendar"></i> Date <span style="color: var(--danger-500);">*</span></label>
             <input type="date">
           </div>
-        </div>
-        
-        <div class="supplier-form-field" style="margin: var(--spacing-xs) 0;">
-          <label><i class="pi pi-list"></i> Description & quantity of ordered items <span style="color: var(--danger-500);">*</span></label>
-          <textarea placeholder="Describe the items ordered and their quantities" rows="2"></textarea>
-        </div>
-        
-        <div class="supplier-form-grid cols-3">
-          <div class="supplier-form-field">
+          <div class="supplier-form-field" style="margin-bottom: 0;">
             <label><i class="pi pi-dollar"></i> Value of Order <span style="color: var(--danger-500);">*</span></label>
             <input type="text" placeholder="USD 0.00">
           </div>
-          <div class="supplier-form-field">
+          <div class="supplier-form-field" style="margin-bottom: 0;">
             <label><i class="pi pi-calendar"></i> Date of completion of Delivery<br><small style="font-weight: 400; color: var(--text-muted);">As per Contract</small></label>
-            <input type="date" placeholder="As per contract">
+            <input type="date">
           </div>
-          <div class="supplier-form-field">
+          <div class="supplier-form-field" style="margin-bottom: 0;">
             <label><i class="pi pi-calendar-times"></i> Date of completion of Delivery<br><small style="font-weight: 400; color: var(--text-muted);">Actual</small></label>
-            <input type="date" placeholder="Actual date">
+            <input type="date">
           </div>
-        </div>
-        
-        <div class="supplier-form-grid" style="margin-top: var(--spacing-xs);">
-          <div class="supplier-form-field">
-            <label><i class="pi pi-comment"></i> Remarks indicating reasons of late delivery, if any</label>
-            <textarea placeholder="Explain any delays in delivery" rows="2"></textarea>
-          </div>
-          <div class="supplier-form-field">
+          <div class="supplier-form-field" style="margin-bottom: 0;">
             <label><i class="pi pi-check-circle"></i> Was the supplies of goods satisfactory? <span style="color: var(--danger-500);">*</span></label>
             <select>
               <option value="">Select</option>
@@ -9047,6 +9190,14 @@ Submission Requirements
               <option value="partial">Partially</option>
             </select>
           </div>
+          <div class="supplier-form-field" style="grid-column: 1 / -1; margin-bottom: 0;">
+            <label><i class="pi pi-list"></i> Description &amp; quantity of ordered items <span style="color: var(--danger-500);">*</span></label>
+            <textarea placeholder="Describe the items ordered and their quantities" rows="2"></textarea>
+          </div>
+          <div class="supplier-form-field" style="grid-column: 1 / span 2; margin-bottom: 0;">
+            <label><i class="pi pi-comment"></i> Remarks indicating reasons of late delivery, if any</label>
+            <textarea placeholder="Explain any delays in delivery" rows="2"></textarea>
+          </div>
         </div>
       </div>
 
@@ -9054,10 +9205,25 @@ Submission Requirements
         <i class="pi pi-plus" style="margin-right: 6px; font-size: 11px;"></i> Add Another Reference
       </button>
 
-      <!-- Section 2: Bid Security Form -->
-      <div class="supplier-subsection-header warning">
-        <strong><i class="pi pi-shield" style="color: var(--warning-500);"></i> Section 2: Bid Security Form</strong>
+      <!-- Years of experience -->
+      <div class="supplier-subsection-header">
+        <strong><i class="pi pi-history"></i> Years of experience</strong>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-md); margin-bottom: var(--spacing-md);">
+        <div class="supplier-form-field" style="margin-bottom: 0;">
+          <label for="years-relevant-experience"><i class="pi pi-hashtag"></i> Years of relevant experience <span style="color: var(--danger-500);">*</span></label>
+          <input id="years-relevant-experience" type="number" min="0" max="99" step="1" placeholder="e.g. 5" style="max-width: 160px;">
+        </div>
+        <div class="supplier-form-field" style="grid-column: 2 / -1; margin-bottom: 0;">
+          <label for="description-relevant-experience"><i class="pi pi-align-left"></i> Description of relevant experience <span style="color: var(--danger-500);">*</span></label>
+          <textarea id="description-relevant-experience" rows="3" placeholder="Summarize experience relevant to this procurement (sectors, contract types, scale, etc.)"></textarea>
+        </div>
+      </div>
 
+      <!-- Bid Security -->
+      <div class="supplier-subsection-header warning">
+        <strong><i class="pi pi-shield" style="color: var(--warning-500);"></i> Bid Security</strong>
+        <div style="font-size: 11px; font-weight: 400; color: var(--text-secondary); margin-top: 4px;">Upload the completed bid security form and enter the security expiry date.</div>
       </div>
 
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-sm); margin-bottom: var(--spacing-sm);">
@@ -9075,8 +9241,21 @@ Submission Requirements
       </div>
 
       <div class="supplier-form-field" style="margin-bottom: var(--spacing-md);">
-        <label><i class="pi pi-calendar-times"></i> Bid security expiry date <span style="color: var(--danger-500);">*</span></label>
-        <input type="date" style="max-width: 250px;">
+        <label for="bid-security-expiry"><i class="pi pi-calendar-times"></i> Bid security expiry date <span style="color: var(--danger-500);">*</span></label>
+        <input id="bid-security-expiry" type="date" style="max-width: 250px; padding: 8px 10px; border: 1px solid var(--surface-300); border-radius: var(--radius-sm); font-size: 13px;">
+      </div>
+
+      <!-- Bid validity -->
+      <div class="supplier-subsection-header warning">
+        <strong><i class="pi pi-clock" style="color: var(--warning-500);"></i> Bid validity</strong>
+        <div style="font-size: 11px; font-weight: 400; color: var(--text-secondary); margin-top: 4px;">How long your offer remains valid after bid closing.</div>
+      </div>
+      <div class="supplier-form-field" style="margin-bottom: var(--spacing-md);">
+        <label for="bid-validity-days"><i class="pi pi-clock"></i> Days of bid validity <span style="color: var(--danger-500);">*</span></label>
+        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+          <input id="bid-validity-days" type="number" min="1" max="999" step="1" placeholder="e.g. 90" style="max-width: 140px; padding: 8px 10px; border: 1px solid var(--surface-300); border-radius: var(--radius-sm); font-size: 13px;">
+          <span style="font-size: 12px; color: var(--text-muted);">calendar days from bid closing</span>
+        </div>
       </div>
 
       <!-- Section: Advance Payment -->
@@ -9216,29 +9395,37 @@ Submission Requirements
         }
       </script>
 
-      <!-- Section 3: Financial Statements -->
+      <!-- Financial Statements -->
       <div class="supplier-subsection-header">
-        <strong><i class="pi pi-chart-bar"></i> Section 3: Financial Statements</strong>
-
+        <strong><i class="pi pi-chart-bar"></i> Financial Statements</strong>
+        <div style="font-size: 11px; font-weight: 400; color: var(--text-secondary); margin-top: 4px;">Choose the financial year, then upload the statement for that year. Add as many years as required.</div>
       </div>
 
-      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-xs); margin-bottom: var(--spacing-md);">
-        <div class="supplier-upload-area" style="padding: var(--spacing-xs);">
-          <div style="color: var(--info-400); font-size: 1.2em; margin-bottom: 4px;"><i class="pi pi-file-pdf"></i></div>
-          <div class="supplier-upload-text">Year 2023</div>
-          <div class="supplier-upload-hint">Upload PDF</div>
-        </div>
-        <div class="supplier-upload-area" style="padding: var(--spacing-xs);">
-          <div style="color: var(--info-400); font-size: 1.2em; margin-bottom: 4px;"><i class="pi pi-file-pdf"></i></div>
-          <div class="supplier-upload-text">Year 2024</div>
-          <div class="supplier-upload-hint">Upload PDF</div>
-        </div>
-        <div class="supplier-upload-area" style="padding: var(--spacing-xs);">
-          <div style="color: var(--info-400); font-size: 1.2em; margin-bottom: 4px;"><i class="pi pi-file-pdf"></i></div>
-          <div class="supplier-upload-text">Year 2025</div>
-          <div class="supplier-upload-hint">Upload PDF</div>
+      <div id="financial-statements-year-rows" style="margin-bottom: var(--spacing-sm);">
+        <div class="financial-statement-year-row" style="display: grid; grid-template-columns: minmax(130px, 160px) 1fr auto; gap: var(--spacing-md); align-items: end; margin-bottom: var(--spacing-md); padding-bottom: var(--spacing-md); border-bottom: 1px solid var(--surface-200);">
+          <div class="supplier-form-field" style="margin-bottom: 0;">
+            <label><i class="pi pi-calendar"></i> Financial year <span style="color: var(--danger-500);">*</span></label>
+            <select class="financial-year-select" style="width: 100%;">
+              <option value="">Select year…</option>
+              <option value="2025">2025</option>
+              <option value="2024">2024</option>
+              <option value="2023">2023</option>
+              <option value="2022">2022</option>
+              <option value="2021">2021</option>
+              <option value="2020">2020</option>
+            </select>
+          </div>
+          <div class="supplier-upload-area" style="padding: var(--spacing-sm); margin-bottom: 0;">
+            <div style="color: var(--info-500); font-size: 1.2em; margin-bottom: 4px;"><i class="pi pi-file-pdf"></i></div>
+            <div class="supplier-upload-text">Upload statement (PDF)</div>
+            <div class="supplier-upload-hint">For the selected year</div>
+          </div>
+          <button type="button" class="btn btn-ghost btn-sm" onclick="removeFinancialYearRow(this)" title="Remove this year" style="margin-bottom: 2px;"><i class="pi pi-trash"></i></button>
         </div>
       </div>
+      <button type="button" class="btn btn-secondary" style="width: 100%; padding: 8px; border-style: dashed; margin-bottom: var(--spacing-md); font-size: 12px;" onclick="addFinancialYearRow()">
+        <i class="pi pi-plus" style="margin-right: 6px; font-size: 11px;"></i> Add another year
+      </button>
 
       <div class="supplier-action-bar">
         <button class="btn btn-ghost" onclick="prevSupplierSection('financial-bid')"><i class="pi pi-arrow-left" style="margin-right: 6px;"></i> Back</button>
@@ -9358,9 +9545,9 @@ Submission Requirements
       </div>
 
 
-      <!-- Section 1: Self Disclosure Form -->
+      <!-- Self Disclosure Form -->
       <div class="supplier-subsection-header warning">
-        <strong><i class="pi pi-exclamation-triangle" style="color: var(--warning-500);"></i> Section 1: Self Disclosure Form</strong>
+        <strong><i class="pi pi-exclamation-triangle" style="color: var(--warning-500);"></i> Self Disclosure Form</strong>
       </div>
 
       <div class="supplier-compliance-item">
@@ -9513,22 +9700,79 @@ Submission Requirements
         </div>
       </div>
 
-      <!-- Section 2: Bid Submission Declaration -->
+      <!-- Bid Submission Declaration -->
       <div class="supplier-subsection-header" style="margin-top: var(--spacing-xl);">
-        <strong><i class="pi pi-file-edit"></i> Section 2: Bid Submission Declaration</strong>
+        <strong><i class="pi pi-file-edit"></i> Bid Submission Declaration</strong>
       </div>
 
       <div class="supplier-declaration-box" style="margin-bottom: var(--spacing-md);">
         <p style="font-weight: 600; margin-bottom: var(--spacing-xs); font-size: 12px;">We, the undersigned, declare that:</p>
-        <ol style="line-height: 1.6; padding-left: var(--spacing-sm); margin: 0; font-size: 11px;" class="declaration-list">
+        <ol type="a" style="line-height: 1.6; padding-left: 1.25rem; margin: 0; font-size: 11px; list-style-type: lower-alpha;" class="declaration-list">
           <li style="margin-bottom: 6px;">We have examined and have no reservations to the bidding documents, including amendments No.: <span class="declaration-prefill" title="System prefill: from published amendments">No. 01 – 5 Dec 2025</span>;</li>
-          <li style="margin-bottom: 6px;">We offer to supply in conformity with the bidding documents, including the UNOPS General Conditions of Contract, and in accordance with the delivery schedules specified in the Schedule of Requirements.</li>
-          <li style="margin-bottom: 6px;">The total price of our bid, excluding any discounts offered in item (d) below, is: <span class="declaration-prefill" title="System prefill: from Financial Bid totals">USD 247,500.00 (two hundred forty-seven thousand five hundred US dollars)</span>.</li>
-          <li style="margin-bottom: 6px;"><strong>The discounts offered and the methodology for their application are:</strong>
-            <ul style="margin: 4px 0 0 1em; padding-left: 1em;">
-              <li style="margin-bottom: 4px;"><strong>Discounts:</strong> If our bid is accepted, the following discounts shall apply. <span class="declaration-prefill" title="System prefill: from Financial Bid – Discounts section">2% early payment discount if invoice paid within 14 days (applies to Lot 1 and Lot 2); 1.5% volume discount on total order value (Schedule of Requirements, All Lots).</span></li>
-              <li style="margin-bottom: 4px;"><strong>Methodology of application of the discounts:</strong> The discounts shall be applied using the following method: <span class="declaration-prefill" title="System prefill: from Financial Bid – discount methodology">Early payment discount deducted from invoice total when payment is made within 14 days; volume discount applied to the total bid value before any other deductions.</span></li>
-            </ul>
+          <li style="margin-bottom: 8px;">The total price of our bid, excluding any discounts offered in item (c) below, is as follows:
+            <div style="overflow-x: auto; margin-top: 8px;">
+              <table style="width: 100%; border-collapse: collapse; font-size: 10px; border: 1px solid var(--surface-200);">
+                <thead>
+                  <tr style="background: var(--surface-100);">
+                    <th style="text-align: left; padding: 6px 8px; border: 1px solid var(--surface-200); font-weight: 600;">Lot</th>
+                    <th style="text-align: right; padding: 6px 8px; border: 1px solid var(--surface-200); font-weight: 600;">Total amount (FCA)</th>
+                    <th style="text-align: center; padding: 6px 8px; border: 1px solid var(--surface-200); font-weight: 600;">Currency</th>
+                    <th style="text-align: left; padding: 6px 8px; border: 1px solid var(--surface-200); font-weight: 600;">In letters</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding: 6px 8px; border: 1px solid var(--surface-200);"><span class="declaration-prefill" title="System prefill">Lot 1</span></td>
+                    <td style="padding: 6px 8px; border: 1px solid var(--surface-200); text-align: right;"><span class="declaration-prefill" title="System prefill">100,000.00</span></td>
+                    <td style="padding: 6px 8px; border: 1px solid var(--surface-200); text-align: center;"><span class="declaration-prefill" title="System prefill">USD</span></td>
+                    <td style="padding: 6px 8px; border: 1px solid var(--surface-200);"><span class="declaration-prefill" title="System prefill">One hundred thousand US dollars</span></td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 6px 8px; border: 1px solid var(--surface-200);"><span class="declaration-prefill" title="System prefill">Lot 1 – Alternate offer</span></td>
+                    <td style="padding: 6px 8px; border: 1px solid var(--surface-200); text-align: right;"><span class="declaration-prefill" title="System prefill">97,500.00</span></td>
+                    <td style="padding: 6px 8px; border: 1px solid var(--surface-200); text-align: center;"><span class="declaration-prefill" title="System prefill">USD</span></td>
+                    <td style="padding: 6px 8px; border: 1px solid var(--surface-200);"><span class="declaration-prefill" title="System prefill">Ninety-seven thousand five hundred US dollars</span></td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 6px 8px; border: 1px solid var(--surface-200);"><span class="declaration-prefill" title="System prefill">Lot 2</span></td>
+                    <td style="padding: 6px 8px; border: 1px solid var(--surface-200); text-align: right;"><span class="declaration-prefill" title="System prefill">50,000.00</span></td>
+                    <td style="padding: 6px 8px; border: 1px solid var(--surface-200); text-align: center;"><span class="declaration-prefill" title="System prefill">USD</span></td>
+                    <td style="padding: 6px 8px; border: 1px solid var(--surface-200);"><span class="declaration-prefill" title="System prefill">Fifty thousand US dollars</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </li>
+          <li style="margin-bottom: 8px;"><strong>The discounts offered and the methodology for their application are</strong>:
+            <div style="overflow-x: auto; margin-top: 8px;">
+              <table style="width: 100%; border-collapse: collapse; font-size: 10px; border: 1px solid var(--surface-200);">
+                <thead>
+                  <tr style="background: var(--surface-100);">
+                    <th style="text-align: center; padding: 6px 6px; border: 1px solid var(--surface-200); font-weight: 600; width: 2.5rem;">#</th>
+                    <th style="text-align: left; padding: 6px 8px; border: 1px solid var(--surface-200); font-weight: 600;">Description / Methodology</th>
+                    <th style="text-align: left; padding: 6px 8px; border: 1px solid var(--surface-200); font-weight: 600;">Apply To</th>
+                    <th style="text-align: right; padding: 6px 8px; border: 1px solid var(--surface-200); font-weight: 600;">Discount %</th>
+                    <th style="text-align: right; padding: 6px 8px; border: 1px solid var(--surface-200); font-weight: 600;">Discount Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding: 6px 6px; border: 1px solid var(--surface-200); text-align: center;">1</td>
+                    <td style="padding: 6px 8px; border: 1px solid var(--surface-200);"><span class="declaration-prefill" title="System prefill">Deducted from invoice total when payment is made within 14 days of invoice date</span></td>
+                    <td style="padding: 6px 8px; border: 1px solid var(--surface-200);"><span class="declaration-prefill" title="System prefill">Lot 1 and Lot 2</span></td>
+                    <td style="padding: 6px 8px; border: 1px solid var(--surface-200); text-align: right;"><span class="declaration-prefill" title="System prefill">2%</span></td>
+                    <td style="padding: 6px 8px; border: 1px solid var(--surface-200); text-align: right;"><span class="declaration-prefill" title="System prefill">$1,960.00</span></td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 6px 6px; border: 1px solid var(--surface-200); text-align: center;">2</td>
+                    <td style="padding: 6px 8px; border: 1px solid var(--surface-200);"><span class="declaration-prefill" title="System prefill">Applied to total bid value before any other deductions</span></td>
+                    <td style="padding: 6px 8px; border: 1px solid var(--surface-200);"><span class="declaration-prefill" title="System prefill">Schedule of Requirements – All Lots</span></td>
+                    <td style="padding: 6px 8px; border: 1px solid var(--surface-200); text-align: right;"><span class="declaration-prefill" title="System prefill">1.5%</span></td>
+                    <td style="padding: 6px 8px; border: 1px solid var(--surface-200); text-align: right;"><span class="declaration-prefill" title="System prefill">$3,712.50</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </li>
           <li style="margin-bottom: 6px;">Our bid shall be valid for the period of time of <span class="declaration-prefill" title="System prefill: from Tender Particulars – Period of Validity of Bids">90</span> days from the date fixed for the bid submission deadline as set out in the ITB, and it shall remain binding upon us and may be accepted at any time before the expiration of that period.</li>
           <li style="margin-bottom: 6px;">If our bid is accepted, and if so requested in the Tender Particulars section, we commit to obtain a performance security in accordance with Instructions to Bidders Article 34 and the General Conditions of Contract.</li>
@@ -9540,6 +9784,19 @@ Submission Requirements
           <li style="margin-bottom: 6px;">We have not offered and will not offer fees, gifts and/or favours of kind in exchange for this ITB and will not engage in any such activity during the performance of any contract awarded.</li>
           <li style="margin-bottom: 0;">We understand that you are not bound to accept the lowest evaluated bid or any other bid that you may receive.</li>
         </ol>
+      </div>
+
+      <!-- Declaration (m): outside declaration box, after items (a)–(l) -->
+      <div style="margin-top: var(--spacing-md); margin-bottom: var(--spacing-md); font-size: 11px;">
+        <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer; font-weight: 500;">
+          <input type="checkbox" id="declaration-m-supply-confirm" style="margin-top: 3px; flex-shrink: 0; min-width: 16px; min-height: 16px;" onchange="var w = document.getElementById('declaration-m-comment-wrap'); if (w) { w.style.display = this.checked ? 'none' : 'block'; }" />
+          <span><strong>(m)</strong> We offer to supply in conformity with the bidding documents, including the UNOPS General Conditions of Contract, and in accordance with the delivery schedules specified in the Schedule of Requirements.</span>
+        </label>
+        <div id="declaration-m-comment-wrap" style="margin-top: var(--spacing-sm);">
+          <label for="declaration-m-comment" style="font-size: 10px; font-weight: 600; color: var(--text-secondary); display: block; margin-bottom: 4px;">Comment <span style="color: var(--danger-500);">*</span> <span style="font-weight: 400; color: var(--text-muted);">(required if you do not confirm the above)</span></label>
+          <p style="font-size: 10px; color: var(--text-muted); margin: 0 0 6px 0; line-height: 1.45;">Explain why this cannot be confirmed, or provide clarifications…</p>
+          <textarea id="declaration-m-comment" rows="2" aria-label="Comment: explain why declaration (m) cannot be confirmed or provide clarifications" style="width: 100%; box-sizing: border-box; font-size: 11px; padding: 8px; border: 1px solid var(--surface-300); border-radius: var(--radius-sm);"></textarea>
+        </div>
       </div>
 
       <!-- Authorized Signature -->
@@ -10450,7 +10707,7 @@ Submission Requirements
   <table class="data-table" id="performanceTable">
   <thead>
   <tr>
-  <th style="width: 20%;">Order placed by<br><small>(Full address of purchaser)</small></th>
+  <th style="width: 24%;">Order placed by &amp; purchaser address<br><small style="font-weight: 400; line-height: 1.35;">Line 1 (35), house no. (10), city (35), postal code (10), country</small></th>
   <th style="width: 12%;">Order no & date</th>
   <th style="width: 18%;">Description & quantity of ordered items</th>
   <th style="width: 10%;">Value of Order</th>
@@ -10462,7 +10719,7 @@ Submission Requirements
   </thead>
   <tbody>
   <tr>
-  <td><textarea class="form-textarea" rows="2" placeholder="Company name & address"></textarea></td>
+  <td style="vertical-align: top; min-width: 210px;"><div style="display: flex; flex-direction: column; gap: 5px;"><div><span style="font-size: 10px; font-weight: 600; color: #374151; display: block; margin-bottom: 2px;">Order placed by <span style="color:#dc2626">*</span></span><input type="text" class="form-input" placeholder="Purchaser / organization" style="font-size: 11px; padding: 4px 8px; width: 100%; box-sizing: border-box;"></div><div><span style="font-size: 10px; font-weight: 600; color: #374151; display: block; margin-bottom: 2px;">Address Line 1 <span style="color:#dc2626">*</span> <span style="font-weight:400;color:#6b7280;">(max 35)</span></span><input type="text" class="form-input" maxlength="35" placeholder="123 Innovation Boulevard" style="font-size: 11px; padding: 4px 8px; width: 100%; box-sizing: border-box;"></div><div><span style="font-size: 10px; font-weight: 600; color: #374151; display: block; margin-bottom: 2px;">House Number <span style="font-weight:400;color:#6b7280;">(max 10)</span></span><input type="text" class="form-input" maxlength="10" placeholder="Suite 500" style="font-size: 11px; padding: 4px 8px; width: 100%; box-sizing: border-box;"></div><div><span style="font-size: 10px; font-weight: 600; color: #374151; display: block; margin-bottom: 2px;">City <span style="color:#dc2626">*</span> <span style="font-weight:400;color:#6b7280;">(max 35)</span></span><input type="text" class="form-input" maxlength="35" placeholder="New York" style="font-size: 11px; padding: 4px 8px; width: 100%; box-sizing: border-box;"></div><div><span style="font-size: 10px; font-weight: 600; color: #374151; display: block; margin-bottom: 2px;">Postal Code <span style="color:#dc2626">*</span> <span style="font-weight:400;color:#6b7280;">(max 10)</span></span><input type="text" class="form-input" maxlength="10" placeholder="10001" style="font-size: 11px; padding: 4px 8px; width: 100%; box-sizing: border-box;"></div><div><span style="font-size: 10px; font-weight: 600; color: #374151; display: block; margin-bottom: 2px;">Country <span style="color:#dc2626">*</span></span><select class="form-select" style="font-size: 11px; padding: 4px 8px; width: 100%;"><option value="">Select...</option><option value="840">United States</option><option value="826">United Kingdom</option><option value="124">Canada</option><option value="276">Germany</option><option value="392">Japan</option><option value="356">India</option><option value="528">Netherlands</option><option value="752">Sweden</option></select></div></div></td>
   <td><input type="text" class="form-input" placeholder="Order #"></td>
   <td><textarea class="form-textarea" rows="2" placeholder="Description"></textarea></td>
   <td><input type="text" class="form-input" placeholder="$0.00"></td>
@@ -10472,7 +10729,7 @@ Submission Requirements
   <td><select class="form-select"><option>Select</option><option>Yes</option><option>No</option></select></td>
   </tr>
   <tr>
-  <td><textarea class="form-textarea" rows="2" placeholder="Company name & address"></textarea></td>
+  <td style="vertical-align: top; min-width: 210px;"><div style="display: flex; flex-direction: column; gap: 5px;"><div><span style="font-size: 10px; font-weight: 600; color: #374151; display: block; margin-bottom: 2px;">Order placed by <span style="color:#dc2626">*</span></span><input type="text" class="form-input" placeholder="Purchaser / organization" style="font-size: 11px; padding: 4px 8px; width: 100%; box-sizing: border-box;"></div><div><span style="font-size: 10px; font-weight: 600; color: #374151; display: block; margin-bottom: 2px;">Address Line 1 <span style="color:#dc2626">*</span> <span style="font-weight:400;color:#6b7280;">(max 35)</span></span><input type="text" class="form-input" maxlength="35" placeholder="123 Innovation Boulevard" style="font-size: 11px; padding: 4px 8px; width: 100%; box-sizing: border-box;"></div><div><span style="font-size: 10px; font-weight: 600; color: #374151; display: block; margin-bottom: 2px;">House Number <span style="font-weight:400;color:#6b7280;">(max 10)</span></span><input type="text" class="form-input" maxlength="10" placeholder="Suite 500" style="font-size: 11px; padding: 4px 8px; width: 100%; box-sizing: border-box;"></div><div><span style="font-size: 10px; font-weight: 600; color: #374151; display: block; margin-bottom: 2px;">City <span style="color:#dc2626">*</span> <span style="font-weight:400;color:#6b7280;">(max 35)</span></span><input type="text" class="form-input" maxlength="35" placeholder="New York" style="font-size: 11px; padding: 4px 8px; width: 100%; box-sizing: border-box;"></div><div><span style="font-size: 10px; font-weight: 600; color: #374151; display: block; margin-bottom: 2px;">Postal Code <span style="color:#dc2626">*</span> <span style="font-weight:400;color:#6b7280;">(max 10)</span></span><input type="text" class="form-input" maxlength="10" placeholder="10001" style="font-size: 11px; padding: 4px 8px; width: 100%; box-sizing: border-box;"></div><div><span style="font-size: 10px; font-weight: 600; color: #374151; display: block; margin-bottom: 2px;">Country <span style="color:#dc2626">*</span></span><select class="form-select" style="font-size: 11px; padding: 4px 8px; width: 100%;"><option value="">Select...</option><option value="840">United States</option><option value="826">United Kingdom</option><option value="124">Canada</option><option value="276">Germany</option><option value="392">Japan</option><option value="356">India</option><option value="528">Netherlands</option><option value="752">Sweden</option></select></div></div></td>
   <td><input type="text" class="form-input" placeholder="Order #"></td>
   <td><textarea class="form-textarea" rows="2" placeholder="Description"></textarea></td>
   <td><input type="text" class="form-input" placeholder="$0.00"></td>
@@ -10482,7 +10739,7 @@ Submission Requirements
   <td><select class="form-select"><option>Select</option><option>Yes</option><option>No</option></select></td>
   </tr>
   <tr>
-  <td><textarea class="form-textarea" rows="2" placeholder="Company name & address"></textarea></td>
+  <td style="vertical-align: top; min-width: 210px;"><div style="display: flex; flex-direction: column; gap: 5px;"><div><span style="font-size: 10px; font-weight: 600; color: #374151; display: block; margin-bottom: 2px;">Order placed by <span style="color:#dc2626">*</span></span><input type="text" class="form-input" placeholder="Purchaser / organization" style="font-size: 11px; padding: 4px 8px; width: 100%; box-sizing: border-box;"></div><div><span style="font-size: 10px; font-weight: 600; color: #374151; display: block; margin-bottom: 2px;">Address Line 1 <span style="color:#dc2626">*</span> <span style="font-weight:400;color:#6b7280;">(max 35)</span></span><input type="text" class="form-input" maxlength="35" placeholder="123 Innovation Boulevard" style="font-size: 11px; padding: 4px 8px; width: 100%; box-sizing: border-box;"></div><div><span style="font-size: 10px; font-weight: 600; color: #374151; display: block; margin-bottom: 2px;">House Number <span style="font-weight:400;color:#6b7280;">(max 10)</span></span><input type="text" class="form-input" maxlength="10" placeholder="Suite 500" style="font-size: 11px; padding: 4px 8px; width: 100%; box-sizing: border-box;"></div><div><span style="font-size: 10px; font-weight: 600; color: #374151; display: block; margin-bottom: 2px;">City <span style="color:#dc2626">*</span> <span style="font-weight:400;color:#6b7280;">(max 35)</span></span><input type="text" class="form-input" maxlength="35" placeholder="New York" style="font-size: 11px; padding: 4px 8px; width: 100%; box-sizing: border-box;"></div><div><span style="font-size: 10px; font-weight: 600; color: #374151; display: block; margin-bottom: 2px;">Postal Code <span style="color:#dc2626">*</span> <span style="font-weight:400;color:#6b7280;">(max 10)</span></span><input type="text" class="form-input" maxlength="10" placeholder="10001" style="font-size: 11px; padding: 4px 8px; width: 100%; box-sizing: border-box;"></div><div><span style="font-size: 10px; font-weight: 600; color: #374151; display: block; margin-bottom: 2px;">Country <span style="color:#dc2626">*</span></span><select class="form-select" style="font-size: 11px; padding: 4px 8px; width: 100%;"><option value="">Select...</option><option value="840">United States</option><option value="826">United Kingdom</option><option value="124">Canada</option><option value="276">Germany</option><option value="392">Japan</option><option value="356">India</option><option value="528">Netherlands</option><option value="752">Sweden</option></select></div></div></td>
   <td><input type="text" class="form-input" placeholder="Order #"></td>
   <td><textarea class="form-textarea" rows="2" placeholder="Description"></textarea></td>
   <td><input type="text" class="form-input" placeholder="$0.00"></td>
@@ -11599,9 +11856,12 @@ let activeOffer = { technical: 'main', financial: 'main' };
 function switchTechnicalLotOffer(lotKey, offerKey) {
     const block = document.querySelector(`.technical-lot-block[data-lot-id="${lotKey}"]`);
     if (!block) return;
-    block.querySelectorAll('.lot-offer-tab-bar .lot-offer-tab').forEach(t => {
+    block.querySelectorAll('.lot-offer-seg-main').forEach(t => {
         const k = t.getAttribute('data-offer-key');
         t.classList.toggle('active', k === offerKey);
+    });
+    block.querySelectorAll('.lot-offer-pill').forEach(p => {
+        p.classList.toggle('active', p.getAttribute('data-offer-key') === offerKey);
     });
     block.querySelectorAll('.lot-offer-panels .lot-offer-panel').forEach(p => {
         p.classList.toggle('active', p.getAttribute('data-offer-key') === offerKey);
@@ -11653,15 +11913,30 @@ function addLotAlternateOffer(lotKey) {
 
     const extra = document.getElementById(`technical-${lotKey}-offer-tabs-extra`);
     if (extra) {
-        const tab = document.createElement('button');
-        tab.type = 'button';
-        tab.className = 'lot-offer-tab';
-        tab.setAttribute('data-offer-key', offerId);
-        tab.innerHTML = `Alt ${seq}<span class="offer-tab-remove" style="margin-left:6px;opacity:0.7;" onclick="event.stopPropagation(); removeLotScopedAlternateOffer('${offerId}')" title="Remove"><i class="pi pi-times" style="font-size:9px;"></i></span>`;
-        tab.onclick = function(e) {
-            if (!e.target.closest('.offer-tab-remove')) switchTechnicalLotOffer(lotKey, offerId);
+        const pill = document.createElement('div');
+        pill.className = 'lot-offer-pill';
+        pill.setAttribute('data-offer-key', offerId);
+
+        const pick = document.createElement('button');
+        pick.type = 'button';
+        pick.className = 'lot-offer-seg-alt';
+        pick.innerHTML = `<i class="pi pi-bookmark" style="font-size:12px;"></i><span>Alt ${seq}</span>`;
+        pick.onclick = function() { switchTechnicalLotOffer(lotKey, offerId); };
+
+        const dismiss = document.createElement('button');
+        dismiss.type = 'button';
+        dismiss.className = 'lot-offer-seg-dismiss';
+        dismiss.setAttribute('aria-label', 'Remove alternative offer');
+        dismiss.title = 'Remove alternative offer';
+        dismiss.innerHTML = '<i class="pi pi-times" style="font-size:11px;"></i>';
+        dismiss.onclick = function(e) {
+            e.stopPropagation();
+            removeLotScopedAlternateOffer(offerId);
         };
-        extra.appendChild(tab);
+
+        pill.appendChild(pick);
+        pill.appendChild(dismiss);
+        extra.appendChild(pill);
     }
 
     switchTechnicalLotOffer(lotKey, offerId);
@@ -11837,8 +12112,8 @@ function removeLotScopedAlternateOffer(offerId) {
         if (panel) panel.remove();
         const tabBar = block && block.querySelector('.lot-offer-tab-bar');
         if (tabBar) {
-            const t = tabBar.querySelector(`.lot-offer-tab[data-offer-key="${offerId}"]`);
-            if (t) t.remove();
+            const pill = tabBar.querySelector(`.lot-offer-pill[data-offer-key="${offerId}"]`);
+            if (pill) pill.remove();
         }
         switchTechnicalLotOffer(lotKey, 'main');
     }
@@ -13036,7 +13311,7 @@ if (!table) return;
 
 const newRow = document.createElement('tr');
 newRow.innerHTML = `
-<td><textarea class="form-textarea" rows="2" placeholder="Company name & address"></textarea></td>
+<td style="vertical-align: top; min-width: 210px;"><div style="display: flex; flex-direction: column; gap: 5px;"><div><span style="font-size: 10px; font-weight: 600; color: #374151; display: block; margin-bottom: 2px;">Order placed by <span style="color:#dc2626">*</span></span><input type="text" class="form-input" placeholder="Purchaser / organization" style="font-size: 11px; padding: 4px 8px; width: 100%; box-sizing: border-box;"></div><div><span style="font-size: 10px; font-weight: 600; color: #374151; display: block; margin-bottom: 2px;">Address Line 1 <span style="color:#dc2626">*</span> <span style="font-weight:400;color:#6b7280;">(max 35)</span></span><input type="text" class="form-input" maxlength="35" placeholder="123 Innovation Boulevard" style="font-size: 11px; padding: 4px 8px; width: 100%; box-sizing: border-box;"></div><div><span style="font-size: 10px; font-weight: 600; color: #374151; display: block; margin-bottom: 2px;">House Number <span style="font-weight:400;color:#6b7280;">(max 10)</span></span><input type="text" class="form-input" maxlength="10" placeholder="Suite 500" style="font-size: 11px; padding: 4px 8px; width: 100%; box-sizing: border-box;"></div><div><span style="font-size: 10px; font-weight: 600; color: #374151; display: block; margin-bottom: 2px;">City <span style="color:#dc2626">*</span> <span style="font-weight:400;color:#6b7280;">(max 35)</span></span><input type="text" class="form-input" maxlength="35" placeholder="New York" style="font-size: 11px; padding: 4px 8px; width: 100%; box-sizing: border-box;"></div><div><span style="font-size: 10px; font-weight: 600; color: #374151; display: block; margin-bottom: 2px;">Postal Code <span style="color:#dc2626">*</span> <span style="font-weight:400;color:#6b7280;">(max 10)</span></span><input type="text" class="form-input" maxlength="10" placeholder="10001" style="font-size: 11px; padding: 4px 8px; width: 100%; box-sizing: border-box;"></div><div><span style="font-size: 10px; font-weight: 600; color: #374151; display: block; margin-bottom: 2px;">Country <span style="color:#dc2626">*</span></span><select class="form-select" style="font-size: 11px; padding: 4px 8px; width: 100%;"><option value="">Select...</option><option value="840">United States</option><option value="826">United Kingdom</option><option value="124">Canada</option><option value="276">Germany</option><option value="392">Japan</option><option value="356">India</option><option value="528">Netherlands</option><option value="752">Sweden</option></select></div></div></td>
 <td><input type="text" class="form-input" placeholder="Order #"></td>
 <td><textarea class="form-textarea" rows="2" placeholder="Description"></textarea></td>
 <td><input type="text" class="form-input" placeholder="$0.00"></td>
@@ -13046,6 +13321,47 @@ newRow.innerHTML = `
 <td><select class="form-select"><option>Select</option><option>Yes</option><option>No</option></select></td>
 `;
 table.appendChild(newRow);
+}
+
+function financialYearRowTemplate() {
+    return `
+<div class="financial-statement-year-row" style="display: grid; grid-template-columns: minmax(130px, 160px) 1fr auto; gap: var(--spacing-md); align-items: end; margin-bottom: var(--spacing-md); padding-bottom: var(--spacing-md); border-bottom: 1px solid var(--surface-200);">
+  <div class="supplier-form-field" style="margin-bottom: 0;">
+    <label><i class="pi pi-calendar"></i> Financial year <span style="color: var(--danger-500);">*</span></label>
+    <select class="financial-year-select" style="width: 100%;">
+      <option value="">Select year…</option>
+      <option value="2025">2025</option>
+      <option value="2024">2024</option>
+      <option value="2023">2023</option>
+      <option value="2022">2022</option>
+      <option value="2021">2021</option>
+      <option value="2020">2020</option>
+    </select>
+  </div>
+  <div class="supplier-upload-area" style="padding: var(--spacing-sm); margin-bottom: 0;">
+    <div style="color: var(--info-500); font-size: 1.2em; margin-bottom: 4px;"><i class="pi pi-file-pdf"></i></div>
+    <div class="supplier-upload-text">Upload statement (PDF)</div>
+    <div class="supplier-upload-hint">For the selected year</div>
+  </div>
+  <button type="button" class="btn btn-ghost btn-sm" onclick="removeFinancialYearRow(this)" title="Remove this year" style="margin-bottom: 2px;"><i class="pi pi-trash"></i></button>
+</div>`;
+}
+
+function addFinancialYearRow() {
+    const wrap = document.getElementById('financial-statements-year-rows');
+    if (!wrap) return;
+    const div = document.createElement('div');
+    div.innerHTML = financialYearRowTemplate().trim();
+    wrap.appendChild(div.firstElementChild);
+}
+
+function removeFinancialYearRow(btn) {
+    const wrap = document.getElementById('financial-statements-year-rows');
+    if (!wrap) return;
+    const rows = wrap.querySelectorAll('.financial-statement-year-row');
+    if (rows.length <= 1) return;
+    const row = btn.closest('.financial-statement-year-row');
+    if (row) row.remove();
 }
 
 // Download Form A as PDF placeholder
