@@ -9753,6 +9753,8 @@
         { value: 'purchase-order', label: 'Purchase Order' },
         { value: 'lta', label: 'Long-term Agreement (LTA)' },
         { value: 'bpa', label: 'Blanket Purchase Agreement (BPA)' },
+        { value: 'call-off-lta', label: 'Call off orders against LTAs' },
+        { value: 'lease', label: 'Lease' },
         { value: 'service', label: 'Service Contract' },
         { value: 'works', label: 'Works Contract' }
       ];
@@ -9774,7 +9776,8 @@
         ],
         sampleContractDocuments: [
           { id: 'sample-doc-1', name: 'UNOPS Sample Contract - Goods and Services (EN).pdf' }
-        ]
+        ],
+        srmComplianceDocuments: []
       };
 
       // GCC link by contract type (read-only; replace with real UNOPS URLs when available)
@@ -15443,7 +15446,12 @@
       };
 
       window.updateContractToBeAwarded = function(selectEl) {
-        const selected = Array.from(selectEl.selectedOptions).map(o => o.value);
+        let selected = Array.from(selectEl.selectedOptions).map(o => o.value);
+        const secondaryBiddingLta = generalInfoValues.processType === 'Secondary bidding against LTA/BPA';
+        if (!secondaryBiddingLta && selected.includes('call-off-lta')) {
+          selected = selected.filter(v => v !== 'call-off-lta');
+          showNotification('Call off orders against LTAs can only be selected when Process type is Secondary bidding against LTA/BPA (General → Solicitation).', 'warning');
+        }
         contractProvisionsValues.contractToBeAwarded = selected;
         saveProjectDetailsSectionStates();
         renderCurrentBlock();
@@ -15464,7 +15472,6 @@
         if (!contractProvisionsValues.specialConditionsClauses) contractProvisionsValues.specialConditionsClauses = [];
         contractProvisionsValues.specialConditionsClauses.push({
           id: 'custom-special-' + Date.now(),
-          title: '',
           description: '',
           clauseInGCC: '',
           type: 'Special',
@@ -15529,6 +15536,24 @@
         if (!file) return;
         if (!contractProvisionsValues.sampleContractDocuments) contractProvisionsValues.sampleContractDocuments = [];
         contractProvisionsValues.sampleContractDocuments.push({ id: 'sample-doc-' + Date.now(), name: file.name });
+        inputEl.value = '';
+        saveProjectDetailsSectionStates();
+        renderCurrentBlock();
+        restoreProjectDetailsSectionStates();
+      };
+
+      window.removeSrmComplianceDocument = function(id) {
+        contractProvisionsValues.srmComplianceDocuments = (contractProvisionsValues.srmComplianceDocuments || []).filter(d => d.id !== id);
+        saveProjectDetailsSectionStates();
+        renderCurrentBlock();
+        restoreProjectDetailsSectionStates();
+      };
+
+      window.addSrmComplianceDocumentFromFile = function(inputEl) {
+        const file = inputEl && inputEl.files && inputEl.files[0];
+        if (!file) return;
+        if (!contractProvisionsValues.srmComplianceDocuments) contractProvisionsValues.srmComplianceDocuments = [];
+        contractProvisionsValues.srmComplianceDocuments.push({ id: 'srm-doc-' + Date.now(), name: file.name });
         inputEl.value = '';
         saveProjectDetailsSectionStates();
         renderCurrentBlock();
@@ -18797,11 +18822,11 @@
                 <div class="supplier-form-section-header"><i class="pi pi-verified" style="margin-right: 8px;"></i> Qualifications & Eligibility</div>
                 <div class="supplier-form-section-body">
 
-                  <!-- Section 1: Performance Statement -->
+                  <!-- Performance Statement -->
                   ${form.config && form.config.requirePerformanceStatement ? `
                   <div style="margin-bottom: var(--spacing-xl);">
                     <div style="background: linear-gradient(135deg, var(--surface-50) 0%, var(--surface-100) 100%); padding: var(--spacing-lg); border-left: 4px solid var(--primary-500); border-radius: 0 var(--radius-md) var(--radius-md) 0; margin-bottom: var(--spacing-lg);">
-                      <strong><i class="pi pi-chart-line" style="margin-right: 8px; color: var(--primary-500);"></i> Section 1: Performance Statement</strong>
+                      <strong><i class="pi pi-chart-line" style="margin-right: 8px; color: var(--primary-500);"></i> Performance Statement</strong>
                       <span style="background: var(--danger-100); color: var(--danger-600); padding: 2px 8px; border-radius: 10px; font-size: 0.8em; margin-left: 12px;">REQUIRED</span>
                   </div>
                   
@@ -18811,50 +18836,76 @@
                         <span style="font-size: 1.05em; font-weight: 600; color: var(--primary-500);"><i class="pi pi-briefcase" style="margin-right: 8px;"></i> Reference 1</span>
                       </div>
                       
-                      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-md);">
-                        <div class="supplier-form-field">
-                          <label><i class="pi pi-building" style="margin-right: 6px; color: var(--primary-500);"></i> Client/Organization Name <span style="color: var(--danger-500);">*</span></label>
-                          <input type="text" placeholder="Enter client name" disabled />
-                      </div>
-                        <div class="supplier-form-field">
-                          <label><i class="pi pi-file" style="margin-right: 6px; color: var(--primary-500);"></i> Contract Reference Number</label>
-                          <input type="text" placeholder="Contract/PO number" disabled />
-                      </div>
-                    </div>
-                      
-                      <div class="supplier-form-field" style="margin-top: var(--spacing-md);">
-                        <label><i class="pi pi-align-left" style="margin-right: 6px; color: var(--primary-500);"></i> Description of Work/Goods Supplied <span style="color: var(--danger-500);">*</span></label>
-                        <textarea placeholder="Describe the goods/services delivered" rows="2" disabled></textarea>
-                  </div>
-                  
-                      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--spacing-md); margin-top: var(--spacing-md);">
-                      <div class="supplier-form-field">
-                          <label><i class="pi pi-dollar" style="margin-right: 6px; color: var(--primary-500);"></i> Contract Value <span style="color: var(--danger-500);">*</span></label>
-                          <input type="text" placeholder="USD 0.00" disabled />
-                      </div>
-                      <div class="supplier-form-field">
-                          <label><i class="pi pi-calendar" style="margin-right: 6px; color: var(--primary-500);"></i> Contract Period</label>
-                          <input type="text" placeholder="Start - End dates" disabled />
-                      </div>
-                      <div class="supplier-form-field">
-                          <label><i class="pi pi-check-circle" style="margin-right: 6px; color: var(--success-500);"></i> Completion Status</label>
-                          <select disabled>
-                            <option>Completed</option>
-                            <option>Ongoing</option>
+                      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-md);">
+                        <div class="supplier-form-field" style="margin-bottom: 0;">
+                          <label><i class="pi pi-user" style="margin-right: 6px; color: var(--primary-500);"></i> Order placed by <span style="color: var(--danger-500);">*</span></label>
+                          <input type="text" placeholder="Name of purchaser/organization" disabled />
+                        </div>
+                        <div class="supplier-form-field" style="margin-bottom: 0;">
+                          <label style="font-size: 12px;">Address Line 1 <span style="color: var(--danger-500);">*</span> <span style="font-weight: 400; color: var(--text-muted); font-size: 11px;">(max 35 chars)</span></label>
+                          <input type="text" maxlength="35" placeholder="123 Innovation Boulevard" disabled />
+                        </div>
+                        <div class="supplier-form-field" style="margin-bottom: 0;">
+                          <label style="font-size: 12px;">House Number <span style="font-weight: 400; color: var(--text-muted); font-size: 11px;">(max 10 chars)</span></label>
+                          <input type="text" maxlength="10" placeholder="Suite 500" disabled />
+                        </div>
+                        <div class="supplier-form-field" style="margin-bottom: 0;">
+                          <label style="font-size: 12px;">City <span style="color: var(--danger-500);">*</span> <span style="font-weight: 400; color: var(--text-muted); font-size: 11px;">(max 35 chars)</span></label>
+                          <input type="text" maxlength="35" placeholder="New York" disabled />
+                        </div>
+                        <div class="supplier-form-field" style="margin-bottom: 0;">
+                          <label style="font-size: 12px;">Postal Code <span style="color: var(--danger-500);">*</span> <span style="font-weight: 400; color: var(--text-muted); font-size: 11px;">(max 10 chars)</span></label>
+                          <input type="text" maxlength="10" placeholder="10001" disabled />
+                        </div>
+                        <div class="supplier-form-field" style="margin-bottom: 0;">
+                          <label style="font-size: 12px;">Country <span style="color: var(--danger-500);">*</span></label>
+                          <select disabled style="max-width: 100%;">
+                            <option value="">Select country...</option>
+                            <option value="840">United States</option>
+                            <option value="826">United Kingdom</option>
+                            <option value="124">Canada</option>
+                            <option value="276">Germany</option>
+                            <option value="392">Japan</option>
                           </select>
+                        </div>
+                        <div class="supplier-form-field" style="margin-bottom: 0;">
+                          <label><i class="pi pi-file" style="margin-right: 6px; color: var(--primary-500);"></i> Order no <span style="color: var(--danger-500);">*</span></label>
+                          <input type="text" placeholder="Order/Contract number" disabled />
+                        </div>
+                        <div class="supplier-form-field" style="margin-bottom: 0;">
+                          <label><i class="pi pi-calendar" style="margin-right: 6px; color: var(--primary-500);"></i> Date <span style="color: var(--danger-500);">*</span></label>
+                          <input type="date" disabled />
+                        </div>
+                        <div class="supplier-form-field" style="margin-bottom: 0;">
+                          <label><i class="pi pi-dollar" style="margin-right: 6px; color: var(--primary-500);"></i> Value of Order <span style="color: var(--danger-500);">*</span></label>
+                          <input type="text" placeholder="USD 0.00" disabled />
+                        </div>
+                        <div class="supplier-form-field" style="margin-bottom: 0;">
+                          <label><i class="pi pi-calendar" style="margin-right: 6px; color: var(--primary-500);"></i> Date of completion of Delivery <small style="font-weight: 400; color: var(--text-muted); display: block;">As per Contract</small></label>
+                          <input type="date" disabled />
+                        </div>
+                        <div class="supplier-form-field" style="margin-bottom: 0;">
+                          <label><i class="pi pi-calendar-times" style="margin-right: 6px; color: var(--primary-500);"></i> Date of completion of Delivery <small style="font-weight: 400; color: var(--text-muted); display: block;">Actual</small></label>
+                          <input type="date" disabled />
+                        </div>
+                        <div class="supplier-form-field" style="margin-bottom: 0;">
+                          <label><i class="pi pi-check-circle" style="margin-right: 6px; color: var(--success-500);"></i> Was the supplies of goods satisfactory? <span style="color: var(--danger-500);">*</span></label>
+                          <select disabled>
+                            <option value="">Select</option>
+                            <option>Yes</option>
+                            <option>No</option>
+                            <option>Partially</option>
+                          </select>
+                        </div>
+                        <div class="supplier-form-field" style="grid-column: 1 / -1; margin-bottom: 0;">
+                          <label><i class="pi pi-list" style="margin-right: 6px; color: var(--primary-500);"></i> Description &amp; quantity of ordered items <span style="color: var(--danger-500);">*</span></label>
+                          <textarea placeholder="Describe the items ordered and their quantities" rows="2" disabled></textarea>
+                        </div>
+                        <div class="supplier-form-field" style="grid-column: 1 / span 2; margin-bottom: 0;">
+                          <label><i class="pi pi-comment" style="margin-right: 6px; color: var(--primary-500);"></i> Remarks indicating reasons of late delivery, if any</label>
+                          <textarea placeholder="Explain any delays in delivery" rows="2" disabled></textarea>
+                        </div>
                       </div>
-                  </div>
-                  
-                      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-md); margin-top: var(--spacing-md);">
-                        <div class="supplier-form-field">
-                          <label><i class="pi pi-user" style="margin-right: 6px; color: var(--primary-500);"></i> Contact Person</label>
-                          <input type="text" placeholder="Reference contact name" disabled />
-                </div>
-                        <div class="supplier-form-field">
-                          <label><i class="pi pi-envelope" style="margin-right: 6px; color: var(--primary-500);"></i> Contact Email/Phone</label>
-                          <input type="text" placeholder="Email or phone number" disabled />
-              </div>
-            </div>
                   </div>
                   
                     <button class="btn btn-secondary" style="margin-top: var(--spacing-md);" disabled><i class="pi pi-plus" style="margin-right: 6px;"></i> Add Another Reference</button>
@@ -18862,18 +18913,36 @@
                   ` : `
                   <div style="margin-bottom: var(--spacing-xl);">
                     <div style="background: linear-gradient(135deg, var(--surface-50) 0%, var(--surface-100) 100%); padding: var(--spacing-lg); border-left: 4px solid var(--surface-400); border-radius: 0 var(--radius-md) var(--radius-md) 0; margin-bottom: var(--spacing-lg);">
-                      <strong><i class="pi pi-chart-line" style="margin-right: 8px; color: var(--surface-500);"></i> Section 1: Performance Statement</strong>
+                      <strong><i class="pi pi-chart-line" style="margin-right: 8px; color: var(--surface-500);"></i> Performance Statement</strong>
                       <span style="background: var(--surface-200); color: var(--text-muted); padding: 2px 8px; border-radius: 10px; font-size: 0.8em; margin-left: 12px;">NOT REQUIRED</span>
                 </div>
               </div>
                   `}
 
-                  <!-- Section 2: Bid Security Form -->
+                  <!-- Years of experience -->
+                  <div style="margin-bottom: var(--spacing-xl);">
+                    <div style="background: linear-gradient(135deg, var(--surface-50) 0%, var(--surface-100) 100%); padding: var(--spacing-lg); border-left: 4px solid var(--primary-500); border-radius: 0 var(--radius-md) var(--radius-md) 0; margin-bottom: var(--spacing-lg);">
+                      <strong><i class="pi pi-history" style="margin-right: 8px; color: var(--primary-500);"></i> Years of experience</strong>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-md);">
+                      <div class="supplier-form-field" style="margin-bottom: 0;">
+                        <label><i class="pi pi-hashtag" style="margin-right: 6px; color: var(--primary-500);"></i> Years of relevant experience <span style="color: var(--danger-500);">*</span></label>
+                        <input type="number" min="0" max="99" placeholder="e.g. 5" disabled style="max-width: 160px;" />
+                      </div>
+                      <div class="supplier-form-field" style="grid-column: 2 / -1; margin-bottom: 0;">
+                        <label><i class="pi pi-align-left" style="margin-right: 6px; color: var(--primary-500);"></i> Description of relevant experience <span style="color: var(--danger-500);">*</span></label>
+                        <textarea placeholder="Summarize experience relevant to this procurement" rows="3" disabled></textarea>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Bid Security -->
                   ${form.config && form.config.requireBidSecurity ? `
                   <div id="bidSecuritySection" style="margin-bottom: var(--spacing-xl);">
                     <div style="background: linear-gradient(135deg, var(--surface-50) 0%, var(--surface-100) 100%); padding: var(--spacing-lg); border-left: 4px solid var(--warning-500); border-radius: 0 var(--radius-md) var(--radius-md) 0; margin-bottom: var(--spacing-lg);">
-                      <strong><i class="pi pi-shield" style="margin-right: 8px; color: var(--warning-500);"></i> Section 2: Bid Security Form</strong>
+                      <strong><i class="pi pi-shield" style="margin-right: 8px; color: var(--warning-500);"></i> Bid Security</strong>
                       <span style="background: var(--danger-100); color: var(--danger-600); padding: 2px 8px; border-radius: 10px; font-size: 0.8em; margin-left: 12px;">REQUIRED</span>
+                      <div style="font-size: 12px; color: var(--text-muted); margin-top: 8px; font-weight: 400;">Upload the completed bid security form and enter the security expiry date.</div>
                   </div>
                   
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-lg);">
@@ -18889,40 +18958,67 @@
                         <div style="font-size: 12px; color: var(--text-muted);">Click or drag file here</div>
                     </div>
                     </div>
+                    <div class="supplier-form-field" style="margin-top: var(--spacing-md);">
+                        <label style="font-size: 12px; font-weight: 600; color: var(--text-secondary);"><i class="pi pi-calendar-times" style="margin-right: 6px;"></i>Bid security expiry date <span style="color: var(--danger-500);">*</span></label>
+                        <input type="date" disabled style="max-width: 250px; padding: 8px 10px; border: 1px solid var(--surface-300); border-radius: var(--radius-sm); font-size: 13px;">
                     </div>
+                    </div>
+
+                  <div id="bidValiditySection" style="margin-bottom: var(--spacing-xl);">
+                    <div style="background: linear-gradient(135deg, var(--surface-50) 0%, var(--surface-100) 100%); padding: var(--spacing-lg); border-left: 4px solid var(--warning-500); border-radius: 0 var(--radius-md) var(--radius-md) 0; margin-bottom: var(--spacing-lg);">
+                      <strong><i class="pi pi-clock" style="margin-right: 8px; color: var(--warning-500);"></i> Bid validity</strong>
+                      <span style="background: var(--danger-100); color: var(--danger-600); padding: 2px 8px; border-radius: 10px; font-size: 0.8em; margin-left: 12px;">REQUIRED</span>
+                      <div style="font-size: 12px; color: var(--text-muted); margin-top: 8px; font-weight: 400;">How long your offer remains valid after bid closing.</div>
+                  </div>
+                    <div class="supplier-form-field">
+                        <label style="font-size: 12px; font-weight: 600; color: var(--text-secondary);"><i class="pi pi-clock" style="margin-right: 6px;"></i>Days of bid validity <span style="color: var(--danger-500);">*</span></label>
+                        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                          <input type="number" min="1" max="999" placeholder="e.g. 90" disabled style="max-width: 140px; padding: 8px 10px; border: 1px solid var(--surface-300); border-radius: var(--radius-sm); font-size: 13px;">
+                          <span style="font-size: 11px; color: var(--text-muted);">calendar days from bid closing</span>
+                        </div>
+                    </div>
+                  </div>
                   ` : `
                   <div id="bidSecuritySection" style="margin-bottom: var(--spacing-xl);">
                     <div style="background: linear-gradient(135deg, var(--surface-50) 0%, var(--surface-100) 100%); padding: var(--spacing-lg); border-left: 4px solid var(--surface-400); border-radius: 0 var(--radius-md) var(--radius-md) 0; margin-bottom: var(--spacing-lg);">
-                      <strong><i class="pi pi-shield" style="margin-right: 8px; color: var(--surface-500);"></i> Section 2: Bid Security Form</strong>
+                      <strong><i class="pi pi-shield" style="margin-right: 8px; color: var(--surface-500);"></i> Bid Security</strong>
+                      <span style="background: var(--surface-200); color: var(--text-muted); padding: 2px 8px; border-radius: 10px; font-size: 0.8em; margin-left: 12px;">NOT REQUIRED</span>
+                    </div>
+                    </div>
+                  <div id="bidValiditySectionOptional" style="margin-bottom: var(--spacing-xl);">
+                    <div style="background: linear-gradient(135deg, var(--surface-50) 0%, var(--surface-100) 100%); padding: var(--spacing-lg); border-left: 4px solid var(--surface-400); border-radius: 0 var(--radius-md) var(--radius-md) 0; margin-bottom: var(--spacing-lg);">
+                      <strong><i class="pi pi-clock" style="margin-right: 8px; color: var(--surface-500);"></i> Bid validity</strong>
                       <span style="background: var(--surface-200); color: var(--text-muted); padding: 2px 8px; border-radius: 10px; font-size: 0.8em; margin-left: 12px;">NOT REQUIRED</span>
                     </div>
                     </div>
                   `}
 
-                  <!-- Section 3: Financial Statements -->
+                  <!-- Financial Statements -->
                   <div style="margin-bottom: var(--spacing-xl);">
                     <div style="background: linear-gradient(135deg, var(--surface-50) 0%, var(--surface-100) 100%); padding: var(--spacing-lg); border-left: 4px solid var(--info-500); border-radius: 0 var(--radius-md) var(--radius-md) 0; margin-bottom: var(--spacing-lg);">
-                      <strong><i class="pi pi-chart-bar" style="margin-right: 8px; color: var(--info-500);"></i> Section 3: Financial Statements</strong>
+                      <strong><i class="pi pi-chart-bar" style="margin-right: 8px; color: var(--info-500);"></i> Financial Statements</strong>
                       <span style="background: var(--surface-200); color: var(--text-secondary); padding: 2px 8px; border-radius: 10px; font-size: 0.8em; margin-left: 12px;">OPTIONAL</span>
+                      <div style="font-size: 12px; color: var(--text-muted); margin-top: 8px; font-weight: 400;">Select a financial year, upload the statement for that year, and repeat for additional years as needed.</div>
                   </div>
                   
-                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-md);">
-                      <div style="border: 2px dashed var(--surface-300); border-radius: var(--radius-lg); padding: var(--spacing-lg); background: var(--surface-50); text-align: center;">
-                        <div style="color: var(--info-500); font-size: 2em; margin-bottom: 8px;"><i class="pi pi-file-pdf"></i></div>
-                        <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 5px; font-size: 0.9em;">Year 2023</div>
-                        <div style="font-size: 11px; color: var(--text-muted);">Upload PDF</div>
+                    <div style="display: grid; grid-template-columns: minmax(130px, 160px) 1fr auto; gap: var(--spacing-md); align-items: end; margin-bottom: var(--spacing-md); padding-bottom: var(--spacing-md); border-bottom: 1px solid var(--surface-200);">
+                      <div class="supplier-form-field" style="margin-bottom: 0;">
+                        <label style="font-size: 12px;"><i class="pi pi-calendar" style="margin-right: 6px; color: var(--info-500);"></i> Financial year</label>
+                        <select disabled style="width: 100%;">
+                          <option value="">Select year…</option>
+                          <option selected>2024</option>
+                          <option>2023</option>
+                          <option>2022</option>
+                        </select>
                       </div>
-                      <div style="border: 2px dashed var(--surface-300); border-radius: var(--radius-lg); padding: var(--spacing-lg); background: var(--surface-50); text-align: center;">
-                        <div style="color: var(--info-500); font-size: 2em; margin-bottom: 8px;"><i class="pi pi-file-pdf"></i></div>
-                        <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 5px; font-size: 0.9em;">Year 2024</div>
-                        <div style="font-size: 11px; color: var(--text-muted);">Upload PDF</div>
-                    </div>
-                      <div style="border: 2px dashed var(--surface-300); border-radius: var(--radius-lg); padding: var(--spacing-lg); background: var(--surface-50); text-align: center;">
-                        <div style="color: var(--info-500); font-size: 2em; margin-bottom: 8px;"><i class="pi pi-file-pdf"></i></div>
-                        <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 5px; font-size: 0.9em;">Year 2025</div>
-                        <div style="font-size: 11px; color: var(--text-muted);">Upload PDF</div>
+                      <div style="border: 2px dashed var(--surface-300); border-radius: var(--radius-lg); padding: var(--spacing-md); background: var(--surface-50); text-align: center;">
+                        <div style="color: var(--info-500); font-size: 1.5em; margin-bottom: 6px;"><i class="pi pi-file-pdf"></i></div>
+                        <div style="font-weight: 600; color: var(--text-primary); font-size: 0.9em;">Upload statement (PDF)</div>
+                        <div style="font-size: 11px; color: var(--text-muted);">For the selected year</div>
                       </div>
+                      <button type="button" class="btn btn-ghost btn-sm" disabled title="Remove this year" style="margin-bottom: 2px;"><i class="pi pi-trash"></i></button>
                     </div>
+                    <button type="button" class="btn btn-secondary btn-sm" disabled style="width: 100%; border-style: dashed; margin-bottom: var(--spacing-md);"><i class="pi pi-plus" style="margin-right: 6px;"></i> Add another year</button>
                     
                     <div class="supplier-form-field" style="margin-top: var(--spacing-lg);">
                       <label><i class="pi pi-comment" style="margin-right: 6px; color: var(--info-500);"></i> Additional Financial Information</label>
@@ -18930,10 +19026,10 @@
                     </div>
                   </div>
                   
-                  <!-- Section 4: Manufacturer's Authorization -->
+                  <!-- Manufacturer's Authorization -->
                   <div style="margin-bottom: var(--spacing-xl);">
                     <div style="background: linear-gradient(135deg, var(--surface-50) 0%, var(--surface-100) 100%); padding: var(--spacing-lg); border-left: 4px solid var(--success-500); border-radius: 0 var(--radius-md) var(--radius-md) 0; margin-bottom: var(--spacing-lg);">
-                      <strong><i class="pi pi-verified" style="margin-right: 8px; color: var(--success-500);"></i> Section 4: Manufacturer's Authorization</strong>
+                      <strong><i class="pi pi-verified" style="margin-right: 8px; color: var(--success-500);"></i> Manufacturer's Authorization</strong>
                   </div>
                   
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-lg);">
@@ -21300,7 +21396,11 @@
       window.updateProcessTypeSelect = function(value) {
         generalInfoValues.processType = value;
         generalInfoValues.directContracting = value === 'Direct contracting / Sole sourcing';
+        if (value !== 'Secondary bidding against LTA/BPA' && (contractProvisionsValues.contractToBeAwarded || []).includes('call-off-lta')) {
+          contractProvisionsValues.contractToBeAwarded = (contractProvisionsValues.contractToBeAwarded || []).filter(v => v !== 'call-off-lta');
+        }
         renderCurrentBlock();
+        restoreProjectDetailsSectionStates();
       }
       
       // ===== PROJECT INFORMATION - AUTO-POPULATION FROM oneUNOPS PROJECT =====
@@ -23672,9 +23772,15 @@
                     <!-- Row 1: Contract to be awarded (col 1) | Language (col 2) | UNOPS Sample Contract (col 3) -->
                     <div class="form-group">
                       <label class="form-label">Contract to be awarded</label>
-                      <select class="form-select" multiple size="5" onchange="updateContractToBeAwarded(this)" onclick="event.stopPropagation()">
-                        ${CONTRACT_TYPES.map(t => `<option value="${t.value}" ${(contractProvisionsValues.contractToBeAwarded || []).includes(t.value) ? 'selected' : ''}>${t.label}</option>`).join('')}
+                      <select class="form-select" multiple size="7" onchange="updateContractToBeAwarded(this)" onclick="event.stopPropagation()">
+                        ${CONTRACT_TYPES.map(t => {
+                          const allowCallOffLta = generalInfoValues.processType === 'Secondary bidding against LTA/BPA';
+                          const disabled = (t.value === 'call-off-lta' && !allowCallOffLta) ? ' disabled' : '';
+                          const sel = (contractProvisionsValues.contractToBeAwarded || []).includes(t.value) ? 'selected' : '';
+                          return `<option value="${t.value}"${disabled} ${sel}>${t.label}</option>`;
+                        }).join('')}
                       </select>
+                      <span class="help-text">Call off orders against LTAs can only be selected when <strong>General → Solicitation → Process type</strong> is <strong>Secondary bidding against LTA/BPA</strong>.</span>
                     </div>
                     
                     <!-- Language of the contract: EN, FR, SP (column 2) -->
@@ -23702,6 +23808,26 @@
                         </div>
                       </div>
                     </div>
+                    
+                    ${(contractProvisionsValues.contractToBeAwarded || []).includes('lease') ? `
+                    <div class="form-group full-width" style="grid-column: 1 / -1;">
+                      <label class="form-label">SRM compliance document <span class="required">*</span></label>
+                      <div style="display: flex; flex-direction: column; gap: var(--spacing-sm);">
+                        ${(contractProvisionsValues.srmComplianceDocuments || []).map((doc) => `
+                          <div style="display: flex; align-items: center; gap: var(--spacing-sm); padding: 0.5rem 0.75rem; background: var(--surface-100); border-radius: var(--radius-sm);">
+                            <span class="pi pi-file-pdf" style="color: var(--text-secondary);"></span>
+                            <span style="flex: 1; font-size: 14px;">${(doc.name || 'Document').replace(/</g, '&lt;')}</span>
+                            <button type="button" class="btn-remove" onclick="event.stopPropagation(); removeSrmComplianceDocument('${doc.id}')" title="Remove">Remove</button>
+                          </div>
+                        `).join('')}
+                        <div style="display: flex; gap: var(--spacing-md); align-items: center; flex-wrap: wrap;">
+                          <input type="file" class="form-input" accept=".pdf,.doc,.docx" style="flex: 1; min-width: 200px;" id="srm-compliance-input" onchange="addSrmComplianceDocumentFromFile(this)" onclick="event.stopPropagation()" />
+                          <button type="button" class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); document.getElementById('srm-compliance-input').click()">Upload</button>
+                        </div>
+                      </div>
+                      <span class="help-text">Required when <strong>Lease</strong> is selected as a contract type to be awarded (implementation: validate on save).</span>
+                    </div>
+                    ` : ''}
                     
                     <!-- General Conditions of Contract (col 1) | GCC Document (col 2) -->
                     <div class="form-group">
@@ -23742,9 +23868,8 @@
                         <table class="special-conditions-table">
                           <thead>
                             <tr>
-                              <th class="cell-title">Title / Risk area</th>
-                              <th class="cell-description">Special Condition of Contract</th>
                               <th class="cell-clause">Clause in GCC (optional)</th>
+                              <th class="cell-description">Special Condition of Contract</th>
                               <th class="cell-type">Type</th>
                               <th class="cell-actions"></th>
                             </tr>
@@ -23752,14 +23877,11 @@
                           <tbody>
                             ${(contractProvisionsValues.specialConditionsClauses || []).map((clause) => `
                             <tr>
-                              <td class="cell-title">
-                                <input type="text" class="table-input" placeholder="Title" value="${(clause.title || '').replace(/"/g, '&quot;')}" onchange="updateSpecialConditionClause('${clause.id}', 'title', this.value)" onclick="event.stopPropagation()" />
-                              </td>
-                              <td class="cell-description">
-                                <textarea class="table-textarea" placeholder="Description" rows="2" onchange="updateSpecialConditionClause('${clause.id}', 'description', this.value)" onclick="event.stopPropagation()">${(clause.description || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</textarea>
-                              </td>
                               <td class="cell-clause">
                                 <input type="text" class="table-input" placeholder="e.g. Article no." value="${(clause.clauseInGCC || '').replace(/"/g, '&quot;')}" onchange="updateSpecialConditionClause('${clause.id}', 'clauseInGCC', this.value)" onclick="event.stopPropagation()" />
+                              </td>
+                              <td class="cell-description">
+                                <textarea class="table-textarea" placeholder="Special condition text" rows="2" onchange="updateSpecialConditionClause('${clause.id}', 'description', this.value)" onclick="event.stopPropagation()">${(clause.description || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</textarea>
                               </td>
                               <td class="cell-type">
                                 <span class="type-badge Special">Special</span>
