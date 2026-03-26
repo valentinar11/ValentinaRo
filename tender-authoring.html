@@ -10561,7 +10561,7 @@
         bidSecurity: '',
         bidderEligibility: '',
         paymentTerms: '',
-        incoterms: []
+        incoterms: ['DDP', 'FCA', 'DPU']
       };
       
       // Evaluation Block - Field Values for Conditional Visibility
@@ -13740,10 +13740,9 @@
           total = 1;
           completed = 0;
         } else if (sectionType === 'other-req') {
-          total = 3;
+          total = 2;
           completed = tenderAuthorConfig.serviceDescriptions.length > 0 ? 1 : 0;
           completed += tenderAuthorConfig.specificRequirements.length > 0 ? 1 : 0;
-          completed += (tenderAuthorConfig.deliveryDestinations && tenderAuthorConfig.deliveryDestinations.length > 0) ? 1 : 0;
         } else if (sectionType === 'key-dates') {
           total = 3;
           completed = 0;
@@ -16975,7 +16974,8 @@
         event.target.value = '';
       }
       
-      const DELIVERY_DESTINATION_INCOTERMS = ['EXW', 'FCA', 'CPT', 'CIP', 'DAP', 'DPU', 'DDP', 'FAS', 'FOB', 'CFR', 'CIF'];
+      const DELIVERY_DESTINATION_CD_INCOTERMS = ['CFR', 'CIF', 'CPT', 'CIP', 'DAP', 'DPU', 'DDP'];
+      const DELIVERY_DESTINATION_EF_INCOTERMS = ['EXW', 'FCA', 'FAS', 'FOB'];
       
       // Render Other Requirements Content (3-column layout)
       function renderOtherRequirementsContent() {
@@ -17000,6 +17000,18 @@
             uniqueUnspscForDest.push(item);
           }
         });
+
+        const tenderIncoterms = particularsValues.incoterms || [];
+        const cdIncotermOptions = DELIVERY_DESTINATION_CD_INCOTERMS.filter(code => tenderIncoterms.includes(code));
+        const vendorPlaceIncoterms = DELIVERY_DESTINATION_EF_INCOTERMS.filter(code => tenderIncoterms.includes(code));
+        const tenderIncotermsLabel = tenderIncoterms.length ? tenderIncoterms.join(', ') : '— none selected —';
+        const vendorPlaceRowsHtml = vendorPlaceIncoterms.map(code => `
+                    <div class="service-line-compact" style="flex-wrap: wrap; align-items: flex-start; background: var(--surface-100); border: 1px dashed var(--surface-300); border-radius: var(--radius-sm);">
+                      <span style="flex: 0 0 auto; min-width: 72px; font-size: 12px; padding: 8px 10px; font-weight: 600; color: var(--text-primary);" title="From Particulars — vendor defines place">${code}</span>
+                      <input type="text" class="form-input" readonly value="Vendor/Offeror to define the delivery place" aria-readonly="true" style="flex: 2; min-width: 180px; font-size: 12px; padding: 6px 10px; background: var(--surface-50); color: var(--text-secondary); cursor: default;" />
+                      <span style="font-size: 12px; padding: 8px 10px; color: var(--text-secondary); white-space: nowrap;">All products</span>
+                      <span style="font-size: 11px; padding: 8px 6px; color: var(--text-muted); font-style: italic;">Particulars</span>
+                    </div>`).join('');
 
         return `
           <!-- Related requirement - Priced Items -->
@@ -17135,9 +17147,22 @@
               <div style="background: var(--surface-100); border: 1px solid var(--surface-200); border-radius: var(--radius-sm); padding: 8px 12px; margin-bottom: var(--spacing-sm); font-size: 11px; color: var(--text-secondary);">
                 <strong style="color: var(--text-primary);">📍 Destinations:</strong> Add one line per destination rule. Choose the <strong>Incoterm</strong> that applies, describe the <strong>delivery destination</strong> (place, site, or address as required), and <strong>assign</strong> the line to the whole tender or to specific catalogue lines / products.
               </div>
+              <div style="background: var(--info-50); border: 1px solid var(--info-200); border-radius: var(--radius-sm); padding: 8px 12px; margin-bottom: var(--spacing-sm); font-size: 11px; color: var(--info-800);">
+                <strong>Demo / behaviour:</strong> <strong>Particulars → Incoterms</strong> currently: <strong>${tenderIncotermsLabel}</strong>.
+                C/D terms in Particulars (<strong>CFR, CIF, CPT, CIP, DAP, DPU, DDP</strong>) appear in the line Incoterm dropdown; E/F terms (<strong>EXW, FCA, FAS, FOB</strong>) show as fixed <em>vendor-place</em> rows below.
+                <span style="color: var(--text-secondary);"> No validation — adding destination lines is optional.</span>
+              </div>
+              ${vendorPlaceRowsHtml ? `
+                <div style="margin-bottom: var(--spacing-sm);">
+                  <div style="font-size: 11px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px;">From Particulars (vendor / offeror defines place)</div>
+                  <div style="display: flex; flex-direction: column; gap: var(--spacing-sm);">
+                    ${vendorPlaceRowsHtml}
+                  </div>
+                </div>
+              ` : ''}
               ${!tenderAuthorConfig.deliveryDestinations || tenderAuthorConfig.deliveryDestinations.length === 0 ? `
                 <div style="text-align: center; padding: var(--spacing-md); color: var(--text-muted); font-size: 12px; border: 1px dashed var(--surface-300); border-radius: var(--radius-sm);">
-                  No delivery destination lines. Click "+ Add line" to define destinations per Incoterm and link them to products.
+                  No author-added destination lines (optional). Click "+ Add line" to describe a place for a C/D Incoterm from Particulars${cdIncotermOptions.length ? ' (' + cdIncotermOptions.join(', ') + ' available)' : ''}.
                 </div>
               ` : `
                 <div style="display: flex; flex-direction: column; gap: var(--spacing-sm);">
@@ -17146,11 +17171,14 @@
                     const isEntireTender = applyToArray.includes('all');
                     const selectedProducts = applyToArray.filter(v => String(v).startsWith('unspsc_'));
                     let displayText = isEntireTender ? 'All products' : (selectedProducts.length === 1 ? '1 product' : selectedProducts.length + ' products');
+                    const rowCdOptions = cdIncotermOptions.slice();
+                    if (row.incoterm && !rowCdOptions.includes(row.incoterm)) rowCdOptions.push(row.incoterm);
+                    const incotermOptionsHtml = rowCdOptions.map(ic => '<option value="' + ic + '"' + (row.incoterm === ic ? ' selected' : '') + '>' + ic + '</option>').join('');
                     return `
                     <div class="service-line-compact" style="flex-wrap: wrap; align-items: flex-start;">
-                      <select class="form-select" onchange="updateDeliveryDestinationLine(${idx}, 'incoterm', this.value)" style="flex: 0 0 auto; width: 100px; font-size: 12px; padding: 6px 10px;" title="Incoterm">
+                      <select class="form-select" onchange="updateDeliveryDestinationLine(${idx}, 'incoterm', this.value)" style="flex: 0 0 auto; width: 100px; font-size: 12px; padding: 6px 10px;" title="Only C/D Incoterms selected in Particulars">
                         <option value="">Incoterm…</option>
-                        ${DELIVERY_DESTINATION_INCOTERMS.map(ic => '<option value="' + ic + '"' + (row.incoterm === ic ? ' selected' : '') + '>' + ic + '</option>').join('')}
+                        ${incotermOptionsHtml}
                       </select>
                       <input type="text" class="form-input" value="${(row.destination || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;')}" placeholder="Destination (place, site, address…)" onchange="updateDeliveryDestinationLine(${idx}, 'destination', this.value)" style="flex: 2; min-width: 180px; font-size: 12px; padding: 6px 10px;" />
                       <div class="apply-to-multiselect" id="delivery-apply-to-${idx}">
@@ -21745,9 +21773,11 @@
       }
       
       window.updateParticularsIncoterms = function(selectElement) {
+        saveProjectDetailsSectionStates();
         const selectedOptions = Array.from(selectElement.selectedOptions).map(opt => opt.value);
         particularsValues.incoterms = selectedOptions;
-        // Note: No need to re-render for multiselect since it doesn't trigger conditional visibility
+        renderCurrentBlock();
+        restoreProjectDetailsSectionStates();
       }
 
       // ===== TENDER AUTHOR CONFIGURATION SECTION =====
@@ -21756,7 +21786,7 @@
       
       let tenderAuthorConfig = {
         serviceDescriptions: [], // [{ name, description, applyTo: ['all'] or ['lot_1', 'lot_2'], isMandatory }]
-        deliveryDestinations: [], // [{ incoterm, destination, applyTo: ['all'] or ['unspsc_CODE', ...] }]
+        deliveryDestinations: [{ incoterm: 'DDP', destination: 'UNOPS Copenhagen, Denmark (demo)', applyTo: ['all'] }], // optional author lines; demo seeds one DDP row when Particulars include DDP
         deliveryConfig: {
           deliveryTime: '',
           deliveryPlace: '',
@@ -23385,20 +23415,20 @@
                 
                 <div class="form-group">
                   <label class="form-label">Incoterms</label>
-                  <select class="form-select" id="particulars-incoterms" multiple size="5" onchange="updateParticularsIncoterms(this)">
-                    <option value="EXW">EXW - Ex Works</option>
-                    <option value="FCA">FCA - Free Carrier</option>
-                    <option value="CPT">CPT - Carriage Paid To</option>
-                    <option value="CIP">CIP - Carriage and Insurance Paid To</option>
-                    <option value="DAP">DAP - Delivered at Place</option>
-                    <option value="DPU">DPU - Delivered at Place Unloaded</option>
-                    <option value="DDP">DDP - Delivered Duty Paid</option>
-                    <option value="FAS">FAS - Free Alongside Ship</option>
-                    <option value="FOB">FOB - Free on Board</option>
-                    <option value="CFR">CFR - Cost and Freight</option>
-                    <option value="CIF">CIF - Cost, Insurance and Freight</option>
+                  <select class="form-select" id="particulars-incoterms" multiple size="8" onchange="updateParticularsIncoterms(this)">
+                    <option value="EXW" ${particularsValues.incoterms.includes('EXW') ? 'selected' : ''}>EXW - Ex Works</option>
+                    <option value="FCA" ${particularsValues.incoterms.includes('FCA') ? 'selected' : ''}>FCA - Free Carrier</option>
+                    <option value="CPT" ${particularsValues.incoterms.includes('CPT') ? 'selected' : ''}>CPT - Carriage Paid To</option>
+                    <option value="CIP" ${particularsValues.incoterms.includes('CIP') ? 'selected' : ''}>CIP - Carriage and Insurance Paid To</option>
+                    <option value="DAP" ${particularsValues.incoterms.includes('DAP') ? 'selected' : ''}>DAP - Delivered at Place</option>
+                    <option value="DPU" ${particularsValues.incoterms.includes('DPU') ? 'selected' : ''}>DPU - Delivered at Place Unloaded</option>
+                    <option value="DDP" ${particularsValues.incoterms.includes('DDP') ? 'selected' : ''}>DDP - Delivered Duty Paid</option>
+                    <option value="FAS" ${particularsValues.incoterms.includes('FAS') ? 'selected' : ''}>FAS - Free Alongside Ship</option>
+                    <option value="FOB" ${particularsValues.incoterms.includes('FOB') ? 'selected' : ''}>FOB - Free on Board</option>
+                    <option value="CFR" ${particularsValues.incoterms.includes('CFR') ? 'selected' : ''}>CFR - Cost and Freight</option>
+                    <option value="CIF" ${particularsValues.incoterms.includes('CIF') ? 'selected' : ''}>CIF - Cost, Insurance and Freight</option>
                   </select>
-                  <span class="help-text">Hold Ctrl/Cmd to select multiple Incoterms (2020)</span>
+                  <span class="help-text">Hold Ctrl/Cmd to select multiple Incoterms (2020). Demo default: DDP, FCA, DPU — drives Delivery destinations below.</span>
                 </div>
                 
                 <div class="form-group">
