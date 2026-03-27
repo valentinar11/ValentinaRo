@@ -6259,53 +6259,351 @@
             color: var(--text-primary);
         }
 
-        /* Amendment card styles for tabs */
+        /* Amendment cards — clean white layout, typographic hierarchy, unified change log table */
         .amendment-card {
-            background: var(--surface-50);
-            border-radius: var(--radius-sm);
-            padding: var(--spacing-md);
-            margin-bottom: var(--spacing-sm);
-            border-left: 3px solid var(--warning-500);
+            background: var(--surface-0);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg) var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+            border: 1px solid var(--surface-200);
+            box-shadow: var(--shadow-sm);
         }
 
         .amendment-header-card {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: var(--spacing-xs);
+            align-items: flex-start;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-sm);
         }
 
         .amendment-badge {
-            font-size: 11px;
+            font-size: 18px;
             font-weight: 600;
-            color: var(--warning-600);
-            background: var(--warning-50);
-            padding: 2px 8px;
-            border-radius: var(--radius-sm);
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+            background: none;
+            padding: 0;
+            border-radius: 0;
+        }
+
+        .amendment-badge i {
+            color: var(--primary-500);
+            margin-right: 6px;
+            font-size: 16px;
+            vertical-align: -1px;
         }
 
         .amendment-date-card {
-            font-size: 11px;
+            font-size: 13px;
             color: var(--text-muted);
+            font-weight: 400;
+            white-space: nowrap;
         }
 
         .amendment-title {
             font-weight: 600;
-            font-size: 14px;
+            font-size: 15px;
             color: var(--text-primary);
             margin-bottom: var(--spacing-xs);
         }
 
         .amendment-description {
-            font-size: 13px;
+            font-size: 14px;
             color: var(--text-secondary);
-            line-height: 1.5;
+            line-height: 1.55;
             margin-bottom: var(--spacing-sm);
         }
 
         .amendment-actions {
             display: flex;
-            gap: var(--spacing-xs);
+            gap: var(--spacing-sm);
+            flex-wrap: wrap;
+            align-items: center;
+            margin-top: var(--spacing-md);
+            padding-top: var(--spacing-md);
+            border-top: 1px solid var(--surface-200);
+        }
+
+        .amendment-meta-strip {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 14px;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .amendment-tier-pill {
+            font-weight: 500;
+            color: var(--text-primary);
+            padding: 0;
+            border-radius: 0;
+            border: none;
+            background: none;
+        }
+
+        .amendment-tier-pill::before {
+            content: "";
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            margin-right: 8px;
+            vertical-align: 2px;
+            background: var(--primary-500);
+        }
+
+        .amendment-meta-sep {
+            color: var(--surface-300);
+            font-weight: 300;
+            user-select: none;
+        }
+
+        .amendment-bid-impact-inline {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+            color: var(--danger-500);
+            background: none;
+            border: none;
+            padding: 0;
+            font-size: 13px;
+        }
+
+        .amendment-bid-impact-inline i {
+            font-size: 14px;
+        }
+
+        .amendment-categories-line {
+            font-size: 13px;
+            line-height: 1.5;
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .amendment-categories-line .amendment-cat-label {
+            color: var(--text-muted);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-right: 8px;
+        }
+
+        .amendment-author-fields {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .amendment-author-field-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 6px;
+        }
+
+        .amendment-author-field-text {
+            font-size: 14px;
+            line-height: 1.55;
+            color: var(--text-primary);
+            padding: 10px 12px;
+            border: 1px solid var(--surface-200);
+            border-radius: var(--radius-md);
+            border-left: 3px solid var(--primary-200);
+            background: var(--surface-0);
+        }
+
+        .amendment-changelog-details {
+            margin-top: var(--spacing-sm);
+        }
+
+        .amendment-changelog-details > summary {
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 12px 14px;
+            margin: 0 calc(-1 * var(--spacing-md));
+            border-radius: var(--radius-md);
+            border: 1px solid var(--surface-200);
+            background: var(--surface-0);
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            transition: border-color 0.15s ease, background 0.15s ease;
+        }
+
+        .amendment-changelog-details > summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .amendment-changelog-details > summary:hover {
+            border-color: var(--primary-200);
+            background: var(--primary-50);
+        }
+
+        .amendment-changelog-details > summary:focus {
+            outline: 2px solid var(--primary-400);
+            outline-offset: 2px;
+        }
+
+        .amendment-changelog-details[open] > summary {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            border-bottom-color: transparent;
+            background: var(--primary-50);
+            border-color: var(--primary-200);
+        }
+
+        .amendment-changelog-summary-chevron {
+            color: var(--text-muted);
+            font-size: 12px;
+            transition: transform 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .amendment-changelog-details[open] .amendment-changelog-summary-chevron {
+            transform: rotate(180deg);
+        }
+
+        .amendment-changelog-count {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .amendment-changelog-summary-end {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .amendment-changelog-panel {
+            margin: 0 calc(-1 * var(--spacing-md));
+            padding: 0 var(--spacing-md) var(--spacing-md);
+            border: 1px solid var(--primary-200);
+            border-top: none;
+            border-radius: 0 0 var(--radius-md) var(--radius-md);
+            background: var(--surface-0);
+        }
+
+        .amendment-changelog-table-wrap {
+            overflow-x: auto;
+            padding-top: var(--spacing-sm);
+        }
+
+        .amendment-changelog-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            line-height: 1.45;
+        }
+
+        .amendment-changelog-table thead th {
+            text-align: left;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            padding: 10px 12px;
+            border-bottom: 2px solid var(--text-primary);
+            white-space: nowrap;
+        }
+
+        .amendment-changelog-table tbody td {
+            padding: 12px;
+            vertical-align: top;
+            border-bottom: 1px solid var(--surface-200);
+            color: var(--text-primary);
+        }
+
+        .amendment-changelog-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .amendment-changelog-table .amend-col-block {
+            font-weight: 600;
+            color: var(--text-primary);
+            width: 18%;
+            min-width: 7rem;
+        }
+
+        .amendment-changelog-table .amend-col-section {
+            color: var(--text-secondary);
+            width: 20%;
+            min-width: 8rem;
+        }
+
+        .amendment-changelog-table .amend-col-field {
+            font-weight: 500;
+            width: 20%;
+            min-width: 8rem;
+        }
+
+        /* Product / table-style rows: Added · Removed · Updated vs scalar Value change */
+        .amendment-changelog-table .amend-col-action {
+            width: 1%;
+            min-width: 6.5rem;
+            white-space: nowrap;
+            font-size: 12px;
+            font-weight: 600;
+            vertical-align: top;
+        }
+
+        .amendment-changelog-table .amend-action-value {
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .amendment-changelog-table .amend-action-updated {
+            color: var(--text-primary);
+        }
+
+        .amendment-changelog-table .amend-action-added {
+            color: var(--primary-600);
+        }
+
+        .amendment-changelog-table .amend-action-removed {
+            color: var(--text-secondary);
+        }
+
+        .amendment-changelog-table .amend-col-before {
+            color: var(--text-muted);
+            text-decoration: line-through;
+            text-decoration-color: var(--surface-600);
+        }
+
+        .amendment-changelog-table .amend-col-after {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .amendment-changelog-table .amend-col-empty {
+            color: var(--text-muted);
+            text-decoration: none !important;
+            font-style: normal;
+        }
+
+        .amendment-changelog-table td.amend-col-before.amend-col-empty {
+            text-decoration: none;
+        }
+
+        @media (max-width: 720px) {
+            .amendment-changelog-table .amend-col-block,
+            .amendment-changelog-table .amend-col-section {
+                min-width: 5rem;
+            }
         }
 
         /* Country tags */
@@ -8830,27 +9128,147 @@
 
                             <div class="amendment-card">
                                 <div class="amendment-header-card">
-                                    <span class="amendment-badge"><i class="pi pi-pencil" style="font-size: 9px; margin-right: 4px;"></i>Amendment #2</span>
-                                    <span class="amendment-date-card">18 Dec 2024</span>
+                                    <span class="amendment-badge"><i class="pi pi-pencil" aria-hidden="true"></i>Amendment #2</span>
+                                    <span class="amendment-date-card">Posted 18 Dec 2024, 14:32</span>
                                 </div>
-                                <div class="amendment-title">Clarification Deadline Extension</div>
-                                <p class="amendment-description">The clarification deadline has been extended from 5 January 2025 to 10 January 2025 to allow additional time for supplier queries.</p>
+                                <div class="amendment-meta-strip">
+                                    <span class="amendment-tier-pill tier-1">Tier 1 — Author posted</span>
+                                </div>
+                                <p class="amendment-categories-line"><span class="amendment-cat-label">Categories</span>General deadline extension</p>
+                                <div class="amendment-author-fields">
+                                    <div class="amendment-author-field">
+                                        <span class="amendment-author-field-label">Amendment Description</span>
+                                        <div class="amendment-author-field-text">Extension of the clarification deadline so suppliers have additional time to submit questions before bid preparation.</div>
+                                    </div>
+                                    <div class="amendment-author-field">
+                                        <span class="amendment-author-field-label">Justification/instructions to Bidders</span>
+                                        <div class="amendment-author-field-text">The clarification deadline is now <strong>10 January 2025, 17:00 (local time)</strong>. You may submit further clarification requests until that time. This change does not invalidate submitted bids and does not require resubmission.</div>
+                                    </div>
+                                </div>
+                                <details class="amendment-changelog-details">
+                                    <summary>
+                                        <span>Change log</span>
+                                        <span class="amendment-changelog-summary-end">
+                                            <span class="amendment-changelog-count">1 change</span>
+                                            <i class="pi pi-chevron-down amendment-changelog-summary-chevron" aria-hidden="true"></i>
+                                        </span>
+                                    </summary>
+                                    <div class="amendment-changelog-panel">
+                                        <div class="amendment-changelog-table-wrap">
+                                            <table class="amendment-changelog-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Block</th>
+                                                        <th scope="col">Section</th>
+                                                        <th scope="col">Action</th>
+                                                        <th scope="col">Field / line</th>
+                                                        <th scope="col">Before</th>
+                                                        <th scope="col">After</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="amend-col-block">Particulars</td>
+                                                        <td class="amend-col-section">Key dates</td>
+                                                        <td class="amend-col-action"><span class="amend-action-value">Value change</span></td>
+                                                        <td class="amend-col-field">Clarification deadline</td>
+                                                        <td class="amend-col-before">5 January 2025, 17:00 (local)</td>
+                                                        <td class="amend-col-after">10 January 2025, 17:00 (local)</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </details>
                                 <div class="amendment-actions">
-                                    <button class="btn btn-link btn-sm"><i class="pi pi-file" style="font-size: 11px;"></i> View Notice</button>
-                                    <button class="btn btn-link btn-sm"><i class="pi pi-pencil" style="font-size: 11px;"></i> Edit</button>
+                                    <button type="button" class="btn btn-secondary btn-sm"><i class="pi pi-eye" style="font-size: 11px;" aria-hidden="true"></i> View tender at this revision</button>
+                                    <button type="button" class="btn btn-link btn-sm"><i class="pi pi-file" style="font-size: 11px;"></i> View notice</button>
                                 </div>
                             </div>
 
                             <div class="amendment-card">
                                 <div class="amendment-header-card">
-                                    <span class="amendment-badge"><i class="pi pi-pencil" style="font-size: 9px; margin-right: 4px;"></i>Amendment #1</span>
-                                    <span class="amendment-date-card">12 Dec 2024</span>
+                                    <span class="amendment-badge"><i class="pi pi-pencil" aria-hidden="true"></i>Amendment #1</span>
+                                    <span class="amendment-date-card">Posted 12 Dec 2024, 09:15</span>
                                 </div>
-                                <div class="amendment-title">Technical Specification Update</div>
-                                <p class="amendment-description">Updated specifications for Patient Monitors (Item 2) - IBP monitoring is now optional instead of required.</p>
+                                <div class="amendment-meta-strip">
+                                    <span class="amendment-tier-pill tier-2">Tier 2 — TME &amp; PR review</span>
+                                    <span class="amendment-meta-sep" aria-hidden="true">|</span>
+                                    <span class="amendment-bid-impact-inline" role="status"><i class="pi pi-exclamation-triangle" aria-hidden="true"></i> Bid impact — submitted bids auto-withdrawn</span>
+                                </div>
+                                <p class="amendment-categories-line"><span class="amendment-cat-label">Categories</span>Document revision, Scope / specification change</p>
+                                <div class="amendment-author-fields">
+                                    <div class="amendment-author-field">
+                                        <span class="amendment-author-field-label">Amendment Description</span>
+                                        <div class="amendment-author-field-text">Update to the contract instrument, product schedule alignment with the approved requisition, correction of Item 2 specifications, addition of syringe pumps, and removal of a discontinued IV stand line.</div>
+                                    </div>
+                                    <div class="amendment-author-field">
+                                        <span class="amendment-author-field-label">Justification/instructions to Bidders</span>
+                                        <div class="amendment-author-field-text">Please review the published notice and tender documents. The contract type, Item 2 requirements, new Item 5, and removal of Item 4 are material to your offer. <strong>Submitted bids were withdrawn by the system;</strong> you must resubmit by the deadline in the notice if you wish to remain in contention.</div>
+                                    </div>
+                                </div>
+                                <details class="amendment-changelog-details">
+                                    <summary>
+                                        <span>Change log</span>
+                                        <span class="amendment-changelog-summary-end">
+                                            <span class="amendment-changelog-count">4 changes</span>
+                                            <i class="pi pi-chevron-down amendment-changelog-summary-chevron" aria-hidden="true"></i>
+                                        </span>
+                                    </summary>
+                                    <div class="amendment-changelog-panel">
+                                        <div class="amendment-changelog-table-wrap">
+                                            <table class="amendment-changelog-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Block</th>
+                                                        <th scope="col">Section</th>
+                                                        <th scope="col">Action</th>
+                                                        <th scope="col">Field / line</th>
+                                                        <th scope="col">Before</th>
+                                                        <th scope="col">After</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="amend-col-block">Particulars</td>
+                                                        <td class="amend-col-section">Contract terms</td>
+                                                        <td class="amend-col-action"><span class="amend-action-value">Value change</span></td>
+                                                        <td class="amend-col-field">Type of contract to be awarded</td>
+                                                        <td class="amend-col-before">BPA</td>
+                                                        <td class="amend-col-after">LTA</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="amend-col-block">Schedule of requirements</td>
+                                                        <td class="amend-col-section">Products</td>
+                                                        <td class="amend-col-action"><span class="amend-action-updated">Updated</span></td>
+                                                        <td class="amend-col-field">Item 2 — Patient Monitor</td>
+                                                        <td class="amend-col-before">IBP monitoring: Required</td>
+                                                        <td class="amend-col-after">IBP monitoring: Optional</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="amend-col-block">Schedule of requirements</td>
+                                                        <td class="amend-col-section">Products</td>
+                                                        <td class="amend-col-action"><span class="amend-action-added">Added</span></td>
+                                                        <td class="amend-col-field">Item 5 — Syringe pump</td>
+                                                        <td class="amend-col-before amend-col-empty">—</td>
+                                                        <td class="amend-col-after">New line · Qty 12 · Lot 1</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="amend-col-block">Schedule of requirements</td>
+                                                        <td class="amend-col-section">Products</td>
+                                                        <td class="amend-col-action"><span class="amend-action-removed">Removed</span></td>
+                                                        <td class="amend-col-field">Item 4 — IV stand</td>
+                                                        <td class="amend-col-before">Line on schedule (Qty 6)</td>
+                                                        <td class="amend-col-after amend-col-empty">—</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </details>
                                 <div class="amendment-actions">
-                                    <button class="btn btn-link btn-sm"><i class="pi pi-file" style="font-size: 11px;"></i> View Notice</button>
-                                    <button class="btn btn-link btn-sm"><i class="pi pi-list" style="font-size: 11px;"></i> View Changes</button>
+                                    <button type="button" class="btn btn-secondary btn-sm"><i class="pi pi-eye" style="font-size: 11px;" aria-hidden="true"></i> View tender at this revision</button>
+                                    <button type="button" class="btn btn-link btn-sm"><i class="pi pi-file" style="font-size: 11px;"></i> View notice</button>
                                 </div>
                             </div>
                         </div>
