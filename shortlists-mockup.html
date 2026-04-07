@@ -443,7 +443,6 @@
             display: inline-block;
         }
         .status-badge.draft { background: var(--surface-200); color: var(--text-secondary); }
-        .status-badge.submitted { background: var(--info-50); color: var(--info-400); }
         .status-badge.approved { background: var(--success-50); color: var(--success-500); }
         .status-badge.preclearance { background: var(--warning-50); color: var(--warning-500); }
         .status-badge.cancelled { background: var(--danger-50); color: var(--danger-500); }
@@ -1179,11 +1178,11 @@
                             <select class="form-select" id="f-status">
                                 <option value="">Any</option>
                                 <option value="draft">Draft</option>
-                                <option value="submitted">Submitted for approval</option>
-                                <option value="approved">Approved</option>
                                 <option value="preclearance">In pre-clearance</option>
+                                <option value="approved">Approved</option>
                                 <option value="cancelled">Cancelled</option>
                             </select>
+                            <span class="help-text">Same status whether the shortlist is awaiting reviewer action or the linked tender is in pre-clearance.</span>
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="f-org">Org. unit</label>
@@ -1225,7 +1224,7 @@
                                     <td>Thailand Operational Hub</td>
                                     <td>450,000</td>
                                     <td><span class="process-source pq">PQ</span></td>
-                                    <td><span class="status-badge preclearance">Pre-clearance</span></td>
+                                    <td><span class="status-badge preclearance">In pre-clearance</span></td>
                                     <td>12 Mar 2026<br><span style="color:var(--text-muted); font-size:12px;">A. Kumar</span></td>
                                     <td class="shortlist-row-actions" onclick="event.stopPropagation()">
                                         <div class="row-actions-wrap">
@@ -1361,7 +1360,7 @@
                         <div class="form-actions-bar">
                             <button type="submit" class="btn btn-primary"><i class="pi pi-save"></i> Save draft</button>
                             <button type="button" class="btn btn-secondary" onclick="mockSubmitShortlist()"><i class="pi pi-send"></i> Submit for approval</button>
-                            <button type="button" class="btn btn-ghost" onclick="resetCreateForm()">Reset form</button>
+                            <button type="button" class="btn btn-ghost" onclick="discardCreateForm()" aria-label="Discard unsaved create form">Discard</button>
                         </div>
                     </form>
                 </div>
@@ -1564,14 +1563,13 @@
                 procurementReviewer: 'Anita Kumar — a.kumar@unops.org',
                 process: 'pq',
                 statusKey: 'preclearance',
-                statusLabel: 'Pre-clearance',
+                statusLabel: 'In pre-clearance',
                 canAmend: false,
                 amendDisabledReason: 'Amend is not available while the shortlist is in pre-clearance.',
                 workflowTimeline: [
                     { state: 'complete', title: 'Draft prepared', meta: '28 Feb 2026 · Jane Doe', note: 'Shortlist prepared from PQ outcome.' },
-                    { state: 'complete', title: 'Submitted for approval', meta: '1 Mar 2026 · Jane Doe', note: 'Sent to procurement reviewer.' },
-                    { state: 'complete', title: 'Approved', meta: '12 Mar 2026 · A. Kumar', note: 'Procurement reviewer approved the shortlist.' },
-                    { state: 'current', title: 'Pre-clearance', meta: 'Linked tender ITB/2024/089', note: 'Tender package is in pre-clearance. Vendors on this shortlist are eligible for invitation once cleared.' }
+                    { state: 'complete', title: 'Approved', meta: '12 Mar 2026 · A. Kumar', note: 'Procurement reviewer approved the shortlist (submitted 1 Mar 2026).' },
+                    { state: 'current', title: 'In pre-clearance', meta: 'Linked tender ITB/2024/089', note: 'Pre-clearance is the same lifecycle stage as “submitted for approval”: reviewer workflow and tender package pre-clearance. Vendors on this shortlist are eligible for invitation once cleared.' }
                 ],
                 amendments: []
             },
@@ -1590,10 +1588,8 @@
                 amendDisabledReason: '',
                 workflowTimeline: [
                     { state: 'complete', title: 'Shortlist initialized', meta: '5 Mar 2026 · Jane Doe', note: 'Ad-hoc shortlist created in this module.' },
-                    { state: 'current', title: 'Draft', meta: 'In progress', note: 'Amend fields and submit for approval when ready.' },
-                    { state: 'pending', title: 'Submitted for approval', meta: '—', note: 'Awaiting submission to reviewer.' },
-                    { state: 'pending', title: 'Approval', meta: '—', note: 'Procurement reviewer decision.' },
-                    { state: 'pending', title: 'Pre-clearance', meta: '—', note: 'After approval, linked tender proceeds through pre-clearance.' }
+                    { state: 'current', title: 'Draft', meta: 'In progress', note: 'Amend fields and submit when ready.' },
+                    { state: 'pending', title: 'In pre-clearance', meta: '—', note: 'Next stage: same status covers submission for reviewer approval and tender pre-clearance (not separate states).' }
                 ],
                 amendments: []
             },
@@ -1612,7 +1608,7 @@
                 amendDisabledReason: 'Amend is not available after approval for this process type (mock rule).',
                 workflowTimeline: [
                     { state: 'complete', title: 'EOI review', meta: 'Jan 2026 · Procurement', note: 'Respondents meeting minimum criteria carried forward from EOI/2025/044.' },
-                    { state: 'complete', title: 'Submitted for approval', meta: '25 Jan 2026 · Jane Doe', note: '—' },
+                    { state: 'complete', title: 'Sent to reviewer', meta: '25 Jan 2026 · Jane Doe', note: 'Within the in pre-clearance stage (before approval was recorded).' },
                     { state: 'complete', title: 'Approved', meta: '02 Feb 2026 · M. Okafor', note: 'Approved under delegation of authority.' },
                     { state: 'current', title: 'Ready for procurement', meta: 'Active', note: 'Use for limited tender or RFQ per your procurement plan.' }
                 ],
@@ -2125,7 +2121,7 @@
             input.value = '';
         }
 
-        function resetCreateForm() {
+        function discardCreateForm() {
             document.getElementById('form-shortlist').reset();
             vendorList = [];
             authorList = [];
@@ -2208,8 +2204,8 @@
                 alert('Please add at least one vendor before submitting.');
                 return;
             }
-            alert('Mock: submitted for approval. After approval, the shortlist proceeds to pre-clearance.');
-            if (mode !== 'detail') resetCreateForm();
+            alert('Mock: submitted. Status is now In pre-clearance (submission for reviewer and tender pre-clearance use the same status).');
+            if (mode !== 'detail') discardCreateForm();
         }
 
         function openCancelModal(id) {
