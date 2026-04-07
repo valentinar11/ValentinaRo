@@ -1,0 +1,2255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNOPS Procurement | Shortlists</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/primeicons@6.0.1/primeicons.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary-50: #e6f7ff;
+            --primary-100: #bae7ff;
+            --primary-400: #0ea5e9;
+            --primary-500: #0092D1;
+            --primary-600: #0284c7;
+            --primary-700: #0369a1;
+            --surface-0: #ffffff;
+            --surface-50: #f5f8fb;
+            --surface-100: #ebf1f8;
+            --surface-200: #dde8f2;
+            --surface-300: #cfdfec;
+            --surface-600: #95a7ba;
+            --surface-800: #596170;
+            --surface-900: #3b3e4a;
+            --success-500: #4c9f38;
+            --success-50: #d2e7cd;
+            --info-400: #0092d1;
+            --info-50: #bfe4f4;
+            --warning-500: #e85c0e;
+            --warning-50: #f9d6c3;
+            --danger-500: #da291c;
+            --danger-50: #f6cac6;
+            --text-primary: var(--surface-900);
+            --text-secondary: var(--surface-800);
+            --text-muted: var(--surface-600);
+            --spacing-xs: 6px;
+            --spacing-sm: 12px;
+            --spacing-md: 20px;
+            --spacing-lg: 28px;
+            --spacing-xl: 36px;
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+            --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: 'Lato', 'Noto Sans', system-ui, sans-serif;
+            background: var(--surface-50);
+            color: var(--text-primary);
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--primary-500);
+            color: white;
+            padding: 8px 16px;
+            z-index: 10000;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .skip-link:focus { top: 0; }
+
+        .header {
+            background: var(--surface-0);
+            border-bottom: 1px solid var(--surface-200);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--spacing-md) var(--spacing-xl);
+        }
+        .logo-container { display: flex; align-items: center; gap: var(--spacing-md); }
+        .logo {
+            font-weight: 700;
+            font-size: 20px;
+            letter-spacing: 0.12em;
+            color: var(--primary-400);
+        }
+        .portal-badge {
+            background: var(--primary-400);
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            margin-left: auto;
+            margin-right: var(--spacing-lg);
+        }
+        .header-action-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            background: transparent;
+            border: none;
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            font-size: 13px;
+        }
+        .header-action-btn:hover { background: var(--surface-100); }
+        .header-action-btn:focus { outline: 2px solid var(--primary-400); outline-offset: 2px; }
+        .header-action-btn i { font-size: 20px; color: var(--text-muted); }
+        .header-action-label { display: none; }
+        .notification-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: var(--danger-500);
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            min-width: 18px;
+            height: 18px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 5px;
+            border: 2px solid white;
+        }
+        .user-menu { display: flex; align-items: center; gap: var(--spacing-md); }
+        .user-info { text-align: right; }
+        .user-company { font-size: 12px; color: var(--text-muted); }
+        .user-name { font-size: 14px; font-weight: 500; color: var(--text-primary); }
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--primary-100);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--primary-600);
+            cursor: pointer;
+        }
+
+        .app-container {
+            display: flex;
+            flex-direction: row;
+            min-height: calc(100vh - 65px);
+            width: 100%;
+        }
+
+        .sidebar {
+            width: 280px;
+            min-width: 280px;
+            background-color: #0192D1;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            flex-shrink: 0;
+            transition: width 0.3s ease, min-width 0.3s ease;
+        }
+        .sidebar.collapsed { width: 60px; min-width: 60px; }
+        .sidebar-toggle {
+            position: absolute;
+            top: 10px;
+            right: -15px;
+            width: 30px;
+            height: 30px;
+            background: var(--primary-400);
+            border: 2px solid white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            color: white;
+            font-size: 14px;
+            transition: transform 0.3s ease;
+        }
+        .sidebar.collapsed .sidebar-toggle { transform: rotate(180deg); }
+        .sidebar.collapsed .menu-section-title,
+        .sidebar.collapsed .menu-item span:not(.menu-icon),
+        .sidebar.collapsed .menu-group-header span,
+        .sidebar.collapsed .menu-group-header i:last-child,
+        .sidebar.collapsed .menu-divider { display: none; }
+        .sidebar.collapsed .menu-group-header { padding: 10px; justify-content: center; }
+        .sidebar.collapsed .menu-group-items .menu-item { padding: 10px; justify-content: center; }
+
+        .sidebar-menu { flex: 1; padding: 20px 0; }
+        .menu-section { margin-bottom: var(--spacing-lg); }
+        .menu-section-title {
+            padding: 10px 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: var(--spacing-xs);
+        }
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background-color 0.2s ease;
+            cursor: pointer;
+            margin: 0 10px;
+            border-radius: 5px;
+            border: none;
+            background: none;
+            width: calc(100% - 20px);
+            text-align: left;
+            font-family: inherit;
+        }
+        .menu-item:hover { background-color: rgba(255, 255, 255, 0.1); color: white; }
+        .menu-item.active { background-color: #006599; color: white; }
+        .menu-icon { font-size: 18px; width: 20px; text-align: center; flex-shrink: 0; }
+        .menu-badge {
+            margin-left: auto;
+            padding: 2px 8px;
+            background: var(--danger-500);
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 999px;
+        }
+        .menu-group { margin: 0 10px var(--spacing-xs) 10px; }
+        .menu-group-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 12px;
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.2s ease;
+        }
+        .menu-group-header:hover { background-color: rgba(255, 255, 255, 0.1); }
+        .menu-group-header span { display: flex; align-items: center; gap: 10px; }
+        .menu-group-header i:last-child { font-size: 12px; transition: transform 0.2s ease; }
+        .menu-group.collapsed .menu-group-header i:last-child { transform: rotate(-90deg); }
+        .menu-group-items {
+            max-height: 800px;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        .menu-group.collapsed .menu-group-items { max-height: 0; }
+        .menu-group-items .menu-item {
+            padding: 10px 20px 10px 36px;
+            font-size: 14px;
+            margin: 2px 0;
+        }
+        .menu-item.disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+        .menu-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.15);
+            margin: var(--spacing-md) 20px;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: var(--spacing-xl);
+            overflow-y: auto;
+            min-width: 0;
+        }
+
+        .page-header {
+            margin-bottom: var(--spacing-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: var(--spacing-md);
+        }
+        .page-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+        .page-title i { color: var(--primary-500); font-size: 24px; }
+        .page-subtitle { font-size: 14px; color: var(--text-secondary); max-width: 720px; }
+
+        .card {
+            background: var(--surface-0);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--surface-200);
+            margin-bottom: var(--spacing-lg);
+        }
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-md);
+            padding-bottom: var(--spacing-sm);
+            border-bottom: 1px solid var(--surface-200);
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+        }
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+        .card-title i { color: var(--primary-500); font-size: 18px; }
+
+        .btn {
+            border-radius: var(--radius-sm);
+            border: 1px solid transparent;
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            text-decoration: none;
+        }
+        .btn-primary {
+            background: var(--primary-400);
+            color: #fff;
+            border-color: var(--primary-400);
+        }
+        .btn-primary:hover { background: var(--primary-500); border-color: var(--primary-500); }
+        .btn-secondary {
+            background: transparent;
+            border-color: var(--primary-400);
+            color: var(--primary-400);
+        }
+        .btn-secondary:hover { background: var(--primary-50); }
+        .btn-ghost {
+            background: transparent;
+            border-color: var(--surface-200);
+            color: var(--text-secondary);
+        }
+        .btn-ghost:hover { background: var(--surface-100); }
+        .btn-danger { background: var(--danger-500); color: white; border-color: var(--danger-500); }
+        .btn-danger:hover { background: #b91c1c; }
+        .btn-sm { padding: 8px 16px; font-size: 13px; }
+
+        .form-group { margin-bottom: 20px; }
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        .form-label.required::after { content: ' *'; color: var(--danger-500); }
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--surface-200);
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary-400);
+            box-shadow: 0 0 0 3px var(--primary-50);
+        }
+        .form-textarea { min-height: 100px; resize: vertical; }
+        .help-text { display: block; font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: var(--spacing-md);
+        }
+        .date-range-row {
+            display: flex;
+            align-items: flex-end;
+            gap: var(--spacing-sm);
+            flex-wrap: wrap;
+        }
+        .date-range-row .form-group { flex: 1; min-width: 140px; margin-bottom: 0; }
+
+        .tender-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        .tender-table th, .tender-table td {
+            padding: 12px 14px;
+            text-align: left;
+            border-bottom: 1px solid var(--surface-200);
+        }
+        .tender-table th {
+            background: var(--surface-50);
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .tender-table tbody tr:hover { background: var(--surface-50); }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-block;
+        }
+        .status-badge.draft { background: var(--surface-200); color: var(--text-secondary); }
+        .status-badge.submitted { background: var(--info-50); color: var(--info-400); }
+        .status-badge.approved { background: var(--success-50); color: var(--success-500); }
+        .status-badge.preclearance { background: var(--warning-50); color: var(--warning-500); }
+        .status-badge.cancelled { background: var(--danger-50); color: var(--danger-500); }
+
+        /* Short list process = origin: EOI, PQ, or Ad hoc */
+        .process-source {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            display: inline-block;
+        }
+        .process-source.eoi {
+            background: #e0e7ff;
+            color: #3730a3;
+        }
+        .process-source.pq {
+            background: #ede9fe;
+            color: #5b21b6;
+        }
+        .process-source.adhoc {
+            background: var(--surface-200);
+            color: var(--text-secondary);
+        }
+
+        .view-section { display: none; }
+        .view-section.active { display: block; }
+
+        .vendor-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .vendor-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            background: var(--surface-100);
+            border-radius: 999px;
+            font-size: 13px;
+            border: 1px solid var(--surface-200);
+        }
+        .vendor-chip button {
+            border: none;
+            background: none;
+            cursor: pointer;
+            color: var(--text-muted);
+            padding: 0;
+            line-height: 1;
+        }
+        .vendor-chip button:hover { color: var(--danger-500); }
+
+        .author-chip {
+            background: var(--primary-50);
+            border-color: rgba(0, 146, 209, 0.35);
+        }
+
+        .add-vendor-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+        .add-vendor-row .form-input { flex: 1; min-width: 200px; }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: 1100;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-md);
+        }
+        .modal-overlay.open { display: flex; }
+        .modal-box {
+            background: var(--surface-0);
+            border-radius: var(--radius-lg);
+            max-width: 480px;
+            width: 100%;
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow-md);
+        }
+        .modal-box h3 { margin-bottom: var(--spacing-sm); font-size: 18px; }
+        .modal-box p { color: var(--text-secondary); margin-bottom: var(--spacing-lg); font-size: 14px; }
+        .modal-actions { display: flex; gap: 12px; justify-content: flex-end; flex-wrap: wrap; }
+
+        .form-actions-bar {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: var(--spacing-lg);
+            padding-top: var(--spacing-md);
+            border-top: 1px solid var(--surface-200);
+        }
+
+        /* Collapsible filtering criteria */
+        .filter-criteria-card .card-header {
+            flex-wrap: nowrap;
+            gap: var(--spacing-sm);
+        }
+        .filter-criteria-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+            min-width: 0;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px 8px 4px 0;
+            margin: -4px 0;
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            text-align: left;
+            color: inherit;
+        }
+        .filter-criteria-toggle:hover .card-title {
+            color: var(--primary-500);
+        }
+        .filter-criteria-toggle:focus {
+            outline: none;
+        }
+        .filter-criteria-toggle:focus-visible {
+            outline: 2px solid var(--primary-400);
+            outline-offset: 2px;
+        }
+        .filter-criteria-chevron {
+            flex-shrink: 0;
+            font-size: 14px;
+            color: var(--text-muted);
+            transition: transform 0.25s ease;
+        }
+        .filter-criteria-card.collapsed .filter-criteria-chevron {
+            transform: rotate(-90deg);
+        }
+        .filter-criteria-toggle .card-title {
+            margin: 0;
+        }
+        .filter-criteria-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            flex-shrink: 0;
+            align-items: center;
+        }
+        .filter-criteria-body {
+            overflow: hidden;
+            max-height: 2500px;
+            transition: max-height 0.35s ease;
+        }
+        .filter-criteria-card.collapsed .filter-criteria-body {
+            max-height: 0;
+        }
+        .filter-criteria-inner {
+            padding-bottom: 4px;
+        }
+        .filter-criteria-card.collapsed .card-header {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Shortlist detail (row click) */
+        .shortlist-row {
+            cursor: pointer;
+        }
+        .shortlist-row:focus-within,
+        .shortlist-row:hover {
+            background: var(--primary-50) !important;
+        }
+        .shortlist-row-actions {
+            cursor: default;
+            text-align: right;
+            vertical-align: middle;
+        }
+        .shortlist-row-actions:hover {
+            background: transparent !important;
+        }
+        .row-actions-wrap {
+            position: relative;
+            display: inline-flex;
+            justify-content: flex-end;
+        }
+        .row-actions-trigger {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            min-width: 44px;
+            height: 44px;
+            padding: 0;
+            border: 1px solid transparent;
+            border-radius: var(--radius-md);
+            background: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 18px;
+            transition: background 0.2s, color 0.2s, border-color 0.2s;
+        }
+        .row-actions-trigger:hover {
+            background: var(--surface-100);
+            color: var(--primary-500);
+            border-color: var(--surface-200);
+        }
+        .row-actions-trigger:focus {
+            outline: none;
+        }
+        .row-actions-trigger:focus-visible {
+            outline: 2px solid var(--primary-400);
+            outline-offset: 2px;
+        }
+        .row-actions-dropdown {
+            position: absolute;
+            right: 0;
+            top: calc(100% + 4px);
+            min-width: 168px;
+            flex-direction: column;
+            padding: 6px 0;
+            background: var(--surface-0);
+            border: 1px solid var(--surface-200);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
+            z-index: 100;
+            display: none;
+        }
+        .row-actions-dropdown.open {
+            display: flex;
+        }
+        .row-actions-dropdown .row-actions-item {
+            width: 100%;
+            text-align: left;
+            padding: 10px 16px;
+            border: none;
+            background: none;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .row-actions-dropdown .row-actions-item:hover:not(:disabled) {
+            background: var(--surface-50);
+        }
+        .row-actions-dropdown .row-actions-item:focus {
+            outline: none;
+        }
+        .row-actions-dropdown .row-actions-item:focus-visible {
+            outline: 2px solid var(--primary-400);
+            outline-offset: -2px;
+        }
+        .row-actions-dropdown .row-actions-item:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+        .row-actions-dropdown .row-actions-item.row-actions-danger {
+            color: var(--danger-500);
+        }
+        .row-actions-dropdown .row-actions-item.row-actions-danger:hover:not(:disabled) {
+            background: var(--danger-50);
+        }
+
+        .detail-breadcrumb {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: var(--spacing-md);
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        .breadcrumb-sep {
+            color: var(--text-muted);
+            user-select: none;
+        }
+        .detail-bc-current {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        .detail-page-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: var(--spacing-lg);
+            padding: var(--spacing-md) var(--spacing-lg);
+            background: var(--surface-0);
+            border: 1px solid var(--surface-200);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+        }
+        .detail-page-toolbar .toolbar-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+        .detail-page-title-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 1px solid var(--surface-200);
+        }
+        .detail-page-title-row .page-title {
+            margin-bottom: 0;
+        }
+        .detail-dl {
+            display: grid;
+            gap: var(--spacing-md);
+        }
+        .detail-dl > div {
+            border-bottom: 1px solid var(--surface-200);
+            padding-bottom: var(--spacing-md);
+        }
+        .detail-dl > div:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        .detail-dt {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+        .detail-dd {
+            font-size: 14px;
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+        .detail-dd.muted {
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+        .detail-vendor-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .detail-vendor-list li {
+            padding: 8px 12px;
+            background: var(--surface-50);
+            border: 1px solid var(--surface-200);
+            border-radius: var(--radius-sm);
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        .detail-hint {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: var(--spacing-sm);
+        }
+
+        /* Shortlist detail: PrimeNG-style tab list (p-tablist / p-tablist-content) */
+        #view-detail .shortlist-detail-p-tabs {
+            margin-bottom: var(--spacing-md);
+        }
+        #view-detail .p-tablist {
+            display: flex;
+            position: relative;
+            background: var(--surface-0);
+            border: 1px solid var(--surface-200);
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            border-bottom: none;
+            box-shadow: var(--shadow-sm);
+        }
+        #view-detail .p-tablist-content {
+            display: flex;
+            flex-wrap: wrap;
+            flex: 1 1 auto;
+            align-items: flex-end;
+            gap: 0;
+            padding: 0 var(--spacing-sm);
+            position: relative;
+            list-style: none;
+            margin: 0;
+            min-height: 48px;
+        }
+        #view-detail .p-tablist-content::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 1px;
+            background: var(--surface-200);
+            pointer-events: none;
+        }
+        #view-detail .p-tab {
+            position: relative;
+            z-index: 1;
+            flex: 0 0 auto;
+            margin: 0;
+            padding: 14px 18px 12px;
+            border: none;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            background: transparent;
+            color: var(--text-secondary);
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 1.25;
+            cursor: pointer;
+            transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+            border-radius: var(--radius-md) var(--radius-md) 0 0;
+        }
+        #view-detail .p-tab:hover:not([aria-selected="true"]) {
+            color: var(--text-primary);
+            background: var(--surface-50);
+        }
+        #view-detail .p-tab:focus {
+            outline: none;
+        }
+        #view-detail .p-tab:focus-visible {
+            outline: 2px solid var(--primary-400);
+            outline-offset: -2px;
+            border-radius: var(--radius-sm);
+        }
+        #view-detail .p-tab[aria-selected="true"],
+        #view-detail .p-tab.p-tab-active {
+            color: var(--primary-500);
+            font-weight: 600;
+            border-bottom-color: var(--primary-500);
+            background: var(--surface-0);
+        }
+        #view-detail .card.detail-tabpanel {
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            margin-top: 0;
+        }
+        .detail-tabpanel[hidden] {
+            display: none !important;
+        }
+        .workflow-stepper {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .workflow-step {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md) 0;
+            border-bottom: 1px solid var(--surface-200);
+        }
+        .workflow-step:last-child {
+            border-bottom: none;
+        }
+        .workflow-step-marker {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .workflow-step.complete .workflow-step-marker {
+            background: var(--success-50);
+            color: var(--success-500);
+            border: 2px solid var(--success-500);
+        }
+        .workflow-step.current .workflow-step-marker {
+            background: var(--info-50);
+            color: var(--info-400);
+            border: 2px solid var(--primary-500);
+        }
+        .workflow-step.pending .workflow-step-marker {
+            background: var(--surface-100);
+            color: var(--text-muted);
+            border: 2px dashed var(--surface-300);
+        }
+        .workflow-step-body .workflow-step-title {
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+        .workflow-step-body .workflow-step-meta {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+        .workflow-step-body .workflow-step-note {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.45;
+        }
+        .amendments-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+        .amendment-card {
+            border: 1px solid var(--surface-200);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            background: var(--surface-50);
+        }
+        .amendment-card-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .amendment-card-date {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        .amendment-card-actor {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .amendment-card-comment {
+            font-size: 14px;
+            color: var(--text-primary);
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+        .amendment-card-changes {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid var(--surface-200);
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        .amendments-empty {
+            font-size: 14px;
+            color: var(--text-muted);
+            padding: var(--spacing-lg);
+            text-align: center;
+            background: var(--surface-50);
+            border-radius: var(--radius-md);
+            border: 1px dashed var(--surface-300);
+        }
+
+        @media (max-width: 900px) {
+            .sidebar { width: 60px; min-width: 60px; }
+            .menu-section-title,
+            .menu-item span:not(.menu-icon),
+            .menu-group-header span,
+            .menu-group-header i:last-child,
+            .menu-divider { display: none; }
+            .menu-group-header { padding: 10px; justify-content: center; }
+            .menu-group-items .menu-item { padding: 10px; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <header class="header" role="banner">
+        <div class="header-top">
+            <div class="logo-container">
+                <div class="logo">UNOPS</div>
+                <span class="portal-badge">Procurement</span>
+                <span style="color: var(--surface-300); margin: 0 8px; font-size: 18px;">|</span>
+                <span style="color: var(--primary-500); font-weight: 600; font-size: 14px;">eTendering</span>
+            </div>
+            <div class="header-actions">
+                <button type="button" class="header-action-btn" title="Accessibility" aria-label="Accessibility Options">
+                    <i class="pi pi-eye" aria-hidden="true"></i>
+                </button>
+                <button type="button" class="header-action-btn" title="Language" aria-label="Change language">
+                    <span class="header-action-label">EN</span>
+                    <i class="pi pi-globe" aria-hidden="true"></i>
+                </button>
+                <button type="button" class="header-action-btn" title="Help" aria-label="Help">
+                    <i class="pi pi-question-circle" aria-hidden="true"></i>
+                </button>
+                <button type="button" class="header-action-btn notification-btn" title="Notifications" aria-label="Notifications">
+                    <i class="pi pi-bell" aria-hidden="true"></i>
+                    <span class="notification-badge">3</span>
+                </button>
+            </div>
+            <div class="user-menu">
+                <div class="user-info">
+                    <div class="user-company">UNOPS Internal</div>
+                    <div class="user-name">Jane Doe</div>
+                </div>
+                <div class="user-avatar" aria-label="User menu">JD</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="app-container">
+        <aside class="sidebar" id="mainSidebar">
+            <div class="sidebar-toggle" onclick="toggleSidebar()" role="button" tabindex="0" aria-label="Collapse sidebar" onkeydown="if(event.key==='Enter')toggleSidebar()">
+                <i class="pi pi-chevron-left"></i>
+            </div>
+            <nav class="sidebar-menu" aria-label="Main navigation">
+                <div class="menu-section">
+                    <div class="menu-section-title">Administrative Applications</div>
+                    <div class="menu-group collapsed">
+                        <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                            <span><i class="pi pi-cog"></i> System Settings</span>
+                            <i class="pi pi-chevron-down"></i>
+                        </div>
+                        <div class="menu-group-items">
+                            <span class="menu-item disabled"><span class="menu-icon"><i class="pi pi-users"></i></span><span>User Role Management</span></span>
+                        </div>
+                    </div>
+                    <div class="menu-group collapsed">
+                        <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                            <span><i class="pi pi-copy"></i> Templates</span>
+                            <i class="pi pi-chevron-down"></i>
+                        </div>
+                        <div class="menu-group-items">
+                            <a class="menu-item" href="template-library.html"><span class="menu-icon"><i class="pi pi-folder"></i></span><span>Templates Library</span></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-divider"></div>
+                <div class="menu-section">
+                    <div class="menu-section-title">Business Applications</div>
+                    <div class="menu-group">
+                        <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                            <span><i class="pi pi-briefcase"></i> eTendering</span>
+                            <i class="pi pi-chevron-down"></i>
+                        </div>
+                        <div class="menu-group-items">
+                            <a class="menu-item" href="tender-dashboard-complete.html"><span class="menu-icon"><i class="pi pi-chart-bar"></i></span><span>Overview</span></a>
+                            <a class="menu-item" href="tender-dashboard-complete.html"><span class="menu-icon"><i class="pi pi-folder-open"></i></span><span>Tenders</span></a>
+                            <a class="menu-item" href="tender-authoring.html"><span class="menu-icon"><i class="pi pi-plus"></i></span><span>Create Tender</span></a>
+                            <a class="menu-item active" href="shortlists-mockup.html"><span class="menu-icon"><i class="pi pi-list"></i></span><span>Shortlists</span></a>
+                        </div>
+                    </div>
+                    <div class="menu-group collapsed">
+                        <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                            <span><i class="pi pi-check-square"></i> Award &amp; Review</span>
+                            <i class="pi pi-chevron-down"></i>
+                        </div>
+                        <div class="menu-group-items">
+                            <span class="menu-item disabled"><span class="menu-icon"><i class="pi pi-folder"></i></span><span>Cases</span></span>
+                        </div>
+                    </div>
+                    <div class="menu-group collapsed">
+                        <div class="menu-group-header" onclick="toggleMenuGroup(this)">
+                            <span><i class="pi pi-truck"></i> Supplier Management</span>
+                            <i class="pi pi-chevron-down"></i>
+                        </div>
+                        <div class="menu-group-items">
+                            <a class="menu-item" href="supplier-management-procurement.html"><span class="menu-icon"><i class="pi pi-building"></i></span><span>Suppliers</span></a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </aside>
+
+        <main class="main-content" id="main-content" role="main">
+            <div class="page-header" id="shortlist-page-header">
+                <div>
+                    <h1 class="page-title"><i class="pi pi-users"></i> Shortlists</h1>
+                </div>
+            </div>
+
+            <!-- Search / listing (default) -->
+            <section class="view-section active" id="view-search">
+                <div class="card filter-criteria-card collapsed" id="filter-criteria-card">
+                    <div class="card-header">
+                        <button type="button" class="filter-criteria-toggle" id="filter-criteria-toggle" aria-expanded="false" aria-controls="filter-criteria-body" onclick="toggleFilterCriteria()">
+                            <i class="pi pi-chevron-down filter-criteria-chevron" aria-hidden="true"></i>
+                            <h2 class="card-title" id="filter-criteria-heading"><i class="pi pi-filter"></i> Filtering criteria</h2>
+                        </button>
+                        <div class="filter-criteria-actions">
+                            <button type="button" class="btn btn-ghost btn-sm" onclick="clearFilters()"><i class="pi pi-times"></i> Clear</button>
+                            <button type="button" class="btn btn-primary btn-sm" onclick="applySearchMock()"><i class="pi pi-search"></i> Search</button>
+                        </div>
+                    </div>
+                    <div class="filter-criteria-body" id="filter-criteria-body" role="region" aria-labelledby="filter-criteria-heading" aria-hidden="true">
+                    <div class="filter-criteria-inner">
+                    <div class="filter-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="f-id">Id</label>
+                            <input type="text" class="form-input" id="f-id" placeholder="Enter short list id" autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="f-title">Title</label>
+                            <input type="text" class="form-input" id="f-title" placeholder="Enter Title" autocomplete="off">
+                        </div>
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label class="form-label">Approved between</label>
+                            <div class="date-range-row">
+                                <div class="form-group">
+                                    <label class="form-label" for="f-approved-from" style="font-weight:500; font-size:12px; color:var(--text-muted);">From</label>
+                                    <input type="date" class="form-input" id="f-approved-from" aria-label="Approved from date">
+                                </div>
+                                <span style="padding-bottom:10px; color:var(--text-muted);">and</span>
+                                <div class="form-group">
+                                    <label class="form-label" for="f-approved-to" style="font-weight:500; font-size:12px; color:var(--text-muted);">To</label>
+                                    <input type="date" class="form-input" id="f-approved-to" aria-label="Approved to date">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="f-approved-by">Approved by</label>
+                            <input type="text" class="form-input" id="f-approved-by" placeholder="Enter name" autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="f-process">Short list process</label>
+                            <select class="form-select" id="f-process">
+                                <option value="">Any</option>
+                                <option value="eoi">EOI</option>
+                                <option value="pq">PQ</option>
+                                <option value="adhoc">Ad hoc</option>
+                            </select>
+                            <span class="help-text">How the shortlist was formed: from an expression of interest, pre-qualification, or ad-hoc creation in this module.</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="f-status">Status</label>
+                            <select class="form-select" id="f-status">
+                                <option value="">Any</option>
+                                <option value="draft">Draft</option>
+                                <option value="submitted">Submitted for approval</option>
+                                <option value="approved">Approved</option>
+                                <option value="preclearance">In pre-clearance</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="f-org">Org. unit</label>
+                            <input type="text" class="form-input" id="f-org" placeholder="Enter the Organization Unit for this procurement event" autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="f-vendors">Contains vendors</label>
+                            <input type="text" class="form-input" id="f-vendors" placeholder="Enter email or company name" autocomplete="off">
+                            <span class="help-text">Matches vendors on the shortlist by contact email or registered company name.</span>
+                        </div>
+                    </div>
+                    </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title"><i class="pi pi-table"></i> Shortlists listing</h2>
+                        <button type="button" class="btn btn-primary btn-sm" onclick="showView('create')"><i class="pi pi-plus"></i> Create ad-hoc shortlist</button>
+                    </div>
+                    <div style="overflow-x:auto;">
+                        <table class="tender-table" id="results-table">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Title</th>
+                                    <th>Org. unit</th>
+                                    <th>Expected value (USD)</th>
+                                    <th>Short list process</th>
+                                    <th>Status</th>
+                                    <th>Approved</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="results-body">
+                                <tr class="shortlist-row" tabindex="0" role="button" aria-label="View shortlist SL-2026-0042" onclick="openShortlistDetailPage('SL-2026-0042')" onkeydown="shortlistRowKey(event, 'SL-2026-0042')">
+                                    <td><strong style="color:var(--primary-500);">SL-2026-0042</strong></td>
+                                    <td>IT services — regional hub</td>
+                                    <td>Thailand Operational Hub</td>
+                                    <td>450,000</td>
+                                    <td><span class="process-source pq">PQ</span></td>
+                                    <td><span class="status-badge preclearance">Pre-clearance</span></td>
+                                    <td>12 Mar 2026<br><span style="color:var(--text-muted); font-size:12px;">A. Kumar</span></td>
+                                    <td class="shortlist-row-actions" onclick="event.stopPropagation()">
+                                        <div class="row-actions-wrap">
+                                            <button type="button" class="row-actions-trigger" aria-label="Actions for SL-2026-0042" aria-expanded="false" aria-haspopup="true" id="row-actions-trigger-SL-2026-0042" onclick="toggleRowActionsMenu(this, event)">
+                                                <i class="pi pi-ellipsis-v" aria-hidden="true"></i>
+                                            </button>
+                                            <div class="row-actions-dropdown" role="menu" aria-labelledby="row-actions-trigger-SL-2026-0042" id="row-actions-menu-SL-2026-0042">
+                                                <button type="button" class="row-actions-item" role="menuitem" onclick="rowActionView('SL-2026-0042')">VIEW</button>
+                                                <button type="button" class="row-actions-item" role="menuitem" disabled title="Amend not available in this status">AMEND</button>
+                                                <button type="button" class="row-actions-item row-actions-danger" role="menuitem" onclick="rowActionCancel('SL-2026-0042')">CANCEL</button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="shortlist-row" tabindex="0" role="button" aria-label="View shortlist SL-2026-0038" onclick="openShortlistDetailPage('SL-2026-0038')" onkeydown="shortlistRowKey(event, 'SL-2026-0038')">
+                                    <td><strong style="color:var(--primary-500);">SL-2026-0038</strong></td>
+                                    <td>Medical supplies — limited vendors</td>
+                                    <td>Kenya Country Office</td>
+                                    <td>120,000</td>
+                                    <td><span class="process-source adhoc">Ad hoc</span></td>
+                                    <td><span class="status-badge draft">Draft</span></td>
+                                    <td>—</td>
+                                    <td class="shortlist-row-actions" onclick="event.stopPropagation()">
+                                        <div class="row-actions-wrap">
+                                            <button type="button" class="row-actions-trigger" aria-label="Actions for SL-2026-0038" aria-expanded="false" aria-haspopup="true" id="row-actions-trigger-SL-2026-0038" onclick="toggleRowActionsMenu(this, event)">
+                                                <i class="pi pi-ellipsis-v" aria-hidden="true"></i>
+                                            </button>
+                                            <div class="row-actions-dropdown" role="menu" aria-labelledby="row-actions-trigger-SL-2026-0038" id="row-actions-menu-SL-2026-0038">
+                                                <button type="button" class="row-actions-item" role="menuitem" onclick="rowActionView('SL-2026-0038')">VIEW</button>
+                                                <button type="button" class="row-actions-item" role="menuitem" onclick="rowActionAmend('SL-2026-0038')">AMEND</button>
+                                                <button type="button" class="row-actions-item row-actions-danger" role="menuitem" onclick="rowActionCancel('SL-2026-0038')">CANCEL</button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="shortlist-row" tabindex="0" role="button" aria-label="View shortlist SL-2026-0015" onclick="openShortlistDetailPage('SL-2026-0015')" onkeydown="shortlistRowKey(event, 'SL-2026-0015')">
+                                    <td><strong style="color:var(--primary-500);">SL-2026-0015</strong></td>
+                                    <td>Civil works — bridge maintenance</td>
+                                    <td>Iraq Operational Hub</td>
+                                    <td>2,100,000</td>
+                                    <td><span class="process-source eoi">EOI</span></td>
+                                    <td><span class="status-badge approved">Approved</span></td>
+                                    <td>02 Feb 2026<br><span style="color:var(--text-muted); font-size:12px;">M. Okafor</span></td>
+                                    <td class="shortlist-row-actions" onclick="event.stopPropagation()">
+                                        <div class="row-actions-wrap">
+                                            <button type="button" class="row-actions-trigger" aria-label="Actions for SL-2026-0015" aria-expanded="false" aria-haspopup="true" id="row-actions-trigger-SL-2026-0015" onclick="toggleRowActionsMenu(this, event)">
+                                                <i class="pi pi-ellipsis-v" aria-hidden="true"></i>
+                                            </button>
+                                            <div class="row-actions-dropdown" role="menu" aria-labelledby="row-actions-trigger-SL-2026-0015" id="row-actions-menu-SL-2026-0015">
+                                                <button type="button" class="row-actions-item" role="menuitem" onclick="rowActionView('SL-2026-0015')">VIEW</button>
+                                                <button type="button" class="row-actions-item" role="menuitem" disabled title="Amend not available in this status">AMEND</button>
+                                                <button type="button" class="row-actions-item row-actions-danger" role="menuitem" onclick="rowActionCancel('SL-2026-0015')">CANCEL</button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Create (opened from listing only) -->
+            <section class="view-section" id="view-create" aria-hidden="true">
+                <nav class="detail-breadcrumb" aria-label="Breadcrumb">
+                    <button type="button" class="btn btn-ghost btn-sm" onclick="showView('search')"><i class="pi pi-arrow-left"></i> Back to shortlists</button>
+                    <span class="breadcrumb-sep" aria-hidden="true">/</span>
+                    <span class="detail-bc-current">Create ad-hoc shortlist</span>
+                </nav>
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title"><i class="pi pi-plus-circle"></i> Create ad-hoc shortlist</h2>
+                    </div>
+                    <form id="form-shortlist" onsubmit="event.preventDefault(); mockSaveShortlist('create');">
+                        <div class="form-group">
+                            <label class="form-label">Short list process</label>
+                            <div style="padding:10px 12px; background:var(--surface-50); border:1px solid var(--surface-200); border-radius:var(--radius-sm); font-size:14px;">
+                                <span class="process-source adhoc">Ad hoc</span>
+                                <span style="color:var(--text-muted); margin-left:8px;">Shortlists created on this screen are always ad-hoc.</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required" for="sl-title">Title</label>
+                            <input type="text" class="form-input" id="sl-title" required placeholder="Short descriptive title">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required" for="sl-org">Organizational unit</label>
+                            <select class="form-select" id="sl-org" required>
+                                <option value="">Select organizational unit</option>
+                                <option>Thailand Operational Hub</option>
+                                <option>Kenya Country Office</option>
+                                <option>Iraq Operational Hub</option>
+                                <option>Global Procurement Group</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required" for="sl-procurement-reviewer">Procurement reviewer</label>
+                            <span class="help-text">The colleague who will act as <strong>pre-clearer</strong> and <strong>approver</strong> for this shortlist when you submit it for approval.</span>
+                            <select class="form-select" id="sl-procurement-reviewer" required>
+                                <option value="">Select procurement reviewer</option>
+                                <option>Anita Kumar — a.kumar@unops.org</option>
+                                <option>Marcus Okafor — m.okafor@unops.org</option>
+                                <option>Elena Vasquez — e.vasquez@unops.org</option>
+                                <option>James Okello — j.okello@unops.org</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required" for="sl-value">Expected value of contract (USD)</label>
+                            <input type="number" class="form-input" id="sl-value" required min="0" step="1000" placeholder="e.g. 250000">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required" for="sl-justification">Justification</label>
+                            <textarea class="form-textarea" id="sl-justification" required placeholder="Explain why a shortlist / limited competition is appropriate (e.g. market conditions, prior performance, emergency)."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="author-input">Alternate authors</label>
+                            <span class="help-text">Optional. Other colleagues who may co-author or edit this ad-hoc shortlist while it is in draft (mock: type name or email; production would use user search).</span>
+                            <div class="add-vendor-row">
+                                <input type="text" class="form-input" id="author-input" placeholder="Name or email" aria-label="Alternate author name or email" autocomplete="off">
+                                <button type="button" class="btn btn-secondary btn-sm" onclick="addAuthorChip()"><i class="pi pi-user-plus"></i> Add author</button>
+                            </div>
+                            <div class="vendor-chips" id="author-chips" aria-live="polite"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required">Vendors</label>
+                            <span class="help-text">Add at least one vendor by company name or email. In production this would link to the supplier register.</span>
+                            <div class="add-vendor-row">
+                                <input type="text" class="form-input" id="vendor-input" placeholder="Company name or email" aria-label="Vendor company or email">
+                                <button type="button" class="btn btn-secondary btn-sm" onclick="addVendorChip()"><i class="pi pi-plus"></i> Add vendor</button>
+                            </div>
+                            <div class="vendor-chips" id="vendor-chips" aria-live="polite"></div>
+                        </div>
+                        <div class="form-actions-bar">
+                            <button type="submit" class="btn btn-primary"><i class="pi pi-save"></i> Save draft</button>
+                            <button type="button" class="btn btn-secondary" onclick="mockSubmitShortlist()"><i class="pi pi-send"></i> Submit for approval</button>
+                            <button type="button" class="btn btn-ghost" onclick="resetCreateForm()">Reset form</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Shortlist detail (full page: view + inline amend) -->
+            <section class="view-section" id="view-detail" aria-hidden="true">
+                <nav class="detail-breadcrumb" aria-label="Breadcrumb">
+                    <button type="button" class="btn btn-ghost btn-sm" onclick="detailBackToList()"><i class="pi pi-arrow-left"></i> Back to shortlists</button>
+                    <span class="breadcrumb-sep" aria-hidden="true">/</span>
+                    <span class="detail-bc-current" id="detail-bc-id">—</span>
+                </nav>
+
+                <div class="detail-page-toolbar" id="detail-toolbar-view">
+                    <div class="toolbar-group">
+                        <button type="button" class="btn btn-primary btn-sm" id="detail-page-amend" onclick="detailStartAmend()"><i class="pi pi-pencil"></i> Amend</button>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="openCancelModal(currentDetailId)"><i class="pi pi-times"></i> Cancel shortlist</button>
+                    </div>
+                </div>
+                <div class="detail-page-toolbar" id="detail-toolbar-edit" style="display:none;">
+                    <div class="toolbar-group">
+                        <button type="button" class="btn btn-ghost btn-sm" onclick="detailDiscardAmend()"><i class="pi pi-eye"></i> Back to view</button>
+                        <button type="button" class="btn btn-primary btn-sm" onclick="document.getElementById('form-detail-edit').requestSubmit()"><i class="pi pi-save"></i> Save changes</button>
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="mockSubmitShortlist('detail')"><i class="pi pi-send"></i> Submit for approval</button>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="openCancelModal(currentDetailId)"><i class="pi pi-times"></i> Cancel shortlist</button>
+                    </div>
+                </div>
+
+                <div class="p-tabs shortlist-detail-p-tabs">
+                    <div class="p-tablist">
+                        <div class="p-tablist-content" role="tablist" aria-label="Shortlist sections">
+                            <button type="button" class="p-tab" role="tab" id="detail-tab-details" aria-selected="true" aria-controls="detail-panel-details" onclick="switchDetailTab('details')">Shortlist details</button>
+                            <button type="button" class="p-tab" role="tab" id="detail-tab-workflow" aria-selected="false" aria-controls="detail-panel-workflow" onclick="switchDetailTab('workflow')">Workflows</button>
+                            <button type="button" class="p-tab" role="tab" id="detail-tab-amendments" aria-selected="false" aria-controls="detail-panel-amendments" onclick="switchDetailTab('amendments')">Amendments</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card detail-tabpanel" id="detail-panel-details" role="tabpanel" aria-labelledby="detail-tab-details">
+                    <div id="detail-readonly-block">
+                        <div class="detail-page-title-row">
+                            <h1 class="page-title" id="detail-view-title"><i class="pi pi-list"></i> —</h1>
+                            <div id="detail-view-badges" style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;"></div>
+                        </div>
+                        <div class="detail-dl">
+                            <div>
+                                <div class="detail-dt">Organizational unit</div>
+                                <div class="detail-dd" id="detail-org">—</div>
+                            </div>
+                            <div>
+                                <div class="detail-dt">Procurement reviewer (pre-clearer / approver)</div>
+                                <div class="detail-dd" id="detail-reviewer">—</div>
+                            </div>
+                            <div>
+                                <div class="detail-dt">Expected value of contract (USD)</div>
+                                <div class="detail-dd" id="detail-value">—</div>
+                            </div>
+                            <div>
+                                <div class="detail-dt">Justification</div>
+                                <div class="detail-dd" id="detail-justification">—</div>
+                            </div>
+                            <div id="detail-authors-block">
+                                <div class="detail-dt">Alternate authors</div>
+                                <ul class="detail-vendor-list" id="detail-authors"></ul>
+                                <p class="detail-dd muted" id="detail-authors-na" style="display:none; margin:0;">Not applicable (EOI / PQ shortlists).</p>
+                            </div>
+                            <div>
+                                <div class="detail-dt">Vendors on shortlist</div>
+                                <ul class="detail-vendor-list" id="detail-vendors"></ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="detail-edit-block" style="display:none;">
+                        <p class="detail-hint" style="margin-bottom:16px;">You are editing this shortlist. Use <strong>Back to view</strong> to return to read-only without saving (mock).</p>
+                        <form id="form-detail-edit" onsubmit="event.preventDefault(); mockSaveShortlist('detail');">
+                            <input type="hidden" id="detail-edit-record-id">
+                            <p style="margin-bottom:20px; display:flex; flex-wrap:wrap; align-items:center; gap:8px;">
+                                <span class="process-source adhoc" id="detail-edit-process-badge">Ad hoc</span>
+                                <span class="status-badge draft" id="detail-edit-status-badge">Draft</span>
+                            </p>
+                            <div class="form-group">
+                                <label class="form-label required" for="sl-title-d">Title</label>
+                                <input type="text" class="form-input" id="sl-title-d" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label required" for="sl-org-d">Organizational unit</label>
+                                <select class="form-select" id="sl-org-d" required>
+                                    <option value="">Select organizational unit</option>
+                                    <option>Thailand Operational Hub</option>
+                                    <option>Kenya Country Office</option>
+                                    <option>Iraq Operational Hub</option>
+                                    <option>Global Procurement Group</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label required" for="sl-procurement-reviewer-d">Procurement reviewer</label>
+                                <span class="help-text">Pre-clearer / approver.</span>
+                                <select class="form-select" id="sl-procurement-reviewer-d" required>
+                                    <option value="">Select procurement reviewer</option>
+                                    <option>Anita Kumar — a.kumar@unops.org</option>
+                                    <option>Marcus Okafor — m.okafor@unops.org</option>
+                                    <option>Elena Vasquez — e.vasquez@unops.org</option>
+                                    <option>James Okello — j.okello@unops.org</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label required" for="sl-value-d">Expected value of contract (USD)</label>
+                                <input type="number" class="form-input" id="sl-value-d" required min="0" step="1000">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label required" for="sl-justification-d">Justification</label>
+                                <textarea class="form-textarea" id="sl-justification-d" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="author-input-d">Alternate authors</label>
+                                <span class="help-text">Optional co-authors (ad-hoc).</span>
+                                <div class="add-vendor-row">
+                                    <input type="text" class="form-input" id="author-input-d" placeholder="Name or email" aria-label="Alternate author" autocomplete="off">
+                                    <button type="button" class="btn btn-secondary btn-sm" onclick="addAuthorChip('detail')"><i class="pi pi-user-plus"></i> Add author</button>
+                                </div>
+                                <div class="vendor-chips" id="author-chips-d" aria-live="polite"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label required">Vendors</label>
+                                <div class="add-vendor-row">
+                                    <input type="text" class="form-input" id="vendor-input-d" placeholder="Company name or email" aria-label="Vendor">
+                                    <button type="button" class="btn btn-secondary btn-sm" onclick="addVendorChip('detail')"><i class="pi pi-plus"></i> Add vendor</button>
+                                </div>
+                                <div class="vendor-chips" id="vendor-chips-d" aria-live="polite"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label required" for="detail-amendment-comment">Amendment comment</label>
+                                <span class="help-text">Required when saving changes. Shown on the <strong>Amendments</strong> tab with date and author; a workflow step is added under <strong>Workflows</strong>.</span>
+                                <textarea class="form-textarea" id="detail-amendment-comment" required placeholder="Describe what you changed and why (audit trail)." rows="4"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card detail-tabpanel" id="detail-panel-workflow" role="tabpanel" aria-labelledby="detail-tab-workflow" hidden>
+                    <div class="card-header" style="border-bottom:none; margin-bottom:8px; padding-bottom:0;">
+                        <h2 class="card-title"><i class="pi pi-sitemap"></i> Workflow</h2>
+                    </div>
+                    <p class="detail-hint" style="margin-bottom:16px;">Standard path for this shortlist type and status. Saving an amendment adds an <strong>Amendment recorded</strong> step (mock).</p>
+                    <ul class="workflow-stepper" id="detail-workflow-list" aria-live="polite"></ul>
+                </div>
+
+                <div class="card detail-tabpanel" id="detail-panel-amendments" role="tabpanel" aria-labelledby="detail-tab-amendments" hidden>
+                    <div class="card-header" style="border-bottom:none; margin-bottom:8px; padding-bottom:0;">
+                        <h2 class="card-title"><i class="pi pi-history"></i> Amendments</h2>
+                    </div>
+                    <p class="detail-hint" style="margin-bottom:16px;">Each saved amendment stores your comment, timestamp, and a short summary of fields touched (mock).</p>
+                    <div id="detail-amendments-container" aria-live="polite"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Cancel confirmation -->
+    <div class="modal-overlay" id="cancel-modal" role="dialog" aria-modal="true" aria-labelledby="cancel-modal-title">
+        <div class="modal-box">
+            <h3 id="cancel-modal-title">Cancel shortlist?</h3>
+            <p id="cancel-modal-text">This will stop the shortlist process for <strong id="cancel-id">—</strong>. This action may be irreversible depending on your business rules.</p>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-ghost" onclick="closeCancelModal()">Keep shortlist</button>
+                <button type="button" class="btn btn-danger" onclick="confirmCancelMock()">Confirm cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            document.getElementById('mainSidebar').classList.toggle('collapsed');
+        }
+        function toggleMenuGroup(header) {
+            header.parentElement.classList.toggle('collapsed');
+        }
+
+        function toggleFilterCriteria() {
+            var card = document.getElementById('filter-criteria-card');
+            var btn = document.getElementById('filter-criteria-toggle');
+            var body = document.getElementById('filter-criteria-body');
+            card.classList.toggle('collapsed');
+            var collapsed = card.classList.contains('collapsed');
+            btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+            body.setAttribute('aria-hidden', collapsed ? 'true' : 'false');
+        }
+
+        var MOCK_CURRENT_USER = 'Jane Doe';
+
+        var SHORTLIST_DB = {
+            'SL-2026-0042': {
+                title: 'IT services — regional hub',
+                org: 'Thailand Operational Hub',
+                valueUsd: 450000,
+                justification: 'Pre-qualified vendors from PQ/RFQ-2025/112 for managed IT and service desk in the regional hub. Limited market of certified partners meeting UN security baselines.',
+                vendors: ['Nexus IT Partners Ltd', 'support@regionaldesk.io', 'SecureOps Co.'],
+                alternateAuthors: [],
+                procurementReviewer: 'Anita Kumar — a.kumar@unops.org',
+                process: 'pq',
+                statusKey: 'preclearance',
+                statusLabel: 'Pre-clearance',
+                canAmend: false,
+                amendDisabledReason: 'Amend is not available while the shortlist is in pre-clearance.',
+                workflowTimeline: [
+                    { state: 'complete', title: 'Draft prepared', meta: '28 Feb 2026 · Jane Doe', note: 'Shortlist prepared from PQ outcome.' },
+                    { state: 'complete', title: 'Submitted for approval', meta: '1 Mar 2026 · Jane Doe', note: 'Sent to procurement reviewer.' },
+                    { state: 'complete', title: 'Approved', meta: '12 Mar 2026 · A. Kumar', note: 'Procurement reviewer approved the shortlist.' },
+                    { state: 'current', title: 'Pre-clearance', meta: 'Linked tender ITB/2024/089', note: 'Tender package is in pre-clearance. Vendors on this shortlist are eligible for invitation once cleared.' }
+                ],
+                amendments: []
+            },
+            'SL-2026-0038': {
+                title: 'Medical supplies — limited vendors',
+                org: 'Kenya Country Office',
+                valueUsd: 120000,
+                justification: 'Limited market for cold-chain medical supplies in region; prior satisfactory performance with listed vendors.',
+                vendors: ['MedSupply East Africa Ltd', 'contact@globalhealth-vendors.org'],
+                alternateAuthors: ['Samuel Otieno (s.otieno@unops.org)'],
+                procurementReviewer: 'Elena Vasquez — e.vasquez@unops.org',
+                process: 'adhoc',
+                statusKey: 'draft',
+                statusLabel: 'Draft',
+                canAmend: true,
+                amendDisabledReason: '',
+                workflowTimeline: [
+                    { state: 'complete', title: 'Shortlist initialized', meta: '5 Mar 2026 · Jane Doe', note: 'Ad-hoc shortlist created in this module.' },
+                    { state: 'current', title: 'Draft', meta: 'In progress', note: 'Amend fields and submit for approval when ready.' },
+                    { state: 'pending', title: 'Submitted for approval', meta: '—', note: 'Awaiting submission to reviewer.' },
+                    { state: 'pending', title: 'Approval', meta: '—', note: 'Procurement reviewer decision.' },
+                    { state: 'pending', title: 'Pre-clearance', meta: '—', note: 'After approval, linked tender proceeds through pre-clearance.' }
+                ],
+                amendments: []
+            },
+            'SL-2026-0015': {
+                title: 'Civil works — bridge maintenance',
+                org: 'Iraq Operational Hub',
+                valueUsd: 2100000,
+                justification: 'Shortlist derived from EOI/2025/044 for specialized bridge inspection and maintenance; respondents meeting minimum criteria carried forward.',
+                vendors: ['Tigris Infrastructure LLC', 'bridging@mesopotamia-eng.com', 'Kurdistan Civil Works JV'],
+                alternateAuthors: [],
+                procurementReviewer: 'Marcus Okafor — m.okafor@unops.org',
+                process: 'eoi',
+                statusKey: 'approved',
+                statusLabel: 'Approved',
+                canAmend: false,
+                amendDisabledReason: 'Amend is not available after approval for this process type (mock rule).',
+                workflowTimeline: [
+                    { state: 'complete', title: 'EOI review', meta: 'Jan 2026 · Procurement', note: 'Respondents meeting minimum criteria carried forward from EOI/2025/044.' },
+                    { state: 'complete', title: 'Submitted for approval', meta: '25 Jan 2026 · Jane Doe', note: '—' },
+                    { state: 'complete', title: 'Approved', meta: '02 Feb 2026 · M. Okafor', note: 'Approved under delegation of authority.' },
+                    { state: 'current', title: 'Ready for procurement', meta: 'Active', note: 'Use for limited tender or RFQ per your procurement plan.' }
+                ],
+                amendments: []
+            }
+        };
+
+        let vendorList = [];
+        let vendorListDetail = [];
+        let authorList = [];
+        let authorListDetail = [];
+        let pendingCancelId = '';
+        let currentDetailId = '';
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            var d = document.createElement('div');
+            d.textContent = str;
+            return d.innerHTML;
+        }
+
+        function shortlistRowKey(e, id) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                openShortlistDetailPage(id, false);
+            }
+        }
+
+        function closeAllRowActionsMenus() {
+            document.querySelectorAll('.row-actions-dropdown.open').forEach(function (menu) {
+                menu.classList.remove('open');
+                var wrap = menu.closest('.row-actions-wrap');
+                if (wrap) {
+                    var trig = wrap.querySelector('.row-actions-trigger');
+                    if (trig) {
+                        trig.setAttribute('aria-expanded', 'false');
+                    }
+                }
+            });
+        }
+
+        function toggleRowActionsMenu(btn, evt) {
+            if (evt) {
+                evt.stopPropagation();
+            }
+            var wrap = btn.closest('.row-actions-wrap');
+            if (!wrap) {
+                return;
+            }
+            var menu = wrap.querySelector('.row-actions-dropdown');
+            if (!menu) {
+                return;
+            }
+            var willOpen = !menu.classList.contains('open');
+            closeAllRowActionsMenus();
+            if (willOpen) {
+                menu.classList.add('open');
+                btn.setAttribute('aria-expanded', 'true');
+            }
+        }
+
+        function rowActionView(id) {
+            closeAllRowActionsMenus();
+            openShortlistDetailPage(id, false);
+        }
+
+        function rowActionAmend(id) {
+            closeAllRowActionsMenus();
+            var d = SHORTLIST_DB[id];
+            if (!d || !d.canAmend) {
+                alert(d && d.amendDisabledReason ? d.amendDisabledReason : 'Amend is not available for this shortlist.');
+                return;
+            }
+            openShortlistDetailPage(id, true);
+        }
+
+        function rowActionCancel(id) {
+            closeAllRowActionsMenus();
+            openCancelModal(id);
+        }
+
+        document.addEventListener('click', function (e) {
+            if (e.target.closest('.row-actions-wrap')) {
+                return;
+            }
+            closeAllRowActionsMenus();
+        });
+
+        function processBadgeHtml(process) {
+            if (process === 'eoi') return '<span class="process-source eoi">EOI</span>';
+            if (process === 'pq') return '<span class="process-source pq">PQ</span>';
+            return '<span class="process-source adhoc">Ad hoc</span>';
+        }
+
+        function statusBadgeHtml(statusKey, label) {
+            return '<span class="status-badge ' + statusKey + '">' + label + '</span>';
+        }
+
+        function fillDetailReadonly(d, id) {
+            document.getElementById('detail-bc-id').textContent = id;
+            document.getElementById('detail-view-title').innerHTML =
+                '<i class="pi pi-list"></i> ' + escapeHtml(d.title);
+            document.getElementById('detail-view-badges').innerHTML =
+                processBadgeHtml(d.process) + statusBadgeHtml(d.statusKey, d.statusLabel);
+            document.getElementById('detail-org').textContent = d.org;
+            document.getElementById('detail-reviewer').textContent = d.procurementReviewer || '—';
+            document.getElementById('detail-value').textContent =
+                typeof d.valueUsd === 'number' ? d.valueUsd.toLocaleString('en-US') : d.valueUsd;
+            document.getElementById('detail-justification').textContent = d.justification;
+
+            var ul = document.getElementById('detail-vendors');
+            ul.innerHTML = '';
+            d.vendors.forEach(function (v) {
+                var li = document.createElement('li');
+                li.textContent = v;
+                ul.appendChild(li);
+            });
+
+            var authorsUl = document.getElementById('detail-authors');
+            var authorsNa = document.getElementById('detail-authors-na');
+            authorsUl.innerHTML = '';
+            if (d.process === 'adhoc') {
+                authorsNa.style.display = 'none';
+                authorsUl.style.display = '';
+                var alt = d.alternateAuthors || [];
+                if (alt.length) {
+                    alt.forEach(function (a) {
+                        var li = document.createElement('li');
+                        li.textContent = a;
+                        authorsUl.appendChild(li);
+                    });
+                } else {
+                    var liEmpty = document.createElement('li');
+                    liEmpty.style.color = 'var(--text-muted)';
+                    liEmpty.textContent = 'None added';
+                    authorsUl.appendChild(liEmpty);
+                }
+            } else {
+                authorsUl.style.display = 'none';
+                authorsNa.style.display = 'block';
+            }
+
+            renderDetailWorkflow();
+            renderDetailAmendments();
+        }
+
+        function ensureWorkflowTimeline(d) {
+            if (!d.workflowTimeline) {
+                d.workflowTimeline = [
+                    { state: 'current', title: 'Draft', meta: 'In progress', note: '—' }
+                ];
+            }
+        }
+
+        function insertAmendmentWorkflowStep(d, metaLine, noteText) {
+            ensureWorkflowTimeline(d);
+            var tl = d.workflowTimeline;
+            var idx = tl.findIndex(function (s) { return s.state === 'current'; });
+            if (idx < 0) {
+                idx = tl.length;
+            }
+            tl.splice(idx, 0, {
+                state: 'complete',
+                title: 'Amendment recorded',
+                meta: metaLine,
+                note: noteText
+            });
+        }
+
+        function workflowStepIcon(state) {
+            if (state === 'complete') return 'pi-check';
+            if (state === 'current') return 'pi-arrow-circle-right';
+            return 'pi-circle';
+        }
+
+        function renderDetailWorkflow() {
+            var id = currentDetailId;
+            var host = document.getElementById('detail-workflow-list');
+            if (!host || !id) {
+                return;
+            }
+            var d = SHORTLIST_DB[id];
+            if (!d) return;
+            ensureWorkflowTimeline(d);
+            host.innerHTML = '';
+            d.workflowTimeline.forEach(function (step) {
+                var li = document.createElement('li');
+                li.className = 'workflow-step ' + (step.state || 'pending');
+                li.innerHTML =
+                    '<div class="workflow-step-marker" aria-hidden="true"><i class="pi ' + workflowStepIcon(step.state) + '"></i></div>' +
+                    '<div class="workflow-step-body">' +
+                    '<div class="workflow-step-title">' + escapeHtml(step.title) + '</div>' +
+                    '<div class="workflow-step-meta">' + escapeHtml(step.meta || '') + '</div>' +
+                    (step.note ? '<div class="workflow-step-note">' + escapeHtml(step.note) + '</div>' : '') +
+                    '</div>';
+                host.appendChild(li);
+            });
+        }
+
+        function renderDetailAmendments() {
+            var id = currentDetailId;
+            var container = document.getElementById('detail-amendments-container');
+            if (!container || !id) return;
+            var d = SHORTLIST_DB[id];
+            if (!d) return;
+            var list = d.amendments || [];
+            container.innerHTML = '';
+            if (!list.length) {
+                var empty = document.createElement('div');
+                empty.className = 'amendments-empty';
+                empty.textContent = 'No amendments recorded yet. After you save changes from Amend, entries appear here with date, author, and comment.';
+                container.appendChild(empty);
+                return;
+            }
+            var wrap = document.createElement('div');
+            wrap.className = 'amendments-list';
+            list.forEach(function (a) {
+                var card = document.createElement('article');
+                card.className = 'amendment-card';
+                card.innerHTML =
+                    '<div class="amendment-card-header">' +
+                    '<span class="amendment-card-date">' + escapeHtml(a.dateLabel || '') + '</span>' +
+                    '<span class="amendment-card-actor">' + escapeHtml(a.actor || MOCK_CURRENT_USER) + '</span>' +
+                    '</div>' +
+                    '<div class="amendment-card-comment">' + escapeHtml(a.comment || '') + '</div>' +
+                    (a.fieldsSummary
+                        ? '<div class="amendment-card-changes"><strong>Fields touched (mock):</strong> ' + escapeHtml(a.fieldsSummary) + '</div>'
+                        : '');
+                wrap.appendChild(card);
+            });
+            container.appendChild(wrap);
+        }
+
+        function switchDetailTab(name) {
+            var tabs = {
+                details: document.getElementById('detail-tab-details'),
+                workflow: document.getElementById('detail-tab-workflow'),
+                amendments: document.getElementById('detail-tab-amendments')
+            };
+            var panels = {
+                details: document.getElementById('detail-panel-details'),
+                workflow: document.getElementById('detail-panel-workflow'),
+                amendments: document.getElementById('detail-panel-amendments')
+            };
+            Object.keys(tabs).forEach(function (key) {
+                var selected = key === name;
+                if (tabs[key]) {
+                    tabs[key].setAttribute('aria-selected', selected ? 'true' : 'false');
+                    tabs[key].classList.toggle('p-tab-active', selected);
+                }
+                if (panels[key]) {
+                    if (selected) {
+                        panels[key].removeAttribute('hidden');
+                    } else {
+                        panels[key].setAttribute('hidden', '');
+                    }
+                }
+            });
+        }
+
+        function formatMockAmendmentTimestamp() {
+            var now = new Date();
+            var dateStr = now.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+            var timeStr = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+            return { dateLabel: dateStr + ' · ' + timeStr + ' UTC', iso: now.toISOString() };
+        }
+
+        function summarizeFieldChanges(before, after) {
+            var parts = [];
+            if (before.title !== after.title) {
+                parts.push('Title');
+            }
+            if (before.org !== after.org) {
+                parts.push('Organizational unit');
+            }
+            if (before.procurementReviewer !== after.procurementReviewer) {
+                parts.push('Procurement reviewer');
+            }
+            if (Number(before.valueUsd) !== Number(after.valueUsd)) {
+                parts.push('Expected value (USD)');
+            }
+            if (before.justification !== after.justification) {
+                parts.push('Justification');
+            }
+            if (JSON.stringify(before.vendors || []) !== JSON.stringify(after.vendors || [])) {
+                parts.push('Vendors');
+            }
+            if (JSON.stringify(before.alternateAuthors || []) !== JSON.stringify(after.alternateAuthors || [])) {
+                parts.push('Alternate authors');
+            }
+            return parts.length ? parts.join(', ') : 'No tracked field differences (mock)';
+        }
+
+        function setDetailEditing(editing) {
+            if (editing) {
+                switchDetailTab('details');
+            }
+            document.getElementById('detail-toolbar-view').style.display = editing ? 'none' : 'flex';
+            document.getElementById('detail-toolbar-edit').style.display = editing ? 'flex' : 'none';
+            document.getElementById('detail-readonly-block').style.display = editing ? 'none' : 'block';
+            document.getElementById('detail-edit-block').style.display = editing ? 'block' : 'none';
+        }
+
+        function openShortlistDetailPage(id, startInAmend) {
+            var d = SHORTLIST_DB[id];
+            if (!d) return;
+
+            currentDetailId = id;
+            switchDetailTab('details');
+            fillDetailReadonly(d, id);
+
+            var amendBtn = document.getElementById('detail-page-amend');
+            amendBtn.disabled = !d.canAmend;
+            amendBtn.title = d.canAmend ? 'Edit fields on this page' : (d.amendDisabledReason || 'Amend not available');
+
+            showView('detail');
+
+            if (startInAmend) {
+                if (!d.canAmend) {
+                    alert('Amend is not available for this shortlist in the current status.');
+                    setDetailEditing(false);
+                    return;
+                }
+                loadDetailEditForm(id);
+                setDetailEditing(true);
+            } else {
+                setDetailEditing(false);
+            }
+        }
+
+        function detailBackToList() {
+            setDetailEditing(false);
+            currentDetailId = '';
+            showView('search');
+        }
+
+        function detailDiscardAmend() {
+            if (!currentDetailId) return;
+            var d = SHORTLIST_DB[currentDetailId];
+            fillDetailReadonly(d, currentDetailId);
+            setDetailEditing(false);
+            var ac = document.getElementById('detail-amendment-comment');
+            if (ac) {
+                ac.value = '';
+            }
+        }
+
+        function detailStartAmend() {
+            if (!currentDetailId) return;
+            var d = SHORTLIST_DB[currentDetailId];
+            if (!d || !d.canAmend) return;
+            loadDetailEditForm(currentDetailId);
+            setDetailEditing(true);
+        }
+
+        function setDetailEditProcessBadge(process) {
+            var el = document.getElementById('detail-edit-process-badge');
+            el.className = 'process-source ' + (process === 'eoi' ? 'eoi' : process === 'pq' ? 'pq' : 'adhoc');
+            el.textContent = process === 'eoi' ? 'EOI' : process === 'pq' ? 'PQ' : 'Ad hoc';
+        }
+
+        function setDetailEditStatusBadge(statusKey, statusLabel) {
+            var el = document.getElementById('detail-edit-status-badge');
+            el.className = 'status-badge ' + statusKey;
+            el.textContent = statusLabel;
+        }
+
+        function loadDetailEditForm(id) {
+            var d = SHORTLIST_DB[id];
+            if (!d) return;
+
+            document.getElementById('detail-edit-record-id').value = id;
+            document.getElementById('sl-title-d').value = d.title;
+            document.getElementById('sl-org-d').value = d.org;
+            document.getElementById('sl-procurement-reviewer-d').value = d.procurementReviewer || '';
+            document.getElementById('sl-value-d').value = String(d.valueUsd);
+            document.getElementById('sl-justification-d').value = d.justification;
+            vendorListDetail = d.vendors.slice();
+            authorListDetail = (d.alternateAuthors || []).slice();
+            renderChips('vendor-chips-d', vendorListDetail, 'detail');
+            renderAuthorChips('author-chips-d', authorListDetail, 'detail');
+            setDetailEditProcessBadge(d.process);
+            setDetailEditStatusBadge(d.statusKey, d.statusLabel);
+            var ac = document.getElementById('detail-amendment-comment');
+            if (ac) {
+                ac.value = '';
+            }
+        }
+
+        function showView(name) {
+            var pageHeader = document.getElementById('shortlist-page-header');
+            pageHeader.style.display = name === 'search' ? '' : 'none';
+
+            document.querySelectorAll('.view-section').forEach(function (el) {
+                el.classList.remove('active');
+                el.setAttribute('aria-hidden', 'true');
+            });
+
+            if (name === 'search') {
+                document.getElementById('view-search').classList.add('active');
+                document.getElementById('view-search').setAttribute('aria-hidden', 'false');
+            } else if (name === 'create') {
+                document.getElementById('view-create').classList.add('active');
+                document.getElementById('view-create').setAttribute('aria-hidden', 'false');
+            } else if (name === 'detail') {
+                document.getElementById('view-detail').classList.add('active');
+                document.getElementById('view-detail').setAttribute('aria-hidden', 'false');
+            }
+        }
+
+        function clearFilters() {
+            document.getElementById('f-id').value = '';
+            document.getElementById('f-title').value = '';
+            document.getElementById('f-approved-from').value = '';
+            document.getElementById('f-approved-to').value = '';
+            document.getElementById('f-approved-by').value = '';
+            document.getElementById('f-process').value = '';
+            document.getElementById('f-status').value = '';
+            document.getElementById('f-org').value = '';
+            document.getElementById('f-vendors').value = '';
+        }
+
+        function applySearchMock() {
+            alert('Mock: search would run with current filters and refresh the results table.');
+        }
+
+        function renderChips(containerId, list, mode) {
+            var m = mode === undefined || mode === 'create' ? 'create' : mode;
+            var el = document.getElementById(containerId);
+            el.innerHTML = '';
+            list.forEach(function (v) {
+                var chip = document.createElement('span');
+                chip.className = 'vendor-chip';
+                var label = document.createElement('span');
+                label.textContent = v;
+                chip.appendChild(label);
+                var rm = document.createElement('button');
+                rm.type = 'button';
+                rm.setAttribute('aria-label', 'Remove ' + v);
+                rm.innerHTML = '<i class="pi pi-times"></i>';
+                rm.onclick = function () {
+                    if (m === 'detail') {
+                        vendorListDetail = vendorListDetail.filter(function (x) { return x !== v; });
+                        renderChips('vendor-chips-d', vendorListDetail, 'detail');
+                    } else {
+                        vendorList = vendorList.filter(function (x) { return x !== v; });
+                        renderChips('vendor-chips', vendorList, 'create');
+                    }
+                };
+                chip.appendChild(rm);
+                el.appendChild(chip);
+            });
+        }
+
+        function renderAuthorChips(containerId, list, mode) {
+            var m = mode === undefined || mode === 'create' ? 'create' : mode;
+            var el = document.getElementById(containerId);
+            el.innerHTML = '';
+            list.forEach(function (v) {
+                var chip = document.createElement('span');
+                chip.className = 'vendor-chip author-chip';
+                var label = document.createElement('span');
+                label.textContent = v;
+                chip.appendChild(label);
+                var rm = document.createElement('button');
+                rm.type = 'button';
+                rm.setAttribute('aria-label', 'Remove author ' + v);
+                rm.innerHTML = '<i class="pi pi-times"></i>';
+                rm.onclick = function () {
+                    if (m === 'detail') {
+                        authorListDetail = authorListDetail.filter(function (x) { return x !== v; });
+                        renderAuthorChips('author-chips-d', authorListDetail, 'detail');
+                    } else {
+                        authorList = authorList.filter(function (x) { return x !== v; });
+                        renderAuthorChips('author-chips', authorList, 'create');
+                    }
+                };
+                chip.appendChild(rm);
+                el.appendChild(chip);
+            });
+        }
+
+        function addAuthorChip(mode) {
+            var m = mode === undefined || mode === 'create' ? 'create' : mode;
+            var input = document.getElementById(m === 'detail' ? 'author-input-d' : 'author-input');
+            var v = (input.value || '').trim();
+            if (!v) return;
+            if (m === 'detail') {
+                authorListDetail.push(v);
+                renderAuthorChips('author-chips-d', authorListDetail, 'detail');
+            } else {
+                authorList.push(v);
+                renderAuthorChips('author-chips', authorList, 'create');
+            }
+            input.value = '';
+        }
+
+        function addVendorChip(mode) {
+            var m = mode === undefined || mode === 'create' ? 'create' : mode;
+            var input = document.getElementById(m === 'detail' ? 'vendor-input-d' : 'vendor-input');
+            var v = (input.value || '').trim();
+            if (!v) return;
+            if (m === 'detail') {
+                vendorListDetail.push(v);
+                renderChips('vendor-chips-d', vendorListDetail, 'detail');
+            } else {
+                vendorList.push(v);
+                renderChips('vendor-chips', vendorList, 'create');
+            }
+            input.value = '';
+        }
+
+        function resetCreateForm() {
+            document.getElementById('form-shortlist').reset();
+            vendorList = [];
+            authorList = [];
+            renderChips('vendor-chips', vendorList, 'create');
+            renderAuthorChips('author-chips', authorList, 'create');
+        }
+
+        function mockSaveShortlist(mode) {
+            var vendors = mode === 'detail' ? vendorListDetail : vendorList;
+            if (vendors.length === 0) {
+                alert('Please add at least one vendor.');
+                return;
+            }
+            if (mode === 'detail') {
+                var id = document.getElementById('detail-edit-record-id').value;
+                var d = SHORTLIST_DB[id];
+                if (!d) {
+                    return;
+                }
+                var commentEl = document.getElementById('detail-amendment-comment');
+                var comment = (commentEl && commentEl.value) ? commentEl.value.trim() : '';
+                if (!comment) {
+                    alert('Please enter an amendment comment. It is stored on the Amendments tab and reflected in Workflows.');
+                    return;
+                }
+                var before = {
+                    title: d.title,
+                    org: d.org,
+                    valueUsd: d.valueUsd,
+                    justification: d.justification,
+                    procurementReviewer: d.procurementReviewer,
+                    vendors: (d.vendors || []).slice(),
+                    alternateAuthors: (d.alternateAuthors || []).slice()
+                };
+                var after = {
+                    title: document.getElementById('sl-title-d').value.trim(),
+                    org: document.getElementById('sl-org-d').value,
+                    valueUsd: Number(document.getElementById('sl-value-d').value),
+                    justification: document.getElementById('sl-justification-d').value.trim(),
+                    procurementReviewer: document.getElementById('sl-procurement-reviewer-d').value,
+                    vendors: vendorListDetail.slice(),
+                    alternateAuthors: authorListDetail.slice()
+                };
+                d.title = after.title;
+                d.org = after.org;
+                d.valueUsd = after.valueUsd;
+                d.justification = after.justification;
+                d.procurementReviewer = after.procurementReviewer;
+                d.vendors = after.vendors;
+                d.alternateAuthors = after.alternateAuthors;
+                if (!d.amendments) {
+                    d.amendments = [];
+                }
+                var ts = formatMockAmendmentTimestamp();
+                d.amendments.unshift({
+                    dateLabel: ts.dateLabel,
+                    iso: ts.iso,
+                    actor: MOCK_CURRENT_USER,
+                    comment: comment,
+                    fieldsSummary: summarizeFieldChanges(before, after)
+                });
+                insertAmendmentWorkflowStep(d, ts.dateLabel + ' · ' + MOCK_CURRENT_USER, comment);
+                if (commentEl) {
+                    commentEl.value = '';
+                }
+                setDetailEditing(false);
+                fillDetailReadonly(d, id);
+                renderDetailWorkflow();
+                renderDetailAmendments();
+                switchDetailTab('amendments');
+                alert('Mock: changes saved. Open Workflows to see the amendment step, or stay on Amendments for the audit entry.');
+                return;
+            }
+            alert('Mock: shortlist saved (' + (mode || 'create') + ').');
+        }
+
+        function mockSubmitShortlist(mode) {
+            var vendors = mode === 'detail' ? vendorListDetail : vendorList;
+            if (vendors.length === 0) {
+                alert('Please add at least one vendor before submitting.');
+                return;
+            }
+            alert('Mock: submitted for approval. After approval, the shortlist proceeds to pre-clearance.');
+            if (mode !== 'detail') resetCreateForm();
+        }
+
+        function openCancelModal(id) {
+            pendingCancelId = id;
+            document.getElementById('cancel-id').textContent = id;
+            document.getElementById('cancel-modal').classList.add('open');
+        }
+
+        function closeCancelModal() {
+            document.getElementById('cancel-modal').classList.remove('open');
+            pendingCancelId = '';
+        }
+
+        function confirmCancelMock() {
+            alert('Mock: shortlist ' + pendingCancelId + ' cancelled.');
+            closeCancelModal();
+        }
+
+        document.getElementById('cancel-modal').addEventListener('click', function (e) {
+            if (e.target === this) closeCancelModal();
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                if (document.querySelector('.row-actions-dropdown.open')) {
+                    closeAllRowActionsMenus();
+                    return;
+                }
+                if (document.getElementById('cancel-modal').classList.contains('open')) {
+                    closeCancelModal();
+                } else if (document.getElementById('view-detail').classList.contains('active')) {
+                    var editing = document.getElementById('detail-edit-block').style.display === 'block';
+                    if (editing) {
+                        detailDiscardAmend();
+                    } else {
+                        detailBackToList();
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
