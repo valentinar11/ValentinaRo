@@ -1484,13 +1484,15 @@
             font-weight: 600;
         }
 
-        /* Compact Tender Header */
+        /* Compact Tender Header — overflow visible so Cancel split dropdown is not clipped */
         .tender-header-compact {
             background: var(--surface-0);
             border-radius: var(--radius-md);
             border: 1px solid var(--surface-200);
             margin-bottom: var(--spacing-md);
-            overflow: hidden;
+            overflow: visible;
+            position: relative;
+            z-index: 40;
             box-shadow: var(--shadow-card);
         }
 
@@ -1695,6 +1697,9 @@
             justify-content: space-between;
             padding: var(--spacing-sm) var(--spacing-lg);
             background: var(--surface-0);
+            overflow: visible;
+            position: relative;
+            z-index: 41;
         }
 
         .action-bar-left {
@@ -1706,6 +1711,74 @@
             display: flex;
             align-items: center;
             gap: var(--spacing-sm);
+        }
+
+        /* Cancel — split / dropdown (Entire tender vs Lots) */
+        .cancel-split-wrap {
+            position: relative;
+            display: inline-flex;
+            align-items: stretch;
+        }
+
+        .cancel-split {
+            display: inline-flex;
+            align-items: stretch;
+            border-radius: var(--radius-md);
+            overflow: visible;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .cancel-split .btn.btn-danger {
+            margin: 0;
+            border-radius: 0;
+            min-height: 44px;
+        }
+
+        .cancel-split-main.btn-danger {
+            border-radius: var(--radius-md) 0 0 var(--radius-md);
+            border-right: 1px solid rgba(255, 255, 255, 0.25);
+        }
+
+        .cancel-split-caret.btn-danger {
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            padding-left: 10px;
+            padding-right: 12px;
+        }
+
+        .cancel-split-menu {
+            position: absolute;
+            top: calc(100% + 4px);
+            right: 0;
+            min-width: 200px;
+            background: var(--surface-0);
+            border: 1px solid var(--surface-200);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            z-index: 10050;
+            padding: var(--spacing-xs);
+        }
+
+        .cancel-split-menu-item {
+            display: flex;
+            width: 100%;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px;
+            border: none;
+            background: none;
+            font-size: 14px;
+            text-align: left;
+            cursor: pointer;
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+        }
+
+        .cancel-split-menu-item:hover {
+            background: var(--surface-100);
+        }
+
+        .cancel-split-menu-item i {
+            color: var(--danger-500);
         }
 
         .btn-back-link {
@@ -7281,7 +7354,7 @@
                             </td>
                             <td><button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); showTenderDetails({id: 'RFQ/2024/001', title: 'Supply of Medical Equipment', status: 'Posted', statusKey: 'active'})">View Details</button></td>
                         </tr>
-                        <tr class="overview-tender-row" data-status="active" data-tab="active" onclick="showTenderDetails({id: 'ITB/2024/045', title: 'Construction of Office Building', status: 'Posted', statusKey: 'active'})">
+                        <tr class="overview-tender-row" data-status="active" data-tab="active" onclick="showTenderDetails({id: 'ITB/2024/045', title: 'Construction of Office Building', status: 'Posted', statusKey: 'active', hasLots: true, submissionDeadlineISO: '2026-01-10', lots: ['Lot 1 — Civil works', 'Lot 2 — MEP', 'Lot 3 — Finishing']})">
                             <td>
                                 <div class="tender-ref">ITB/2024/045</div>
                                 <div class="tender-title-cell">Construction of Office Building</div>
@@ -7294,7 +7367,7 @@
                                     <div class="deadline-remaining">30 days left</div>
                                 </div>
                             </td>
-                            <td><button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); showTenderDetails({id: 'ITB/2024/045', title: 'Construction of Office Building', status: 'Posted', statusKey: 'active'})">View Details</button></td>
+                            <td><button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); showTenderDetails({id: 'ITB/2024/045', title: 'Construction of Office Building', status: 'Posted', statusKey: 'active', hasLots: true, submissionDeadlineISO: '2026-01-10', lots: ['Lot 1 — Civil works', 'Lot 2 — MEP', 'Lot 3 — Finishing']})">View Details</button></td>
                         </tr>
                         <tr class="overview-tender-row" data-status="approval" data-tab="active" onclick="showTenderDetails({id: 'RFP/2024/078', title: 'IT Infrastructure Services', status: 'Pending Approval', statusKey: 'approval'})">
                             <td>
@@ -7809,9 +7882,25 @@
                             <button class="btn btn-secondary" onclick="openAmendModalFromDetails()">
                                 <i class="pi pi-pencil"></i> Amend
                         </button>
-                        <button class="btn btn-danger" onclick="openCancelModalFromDetails()">
-                            <i class="pi pi-times-circle"></i> Cancel Tender
-                        </button>
+                        <!-- Demo: dual Cancel (Entire tender + Lots) — same markup built in updateDetailsActions when hasLots + after deadline -->
+                        <div class="cancel-split-wrap" id="cancel-split-wrap-static">
+                            <div class="cancel-split">
+                                <button type="button" class="btn btn-danger cancel-split-main" onclick="openCancelModalFromDetails('entire-tender')" title="Cancel entire tender">
+                                    <i class="pi pi-times-circle"></i> Cancel
+                                </button>
+                                <button type="button" class="btn btn-danger cancel-split-caret" onclick="toggleCancelSplitDropdown(event, 'cancel-split-menu-static')" aria-label="More cancel options" title="Other cancel options">
+                                    <i class="pi pi-angle-down"></i>
+                                </button>
+                            </div>
+                            <div class="cancel-split-menu" id="cancel-split-menu-static" role="menu" style="display: none;">
+                                <button type="button" class="cancel-split-menu-item" role="menuitem" onclick="openCancelModalFromDetails('entire-tender'); closeCancelSplitDropdown()">
+                                    <i class="pi pi-ban"></i> Entire tender
+                                </button>
+                                <button type="button" class="cancel-split-menu-item" role="menuitem" onclick="openCancelModalFromDetails('lots'); closeCancelSplitDropdown()">
+                                    <i class="pi pi-th-large"></i> Lots
+                                </button>
+                            </div>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -13747,7 +13836,7 @@
             <div class="modal-header">
                 <h2 class="modal-title">
                     <i class="pi pi-times-circle"></i>
-                    <span>Cancel Tender: <span id="cancelTenderTitle"></span></span>
+                    <span id="cancel-modal-heading">Cancel</span><span>: </span><span id="cancelTenderTitle"></span>
                 </h2>
                 <button class="modal-close" onclick="closeCancelModal()">×</button>
             </div>
@@ -13797,6 +13886,14 @@
                     <span class="help-text">This will be published to all participating suppliers</span>
                 </div>
 
+                <div class="form-group" id="cancel-lot-scope-panel" style="display: none;">
+                    <label class="form-label required">Lot(s) to cancel</label>
+                    <div id="cancel-lot-checkboxes" class="cancel-lot-checkboxes" style="display: flex; flex-direction: column; gap: 8px; margin-top: 8px;">
+                        <!-- Filled by openCancelModal from currentTenderData.lots -->
+                    </div>
+                    <span class="help-text">Only selected lots are cancelled; other lots may remain active.</span>
+                </div>
+
                 <div class="alert alert-info">
                     <i class="pi pi-info-circle" style="font-size: 20px;"></i>
                     <div>
@@ -13813,7 +13910,7 @@
 
                 <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; margin-top: 20px;">
                     <input type="checkbox" id="confirm-cancellation">
-                    <strong>I confirm that I want to cancel this tender</strong>
+                    <strong id="confirm-cancellation-label">I confirm that I want to cancel this tender</strong>
                 </label>
             </div>
 
@@ -14446,11 +14543,6 @@
         // Helper functions for menu actions
         function viewTenderPreview(tenderId, tenderTitle) {
             showToast('📋 Quick preview: ' + tenderId + ' - ' + tenderTitle);
-            closeAllActionMenus();
-        }
-        
-        function openCancelModal(tenderId, tenderTitle) {
-            showToast('⚠️ Opening cancellation dialog for ' + tenderId);
             closeAllActionMenus();
         }
         
@@ -16245,6 +16337,78 @@
 
         // Store current tender data
         let currentTenderData = {};
+        let currentCancelScope = 'entire-tender';
+
+        function isAfterSubmissionDeadline(tender) {
+            if (!tender || !tender.submissionDeadlineISO) return false;
+            const d = new Date(tender.submissionDeadlineISO);
+            const endOfDay = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 23, 59, 59, 999);
+            return endOfDay < new Date();
+        }
+
+        function tenderShowsCancelLotsOption(tender) {
+            return !!(tender && tender.hasLots === true && isAfterSubmissionDeadline(tender));
+        }
+
+        function closeCancelSplitDropdown() {
+            document.querySelectorAll('.cancel-split-menu').forEach(function (m) {
+                m.style.display = 'none';
+            });
+        }
+
+        function toggleCancelSplitDropdown(event, menuId) {
+            if (event && event.stopPropagation) event.stopPropagation();
+            const menu = document.getElementById(menuId);
+            if (!menu) return;
+            const isOpen = menu.style.display === 'block';
+            closeCancelSplitDropdown();
+            menu.style.display = isOpen ? 'none' : 'block';
+        }
+
+        function getPostedTenderCancelControlHtml() {
+            const menuId = 'cancel-split-menu-' + Math.random().toString(36).slice(2, 10);
+            if (tenderShowsCancelLotsOption(currentTenderData)) {
+                return (
+                    '<div class="cancel-split-wrap" id="cancel-split-wrap">' +
+                    '<div class="cancel-split">' +
+                    '<button type="button" class="btn btn-danger cancel-split-main" onclick="openCancelModalFromDetails(\'entire-tender\')" title="Cancel entire tender">' +
+                    '<i class="pi pi-times-circle"></i> Cancel</button>' +
+                    '<button type="button" class="btn btn-danger cancel-split-caret" onclick="toggleCancelSplitDropdown(event, \'' +
+                    menuId +
+                    '\')" aria-label="More cancel options" title="Other cancel options">' +
+                    '<i class="pi pi-angle-down"></i></button></div>' +
+                    '<div class="cancel-split-menu" id="' +
+                    menuId +
+                    '" role="menu" style="display: none;">' +
+                    '<button type="button" class="cancel-split-menu-item" role="menuitem" onclick="openCancelModalFromDetails(\'entire-tender\'); closeCancelSplitDropdown();">' +
+                    '<i class="pi pi-ban"></i> Entire tender</button>' +
+                    '<button type="button" class="cancel-split-menu-item" role="menuitem" onclick="openCancelModalFromDetails(\'lots\'); closeCancelSplitDropdown();">' +
+                    '<i class="pi pi-th-large"></i> Lots</button></div></div>'
+                );
+            }
+            return (
+                '<button type="button" class="btn btn-danger" onclick="openCancelModalFromDetails(\'entire-tender\')">' +
+                '<i class="pi pi-times-circle"></i> Cancel</button>'
+            );
+        }
+
+        function getActivePostedDetailsActionsHtml() {
+            return (
+                '<button class="btn btn-secondary" onclick="downloadTenderPackage()">' +
+                '<i class="pi pi-download"></i> Download Tender Package</button>' +
+                '<button class="btn btn-secondary" onclick="openClarificationsFromDetails()">' +
+                '<i class="pi pi-comment"></i> Clarifications (5)</button>' +
+                '<button class="btn btn-secondary" onclick="openAmendModalFromDetails()">' +
+                '<i class="pi pi-pencil"></i> Amend</button>' +
+                getPostedTenderCancelControlHtml()
+            );
+        }
+
+        document.addEventListener('click', function (e) {
+            if (e.target.closest && !e.target.closest('.cancel-split-wrap')) {
+                closeCancelSplitDropdown();
+            }
+        });
 
         function showTenderDetails(tenderData) {
             // Store tender data
@@ -16291,20 +16455,7 @@
             
             // Define actions for each status
             const actionsByStatus = {
-                'active': `
-                    <button class="btn btn-secondary" onclick="downloadTenderPackage()">
-                        <i class="pi pi-download"></i> Download Tender Package
-                    </button>
-                    <button class="btn btn-secondary" onclick="openClarificationsFromDetails()">
-                        <i class="pi pi-comment"></i> Clarifications (5)
-                    </button>
-                    <button class="btn btn-secondary" onclick="openAmendModalFromDetails()">
-                        <i class="pi pi-pencil"></i> Amend
-                    </button>
-                    <button class="btn btn-danger" onclick="openCancelModalFromDetails()">
-                        <i class="pi pi-times-circle"></i> Cancel Tender
-                    </button>
-                `,
+                'active': null,
                 'draft': `
                     <button class="btn btn-primary">
                         <i class="pi pi-pencil"></i> Continue Editing
@@ -16441,8 +16592,13 @@
                 `
             };
             
-            const actions = actionsByStatus[statusKey] || actionsByStatus['active'];
-            actionsContainer.innerHTML = actions;
+            if (statusKey === 'active') {
+                actionsContainer.innerHTML = getActivePostedDetailsActionsHtml();
+            } else {
+                const html = actionsByStatus[statusKey];
+                actionsContainer.innerHTML =
+                    html != null ? html : getActivePostedDetailsActionsHtml();
+            }
         }
 
         function filterTenders() {
@@ -17427,7 +17583,7 @@
         }
 
         function openCancelModalFromPreview() {
-            openCancelModal(currentTenderId, currentTenderTitle);
+            openCancelModal(currentTenderId, currentTenderTitle, 'entire-tender');
         }
 
         function openAmendModalFromDetails() {
@@ -17442,8 +17598,9 @@
             }, 1500);
         }
 
-        function openCancelModalFromDetails() {
-            openCancelModal(currentTenderId, currentTenderTitle);
+        function openCancelModalFromDetails(cancelScope) {
+            const scope = cancelScope === 'lots' ? 'lots' : 'entire-tender';
+            openCancelModal(currentTenderId, currentTenderTitle, scope);
         }
 
         function toggleItemCard(header, event) {
@@ -23017,11 +23174,82 @@
         }
 
         // Cancel Modal
-        function openCancelModal(tenderId, tenderTitle) {
+        function updateCancelConfirmButtonState() {
+            const reasonEl = document.getElementById('cancel-reason');
+            const internalEl = document.getElementById('cancel-internal-explanation');
+            const publicEl = document.getElementById('cancel-public-justification');
+            const confirmEl = document.getElementById('confirm-cancellation');
+            const btn = document.getElementById('confirm-cancel-btn');
+            if (!reasonEl || !btn) return;
+
+            const reason = reasonEl.value;
+            const internalExp = internalEl ? internalEl.value : '';
+            const publicJust = publicEl ? publicEl.value : '';
+            const confirmed = confirmEl ? confirmEl.checked : false;
+
+            let lotsOk = true;
+            if (currentCancelScope === 'lots') {
+                lotsOk = document.querySelectorAll('#cancel-lot-checkboxes .cancel-lot-cb:checked').length > 0;
+            }
+
+            btn.disabled = !(confirmed && reason && internalExp && publicJust && lotsOk);
+        }
+
+        function openCancelModal(tenderId, tenderTitle, cancelScope) {
             currentTenderId = tenderId;
             currentTenderTitle = tenderTitle;
-            document.getElementById('cancelTenderTitle').textContent = tenderId;
+            currentCancelScope = cancelScope === 'lots' ? 'lots' : 'entire-tender';
+
+            const ref = tenderId + (tenderTitle ? ' — ' + tenderTitle : '');
+            document.getElementById('cancelTenderTitle').textContent = ref;
+
+            const heading = document.getElementById('cancel-modal-heading');
+            if (heading) {
+                heading.textContent =
+                    currentCancelScope === 'lots' ? 'Cancel — Lot(s)' : 'Cancel — Entire tender';
+            }
+
+            const panel = document.getElementById('cancel-lot-scope-panel');
+            const label = document.getElementById('confirm-cancellation-label');
+            const wrap = document.getElementById('cancel-lot-checkboxes');
+
+            if (currentCancelScope === 'lots' && panel && wrap) {
+                panel.style.display = 'block';
+                if (label) {
+                    label.textContent = 'I confirm cancellation for the selected lot(s)';
+                }
+                const lots =
+                    currentTenderData &&
+                    currentTenderData.lots &&
+                    currentTenderData.lots.length > 0
+                        ? currentTenderData.lots
+                        : ['Lot 1', 'Lot 2', 'Lot 3'];
+                wrap.innerHTML = '';
+                lots.forEach(function (name, i) {
+                    const row = document.createElement('label');
+                    row.style.cssText = 'display:flex;align-items:center;gap:8px;cursor:pointer;';
+                    const cb = document.createElement('input');
+                    cb.type = 'checkbox';
+                    cb.className = 'cancel-lot-cb';
+                    cb.value = String(i);
+                    cb.addEventListener('change', updateCancelConfirmButtonState);
+                    const span = document.createElement('span');
+                    span.textContent = name;
+                    row.appendChild(cb);
+                    row.appendChild(span);
+                    wrap.appendChild(row);
+                });
+            } else {
+                if (panel) panel.style.display = 'none';
+                if (wrap) wrap.innerHTML = '';
+                if (label) {
+                    label.textContent = 'I confirm that I want to cancel this tender';
+                }
+            }
+
             document.getElementById('cancelModal').classList.add('active');
+            closeCancelSplitDropdown();
+            updateCancelConfirmButtonState();
         }
 
         function closeCancelModal() {
@@ -23035,6 +23263,11 @@
             document.getElementById('cancel-public-justification').value = '';
             document.getElementById('confirm-cancellation').checked = false;
             document.getElementById('confirm-cancel-btn').disabled = true;
+            const wrap = document.getElementById('cancel-lot-checkboxes');
+            if (wrap) wrap.innerHTML = '';
+            const panel = document.getElementById('cancel-lot-scope-panel');
+            if (panel) panel.style.display = 'none';
+            currentCancelScope = 'entire-tender';
         }
 
         function submitCancellation() {
@@ -23047,23 +23280,39 @@
                 return;
             }
 
-            alert(`Tender ${currentTenderId} has been cancelled.\n\n` +
-                  `- All suppliers have been notified\n` +
-                  `- Bids have been archived\n` +
-                  `- Requisition lines released in ERP\n` +
-                  `- Cancellation logged in audit trail`);
-            
+            if (currentCancelScope === 'lots') {
+                const selected = Array.from(
+                    document.querySelectorAll('#cancel-lot-checkboxes .cancel-lot-cb:checked')
+                ).map(function (cb) {
+                    return cb.nextElementSibling ? cb.nextElementSibling.textContent : cb.value;
+                });
+                if (selected.length === 0) {
+                    alert('Select at least one lot to cancel');
+                    return;
+                }
+                alert(
+                    `Lot cancellation submitted for ${currentTenderId}.\n\nLots: ${selected.join(', ')}\n\n(Mock: suppliers for those lots notified; ERP lines released per lot.)`
+                );
+            } else {
+                alert(
+                    `Tender ${currentTenderId} has been cancelled (entire tender).\n\n` +
+                        `- All suppliers have been notified\n` +
+                        `- Bids have been archived\n` +
+                        `- Requisition lines released in ERP\n` +
+                        `- Cancellation logged in audit trail`
+                );
+            }
+
             closeCancelModal();
         }
 
         // Enable cancel button
-        document.getElementById('confirm-cancellation').addEventListener('change', function() {
-            const reason = document.getElementById('cancel-reason').value;
-            const internalExp = document.getElementById('cancel-internal-explanation').value;
-            const publicJust = document.getElementById('cancel-public-justification').value;
-            
-            document.getElementById('confirm-cancel-btn').disabled = 
-                !(this.checked && reason && internalExp && publicJust);
+        document.getElementById('confirm-cancellation').addEventListener('change', updateCancelConfirmButtonState);
+        ['cancel-reason', 'cancel-internal-explanation', 'cancel-public-justification'].forEach(function (id) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.addEventListener('input', updateCancelConfirmButtonState);
+            if (el.tagName === 'SELECT') el.addEventListener('change', updateCancelConfirmButtonState);
         });
 
         // Close modals on overlay click
