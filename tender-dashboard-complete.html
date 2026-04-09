@@ -1425,7 +1425,6 @@
         .main-content #view-tender-details,
         .main-content #view-evaluation,
         .main-content #view-evaluation-report,
-        .main-content #view-bid-opening,
         .main-content #view-cpc-case {
             display: none;
         }
@@ -1435,7 +1434,6 @@
         .main-content #view-tender-details.active,
         .main-content #view-evaluation.active,
         .main-content #view-evaluation-report.active,
-        .main-content #view-bid-opening.active,
         .main-content #view-cpc-case.active {
             display: block;
             width: 100%;
@@ -7089,6 +7087,7 @@
                             <a class="menu-item active" id="menu-tendering-overview" href="javascript:void(0)" onclick="showDashboard(this); return false;"><span class="menu-icon"><i class="pi pi-chart-bar"></i></span><span>Overview</span></a>
                             <a class="menu-item" id="menu-tendering-tenders" href="javascript:void(0)" onclick="showTendersList(this); return false;"><span class="menu-icon"><i class="pi pi-folder-open"></i></span><span>Tenders</span><span class="menu-badge">13</span></a>
                             <a class="menu-item" href="tender-authoring.html"><span class="menu-icon"><i class="pi pi-plus"></i></span><span>Create Tender</span></a>
+                            <a class="menu-item" href="shortlists-mockup.html"><span class="menu-icon"><i class="pi pi-list"></i></span><span>Shortlists</span></a>
                         </div>
                     </div>
                     
@@ -7949,6 +7948,9 @@
                             </button>
                             <button class="tender-tab-btn" onclick="switchTab('tab-submissions', this)">
                                 <i class="pi pi-upload"></i> Submissions <span class="tab-badge">3</span>
+                            </button>
+                            <button class="tender-tab-btn" id="tab-btn-bid-opening" onclick="switchTab('tab-bid-opening', this)">
+                                <i class="pi pi-unlock"></i> Bid Opening
                             </button>
                             <button class="tender-tab-btn" onclick="switchTab('tab-process-evaluation', this)">
                                 <i class="pi pi-chart-bar"></i> Evaluation
@@ -9670,6 +9672,161 @@
                             </div>
                         </div>
 
+                        <!-- Tab Panel: Bid Opening (same workspace as tender details — Process) -->
+                        <div id="tab-bid-opening" class="tender-tab-panel">
+                            <div style="margin-bottom: var(--spacing-lg); padding: var(--spacing-md) 0 var(--spacing-lg); border-bottom: 1px solid var(--surface-200);">
+                                <div style="display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: var(--spacing-md);">
+                                    <div style="min-width: 0; flex: 1;">
+                                        <div style="font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px;">Bid opening</div>
+                                        <div style="display: flex; flex-wrap: wrap; align-items: center; column-gap: 10px; row-gap: 6px; font-size: 13px; line-height: 1.4; color: var(--text-primary);">
+                                            <span id="bid-opening-status" style="display: inline-flex; align-items: center; gap: 6px; font-weight: 600; color: var(--warning-700);">
+                                                <i class="pi pi-lock-open" style="font-size: 13px; opacity: 0.9;" aria-hidden="true"></i>
+                                                Opening in progress
+                                            </span>
+                                            <span style="color: var(--surface-300); user-select: none;" aria-hidden="true">·</span>
+                                            <span id="bid-opening-type-badge" style="color: var(--text-primary); font-weight: 500;">ITB — Single report</span>
+                                            <span style="color: var(--surface-300); user-select: none;" aria-hidden="true">·</span>
+                                            <span id="bid-opening-session-badge" style="color: var(--text-secondary); font-weight: 500;">Online · Public</span>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; gap: 8px; flex-wrap: wrap; flex-shrink: 0; align-items: center;">
+                                        <button type="button" class="btn btn-secondary btn-sm" onclick="downloadBidOpeningReport('pdf')" title="Download Bid Opening Report as PDF" style="font-weight: 500;">
+                                            <i class="pi pi-file-pdf"></i> PDF
+                                        </button>
+                                        <button type="button" class="btn btn-secondary btn-sm" onclick="downloadBidOpeningReport('excel')" title="Download Bid Opening Report as Excel" style="font-weight: 500;">
+                                            <i class="pi pi-file-excel"></i> Excel
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="background: var(--surface-0); border-radius: var(--radius-lg); box-shadow: var(--shadow-card); margin-bottom: var(--spacing-xl); overflow: hidden;">
+                                <div onclick="toggleBidOpeningSection('confidentiality')" style="padding: var(--spacing-lg); background: var(--surface-50); cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--surface-200);">
+                                    <div style="display: flex; align-items: center; gap: var(--spacing-md);">
+                                        <i class="pi pi-lock" style="color: var(--warning-500);"></i>
+                                        <span style="font-weight: 600; color: var(--text-primary);">Pricing Confidentiality Settings</span>
+                                        <span style="font-size: 10px; padding: 2px 8px; background: var(--warning-100); color: var(--warning-600); border-radius: var(--radius-xs);">Configure before finalizing</span>
+                                    </div>
+                                    <i id="confidentiality-icon" class="pi pi-chevron-down" style="color: var(--text-muted); transition: transform 0.2s;"></i>
+                                </div>
+                                <div id="confidentiality-content" style="padding: var(--spacing-lg); display: none;">
+                                    <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--spacing-lg);">
+                                        Configure which information will be visible to bidders in the external Bid Opening Report. Hidden fields require justification and will be included in the Evaluation Report.
+                                    </div>
+                                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-md);">
+                                        <label style="display: flex; align-items: center; gap: var(--spacing-sm); padding: var(--spacing-sm); background: var(--surface-50); border-radius: var(--radius-sm); cursor: pointer;">
+                                            <input type="checkbox" id="show-financial-offer" checked style="accent-color: var(--primary-500);">
+                                            <span style="font-size: 13px;">Show Total Financial Offer</span>
+                                        </label>
+                                        <label style="display: flex; align-items: center; gap: var(--spacing-sm); padding: var(--spacing-sm); background: var(--surface-50); border-radius: var(--radius-sm); cursor: pointer;">
+                                            <input type="checkbox" id="show-bidder-name" checked style="accent-color: var(--primary-500);">
+                                            <span style="font-size: 13px;">Show Bidder Name</span>
+                                        </label>
+                                        <label style="display: flex; align-items: center; gap: var(--spacing-sm); padding: var(--spacing-sm); background: var(--surface-50); border-radius: var(--radius-sm); cursor: pointer;">
+                                            <input type="checkbox" id="show-ungm-number" checked style="accent-color: var(--primary-500);">
+                                            <span style="font-size: 13px;">Show UNGM Number</span>
+                                        </label>
+                                        <label style="display: flex; align-items: center; gap: var(--spacing-sm); padding: var(--spacing-sm); background: var(--surface-50); border-radius: var(--radius-sm); cursor: pointer;">
+                                            <input type="checkbox" id="show-discounts" checked style="accent-color: var(--primary-500);">
+                                            <span style="font-size: 13px;">Show Discounts</span>
+                                        </label>
+                                        <label style="display: flex; align-items: center; gap: var(--spacing-sm); padding: var(--spacing-sm); background: var(--surface-50); border-radius: var(--radius-sm); cursor: pointer;">
+                                            <input type="checkbox" id="show-bidder-comments" checked style="accent-color: var(--primary-500);">
+                                            <span style="font-size: 13px;">Show Bidder Comments</span>
+                                        </label>
+                                        <label style="display: flex; align-items: center; gap: var(--spacing-sm); padding: var(--spacing-sm); background: var(--surface-50); border-radius: var(--radius-sm); cursor: pointer;">
+                                            <input type="checkbox" id="show-budget-estimate" style="accent-color: var(--primary-500);">
+                                            <span style="font-size: 13px;">Show Budget Estimate</span>
+                                        </label>
+                                    </div>
+                                    <div style="margin-top: var(--spacing-lg);">
+                                        <label style="font-size: 12px; font-weight: 500; color: var(--text-primary); display: block; margin-bottom: var(--spacing-xs);">
+                                            Justification for hidden fields (required if any field is hidden):
+                                        </label>
+                                        <textarea id="confidentiality-justification" placeholder="Provide justification for hiding any pricing or identity information from bidders..." style="width: 100%; padding: var(--spacing-sm); border: 1px solid var(--surface-300); border-radius: var(--radius-sm); font-size: 12px; resize: vertical; min-height: 60px;"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="bid-opening-panel-section" style="background: var(--surface-0); border-radius: var(--radius-lg); box-shadow: var(--shadow-card); margin-bottom: var(--spacing-xl); overflow: hidden; display: none;">
+                                <div onclick="toggleBidOpeningSection('panel')" style="padding: var(--spacing-lg); background: var(--surface-50); cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--surface-200);">
+                                    <div style="display: flex; align-items: center; gap: var(--spacing-md); flex-wrap: wrap;">
+                                        <i class="pi pi-users" style="color: var(--primary-500);"></i>
+                                        <span style="font-weight: 600; color: var(--text-primary);">Bid Opening Panel</span>
+                                        <span id="bid-opening-panel-status" style="font-size: 10px; padding: 2px 8px; background: var(--warning-100); color: var(--warning-600); border-radius: var(--radius-xs); font-weight: 600;">Not Required</span>
+                                        <span id="panel-members-count" style="font-size: 10px; padding: 2px 8px; background: var(--primary-100); color: var(--primary-600); border-radius: var(--radius-xs);">3 Members</span>
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                                        <button type="button" class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); setupBidOpeningPanel()" style="font-size: 10px;">
+                                            <i class="pi pi-users"></i> Setup Panel
+                                        </button>
+                                        <i id="panel-icon" class="pi pi-chevron-down" style="color: var(--text-muted); transition: transform 0.2s;"></i>
+                                    </div>
+                                </div>
+                                <div id="panel-content" style="padding: var(--spacing-lg); display: none;">
+                                    <div id="panel-members-list" style="display: grid; gap: var(--spacing-md);">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="background: var(--surface-0); border-radius: var(--radius-lg); box-shadow: var(--shadow-card); overflow: hidden; margin-bottom: var(--spacing-xl);">
+                                <div onclick="toggleBidOpeningSection('report')" style="padding: var(--spacing-lg); background: var(--surface-50); cursor: pointer; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--spacing-md); border-bottom: 1px solid var(--surface-200);">
+                                    <div style="flex: 1; min-width: 200px;">
+                                        <h3 style="margin: 0; font-size: 16px; font-weight: 600; color: var(--text-primary); display: flex; align-items: center; gap: 8px;">
+                                            <i class="pi pi-file-edit" style="font-size: 18px; color: var(--primary-500);"></i>
+                                            Bid Opening Report
+                                        </h3>
+                                    </div>
+                                    <div style="display: flex; align-items: center; flex-shrink: 0;">
+                                        <i id="report-icon" class="pi pi-chevron-down" style="color: var(--text-muted); transition: transform 0.2s;"></i>
+                                    </div>
+                                </div>
+
+                                <div id="report-content" style="display: none;">
+                                    <div style="padding: var(--spacing-lg); border-bottom: 1px solid var(--surface-200); background: var(--surface-0);">
+                                        <div style="font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: var(--spacing-md);">Summary — tender details</div>
+                                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--spacing-md);">
+                                            <div style="background: var(--surface-50); border-radius: var(--radius-md); padding: var(--spacing-md); border-left: 4px solid var(--primary-400);">
+                                                <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Total vendors</div>
+                                                <div id="bid-opening-total-vendors" style="font-size: 24px; font-weight: 700; color: var(--primary-500);">6</div>
+                                                <div style="font-size: 10px; color: var(--text-muted); margin-top: 2px;">Registered / invited vendors</div>
+                                            </div>
+                                            <div style="background: var(--surface-50); border-radius: var(--radius-md); padding: var(--spacing-md); border-left: 4px solid var(--success-400);">
+                                                <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Total bids</div>
+                                                <div id="bid-opening-total-bids" style="font-size: 24px; font-weight: 700; color: var(--success-600);">6</div>
+                                                <div style="font-size: 10px; color: var(--text-muted); margin-top: 2px;">Offers received</div>
+                                            </div>
+                                            <div style="background: var(--surface-50); border-radius: var(--radius-md); padding: var(--spacing-md); border-left: 4px solid var(--info-400);">
+                                                <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Estimated budget</div>
+                                                <div id="bid-opening-budget" style="font-size: 20px; font-weight: 700; color: var(--info-500);">$150,000</div>
+                                                <div style="font-size: 10px; color: var(--text-muted); margin-top: 2px;">Reference estimate</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="bid-opening-tables-container" style="padding: 0 var(--spacing-lg) var(--spacing-lg);">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="background: var(--surface-0); border-radius: var(--radius-lg); box-shadow: var(--shadow-card); padding: var(--spacing-xl); margin-top: var(--spacing-xl); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--spacing-md);">
+                                <div>
+                                    <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 4px;">Ready to finalize?</div>
+                                    <div style="font-size: 12px; color: var(--text-muted);">
+                                        Once finalized, the Bid Opening Report will be shared with all bidders and the evaluation team will gain access to submissions.
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: var(--spacing-sm);">
+                                    <button type="button" class="btn btn-secondary" onclick="saveBidOpeningDraft()">
+                                        <i class="pi pi-save"></i> Save Draft
+                                    </button>
+                                    <button type="button" class="btn btn-success" onclick="finalizeBidOpening()" style="background: linear-gradient(135deg, var(--success-500) 0%, var(--success-400) 100%);">
+                                        <i class="pi pi-check-circle"></i> Finalize Bid Opening
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Tab Panel: Workflow -->
                         <div id="tab-workflow" class="tender-tab-panel">
                             <!-- Workflow Stats Bar -->
@@ -10586,220 +10743,6 @@
                 </div> <!-- End tender-overview-grid -->
             </div>
             <!-- End Tender Details View -->
-
-            <!-- Bid Opening View -->
-            <div class="view-section" id="view-bid-opening">
-                <!-- Bid Opening Header -->
-                <div style="background: var(--surface-0); border-radius: var(--radius-lg); padding: var(--spacing-xl); box-shadow: var(--shadow-card); border: 1px solid var(--surface-200); margin-bottom: var(--spacing-xl);">
-                    <button class="btn btn-secondary" onclick="showDashboard()" style="margin-bottom: var(--spacing-md);">
-                        <i class="pi pi-arrow-left"></i> Back to Dashboard
-                    </button>
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: var(--spacing-md);">
-                        <div>
-                            <h1 style="font-size: 24px; font-weight: 600; color: var(--primary-400); margin-bottom: var(--spacing-sm);" id="bid-opening-tender-title">
-                                Tender Bid Opening
-                            </h1>
-                            <div style="display: flex; align-items: center; gap: var(--spacing-md); flex-wrap: wrap;">
-                                <span id="bid-opening-tender-ref" style="font-size: 13px; color: var(--text-muted);">Reference: ITB/2024/089</span>
-                                <span style="padding: 4px 12px; background: var(--warning-100); color: var(--warning-600); border-radius: var(--radius-sm); font-size: 11px; font-weight: 600;" id="bid-opening-status">
-                                    🔓 Opening in Progress
-                                </span>
-                                <span id="bid-opening-type-badge" style="padding: 4px 12px; background: var(--primary-50); color: var(--primary-500); border-radius: var(--radius-sm); font-size: 11px; font-weight: 600;">
-                                    ITB - Single Report
-                                </span>
-                            </div>
-                        </div>
-                        <div style="display: flex; gap: var(--spacing-sm);">
-                            <button class="btn btn-secondary" onclick="showBidOpeningSettings()">
-                                <i class="pi pi-cog"></i> Settings
-                            </button>
-                            <button class="btn btn-secondary" onclick="downloadBidOpeningReport('pdf')">
-                                <i class="pi pi-file-pdf"></i> Download PDF
-                            </button>
-                            <button class="btn btn-secondary" onclick="downloadBidOpeningReport('excel')">
-                                <i class="pi pi-file-excel"></i> Download Excel
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Bid Opening Summary Cards -->
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--spacing-md); margin-bottom: var(--spacing-xl);">
-                    <div style="background: var(--surface-0); border-radius: var(--radius-lg); padding: var(--spacing-lg); box-shadow: var(--shadow-card); border-left: 4px solid var(--primary-400);">
-                        <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Total Submissions</div>
-                        <div id="bid-opening-total-bids" style="font-size: 28px; font-weight: 700; color: var(--primary-500);">6</div>
-                    </div>
-                    <div style="background: var(--surface-0); border-radius: var(--radius-lg); padding: var(--spacing-lg); box-shadow: var(--shadow-card); border-left: 4px solid var(--success-400);">
-                        <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Lowest Offer</div>
-                        <div id="bid-opening-lowest-offer" style="font-size: 20px; font-weight: 700; color: var(--success-500);">$115,200</div>
-                        <div style="font-size: 10px; color: var(--text-muted);">HealthCare Corp.</div>
-                    </div>
-                    <div style="background: var(--surface-0); border-radius: var(--radius-lg); padding: var(--spacing-lg); box-shadow: var(--shadow-card); border-left: 4px solid var(--info-400);">
-                        <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Budget Estimate</div>
-                        <div id="bid-opening-budget" style="font-size: 20px; font-weight: 700; color: var(--info-500);">$150,000</div>
-                        <div style="font-size: 10px; color: var(--text-muted);">Reference budget</div>
-                    </div>
-                    <div style="background: var(--surface-0); border-radius: var(--radius-lg); padding: var(--spacing-lg); box-shadow: var(--shadow-card); border-left: 4px solid var(--warning-400);">
-                        <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Bid Opening Panel</div>
-                        <div id="bid-opening-panel-status" style="font-size: 16px; font-weight: 600; color: var(--warning-500);">Not Required</div>
-                        <button class="btn btn-secondary btn-sm" onclick="setupBidOpeningPanel()" style="margin-top: 8px; font-size: 10px;">
-                            <i class="pi pi-users"></i> Setup Panel
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Bid Opening Info Banner -->
-                <div id="bid-opening-info-banner" style="background: linear-gradient(135deg, var(--info-50) 0%, var(--primary-50) 100%); border: 1px solid var(--info-200); border-radius: var(--radius-lg); padding: var(--spacing-lg); margin-bottom: var(--spacing-xl); display: flex; align-items: center; gap: var(--spacing-md);">
-                    <div style="width: 50px; height: 50px; background: var(--info-100); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                        <i class="pi pi-info-circle" style="font-size: 24px; color: var(--info-500);"></i>
-                    </div>
-                    <div>
-                        <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 4px;">Virtual Bid Opening</div>
-                        <div style="font-size: 12px; color: var(--text-secondary);">
-                            All bids have been securely received and are now available for opening. Once finalized, the Bid Opening Report will be automatically shared with all bidders who submitted offers.
-                            The evaluation team will gain access to bid details only after this process is finalized.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Confidentiality Settings Panel (Collapsible) -->
-                <div style="background: var(--surface-0); border-radius: var(--radius-lg); box-shadow: var(--shadow-card); margin-bottom: var(--spacing-xl); overflow: hidden;">
-                    <div onclick="toggleBidOpeningSection('confidentiality')" style="padding: var(--spacing-lg); background: var(--surface-50); cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--surface-200);">
-                        <div style="display: flex; align-items: center; gap: var(--spacing-md);">
-                            <i class="pi pi-lock" style="color: var(--warning-500);"></i>
-                            <span style="font-weight: 600; color: var(--text-primary);">Pricing Confidentiality Settings</span>
-                            <span style="font-size: 10px; padding: 2px 8px; background: var(--warning-100); color: var(--warning-600); border-radius: var(--radius-xs);">Configure before finalizing</span>
-                        </div>
-                        <i id="confidentiality-icon" class="pi pi-chevron-down" style="color: var(--text-muted); transition: transform 0.2s;"></i>
-                    </div>
-                    <div id="confidentiality-content" style="padding: var(--spacing-lg); display: none;">
-                        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: var(--spacing-lg);">
-                            Configure which information will be visible to bidders in the external Bid Opening Report. Hidden fields require justification and will be included in the Evaluation Report.
-                        </div>
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-md);">
-                            <label style="display: flex; align-items: center; gap: var(--spacing-sm); padding: var(--spacing-sm); background: var(--surface-50); border-radius: var(--radius-sm); cursor: pointer;">
-                                <input type="checkbox" id="show-financial-offer" checked style="accent-color: var(--primary-500);">
-                                <span style="font-size: 13px;">Show Total Financial Offer</span>
-                            </label>
-                            <label style="display: flex; align-items: center; gap: var(--spacing-sm); padding: var(--spacing-sm); background: var(--surface-50); border-radius: var(--radius-sm); cursor: pointer;">
-                                <input type="checkbox" id="show-bidder-name" checked style="accent-color: var(--primary-500);">
-                                <span style="font-size: 13px;">Show Bidder Name</span>
-                            </label>
-                            <label style="display: flex; align-items: center; gap: var(--spacing-sm); padding: var(--spacing-sm); background: var(--surface-50); border-radius: var(--radius-sm); cursor: pointer;">
-                                <input type="checkbox" id="show-ungm-number" checked style="accent-color: var(--primary-500);">
-                                <span style="font-size: 13px;">Show UNGM Number</span>
-                            </label>
-                            <label style="display: flex; align-items: center; gap: var(--spacing-sm); padding: var(--spacing-sm); background: var(--surface-50); border-radius: var(--radius-sm); cursor: pointer;">
-                                <input type="checkbox" id="show-discounts" checked style="accent-color: var(--primary-500);">
-                                <span style="font-size: 13px;">Show Discounts</span>
-                            </label>
-                            <label style="display: flex; align-items: center; gap: var(--spacing-sm); padding: var(--spacing-sm); background: var(--surface-50); border-radius: var(--radius-sm); cursor: pointer;">
-                                <input type="checkbox" id="show-bidder-comments" checked style="accent-color: var(--primary-500);">
-                                <span style="font-size: 13px;">Show Bidder Comments</span>
-                            </label>
-                            <label style="display: flex; align-items: center; gap: var(--spacing-sm); padding: var(--spacing-sm); background: var(--surface-50); border-radius: var(--radius-sm); cursor: pointer;">
-                                <input type="checkbox" id="show-budget-estimate" style="accent-color: var(--primary-500);">
-                                <span style="font-size: 13px;">Show Budget Estimate</span>
-                            </label>
-                        </div>
-                        <div style="margin-top: var(--spacing-lg);">
-                            <label style="font-size: 12px; font-weight: 500; color: var(--text-primary); display: block; margin-bottom: var(--spacing-xs);">
-                                Justification for hidden fields (required if any field is hidden):
-                            </label>
-                            <textarea id="confidentiality-justification" placeholder="Provide justification for hiding any pricing or identity information from bidders..." style="width: 100%; padding: var(--spacing-sm); border: 1px solid var(--surface-300); border-radius: var(--radius-sm); font-size: 12px; resize: vertical; min-height: 60px;"></textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Bid Opening Panel Section (Collapsible) -->
-                <div id="bid-opening-panel-section" style="background: var(--surface-0); border-radius: var(--radius-lg); box-shadow: var(--shadow-card); margin-bottom: var(--spacing-xl); overflow: hidden; display: none;">
-                    <div onclick="toggleBidOpeningSection('panel')" style="padding: var(--spacing-lg); background: var(--surface-50); cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--surface-200);">
-                        <div style="display: flex; align-items: center; gap: var(--spacing-md);">
-                            <i class="pi pi-users" style="color: var(--primary-500);"></i>
-                            <span style="font-weight: 600; color: var(--text-primary);">Bid Opening Panel</span>
-                            <span id="panel-members-count" style="font-size: 10px; padding: 2px 8px; background: var(--primary-100); color: var(--primary-600); border-radius: var(--radius-xs);">3 Members</span>
-                        </div>
-                        <i id="panel-icon" class="pi pi-chevron-down" style="color: var(--text-muted); transition: transform 0.2s;"></i>
-                    </div>
-                    <div id="panel-content" style="padding: var(--spacing-lg); display: none;">
-                        <div id="panel-members-list" style="display: grid; gap: var(--spacing-md); margin-bottom: var(--spacing-lg);">
-                            <!-- Panel members will be rendered here -->
-                        </div>
-                        <div style="background: var(--surface-50); padding: var(--spacing-md); border-radius: var(--radius-sm);">
-                            <label style="font-size: 12px; font-weight: 500; color: var(--text-primary); display: block; margin-bottom: var(--spacing-xs);">
-                                Panel Remarks (visible in final report):
-                            </label>
-                            <textarea id="panel-remarks" placeholder="Add remarks about the bid opening process..." style="width: 100%; padding: var(--spacing-sm); border: 1px solid var(--surface-300); border-radius: var(--radius-sm); font-size: 12px; resize: vertical; min-height: 80px;"></textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Bid Opening Report Table -->
-                <div style="background: var(--surface-0); border-radius: var(--radius-lg); box-shadow: var(--shadow-card); overflow: hidden;">
-                    <div style="padding: var(--spacing-lg); border-bottom: 1px solid var(--surface-200); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--spacing-md);">
-                        <div>
-                            <h3 style="margin: 0; font-size: 16px; font-weight: 600; color: var(--text-primary);">📋 Bid Opening Report</h3>
-                            <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">
-                                Bids ranked from lowest to highest based on total financial offer
-                            </div>
-                        </div>
-                        <div style="display: flex; gap: var(--spacing-sm); align-items: center;">
-                            <span style="font-size: 11px; color: var(--text-muted);">Tender closed:</span>
-                            <span id="bid-opening-close-date" style="font-size: 11px; font-weight: 600; color: var(--text-primary);">Dec 1, 2024, 14:00 UTC</span>
-                        </div>
-                    </div>
-                    
-                    <div style="overflow-x: auto;">
-                        <table id="bid-opening-table" style="width: 100%; border-collapse: collapse; font-size: 12px;">
-                            <thead>
-                                <tr style="background: var(--surface-50);">
-                                    <th style="padding: 12px; text-align: center; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--surface-200); width: 50px;">Rank</th>
-                                    <th style="padding: 12px; text-align: left; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--surface-200);">Vendor</th>
-                                    <th style="padding: 12px; text-align: center; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--surface-200); width: 100px;">UNGM #</th>
-                                    <th style="padding: 12px; text-align: center; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--surface-200); width: 100px;">Country</th>
-                                    <th style="padding: 12px; text-align: center; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--surface-200); width: 80px;">Women Owned</th>
-                                    <th style="padding: 12px; text-align: center; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--surface-200); width: 80px;">JV/Consortia</th>
-                                    <th style="padding: 12px; text-align: right; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--surface-200); width: 130px;">Total Offer</th>
-                                    <th style="padding: 12px; text-align: center; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--surface-200); width: 70px;">Currency</th>
-                                    <th style="padding: 12px; text-align: center; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--surface-200); width: 140px;">Submitted</th>
-                                    <th style="padding: 12px; text-align: center; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--surface-200); width: 90px;">Sanction</th>
-                                    <th style="padding: 12px; text-align: center; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--surface-200); width: 80px;">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="bid-opening-table-body">
-                                <!-- Bid rows will be rendered here -->
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- Bidder Comments Section -->
-                    <div style="padding: var(--spacing-lg); border-top: 1px solid var(--surface-200);">
-                        <h4 style="margin: 0 0 var(--spacing-md) 0; font-size: 14px; font-weight: 600; color: var(--text-primary);">💬 Bidder Comments</h4>
-                        <div id="bidder-comments-list" style="display: grid; gap: var(--spacing-sm);">
-                            <!-- Bidder comments will be rendered here -->
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Finalization Actions -->
-                <div style="background: var(--surface-0); border-radius: var(--radius-lg); box-shadow: var(--shadow-card); padding: var(--spacing-xl); margin-top: var(--spacing-xl); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--spacing-md);">
-                    <div>
-                        <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 4px;">Ready to finalize?</div>
-                        <div style="font-size: 12px; color: var(--text-muted);">
-                            Once finalized, the Bid Opening Report will be shared with all bidders and the evaluation team will gain access to submissions.
-                        </div>
-                    </div>
-                    <div style="display: flex; gap: var(--spacing-sm);">
-                        <button class="btn btn-secondary" onclick="saveBidOpeningDraft()">
-                            <i class="pi pi-save"></i> Save Draft
-                        </button>
-                        <button class="btn btn-success" onclick="finalizeBidOpening()" style="background: linear-gradient(135deg, var(--success-500) 0%, var(--success-400) 100%);">
-                            <i class="pi pi-check-circle"></i> Finalize Bid Opening
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <!-- End Bid Opening View -->
 
             <!-- Evaluation View -->
             <div class="view-section" id="view-evaluation">
@@ -15073,6 +15016,9 @@
                 tenderRef: 'ITB/2024/089',
                 tenderTitle: 'Medical Supplies Procurement - Emergency Response Kit',
                 tenderType: 'ITB',
+                vendorCount: 6,
+                openingModality: 'Online',
+                openingVisibility: 'Public',
                 evaluationMethod: 'Lowest Priced Substantially Compliant',
                 closingDate: 'Dec 1, 2024, 14:00 UTC',
                 budgetEstimate: 150000,
@@ -15082,7 +15028,10 @@
                 bids: [
                     {
                         id: 'BID-001',
+                        lotId: '1',
+                        lotName: 'Consumables & emergency kits',
                         rank: 1,
+                        bidOpeningRemark: 'Sealed offer validated; no arithmetic adjustments.',
                         vendorName: 'HealthCare Corp.',
                         ungmNumber: '301245',
                         country: 'USA',
@@ -15093,10 +15042,31 @@
                         submittedAt: 'Dec 1, 2024, 13:45:22 UTC',
                         sanctionStatus: 'clear',
                         comments: 'We can deliver within 30 days of contract signature. All items comply with WHO standards.',
-                        discount: '5% early payment discount available'
+                        discount: null,
+                        discountLines: [
+                            { description: 'Early payment (if paid ≤30 days)', percent: 5, amount: 5760 }
+                        ],
+                        priceBreakdownLots: [
+                            {
+                                lotName: 'Lot 1 — Consumables & emergency kits',
+                                products: [
+                                    {
+                                        name: 'Emergency response kits (lot line)',
+                                        lineTotal: 115200,
+                                        requirements: [
+                                            { name: 'Sterile consumables bundle', amount: 68200 },
+                                            { name: 'Portable diagnostics subset', amount: 32000 },
+                                            { name: 'Cold-chain packaging & labels', amount: 15000 }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
                     },
                     {
                         id: 'BID-002',
+                        lotId: '1',
+                        lotName: 'Consumables & emergency kits',
                         rank: 2,
                         vendorName: 'MedSupply Ltd.',
                         ungmNumber: '309663',
@@ -15112,6 +15082,8 @@
                     },
                     {
                         id: 'BID-003',
+                        lotId: '1',
+                        lotName: 'Consumables & emergency kits',
                         rank: 3,
                         vendorName: 'MedTech Inc.',
                         ungmNumber: '315789',
@@ -15127,6 +15099,8 @@
                     },
                     {
                         id: 'BID-004',
+                        lotId: '2',
+                        lotName: 'Diagnostic & monitoring equipment',
                         rank: 4,
                         vendorName: 'Global Medical Solutions',
                         ungmNumber: '298456',
@@ -15143,6 +15117,8 @@
                     },
                     {
                         id: 'BID-005',
+                        lotId: '2',
+                        lotName: 'Diagnostic & monitoring equipment',
                         rank: 5,
                         vendorName: 'EuroMed Supplies',
                         ungmNumber: '312890',
@@ -15159,6 +15135,8 @@
                     },
                     {
                         id: 'BID-006',
+                        lotId: '3',
+                        lotName: 'Training & after-sales support',
                         rank: 6,
                         vendorName: 'MediCare International',
                         ungmNumber: '305672',
@@ -15178,20 +15156,26 @@
                 tenderRef: 'RFP/2024/067',
                 tenderTitle: 'Security Services Contract',
                 tenderType: 'RFP',
+                vendorCount: 12,
+                openingModality: 'Online',
+                openingVisibility: 'Public',
                 evaluationMethod: 'Cumulative Analysis',
                 closingDate: 'Nov 28, 2024, 17:00 UTC',
                 budgetEstimate: 500000,
                 currency: 'USD',
                 panelRequired: true,
                 panelMembers: [
-                    { name: 'John Smith', role: 'Panel Chair', email: 'john.smith@unops.org', finalized: true },
-                    { name: 'Maria Garcia', role: 'Panel Member', email: 'maria.garcia@unops.org', finalized: true },
-                    { name: 'Ahmed Hassan', role: 'Panel Member', email: 'ahmed.hassan@unops.org', finalized: false }
+                    { name: 'John Smith', role: 'Panel Chair', email: 'john.smith@unops.org', finalized: true, remarks: 'Confirmed quorum and agenda at 09:00 UTC.' },
+                    { name: 'Maria Garcia', role: 'Panel Member', email: 'maria.garcia@unops.org', finalized: true, remarks: '' },
+                    { name: 'Ahmed Hassan', role: 'Panel Member', email: 'ahmed.hassan@unops.org', finalized: false, remarks: '' }
                 ],
                 bids: [
                     {
                         id: 'BID-101',
+                        lotId: '1',
+                        lotName: 'Core guard services',
                         rank: 1,
+                        bidOpeningRemark: 'Financial envelope opened at 17:05 UTC; totals read aloud and confirmed.',
                         vendorName: 'SecureGuard Global',
                         ungmNumber: '287456',
                         country: 'UK',
@@ -15202,10 +15186,32 @@
                         submittedAt: 'Nov 28, 2024, 16:30:12 UTC',
                         sanctionStatus: 'clear',
                         comments: 'Over 20 years experience in UN security operations.',
-                        discount: null
+                        discount: null,
+                        discountLines: [
+                            { description: 'Multi-year contract incentive', percent: 5, amount: 21250 },
+                            { description: 'Volume threshold rebate (fixed)', percent: null, amount: 5000 }
+                        ],
+                        priceBreakdownLots: [
+                            {
+                                lotName: 'Lot 1 — Core guard services',
+                                products: [
+                                    {
+                                        name: 'Static guarding & compound security',
+                                        lineTotal: 398750,
+                                        requirements: [
+                                            { name: 'Static guarding — HQ & compound (24/365)', amount: 210000 },
+                                            { name: 'Mobile patrol & emergency response', amount: 118750 },
+                                            { name: 'Control room, vetting & reporting package', amount: 70000 }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
                     },
                     {
                         id: 'BID-102',
+                        lotId: '1',
+                        lotName: 'Core guard services',
                         rank: 2,
                         vendorName: 'SafeNet Security',
                         ungmNumber: '295123',
@@ -15217,10 +15223,38 @@
                         submittedAt: 'Nov 28, 2024, 15:45:33 UTC',
                         sanctionStatus: 'clear',
                         comments: 'ISO 18788 certified. Extensive regional presence.',
-                        discount: '5% for multi-year contract'
+                        discount: null,
+                        discountLines: [
+                            { description: 'Multi-year contract', percent: 5, amount: 23400 }
+                        ],
+                        priceBreakdownLots: [
+                            {
+                                lotName: 'Lot 1 — Core guard services',
+                                products: [
+                                    {
+                                        name: 'Core security package',
+                                        lineTotal: 380000,
+                                        requirements: [
+                                            { name: 'Base annual service fee', amount: 280000 },
+                                            { name: 'Supervision & QA retainer', amount: 100000 }
+                                        ]
+                                    },
+                                    {
+                                        name: 'Equipment & mobilization add-ons',
+                                        lineTotal: 88000,
+                                        requirements: [
+                                            { name: 'Radio, PPE & uniforms bundle', amount: 45000 },
+                                            { name: 'Vehicle-mounted kit & logistics', amount: 43000 }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
                     },
                     {
                         id: 'BID-103',
+                        lotId: '2',
+                        lotName: 'Regional & consortium services',
                         rank: 3,
                         vendorName: 'Regional Protection Services',
                         ungmNumber: '302789',
@@ -15233,7 +15267,37 @@
                         submittedAt: 'Nov 28, 2024, 14:20:45 UTC',
                         sanctionStatus: 'clear',
                         comments: 'Local consortium with deep regional expertise and networks.',
-                        discount: null
+                        discount: null,
+                        priceBreakdownLots: [
+                            {
+                                lotName: 'Lot 2 — Regional & consortium services',
+                                products: [
+                                    {
+                                        name: 'Consortium lead — Regional Protection Services',
+                                        lineTotal: 220000,
+                                        requirements: [
+                                            { name: 'Regional coordination & MoU compliance', amount: 120000 },
+                                            { name: 'Training & quality assurance', amount: 100000 }
+                                        ]
+                                    },
+                                    {
+                                        name: 'Partner — LocalGuard Ltd.',
+                                        lineTotal: 95000,
+                                        requirements: [
+                                            { name: 'Local personnel mobilization', amount: 65000 },
+                                            { name: 'Community liaison retainer', amount: 30000 }
+                                        ]
+                                    },
+                                    {
+                                        name: 'Partner — PanAfrica Security',
+                                        lineTotal: 80000,
+                                        requirements: [
+                                            { name: 'Cross-border logistics support', amount: 80000 }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
                     }
                 ]
             }
@@ -15241,60 +15305,84 @@
 
         let currentBidOpeningData = null;
 
+        /** Process context → Bid Opening tab (stays inside tender workspace). */
+        function goToProcessBidOpeningTab() {
+            const processToggle = document.querySelector('.tab-context-toggle .toggle-btn:nth-child(2)');
+            if (processToggle) {
+                switchTabContext('process', processToggle);
+            }
+            const bidTabBtn = document.getElementById('tab-btn-bid-opening');
+            if (bidTabBtn) {
+                switchTab('tab-bid-opening', bidTabBtn);
+            }
+        }
+
         function showBidOpening(tenderId, tenderTitle, tenderType) {
-            // Get bid opening data
+            const sameTender = currentTenderData && currentTenderData.id === tenderId;
+            if (!sameTender) {
+                showTenderDetails({
+                    id: tenderId,
+                    title: tenderTitle || 'Tender',
+                    type: tenderType,
+                    status: 'Bid Opening',
+                    statusKey: 'bid-opening'
+                });
+            } else {
+                if (tenderTitle) {
+                    currentTenderData.title = tenderTitle;
+                    currentTenderTitle = tenderTitle;
+                }
+                if (tenderType) {
+                    currentTenderData.type = tenderType;
+                }
+                const detailsView = document.getElementById('view-tender-details');
+                if (detailsView && !detailsView.classList.contains('active')) {
+                    showTenderDetails(currentTenderData);
+                }
+            }
+
+            goToProcessBidOpeningTab();
+
+            const fallbackBids = (bidOpeningData['ITB/2024/089'] && bidOpeningData['ITB/2024/089'].bids) ? bidOpeningData['ITB/2024/089'].bids : [];
+
             currentBidOpeningData = bidOpeningData[tenderId] || {
                 tenderRef: tenderId,
-                tenderTitle: tenderTitle || 'Tender',
-                tenderType: tenderType || 'ITB',
+                tenderTitle: tenderTitle || currentTenderTitle || 'Tender',
+                tenderType: tenderType || (currentTenderData && currentTenderData.type) || 'ITB',
+                vendorCount: null,
+                openingModality: 'Online',
+                openingVisibility: 'Public',
                 evaluationMethod: 'Lowest Priced Substantially Compliant',
                 closingDate: 'Dec 1, 2024, 14:00 UTC',
                 budgetEstimate: 150000,
                 currency: 'USD',
                 panelRequired: false,
                 panelMembers: [],
-                bids: bidOpeningData['ITB/2024/089'].bids // Use sample bids
+                bids: fallbackBids
             };
 
-            // Switch to bid opening view - hide all sections first
-            document.querySelectorAll('.view-section').forEach(section => {
-                section.classList.remove('active');
-                section.style.display = 'none';
-            });
-            
-            // Show bid opening view
-            const bidView = document.getElementById('view-bid-opening');
-            if (bidView) {
-                bidView.classList.add('active');
-                bidView.style.display = 'block';
-            }
-
-            // Update header info
-            document.getElementById('bid-opening-tender-title').textContent = currentBidOpeningData.tenderTitle;
-            document.getElementById('bid-opening-tender-ref').textContent = 'Reference: ' + currentBidOpeningData.tenderRef;
-            document.getElementById('bid-opening-close-date').textContent = currentBidOpeningData.closingDate;
-
-            // Update type badge
+            // Update procedure line (plain text; no pill chrome)
             const typeBadge = document.getElementById('bid-opening-type-badge');
             if (currentBidOpeningData.tenderType === 'RFP') {
-                typeBadge.textContent = 'RFP - Two Reports (Tech + Financial)';
-                typeBadge.style.background = 'var(--info-50)';
-                typeBadge.style.color = 'var(--info-500)';
+                typeBadge.textContent = 'RFP — Two reports (technical + financial)';
             } else {
-                typeBadge.textContent = currentBidOpeningData.tenderType + ' - Single Report';
-                typeBadge.style.background = 'var(--primary-50)';
-                typeBadge.style.color = 'var(--primary-500)';
+                typeBadge.textContent = currentBidOpeningData.tenderType + ' — Single report';
             }
 
-            // Update summary cards
-            document.getElementById('bid-opening-total-bids').textContent = currentBidOpeningData.bids.length;
-            
-            const lowestBid = currentBidOpeningData.bids.reduce((min, bid) => 
-                (bid.totalOfferUSD || bid.totalOffer) < (min.totalOfferUSD || min.totalOffer) ? bid : min
-            );
-            document.getElementById('bid-opening-lowest-offer').textContent = formatCurrency(lowestBid.totalOffer, lowestBid.currency);
-            document.getElementById('bid-opening-lowest-offer').nextElementSibling.textContent = lowestBid.vendorName;
+            const sessionBadge = document.getElementById('bid-opening-session-badge');
+            if (sessionBadge) {
+                const modality = currentBidOpeningData.openingModality || 'Online';
+                const visibility = currentBidOpeningData.openingVisibility || 'Public';
+                sessionBadge.textContent = modality + ' · ' + visibility;
+            }
 
+            const bidsList = currentBidOpeningData.bids || [];
+            const distinctVendors = new Set(bidsList.map(b => b.vendorName)).size;
+            const vendorTotal = currentBidOpeningData.vendorCount != null && currentBidOpeningData.vendorCount !== ''
+                ? currentBidOpeningData.vendorCount
+                : distinctVendors;
+            document.getElementById('bid-opening-total-vendors').textContent = vendorTotal;
+            document.getElementById('bid-opening-total-bids').textContent = bidsList.length;
             document.getElementById('bid-opening-budget').textContent = formatCurrency(currentBidOpeningData.budgetEstimate, currentBidOpeningData.currency);
 
             // Update panel status
@@ -15302,20 +15390,21 @@
             const panelSection = document.getElementById('bid-opening-panel-section');
             if (currentBidOpeningData.panelRequired) {
                 panelStatusEl.textContent = 'Required';
-                panelStatusEl.style.color = 'var(--info-500)';
+                panelStatusEl.style.color = 'var(--info-600)';
+                panelStatusEl.style.background = 'var(--info-100)';
                 panelSection.style.display = 'block';
                 renderPanelMembers(currentBidOpeningData.panelMembers);
             } else {
                 panelStatusEl.textContent = 'Not Required';
-                panelStatusEl.style.color = 'var(--warning-500)';
+                panelStatusEl.style.color = 'var(--warning-600)';
+                panelStatusEl.style.background = 'var(--warning-100)';
                 panelSection.style.display = 'none';
             }
 
             // Render bids table
-            renderBidOpeningTable(currentBidOpeningData.bids);
+            renderBidOpeningTablesByLot(currentBidOpeningData);
 
-            // Render bidder comments
-            renderBidderComments(currentBidOpeningData.bids);
+            ensureBidRowMenuGlobalCloser();
 
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -15329,30 +15418,268 @@
             }).format(amount);
         }
 
-        function renderBidOpeningTable(bids) {
-            const tbody = document.getElementById('bid-opening-table-body');
-            
-            // Sort bids by total offer (ascending)
-            const sortedBids = [...bids].sort((a, b) => 
-                (a.totalOfferUSD || a.totalOffer) - (b.totalOfferUSD || b.totalOffer)
-            );
+        function normalizeBidOpeningLots(openingData) {
+            if (openingData.lots && Array.isArray(openingData.lots) && openingData.lots.length > 0) {
+                return openingData.lots.map((lot, i) => ({
+                    lotId: lot.lotId != null ? String(lot.lotId) : String(i + 1),
+                    lotName: lot.lotName || ('Lot ' + (i + 1)),
+                    bids: lot.bids || []
+                }));
+            }
 
-            // Assign ranks (handle ties)
-            let currentRank = 1;
-            let previousOffer = null;
-            sortedBids.forEach((bid, index) => {
-                const offer = bid.totalOfferUSD || bid.totalOffer;
-                if (previousOffer !== null && offer !== previousOffer) {
-                    currentRank = index + 1;
+            const bids = openingData.bids || [];
+            if (bids.length === 0) {
+                return [{ lotId: '1', lotName: 'Lot 1', bids: [] }];
+            }
+
+            const byLot = new Map();
+            bids.forEach(bid => {
+                const id = bid.lotId != null ? String(bid.lotId) : '1';
+                if (!byLot.has(id)) {
+                    byLot.set(id, {
+                        lotId: id,
+                        lotName: bid.lotName || ('Lot ' + id),
+                        bids: []
+                    });
                 }
-                bid.displayRank = currentRank;
-                previousOffer = offer;
+                byLot.get(id).bids.push(bid);
             });
 
-            tbody.innerHTML = sortedBids.map((bid, index) => `
-                <tr style="background: ${index === 0 ? 'var(--success-50)' : index % 2 === 0 ? 'white' : 'var(--surface-50)'}; ${bid.sanctionStatus !== 'clear' ? 'border-left: 3px solid var(--warning-400);' : ''}">
+            return Array.from(byLot.values()).sort((a, b) =>
+                String(a.lotId).localeCompare(String(b.lotId), undefined, { numeric: true })
+            );
+        }
+
+        function bidOpeningTableHeadHtml() {
+            return `
+                <thead>
+                    <tr style="background: var(--surface-50);">
+                        <th style="padding: 12px; text-align: center; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--surface-200); width: 50px;">Rank</th>
+                        <th style="padding: 12px; text-align: left; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--surface-200);">Vendor</th>
+                        <th style="padding: 12px; text-align: center; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--surface-200); width: 100px;">UNGM #</th>
+                        <th style="padding: 12px; text-align: center; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--surface-200); width: 100px;">Country</th>
+                        <th style="padding: 12px; text-align: center; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--surface-200); width: 80px;">Women Owned</th>
+                        <th style="padding: 12px; text-align: center; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--surface-200); width: 80px;">JV/Consortia</th>
+                        <th style="padding: 12px; text-align: right; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--surface-200); width: 130px;">Total Offer</th>
+                        <th style="padding: 12px; text-align: center; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--surface-200); width: 70px;">Currency</th>
+                        <th style="padding: 12px; text-align: center; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--surface-200); width: 140px;">Submitted</th>
+                        <th style="padding: 12px; text-align: center; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--surface-200); width: 90px;">Sanction</th>
+                        <th style="padding: 12px; text-align: left; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--surface-200); min-width: 160px;">Bid opening remarks</th>
+                        <th style="padding: 12px; text-align: center; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--surface-200); width: 100px;">Actions</th>
+                    </tr>
+                </thead>`;
+        }
+
+        function escapeHtmlCell(str) {
+            if (str == null || str === '') {
+                return '';
+            }
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        function buildBidDiscountSectionHtml(bid) {
+            const cur = bid.currency || 'USD';
+            if (bid.discountLines && bid.discountLines.length > 0) {
+                const rows = bid.discountLines.map(d => {
+                    const pct = d.percent != null && d.percent !== '' ? escapeHtmlCell(String(d.percent)) + '%' : '—';
+                    const amt = d.amount != null && d.amount !== '' ? formatCurrency(Number(d.amount), cur) : '—';
+                    return `
+                        <tr>
+                            <td style="padding:8px 10px; border-bottom:1px solid var(--surface-100); font-size:12px;">${escapeHtmlCell(d.description)}</td>
+                            <td style="padding:8px 10px; border-bottom:1px solid var(--surface-100); font-size:12px; text-align:right;">${pct}</td>
+                            <td style="padding:8px 10px; border-bottom:1px solid var(--surface-100); font-size:12px; text-align:right;">${amt}</td>
+                        </tr>`;
+                }).join('');
+                return `
+                    <div style="margin-bottom: var(--spacing-lg);">
+                        <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px; font-weight: 600;">Discounts</div>
+                        <table style="width:100%; border-collapse:collapse; font-size:12px; border:1px solid var(--surface-200); border-radius:var(--radius-sm);">
+                            <thead><tr style="background:var(--surface-50);">
+                                <th style="padding:8px 10px; text-align:left; font-weight:600;">Description</th>
+                                <th style="padding:8px 10px; text-align:right; font-weight:600; width:72px;">%</th>
+                                <th style="padding:8px 10px; text-align:right; font-weight:600; width:100px;">Amount</th>
+                            </tr></thead>
+                            <tbody>${rows}</tbody>
+                        </table>
+                    </div>`;
+            }
+            if (bid.discount) {
+                return `
+                    <div style="margin-bottom: var(--spacing-lg);">
+                        <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px; font-weight: 600;">Discounts</div>
+                        <div style="font-size: 12px; color: var(--text-secondary); padding: var(--spacing-md); background: var(--surface-50); border-radius: var(--radius-sm); border-left: 3px solid var(--success-400);">
+                            ${escapeHtmlCell(bid.discount)} <span style="color: var(--text-muted); font-size: 11px;">(not itemized)</span>
+                        </div>
+                    </div>`;
+            }
+            return `
+                <div style="margin-bottom: var(--spacing-lg);">
+                    <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px; font-weight: 600;">Discounts</div>
+                    <p style="font-size: 12px; color: var(--text-muted); margin: 0;">No discounts declared.</p>
+                </div>`;
+        }
+
+        function productBreakdownBlockHtml(prod, cur) {
+            const label = prod.name || prod.product || 'Product / line item';
+            const reqs = prod.requirements || [];
+            const reqRows = reqs.length > 0
+                ? reqs.map(r => `
+                    <tr>
+                        <td style="padding:6px 10px; border-bottom:1px solid var(--surface-100); font-size:11px; color:var(--text-secondary);">${escapeHtmlCell(r.name)}</td>
+                        <td style="padding:6px 10px; border-bottom:1px solid var(--surface-100); font-size:11px; text-align:right; font-weight:600;">${formatCurrency(Number(r.amount), cur)}</td>
+                    </tr>`).join('')
+                : `<tr><td colspan="2" style="padding:8px 10px; font-size:11px; color:var(--text-muted);">No requirement-level lines.</td></tr>`;
+            const lineTotal = prod.lineTotal != null ? formatCurrency(Number(prod.lineTotal), cur) : '—';
+            return `
+                <div style="margin-bottom: var(--spacing-md); border: 1px solid var(--surface-200); border-radius: var(--radius-md); overflow: hidden;">
+                    <div style="padding: 10px 12px; background: var(--surface-100); font-size: 12px; font-weight: 600; color: var(--text-primary);">
+                        ${escapeHtmlCell(label)}
+                    </div>
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead><tr style="background: var(--surface-50);">
+                            <th style="padding: 6px 10px; text-align: left; font-size: 10px; text-transform: uppercase; color: var(--text-muted);">Requirement / priced item</th>
+                            <th style="padding: 6px 10px; text-align: right; font-size: 10px; text-transform: uppercase; color: var(--text-muted); width: 110px;">Amount</th>
+                        </tr></thead>
+                        <tbody>${reqRows}</tbody>
+                    </table>
+                    <div style="padding: 8px 12px; text-align: right; font-size: 12px; font-weight: 700; border-top: 1px solid var(--surface-200); background: var(--surface-50);">
+                        Line total: ${lineTotal}
+                    </div>
+                </div>`;
+        }
+
+        function buildPriceBreakdownSectionHtml(bid) {
+            const cur = bid.currency || 'USD';
+            if (bid.priceBreakdownLots && bid.priceBreakdownLots.length > 0) {
+                const lotsHtml = bid.priceBreakdownLots.map(lot => {
+                    const products = lot.products || [];
+                    const productsHtml = products.map(p => productBreakdownBlockHtml(p, cur)).join('');
+                    const lotTitle = lot.lotName || bid.lotName || 'Lot';
+                    return `
+                        <div style="margin-bottom: var(--spacing-lg);">
+                            <div style="font-size: 11px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; display:flex; align-items:center; gap:6px;">
+                                <i class="pi pi-th-large" style="font-size: 10px; color: var(--text-muted);"></i>
+                                ${escapeHtmlCell(lotTitle)}
+                            </div>
+                            ${productsHtml}
+                        </div>`;
+                }).join('');
+                return `
+                    <div style="margin-bottom: var(--spacing-md);">
+                        <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; font-weight: 600;">Price breakdown</div>
+                        ${lotsHtml}
+                    </div>`;
+            }
+            if (bid.priceBreakdown && bid.priceBreakdown.length > 0) {
+                const blocks = bid.priceBreakdown.map(block => productBreakdownBlockHtml(block, cur)).join('');
+                return `
+                    <div style="margin-bottom: var(--spacing-md);">
+                        <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; font-weight: 600;">Price breakdown</div>
+                        ${blocks}
+                    </div>`;
+            }
+            return `
+                <div style="margin-bottom: var(--spacing-md);">
+                    <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px; font-weight: 600;">Price breakdown</div>
+                    <p style="font-size: 12px; color: var(--text-muted); margin: 0;">No line-level breakdown submitted for this offer.</p>
+                </div>`;
+        }
+
+        function findBidInOpeningData(bidId) {
+            if (!currentBidOpeningData || !currentBidOpeningData.bids) {
+                return null;
+            }
+            return currentBidOpeningData.bids.find(b => b.id === bidId) || null;
+        }
+
+        function openBidOpeningRemarkModal(bidId) {
+            const bid = findBidInOpeningData(bidId);
+            if (!bid) {
+                return;
+            }
+            closeBidOpeningRemarkModal();
+            const existing = bid.bidOpeningRemark || '';
+            const modalHtml = `
+                <div id="bidOpeningRemarkModal" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 10000; display: flex; align-items: center; justify-content: center;" onclick="if(event.target===this) closeBidOpeningRemarkModal()">
+                    <div style="background: white; border-radius: var(--radius-lg); width: 480px; max-width: 95%; box-shadow: var(--shadow-lg);" onclick="event.stopPropagation()">
+                        <div style="padding: var(--spacing-lg); border-bottom: 1px solid var(--surface-200);">
+                            <h3 style="margin: 0; font-size: 16px; font-weight: 600; color: var(--text-primary);">Bid opening remark</h3>
+                            <div style="font-size: 12px; color: var(--text-muted); margin-top: 6px;">${escapeHtmlCell(bid.vendorName)} <span style="color: var(--text-muted);">• ${escapeHtmlCell(bid.id)}</span></div>
+                        </div>
+                        <div style="padding: var(--spacing-lg);">
+                            <label style="font-size: 12px; font-weight: 600; color: var(--text-primary); display: block; margin-bottom: 6px;">Remark (shown in the report column)</label>
+                            <textarea id="bid-opening-remark-input" rows="4" style="width: 100%; padding: var(--spacing-sm); border: 1px solid var(--surface-300); border-radius: var(--radius-sm); font-size: 12px; resize: vertical; box-sizing: border-box;">${escapeForTextareaContent(existing)}</textarea>
+                        </div>
+                        <div style="padding: var(--spacing-lg); border-top: 1px solid var(--surface-200); display: flex; justify-content: flex-end; gap: var(--spacing-sm);">
+                            <button type="button" class="btn btn-secondary" onclick="closeBidOpeningRemarkModal()">Cancel</button>
+                            <button type="button" class="btn btn-primary" onclick="saveBidOpeningRemark('${bid.id}')">Save remark</button>
+                        </div>
+                    </div>
+                </div>`;
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+            setTimeout(() => document.getElementById('bid-opening-remark-input')?.focus(), 50);
+        }
+
+        function closeBidOpeningRemarkModal() {
+            document.getElementById('bidOpeningRemarkModal')?.remove();
+        }
+
+        function saveBidOpeningRemark(bidId) {
+            const bid = findBidInOpeningData(bidId);
+            const input = document.getElementById('bid-opening-remark-input');
+            if (!bid || !input) {
+                closeBidOpeningRemarkModal();
+                return;
+            }
+            const text = input.value.trim();
+            bid.bidOpeningRemark = text || null;
+            closeBidOpeningRemarkModal();
+            renderBidOpeningTablesByLot(currentBidOpeningData);
+            showToast(text ? '✅ Bid opening remark saved' : 'Remark cleared');
+        }
+
+        function bidActionsMenuSafeId(bidId) {
+            return String(bidId).replace(/[^a-zA-Z0-9_-]/g, '_');
+        }
+
+        function closeBidRowActionsMenu() {
+            document.querySelectorAll('.bor-row-actions-menu').forEach(el => {
+                el.style.display = 'none';
+            });
+        }
+
+        function toggleBidRowActionsMenu(ev, bidId) {
+            if (ev && ev.stopPropagation) {
+                ev.stopPropagation();
+            }
+            const menu = document.getElementById('bor-act-' + bidActionsMenuSafeId(bidId));
+            const willOpen = !(menu && menu.style.display === 'block');
+            closeBidRowActionsMenu();
+            if (willOpen && menu) {
+                menu.style.display = 'block';
+            }
+        }
+
+        function ensureBidRowMenuGlobalCloser() {
+            if (window.__borRowMenuCloserBound) {
+                return;
+            }
+            window.__borRowMenuCloserBound = true;
+            document.addEventListener('click', function () {
+                closeBidRowActionsMenu();
+            });
+        }
+
+        function renderBidOpeningBidRowHtml(bid, indexWithinLot) {
+            const isTopInLot = indexWithinLot === 0;
+            return `
+                <tr style="background: ${isTopInLot ? 'var(--success-50)' : indexWithinLot % 2 === 0 ? 'white' : 'var(--surface-50)'}; ${bid.sanctionStatus !== 'clear' ? 'border-left: 3px solid var(--warning-400);' : ''}">
                     <td style="padding: 12px; text-align: center; border-bottom: 1px solid var(--surface-100);">
-                        <span style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: ${index === 0 ? 'var(--success-500)' : 'var(--surface-200)'}; color: ${index === 0 ? 'white' : 'var(--text-primary)'}; font-weight: 700; font-size: 12px;">
+                        <span style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: ${isTopInLot ? 'var(--success-500)' : 'var(--surface-200)'}; color: ${isTopInLot ? 'white' : 'var(--text-primary)'}; font-weight: 700; font-size: 12px;">
                             ${bid.displayRank}
                         </span>
                     </td>
@@ -15371,25 +15698,25 @@
                         <span style="font-size: 11px;">${bid.country}</span>
                     </td>
                     <td style="padding: 12px; text-align: center; border-bottom: 1px solid var(--surface-100);">
-                        ${bid.womenOwned ? 
-                            '<span style="color: var(--success-500); font-weight: 600;">✓ Yes</span>' : 
+                        ${bid.womenOwned ?
+                            '<span style="color: var(--success-500); font-weight: 600;">✓ Yes</span>' :
                             '<span style="color: var(--text-muted);">No</span>'}
                     </td>
                     <td style="padding: 12px; text-align: center; border-bottom: 1px solid var(--surface-100);">
-                        ${bid.jvConsortia ? 
+                        ${bid.jvConsortia ?
                             `<span style="display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; background: var(--info-50); color: var(--info-600); border-radius: var(--radius-xs); font-size: 10px; cursor: pointer;" onclick="showJVDetails('${bid.id}')">
                                 🤝 JV <i class="pi pi-info-circle" style="font-size: 10px;"></i>
-                            </span>` : 
+                            </span>` :
                             '<span style="color: var(--text-muted);">—</span>'}
                     </td>
                     <td style="padding: 12px; text-align: right; border-bottom: 1px solid var(--surface-100);">
-                        <div style="font-weight: 700; color: ${index === 0 ? 'var(--success-600)' : 'var(--text-primary)'}; font-size: 13px;">
+                        <div style="font-weight: 700; color: ${isTopInLot ? 'var(--success-600)' : 'var(--text-primary)'}; font-size: 13px;">
                             ${formatCurrency(bid.totalOffer, bid.currency)}
                         </div>
-                        ${bid.totalOfferUSD && bid.currency !== 'USD' ? 
+                        ${bid.totalOfferUSD && bid.currency !== 'USD' ?
                             `<div style="font-size: 10px; color: var(--text-muted);">≈ ${formatCurrency(bid.totalOfferUSD, 'USD')}</div>` : ''}
-                        ${bid.discount ? 
-                            `<div style="font-size: 9px; color: var(--success-500); margin-top: 2px;">💰 Discount available</div>` : ''}
+                        ${bid.discount || (bid.discountLines && bid.discountLines.length > 0) ?
+                            `<div style="font-size: 9px; color: var(--success-500); margin-top: 2px;">Discount available</div>` : ''}
                     </td>
                     <td style="padding: 12px; text-align: center; border-bottom: 1px solid var(--surface-100);">
                         <span style="font-size: 11px; font-weight: 500;">${bid.currency}</span>
@@ -15399,63 +15726,118 @@
                         <div style="font-size: 9px; color: var(--text-muted);">${bid.submittedAt.split(',').slice(1).join(',').trim()}</div>
                     </td>
                     <td style="padding: 12px; text-align: center; border-bottom: 1px solid var(--surface-100);">
-                        ${bid.sanctionStatus === 'clear' ? 
+                        ${bid.sanctionStatus === 'clear' ?
                             '<span style="padding: 2px 8px; background: var(--success-50); color: var(--success-600); border-radius: var(--radius-xs); font-size: 10px;">✓ Clear</span>' :
                             '<span style="padding: 2px 8px; background: var(--warning-50); color: var(--warning-600); border-radius: var(--radius-xs); font-size: 10px;">⚠️ Review</span>'}
                     </td>
-                    <td style="padding: 12px; text-align: center; border-bottom: 1px solid var(--surface-100);">
-                        <button class="btn btn-secondary btn-sm" onclick="viewBidDetails('${bid.id}')" title="View Full Bid" style="font-size: 10px; padding: 4px 8px;">
-                            <i class="pi pi-eye"></i>
-                        </button>
+                    <td style="padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--surface-100); vertical-align: top; max-width: 220px;">
+                        ${bid.bidOpeningRemark && String(bid.bidOpeningRemark).trim() ?
+                            `<span style="font-size: 11px; color: var(--text-secondary); line-height: 1.45; word-break: break-word;">${escapeHtmlCell(bid.bidOpeningRemark)}</span>` :
+                            ''}
                     </td>
-                </tr>
-            `).join('');
+                    <td style="padding: 8px; text-align: center; border-bottom: 1px solid var(--surface-100); vertical-align: middle; position: relative;">
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="toggleBidRowActionsMenu(event, '${bid.id}')" title="Actions" aria-label="Bid row actions" style="font-size: 10px; padding: 4px 10px; min-width: 36px;">
+                            <i class="pi pi-ellipsis-v"></i>
+                        </button>
+                        <div id="bor-act-${bidActionsMenuSafeId(bid.id)}" class="bor-row-actions-menu" onclick="event.stopPropagation()" style="display: none; position: absolute; right: 8px; top: calc(100% - 2px); z-index: 60; min-width: 200px; background: var(--surface-0); border: 1px solid var(--surface-200); border-radius: var(--radius-md); box-shadow: var(--shadow-md); padding: 4px 0;">
+                            <button type="button" onclick="event.stopPropagation(); closeBidRowActionsMenu(); viewBidDetails('${bid.id}');" style="display: block; width: 100%; text-align: left; padding: 10px 14px; font-size: 12px; border: none; background: none; cursor: pointer; color: var(--text-primary);" onmouseover="this.style.background='var(--surface-50)'" onmouseout="this.style.background='none'">
+                                <i class="pi pi-eye" style="margin-right: 8px; color: var(--primary-500);"></i> View details
+                            </button>
+                            <button type="button" onclick="event.stopPropagation(); closeBidRowActionsMenu(); openBidOpeningRemarkModal('${bid.id}');" style="display: block; width: 100%; text-align: left; padding: 10px 14px; font-size: 12px; border: none; background: none; cursor: pointer; color: var(--text-primary);" onmouseover="this.style.background='var(--surface-50)'" onmouseout="this.style.background='none'">
+                                <i class="pi pi-comment" style="margin-right: 8px; color: var(--primary-500);"></i> Add opening remark
+                            </button>
+                        </div>
+                    </td>
+                </tr>`;
         }
 
-        function renderBidderComments(bids) {
-            const container = document.getElementById('bidder-comments-list');
-            const bidsWithComments = bids.filter(bid => bid.comments);
-
-            if (bidsWithComments.length === 0) {
-                container.innerHTML = '<div style="font-size: 12px; color: var(--text-muted); padding: var(--spacing-md); text-align: center;">No comments provided by bidders.</div>';
+        function renderBidOpeningTablesByLot(openingData) {
+            const container = document.getElementById('bid-opening-tables-container');
+            if (!container) {
                 return;
             }
 
-            container.innerHTML = bidsWithComments.map(bid => `
-                <div style="background: var(--surface-50); padding: var(--spacing-md); border-radius: var(--radius-sm); border-left: 3px solid var(--primary-300);">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px;">
-                        <span style="font-weight: 600; font-size: 12px; color: var(--primary-500);">${bid.vendorName}</span>
-                        <span style="font-size: 10px; color: var(--text-muted);">UNGM: ${bid.ungmNumber}</span>
-                    </div>
-                    <div style="font-size: 12px; color: var(--text-secondary);">${bid.comments}</div>
-                    ${bid.discount ? `<div style="font-size: 11px; color: var(--success-600); margin-top: 4px; padding: 4px 8px; background: var(--success-50); border-radius: var(--radius-xs); display: inline-block;">💰 ${bid.discount}</div>` : ''}
-                </div>
-            `).join('');
+            const lots = normalizeBidOpeningLots(openingData);
+            const head = bidOpeningTableHeadHtml();
+
+            container.innerHTML = lots.map(lot => {
+                const sortedBids = [...lot.bids].sort((a, b) =>
+                    (a.totalOfferUSD || a.totalOffer) - (b.totalOfferUSD || b.totalOffer)
+                );
+
+                let currentRank = 1;
+                let previousOffer = null;
+                sortedBids.forEach((bid, index) => {
+                    const offer = bid.totalOfferUSD || bid.totalOffer;
+                    if (previousOffer !== null && offer !== previousOffer) {
+                        currentRank = index + 1;
+                    }
+                    bid.displayRank = currentRank;
+                    previousOffer = offer;
+                });
+
+                const rows = sortedBids.length === 0
+                    ? `<tr><td colspan="12" style="padding: var(--spacing-lg); text-align: center; color: var(--text-muted); font-size: 12px;">No offers received for this lot.</td></tr>`
+                    : sortedBids.map((bid, i) => renderBidOpeningBidRowHtml(bid, i)).join('');
+
+                return `
+                    <div style="margin-bottom: var(--spacing-lg);">
+                        <div style="padding: 10px 12px; background: var(--surface-100); border: 1px solid var(--surface-200); border-bottom: none; border-radius: var(--radius-md) var(--radius-md) 0 0;">
+                            <span style="font-size: 11px; font-weight: 700; color: var(--text-primary); letter-spacing: 0.04em;">LOT ${lot.lotId}</span>
+                            <span style="font-size: 13px; font-weight: 600; color: var(--text-primary); margin-left: 8px;">${lot.lotName}</span>
+                            <span style="font-size: 11px; color: var(--text-muted); margin-left: 8px;">(${sortedBids.length} offer${sortedBids.length === 1 ? '' : 's'})</span>
+                        </div>
+                        <div style="overflow-x: auto; border: 1px solid var(--surface-200); border-radius: 0 0 var(--radius-md) var(--radius-md);">
+                            <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+                                ${head}
+                                <tbody>${rows}</tbody>
+                            </table>
+                        </div>
+                    </div>`;
+            }).join('');
+        }
+
+        function escapeForTextareaContent(value) {
+            if (value == null || value === '') {
+                return '';
+            }
+            return String(value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
         }
 
         function renderPanelMembers(members) {
             const container = document.getElementById('panel-members-list');
             document.getElementById('panel-members-count').textContent = members.length + ' Members';
 
-            container.innerHTML = members.map(member => `
-                <div style="background: var(--surface-50); padding: var(--spacing-md); border-radius: var(--radius-sm); display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                        <div style="font-weight: 600; font-size: 13px; color: var(--text-primary);">${member.name}</div>
-                        <div style="font-size: 11px; color: var(--text-muted);">${member.role} • ${member.email}</div>
+            container.innerHTML = members.map((member, idx) => {
+                const remarksVal = escapeForTextareaContent(member.remarks || '');
+                return `
+                <div style="background: var(--surface-50); padding: var(--spacing-md); border-radius: var(--radius-sm); border: 1px solid var(--surface-200);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: var(--spacing-sm);">
+                        <div>
+                            <div style="font-weight: 600; font-size: 13px; color: var(--text-primary);">${member.name}</div>
+                        </div>
+                        <span style="padding: 4px 10px; border-radius: var(--radius-sm); font-size: 10px; font-weight: 600; flex-shrink: 0; ${member.finalized ?
+                            'background: var(--success-50); color: var(--success-600);' :
+                            'background: var(--warning-50); color: var(--warning-600);'}">
+                            ${member.finalized ? '✓ Finalized' : '⏳ Pending'}
+                        </span>
                     </div>
-                    <span style="padding: 4px 10px; border-radius: var(--radius-sm); font-size: 10px; font-weight: 600; ${member.finalized ? 
-                        'background: var(--success-50); color: var(--success-600);' : 
-                        'background: var(--warning-50); color: var(--warning-600);'}">
-                        ${member.finalized ? '✓ Finalized' : '⏳ Pending'}
-                    </span>
-                </div>
-            `).join('');
+                    <label style="font-size: 11px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 4px;" for="panel-member-remarks-${idx}">Member Remarks</label>
+                    <textarea id="panel-member-remarks-${idx}" rows="2" placeholder="Individual remarks from this panel member (shown in the report)" style="width: 100%; padding: var(--spacing-sm); border: 1px solid var(--surface-300); border-radius: var(--radius-sm); font-size: 12px; resize: vertical; min-height: 52px; box-sizing: border-box;">${remarksVal}</textarea>
+                </div>`;
+            }).join('');
         }
 
         function toggleBidOpeningSection(section) {
             const content = document.getElementById(section + '-content');
             const icon = document.getElementById(section + '-icon');
-            
+            if (!content || !icon) {
+                return;
+            }
+
             if (content.style.display === 'none') {
                 content.style.display = 'block';
                 icon.style.transform = 'rotate(180deg)';
@@ -15545,8 +15927,10 @@
 
         function savePanelSetup() {
             document.getElementById('panelSetupModal').remove();
-            document.getElementById('bid-opening-panel-status').textContent = 'Configured';
-            document.getElementById('bid-opening-panel-status').style.color = 'var(--success-500)';
+            const st = document.getElementById('bid-opening-panel-status');
+            st.textContent = 'Configured';
+            st.style.color = 'var(--success-700)';
+            st.style.background = 'var(--success-100)';
             document.getElementById('bid-opening-panel-section').style.display = 'block';
             showToast('✅ Bid Opening Panel configured successfully');
         }
@@ -15555,14 +15939,18 @@
             const bid = currentBidOpeningData.bids.find(b => b.id === bidId);
             if (!bid) return;
 
+            const discountsHtml = buildBidDiscountSectionHtml(bid);
+            const breakdownHtml = buildPriceBreakdownSectionHtml(bid);
+
             const modalHtml = `
                 <div id="bidDetailsModal" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 10000; display: flex; align-items: center; justify-content: center;" onclick="if(event.target===this) this.remove()">
-                    <div style="background: white; border-radius: var(--radius-lg); width: 600px; max-width: 95%; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-lg);">
+                    <div style="background: white; border-radius: var(--radius-lg); width: 680px; max-width: 95%; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-lg);">
                         <div style="background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-400) 100%); color: white; padding: var(--spacing-lg); border-radius: var(--radius-lg) var(--radius-lg) 0 0; position: sticky; top: 0;">
                             <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                                 <div>
-                                    <h3 style="margin: 0; font-size: 18px;">${bid.vendorName}</h3>
-                                    <div style="font-size: 12px; opacity: 0.9; margin-top: 4px;">UNGM: ${bid.ungmNumber} • ${bid.country}</div>
+                                    <h3 style="margin: 0; font-size: 18px;">${escapeHtmlCell(bid.vendorName)}</h3>
+                                    <div style="font-size: 12px; opacity: 0.9; margin-top: 4px;">UNGM: ${escapeHtmlCell(bid.ungmNumber)} • ${escapeHtmlCell(bid.country)}</div>
+                                    ${bid.lotName ? `<div style="font-size: 11px; opacity: 0.95; margin-top: 6px; display: flex; align-items: center; gap: 6px;"><i class="pi pi-th-large" style="font-size: 10px;"></i> ${escapeHtmlCell(bid.lotName)}</div>` : ''}
                                 </div>
                                 <span style="background: white; color: var(--primary-500); padding: 4px 12px; border-radius: var(--radius-sm); font-weight: 700; font-size: 14px;">
                                     Rank #${bid.displayRank || bid.rank}
@@ -15591,30 +15979,21 @@
                             <!-- Details -->
                             <div style="display: grid; gap: var(--spacing-md);">
                                 <div style="background: var(--surface-50); padding: var(--spacing-md); border-radius: var(--radius-sm);">
-                                    <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px;">📅 Submission Time</div>
-                                    <div style="font-size: 13px; color: var(--text-primary);">${bid.submittedAt}</div>
+                                    <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px;">Submission time</div>
+                                    <div style="font-size: 13px; color: var(--text-primary);">${escapeHtmlCell(bid.submittedAt)}</div>
                                 </div>
                                 
                                 ${bid.jvConsortia ? `
                                     <div style="background: var(--info-50); padding: var(--spacing-md); border-radius: var(--radius-sm); border-left: 3px solid var(--info-400);">
-                                        <div style="font-size: 10px; color: var(--info-600); text-transform: uppercase; margin-bottom: 4px;">🤝 Joint Venture / Consortia</div>
+                                        <div style="font-size: 10px; color: var(--info-600); text-transform: uppercase; margin-bottom: 4px;">Joint venture / consortia</div>
                                         <div style="font-size: 13px; color: var(--text-primary);">
-                                            Partners: ${bid.jvPartners ? bid.jvPartners.join(', ') : 'Details in bid documents'}
+                                            Partners: ${bid.jvPartners ? bid.jvPartners.map(p => escapeHtmlCell(p)).join(', ') : 'Details in bid documents'}
                                         </div>
                                     </div>
                                 ` : ''}
 
-                                <div style="background: var(--surface-50); padding: var(--spacing-md); border-radius: var(--radius-sm);">
-                                    <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px;">💬 Bidder Comments</div>
-                                    <div style="font-size: 13px; color: var(--text-primary);">${bid.comments || 'No comments provided'}</div>
-                                </div>
-
-                                ${bid.discount ? `
-                                    <div style="background: var(--success-50); padding: var(--spacing-md); border-radius: var(--radius-sm); border-left: 3px solid var(--success-400);">
-                                        <div style="font-size: 10px; color: var(--success-600); text-transform: uppercase; margin-bottom: 4px;">💰 Discount Offered</div>
-                                        <div style="font-size: 13px; color: var(--success-700);">${bid.discount}</div>
-                                    </div>
-                                ` : ''}
+                                ${discountsHtml}
+                                ${breakdownHtml}
                             </div>
 
                             <!-- Actions -->
@@ -15641,10 +16020,6 @@
         function previewBidDocuments(bidId) {
             showToast('📂 Opening bid documents viewer...');
             // In real implementation, this would open a document viewer
-        }
-
-        function showBidOpeningSettings() {
-            toggleBidOpeningSection('confidentiality');
         }
 
         function downloadBidOpeningReport(format) {
@@ -15724,9 +16099,9 @@
             document.getElementById('finalizeConfirmModal').remove();
             
             // Update status
-            document.getElementById('bid-opening-status').innerHTML = '✅ Finalized';
-            document.getElementById('bid-opening-status').style.background = 'var(--success-100)';
-            document.getElementById('bid-opening-status').style.color = 'var(--success-600)';
+            const bidOpenStatus = document.getElementById('bid-opening-status');
+            bidOpenStatus.innerHTML = '<i class="pi pi-check-circle" style="font-size: 13px;" aria-hidden="true"></i><span>Finalized</span>';
+            bidOpenStatus.style.color = 'var(--success-700)';
 
             showToast('✅ Bid Opening finalized! Report sent to all bidders. Tender moved to Evaluation stage.');
 
