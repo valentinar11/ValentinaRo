@@ -9769,42 +9769,98 @@
                                 </div>
                             </div>
 
-                            <div style="background: var(--surface-0); border-radius: var(--radius-lg); box-shadow: var(--shadow-card); overflow: hidden; margin-bottom: var(--spacing-xl);">
-                                <div onclick="toggleBidOpeningSection('report')" style="padding: var(--spacing-lg); background: var(--surface-50); cursor: pointer; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--spacing-md); border-bottom: 1px solid var(--surface-200);">
-                                    <div style="flex: 1; min-width: 200px;">
-                                        <h3 style="margin: 0; font-size: 16px; font-weight: 600; color: var(--text-primary); display: flex; align-items: center; gap: 8px;">
-                                            <i class="pi pi-file-edit" style="font-size: 18px; color: var(--primary-500);"></i>
-                                            Bid Opening Report
-                                        </h3>
-                                    </div>
-                                    <div style="display: flex; align-items: center; flex-shrink: 0;">
-                                        <i id="report-icon" class="pi pi-chevron-down" style="color: var(--text-muted); transition: transform 0.2s;"></i>
-                                    </div>
-                                </div>
-
-                                <div id="report-content" style="display: none;">
-                                    <div style="padding: var(--spacing-lg); border-bottom: 1px solid var(--surface-200); background: var(--surface-0);">
-                                        <div style="font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: var(--spacing-md);">Summary — tender details</div>
-                                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--spacing-md);">
-                                            <div style="background: var(--surface-50); border-radius: var(--radius-md); padding: var(--spacing-md); border-left: 4px solid var(--primary-400);">
-                                                <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Total vendors</div>
-                                                <div id="bid-opening-total-vendors" style="font-size: 24px; font-weight: 700; color: var(--primary-500);">6</div>
-                                                <div style="font-size: 10px; color: var(--text-muted); margin-top: 2px;">Registered / invited vendors</div>
+                            <!-- RFP: technical + financial report cards; ITB/RFQ single: one card only (financial card hidden via JS) -->
+                            <div id="bid-opening-reports-stack" style="margin-bottom: var(--spacing-xl);">
+                                <div style="background: var(--surface-0); border-radius: var(--radius-lg); box-shadow: var(--shadow-card); overflow: hidden; margin-bottom: var(--spacing-lg);">
+                                    <div style="padding: var(--spacing-lg); background: var(--surface-50); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--spacing-md); border-bottom: 1px solid var(--surface-200);">
+                                        <div onclick="toggleBidOpeningSection('report-tech')" style="flex: 1; min-width: 200px; cursor: pointer;">
+                                            <h3 id="report-tech-heading" style="margin: 0; font-size: 16px; font-weight: 600; color: var(--text-primary); display: flex; align-items: center; gap: 8px;">
+                                                <i class="pi pi-file-edit" style="font-size: 18px; color: var(--primary-500);"></i>
+                                                <span id="report-tech-title-text">Bid Opening Report</span>
+                                            </h3>
+                                            <div id="report-tech-subtitle" style="display: none; font-size: 11px; color: var(--text-muted); margin-top: 6px;">Technical phase only — no financial offer columns. Financial report unlocks after technical evaluation.</div>
+                                        </div>
+                                        <div style="display: flex; align-items: center; gap: var(--spacing-sm); flex-wrap: wrap; flex-shrink: 0;">
+                                            <div style="position: relative;">
+                                                <button type="button" class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); toggleBorDownloadMenu(event, 'internal')" title="Download internal report (all fields)" style="display: inline-flex; align-items: center; gap: 6px; font-weight: 500;">
+                                                    Internal <i class="pi pi-angle-down" style="font-size: 11px;"></i>
+                                                </button>
+                                                <div id="bor-dl-menu-internal" class="bor-dl-dropdown" onclick="event.stopPropagation()" style="display: none; position: absolute; top: calc(100% + 4px); right: 0; z-index: 70; min-width: 200px; background: var(--surface-0); border: 1px solid var(--surface-200); border-radius: var(--radius-md); box-shadow: var(--shadow-md); padding: 4px 0;">
+                                                    <button type="button" onclick="event.stopPropagation(); closeBorDownloadMenus(); downloadBidOpeningReportDual('pdf', 'internal');" style="display: flex; width: 100%; align-items: center; gap: 8px; text-align: left; padding: 10px 14px; font-size: 12px; border: none; background: none; cursor: pointer; color: var(--text-primary);" onmouseover="this.style.background='var(--surface-50)'" onmouseout="this.style.background='none'">
+                                                        <i class="pi pi-file-pdf" style="color: var(--primary-500);"></i> PDF
+                                                    </button>
+                                                    <button type="button" onclick="event.stopPropagation(); closeBorDownloadMenus(); downloadBidOpeningReportDual('excel', 'internal');" style="display: flex; width: 100%; align-items: center; gap: 8px; text-align: left; padding: 10px 14px; font-size: 12px; border: none; background: none; cursor: pointer; color: var(--text-primary);" onmouseover="this.style.background='var(--surface-50)'" onmouseout="this.style.background='none'">
+                                                        <i class="pi pi-file-excel" style="color: var(--success-600);"></i> Excel
+                                                    </button>
+                                                </div>
                                             </div>
-                                            <div style="background: var(--surface-50); border-radius: var(--radius-md); padding: var(--spacing-md); border-left: 4px solid var(--success-400);">
-                                                <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Total bids</div>
-                                                <div id="bid-opening-total-bids" style="font-size: 24px; font-weight: 700; color: var(--success-600);">6</div>
-                                                <div style="font-size: 10px; color: var(--text-muted); margin-top: 2px;">Offers received</div>
+                                            <div style="position: relative;">
+                                                <button type="button" class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); toggleBorDownloadMenu(event, 'external')" title="Download external report (redacted per confidentiality)" style="display: inline-flex; align-items: center; gap: 6px; font-weight: 500;">
+                                                    External <i class="pi pi-angle-down" style="font-size: 11px;"></i>
+                                                </button>
+                                                <div id="bor-dl-menu-external" class="bor-dl-dropdown" onclick="event.stopPropagation()" style="display: none; position: absolute; top: calc(100% + 4px); right: 0; z-index: 70; min-width: 200px; background: var(--surface-0); border: 1px solid var(--surface-200); border-radius: var(--radius-md); box-shadow: var(--shadow-md); padding: 4px 0;">
+                                                    <button type="button" onclick="event.stopPropagation(); closeBorDownloadMenus(); downloadBidOpeningReportDual('pdf', 'external');" style="display: flex; width: 100%; align-items: center; gap: 8px; text-align: left; padding: 10px 14px; font-size: 12px; border: none; background: none; cursor: pointer; color: var(--text-primary);" onmouseover="this.style.background='var(--surface-50)'" onmouseout="this.style.background='none'">
+                                                        <i class="pi pi-file-pdf" style="color: var(--primary-500);"></i> PDF
+                                                    </button>
+                                                    <button type="button" onclick="event.stopPropagation(); closeBorDownloadMenus(); downloadBidOpeningReportDual('excel', 'external');" style="display: flex; width: 100%; align-items: center; gap: 8px; text-align: left; padding: 10px 14px; font-size: 12px; border: none; background: none; cursor: pointer; color: var(--text-primary);" onmouseover="this.style.background='var(--surface-50)'" onmouseout="this.style.background='none'">
+                                                        <i class="pi pi-file-excel" style="color: var(--success-600);"></i> Excel
+                                                    </button>
+                                                </div>
                                             </div>
-                                            <div style="background: var(--surface-50); border-radius: var(--radius-md); padding: var(--spacing-md); border-left: 4px solid var(--info-400);">
-                                                <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Estimated budget</div>
-                                                <div id="bid-opening-budget" style="font-size: 20px; font-weight: 700; color: var(--info-500);">$150,000</div>
-                                                <div style="font-size: 10px; color: var(--text-muted); margin-top: 2px;">Reference estimate</div>
-                                            </div>
+                                            <span id="report-tech-phase-badge" style="display: none; padding: 4px 10px; border-radius: var(--radius-sm); font-size: 10px; font-weight: 600; background: var(--warning-100); color: var(--warning-700);">Technical opening in progress</span>
+                                            <button type="button" onclick="toggleBidOpeningSection('report-tech'); event.stopPropagation();" title="Expand or collapse report" aria-expanded="false" id="report-tech-chevron-btn" style="border: none; background: transparent; cursor: pointer; padding: 6px; border-radius: var(--radius-sm); line-height: 0;">
+                                                <i id="report-tech-icon" class="pi pi-chevron-down" style="color: var(--text-muted); transition: transform 0.2s;"></i>
+                                            </button>
                                         </div>
                                     </div>
 
-                                    <div id="bid-opening-tables-container" style="padding: 0 var(--spacing-lg) var(--spacing-lg);">
+                                    <div id="report-tech-content" style="display: none;">
+                                        <div style="padding: var(--spacing-lg); border-bottom: 1px solid var(--surface-200); background: var(--surface-0);">
+                                            <div style="font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: var(--spacing-md);">Summary — tender details</div>
+                                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--spacing-md);">
+                                                <div style="background: var(--surface-50); border-radius: var(--radius-md); padding: var(--spacing-md); border-left: 4px solid var(--primary-400);">
+                                                    <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Total vendors</div>
+                                                    <div id="bid-opening-total-vendors" style="font-size: 24px; font-weight: 700; color: var(--primary-500);">6</div>
+                                                    <div style="font-size: 10px; color: var(--text-muted); margin-top: 2px;">Registered / invited vendors</div>
+                                                </div>
+                                                <div style="background: var(--surface-50); border-radius: var(--radius-md); padding: var(--spacing-md); border-left: 4px solid var(--success-400);">
+                                                    <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Total bids</div>
+                                                    <div id="bid-opening-total-bids" style="font-size: 24px; font-weight: 700; color: var(--success-600);">6</div>
+                                                    <div style="font-size: 10px; color: var(--text-muted); margin-top: 2px;">Offers received</div>
+                                                </div>
+                                                <div style="background: var(--surface-50); border-radius: var(--radius-md); padding: var(--spacing-md); border-left: 4px solid var(--info-400);">
+                                                    <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Estimated budget</div>
+                                                    <div id="bid-opening-budget" style="font-size: 20px; font-weight: 700; color: var(--info-500);">$150,000</div>
+                                                    <div style="font-size: 10px; color: var(--text-muted); margin-top: 2px;">Reference estimate</div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div id="bid-opening-tables-container" style="padding: 0 var(--spacing-lg) var(--spacing-lg);">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="report-financial-section" style="display: none; background: var(--surface-0); border-radius: var(--radius-lg); box-shadow: var(--shadow-card); overflow: hidden; margin-bottom: var(--spacing-xl); border: 1px solid var(--surface-200);">
+                                    <div onclick="toggleBidOpeningSection('report-fin')" style="padding: var(--spacing-lg); background: var(--surface-100); cursor: pointer; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--spacing-md); border-bottom: 1px solid var(--surface-200); opacity: 0.92;">
+                                        <div style="flex: 1; min-width: 200px;">
+                                            <h3 style="margin: 0; font-size: 16px; font-weight: 600; color: var(--text-muted); display: flex; align-items: center; gap: 8px;">
+                                                <i class="pi pi-dollar" style="font-size: 18px; color: var(--text-muted);"></i>
+                                                Financial proposal opening report
+                                            </h3>
+                                            <div style="font-size: 11px; color: var(--text-muted); margin-top: 6px;">Unavailable while technical evaluation is still in progress.</div>
+                                        </div>
+                                        <div style="display: flex; align-items: center; gap: var(--spacing-sm); flex-shrink: 0;">
+                                            <span style="padding: 4px 10px; border-radius: var(--radius-sm); font-size: 10px; font-weight: 600; background: var(--surface-200); color: var(--text-muted);">Locked</span>
+                                            <i id="report-fin-icon" class="pi pi-chevron-down" style="color: var(--text-muted); transition: transform 0.2s;"></i>
+                                        </div>
+                                    </div>
+                                    <div id="report-fin-content" style="display: none;">
+                                        <div style="padding: var(--spacing-xl); text-align: center;">
+                                            <i class="pi pi-lock" style="font-size: 28px; color: var(--surface-300);"></i>
+                                            <p style="margin: var(--spacing-md) 0 0 0; font-size: 13px; color: var(--text-muted); max-width: 420px; margin-left: auto; margin-right: auto; line-height: 1.5;">This section will include total offer, discounts, and currency columns after technical evaluation is finalized and the financial opening is enabled.</p>
+                                            <p style="margin: var(--spacing-sm) 0 0 0; font-size: 11px; color: var(--text-muted);">Dual internal / external downloads will mirror the technical report pattern.</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -15376,6 +15432,38 @@
                 sessionBadge.textContent = modality + ' · ' + visibility;
             }
 
+            const finSection = document.getElementById('report-financial-section');
+            const techSubtitle = document.getElementById('report-tech-subtitle');
+            const techPhaseBadge = document.getElementById('report-tech-phase-badge');
+            const techTitleText = document.getElementById('report-tech-title-text');
+            if (currentBidOpeningData.tenderType === 'RFP') {
+                if (finSection) {
+                    finSection.style.display = '';
+                }
+                if (techSubtitle) {
+                    techSubtitle.style.display = 'block';
+                }
+                if (techPhaseBadge) {
+                    techPhaseBadge.style.display = 'inline-flex';
+                }
+                if (techTitleText) {
+                    techTitleText.textContent = 'Technical proposal opening report';
+                }
+            } else {
+                if (finSection) {
+                    finSection.style.display = 'none';
+                }
+                if (techSubtitle) {
+                    techSubtitle.style.display = 'none';
+                }
+                if (techPhaseBadge) {
+                    techPhaseBadge.style.display = 'none';
+                }
+                if (techTitleText) {
+                    techTitleText.textContent = 'Bid Opening Report';
+                }
+            }
+
             const bidsList = currentBidOpeningData.bids || [];
             const distinctVendors = new Set(bidsList.map(b => b.vendorName)).size;
             const vendorTotal = currentBidOpeningData.vendorCount != null && currentBidOpeningData.vendorCount !== ''
@@ -15405,6 +15493,7 @@
             renderBidOpeningTablesByLot(currentBidOpeningData);
 
             ensureBidRowMenuGlobalCloser();
+            ensureBorDownloadMenuCloser();
 
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -16023,17 +16112,58 @@
         }
 
         function downloadBidOpeningReport(format) {
-            if (format === 'pdf') {
-                showToast('📄 Generating PDF report... Download will start shortly.');
-            } else if (format === 'excel') {
-                showToast('📊 Generating Excel file... Download will start shortly.');
+            downloadBidOpeningReportDual(format, 'external');
+        }
+
+        function closeBorDownloadMenus() {
+            document.querySelectorAll('.bor-dl-dropdown').forEach(function (el) {
+                el.style.display = 'none';
+            });
+        }
+
+        function toggleBorDownloadMenu(ev, audience) {
+            if (ev && ev.stopPropagation) {
+                ev.stopPropagation();
             }
-            
-            // Simulate download
+            const target = document.getElementById(audience === 'internal' ? 'bor-dl-menu-internal' : 'bor-dl-menu-external');
+            const willOpen = target && target.style.display !== 'block';
+            closeBorDownloadMenus();
+            if (willOpen && target) {
+                target.style.display = 'block';
+            }
+        }
+
+        function ensureBorDownloadMenuCloser() {
+            if (window.__borDlMenuCloserBound) {
+                return;
+            }
+            window.__borDlMenuCloserBound = true;
+            document.addEventListener('click', function () {
+                closeBorDownloadMenus();
+            });
+        }
+
+        /**
+         * @param {'pdf'|'excel'} format
+         * @param {'internal'|'external'} audience — internal = full fields; external = redacted per confidentiality (§8.2 mock)
+         */
+        function downloadBidOpeningReportDual(format, audience) {
+            if (!currentBidOpeningData || !currentBidOpeningData.tenderRef) {
+                showToast('Open a tender bid opening context first.', 'warning');
+                return;
+            }
+            const audLabel = audience === 'internal' ? 'INTERNAL (full)' : 'EXTERNAL (redacted)';
+            const ext = format === 'pdf' ? 'pdf' : 'xlsx';
+            if (format === 'pdf') {
+                showToast('Generating PDF — ' + audLabel + '…');
+            } else {
+                showToast('Generating Excel — ' + audLabel + '…');
+            }
             setTimeout(() => {
-                const filename = `BOR_${currentBidOpeningData.tenderRef.replace(/\//g, '-')}_${new Date().toISOString().split('T')[0]}.${format === 'pdf' ? 'pdf' : 'xlsx'}`;
-                showToast(`✅ ${filename} downloaded successfully`);
-            }, 1500);
+                const suffix = audience === 'internal' ? '_INTERNAL_FULL' : '_EXTERNAL_REDACTED';
+                const filename = `BOR_${currentBidOpeningData.tenderRef.replace(/\//g, '-')}${suffix}_${new Date().toISOString().split('T')[0]}.${ext}`;
+                showToast('Download ready: ' + filename);
+            }, 1200);
         }
 
         function saveBidOpeningDraft() {
