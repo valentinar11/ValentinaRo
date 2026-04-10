@@ -1251,6 +1251,38 @@
             color: #166534;
         }
 
+        /* Cancel modal — compact alerts */
+        #cancelModal .alert.cancel-modal-alert {
+            padding: 10px 12px;
+            margin-bottom: 12px;
+            gap: 8px;
+            font-size: 12px;
+            line-height: 1.35;
+        }
+
+        #cancelModal .alert.cancel-modal-alert > i.pi {
+            font-size: 14px !important;
+        }
+
+        #cancelModal .alert.cancel-modal-alert strong {
+            font-size: 12px;
+        }
+
+        #cancelModal .alert.cancel-modal-alert p {
+            font-size: 11px !important;
+            margin-top: 2px !important;
+        }
+
+        #cancelModal .alert.cancel-modal-alert ul {
+            margin: 4px 0 0 16px;
+            font-size: 11px;
+            padding-left: 0;
+        }
+
+        #cancelModal .alert.cancel-modal-alert li {
+            margin: 2px 0;
+        }
+
         /* Category Grid */
         .category-grid {
             display: grid;
@@ -13842,18 +13874,8 @@
             </div>
 
             <div class="modal-body">
-                <div class="alert alert-danger">
-                    <i class="pi pi-exclamation-triangle" style="font-size: 20px;"></i>
-                    <div>
-                        <strong>Warning: This action cannot be undone</strong>
-                        <p style="margin-top: 4px; font-size: 13px;">
-                            All participating suppliers will be notified and requisition lines will be released in ERP.
-                        </p>
-                    </div>
-                </div>
-
                 <div class="form-group">
-                    <label class="form-label required">Cancellation Reason (Internal)</label>
+                    <label class="form-label required">Cancellation Reason - Internal</label>
                     <select class="form-select" id="cancel-reason">
                         <option value="">Select a reason...</option>
                         <option value="lack-funds">Lack of Funds</option>
@@ -13872,16 +13894,15 @@
                         <option value="conflict-interest">Conflict of Interest</option>
                         <option value="legal-changes">Legal or Regulatory Changes</option>
                     </select>
-                    <span class="help-text">For internal analysis and audit purposes</span>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label required">Internal Explanation</label>
+                    <label class="form-label required">Explanation of circumstances resulting in cancellation - Internal</label>
                     <textarea class="form-textarea" id="cancel-internal-explanation" placeholder="Detailed explanation for internal records..."></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label required">Public Justification</label>
+                    <label class="form-label required">Explanation to bidders - External</label>
                     <textarea class="form-textarea" id="cancel-public-justification" placeholder="Justification to be shared with suppliers..."></textarea>
                     <span class="help-text">This will be published to all participating suppliers</span>
                 </div>
@@ -13894,17 +13915,13 @@
                     <span class="help-text">Only selected lots are cancelled; other lots may remain active.</span>
                 </div>
 
-                <div class="alert alert-info">
-                    <i class="pi pi-info-circle" style="font-size: 20px;"></i>
+                <div class="alert alert-danger cancel-modal-alert">
+                    <i class="pi pi-exclamation-triangle"></i>
                     <div>
-                        <strong>After Cancellation:</strong>
-                        <ul style="margin: 8px 0 0 20px; font-size: 13px;">
-                            <li>All interested suppliers notified immediately</li>
-                            <li>Submitted bids archived</li>
-                            <li>Requisition lines released in ERP</li>
-                            <li>Tender marked as "Cancelled" on Agora and UNGM</li>
-                            <li>All details logged in audit trail</li>
-                        </ul>
+                        <strong>Warning: This action cannot be undone</strong>
+                        <p id="cancel-modal-warning-detail">
+                            All participating suppliers will be notified and requisition lines will be released in ERP.
+                        </p>
                     </div>
                 </div>
 
@@ -23245,6 +23262,14 @@
                 if (label) {
                     label.textContent = 'I confirm that I want to cancel this tender';
                 }
+            }
+
+            const warningDetail = document.getElementById('cancel-modal-warning-detail');
+            if (warningDetail) {
+                warningDetail.textContent =
+                    currentCancelScope === 'lots'
+                        ? 'Suppliers for the selected lot(s) will be notified. Other lots in this tender may remain active.'
+                        : 'All participating suppliers will be notified and requisition lines will be released in ERP.';
             }
 
             document.getElementById('cancelModal').classList.add('active');
