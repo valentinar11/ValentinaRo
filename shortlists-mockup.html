@@ -433,6 +433,18 @@
         }
         .tender-table tbody tr:hover { background: var(--surface-50); }
 
+        .vendor-table-wrap {
+            margin-top: 12px;
+            overflow-x: auto;
+            border: 1px solid var(--surface-200);
+            border-radius: var(--radius-sm);
+        }
+        .vendor-table-wrap .tender-table { margin: 0; }
+        .vendor-table-wrap .tender-table.has-row-actions th:last-child,
+        .vendor-table-wrap .tender-table.has-row-actions td:last-child { text-align: right; white-space: nowrap; }
+        .sanction-flagged { color: var(--danger-500); font-weight: 600; }
+        .sanction-clear { color: var(--text-secondary); }
+
         .status-badge {
             padding: 4px 12px;
             border-radius: 12px;
@@ -1355,7 +1367,7 @@
                                 <input type="text" class="form-input" id="vendor-input" placeholder="Company name or email" aria-label="Vendor company or email">
                                 <button type="button" class="btn btn-secondary btn-sm" onclick="addVendorChip()"><i class="pi pi-plus"></i> Add vendor</button>
                             </div>
-                            <div class="vendor-chips" id="vendor-chips" aria-live="polite"></div>
+                            <div class="vendor-table-wrap" id="vendor-table-create" style="display:none;" aria-live="polite"></div>
                         </div>
                         <div class="form-actions-bar">
                             <button type="submit" class="btn btn-primary"><i class="pi pi-save"></i> Save draft</button>
@@ -1429,7 +1441,8 @@
                             </div>
                             <div>
                                 <div class="detail-dt">Vendors on shortlist</div>
-                                <ul class="detail-vendor-list" id="detail-vendors"></ul>
+                                <div class="vendor-table-wrap" id="detail-vendors" style="display:none;"></div>
+                                <p class="detail-dd muted" id="detail-vendors-empty" style="display:none; margin:0;">No vendors on this shortlist.</p>
                             </div>
                         </div>
                     </div>
@@ -1490,7 +1503,7 @@
                                     <input type="text" class="form-input" id="vendor-input-d" placeholder="Company name or email" aria-label="Vendor">
                                     <button type="button" class="btn btn-secondary btn-sm" onclick="addVendorChip('detail')"><i class="pi pi-plus"></i> Add vendor</button>
                                 </div>
-                                <div class="vendor-chips" id="vendor-chips-d" aria-live="polite"></div>
+                                <div class="vendor-table-wrap" id="vendor-table-detail" style="display:none;" aria-live="polite"></div>
                             </div>
                             <div class="form-group">
                                 <label class="form-label required" for="detail-amendment-comment">Amendment comment</label>
@@ -1622,12 +1635,148 @@
         let authorListDetail = [];
         let pendingCancelId = '';
         let currentDetailId = '';
+        var vendorInputSeq = 0;
 
         function escapeHtml(str) {
             if (!str) return '';
             var d = document.createElement('div');
             d.textContent = str;
             return d.innerHTML;
+        }
+
+        function hashStr(s) {
+            var h = 0;
+            for (var i = 0; i < s.length; i++) {
+                h = ((h << 5) - h) + s.charCodeAt(i);
+                h |= 0;
+            }
+            return Math.abs(h);
+        }
+
+        function vendorFromLegacyString(s) {
+            var h = hashStr(String(s));
+            var isEmail = String(s).indexOf('@') !== -1;
+            var countries = ['Thailand', 'Kenya', 'Iraq', 'Denmark', 'Ghana', 'India', 'United Kingdom', 'Nigeria'];
+            return {
+                id: 'v-legacy-' + h,
+                ungm: 'UNGM-' + (400000 + (h % 500000)),
+                company: isEmail ? '—' : String(s),
+                email: isEmail ? String(s) : 'vendor+' + h + '@mock-supplier.unops',
+                country: countries[h % countries.length],
+                womenOwned: (h % 5) === 0,
+                sanction: (h % 17) === 0 ? 'Under review' : 'None'
+            };
+        }
+
+        function normalizeVendor(v) {
+            if (v === null || v === undefined) {
+                return null;
+            }
+            if (typeof v === 'string') {
+                return vendorFromLegacyString(v);
+            }
+            return v;
+        }
+
+        function createVendorFromInput(raw) {
+            vendorInputSeq += 1;
+            var h = hashStr(raw + '\0' + vendorInputSeq);
+            var isEmail = raw.indexOf('@') !== -1;
+            var countries = ['Thailand', 'Kenya', 'Iraq', 'Denmark', 'Ghana', 'India', 'United Kingdom', 'Nigeria'];
+            return {
+                id: 'v-new-' + Date.now() + '-' + vendorInputSeq,
+                ungm: 'UNGM-' + (400000 + (h % 500000)),
+                company: isEmail ? '—' : raw,
+                email: isEmail ? raw.toLowerCase() : 'contact@vendor' + (h % 100000) + '.mock',
+                country: countries[h % countries.length],
+                womenOwned: (h % 4) === 0,
+                sanction: (h % 23) === 0 ? 'Flagged' : 'None'
+            };
+        }
+
+        function sanctionCellHtml(sanction) {
+            var s = sanction || 'None';
+            var cls = s === 'None' ? 'sanction-clear' : 'sanction-flagged';
+            return '<span class="' + cls + '">' + escapeHtml(s) + '</span>';
+        }
+
+        function renderVendorTable(containerId, list, mode) {
+            var el = document.getElementById(containerId);
+            if (!el) {
+                return;
+            }
+            var rows = (list || []).map(normalizeVendor).filter(function (x) { return x !== null; });
+            if (!rows.length) {
+                el.innerHTML = '';
+                el.style.display = 'none';
+                return;
+            }
+            el.style.display = 'block';
+            var readonly = mode === 'readonly';
+            var table = document.createElement('table');
+            table.className = 'tender-table' + (readonly ? '' : ' has-row-actions');
+            table.setAttribute('role', readonly ? 'table' : 'grid');
+            var thead = document.createElement('thead');
+            var hr = document.createElement('tr');
+            ['UNGM number', 'Company name', 'Email', 'Country', 'Women owned?', 'Sanction'].forEach(function (label) {
+                var th = document.createElement('th');
+                th.textContent = label;
+                hr.appendChild(th);
+            });
+            if (!readonly) {
+                var thAct = document.createElement('th');
+                thAct.textContent = 'Actions';
+                thAct.setAttribute('scope', 'col');
+                hr.appendChild(thAct);
+            }
+            thead.appendChild(hr);
+            table.appendChild(thead);
+            var tbody = document.createElement('tbody');
+            rows.forEach(function (v) {
+                var tr = document.createElement('tr');
+                function tdText(text) {
+                    var td = document.createElement('td');
+                    td.textContent = text;
+                    tr.appendChild(td);
+                }
+                tdText(v.ungm || '—');
+                tdText(v.company || '—');
+                tdText(v.email || '—');
+                tdText(v.country || '—');
+                tdText(v.womenOwned ? 'Yes' : 'No');
+                var tdSan = document.createElement('td');
+                tdSan.innerHTML = sanctionCellHtml(v.sanction);
+                tr.appendChild(tdSan);
+                if (!readonly) {
+                    var tdRm = document.createElement('td');
+                    var rm = document.createElement('button');
+                    rm.type = 'button';
+                    rm.className = 'btn btn-ghost btn-sm';
+                    rm.setAttribute('aria-label', 'Remove vendor ' + (v.company || v.email || v.ungm));
+                    rm.innerHTML = '<i class="pi pi-trash"></i> Remove';
+                    rm.onclick = function () {
+                        if (mode === 'detail') {
+                            vendorListDetail = vendorListDetail.filter(function (x) {
+                                var n = normalizeVendor(x);
+                                return n && n.id !== v.id;
+                            });
+                            renderVendorTable('vendor-table-detail', vendorListDetail, 'detail');
+                        } else {
+                            vendorList = vendorList.filter(function (x) {
+                                var n = normalizeVendor(x);
+                                return n && n.id !== v.id;
+                            });
+                            renderVendorTable('vendor-table-create', vendorList, 'create');
+                        }
+                    };
+                    tdRm.appendChild(rm);
+                    tr.appendChild(tdRm);
+                }
+                tbody.appendChild(tr);
+            });
+            table.appendChild(tbody);
+            el.innerHTML = '';
+            el.appendChild(table);
         }
 
         function shortlistRowKey(e, id) {
@@ -1719,13 +1868,17 @@
                 typeof d.valueUsd === 'number' ? d.valueUsd.toLocaleString('en-US') : d.valueUsd;
             document.getElementById('detail-justification').textContent = d.justification;
 
-            var ul = document.getElementById('detail-vendors');
-            ul.innerHTML = '';
-            d.vendors.forEach(function (v) {
-                var li = document.createElement('li');
-                li.textContent = v;
-                ul.appendChild(li);
-            });
+            var vw = document.getElementById('detail-vendors');
+            var ve = document.getElementById('detail-vendors-empty');
+            var vList = d.vendors || [];
+            if (!vList.length) {
+                vw.style.display = 'none';
+                vw.innerHTML = '';
+                ve.style.display = 'block';
+            } else {
+                ve.style.display = 'none';
+                renderVendorTable('detail-vendors', vList, 'readonly');
+            }
 
             var authorsUl = document.getElementById('detail-authors');
             var authorsNa = document.getElementById('detail-authors-na');
@@ -1986,9 +2139,9 @@
             document.getElementById('sl-procurement-reviewer-d').value = d.procurementReviewer || '';
             document.getElementById('sl-value-d').value = String(d.valueUsd);
             document.getElementById('sl-justification-d').value = d.justification;
-            vendorListDetail = d.vendors.slice();
+            vendorListDetail = (d.vendors || []).map(function (x) { return normalizeVendor(x); });
             authorListDetail = (d.alternateAuthors || []).slice();
-            renderChips('vendor-chips-d', vendorListDetail, 'detail');
+            renderVendorTable('vendor-table-detail', vendorListDetail, 'detail');
             renderAuthorChips('author-chips-d', authorListDetail, 'detail');
             setDetailEditProcessBadge(d.process);
             setDetailEditStatusBadge(d.statusKey, d.statusLabel);
@@ -2033,34 +2186,6 @@
 
         function applySearchMock() {
             alert('Mock: search would run with current filters and refresh the results table.');
-        }
-
-        function renderChips(containerId, list, mode) {
-            var m = mode === undefined || mode === 'create' ? 'create' : mode;
-            var el = document.getElementById(containerId);
-            el.innerHTML = '';
-            list.forEach(function (v) {
-                var chip = document.createElement('span');
-                chip.className = 'vendor-chip';
-                var label = document.createElement('span');
-                label.textContent = v;
-                chip.appendChild(label);
-                var rm = document.createElement('button');
-                rm.type = 'button';
-                rm.setAttribute('aria-label', 'Remove ' + v);
-                rm.innerHTML = '<i class="pi pi-times"></i>';
-                rm.onclick = function () {
-                    if (m === 'detail') {
-                        vendorListDetail = vendorListDetail.filter(function (x) { return x !== v; });
-                        renderChips('vendor-chips-d', vendorListDetail, 'detail');
-                    } else {
-                        vendorList = vendorList.filter(function (x) { return x !== v; });
-                        renderChips('vendor-chips', vendorList, 'create');
-                    }
-                };
-                chip.appendChild(rm);
-                el.appendChild(chip);
-            });
         }
 
         function renderAuthorChips(containerId, list, mode) {
@@ -2109,14 +2234,15 @@
         function addVendorChip(mode) {
             var m = mode === undefined || mode === 'create' ? 'create' : mode;
             var input = document.getElementById(m === 'detail' ? 'vendor-input-d' : 'vendor-input');
-            var v = (input.value || '').trim();
-            if (!v) return;
+            var raw = (input.value || '').trim();
+            if (!raw) return;
+            var row = createVendorFromInput(raw);
             if (m === 'detail') {
-                vendorListDetail.push(v);
-                renderChips('vendor-chips-d', vendorListDetail, 'detail');
+                vendorListDetail.push(row);
+                renderVendorTable('vendor-table-detail', vendorListDetail, 'detail');
             } else {
-                vendorList.push(v);
-                renderChips('vendor-chips', vendorList, 'create');
+                vendorList.push(row);
+                renderVendorTable('vendor-table-create', vendorList, 'create');
             }
             input.value = '';
         }
@@ -2125,7 +2251,7 @@
             document.getElementById('form-shortlist').reset();
             vendorList = [];
             authorList = [];
-            renderChips('vendor-chips', vendorList, 'create');
+            renderVendorTable('vendor-table-create', vendorList, 'create');
             renderAuthorChips('author-chips', authorList, 'create');
         }
 
@@ -2170,7 +2296,7 @@
                 d.valueUsd = after.valueUsd;
                 d.justification = after.justification;
                 d.procurementReviewer = after.procurementReviewer;
-                d.vendors = after.vendors;
+                d.vendors = after.vendors.map(function (x) { return normalizeVendor(x); });
                 d.alternateAuthors = after.alternateAuthors;
                 if (!d.amendments) {
                     d.amendments = [];
