@@ -457,7 +457,23 @@
         .status-badge.draft { background: var(--surface-200); color: var(--text-secondary); }
         .status-badge.approved { background: var(--success-50); color: var(--success-500); }
         .status-badge.preclearance { background: var(--warning-50); color: var(--warning-500); }
+        .status-badge.underapproval { background: var(--warning-50); color: var(--warning-500); }
         .status-badge.cancelled { background: var(--danger-50); color: var(--danger-500); }
+
+        .validity-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            margin-bottom: 4px;
+        }
+        .validity-badge.valid { background: var(--success-50); color: var(--success-500); }
+        .validity-badge.expired { background: var(--danger-50); color: var(--danger-500); }
+        .validity-badge.not-started { background: var(--surface-200); color: var(--text-secondary); }
+        .validity-sub { font-size: 12px; color: var(--text-secondary); line-height: 1.35; }
+        .validity-expires { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
 
         /* Short list process = origin: EOI, PQ, or Ad hoc */
         .process-source {
@@ -1190,11 +1206,11 @@
                             <select class="form-select" id="f-status">
                                 <option value="">Any</option>
                                 <option value="draft">Draft</option>
-                                <option value="preclearance">In pre-clearance</option>
+                                <option value="underapproval">Under approval</option>
                                 <option value="approved">Approved</option>
                                 <option value="cancelled">Cancelled</option>
                             </select>
-                            <span class="help-text">Same status whether the shortlist is awaiting reviewer action or the linked tender is in pre-clearance.</span>
+                            <span class="help-text">Under approval: submitted, awaiting procurement reviewer. EOI/PQ rows on this list appear only when Approved (implementation guide).</span>
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="f-org">Org. unit</label>
@@ -1203,7 +1219,17 @@
                         <div class="form-group">
                             <label class="form-label" for="f-vendors">Contains vendors</label>
                             <input type="text" class="form-input" id="f-vendors" placeholder="Enter email or company name" autocomplete="off">
-                            <span class="help-text">Matches vendors on the shortlist by contact email or registered company name.</span>
+                            <span class="help-text">Matches UNGM number, contact email, or company name on the shortlist.</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="f-validity">Validity</label>
+                            <select class="form-select" id="f-validity">
+                                <option value="">Any</option>
+                                <option value="not_started">Not started</option>
+                                <option value="valid">Valid</option>
+                                <option value="expired">Expired</option>
+                            </select>
+                            <span class="help-text">2-year validity from approval date (mock “today” fixed for demo — see footer).</span>
                         </div>
                     </div>
                     </div>
@@ -1226,73 +1252,11 @@
                                     <th>Short list process</th>
                                     <th>Status</th>
                                     <th>Approved</th>
+                                    <th>Validity</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="results-body">
-                                <tr class="shortlist-row" tabindex="0" role="button" aria-label="View shortlist SL-2026-0042" onclick="openShortlistDetailPage('SL-2026-0042')" onkeydown="shortlistRowKey(event, 'SL-2026-0042')">
-                                    <td><strong style="color:var(--primary-500);">SL-2026-0042</strong></td>
-                                    <td>IT services — regional hub</td>
-                                    <td>Thailand Operational Hub</td>
-                                    <td>450,000</td>
-                                    <td><span class="process-source pq">PQ</span></td>
-                                    <td><span class="status-badge preclearance">In pre-clearance</span></td>
-                                    <td>12 Mar 2026<br><span style="color:var(--text-muted); font-size:12px;">A. Kumar</span></td>
-                                    <td class="shortlist-row-actions" onclick="event.stopPropagation()">
-                                        <div class="row-actions-wrap">
-                                            <button type="button" class="row-actions-trigger" aria-label="Actions for SL-2026-0042" aria-expanded="false" aria-haspopup="true" id="row-actions-trigger-SL-2026-0042" onclick="toggleRowActionsMenu(this, event)">
-                                                <i class="pi pi-ellipsis-v" aria-hidden="true"></i>
-                                            </button>
-                                            <div class="row-actions-dropdown" role="menu" aria-labelledby="row-actions-trigger-SL-2026-0042" id="row-actions-menu-SL-2026-0042">
-                                                <button type="button" class="row-actions-item" role="menuitem" onclick="rowActionView('SL-2026-0042')">VIEW</button>
-                                                <button type="button" class="row-actions-item" role="menuitem" disabled title="Amend not available in this status">AMEND</button>
-                                                <button type="button" class="row-actions-item row-actions-danger" role="menuitem" onclick="rowActionCancel('SL-2026-0042')">CANCEL</button>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr class="shortlist-row" tabindex="0" role="button" aria-label="View shortlist SL-2026-0038" onclick="openShortlistDetailPage('SL-2026-0038')" onkeydown="shortlistRowKey(event, 'SL-2026-0038')">
-                                    <td><strong style="color:var(--primary-500);">SL-2026-0038</strong></td>
-                                    <td>Medical supplies — limited vendors</td>
-                                    <td>Kenya Country Office</td>
-                                    <td>120,000</td>
-                                    <td><span class="process-source adhoc">Ad hoc</span></td>
-                                    <td><span class="status-badge draft">Draft</span></td>
-                                    <td>—</td>
-                                    <td class="shortlist-row-actions" onclick="event.stopPropagation()">
-                                        <div class="row-actions-wrap">
-                                            <button type="button" class="row-actions-trigger" aria-label="Actions for SL-2026-0038" aria-expanded="false" aria-haspopup="true" id="row-actions-trigger-SL-2026-0038" onclick="toggleRowActionsMenu(this, event)">
-                                                <i class="pi pi-ellipsis-v" aria-hidden="true"></i>
-                                            </button>
-                                            <div class="row-actions-dropdown" role="menu" aria-labelledby="row-actions-trigger-SL-2026-0038" id="row-actions-menu-SL-2026-0038">
-                                                <button type="button" class="row-actions-item" role="menuitem" onclick="rowActionView('SL-2026-0038')">VIEW</button>
-                                                <button type="button" class="row-actions-item" role="menuitem" onclick="rowActionAmend('SL-2026-0038')">AMEND</button>
-                                                <button type="button" class="row-actions-item row-actions-danger" role="menuitem" onclick="rowActionCancel('SL-2026-0038')">CANCEL</button>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr class="shortlist-row" tabindex="0" role="button" aria-label="View shortlist SL-2026-0015" onclick="openShortlistDetailPage('SL-2026-0015')" onkeydown="shortlistRowKey(event, 'SL-2026-0015')">
-                                    <td><strong style="color:var(--primary-500);">SL-2026-0015</strong></td>
-                                    <td>Civil works — bridge maintenance</td>
-                                    <td>Iraq Operational Hub</td>
-                                    <td>2,100,000</td>
-                                    <td><span class="process-source eoi">EOI</span></td>
-                                    <td><span class="status-badge approved">Approved</span></td>
-                                    <td>02 Feb 2026<br><span style="color:var(--text-muted); font-size:12px;">M. Okafor</span></td>
-                                    <td class="shortlist-row-actions" onclick="event.stopPropagation()">
-                                        <div class="row-actions-wrap">
-                                            <button type="button" class="row-actions-trigger" aria-label="Actions for SL-2026-0015" aria-expanded="false" aria-haspopup="true" id="row-actions-trigger-SL-2026-0015" onclick="toggleRowActionsMenu(this, event)">
-                                                <i class="pi pi-ellipsis-v" aria-hidden="true"></i>
-                                            </button>
-                                            <div class="row-actions-dropdown" role="menu" aria-labelledby="row-actions-trigger-SL-2026-0015" id="row-actions-menu-SL-2026-0015">
-                                                <button type="button" class="row-actions-item" role="menuitem" onclick="rowActionView('SL-2026-0015')">VIEW</button>
-                                                <button type="button" class="row-actions-item" role="menuitem" disabled title="Amend not available in this status">AMEND</button>
-                                                <button type="button" class="row-actions-item row-actions-danger" role="menuitem" onclick="rowActionCancel('SL-2026-0015')">CANCEL</button>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -1334,7 +1298,7 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label required" for="sl-procurement-reviewer">Procurement reviewer</label>
-                            <span class="help-text">The colleague who will act as <strong>pre-clearer</strong> and <strong>approver</strong> for this shortlist when you submit it for approval.</span>
+                            <span class="help-text">The colleague who reviews and approves this shortlist when you submit it for approval.</span>
                             <select class="form-select" id="sl-procurement-reviewer" required>
                                 <option value="">Select procurement reviewer</option>
                                 <option>Anita Kumar — a.kumar@unops.org</option>
@@ -1389,7 +1353,7 @@
                 <div class="detail-page-toolbar" id="detail-toolbar-view">
                     <div class="toolbar-group">
                         <button type="button" class="btn btn-primary btn-sm" id="detail-page-amend" onclick="detailStartAmend()"><i class="pi pi-pencil"></i> Amend</button>
-                        <button type="button" class="btn btn-danger btn-sm" onclick="openCancelModal(currentDetailId)"><i class="pi pi-times"></i> Cancel shortlist</button>
+                        <button type="button" class="btn btn-danger btn-sm" id="detail-btn-cancel-view" onclick="openCancelModal(currentDetailId)"><i class="pi pi-times"></i> Cancel shortlist</button>
                     </div>
                 </div>
                 <div class="detail-page-toolbar" id="detail-toolbar-edit" style="display:none;">
@@ -1397,7 +1361,7 @@
                         <button type="button" class="btn btn-ghost btn-sm" onclick="detailDiscardAmend()"><i class="pi pi-eye"></i> Back to view</button>
                         <button type="button" class="btn btn-primary btn-sm" onclick="document.getElementById('form-detail-edit').requestSubmit()"><i class="pi pi-save"></i> Save changes</button>
                         <button type="button" class="btn btn-secondary btn-sm" onclick="mockSubmitShortlist('detail')"><i class="pi pi-send"></i> Submit for approval</button>
-                        <button type="button" class="btn btn-danger btn-sm" onclick="openCancelModal(currentDetailId)"><i class="pi pi-times"></i> Cancel shortlist</button>
+                        <button type="button" class="btn btn-danger btn-sm" id="detail-btn-cancel-edit" onclick="openCancelModal(currentDetailId)"><i class="pi pi-times"></i> Cancel shortlist</button>
                     </div>
                 </div>
 
@@ -1423,8 +1387,12 @@
                                 <div class="detail-dd" id="detail-org">—</div>
                             </div>
                             <div>
-                                <div class="detail-dt">Procurement reviewer (pre-clearer / approver)</div>
+                                <div class="detail-dt">Procurement reviewer</div>
                                 <div class="detail-dd" id="detail-reviewer">—</div>
+                            </div>
+                            <div>
+                                <div class="detail-dt">Validity (2 years from approval date)</div>
+                                <div class="detail-dd" id="detail-validity">—</div>
                             </div>
                             <div>
                                 <div class="detail-dt">Expected value of contract (USD)</div>
@@ -1471,7 +1439,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-label required" for="sl-procurement-reviewer-d">Procurement reviewer</label>
-                                <span class="help-text">Pre-clearer / approver.</span>
+                                <span class="help-text">Procurement reviewer for approval.</span>
                                 <select class="form-select" id="sl-procurement-reviewer-d" required>
                                     <option value="">Select procurement reviewer</option>
                                     <option>Anita Kumar — a.kumar@unops.org</option>
@@ -1564,25 +1532,32 @@
         }
 
         var MOCK_CURRENT_USER = 'Jane Doe';
+        /** Fixed “today” for stable validity math in the mock (see listing footer). */
+        var MOCK_TODAY = new Date(Date.UTC(2026, 3, 10, 12, 0, 0));
+        var LISTING_ORDER = ['SL-2026-0055', 'SL-2026-0038', 'SL-2026-0042', 'SL-2026-0015', 'SL-2023-0110'];
 
         var SHORTLIST_DB = {
-            'SL-2026-0042': {
-                title: 'IT services — regional hub',
-                org: 'Thailand Operational Hub',
-                valueUsd: 450000,
-                justification: 'Pre-qualified vendors from PQ/RFQ-2025/112 for managed IT and service desk in the regional hub. Limited market of certified partners meeting UN security baselines.',
-                vendors: ['Nexus IT Partners Ltd', 'support@regionaldesk.io', 'SecureOps Co.'],
+            'SL-2026-0055': {
+                title: 'Facilities maintenance — city offices',
+                org: 'Global Procurement Group',
+                valueUsd: 89000,
+                justification: 'Recurring facilities scope; ad-hoc shortlist submitted for reviewer approval.',
+                vendors: ['BuildRight Facilities Ltd', 'ops@citymaint.mock'],
                 alternateAuthors: [],
                 procurementReviewer: 'Anita Kumar — a.kumar@unops.org',
-                process: 'pq',
-                statusKey: 'preclearance',
-                statusLabel: 'In pre-clearance',
+                process: 'adhoc',
+                statusKey: 'underapproval',
+                statusLabel: 'Under approval',
+                approvalDateIso: null,
+                approvedDateLabel: '',
+                approvedReviewerShort: '',
                 canAmend: false,
-                amendDisabledReason: 'Amend is not available while the shortlist is in pre-clearance.',
+                amendDisabledReason: 'Amend is not available while the shortlist is under approval.',
+                canCancelShortlist: true,
                 workflowTimeline: [
-                    { state: 'complete', title: 'Draft prepared', meta: '28 Feb 2026 · Jane Doe', note: 'Shortlist prepared from PQ outcome.' },
-                    { state: 'complete', title: 'Approved', meta: '12 Mar 2026 · A. Kumar', note: 'Procurement reviewer approved the shortlist (submitted 1 Mar 2026).' },
-                    { state: 'current', title: 'In pre-clearance', meta: 'Linked tender ITB/2024/089', note: 'Pre-clearance is the same lifecycle stage as “submitted for approval”: reviewer workflow and tender package pre-clearance. Vendors on this shortlist are eligible for invitation once cleared.' }
+                    { state: 'complete', title: 'Draft prepared', meta: '8 Apr 2026 · Jane Doe', note: 'Ad-hoc shortlist created and vendors added.' },
+                    { state: 'current', title: 'Under approval', meta: 'Awaiting procurement reviewer', note: 'Submitted for approval; validity has not started until approval is recorded.' },
+                    { state: 'pending', title: 'Approved', meta: '—', note: 'After approval, a 2-year validity period begins from the approval date.' }
                 ],
                 amendments: []
             },
@@ -1597,12 +1572,41 @@
                 process: 'adhoc',
                 statusKey: 'draft',
                 statusLabel: 'Draft',
+                approvalDateIso: null,
+                approvedDateLabel: '',
+                approvedReviewerShort: '',
                 canAmend: true,
                 amendDisabledReason: '',
+                canCancelShortlist: true,
                 workflowTimeline: [
                     { state: 'complete', title: 'Shortlist initialized', meta: '5 Mar 2026 · Jane Doe', note: 'Ad-hoc shortlist created in this module.' },
                     { state: 'current', title: 'Draft', meta: 'In progress', note: 'Amend fields and submit when ready.' },
-                    { state: 'pending', title: 'In pre-clearance', meta: '—', note: 'Next stage: same status covers submission for reviewer approval and tender pre-clearance (not separate states).' }
+                    { state: 'pending', title: 'Under approval', meta: '—', note: 'Next: submit for procurement reviewer approval.' }
+                ],
+                amendments: []
+            },
+            'SL-2026-0042': {
+                title: 'IT services — regional hub',
+                org: 'Thailand Operational Hub',
+                valueUsd: 450000,
+                justification: 'Pre-qualified vendors from PQ/RFQ-2025/112 for managed IT and service desk in the regional hub. Limited market of certified partners meeting UN security baselines.',
+                vendors: ['Nexus IT Partners Ltd', 'support@regionaldesk.io', 'SecureOps Co.'],
+                alternateAuthors: [],
+                procurementReviewer: 'Anita Kumar — a.kumar@unops.org',
+                process: 'pq',
+                statusKey: 'approved',
+                statusLabel: 'Approved',
+                approvalDateIso: '2026-03-12',
+                approvedDateLabel: '12 Mar 2026',
+                approvedReviewerShort: 'A. Kumar',
+                canAmend: false,
+                amendDisabledReason: 'PQ shortlists are read-only in this module after approval (implementation guide).',
+                canCancelShortlist: false,
+                workflowTimeline: [
+                    { state: 'complete', title: 'PQ outcome', meta: 'Feb 2026 · Procurement', note: 'Shortlist prepared from PQ/RFQ-2025/112.' },
+                    { state: 'complete', title: 'Under approval', meta: '1 Mar 2026 · Jane Doe', note: 'Submitted to procurement reviewer.' },
+                    { state: 'complete', title: 'Approved', meta: '12 Mar 2026 · A. Kumar', note: 'Approval recorded; 2-year validity runs from this date (independent of tender lifecycle).' },
+                    { state: 'current', title: 'Use in procurement', meta: 'Linked tender ITB/2024/089', note: 'PQ row appears on this list only when Approved; validity does not track tender pre-clearance.' }
                 ],
                 amendments: []
             },
@@ -1617,17 +1621,228 @@
                 process: 'eoi',
                 statusKey: 'approved',
                 statusLabel: 'Approved',
+                approvalDateIso: '2026-02-02',
+                approvedDateLabel: '02 Feb 2026',
+                approvedReviewerShort: 'M. Okafor',
                 canAmend: false,
-                amendDisabledReason: 'Amend is not available after approval for this process type (mock rule).',
+                amendDisabledReason: 'EOI shortlists are read-only in this module after approval (implementation guide).',
+                canCancelShortlist: false,
                 workflowTimeline: [
                     { state: 'complete', title: 'EOI review', meta: 'Jan 2026 · Procurement', note: 'Respondents meeting minimum criteria carried forward from EOI/2025/044.' },
-                    { state: 'complete', title: 'Sent to reviewer', meta: '25 Jan 2026 · Jane Doe', note: 'Within the in pre-clearance stage (before approval was recorded).' },
-                    { state: 'complete', title: 'Approved', meta: '02 Feb 2026 · M. Okafor', note: 'Approved under delegation of authority.' },
+                    { state: 'complete', title: 'Under approval', meta: '25 Jan 2026 · Jane Doe', note: 'Submitted to procurement reviewer.' },
+                    { state: 'complete', title: 'Approved', meta: '02 Feb 2026 · M. Okafor', note: '2-year validity from approval date.' },
                     { state: 'current', title: 'Ready for procurement', meta: 'Active', note: 'Use for limited tender or RFQ per your procurement plan.' }
+                ],
+                amendments: []
+            },
+            'SL-2023-0110': {
+                title: 'Vehicle leasing — legacy frame',
+                org: 'Kenya Country Office',
+                valueUsd: 340000,
+                justification: 'Historical ad-hoc shortlist illustrating Approved lifecycle with expired validity (validity is independent of status).',
+                vendors: [
+                    { id: 'v-fl-legacy', ungm: 'UNGM-445221', company: 'FleetLease East Africa', email: 'lease@fleet.mock', country: 'Kenya', womenOwned: false, sanction: 'None' }
+                ],
+                alternateAuthors: [],
+                procurementReviewer: 'James Okello — j.okello@unops.org',
+                process: 'adhoc',
+                statusKey: 'approved',
+                statusLabel: 'Approved',
+                approvalDateIso: '2023-04-10',
+                approvedDateLabel: '10 Apr 2023',
+                approvedReviewerShort: 'J. Okello',
+                canAmend: true,
+                amendDisabledReason: '',
+                canCancelShortlist: true,
+                workflowTimeline: [
+                    { state: 'complete', title: 'Approved', meta: '10 Apr 2023 · J. Okello', note: 'Validity expired on 10 Apr 2025 (2 years from approval).' },
+                    { state: 'current', title: 'Record retained', meta: 'Mock sample', note: 'Status can remain Approved while validity shows Expired.' }
                 ],
                 amendments: []
             }
         };
+
+        function statusBadgeClass(statusKey) {
+            if (statusKey === 'preclearance') return 'underapproval';
+            return statusKey;
+        }
+
+        function isListingVisible(d) {
+            if (d.process === 'adhoc') return true;
+            return d.statusKey === 'approved';
+        }
+
+        function computeValidityInfo(d) {
+            var approval = d.approvalDateIso;
+            if (!approval) {
+                return {
+                    category: 'not_started',
+                    badgeClass: 'not-started',
+                    label: 'Not started',
+                    sub: 'Starts when approval is recorded',
+                    expiresOnDisplay: '—'
+                };
+            }
+            var ap = new Date(approval + 'T12:00:00.000Z');
+            var ex = new Date(ap.getTime());
+            ex.setUTCFullYear(ex.getUTCFullYear() + 2);
+            var now = MOCK_TODAY;
+            var dayMs = 86400000;
+            var expiresStr = ex.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+            if (now.getTime() >= ex.getTime()) {
+                return {
+                    category: 'expired',
+                    badgeClass: 'expired',
+                    label: 'Expired',
+                    sub: 'Ended ' + expiresStr,
+                    expiresOnDisplay: expiresStr
+                };
+            }
+            var daysLeft = Math.ceil((ex.getTime() - now.getTime()) / dayMs);
+            return {
+                category: 'valid',
+                badgeClass: 'valid',
+                label: 'Valid',
+                sub: daysLeft + ' day' + (daysLeft === 1 ? '' : 's') + ' remaining',
+                expiresOnDisplay: expiresStr
+            };
+        }
+
+        function formatApprovedColumnHtml(d) {
+            if (!d.approvalDateIso) return '—';
+            var line1 = d.approvedDateLabel;
+            if (!line1) {
+                var dt = new Date(d.approvalDateIso + 'T12:00:00.000Z');
+                line1 = dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+            }
+            var line2 = d.approvedReviewerShort || '';
+            if (!line2 && d.procurementReviewer) {
+                var parts = String(d.procurementReviewer).split('—');
+                line2 = (parts[0] || '').trim();
+            }
+            var html = escapeHtml(line1);
+            if (line2) {
+                html += '<br><span style="color:var(--text-muted); font-size:12px;">' + escapeHtml(line2) + '</span>';
+            }
+            return html;
+        }
+
+        function validityColumnHtml(d) {
+            var v = computeValidityInfo(d);
+            return '<div><span class="validity-badge ' + v.badgeClass + '">' + escapeHtml(v.label) + '</span></div>' +
+                '<div class="validity-sub">' + escapeHtml(v.sub) + '</div>' +
+                '<div class="validity-expires">Expires: ' + escapeHtml(v.expiresOnDisplay) + '</div>';
+        }
+
+        function vendorSearchMatches(d, needle) {
+            if (!needle) return true;
+            var n = needle.trim().toLowerCase();
+            if (!n) return true;
+            var list = d.vendors || [];
+            for (var i = 0; i < list.length; i++) {
+                var vn = normalizeVendor(list[i]);
+                if (!vn) continue;
+                var parts = [vn.ungm, vn.company, vn.email];
+                for (var j = 0; j < parts.length; j++) {
+                    var p = parts[j];
+                    if (p && String(p).toLowerCase().indexOf(n) >= 0) return true;
+                }
+            }
+            return false;
+        }
+
+        function parseFilterDate(isoDateString, endOfDay) {
+            if (!isoDateString) return null;
+            var p = isoDateString.split('-');
+            if (p.length !== 3) return null;
+            var y = parseInt(p[0], 10);
+            var mo = parseInt(p[1], 10) - 1;
+            var da = parseInt(p[2], 10);
+            var d = new Date(Date.UTC(y, mo, da, endOfDay ? 23 : 0, endOfDay ? 59 : 0, endOfDay ? 59 : 0));
+            return isNaN(d.getTime()) ? null : d;
+        }
+
+        function rowMatchesFilters(id, d) {
+            var fId = (document.getElementById('f-id').value || '').trim().toLowerCase();
+            if (fId && id.toLowerCase().indexOf(fId) < 0) return false;
+            var fTitle = (document.getElementById('f-title').value || '').trim().toLowerCase();
+            if (fTitle && String(d.title).toLowerCase().indexOf(fTitle) < 0) return false;
+            var fProcess = document.getElementById('f-process').value;
+            if (fProcess && d.process !== fProcess) return false;
+            var fStatus = document.getElementById('f-status').value;
+            if (fStatus && d.statusKey !== fStatus) return false;
+            var fOrg = (document.getElementById('f-org').value || '').trim().toLowerCase();
+            if (fOrg && String(d.org).toLowerCase().indexOf(fOrg) < 0) return false;
+            var fVendors = document.getElementById('f-vendors').value || '';
+            if (!vendorSearchMatches(d, fVendors)) return false;
+            var fValidity = document.getElementById('f-validity').value;
+            if (fValidity && computeValidityInfo(d).category !== fValidity) return false;
+            var apprFrom = parseFilterDate(document.getElementById('f-approved-from').value, false);
+            var apprTo = parseFilterDate(document.getElementById('f-approved-to').value, true);
+            if (apprFrom || apprTo) {
+                if (!d.approvalDateIso) return false;
+                var apprMid = new Date(d.approvalDateIso + 'T12:00:00.000Z');
+                if (apprFrom && apprMid.getTime() < apprFrom.getTime()) return false;
+                if (apprTo && apprMid.getTime() > apprTo.getTime()) return false;
+            }
+            var fBy = (document.getElementById('f-approved-by').value || '').trim().toLowerCase();
+            if (fBy) {
+                var hay = (d.approvedReviewerShort || '') + ' ' + (d.procurementReviewer || '');
+                if (hay.toLowerCase().indexOf(fBy) < 0) return false;
+            }
+            return true;
+        }
+
+        function renderResultsTable() {
+            var tb = document.getElementById('results-body');
+            if (!tb) return;
+            tb.innerHTML = '';
+            LISTING_ORDER.forEach(function (id) {
+                var d = SHORTLIST_DB[id];
+                if (!d || !isListingVisible(d)) return;
+                if (!rowMatchesFilters(id, d)) return;
+                var amendDisabled = !d.canAmend;
+                var amendTitle = amendDisabled ? (d.amendDisabledReason || 'Amend not available') : '';
+                var isAdhoc = d.process === 'adhoc';
+                var safeId = id.replace(/[^a-zA-Z0-9-]/g, '_');
+                var amendBtn = '';
+                var cancelBtn = '';
+                if (isAdhoc) {
+                    amendBtn = amendDisabled
+                        ? '<button type="button" class="row-actions-item" role="menuitem" disabled title="' + escapeAttr(amendTitle) + '">Amend</button>'
+                        : '<button type="button" class="row-actions-item" role="menuitem" onclick="rowActionAmend(\'' + id + '\')">Amend</button>';
+                    cancelBtn = d.canCancelShortlist === true
+                        ? '<button type="button" class="row-actions-item row-actions-danger" role="menuitem" onclick="rowActionCancel(\'' + id + '\')">Cancel</button>'
+                        : '<button type="button" class="row-actions-item row-actions-danger" role="menuitem" disabled title="Cancel is not available for this shortlist.">Cancel</button>';
+                }
+                var tr = document.createElement('tr');
+                tr.className = 'shortlist-row';
+                tr.setAttribute('tabindex', '0');
+                tr.setAttribute('role', 'button');
+                tr.setAttribute('aria-label', 'View shortlist ' + id);
+                tr.onclick = function () { openShortlistDetailPage(id, false); };
+                tr.onkeydown = function (e) { shortlistRowKey(e, id); };
+                tr.innerHTML =
+                    '<td><strong style="color:var(--primary-500);">' + escapeHtml(id) + '</strong></td>' +
+                    '<td>' + escapeHtml(d.title) + '</td>' +
+                    '<td>' + escapeHtml(d.org) + '</td>' +
+                    '<td>' + (typeof d.valueUsd === 'number' ? d.valueUsd.toLocaleString('en-US') : escapeHtml(String(d.valueUsd))) + '</td>' +
+                    '<td>' + processBadgeHtml(d.process) + '</td>' +
+                    '<td>' + statusBadgeHtml(d.statusKey, d.statusLabel) + '</td>' +
+                    '<td>' + formatApprovedColumnHtml(d) + '</td>' +
+                    '<td>' + validityColumnHtml(d) + '</td>' +
+                    '<td class="shortlist-row-actions" onclick="event.stopPropagation()">' +
+                    '<div class="row-actions-wrap">' +
+                    '<button type="button" class="row-actions-trigger" aria-label="Actions for ' + escapeAttr(id) + '" aria-expanded="false" aria-haspopup="true" id="row-actions-trigger-' + safeId + '" onclick="toggleRowActionsMenu(this, event)">' +
+                    '<i class="pi pi-ellipsis-v" aria-hidden="true"></i></button>' +
+                    '<div class="row-actions-dropdown" role="menu" aria-labelledby="row-actions-trigger-' + safeId + '" id="row-actions-menu-' + safeId + '">' +
+                    '<button type="button" class="row-actions-item" role="menuitem" onclick="rowActionView(\'' + id + '\')">View</button>' +
+                    amendBtn +
+                    cancelBtn +
+                    '</div></div></td>';
+                tb.appendChild(tr);
+            });
+        }
 
         let vendorList = [];
         let vendorListDetail = [];
@@ -1642,6 +1857,14 @@
             var d = document.createElement('div');
             d.textContent = str;
             return d.innerHTML;
+        }
+
+        function escapeAttr(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/"/g, '&quot;')
+                .replace(/</g, '&lt;');
         }
 
         function hashStr(s) {
@@ -1836,6 +2059,11 @@
 
         function rowActionCancel(id) {
             closeAllRowActionsMenus();
+            var d = SHORTLIST_DB[id];
+            if (!d || d.canCancelShortlist !== true) {
+                alert('Cancel is only available for eligible ad-hoc shortlists in this module (implementation guide).');
+                return;
+            }
             openCancelModal(id);
         }
 
@@ -1853,7 +2081,7 @@
         }
 
         function statusBadgeHtml(statusKey, label) {
-            return '<span class="status-badge ' + statusKey + '">' + label + '</span>';
+            return '<span class="status-badge ' + statusBadgeClass(statusKey) + '">' + escapeHtml(label) + '</span>';
         }
 
         function fillDetailReadonly(d, id) {
@@ -1864,6 +2092,11 @@
                 processBadgeHtml(d.process) + statusBadgeHtml(d.statusKey, d.statusLabel);
             document.getElementById('detail-org').textContent = d.org;
             document.getElementById('detail-reviewer').textContent = d.procurementReviewer || '—';
+            var vInfo = computeValidityInfo(d);
+            document.getElementById('detail-validity').innerHTML =
+                '<div><span class="validity-badge ' + vInfo.badgeClass + '">' + escapeHtml(vInfo.label) + '</span></div>' +
+                '<div class="validity-sub">' + escapeHtml(vInfo.sub) + '</div>' +
+                '<div class="validity-expires">Expires on: ' + escapeHtml(vInfo.expiresOnDisplay) + '</div>';
             document.getElementById('detail-value').textContent =
                 typeof d.valueUsd === 'number' ? d.valueUsd.toLocaleString('en-US') : d.valueUsd;
             document.getElementById('detail-justification').textContent = d.justification;
@@ -2077,6 +2310,12 @@
             amendBtn.disabled = !d.canAmend;
             amendBtn.title = d.canAmend ? 'Edit fields on this page' : (d.amendDisabledReason || 'Amend not available');
 
+            var showCancel = d.canCancelShortlist === true;
+            ['detail-btn-cancel-view', 'detail-btn-cancel-edit'].forEach(function (bid) {
+                var cb = document.getElementById(bid);
+                if (cb) cb.style.display = showCancel ? '' : 'none';
+            });
+
             showView('detail');
 
             if (startInAmend) {
@@ -2125,7 +2364,7 @@
 
         function setDetailEditStatusBadge(statusKey, statusLabel) {
             var el = document.getElementById('detail-edit-status-badge');
-            el.className = 'status-badge ' + statusKey;
+            el.className = 'status-badge ' + statusBadgeClass(statusKey);
             el.textContent = statusLabel;
         }
 
@@ -2163,6 +2402,7 @@
             if (name === 'search') {
                 document.getElementById('view-search').classList.add('active');
                 document.getElementById('view-search').setAttribute('aria-hidden', 'false');
+                renderResultsTable();
             } else if (name === 'create') {
                 document.getElementById('view-create').classList.add('active');
                 document.getElementById('view-create').setAttribute('aria-hidden', 'false');
@@ -2182,10 +2422,12 @@
             document.getElementById('f-status').value = '';
             document.getElementById('f-org').value = '';
             document.getElementById('f-vendors').value = '';
+            document.getElementById('f-validity').value = '';
         }
 
         function applySearchMock() {
-            alert('Mock: search would run with current filters and refresh the results table.');
+            renderResultsTable();
+            alert('Mock: filters applied to the listing.');
         }
 
         function renderAuthorChips(containerId, list, mode) {
@@ -2330,11 +2572,16 @@
                 alert('Please add at least one vendor before submitting.');
                 return;
             }
-            alert('Mock: submitted. Status is now In pre-clearance (submission for reviewer and tender pre-clearance use the same status).');
+            alert('Mock: submitted. Status is now Under approval (awaiting procurement reviewer). Validity starts only after approval is recorded.');
             if (mode !== 'detail') discardCreateForm();
         }
 
         function openCancelModal(id) {
+            var d = SHORTLIST_DB[id];
+            if (!d || d.canCancelShortlist !== true) {
+                alert('Cancel is only available for eligible ad-hoc shortlists in this module (implementation guide).');
+                return;
+            }
             pendingCancelId = id;
             document.getElementById('cancel-id').textContent = id;
             document.getElementById('cancel-modal').classList.add('open');
@@ -2372,6 +2619,14 @@
                 }
             }
         });
+
+        (function initShortlistMock() {
+            var el = document.getElementById('mock-today-label');
+            if (el) {
+                el.textContent = MOCK_TODAY.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }) + ' (UTC)';
+            }
+            renderResultsTable();
+        })();
     </script>
 </body>
 </html>
