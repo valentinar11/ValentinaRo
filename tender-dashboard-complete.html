@@ -2419,6 +2419,339 @@
             background: var(--surface-50);
         }
 
+        /* Eligibility: multi-supplier matrix + lot scope (mock) */
+        .eligibility-matrix-wrap {
+            overflow-x: auto;
+            margin-bottom: var(--spacing-md);
+            border: 1px solid var(--surface-200);
+            border-radius: var(--radius-md);
+            background: var(--surface-0);
+        }
+        .eligibility-matrix-table {
+            width: max-content;
+            min-width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        .eligibility-matrix-table th,
+        .eligibility-matrix-table td {
+            border-right: 1px solid var(--surface-200);
+            border-bottom: 1px solid var(--surface-200);
+        }
+        .eligibility-matrix-table thead th {
+            background: var(--surface-100);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            padding: 10px 8px;
+            text-align: center;
+            vertical-align: middle;
+        }
+        .eligibility-matrix-table tbody td {
+            padding: 6px 6px;
+            vertical-align: top;
+            font-size: 11px;
+            background: var(--surface-0);
+        }
+        .eligibility-matrix-table tbody tr:hover td.eligibility-sticky-id,
+        .eligibility-matrix-table tbody tr:hover td.eligibility-sticky-criteria {
+            background: var(--surface-50) !important;
+        }
+        .eligibility-matrix-table tbody tr:hover td.eligibility-zone-0 {
+            background: var(--surface-100) !important;
+        }
+        .eligibility-matrix-table tbody tr:hover td.eligibility-zone-1 {
+            background: var(--primary-50) !important;
+        }
+        .eligibility-matrix-table tbody tr:hover td.eligibility-zone-2 {
+            background: var(--primary-100) !important;
+        }
+        .eligibility-matrix-table .eligibility-sticky-id {
+            position: sticky;
+            left: 0;
+            z-index: 3;
+            min-width: 76px;
+            max-width: 88px;
+            background: var(--surface-0);
+            box-shadow: 1px 0 0 var(--surface-200);
+        }
+        .eligibility-matrix-table .eligibility-sticky-criteria {
+            position: sticky;
+            left: 76px;
+            z-index: 3;
+            min-width: 168px;
+            max-width: 220px;
+            background: var(--surface-0);
+            box-shadow: 1px 0 0 var(--surface-200);
+        }
+        .eligibility-matrix-table thead .eligibility-sticky-id,
+        .eligibility-matrix-table thead .eligibility-sticky-criteria {
+            background: var(--surface-100);
+            z-index: 4;
+        }
+        .eligibility-lot-toolbar {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px 16px;
+            margin-bottom: var(--spacing-md);
+            padding-bottom: var(--spacing-sm);
+            border-bottom: 1px solid var(--surface-200);
+        }
+        .eligibility-lot-field-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+        .eligibility-lot-tab-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 2px;
+        }
+        .eligibility-lot-tab .lot-tab-num {
+            font-weight: 700;
+            color: var(--primary-600);
+        }
+        .eligibility-lot-tab .lot-tab-name {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        .eligibility-toolbar-cluster {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .eligibility-dropdown {
+            position: relative;
+        }
+        .eligibility-dropdown > summary {
+            list-style: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            min-width: 200px;
+            max-width: min(320px, 92vw);
+            background: var(--surface-0);
+            border: 1px solid var(--surface-300);
+            border-radius: var(--radius-md);
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-primary);
+            box-shadow: var(--shadow-sm);
+        }
+        .eligibility-dropdown > summary::-webkit-details-marker {
+            display: none;
+        }
+        .eligibility-dropdown > summary .pi-chevron-down {
+            margin-left: auto;
+            font-size: 11px;
+            color: var(--text-muted);
+            transition: transform 0.2s ease;
+        }
+        .eligibility-dropdown[open] > summary .pi-chevron-down {
+            transform: rotate(180deg);
+        }
+        .eligibility-dropdown-panel {
+            position: absolute;
+            z-index: 50;
+            margin-top: 4px;
+            min-width: 100%;
+            width: max-content;
+            max-width: min(360px, 94vw);
+            background: var(--surface-0);
+            border: 1px solid var(--surface-200);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
+            padding: var(--spacing-sm);
+        }
+        .eligibility-dropdown-panel--scroll {
+            max-height: 240px;
+            overflow-y: auto;
+        }
+        .eligibility-radio-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 6px 8px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 12px;
+            line-height: 1.35;
+            color: var(--text-primary);
+        }
+        .eligibility-radio-row:hover {
+            background: var(--surface-50);
+        }
+        .eligibility-radio-row input {
+            margin-top: 3px;
+            flex-shrink: 0;
+            accent-color: var(--primary-500);
+        }
+        .eligibility-supplier-head {
+            text-align: left !important;
+            padding: 6px 8px !important;
+            vertical-align: middle !important;
+            background: var(--surface-50) !important;
+            border-bottom: 2px solid var(--primary-200) !important;
+            color: var(--text-primary) !important;
+            text-transform: none !important;
+            letter-spacing: normal !important;
+        }
+        .eligibility-supplier-head-inner {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px 12px;
+            flex-wrap: nowrap;
+            width: 100%;
+            min-width: 0;
+        }
+        .eligibility-supplier-head-top {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+        .eligibility-supplier-head-top > .pi {
+            font-size: 15px;
+            color: var(--primary-500);
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+        .eligibility-supplier-head-final {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 3px;
+            flex: 0 0 auto;
+            text-align: right;
+            padding-left: 8px;
+        }
+        .eligibility-supplier-final-lbl {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.01em;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+        .eligibility-supplier-final-select {
+            width: auto;
+            min-width: 118px;
+            max-width: 168px;
+        }
+        .eligibility-supplier-code {
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            color: var(--primary-600);
+            text-transform: uppercase;
+            line-height: 1.2;
+        }
+        .eligibility-supplier-name {
+            font-size: 11px;
+            font-weight: 600;
+            line-height: 1.25;
+            margin-top: 2px;
+        }
+        .eligibility-matrix-subth {
+            font-size: 8px !important;
+            font-weight: 700 !important;
+            padding: 5px 4px !important;
+            line-height: 1.15;
+            text-transform: uppercase;
+            letter-spacing: 0.02em !important;
+            white-space: normal;
+        }
+        .eligibility-matrix-subth .pi {
+            display: block;
+            font-size: 13px;
+            margin: 0 auto 3px auto;
+            color: var(--text-muted);
+        }
+        .eligibility-zone-0 {
+            background: var(--surface-0) !important;
+        }
+        .eligibility-zone-1 {
+            background: var(--surface-50) !important;
+        }
+        .eligibility-zone-2 {
+            background: var(--primary-50) !important;
+        }
+        .eligibility-zone-start.eligibility-zone-0 {
+            box-shadow: inset 3px 0 0 var(--primary-500);
+        }
+        .eligibility-zone-start.eligibility-zone-1 {
+            box-shadow: inset 3px 0 0 var(--primary-400);
+        }
+        .eligibility-zone-start.eligibility-zone-2 {
+            box-shadow: inset 3px 0 0 var(--primary-300);
+        }
+        .eligibility-matrix-table .eval-status-badge.eligibility-compact {
+            padding: 3px 7px;
+            font-size: 10px;
+            border-radius: var(--radius-sm);
+            gap: 4px;
+        }
+        .eligibility-matrix-table .eval-select {
+            padding: 4px 6px;
+            font-size: 11px;
+            border-width: 1px;
+        }
+        .eligibility-matrix-table .eval-comment-field {
+            font-size: 11px;
+            padding: 6px 8px;
+            min-height: 2.25rem;
+        }
+        .eligibility-matrix-table .btn-sm {
+            padding: 4px 6px;
+            min-width: 32px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .eligibility-sync-across-lots {
+            display: flex;
+            align-items: flex-start;
+            gap: 5px;
+            margin-top: 6px;
+            cursor: pointer;
+            font-size: 8px;
+            font-weight: 500;
+            color: var(--text-muted);
+            line-height: 1.2;
+            user-select: none;
+        }
+        .eligibility-sync-across-lots input[type="checkbox"] {
+            margin-top: 1px;
+            flex-shrink: 0;
+            width: 12px;
+            height: 12px;
+            accent-color: var(--surface-400);
+            cursor: pointer;
+        }
+        .eligibility-sync-across-lots-text {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+        }
+        .eligibility-sync-across-lots .pi {
+            font-size: 9px;
+            color: var(--text-muted);
+            opacity: 0.85;
+        }
+
         .view-toggle {
             display: flex;
             gap: 0;
@@ -2721,21 +3054,43 @@
             font-size: 13px;
             font-weight: 600;
             font-family: inherit;
+            background: var(--surface-0);
+            color: var(--text-primary);
+        }
+
+        .eval-select.not_evaluated {
+            border-color: var(--surface-400);
+            background: var(--surface-100);
+            color: var(--text-muted);
+        }
+
+        .eval-select.pending {
+            border-color: var(--info-400);
+            background: var(--info-50);
+            color: var(--info-600);
         }
 
         .eval-select.pass {
             border-color: var(--success-500);
-            color: var(--success-500);
+            background: var(--success-50);
+            color: var(--success-600);
         }
 
         .eval-select.fail {
             border-color: var(--danger-500);
-            color: var(--danger-500);
+            background: var(--danger-50);
+            color: var(--danger-600);
         }
 
         .eval-select.clarification {
             border-color: var(--warning-500);
-            color: var(--warning-500);
+            background: var(--warning-50);
+            color: var(--warning-700);
+        }
+
+        .eligibility-matrix-table .eval-select:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px var(--surface-0), 0 0 0 4px var(--primary-300);
         }
 
         .eval-comment-field {
@@ -17977,6 +18332,25 @@
         let currentEvaluationStep = 1; // Start with Eligibility by default
         let currentVendorEval = 'vendor1';
         let currentEvalView = 'supplier'; // 'supplier' or 'lot'
+        let currentEligibilityLotKey = 'lot1';
+        let currentEligibilitySupplierFilter = 'all';
+
+        const eligibilityLotScopeOptions = [
+            { key: 'lot1', number: '1', name: 'PPE & protective equipment', vendorIds: ['vendor1', 'vendor2'] },
+            { key: 'lot2', number: '2', name: 'Medical consumables', vendorIds: ['vendor2', 'vendor3'] },
+            { key: 'lot3', number: '3', name: 'Diagnostic supplies', vendorIds: ['vendor1', 'vendor3'] },
+            { key: 'lot4', number: '4', name: 'Sterilization equipment', vendorIds: ['vendor1', 'vendor2'] },
+            { key: 'lot5', number: '5', name: 'Laboratory reagents', vendorIds: ['vendor2', 'vendor3'] },
+            { key: 'lot6', number: '6', name: 'Waste management kits', vendorIds: ['vendor1'] },
+            { key: 'lot7', number: '7', name: 'Cold chain logistics', vendorIds: ['vendor2'] },
+            { key: 'lot8', number: '8', name: 'Training & spare parts', vendorIds: ['vendor1', 'vendor2', 'vendor3'] }
+        ];
+
+        const eligibilityMatrixVendors = [
+            { id: 'vendor1', code: 'S1', name: 'MedSupply Ltd.' },
+            { id: 'vendor2', code: 'S2', name: 'HealthCare Corp.' },
+            { id: 'vendor3', code: 'S3', name: 'MedTech Inc.' }
+        ];
 
         // Evaluation data structure
         const evaluationData = {
@@ -18887,14 +19261,17 @@
             
             if (role === 'comparison') {
                 // Hide vendor tabs, info bar, and view toggle for Overview Dashboard
-                if (evalTabsContainer) evalTabsContainer.parentElement.style.display = 'none';
+                if (evalTabsContainer && evalTabsContainer.parentElement) evalTabsContainer.parentElement.style.display = 'none';
                 if (vendorInfoBar) vendorInfoBar.style.display = 'none';
                 if (viewToggle) viewToggle.style.display = 'none';
             } else {
-                // Show vendor tabs, info bar for Evaluator and PO views
-                if (evalTabsContainer) evalTabsContainer.parentElement.style.display = 'flex';
-                if (vendorInfoBar) vendorInfoBar.style.display = 'flex';
-                // Show view toggle only for Technical (3) and Financial (4) steps
+                const hideSupplierChrome = currentEvaluationStep === 1;
+                if (evalTabsContainer && evalTabsContainer.parentElement) {
+                    evalTabsContainer.parentElement.style.display = hideSupplierChrome ? 'none' : 'flex';
+                }
+                if (vendorInfoBar) {
+                    vendorInfoBar.style.display = hideSupplierChrome ? 'none' : 'flex';
+                }
                 if (viewToggle) {
                     viewToggle.style.display = (currentEvaluationStep === 3 || currentEvaluationStep === 4) ? 'flex' : 'none';
                 }
@@ -18963,13 +19340,15 @@
                 viewToggle.style.display = (step === 3 || step === 4) ? 'flex' : 'none';
             }
             
-            // Show/hide view toggle based on step (show for Technical step 3 and Financial step 4)
             const evalTabsContainer = document.getElementById('evalTabsContainer');
-            const vendorInfoBar = document.querySelector('#evaluation-content-area > div:first-child');
-            
-            // Always show vendor tabs and info bar for all steps (unless in comparison view)
-            if (evalTabsContainer) evalTabsContainer.parentElement.style.display = 'flex';
-            if (vendorInfoBar) vendorInfoBar.style.display = 'flex';
+            const vendorInfoBar = document.getElementById('vendor-info-bar');
+            const hideSupplierChrome = currentEvaluationRole === 'comparison' || step === 1;
+            if (evalTabsContainer && evalTabsContainer.parentElement) {
+                evalTabsContainer.parentElement.style.display = hideSupplierChrome ? 'none' : 'flex';
+            }
+            if (vendorInfoBar) {
+                vendorInfoBar.style.display = hideSupplierChrome ? 'none' : 'flex';
+            }
             
             // Reset to supplier view when changing steps
             if (step !== 3 && step !== 4) {
@@ -19090,28 +19469,232 @@
             }
         }
 
-        function renderEligibilityTable(stepData) {
-            let html = `
-                <div style="margin-bottom: var(--spacing-lg);">
-                    <div style="overflow-x: auto;">
-                        <table class="eval-table">
-                            <thead>
-                                <tr>
-                                    <th style="width: 90px;">Criteria ID</th>
-                                    <th style="width: 200px;">Criteria</th>
-                                    <th style="width: 90px;">Type</th>
-                                    <th style="width: 60px;">SP Flag</th>
-                                    <th style="width: 150px;">Linked Forms</th>
-                                    <th class="system-eval-column" style="width: 90px;">System</th>
-                                    <th class="manual-eval-column" style="width: 120px;">Your Eval</th>
-                                    <th class="manual-eval-column" style="width: 200px;">Comments</th>
-                                    <th class="manual-eval-column" style="width: 100px;">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+        function setEligibilityLotScopeFromSelect(key) {
+            currentEligibilityLotKey = key;
+            eligibilitySanitizeSupplierFilter();
+            renderEvaluationTable();
+        }
+
+        function getEligibilityLotOption(key) {
+            return eligibilityLotScopeOptions.find(o => o.key === key) || eligibilityLotScopeOptions[0];
+        }
+
+        function getEligibilityVendorsForLotKey(lotKey) {
+            const opt = getEligibilityLotOption(lotKey);
+            const ids = opt.vendorIds && opt.vendorIds.length > 0 ? opt.vendorIds : ['vendor1', 'vendor2'];
+            return eligibilityMatrixVendors.filter(v => ids.includes(v.id));
+        }
+
+        function eligibilitySanitizeSupplierFilter() {
+            const allowed = getEligibilityVendorsForLotKey(currentEligibilityLotKey).map(v => v.id);
+            if (currentEligibilitySupplierFilter !== 'all' && !allowed.includes(currentEligibilitySupplierFilter)) {
+                currentEligibilitySupplierFilter = 'all';
+            }
+        }
+
+        function getEligibilityMatrixVendors() {
+            eligibilitySanitizeSupplierFilter();
+            let list = getEligibilityVendorsForLotKey(currentEligibilityLotKey);
+            if (currentEligibilitySupplierFilter !== 'all') {
+                list = list.filter(v => v.id === currentEligibilitySupplierFilter);
+            }
+            return list;
+        }
+
+        function eligibilityLotRadioChanged(radio) {
+            if (!radio.checked) {
+                return;
+            }
+            currentEligibilityLotKey = radio.value;
+            eligibilitySanitizeSupplierFilter();
+            const det = radio.closest('details');
+            if (det) {
+                det.open = false;
+            }
+            renderEvaluationTable();
+        }
+
+        function eligibilitySupplierFilterRadioChanged(radio) {
+            if (!radio.checked) {
+                return;
+            }
+            currentEligibilitySupplierFilter = radio.value;
+            const det = radio.closest('details');
+            if (det) {
+                det.open = false;
+            }
+            renderEvaluationTable();
+        }
+
+        function getMockSupplierHeaderFinal(vendorId, lotKey, role) {
+            const lotNum = parseInt(getEligibilityLotOption(lotKey).number, 10) || 1;
+            if (role === 'po') {
+                if (vendorId === 'vendor1') {
+                    return 'pass';
+                }
+                if (vendorId === 'vendor2') {
+                    return lotNum % 2 === 0 ? 'pending' : 'pass';
+                }
+                return 'pending';
+            }
+            if (vendorId === 'vendor1') {
+                return 'pass';
+            }
+            if (vendorId === 'vendor2') {
+                return lotNum % 2 === 0 ? 'not_evaluated' : 'pass';
+            }
+            return 'not_evaluated';
+        }
+
+        function eligibilitySupplierHeaderFinalChanged(sel, vendorId, role) {
+            const lot = sel.getAttribute('data-lot-key') || currentEligibilityLotKey;
+            const ctx = role === 'po' ? 'PO' : 'Evaluator';
+            showToast(ctx + ' final for ' + vendorId + ' · ' + lot + ' → ' + sel.value + ' (demo)');
+        }
+
+        function renderEligibilityLotToolbar() {
+            const currentLot = getEligibilityLotOption(currentEligibilityLotKey);
+            const lotSummaryText = 'Lot ' + currentLot.number + ' — ' + currentLot.name;
+            const lotRadios = eligibilityLotScopeOptions.map(o => `
+                <label class="eligibility-radio-row">
+                    <input type="radio" name="eligibility-lot-pick" value="${o.key}" ${currentEligibilityLotKey === o.key ? 'checked' : ''} onchange="eligibilityLotRadioChanged(this)" />
+                    <span><strong>Lot ${o.number}</strong> — ${o.name}</span>
+                </label>
+            `).join('');
+
+            const vendorsInLot = getEligibilityVendorsForLotKey(currentEligibilityLotKey);
+            const supplierRows = [
+                `<label class="eligibility-radio-row">
+                    <input type="radio" name="eligibility-supplier-pick" value="all" ${currentEligibilitySupplierFilter === 'all' ? 'checked' : ''} onchange="eligibilitySupplierFilterRadioChanged(this)" />
+                    <span><strong>All suppliers</strong> in this lot</span>
+                </label>`
+            ].concat(vendorsInLot.map(v => `
+                <label class="eligibility-radio-row">
+                    <input type="radio" name="eligibility-supplier-pick" value="${v.id}" ${currentEligibilitySupplierFilter === v.id ? 'checked' : ''} onchange="eligibilitySupplierFilterRadioChanged(this)" />
+                    <span><strong>${v.code}</strong> — ${v.name}</span>
+                </label>
+            `));
+
+            const supplierSummary = currentEligibilitySupplierFilter === 'all'
+                ? 'All suppliers (' + vendorsInLot.length + ')'
+                : (() => {
+                    const one = vendorsInLot.find(v => v.id === currentEligibilitySupplierFilter);
+                    return one ? (one.code + ' — ' + one.name) : 'All suppliers';
+                })();
+
+            return `
+                <div class="eligibility-lot-toolbar">
+                    <div class="eligibility-toolbar-cluster">
+                        <span class="eligibility-lot-field-label"><i class="pi pi-th-large"></i> Lot</span>
+                        <details class="eligibility-dropdown" id="eligibility-lot-dropdown">
+                            <summary>
+                                <span class="eligibility-dropdown-value">${lotSummaryText}</span>
+                                <i class="pi pi-chevron-down" aria-hidden="true"></i>
+                            </summary>
+                            <div class="eligibility-dropdown-panel eligibility-dropdown-panel--scroll" role="group" aria-label="Choose lot">
+                                ${lotRadios}
+                            </div>
+                        </details>
+                    </div>
+                    <div class="eligibility-toolbar-cluster">
+                        <span class="eligibility-lot-field-label"><i class="pi pi-users"></i> Suppliers</span>
+                        <details class="eligibility-dropdown" id="eligibility-supplier-dropdown">
+                            <summary>
+                                <span class="eligibility-dropdown-value">${supplierSummary}</span>
+                                <i class="pi pi-chevron-down" aria-hidden="true"></i>
+                            </summary>
+                            <div class="eligibility-dropdown-panel eligibility-dropdown-panel--scroll" role="group" aria-label="Filter suppliers in table">
+                                ${supplierRows.join('')}
+                            </div>
+                        </details>
+                    </div>
+                </div>
             `;
-            
-            // Define linked forms for eligibility criteria (demo data)
+        }
+
+        function eligibilitySystemBadgeHtml(sys) {
+            if (sys === 'pass') {
+                return '<span class="eval-status-badge pass eligibility-compact"><i class="pi pi-check"></i> Pass</span>';
+            }
+            return '<span class="eval-status-badge fail eligibility-compact"><i class="pi pi-times"></i> Fail</span>';
+        }
+
+        function eligibilityEvalStatusBadgeHtml(status) {
+            const map = {
+                pass: '<i class="pi pi-check"></i> Pass',
+                fail: '<i class="pi pi-times"></i> Fail',
+                clarification: '<i class="pi pi-exclamation-triangle"></i> Clarify',
+                not_evaluated: '<i class="pi pi-minus-circle"></i> N/A',
+                pending: '<i class="pi pi-clock"></i> Pending'
+            };
+            const inner = map[status] || status;
+            return `<span class="eval-status-badge ${status} eligibility-compact">${inner}</span>`;
+        }
+
+        /** Keep eval-select border/background in sync with selected value (native select does not update classes automatically). */
+        function syncEvalSelectStateClass(sel) {
+            const stateClasses = ['pass', 'fail', 'not_evaluated', 'clarification', 'pending'];
+            stateClasses.forEach(function(s) {
+                sel.classList.remove(s);
+            });
+            if (stateClasses.indexOf(sel.value) >= 0) {
+                sel.classList.add(sel.value);
+            }
+        }
+
+        /** Mock: toggles “mirror assessment to all lots for this bidder” (real app would persist per cell or per bidder). */
+        function eligibilityApplyAllLotsChanged(el) {
+            const vendor = el.getAttribute('data-vendor-id') || '';
+            const criterion = el.getAttribute('data-criterion-id') || '';
+            const context = el.getAttribute('data-context') === 'po' ? 'PO final' : 'Evaluator';
+            if (el.checked) {
+                showToast(context + ': mirroring to all lots for this bidder (demo) — ' + criterion + ' · ' + vendor);
+            } else {
+                showToast(context + ': current lot only (demo) — ' + criterion + ' · ' + vendor);
+            }
+        }
+
+        function getMockEvaluatorEvalForEligibility(req, vendorId) {
+            const ev = req.evaluations.evaluator;
+            const po = req.evaluations.po;
+            if (vendorId === 'vendor1') {
+                return { status: ev.status, comment: ev.comment };
+            }
+            if (vendorId === 'vendor2') {
+                if (po.status !== 'pending') {
+                    return { status: po.status, comment: po.comment || 'Cross-check with primary evaluator.' };
+                }
+                return { status: ev.status === 'fail' ? 'clarification' : 'pass', comment: 'Secondary desk review.' };
+            }
+            const n = (req.id + vendorId).length % 4;
+            const st = ['pass', 'pass', 'not_evaluated', 'clarification'][n];
+            return { status: st, comment: st === 'not_evaluated' ? '' : 'Screening note.' };
+        }
+
+        function renderEligibilityLinkedFormsCell(req, eligibilityForms) {
+            const linkedForms = eligibilityForms[req.id] || [];
+            if (linkedForms.length === 0) {
+                return '<span style="color: var(--text-muted); display: inline-flex; align-items: center; gap: 4px; font-size: 11px;"><i class="pi pi-minus"></i></span>';
+            }
+            return `
+                <div style="display: flex; flex-direction: column; gap: 3px;">
+                    ${linkedForms.map(form => `
+                        <a href="#" onclick="event.preventDefault(); openLinkedForm('${form.id}')" style="font-size: 10px; color: var(--primary-500); text-decoration: none; display: flex; align-items: center; gap: 4px;">
+                            <i class="pi pi-file" style="font-size: 10px; flex-shrink: 0;"></i> ${form.name}
+                        </a>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function renderEligibilityTable(stepData) {
+            const vendors = getEligibilityMatrixVendors();
+            const lotMeta = getEligibilityLotOption(currentEligibilityLotKey);
+            const lotSummaryShort = 'Lot ' + lotMeta.number + ' — ' + lotMeta.name;
+            const colSpanPerSupplier = 5;
+            if (vendors.length === 0) {
+                return renderEligibilityLotToolbar() + '<p style="padding: var(--spacing-md); color: var(--text-muted); font-size: 13px;">No suppliers match the current lot and supplier filter.</p>';
+            }
             const eligibilityForms = {
                 'EL-001': [{ name: 'Bidder\'s Information Form', id: 'bidder-info' }],
                 'EL-002': [{ name: 'Bidder\'s Information Form', id: 'bidder-info' }],
@@ -19119,90 +19702,117 @@
                 'EL-004': [{ name: 'Bidder\'s Information Form', id: 'bidder-info' }],
                 'EL-005': [{ name: 'Self Disclosure Form', id: 'self-disclosure' }],
                 'EL-006': [{ name: 'Self Disclosure Form', id: 'self-disclosure' }],
+                'EF-001': [{ name: 'Bidder\'s Information Form', id: 'bidder-info' }],
+                'EF-002': [{ name: 'Bid/Proposal Submission', id: 'bidder-info' }],
+                'EF-003': [{ name: 'Bidder\'s Information Form', id: 'bidder-info' }],
+                'EF-004': [{ name: 'Technical Bid Form', id: 'technical-bid' }],
+                'EF-005': [{ name: 'Technical Bid Form', id: 'technical-bid' }],
+                'EF-006': [{ name: 'Self Disclosure Form', id: 'self-disclosure' }],
+                'EF-007': [{ name: 'Bidder\'s Information Form', id: 'bidder-info' }],
+                'EF-008': [{ name: 'Technical Bid Form', id: 'technical-bid' }],
                 'FR-001': [{ name: 'Financial Bid Form', id: 'financial-bid' }],
                 'FR-002': [{ name: 'Technical Bid Form', id: 'technical-bid' }],
                 'FR-003': [{ name: 'Bidder\'s Information Form', id: 'bidder-info' }],
                 'FR-004': [{ name: 'Bidder\'s Information Form', id: 'bidder-info' }],
                 'FR-005': [{ name: 'Bid Security Form', id: 'bid-security' }]
             };
-            
-            stepData.requirements.forEach(req => {
-                const currentEval = req.evaluations.evaluator;
-                const hasFlag = req.spFlag || req.flagDetails;
-                const linkedForms = eligibilityForms[req.id] || [];
-                
-                html += `
-                    <tr style="${hasFlag ? 'background: #fffef0;' : ''}">
-                        <td>
-                            <div class="req-id-badge" style="${req.isCustom ? 'background: var(--primary-100); color: var(--primary-600);' : ''}">
-                                ${req.id}
+
+            let html = renderEligibilityLotToolbar();
+            html += '<div class="eligibility-matrix-wrap"><table class="eval-table eligibility-matrix-table"><thead>';
+            html += '<tr>';
+            html += '<th rowspan="2" class="eligibility-sticky-id" style="text-align: left;">Criteria ID</th>';
+            html += '<th rowspan="2" class="eligibility-sticky-criteria" style="text-align: left;">Criteria</th>';
+            vendors.forEach(v => {
+                const hdrFinal = getMockSupplierHeaderFinal(v.id, currentEligibilityLotKey, 'evaluator');
+                html += `<th colspan="${colSpanPerSupplier}" class="eligibility-supplier-head">
+                    <div class="eligibility-supplier-head-inner">
+                        <div class="eligibility-supplier-head-top">
+                            <i class="pi pi-building" aria-hidden="true"></i>
+                            <div>
+                                <div class="eligibility-supplier-code">${v.code}</div>
+                                <div class="eligibility-supplier-name">${v.name}</div>
                             </div>
-                            ${req.isCustom ? '<div style="font-size: 9px; color: var(--primary-500); margin-top: 4px;">CUSTOM</div>' : ''}
-                        </td>
-                        <td>
-                            <div style="font-weight: 600; font-size: 13px; margin-bottom: 4px;">${req.criteria}</div>
-                            <div style="font-size: 11px; color: var(--text-muted); line-height: 1.4;">${req.criteriaDesc}</div>
-                        </td>
-                        <td>
-                            <span style="font-size: 11px; padding: 3px 8px; background: var(--surface-100); border-radius: var(--radius-xs);">
-                                ${req.type}
-                            </span>
-                        </td>
-                        <td style="text-align: center;">
-                            ${hasFlag ? '<span style="font-size: 16px;" title="Special attention required">🚩</span>' : '<span style="color: var(--text-muted);">—</span>'}
-                        </td>
-                        <td>
-                            ${linkedForms.length > 0 ? `
-                                <div style="display: flex; flex-direction: column; gap: 4px;">
-                                    ${linkedForms.map(form => `
-                                        <a href="#" onclick="event.preventDefault(); openLinkedForm('${form.id}')" style="font-size: 11px; color: var(--primary-500); text-decoration: none; display: flex; align-items: center; gap: 4px;">
-                                            <i class="pi pi-file" style="font-size: 10px;"></i> ${form.name}
-                                        </a>
-                                    `).join('')}
-                                </div>
-                            ` : '<span style="color: var(--text-muted); font-size: 11px;">—</span>'}
-                        </td>
-                        <td class="system-eval-column">
-                            <span class="eval-status-badge ${req.systemEval}">
-                                ${req.systemEval === 'pass' ? '✅ Pass' : '❌ Fail'}
-                            </span>
-                        </td>
-                        <td class="manual-eval-column">
-                            <select class="eval-select ${currentEval.status}">
-                                <option value="not_evaluated" ${currentEval.status === 'not_evaluated' ? 'selected' : ''}>⊘ Not Evaluated</option>
-                                <option value="pass" ${currentEval.status === 'pass' ? 'selected' : ''}>✅ Pass</option>
-                                <option value="fail" ${currentEval.status === 'fail' ? 'selected' : ''}>❌ Fail</option>
-                                <option value="clarification" ${currentEval.status === 'clarification' ? 'selected' : ''}>⚠️ Clarification</option>
+                        </div>
+                        <div class="eligibility-supplier-head-final">
+                            <span class="eligibility-supplier-final-lbl">Final Eligibility</span>
+                            <select class="eval-select eligibility-supplier-final-select ${hdrFinal}" data-lot-key="${currentEligibilityLotKey}" aria-label="Final Eligibility for ${v.name}, ${lotSummaryShort}" onchange="syncEvalSelectStateClass(this); eligibilitySupplierHeaderFinalChanged(this, '${v.id}', 'eval')">
+                                <option value="not_evaluated" ${hdrFinal === 'not_evaluated' ? 'selected' : ''}>Not evaluated</option>
+                                <option value="pass" ${hdrFinal === 'pass' ? 'selected' : ''}>Pass</option>
+                                <option value="fail" ${hdrFinal === 'fail' ? 'selected' : ''}>Fail</option>
                             </select>
-                        </td>
-                        <td class="manual-eval-column">
-                            <textarea class="eval-comment-field" placeholder="Enter your comments..." rows="2">${currentEval.comment}</textarea>
-                        </td>
-                        <td class="manual-eval-column" style="text-align: center;">
-                            <div style="display: flex; flex-direction: column; gap: 4px;">
-                                ${currentEvaluationRole === 'evaluator' ? `
-                                    <button class="btn btn-secondary btn-sm" onclick="askEvalTeamQuestion('${req.id}')" title="Ask Evaluation Team/PO" style="font-size: 10px; padding: 4px 6px;">
-                                        💬 Ask Team
-                                    </button>
-                                ` : ''}
-                                ${currentEvaluationRole === 'po' ? `
-                                    <button class="btn btn-secondary btn-sm" onclick="startPrivateClarification('${req.id}')" title="Start Private Clarification with Supplier" style="font-size: 10px; padding: 4px 6px;">
-                                        🔒 Clarify
-                                    </button>
-                                ` : ''}
-                            </div>
-                        </td>
-                    </tr>
-                `;
-            });
-            
-            html += `
-                            </tbody>
-                        </table>
+                        </div>
                     </div>
-                </div>
-            `;
-            
+                </th>`;
+            });
+            html += '</tr><tr>';
+            const subHeaders = [
+                { icon: 'pi-file', label: 'Forms', title: 'Linked forms' },
+                { icon: 'pi-desktop', label: 'System', title: 'System assessment' },
+                { icon: 'pi-user-edit', label: 'Eval', title: 'Evaluator assessment' },
+                { icon: 'pi-comments', label: 'Notes', title: 'Evaluator comments' },
+                { icon: 'pi-sliders-h', label: 'Action', title: 'Actions' }
+            ];
+            vendors.forEach(() => {
+                subHeaders.forEach(sh => {
+                    html += `<th class="eligibility-matrix-subth" title="${sh.title}"><i class="pi ${sh.icon}" aria-hidden="true"></i>${sh.label}</th>`;
+                });
+            });
+            html += '</tr></thead><tbody>';
+
+            stepData.requirements.forEach(req => {
+                const hasFlag = req.spFlag || req.flagDetails;
+                html += '<tr>';
+                html += '<td class="eligibility-sticky-id">';
+                html += `<div class="req-id-badge" style="font-size: 12px; ${req.isCustom ? 'background: var(--primary-100); color: var(--primary-600);' : ''}">${req.id}</div>`;
+                if (req.isCustom) {
+                    html += '<div style="font-size: 8px; color: var(--primary-500); margin-top: 4px;">CUSTOM</div>';
+                }
+                html += '</td>';
+                html += '<td class="eligibility-sticky-criteria">';
+                html += `<div style="font-weight: 600; font-size: 12px; margin-bottom: 3px;">${req.criteria}</div>`;
+                html += `<div style="font-size: 10px; color: var(--text-muted); line-height: 1.35;">${req.criteriaDesc}</div>`;
+                html += '<div style="margin-top: 6px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center;">';
+                html += `<span style="font-size: 9px; padding: 2px 6px; background: var(--surface-100); border-radius: var(--radius-xs);">${req.type}</span>`;
+                if (hasFlag) {
+                    html += '<span style="display: inline-flex; align-items: center; gap: 4px; font-size: 10px;" title="Special attention required"><i class="pi pi-flag" style="color: var(--warning-500);"></i> SP</span>';
+                }
+                html += '</div></td>';
+
+                vendors.forEach((v, vi) => {
+                    const z = vi % 3;
+                    const zc = `eligibility-zone-${z}`;
+                    const currentEval = getMockEvaluatorEvalForEligibility(req, v.id);
+                    const sys = req.systemEval;
+                    html += `<td class="eligibility-zone-start ${zc}" style="min-width: 88px; max-width: 112px;">`;
+                    html += renderEligibilityLinkedFormsCell(req, eligibilityForms);
+                    html += '</td>';
+                    html += `<td class="${zc}" style="text-align: center; min-width: 72px;">${eligibilitySystemBadgeHtml(sys)}</td>`;
+                    html += `<td class="manual-eval-column ${zc}" style="min-width: 108px;">
+                        <select class="eval-select ${currentEval.status}" aria-label="Evaluator assessment for ${v.name}" onchange="syncEvalSelectStateClass(this)">
+                            <option value="not_evaluated" ${currentEval.status === 'not_evaluated' ? 'selected' : ''}>Not evaluated</option>
+                            <option value="pass" ${currentEval.status === 'pass' ? 'selected' : ''}>Pass</option>
+                            <option value="fail" ${currentEval.status === 'fail' ? 'selected' : ''}>Fail</option>
+                            <option value="clarification" ${currentEval.status === 'clarification' ? 'selected' : ''}>Clarification</option>
+                        </select>
+                        <label class="eligibility-sync-across-lots" title="When checked, this assessment is applied for this bidder across all lots (same criterion). Uncheck to keep the evaluation specific to the lot you are viewing.">
+                            <input type="checkbox" checked data-context="eval" data-vendor-id="${v.id}" data-criterion-id="${req.id}" onchange="eligibilityApplyAllLotsChanged(this)" aria-label="Apply assessment to all lots for ${v.name}, criterion ${req.id}" />
+                            <span class="eligibility-sync-across-lots-text"><i class="pi pi-sync" aria-hidden="true"></i> All lots</span>
+                        </label>
+                    </td>`;
+                    html += `<td class="manual-eval-column ${zc}" style="min-width: 120px;">
+                        <textarea class="eval-comment-field" placeholder="Comments…" rows="2">${currentEval.comment}</textarea>
+                    </td>`;
+                    html += `<td class="manual-eval-column ${zc}" style="text-align: center; min-width: 40px;">
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="askEvalTeamQuestion('${req.id}')" title="Ask evaluation team / PO" aria-label="Ask team">
+                            <i class="pi pi-comments"></i>
+                        </button>
+                    </td>`;
+                });
+
+                html += '</tr>';
+            });
+
+            html += '</tbody></table></div>';
             return html;
         }
         
@@ -21217,96 +21827,163 @@
             return html;
         }
         
+        function getMockPoEvalForEligibility(req, vendorId) {
+            const po = req.evaluations.po;
+            if (vendorId === 'vendor1') {
+                return { status: po.status, comment: po.comment };
+            }
+            if (vendorId === 'vendor2') {
+                return { status: po.status === 'pending' ? 'pass' : po.status, comment: po.comment || 'PO aligned.' };
+            }
+            return { status: 'pending', comment: '' };
+        }
+
         function renderEligibilityPOTable(stepData) {
+            const vendors = getEligibilityMatrixVendors();
+            const lotMetaPo = getEligibilityLotOption(currentEligibilityLotKey);
+            const lotSummaryShortPo = 'Lot ' + lotMetaPo.number + ' — ' + lotMetaPo.name;
+            const colSpanPerSupplier = 7;
+            if (vendors.length === 0) {
+                return `
+                <div style="margin-bottom: var(--spacing-lg);">
+                    <div style="background: var(--primary-50); padding: var(--spacing-md); border-radius: var(--radius-sm); margin-bottom: var(--spacing-md); border-left: 4px solid var(--primary-400);">
+                        <strong>Procurement official review — eligibility & formal</strong>
+                    </div>
+                </div>` + renderEligibilityLotToolbar() + '<p style="padding: var(--spacing-md); color: var(--text-muted); font-size: 13px;">No suppliers match the current lot and supplier filter.</p>';
+            }
+            const eligibilityForms = {
+                'EF-001': [{ name: 'Bidder\'s Information Form', id: 'bidder-info' }],
+                'EF-002': [{ name: 'Bid/Proposal Submission', id: 'bidder-info' }],
+                'EF-003': [{ name: 'Bidder\'s Information Form', id: 'bidder-info' }],
+                'EF-004': [{ name: 'Technical Bid Form', id: 'technical-bid' }],
+                'EF-005': [{ name: 'Technical Bid Form', id: 'technical-bid' }],
+                'EF-006': [{ name: 'Self Disclosure Form', id: 'self-disclosure' }],
+                'EF-007': [{ name: 'Bidder\'s Information Form', id: 'bidder-info' }],
+                'EF-008': [{ name: 'Technical Bid Form', id: 'technical-bid' }]
+            };
+
             let html = `
                 <div style="margin-bottom: var(--spacing-lg);">
-                    <div style="background: var(--primary-50); padding: var(--spacing-md); border-radius: var(--radius-sm); margin-bottom: var(--spacing-lg); border-left: 4px solid var(--primary-400);">
-                        <strong>Procurement Official Review - Eligibility & Formal Criteria</strong>
+                    <div style="background: var(--primary-50); padding: var(--spacing-md); border-radius: var(--radius-sm); margin-bottom: var(--spacing-md); border-left: 4px solid var(--primary-400);">
+                        <strong>Procurement official review — eligibility & formal</strong>
                         <p style="margin: var(--spacing-xs) 0 0 0; font-size: 12px; color: var(--text-secondary);">
-                            Review evaluator assessments and provide final determination. You can start private clarifications with suppliers from here.
+                            Same side-by-side layout as evaluators; complete PO final determination and clarifications per supplier.
                         </p>
                     </div>
-                    
-                    <div style="overflow-x: auto;">
-                        <table class="eval-table">
-                            <thead>
-                                <tr>
-                                    <th style="width: 90px;">Criteria ID</th>
-                                    <th style="width: 180px;">Criteria</th>
-                                    <th style="width: 80px;">Type</th>
-                                    <th style="width: 50px;">SP</th>
-                                    <th style="min-width: 200px;">Assessment</th>
-                                    <th class="system-eval-column" style="width: 80px;">System</th>
-                                    <th style="width: 100px;">Evaluator</th>
-                                    <th style="width: 150px;">Eval Comments</th>
-                                    <th class="manual-eval-column" style="width: 100px;">PO Final</th>
-                                    <th class="manual-eval-column" style="width: 150px;">PO Comments</th>
-                                    <th class="manual-eval-column" style="width: 90px;">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
             `;
-            
+            html += renderEligibilityLotToolbar();
+            html += '<div class="eligibility-matrix-wrap"><table class="eval-table eligibility-matrix-table"><thead>';
+            html += '<tr>';
+            html += '<th rowspan="2" class="eligibility-sticky-id" style="text-align: left;">Criteria ID</th>';
+            html += '<th rowspan="2" class="eligibility-sticky-criteria" style="text-align: left;">Criteria</th>';
+            vendors.forEach(v => {
+                const hdrPo = getMockSupplierHeaderFinal(v.id, currentEligibilityLotKey, 'po');
+                html += `<th colspan="${colSpanPerSupplier}" class="eligibility-supplier-head">
+                    <div class="eligibility-supplier-head-inner">
+                        <div class="eligibility-supplier-head-top">
+                            <i class="pi pi-building" aria-hidden="true"></i>
+                            <div>
+                                <div class="eligibility-supplier-code">${v.code}</div>
+                                <div class="eligibility-supplier-name">${v.name}</div>
+                            </div>
+                        </div>
+                        <div class="eligibility-supplier-head-final">
+                            <span class="eligibility-supplier-final-lbl">PO final</span>
+                            <select class="eval-select eligibility-supplier-final-select ${hdrPo}" data-lot-key="${currentEligibilityLotKey}" aria-label="PO final for ${v.name}, ${lotSummaryShortPo}" onchange="syncEvalSelectStateClass(this); eligibilitySupplierHeaderFinalChanged(this, '${v.id}', 'po')">
+                                <option value="pending" ${hdrPo === 'pending' ? 'selected' : ''}>Pending</option>
+                                <option value="pass" ${hdrPo === 'pass' ? 'selected' : ''}>Pass</option>
+                                <option value="fail" ${hdrPo === 'fail' ? 'selected' : ''}>Fail</option>
+                            </select>
+                        </div>
+                    </div>
+                </th>`;
+            });
+            html += '</tr><tr>';
+            const poSubHeaders = [
+                { icon: 'pi-file', label: 'Forms', title: 'Linked forms' },
+                { icon: 'pi-desktop', label: 'System', title: 'System' },
+                { icon: 'pi-user', label: 'Eval', title: 'Evaluator' },
+                { icon: 'pi-comments', label: 'E-Notes', title: 'Evaluator comments' },
+                { icon: 'pi-check-square', label: 'PO', title: 'PO final' },
+                { icon: 'pi-pencil', label: 'PO+', title: 'PO comments' },
+                { icon: 'pi-sliders-h', label: 'Act', title: 'Actions' }
+            ];
+            vendors.forEach(() => {
+                poSubHeaders.forEach(sh => {
+                    html += `<th class="eligibility-matrix-subth" title="${sh.title}"><i class="pi ${sh.icon}" aria-hidden="true"></i>${sh.label}</th>`;
+                });
+            });
+            html += '</tr></thead><tbody>';
+
             stepData.requirements.forEach(req => {
                 const evalStatus = req.evaluations.evaluator;
-                const poStatus = req.evaluations.po;
                 const hasFlag = req.spFlag || req.flagDetails;
                 const hasDiscrepancy = evalStatus.status !== req.systemEval;
-                
-                html += `
-                    <tr style="${hasFlag ? 'background: #fffef0;' : ''} ${hasDiscrepancy ? 'border-left: 3px solid var(--warning-400);' : ''}">
-                        <td>
-                            <div class="req-id-badge" style="${req.isCustom ? 'background: var(--primary-100); color: var(--primary-600);' : ''}">${req.id}</div>
-                            ${req.isCustom ? '<div style="font-size: 8px; color: var(--primary-500); margin-top: 2px;">CUSTOM</div>' : ''}
-                        </td>
-                        <td>
-                            <div style="font-weight: 600; font-size: 12px; margin-bottom: 2px;">${req.criteria}</div>
-                        </td>
-                        <td><span style="font-size: 10px; padding: 2px 6px; background: var(--surface-100); border-radius: var(--radius-xs);">${req.type}</span></td>
-                        <td style="text-align: center;">${hasFlag ? '🚩' : '—'}</td>
-                        <td style="font-size: 11px;">
-                            ${req.assessment.substring(0, 100)}${req.assessment.length > 100 ? '...' : ''}
-                            ${req.flagDetails ? `<div style="color: var(--warning-500); font-size: 10px; margin-top: 4px;">⚠️ Flag</div>` : ''}
-                        </td>
-                        <td class="system-eval-column">
-                            <span class="eval-status-badge ${req.systemEval}">${req.systemEval === 'pass' ? '✅' : '❌'}</span>
-                        </td>
-                        <td>
-                            <span class="eval-status-badge ${evalStatus.status}" style="font-size: 10px;">${formatEvalStatus(evalStatus.status)}</span>
-                            ${hasDiscrepancy ? '<div style="font-size: 9px; color: var(--warning-500); margin-top: 2px;">⚠️ Differs</div>' : ''}
-                        </td>
-                        <td style="font-size: 11px;">${evalStatus.comment.substring(0, 50)}${evalStatus.comment.length > 50 ? '...' : ''}</td>
-                        <td class="manual-eval-column">
-                            <select class="eval-select ${poStatus.status}" style="font-size: 11px; padding: 4px;">
-                                <option value="pending" ${poStatus.status === 'pending' ? 'selected' : ''}>⏳ Pending</option>
-                                <option value="pass" ${poStatus.status === 'pass' ? 'selected' : ''}>✅ Pass</option>
-                                <option value="fail" ${poStatus.status === 'fail' ? 'selected' : ''}>❌ Fail</option>
-                            </select>
-                        </td>
-                        <td class="manual-eval-column">
-                            <textarea class="eval-comment-field" rows="2" style="font-size: 11px;">${poStatus.comment}</textarea>
-                        </td>
-                        <td class="manual-eval-column" style="text-align: center;">
-                            <div style="display: flex; flex-direction: column; gap: 3px;">
-                                <button class="btn btn-secondary btn-sm" onclick="startPrivateClarification('${req.id}')" title="Clarify with Supplier" style="font-size: 9px; padding: 4px 6px;">
-                                    🔒 Clarify
-                                </button>
-                                <button class="btn btn-secondary btn-sm" onclick="askEvalTeamQuestion('${req.id}')" title="Ask Team" style="font-size: 9px; padding: 4px 6px;">
-                                    💬 Team
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                `;
+                const rowBorder = hasDiscrepancy ? 'border-left: 3px solid var(--warning-400);' : '';
+                html += `<tr style="${rowBorder}">`;
+                html += '<td class="eligibility-sticky-id">';
+                html += `<div class="req-id-badge" style="font-size: 12px; ${req.isCustom ? 'background: var(--primary-100); color: var(--primary-600);' : ''}">${req.id}</div>`;
+                if (req.isCustom) {
+                    html += '<div style="font-size: 8px; color: var(--primary-500); margin-top: 2px;">CUSTOM</div>';
+                }
+                html += '</td>';
+                html += '<td class="eligibility-sticky-criteria">';
+                html += `<div style="font-weight: 600; font-size: 12px; margin-bottom: 3px;">${req.criteria}</div>`;
+                html += `<div style="font-size: 10px; color: var(--text-muted); line-height: 1.35;">${req.assessment.substring(0, 120)}${req.assessment.length > 120 ? '…' : ''}</div>`;
+                html += '<div style="margin-top: 6px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center;">';
+                html += `<span style="font-size: 9px; padding: 2px 6px; background: var(--surface-100); border-radius: var(--radius-xs);">${req.type}</span>`;
+                if (hasFlag) {
+                    html += '<span style="display: inline-flex; align-items: center;" title="Flag"><i class="pi pi-flag" style="color: var(--warning-500); font-size: 12px;"></i></span>';
+                }
+                if (req.flagDetails) {
+                    html += '<span style="font-size: 10px; color: var(--warning-600); display: inline-flex; align-items: center; gap: 4px;"><i class="pi pi-exclamation-triangle"></i> Flag</span>';
+                }
+                html += '</div></td>';
+
+                vendors.forEach((v, vi) => {
+                    const z = vi % 3;
+                    const zc = `eligibility-zone-${z}`;
+                    const ev = getMockEvaluatorEvalForEligibility(req, v.id);
+                    const poSt = getMockPoEvalForEligibility(req, v.id);
+                    const sys = req.systemEval;
+                    html += `<td class="eligibility-zone-start ${zc}" style="min-width: 88px; max-width: 112px;">`;
+                    html += renderEligibilityLinkedFormsCell(req, eligibilityForms);
+                    html += '</td>';
+                    html += `<td class="${zc}" style="text-align: center; min-width: 72px;">${eligibilitySystemBadgeHtml(sys)}</td>`;
+                    html += `<td class="${zc}" style="text-align: center; min-width: 76px;">${eligibilityEvalStatusBadgeHtml(ev.status)}
+                        ${ev.status !== sys ? '<div style="font-size: 9px; color: var(--warning-500); margin-top: 4px; display: flex; align-items: center; justify-content: center; gap: 4px;"><i class="pi pi-exclamation-triangle"></i> vs sys</div>' : ''}
+                    </td>`;
+                    html += `<td class="${zc}" style="font-size: 10px; min-width: 100px; max-width: 132px;">${ev.comment.substring(0, 72)}${ev.comment.length > 72 ? '…' : ''}</td>`;
+                    html += `<td class="manual-eval-column ${zc}" style="min-width: 108px;">
+                        <select class="eval-select ${poSt.status}" aria-label="PO final ${v.name}" onchange="syncEvalSelectStateClass(this)">
+                            <option value="pending" ${poSt.status === 'pending' ? 'selected' : ''}>Pending</option>
+                            <option value="pass" ${poSt.status === 'pass' ? 'selected' : ''}>Pass</option>
+                            <option value="fail" ${poSt.status === 'fail' ? 'selected' : ''}>Fail</option>
+                        </select>
+                        <label class="eligibility-sync-across-lots" title="When checked, this PO final decision is applied for this bidder across all lots (same criterion). Uncheck for lot-specific determination.">
+                            <input type="checkbox" checked data-context="po" data-vendor-id="${v.id}" data-criterion-id="${req.id}" onchange="eligibilityApplyAllLotsChanged(this)" aria-label="Apply PO final to all lots for ${v.name}, criterion ${req.id}" />
+                            <span class="eligibility-sync-across-lots-text"><i class="pi pi-sync" aria-hidden="true"></i> All lots</span>
+                        </label>
+                    </td>`;
+                    html += `<td class="manual-eval-column ${zc}" style="min-width: 104px;">
+                        <textarea class="eval-comment-field" rows="2">${poSt.comment}</textarea>
+                    </td>`;
+                    html += `<td class="manual-eval-column ${zc}" style="text-align: center; min-width: 44px;">
+                        <div style="display: flex; flex-direction: column; gap: 4px; align-items: center;">
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="startPrivateClarification('${req.id}')" title="Clarify with supplier" aria-label="Clarify with supplier">
+                                <i class="pi pi-lock"></i>
+                            </button>
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="askEvalTeamQuestion('${req.id}')" title="Ask team" aria-label="Ask team">
+                                <i class="pi pi-comments"></i>
+                            </button>
+                        </div>
+                    </td>`;
+                });
+
+                html += '</tr>';
             });
-            
-            html += `
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            `;
-            
+
+            html += '</tbody></table></div></div>';
             return html;
         }
         
