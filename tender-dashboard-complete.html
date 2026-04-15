@@ -2665,6 +2665,21 @@
             line-height: 1.25;
             margin-top: 2px;
         }
+        .eligibility-supplier-name-link {
+            color: var(--primary-600);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: color 0.15s ease, border-color 0.15s ease;
+        }
+        .eligibility-supplier-name-link:hover {
+            color: var(--primary-500);
+            border-bottom-color: var(--primary-300);
+        }
+        .eligibility-supplier-name-link:focus {
+            outline: 2px solid var(--primary-500);
+            outline-offset: 2px;
+            border-radius: 2px;
+        }
         .eligibility-matrix-subth {
             font-size: 8px !important;
             font-weight: 700 !important;
@@ -19507,6 +19522,11 @@
             return reqType === 'Bid Level' ? 'Every Lot' : reqType;
         }
 
+        /** Opens standalone mock: supplier submission responses + evaluation by lot/stage. */
+        function eligibilitySupplierDetailMockHref(vendorId) {
+            return 'supplier-evaluation-detail-mock.html?vendor=' + encodeURIComponent(vendorId || 'vendor1');
+        }
+
         function getMockSupplierHeaderFinal(vendorId, lotKey, role) {
             const lotNum = parseInt(getEligibilityLotOption(lotKey).number, 10) || 1;
             if (currentEvaluationStep === 2) {
@@ -19810,7 +19830,7 @@
                             <i class="pi pi-building" aria-hidden="true"></i>
                             <div>
                                 <div class="eligibility-supplier-code">${v.code}</div>
-                                <div class="eligibility-supplier-name">${v.name}</div>
+                                <div class="eligibility-supplier-name"><a href="${eligibilitySupplierDetailMockHref(v.id)}" target="_blank" rel="noopener noreferrer" class="eligibility-supplier-name-link" title="Open supplier details (submission & evaluation) — mock">${v.name}</a></div>
                             </div>
                         </div>
                         <div class="eligibility-supplier-head-final">
@@ -19949,7 +19969,7 @@
                             <i class="pi pi-building" aria-hidden="true"></i>
                             <div>
                                 <div class="eligibility-supplier-code">${v.code}</div>
-                                <div class="eligibility-supplier-name">${v.name}</div>
+                                <div class="eligibility-supplier-name"><a href="${eligibilitySupplierDetailMockHref(v.id)}" target="_blank" rel="noopener noreferrer" class="eligibility-supplier-name-link" title="Open supplier details (submission & evaluation) — mock">${v.name}</a></div>
                             </div>
                         </div>
                         <div class="eligibility-supplier-head-final">
@@ -20090,7 +20110,7 @@
                             <i class="pi pi-building" aria-hidden="true"></i>
                             <div>
                                 <div class="eligibility-supplier-code">${v.code}</div>
-                                <div class="eligibility-supplier-name">${v.name}</div>
+                                <div class="eligibility-supplier-name"><a href="${eligibilitySupplierDetailMockHref(v.id)}" target="_blank" rel="noopener noreferrer" class="eligibility-supplier-name-link" title="Open supplier details (submission & evaluation) — mock">${v.name}</a></div>
                             </div>
                         </div>
                         <div class="eligibility-supplier-head-final">
@@ -22034,7 +22054,7 @@
                             <i class="pi pi-building" aria-hidden="true"></i>
                             <div>
                                 <div class="eligibility-supplier-code">${v.code}</div>
-                                <div class="eligibility-supplier-name">${v.name}</div>
+                                <div class="eligibility-supplier-name"><a href="${eligibilitySupplierDetailMockHref(v.id)}" target="_blank" rel="noopener noreferrer" class="eligibility-supplier-name-link" title="Open supplier details (submission & evaluation) — mock">${v.name}</a></div>
                             </div>
                         </div>
                         <div class="eligibility-supplier-head-final">
@@ -23248,6 +23268,136 @@
             });
         }
 
+        function evalOverviewMatrixCellExportText(cell) {
+            const status = cell.status || 'pending';
+            const labels = {
+                pass: 'Pass',
+                in_progress: 'In Progress',
+                clarification: 'Clarify',
+                not_started: 'Not Started',
+                pending: 'Pending',
+                fail: 'Fail'
+            };
+            let t = labels[status] || status;
+            if (status === 'in_progress' && cell.progress != null) {
+                t += ' (' + cell.progress + '%)';
+            }
+            return t;
+        }
+
+        function evalOverviewEscapeTsvField(val) {
+            if (val === null || val === undefined) {
+                return '';
+            }
+            return String(val).replace(/\r?\n/g, ' ').replace(/\t/g, ' ');
+        }
+
+        /** Tab-separated export matching current filters (opens in Excel as .xls). */
+        function buildEvalOverviewStatusMatrixExportTsv(opts) {
+            const lotFilter = opts.lotFilter || 'all';
+            const supplierFilter = opts.supplierFilter || 'all';
+            const groupBy = opts.groupBy === 'supplier' ? 'supplier' : 'lot';
+            const showEvaluators = opts.showEvaluators !== false;
+
+            const lots = EVAL_OVERVIEW_MATRIX_LOTS.filter(l => lotFilter === 'all' || l.key === lotFilter);
+            const suppliers = EVAL_OVERVIEW_MATRIX_SUPPLIERS.filter(s => supplierFilter === 'all' || s.id === supplierFilter);
+
+            const col1Label = groupBy === 'lot' ? 'Lot' : 'Supplier';
+            const col2Label = groupBy === 'lot' ? 'Supplier' : 'Lot';
+
+            const lines = [];
+            lines.push(evalOverviewEscapeTsvField('Evaluation Status by Stage — export'));
+
+            if (showEvaluators) {
+                const hdr = [col1Label, col2Label];
+                EVAL_OVERVIEW_STAGES.forEach(st => {
+                    hdr.push(st.title + ' — Status');
+                    hdr.push(st.title + ' — Evaluator');
+                });
+                lines.push(hdr.map(evalOverviewEscapeTsvField).join('\t'));
+            } else {
+                const hdr = [col1Label, col2Label].concat(EVAL_OVERVIEW_STAGES.map(st => st.title));
+                lines.push(hdr.map(evalOverviewEscapeTsvField).join('\t'));
+            }
+
+            const rows = [];
+            if (groupBy === 'lot') {
+                lots.forEach(lot => {
+                    const sups = suppliers.filter(() => true);
+                    if (sups.length === 0) {
+                        return;
+                    }
+                    sups.forEach((sup, si) => {
+                        rows.push({ lot, sup, isFirst: si === 0, rowspan: sups.length });
+                    });
+                });
+            } else {
+                suppliers.forEach(sup => {
+                    const ls = lots.filter(() => true);
+                    if (ls.length === 0) {
+                        return;
+                    }
+                    ls.forEach((lot, li) => {
+                        rows.push({ lot, sup, isFirst: li === 0, rowspan: ls.length });
+                    });
+                });
+            }
+
+            if (rows.length === 0) {
+                lines.push(evalOverviewEscapeTsvField('No rows match the current lot and supplier filters.'));
+                return lines.join('\r\n');
+            }
+
+            rows.forEach(row => {
+                const cols = [];
+                if (groupBy === 'lot') {
+                    cols.push(row.lot.labelShort + ' — ' + row.lot.subtitle);
+                    cols.push(row.sup.name + ' (' + row.sup.meta + ')');
+                } else {
+                    cols.push(row.sup.name + ' (' + row.sup.meta + ')');
+                    cols.push(row.lot.labelShort + ' — ' + row.lot.subtitle);
+                }
+                EVAL_OVERVIEW_STAGES.forEach(st => {
+                    const cell = evalOverviewMatrixGetCell(row.lot.key, row.sup.id, st.key);
+                    cols.push(evalOverviewMatrixCellExportText(cell));
+                    if (showEvaluators) {
+                        cols.push(st.evaluator);
+                    }
+                });
+                lines.push(cols.map(evalOverviewEscapeTsvField).join('\t'));
+            });
+
+            return lines.join('\r\n');
+        }
+
+        function evalOverviewStatusMatrixReadOptsFromDom() {
+            const lotEl = document.getElementById('eval-overview-lot-filter');
+            const supEl = document.getElementById('eval-overview-supplier-filter');
+            const showEl = document.getElementById('eval-overview-show-evaluators');
+            return {
+                lotFilter: lotEl ? lotEl.value : 'all',
+                supplierFilter: supEl ? supEl.value : 'all',
+                groupBy: evalOverviewStatusMatrixReadGroupBy(),
+                showEvaluators: showEl ? showEl.checked : true
+            };
+        }
+
+        function downloadEvalOverviewStatusMatrixXls() {
+            const tsv = buildEvalOverviewStatusMatrixExportTsv(evalOverviewStatusMatrixReadOptsFromDom());
+            const bom = '\uFEFF';
+            const blob = new Blob([bom + tsv], { type: 'application/vnd.ms-excel;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'evaluation-status-by-stage.xls';
+            a.rel = 'noopener';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('Downloaded evaluation-status-by-stage.xls (current filters)');
+        }
+
         // Render comprehensive Evaluation Overview (Step 0)
         function renderEvaluationOverview(container) {
             const suppliers = [
@@ -23310,10 +23460,16 @@
                 
                 <!-- Evaluation Status by Stage (lot × supplier matrix) -->
                 <div style="background: white; border: 1px solid var(--surface-200); border-radius: var(--radius-lg); padding: var(--spacing-lg); margin-bottom: var(--spacing-xl);">
-                    <h3 style="font-size: 15px; font-weight: 600; margin-bottom: var(--spacing-md); display: flex; align-items: center; gap: var(--spacing-sm);">
-                        <i class="pi pi-th-large" style="color: var(--primary-500); font-size: 18px;" aria-hidden="true"></i>
-                        <span>Evaluation Status by Stage</span>
-                    </h3>
+                    <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--spacing-md); margin-bottom: var(--spacing-md);">
+                        <h3 style="font-size: 15px; font-weight: 600; margin: 0; display: flex; align-items: center; gap: var(--spacing-sm);">
+                            <i class="pi pi-th-large" style="color: var(--primary-500); font-size: 18px;" aria-hidden="true"></i>
+                            <span>Evaluation Status by Stage</span>
+                        </h3>
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="downloadEvalOverviewStatusMatrixXls()" title="Download table as Excel (.xls)" aria-label="Download evaluation status as XLS" style="display: inline-flex; align-items: center; gap: 6px; min-height: 36px;">
+                            <i class="pi pi-download" aria-hidden="true"></i>
+                            <span>Download .xls</span>
+                        </button>
+                    </div>
                     <div style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--spacing-md) var(--spacing-lg); margin-bottom: var(--spacing-lg); padding-bottom: var(--spacing-md); border-bottom: 1px solid var(--surface-100);">
                         <div style="display: flex; flex-direction: column; gap: 6px; min-width: 160px;">
                             <label for="eval-overview-lot-filter" style="font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.02em;">Lot</label>
