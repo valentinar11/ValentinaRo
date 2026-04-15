@@ -233,6 +233,40 @@
             background: var(--primary-50);
             border-radius: var(--radius-md);
         }
+        .history-table td:first-child {
+            white-space: nowrap;
+            font-size: 12px;
+            color: var(--text-muted);
+            width: 140px;
+        }
+        .clar-card {
+            border: 1px solid var(--surface-200);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-sm);
+            background: var(--surface-0);
+        }
+        .clar-card-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .clar-card-header strong { font-size: 14px; }
+        .clar-meta {
+            font-size: 12px;
+            color: var(--text-muted);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .clar-snippet {
+            font-size: 13px;
+            color: var(--text-primary);
+            line-height: 1.45;
+        }
     </style>
 </head>
 <body>
@@ -256,6 +290,12 @@
             <button type="button" class="main-tab" role="tab" id="tab-main-evaluation" aria-selected="false" aria-controls="panel-evaluation" data-main="evaluation">
                 <i class="pi pi-chart-line" aria-hidden="true"></i> Evaluation
             </button>
+            <button type="button" class="main-tab" role="tab" id="tab-main-bidding-history" aria-selected="false" aria-controls="panel-bidding-history" data-main="bidding-history">
+                <i class="pi pi-history" aria-hidden="true"></i> Bidding history
+            </button>
+            <button type="button" class="main-tab" role="tab" id="tab-main-clarifications" aria-selected="false" aria-controls="panel-clarifications" data-main="clarifications">
+                <i class="pi pi-comments" aria-hidden="true"></i> Evaluation clarifications
+            </button>
         </div>
 
         <div id="panel-submission" class="panel active" role="tabpanel" aria-labelledby="tab-main-submission">
@@ -276,6 +316,20 @@
             <div class="sub-tabs-wrap" style="border:none;background:transparent;">
                 <p style="font-size:13px;color:var(--text-muted);margin-bottom:12px;">Per lot and evaluation stage — same mock logic as the comparison overview matrix.</p>
                 <div id="evaluation-table-host"></div>
+            </div>
+        </div>
+
+        <div id="panel-bidding-history" class="panel" role="tabpanel" aria-labelledby="tab-main-bidding-history" hidden>
+            <div class="sub-tabs-wrap" style="border:none;background:transparent;">
+                <p style="font-size:13px;color:var(--text-muted);margin-bottom:12px;">Chronological record of this supplier’s actions in the tender (mock).</p>
+                <div id="bidding-history-host"></div>
+            </div>
+        </div>
+
+        <div id="panel-clarifications" class="panel" role="tabpanel" aria-labelledby="tab-main-clarifications" hidden>
+            <div class="sub-tabs-wrap" style="border:none;background:transparent;">
+                <p style="font-size:13px;color:var(--text-muted);margin-bottom:12px;">Clarification threads linked to evaluation stages and lots (mock).</p>
+                <div id="clarifications-host"></div>
             </div>
         </div>
 
@@ -411,14 +465,96 @@
             evalHtml += '</tbody></table>';
             document.getElementById('evaluation-table-host').innerHTML = evalHtml;
 
+            var MAIN_PANEL_KEYS = ['submission', 'evaluation', 'bidding-history', 'clarifications'];
+
+            function buildBiddingHistoryHtml() {
+                var rows = [
+                    ['2024-12-01 09:12', 'Invitation to tender', 'Access granted; documents downloaded.'],
+                    ['2024-12-03 14:40', 'Clarification question (supplier)', 'Asked about delivery incoterms for Lot 2.'],
+                    ['2024-12-04 11:05', 'Clarification response (UNOPS)', 'Answer published in clarification log #CL-089.'],
+                    ['2024-12-08 16:22', 'Bid submitted', 'Full proposal submitted before deadline; receipt ID BID-' + v.ungm + '-001.'],
+                    ['2024-12-10 10:00', 'Bid opening', 'Bid opened in session; integrity check passed.']
+                ];
+                if (vendorId === 'vendor2') {
+                    rows.push(['2024-12-11 09:30', 'Post-opening clarification', 'Evaluator request: updated ISO certificate for masks (Lot 1).']);
+                }
+                if (vendorId === 'vendor3') {
+                    rows.push(['2024-12-09 08:15', 'Bid amendment', 'Minor administrative correction to Form B (version 2).']);
+                    rows.push(['2024-12-12 13:20', 'Clarification (evaluation)', 'Outstanding: manufacturer authorization (Form D) — response due.']);
+                }
+                var html = '<table class="eval-table history-table"><thead><tr><th>Date / time (UTC)</th><th>Event</th><th>Details</th></tr></thead><tbody>';
+                rows.forEach(function (r) {
+                    html += '<tr><td>' + r[0] + '</td><td><strong>' + r[1] + '</strong></td><td>' + r[2] + '</td></tr>';
+                });
+                html += '</tbody></table>';
+                return html;
+            }
+
+            function buildClarificationsHtml() {
+                var cards = [
+                    {
+                        title: 'Payment terms vs draft contract',
+                        stage: 'Eligibility & formal',
+                        lot: 'All lots',
+                        status: 'Closed',
+                        date: '2024-12-04',
+                        text: 'UNOPS confirmed payment terms align with GCC; no change to financial submission required.'
+                    },
+                    {
+                        title: 'Delivery timeline — cold chain (Lot 2)',
+                        stage: 'Technical',
+                        lot: 'Lot 2 — Medical consumables',
+                        status: 'Awaiting supplier',
+                        date: '2024-12-11',
+                        text: 'Please confirm temperature monitoring device model referenced in technical schedule section 4.2.'
+                    }
+                ];
+                if (vendorId === 'vendor3') {
+                    cards.unshift({
+                        title: 'Manufacturer authorization (Form D)',
+                        stage: 'Qualification',
+                        lot: 'Lot 1',
+                        status: 'Open',
+                        date: '2024-12-12',
+                        text: 'Evaluator requested valid manufacturer letter for SKU bundle A-12; upload via secure clarification channel.'
+                    });
+                }
+                if (vendorId === 'vendor1') {
+                    cards.push({
+                        title: 'Bid validity extension',
+                        stage: 'Eligibility & formal',
+                        lot: 'All lots',
+                        status: 'Closed',
+                        date: '2024-12-06',
+                        text: 'Supplier accepted automatic extension to 90 days per amendment 2.'
+                    });
+                }
+                var html = '';
+                cards.forEach(function (c) {
+                    html += '<div class="clar-card"><div class="clar-card-header"><strong><i class="pi pi-comments" aria-hidden="true" style="color:var(--primary-500);margin-right:6px;"></i>' + c.title + '</strong>';
+                    html += '<span class="status-pill ' + (c.status === 'Open' ? 'clarification' : 'pass') + '">' + c.status + '</span></div>';
+                    html += '<div class="clar-meta"><span><i class="pi pi-flag" aria-hidden="true"></i> ' + c.stage + '</span><span><i class="pi pi-th-large" aria-hidden="true"></i> ' + c.lot + '</span><span><i class="pi pi-calendar" aria-hidden="true"></i> ' + c.date + '</span></div>';
+                    html += '<p class="clar-snippet" style="margin-top:10px;">' + c.text + '</p></div>';
+                });
+                return html;
+            }
+
+            document.getElementById('bidding-history-host').innerHTML = buildBiddingHistoryHtml();
+            document.getElementById('clarifications-host').innerHTML = buildClarificationsHtml();
+
             document.querySelectorAll('.main-tab').forEach(function (btn) {
                 btn.addEventListener('click', function () {
                     var main = btn.getAttribute('data-main');
                     document.querySelectorAll('.main-tab').forEach(function (b) { b.setAttribute('aria-selected', b === btn ? 'true' : 'false'); });
-                    document.getElementById('panel-submission').classList.toggle('active', main === 'submission');
-                    document.getElementById('panel-evaluation').classList.toggle('active', main === 'evaluation');
-                    document.getElementById('panel-submission').toggleAttribute('hidden', main !== 'submission');
-                    document.getElementById('panel-evaluation').toggleAttribute('hidden', main !== 'evaluation');
+                    MAIN_PANEL_KEYS.forEach(function (key) {
+                        var panel = document.getElementById('panel-' + key);
+                        if (!panel) {
+                            return;
+                        }
+                        var show = main === key;
+                        panel.classList.toggle('active', show);
+                        panel.toggleAttribute('hidden', !show);
+                    });
                 });
             });
 
