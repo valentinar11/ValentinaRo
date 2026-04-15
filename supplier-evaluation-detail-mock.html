@@ -233,11 +233,31 @@
             background: var(--primary-50);
             border-radius: var(--radius-md);
         }
-        .history-table td:first-child {
+        .bidding-history-scroll {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: 0 -2px;
+            padding: 0 2px;
+        }
+        .bidding-history-table {
+            min-width: 1180px;
+        }
+        .bidding-history-table th {
             white-space: nowrap;
+        }
+        .ref-badge {
+            display: inline-block;
+            background: #4b5563;
+            color: #fff;
             font-size: 12px;
-            color: var(--text-muted);
-            width: 140px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 6px;
+            white-space: nowrap;
+        }
+        .bidding-history-table .num-cell {
+            text-align: right;
+            font-variant-numeric: tabular-nums;
         }
         .clar-card {
             border: 1px solid var(--surface-200);
@@ -267,13 +287,163 @@
             color: var(--text-primary);
             line-height: 1.45;
         }
+        .eval-summary { margin-bottom: var(--spacing-md); }
+        .eval-section-lead {
+            font-size: 13px;
+            font-weight: 400;
+            color: var(--text-muted);
+            margin: 0 0 12px;
+            line-height: 1.5;
+        }
+        h2.eval-section-lead {
+            font-family: inherit;
+        }
+        .eval-stage-section {
+            margin-top: var(--spacing-lg);
+            padding-top: var(--spacing-md);
+            border-top: 1px solid var(--surface-200);
+        }
+        .eval-stage-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: var(--spacing-md);
+        }
+        .eval-stage-tab {
+            padding: 8px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: inherit;
+            border: 1px solid var(--surface-200);
+            border-radius: var(--radius-md);
+            background: var(--surface-0);
+            color: var(--text-muted);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .eval-stage-tab:hover { background: var(--surface-50); color: var(--text-primary); }
+        .eval-stage-tab[aria-selected="true"] {
+            border-color: var(--primary-500);
+            color: var(--primary-600);
+            background: var(--primary-50);
+        }
+        .eval-stage-tab:focus { outline: 2px solid var(--primary-500); outline-offset: 2px; }
+        .eval-stage-panel { display: none; }
+        .eval-stage-panel.active { display: block; }
+        .eval-criteria-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px;
+            padding: 10px 12px;
+            background: var(--surface-50);
+            border: 1px solid var(--surface-200);
+            border-radius: var(--radius-md);
+        }
+        .eval-criteria-header .supplier-line {
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .eval-criteria-header .final-line {
+            font-size: 12px;
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+        }
+        .eval-criteria-header .final-line strong { color: var(--text-primary); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; }
+        .eval-criteria-table { font-size: 12px; }
+        .eval-criteria-table th { white-space: nowrap; }
+        .eval-criteria-table td { vertical-align: top; }
+        .criteria-id { color: var(--primary-600); font-weight: 600; font-size: 13px; }
+        .criteria-title { font-weight: 700; font-size: 13px; color: var(--text-primary); }
+        .criteria-desc { font-size: 12px; color: var(--text-muted); margin-top: 4px; line-height: 1.45; }
+        .criteria-tags { margin-top: 8px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+        .tag-pill {
+            font-size: 11px;
+            font-weight: 500;
+            padding: 2px 8px;
+            background: var(--surface-100);
+            color: var(--text-muted);
+            border-radius: 4px;
+        }
+        .tag-sp {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            background: var(--warning-50);
+            color: var(--warning-600);
+            border-radius: 4px;
+        }
+        .form-stack { display: flex; flex-direction: column; gap: 6px; }
+        .form-line {
+            display: inline-flex;
+            align-items: flex-start;
+            gap: 6px;
+            color: var(--text-primary);
+        }
+        .form-line .pi { color: var(--primary-500); margin-top: 2px; font-size: 14px; }
+        .form-meta { font-size: 11px; color: var(--text-muted); }
+        .eval-note { font-size: 12px; color: var(--text-primary); line-height: 1.45; }
+        .eval-note.empty { color: var(--text-muted); }
+        .status-pill.fail { background: #fee2e2; color: var(--danger-600); }
+        .status-pill.fail .pi { color: var(--danger-600); }
+        .tech-lot-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 12px 14px;
+            background: var(--surface-50);
+            border: 1px solid var(--surface-200);
+            border-radius: var(--radius-md);
+            margin-bottom: 10px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .tech-lot-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font-size: 12px; font-weight: 500; color: var(--text-muted); }
+        .tech-lot-counts { display: inline-flex; align-items: center; gap: 12px; }
+        .tech-item-block {
+            margin-left: 8px;
+            margin-bottom: 14px;
+            padding: 10px 12px;
+            border: 1px solid var(--surface-200);
+            border-radius: var(--radius-md);
+            background: var(--surface-0);
+        }
+        .tech-item-head {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-size: 13px;
+        }
+        .tech-item-desc { font-weight: 600; color: var(--text-primary); }
+        .tech-item-qty { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+        .fin-lot-bar .fin-price { font-weight: 700; color: var(--text-primary); }
+        .fin-detail-table thead th { background: var(--primary-50); color: var(--primary-600); font-size: 11px; }
+        .fin-detail-table .num-cell { text-align: right; font-variant-numeric: tabular-nums; }
+        .fin-final-price { font-weight: 700; }
     </style>
 </head>
 <body>
     <header class="page-header">
         <div class="page-header-inner">
-            <a href="tender-dashboard-complete.html" class="back-link"><i class="pi pi-arrow-left" aria-hidden="true"></i> Back to tender dashboard (mock)</a>
-            <span style="font-size:12px;color:var(--text-muted);">Static mock — not connected to live data</span>
+            <a href="tender-dashboard-complete.html" class="back-link"><i class="pi pi-arrow-left" aria-hidden="true"></i> Back to Evaluation dashboard</a>
         </div>
     </header>
 
@@ -314,26 +484,31 @@
 
         <div id="panel-evaluation" class="panel" role="tabpanel" aria-labelledby="tab-main-evaluation" hidden>
             <div class="sub-tabs-wrap" style="border:none;background:transparent;">
-                <p style="font-size:13px;color:var(--text-muted);margin-bottom:12px;">Per lot and evaluation stage — same mock logic as the comparison overview matrix.</p>
-                <div id="evaluation-table-host"></div>
+                <div class="eval-summary">
+                    <p class="eval-section-lead">Evaluation Summary</p>
+                    <div id="evaluation-table-host"></div>
+                </div>
+                <div class="eval-stage-section">
+                    <h2 class="eval-section-lead">Stage Detail</h2>
+                    <div class="eval-stage-tabs" id="eval-stage-tabs" role="tablist" aria-label="Evaluation stage detail"></div>
+                    <div id="eval-stage-panels-host"></div>
+                </div>
             </div>
         </div>
 
         <div id="panel-bidding-history" class="panel" role="tabpanel" aria-labelledby="tab-main-bidding-history" hidden>
             <div class="sub-tabs-wrap" style="border:none;background:transparent;">
-                <p style="font-size:13px;color:var(--text-muted);margin-bottom:12px;">Chronological record of this supplier’s actions in the tender (mock).</p>
                 <div id="bidding-history-host"></div>
             </div>
         </div>
 
         <div id="panel-clarifications" class="panel" role="tabpanel" aria-labelledby="tab-main-clarifications" hidden>
             <div class="sub-tabs-wrap" style="border:none;background:transparent;">
-                <p style="font-size:13px;color:var(--text-muted);margin-bottom:12px;">Clarification threads linked to evaluation stages and lots (mock).</p>
+                <p style="font-size:13px;color:var(--text-muted);margin-bottom:12px;">Clarification threads linked to evaluation stages and lots.</p>
                 <div id="clarifications-host"></div>
             </div>
         </div>
 
-        <p class="note"><i class="pi pi-info-circle" aria-hidden="true"></i> Open this page from an evaluation matrix supplier name link with <code>?vendor=vendor1</code> (or <code>vendor2</code>, <code>vendor3</code>).</p>
     </div>
 
     <script>
@@ -375,7 +550,6 @@
 
             document.getElementById('supplier-title').textContent = v.name;
             document.getElementById('supplier-meta').innerHTML = `
-                <span><i class="pi pi-tag" aria-hidden="true"></i> ${v.code}</span>
                 <span><i class="pi pi-globe" aria-hidden="true"></i> UNGM: ${v.ungm}</span>
                 <span><i class="pi pi-map-marker" aria-hidden="true"></i> ${v.country}</span>
             `;
@@ -465,28 +639,268 @@
             evalHtml += '</tbody></table>';
             document.getElementById('evaluation-table-host').innerHTML = evalHtml;
 
+            function statusPillStatic(kind, label) {
+                var map = {
+                    pass: { cls: 'pass', icon: 'pi-check-circle' },
+                    clarification: { cls: 'clarification', icon: 'pi-exclamation-triangle' },
+                    fail: { cls: 'fail', icon: 'pi-times-circle' },
+                    pending: { cls: 'in_progress', icon: 'pi-clock' }
+                };
+                var m = map[kind] || map.pass;
+                return '<span class="status-pill ' + m.cls + '"><i class="pi ' + m.icon + '" aria-hidden="true"></i> ' + label + '</span>';
+            }
+
+            function buildEvaluationStages(v, vendorId) {
+                var eligEvalForm = vendorId === 'vendor1' ? 'clarification' : 'pass';
+                var eligEvalFormLabel = vendorId === 'vendor1' ? 'Clarification' : 'Pass';
+                var qualFinal = vendorId === 'vendor3' ? { kind: 'clarification', label: 'Clarification' } : { kind: 'pass', label: 'Pass' };
+
+                var tabsHtml = ''
+                    + '<button type="button" class="eval-stage-tab" role="tab" id="eval-tab-eligibility" data-eval-stage="eligibility" aria-selected="true" aria-controls="eval-panel-eligibility">1. Eligibility</button>'
+                    + '<button type="button" class="eval-stage-tab" role="tab" id="eval-tab-qualification" data-eval-stage="qualification" aria-selected="false" aria-controls="eval-panel-qualification">2. Qualification</button>'
+                    + '<button type="button" class="eval-stage-tab" role="tab" id="eval-tab-technical" data-eval-stage="technical" aria-selected="false" aria-controls="eval-panel-technical">3. Technical</button>'
+                    + '<button type="button" class="eval-stage-tab" role="tab" id="eval-tab-financial" data-eval-stage="financial" aria-selected="false" aria-controls="eval-panel-financial">4. Financial</button>';
+
+                var eligRows = ''
+                    + '<tr><td><span class="criteria-id">EF-001</span></td><td><div class="criteria-title">Bidders\' nationality check</div><div class="criteria-desc">Supplier nationality must be from an eligible country list.</div><div class="criteria-tags"><span class="tag-pill">Every Lot</span></div></td><td><div class="form-stack"><span class="form-line"><i class="pi pi-file" aria-hidden="true"></i> Bidder\'s Information Form</span></div></td><td>' + statusPillStatic('pass', 'Pass') + '</td><td>' + statusPillStatic('pass', 'Pass') + '</td><td><div class="eval-note">Nationality verified against eligible countries list.</div></td></tr>'
+                    + '<tr><td><span class="criteria-id">EF-002</span></td><td><div class="criteria-title">Bid/Proposal Submission Form</div><div class="criteria-desc">Formal completeness of the submission package.</div><div class="criteria-tags"><span class="tag-pill">Every Lot</span></div></td><td><div class="form-stack"><span class="form-line"><i class="pi pi-file" aria-hidden="true"></i> Bid/Proposal Submission</span></div></td><td>' + statusPillStatic('pass', 'Pass') + '</td><td>' + statusPillStatic(eligEvalForm, eligEvalFormLabel) + '</td><td><div class="eval-note">' + (vendorId === 'vendor1' ? 'Payment terms deviation needs review.' : 'Submission package complete; no formal issues.') + '</div></td></tr>'
+                    + '<tr><td><span class="criteria-id">EF-003</span></td><td><div class="criteria-title">UNGM eligibility check</div><div class="criteria-desc">Active UNGM registration required.</div><div class="criteria-tags"><span class="tag-pill">Every Lot</span></div></td><td><div class="form-stack"><span class="form-line"><i class="pi pi-file" aria-hidden="true"></i> UNGM profile excerpt</span></div></td><td>' + statusPillStatic('pass', 'Pass') + '</td><td>' + statusPillStatic('pass', 'Pass') + '</td><td><div class="eval-note">UNGM registration active and valid.</div></td></tr>'
+                    + '<tr><td><span class="criteria-id">EF-004</span></td><td><div class="criteria-title">Completeness of documents</div><div class="criteria-desc">All mandatory attachments uploaded and legible.</div><div class="criteria-tags"><span class="tag-pill">Every Lot</span></div></td><td><div class="form-stack"><span class="form-line"><i class="pi pi-file" aria-hidden="true"></i> Document checklist</span></div></td><td>' + statusPillStatic('pass', 'Pass') + '</td><td>' + statusPillStatic('pass', 'Pass') + '</td><td><div class="eval-note">All documents complete and compliant.</div></td></tr>'
+                    + '<tr><td><span class="criteria-id">EF-005</span></td><td><div class="criteria-title">Document format check (partial)</div><div class="criteria-desc">File types and naming conventions per ITB.</div><div class="criteria-tags"><span class="tag-pill">Every Lot</span></div></td><td><div class="form-stack"><span class="form-line"><i class="pi pi-file" aria-hidden="true"></i> Annex uploads</span></div></td><td>' + statusPillStatic('fail', 'Fail') + '</td><td><div class="eval-note empty">—</div></td><td><div class="eval-note empty">—</div></td></tr>';
+
+                var qualRows = ''
+                    + '<tr><td><span class="criteria-id">QC-001</span></td><td><div class="criteria-title">Business Experience (Form E)</div><div class="criteria-desc">Minimum two years of continuous business in relevant sector.</div><div class="criteria-tags"><span class="tag-pill">Every Lot</span></div></td><td><div class="form-stack"><span class="form-line"><i class="pi pi-file" aria-hidden="true"></i> Performance Statement</span><span class="form-line"><i class="pi pi-file" aria-hidden="true"></i> Form_E_Performance_Statement.pdf</span><span class="form-meta">2 doc(s)</span></div></td><td>' + statusPillStatic('pass', 'Pass') + '</td><td>' + statusPillStatic('pass', 'Pass') + '</td><td><div class="eval-note">5+ years of continuous business documented.</div></td></tr>'
+                    + '<tr><td><span class="criteria-id">QC-002</span></td><td><div class="criteria-title">Manufacturer\'s Authorization</div><div class="criteria-desc">Valid letter of authorization from manufacturer where applicable.</div><div class="criteria-tags"><span class="tag-pill">Every Lot</span><span class="tag-sp"><i class="pi pi-flag" aria-hidden="true"></i> SP</span></div></td><td><div class="form-stack"><span class="form-line"><i class="pi pi-file" aria-hidden="true"></i> Authorization Letters</span><span class="form-meta">1 doc(s)</span></div></td><td>' + statusPillStatic('pass', 'Pass') + '</td><td>' + statusPillStatic('pass', 'Pass') + '</td><td><div class="eval-note">Authorization on file for listed SKUs.</div></td></tr>'
+                    + '<tr><td><span class="criteria-id">QC-003</span></td><td><div class="criteria-title">Gender Mainstreaming Statement</div><div class="criteria-desc">Clear internal policy statement on gender mainstreaming.</div><div class="criteria-tags"><span class="tag-pill">Every Lot</span></div></td><td><div class="form-stack"><span class="form-line"><i class="pi pi-file" aria-hidden="true"></i> Gender Mainstreaming Policy</span><span class="form-line"><i class="pi pi-file" aria-hidden="true"></i> Diversity_Report_2024.pdf</span><span class="form-meta">2 doc(s)</span></div></td><td>' + statusPillStatic('pass', 'Pass') + '</td><td>' + statusPillStatic('pass', 'Pass') + '</td><td><div class="eval-note">Policy meets minimum content requirements.</div></td></tr>'
+                    + '<tr><td><span class="criteria-id">QC-004</span></td><td><div class="criteria-title">Company Registration</div><div class="criteria-desc">Certificate of incorporation or equivalent, current.</div><div class="criteria-tags"><span class="tag-pill">Every Lot</span></div></td><td><div class="form-stack"><span class="form-line"><i class="pi pi-file" aria-hidden="true"></i> Commercial register excerpt</span></div></td><td>' + statusPillStatic('pass', 'Pass') + '</td><td>' + statusPillStatic('pass', 'Pass') + '</td><td><div class="eval-note">Registration valid; matches bidder name.</div></td></tr>';
+
+                var techBlock = ''
+                    + '<div class="tech-lot-bar">'
+                    + '<span>Lot 1: Personal Protective Equipment <span style="font-weight:500;color:var(--text-muted);">(3 items)</span></span>'
+                    + '<div class="tech-lot-meta">'
+                    + '<span class="tech-lot-counts"><span style="color:var(--success-600);"><i class="pi pi-check" aria-hidden="true"></i> 2</span> <span style="color:var(--danger-600);"><i class="pi pi-times" aria-hidden="true"></i> 0</span> <span style="color:var(--primary-600);"><i class="pi pi-clock" aria-hidden="true"></i> 1</span></span>'
+                    + statusPillStatic('pending', 'PENDING')
+                    + '</div></div>'
+                    + '<div class="tech-item-block">'
+                    + '<div class="tech-item-head">'
+                    + '<div><div class="tech-item-desc">42131701 Medical gloves — Latex-free, powder-free examination gloves</div><div class="tech-item-qty">Qty: 50,000 boxes</div></div>'
+                    + '<div style="display:flex;align-items:center;gap:8px;">' + statusPillStatic('pass', 'Pass') + '</div>'
+                    + '</div>'
+                    + '<table class="eval-table eval-criteria-table"><thead><tr>'
+                    + '<th>Req ID</th><th>Requirement</th><th>Supplier</th><th>Compliant?</th><th>Details offered</th><th>Deviation</th><th>Your eval</th><th>Comments</th>'
+                    + '</tr></thead><tbody>'
+                    + '<tr><td><span class="criteria-id">R1</span></td><td>Product must meet ISO 13485 quality standards</td><td>' + v.name + '<br><span style="font-size:11px;color:var(--text-muted);">UNGM: ' + v.ungm + '</span></td><td><span style="color:var(--success-600);font-weight:600;"><i class="pi pi-check" aria-hidden="true"></i> Yes</span></td><td>ISO 13485:2016 certified</td><td>—</td><td>' + statusPillStatic('pass', 'Pass') + '</td><td><div class="eval-note empty">—</div></td></tr>'
+                    + '<tr><td><span class="criteria-id">R2</span></td><td>Minimum 24 months shelf life from delivery</td><td>' + v.name + '<br><span style="font-size:11px;color:var(--text-muted);">UNGM: ' + v.ungm + '</span></td><td><span style="color:var(--success-600);font-weight:600;"><i class="pi pi-check" aria-hidden="true"></i> Yes</span></td><td>36 months shelf life guaranteed</td><td>—</td><td>' + statusPillStatic('pass', 'Pass') + '</td><td><div class="eval-note empty">—</div></td></tr>'
+                    + '<tr><td><span class="criteria-id">R3</span></td><td>User manual in English</td><td>' + v.name + '<br><span style="font-size:11px;color:var(--text-muted);">UNGM: ' + v.ungm + '</span></td><td><span style="color:var(--success-600);font-weight:600;"><i class="pi pi-check" aria-hidden="true"></i> Yes</span></td><td>Manual provided in EN, FR, ES</td><td>—</td><td>' + statusPillStatic('pass', 'Pass') + '</td><td><div class="eval-note empty">—</div></td></tr>'
+                    + '</tbody></table></div>';
+
+                var finBlock = ''
+                    + '<div class="tech-lot-bar fin-lot-bar">'
+                    + '<span>Lot 1: Personal Protective Equipment <span style="font-weight:500;color:var(--text-muted);">(3 items)</span></span>'
+                    + '<div class="tech-lot-meta">'
+                    + '<span class="fin-price">$191,500</span>'
+                    + '<span class="tech-lot-counts"><span style="color:var(--success-600);"><i class="pi pi-check" aria-hidden="true"></i> 2</span> <span style="color:var(--danger-600);"><i class="pi pi-times" aria-hidden="true"></i> 0</span> <span style="color:var(--primary-600);"><i class="pi pi-clock" aria-hidden="true"></i> 1</span></span>'
+                    + statusPillStatic('pending', 'PENDING')
+                    + '</div></div>'
+                    + '<div class="tech-item-block">'
+                    + '<div class="tech-item-head">'
+                    + '<div><div class="tech-item-desc">42131701 Medical gloves — Latex-free, powder-free examination gloves</div><div class="tech-item-qty">Qty: 50,000 boxes</div></div>'
+                    + '<div style="display:flex;align-items:center;gap:12px;"><span class="fin-price">$112,500</span>' + statusPillStatic('pass', 'Pass') + '</div>'
+                    + '</div>'
+                    + '<table class="eval-table eval-criteria-table fin-detail-table"><thead><tr>'
+                    + '<th>Product (UNSPSC / description / qty)</th><th>Unit price</th><th>Total (currency)</th><th>Total (Incoterm)</th><th>Rank</th><th>Corrections</th><th>Negotiations</th><th>Final price</th><th>Your eval</th><th>Comments</th>'
+                    + '</tr></thead><tbody>'
+                    + '<tr>'
+                    + '<td><strong>42131701</strong><br>Medical gloves — Latex-free, powder-free<br><span style="font-size:11px;color:var(--text-muted);">Qty: 50,000 boxes</span></td>'
+                    + '<td class="num-cell">$2.25</td>'
+                    + '<td class="num-cell">$112,500</td>'
+                    + '<td class="num-cell">$112,500 (CIF)</td>'
+                    + '<td class="num-cell">2 of 6</td>'
+                    + '<td class="num-cell" style="color:var(--danger-600);">−$500</td>'
+                    + '<td class="num-cell">−$2,000</td>'
+                    + '<td class="num-cell fin-final-price">$110,000</td>'
+                    + '<td>' + statusPillStatic('pass', 'Pass') + '</td>'
+                    + '<td><div class="eval-note empty">—</div></td>'
+                    + '</tr></tbody></table></div>';
+
+                var critHead = function (finalLabel, finalKind, finalText) {
+                    return '<div class="eval-criteria-header">'
+                        + '<span class="supplier-line"><i class="pi pi-building" aria-hidden="true" style="color:var(--primary-500);"></i> ' + v.code + ' ' + v.name + '</span>'
+                        + '<div class="final-line"><strong>' + finalLabel + '</strong>' + statusPillStatic(finalKind, finalText) + '</div>'
+                        + '</div>';
+                };
+
+                var critTableHead = '<thead><tr><th>Criteria ID</th><th>Criteria</th><th>Forms</th><th>System</th><th>Eval</th><th>Notes</th></tr></thead>';
+
+                var panelsHtml = ''
+                    + '<div id="eval-panel-eligibility" class="eval-stage-panel active" role="tabpanel" aria-labelledby="eval-tab-eligibility">'
+                    + critHead('Final Eligibility', 'pass', 'Pass')
+                    + '<table class="eval-table eval-criteria-table">' + critTableHead + '<tbody>' + eligRows + '</tbody></table>'
+                    + '</div>'
+                    + '<div id="eval-panel-qualification" class="eval-stage-panel" role="tabpanel" aria-labelledby="eval-tab-qualification" hidden>'
+                    + critHead('Final Qualification', qualFinal.kind, qualFinal.label)
+                    + '<table class="eval-table eval-criteria-table">' + critTableHead + '<tbody>' + qualRows + '</tbody></table>'
+                    + '</div>'
+                    + '<div id="eval-panel-technical" class="eval-stage-panel" role="tabpanel" aria-labelledby="eval-tab-technical" hidden>'
+                    + '<p style="font-size:12px;color:var(--text-muted);margin-bottom:10px;">Lot-level technical compliance (read-only mock).</p>'
+                    + techBlock
+                    + '</div>'
+                    + '<div id="eval-panel-financial" class="eval-stage-panel" role="tabpanel" aria-labelledby="eval-tab-financial" hidden>'
+                    + '<p style="font-size:12px;color:var(--text-muted);margin-bottom:10px;">Line-item financial breakdown (read-only mock).</p>'
+                    + finBlock
+                    + '</div>';
+
+                return { tabsHtml: tabsHtml, panelsHtml: panelsHtml };
+            }
+
+            var stagesUi = buildEvaluationStages(v, vendorId);
+            document.getElementById('eval-stage-tabs').innerHTML = stagesUi.tabsHtml;
+            document.getElementById('eval-stage-panels-host').innerHTML = stagesUi.panelsHtml;
+
+            document.querySelectorAll('#eval-stage-tabs .eval-stage-tab').forEach(function (tab) {
+                tab.addEventListener('click', function () {
+                    var stage = tab.getAttribute('data-eval-stage');
+                    document.querySelectorAll('#eval-stage-tabs .eval-stage-tab').forEach(function (t) {
+                        t.setAttribute('aria-selected', t === tab ? 'true' : 'false');
+                    });
+                    document.querySelectorAll('#eval-stage-panels-host .eval-stage-panel').forEach(function (p) {
+                        var on = p.id === 'eval-panel-' + stage;
+                        p.classList.toggle('active', on);
+                        p.toggleAttribute('hidden', !on);
+                    });
+                });
+            });
+
             var MAIN_PANEL_KEYS = ['submission', 'evaluation', 'bidding-history', 'clarifications'];
 
             function buildBiddingHistoryHtml() {
-                var rows = [
-                    ['2024-12-01 09:12', 'Invitation to tender', 'Access granted; documents downloaded.'],
-                    ['2024-12-03 14:40', 'Clarification question (supplier)', 'Asked about delivery incoterms for Lot 2.'],
-                    ['2024-12-04 11:05', 'Clarification response (UNOPS)', 'Answer published in clarification log #CL-089.'],
-                    ['2024-12-08 16:22', 'Bid submitted', 'Full proposal submitted before deadline; receipt ID BID-' + v.ungm + '-001.'],
-                    ['2024-12-10 10:00', 'Bid opening', 'Bid opened in session; integrity check passed.']
+                var baseRows = [
+                    {
+                        ref: 'RFQ/2025/50448',
+                        title: 'QA RFQ template 12/06/2024 - copy',
+                        lotNo: 'n/a',
+                        hnol: 'n/a',
+                        posting: '2025-02-18',
+                        deadline: '2025-02-18',
+                        status: 'Award recommendation',
+                        contractType: 'n/a',
+                        highestEval: 'Financial',
+                        awardedShortlisted: 'Yes',
+                        contractAmount: '9,500',
+                        totalAmount: '9,500'
+                    },
+                    {
+                        ref: 'RFQ/2024/44102',
+                        title: 'Medical supplies framework — Lot A',
+                        lotNo: '1',
+                        hnol: 'n/a',
+                        posting: '2024-09-05',
+                        deadline: '2024-10-01',
+                        status: 'Bid opening',
+                        contractType: 'Purchase Order',
+                        highestEval: 'Eligibility',
+                        awardedShortlisted: 'No',
+                        contractAmount: '0',
+                        totalAmount: '0'
+                    },
+                    {
+                        ref: 'ITB/2024/38891',
+                        title: 'Laboratory consumables — regional',
+                        lotNo: 'n/a',
+                        hnol: 'n/a',
+                        posting: '2024-06-12',
+                        deadline: '2024-07-15',
+                        status: 'Finalized — various award decisions',
+                        contractType: 'Contract for Goods',
+                        highestEval: 'Financial',
+                        awardedShortlisted: 'Yes',
+                        contractAmount: '124,800',
+                        totalAmount: '124,800'
+                    },
+                    {
+                        ref: 'RFQ/2023/29100',
+                        title: 'Long-term agreement — PPE bundles',
+                        lotNo: '2',
+                        hnol: 'n/a',
+                        posting: '2023-11-20',
+                        deadline: '2023-12-18',
+                        status: 'Award recommendation',
+                        contractType: 'Long Term Agreement',
+                        highestEval: 'Financial',
+                        awardedShortlisted: 'No',
+                        contractAmount: '0',
+                        totalAmount: '0'
+                    }
                 ];
+                var rows = baseRows.slice();
                 if (vendorId === 'vendor2') {
-                    rows.push(['2024-12-11 09:30', 'Post-opening clarification', 'Evaluator request: updated ISO certificate for masks (Lot 1).']);
+                    rows.unshift({
+                        ref: 'RFQ/2025/51002',
+                        title: 'Cold chain equipment — pilot',
+                        lotNo: '1',
+                        hnol: 'n/a',
+                        posting: '2025-01-08',
+                        deadline: '2025-02-02',
+                        status: 'Evaluation',
+                        contractType: 'Contract for Goods',
+                        highestEval: 'Technical',
+                        awardedShortlisted: 'No',
+                        contractAmount: '0',
+                        totalAmount: '0'
+                    });
                 }
                 if (vendorId === 'vendor3') {
-                    rows.push(['2024-12-09 08:15', 'Bid amendment', 'Minor administrative correction to Form B (version 2).']);
-                    rows.push(['2024-12-12 13:20', 'Clarification (evaluation)', 'Outstanding: manufacturer authorization (Form D) — response due.']);
+                    rows.push({
+                        ref: 'RFQ/2024/40188',
+                        title: 'Surgical instruments — spare parts',
+                        lotNo: 'n/a',
+                        hnol: 'n/a',
+                        posting: '2024-08-01',
+                        deadline: '2024-08-22',
+                        status: 'Cancelled',
+                        contractType: 'n/a',
+                        highestEval: 'Eligibility',
+                        awardedShortlisted: 'No',
+                        contractAmount: '0',
+                        totalAmount: '0'
+                    });
                 }
-                var html = '<table class="eval-table history-table"><thead><tr><th>Date / time (UTC)</th><th>Event</th><th>Details</th></tr></thead><tbody>';
-                rows.forEach(function (r) {
-                    html += '<tr><td>' + r[0] + '</td><td><strong>' + r[1] + '</strong></td><td>' + r[2] + '</td></tr>';
+                var headers = [
+                    'Reference',
+                    'Title',
+                    'Lot no.',
+                    'HNOL count',
+                    'Posting date',
+                    'Deadline',
+                    'Status',
+                    'Type of contract',
+                    'Highest eval state',
+                    'Awarded / Shortlisted?',
+                    'Contract award amount',
+                    'Total award amount'
+                ];
+                var html = '<div class="bidding-history-scroll"><table class="eval-table bidding-history-table"><thead><tr>';
+                headers.forEach(function (h) {
+                    html += '<th>' + h + '</th>';
                 });
-                html += '</tbody></table>';
+                html += '</tr></thead><tbody>';
+                rows.forEach(function (r) {
+                    html += '<tr>';
+                    html += '<td><span class="ref-badge">' + r.ref + '</span></td>';
+                    html += '<td>' + r.title + '</td>';
+                    html += '<td>' + r.lotNo + '</td>';
+                    html += '<td>' + r.hnol + '</td>';
+                    html += '<td>' + r.posting + '</td>';
+                    html += '<td>' + r.deadline + '</td>';
+                    html += '<td>' + r.status + '</td>';
+                    html += '<td>' + r.contractType + '</td>';
+                    html += '<td>' + r.highestEval + '</td>';
+                    html += '<td>' + r.awardedShortlisted + '</td>';
+                    html += '<td class="num-cell">' + r.contractAmount + '</td>';
+                    html += '<td class="num-cell">' + r.totalAmount + '</td>';
+                    html += '</tr>';
+                });
+                html += '</tbody></table></div>';
                 return html;
             }
 
