@@ -18333,7 +18333,8 @@
         let currentVendorEval = 'vendor1';
         let currentEvalView = 'supplier'; // 'supplier' or 'lot'
         let currentEligibilityLotKey = 'lot1';
-        let currentEligibilitySupplierFilter = 'all';
+        /** Vendor ids selected in matrix toolbar (subset of current lot). Lazily initialized to all vendors in lot. */
+        let eligibilitySupplierSelectedIds = null;
 
         const eligibilityLotScopeOptions = [
             { key: 'lot1', number: '1', name: 'PPE & protective equipment', vendorIds: ['vendor1', 'vendor2'] },
@@ -19439,7 +19440,7 @@
 
         function setEligibilityLotScopeFromSelect(key) {
             currentEligibilityLotKey = key;
-            eligibilitySanitizeSupplierFilter();
+            eligibilitySupplierSelectedIds = getEligibilityVendorsForLotKey(currentEligibilityLotKey).map(v => v.id);
             renderEvaluationTable();
         }
 
@@ -19453,20 +19454,19 @@
             return eligibilityMatrixVendors.filter(v => ids.includes(v.id));
         }
 
-        function eligibilitySanitizeSupplierFilter() {
+        function eligibilitySupplierSelectionEnsureForCurrentLot() {
             const allowed = getEligibilityVendorsForLotKey(currentEligibilityLotKey).map(v => v.id);
-            if (currentEligibilitySupplierFilter !== 'all' && !allowed.includes(currentEligibilitySupplierFilter)) {
-                currentEligibilitySupplierFilter = 'all';
+            if (eligibilitySupplierSelectedIds === null) {
+                eligibilitySupplierSelectedIds = [...allowed];
+                return;
             }
+            eligibilitySupplierSelectedIds = eligibilitySupplierSelectedIds.filter(id => allowed.includes(id));
         }
 
         function getEligibilityMatrixVendors() {
-            eligibilitySanitizeSupplierFilter();
-            let list = getEligibilityVendorsForLotKey(currentEligibilityLotKey);
-            if (currentEligibilitySupplierFilter !== 'all') {
-                list = list.filter(v => v.id === currentEligibilitySupplierFilter);
-            }
-            return list;
+            eligibilitySupplierSelectionEnsureForCurrentLot();
+            const allowed = getEligibilityVendorsForLotKey(currentEligibilityLotKey);
+            return allowed.filter(v => eligibilitySupplierSelectedIds.includes(v.id));
         }
 
         function eligibilityLotRadioChanged(radio) {
@@ -19474,7 +19474,7 @@
                 return;
             }
             currentEligibilityLotKey = radio.value;
-            eligibilitySanitizeSupplierFilter();
+            eligibilitySupplierSelectedIds = getEligibilityVendorsForLotKey(currentEligibilityLotKey).map(v => v.id);
             const det = radio.closest('details');
             if (det) {
                 det.open = false;
@@ -19482,16 +19482,29 @@
             renderEvaluationTable();
         }
 
-        function eligibilitySupplierFilterRadioChanged(radio) {
-            if (!radio.checked) {
+        function eligibilitySupplierCheckboxChanged(el) {
+            const panel = el.closest('.eligibility-dropdown-panel');
+            if (!panel) {
                 return;
             }
-            currentEligibilitySupplierFilter = radio.value;
-            const det = radio.closest('details');
-            if (det) {
-                det.open = false;
+            const cbs = panel.querySelectorAll('input[name="eligibility-supplier-cb"]');
+            eligibilitySupplierSelectedIds = Array.from(cbs).filter(cb => cb.checked).map(cb => cb.value);
+            renderEvaluationTable();
+        }
+
+        function eligibilitySupplierMasterChanged(master) {
+            const vendorsInLot = getEligibilityVendorsForLotKey(currentEligibilityLotKey);
+            if (master.checked) {
+                eligibilitySupplierSelectedIds = vendorsInLot.map(v => v.id);
+            } else {
+                eligibilitySupplierSelectedIds = [];
             }
             renderEvaluationTable();
+        }
+
+        /** Matrix criteria scope chip: show “Every Lot” instead of raw “Bid Level”. */
+        function eligibilityMatrixCriteriaTypeLabel(reqType) {
+            return reqType === 'Bid Level' ? 'Every Lot' : reqType;
         }
 
         function getMockSupplierHeaderFinal(vendorId, lotKey, role) {
@@ -19550,24 +19563,36 @@
             `).join('');
 
             const vendorsInLot = getEligibilityVendorsForLotKey(currentEligibilityLotKey);
+            eligibilitySupplierSelectionEnsureForCurrentLot();
+            const nLot = vendorsInLot.length;
+            const nSel = eligibilitySupplierSelectedIds.length;
+            const allSelected = nLot > 0 && nSel === nLot && vendorsInLot.every(v => eligibilitySupplierSelectedIds.includes(v.id));
+
             const supplierRows = [
                 `<label class="eligibility-radio-row">
-                    <input type="radio" name="eligibility-supplier-pick" value="all" ${currentEligibilitySupplierFilter === 'all' ? 'checked' : ''} onchange="eligibilitySupplierFilterRadioChanged(this)" />
-                    <span><strong>All suppliers</strong> in this lot</span>
+                    <input type="checkbox" id="eligibility-supplier-master" ${allSelected ? 'checked' : ''} onchange="eligibilitySupplierMasterChanged(this)" aria-label="Select all suppliers in this lot" />
+                    <span><strong>All suppliers</strong> <span style="font-weight: 500; color: var(--text-muted);">(${nLot})</span></span>
                 </label>`
             ].concat(vendorsInLot.map(v => `
                 <label class="eligibility-radio-row">
-                    <input type="radio" name="eligibility-supplier-pick" value="${v.id}" ${currentEligibilitySupplierFilter === v.id ? 'checked' : ''} onchange="eligibilitySupplierFilterRadioChanged(this)" />
+                    <input type="checkbox" name="eligibility-supplier-cb" value="${v.id}" ${eligibilitySupplierSelectedIds.includes(v.id) ? 'checked' : ''} onchange="eligibilitySupplierCheckboxChanged(this)" />
                     <span><strong>${v.code}</strong> — ${v.name}</span>
                 </label>
             `));
 
-            const supplierSummary = currentEligibilitySupplierFilter === 'all'
-                ? 'All suppliers (' + vendorsInLot.length + ')'
-                : (() => {
-                    const one = vendorsInLot.find(v => v.id === currentEligibilitySupplierFilter);
-                    return one ? (one.code + ' — ' + one.name) : 'All suppliers';
-                })();
+            const supplierSummary = (() => {
+                if (nSel === 0) {
+                    return 'No suppliers selected';
+                }
+                if (allSelected) {
+                    return 'All suppliers (' + nLot + ')';
+                }
+                if (nSel === 1) {
+                    const one = vendorsInLot.find(v => v.id === eligibilitySupplierSelectedIds[0]);
+                    return one ? (one.code + ' — ' + one.name) : '1 supplier';
+                }
+                return nSel + ' suppliers selected';
+            })();
 
             return `
                 <div class="eligibility-lot-toolbar">
@@ -19590,7 +19615,7 @@
                                 <span class="eligibility-dropdown-value">${supplierSummary}</span>
                                 <i class="pi pi-chevron-down" aria-hidden="true"></i>
                             </summary>
-                            <div class="eligibility-dropdown-panel eligibility-dropdown-panel--scroll" role="group" aria-label="Filter suppliers in table">
+                            <div class="eligibility-dropdown-panel eligibility-dropdown-panel--scroll" role="group" aria-label="Select one or more suppliers (multiselect)">
                                 ${supplierRows.join('')}
                             </div>
                         </details>
@@ -19827,7 +19852,7 @@
                 html += `<div style="font-weight: 600; font-size: 12px; margin-bottom: 3px;">${req.criteria}</div>`;
                 html += `<div style="font-size: 10px; color: var(--text-muted); line-height: 1.35;">${req.criteriaDesc}</div>`;
                 html += '<div style="margin-top: 6px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center;">';
-                html += `<span style="font-size: 9px; padding: 2px 6px; background: var(--surface-100); border-radius: var(--radius-xs);">${req.type}</span>`;
+                html += `<span style="font-size: 9px; padding: 2px 6px; background: var(--surface-100); border-radius: var(--radius-xs);">${eligibilityMatrixCriteriaTypeLabel(req.type)}</span>`;
                 if (hasFlag) {
                     html += '<span style="display: inline-flex; align-items: center; gap: 4px; font-size: 10px;" title="Special attention required"><i class="pi pi-flag" style="color: var(--warning-500);"></i> SP</span>';
                 }
@@ -19975,7 +20000,7 @@
                     </div>`;
                 }
                 html += '<div style="margin-top: 6px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center;">';
-                html += `<span style="font-size: 9px; padding: 2px 6px; background: var(--surface-100); border-radius: var(--radius-xs);">${req.type}</span>`;
+                html += `<span style="font-size: 9px; padding: 2px 6px; background: var(--surface-100); border-radius: var(--radius-xs);">${eligibilityMatrixCriteriaTypeLabel(req.type)}</span>`;
                 if (hasFlag) {
                     html += '<span style="display: inline-flex; align-items: center; gap: 4px; font-size: 10px;" title="Special attention required"><i class="pi pi-flag" style="color: var(--warning-500);"></i> SP</span>';
                 }
@@ -20118,7 +20143,7 @@
                     html += `<div style="margin-top: 6px;"><span style="font-size: 9px; padding: 2px 6px; background: var(--primary-50); color: var(--primary-600); border-radius: var(--radius-xs); display: inline-flex; align-items: center; gap: 4px;"><i class="pi pi-bookmark" aria-hidden="true"></i> ${req.formRef}</span></div>`;
                 }
                 html += '<div style="margin-top: 6px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center;">';
-                html += `<span style="font-size: 9px; padding: 2px 6px; background: var(--surface-100); border-radius: var(--radius-xs);">${req.type}</span>`;
+                html += `<span style="font-size: 9px; padding: 2px 6px; background: var(--surface-100); border-radius: var(--radius-xs);">${eligibilityMatrixCriteriaTypeLabel(req.type)}</span>`;
                 if (hasFlag) {
                     html += '<span style="display: inline-flex; align-items: center;" title="Flag"><i class="pi pi-flag" style="color: var(--warning-500); font-size: 12px;"></i></span>';
                 }
@@ -21183,7 +21208,7 @@
                                 ${req.mandatory ? 'MANDATORY' : 'OPTIONAL'}
                             </div>
                         </td>
-                        <td style="font-size: 12px;">${req.type}</td>
+                        <td style="font-size: 12px;">${eligibilityMatrixCriteriaTypeLabel(req.type)}</td>
                         <td>
                             ${req.bidderResponse}
                             ${req.deviation ? `<div class="deviation-badge"><strong>⚠️ Deviation:</strong> ${req.deviation}</div>` : ''}
@@ -22056,7 +22081,7 @@
                 html += `<div style="font-weight: 600; font-size: 12px; margin-bottom: 3px;">${req.criteria}</div>`;
                 html += `<div style="font-size: 10px; color: var(--text-muted); line-height: 1.35;">${req.assessment.substring(0, 120)}${req.assessment.length > 120 ? '…' : ''}</div>`;
                 html += '<div style="margin-top: 6px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center;">';
-                html += `<span style="font-size: 9px; padding: 2px 6px; background: var(--surface-100); border-radius: var(--radius-xs);">${req.type}</span>`;
+                html += `<span style="font-size: 9px; padding: 2px 6px; background: var(--surface-100); border-radius: var(--radius-xs);">${eligibilityMatrixCriteriaTypeLabel(req.type)}</span>`;
                 if (hasFlag) {
                     html += '<span style="display: inline-flex; align-items: center;" title="Flag"><i class="pi pi-flag" style="color: var(--warning-500); font-size: 12px;"></i></span>';
                 }
@@ -22981,6 +23006,248 @@
             return responseArray[vendorIndex] || responseArray[0];
         }
 
+        /** Stages for Evaluation Status by Stage matrix (comparison / overview). */
+        const EVAL_OVERVIEW_STAGES = [
+            { key: 'step1', title: '1. Eligibility', evaluator: 'Jane Doe' },
+            { key: 'step2', title: '2. Qualification', evaluator: 'John Smith' },
+            { key: 'step3', title: '3. Technical', evaluator: 'Sarah Johnson' },
+            { key: 'step4', title: '4. Financial', evaluator: 'Sarah Johnson' }
+        ];
+
+        const EVAL_OVERVIEW_MATRIX_LOTS = [
+            { key: 'lot1', labelShort: 'Lot 1', subtitle: 'Personal Protective Equipment' },
+            { key: 'lot2', labelShort: 'Lot 2', subtitle: 'Medical Consumables' }
+        ];
+
+        const EVAL_OVERVIEW_MATRIX_SUPPLIERS = [
+            { id: 'vendor1', name: 'MedSupply Ltd.', meta: 'UNGM: 309663 | Germany' },
+            { id: 'vendor2', name: 'HealthCare Corp.', meta: 'UNGM: 301245 | USA' },
+            { id: 'vendor3', name: 'MedTech Inc.', meta: 'UNGM: 315789 | Japan' }
+        ];
+
+        /** Per lot × supplier × stage — matches reference “group by lot / supplier” mock. */
+        const EVAL_OVERVIEW_MATRIX_CELLS = {
+            lot1: {
+                vendor1: { step1: { status: 'pass' }, step2: { status: 'pass' }, step3: { status: 'pass' }, step4: { status: 'pass' } },
+                vendor2: { step1: { status: 'in_progress', progress: 55 }, step2: { status: 'in_progress', progress: 55 }, step3: { status: 'in_progress', progress: 55 }, step4: { status: 'in_progress', progress: 55 } },
+                vendor3: { step1: { status: 'clarification' }, step2: { status: 'clarification' }, step3: { status: 'clarification' }, step4: { status: 'clarification' } }
+            },
+            lot2: {
+                vendor1: { step1: { status: 'in_progress', progress: 40 }, step2: { status: 'in_progress', progress: 40 }, step3: { status: 'in_progress', progress: 70 }, step4: { status: 'in_progress', progress: 30 } },
+                vendor2: { step1: { status: 'pass' }, step2: { status: 'pass' }, step3: { status: 'pass' }, step4: { status: 'pass' } },
+                vendor3: { step1: { status: 'not_started' }, step2: { status: 'not_started' }, step3: { status: 'not_started' }, step4: { status: 'not_started' } }
+            }
+        };
+
+        function evalOverviewMatrixGetCell(lotKey, vendorId, stepKey) {
+            const byLot = EVAL_OVERVIEW_MATRIX_CELLS[lotKey];
+            if (!byLot) {
+                return { status: 'not_started', progress: null };
+            }
+            const byVendor = byLot[vendorId];
+            if (!byVendor) {
+                return { status: 'not_started', progress: null };
+            }
+            return byVendor[stepKey] || { status: 'not_started', progress: null };
+        }
+
+        function evalOverviewMatrixStatusCellHtml(cell) {
+            const status = cell.status || 'pending';
+            const map = {
+                pass: {
+                    icon: 'pi-check-circle',
+                    color: 'var(--success-700)',
+                    bg: 'var(--success-50)',
+                    border: 'var(--success-300)',
+                    label: 'Pass'
+                },
+                in_progress: {
+                    icon: 'pi-sync',
+                    color: 'var(--primary-700)',
+                    bg: 'var(--primary-50)',
+                    border: 'var(--primary-200)',
+                    label: 'In Progress'
+                },
+                clarification: {
+                    icon: 'pi-exclamation-triangle',
+                    color: 'var(--warning-800)',
+                    bg: 'var(--warning-50)',
+                    border: 'var(--warning-400)',
+                    label: 'Clarify'
+                },
+                not_started: {
+                    icon: 'pi-ban',
+                    color: 'var(--text-muted)',
+                    bg: 'var(--surface-100)',
+                    border: 'var(--surface-300)',
+                    label: 'Not Started'
+                },
+                pending: {
+                    icon: 'pi-clock',
+                    color: 'var(--text-secondary)',
+                    bg: 'var(--surface-100)',
+                    border: 'var(--surface-300)',
+                    label: 'Pending'
+                },
+                fail: {
+                    icon: 'pi-times-circle',
+                    color: 'var(--danger-700)',
+                    bg: 'var(--danger-50)',
+                    border: 'var(--danger-300)',
+                    label: 'Fail'
+                }
+            };
+            const m = map[status] || map.pending;
+            const prog = (status === 'in_progress' && cell.progress != null)
+                ? `<div style="font-size: 10px; color: var(--text-muted); margin-top: 4px;">${cell.progress}%</div>`
+                : '';
+            return `<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 4px 2px;">
+                <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; color: ${m.color}; white-space: nowrap; padding: 6px 10px; border-radius: var(--radius-md); background: ${m.bg}; border: 1px solid ${m.border}; box-sizing: border-box;">
+                    <i class="pi ${m.icon}" aria-hidden="true" style="font-size: 13px;"></i> ${m.label}
+                </span>${prog}
+            </div>`;
+        }
+
+        /**
+         * @param {{ lotFilter: string, supplierFilter: string, groupBy: 'lot'|'supplier', showEvaluators: boolean }} opts
+         */
+        function buildEvalOverviewStatusMatrixTableHtml(opts) {
+            const lotFilter = opts.lotFilter || 'all';
+            const supplierFilter = opts.supplierFilter || 'all';
+            const groupBy = opts.groupBy === 'supplier' ? 'supplier' : 'lot';
+            const showEvaluators = opts.showEvaluators !== false;
+
+            const lots = EVAL_OVERVIEW_MATRIX_LOTS.filter(l => lotFilter === 'all' || l.key === lotFilter);
+            const suppliers = EVAL_OVERVIEW_MATRIX_SUPPLIERS.filter(s => supplierFilter === 'all' || s.id === supplierFilter);
+
+            const col1Label = groupBy === 'lot' ? 'Lot' : 'Supplier';
+            const col2Label = groupBy === 'lot' ? 'Supplier' : 'Lot';
+
+            let thead = '';
+            if (showEvaluators) {
+                thead += '<tr style="background: var(--surface-50);">';
+                thead += `<th rowspan="2" style="padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--surface-200); font-weight: 600; vertical-align: bottom;">${col1Label}</th>`;
+                thead += `<th rowspan="2" style="padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--surface-200); font-weight: 600; vertical-align: bottom;">${col2Label}</th>`;
+                EVAL_OVERVIEW_STAGES.forEach(st => {
+                    thead += `<th colspan="2" style="padding: 10px 8px; text-align: center; border-bottom: 1px solid var(--surface-200); font-weight: 600;">${st.title}</th>`;
+                });
+                thead += '</tr><tr style="background: var(--surface-50);">';
+                EVAL_OVERVIEW_STAGES.forEach(() => {
+                    thead += '<th style="padding: 8px; text-align: center; border-bottom: 2px solid var(--surface-200); font-size: 11px; font-weight: 600; color: var(--text-muted);">Status</th>';
+                    thead += '<th style="padding: 8px; text-align: center; border-bottom: 2px solid var(--surface-200); font-size: 11px; font-weight: 600; color: var(--text-muted);">Evaluator</th>';
+                });
+                thead += '</tr>';
+            } else {
+                thead += '<tr style="background: var(--surface-50);">';
+                thead += `<th style="padding: 10px 12px; text-align: left; border-bottom: 2px solid var(--surface-200); font-weight: 600;">${col1Label}</th>`;
+                thead += `<th style="padding: 10px 12px; text-align: left; border-bottom: 2px solid var(--surface-200); font-weight: 600;">${col2Label}</th>`;
+                EVAL_OVERVIEW_STAGES.forEach(st => {
+                    thead += `<th style="padding: 10px 8px; text-align: center; border-bottom: 2px solid var(--surface-200); font-weight: 600;">${st.title}</th>`;
+                });
+                thead += '</tr>';
+            }
+
+            const rows = [];
+            if (groupBy === 'lot') {
+                lots.forEach(lot => {
+                    const sups = suppliers.filter(() => true);
+                    if (sups.length === 0) {
+                        return;
+                    }
+                    sups.forEach((sup, si) => {
+                        const isFirst = si === 0;
+                        const row = { type: 'lot', lot, sup, isFirst, rowspan: sups.length };
+                        rows.push(row);
+                    });
+                });
+            } else {
+                suppliers.forEach(sup => {
+                    const ls = lots.filter(() => true);
+                    if (ls.length === 0) {
+                        return;
+                    }
+                    ls.forEach((lot, li) => {
+                        const isFirst = li === 0;
+                        rows.push({ type: 'supplier', lot, sup, isFirst, rowspan: ls.length });
+                    });
+                });
+            }
+
+            let tbody = '';
+            rows.forEach((row, idx) => {
+                const bg = idx % 2 === 0 ? 'white' : 'var(--surface-50)';
+                tbody += `<tr style="background: ${bg}; border-bottom: 1px solid var(--surface-100);">`;
+
+                if (groupBy === 'lot') {
+                    if (row.isFirst) {
+                        tbody += `<td rowspan="${row.rowspan}" style="padding: 12px; vertical-align: top; border-right: 1px solid var(--surface-100); font-weight: 600;">
+                            <div>${row.lot.labelShort}</div>
+                            <div style="font-size: 10px; font-weight: 500; color: var(--text-muted); margin-top: 4px;">${row.lot.subtitle}</div>
+                        </td>`;
+                    }
+                    tbody += `<td style="padding: 12px; vertical-align: top;">
+                        <div style="font-weight: 600; color: var(--text-primary);">${row.sup.name}</div>
+                        <div style="font-size: 10px; color: var(--text-muted);">${row.sup.meta}</div>
+                    </td>`;
+                } else {
+                    if (row.isFirst) {
+                        tbody += `<td rowspan="${row.rowspan}" style="padding: 12px; vertical-align: top; border-right: 1px solid var(--surface-100);">
+                            <div style="font-weight: 600; color: var(--text-primary);">${row.sup.name}</div>
+                            <div style="font-size: 10px; color: var(--text-muted);">${row.sup.meta}</div>
+                        </td>`;
+                    }
+                    tbody += `<td style="padding: 12px; vertical-align: top; font-weight: 600;">
+                        <div>${row.lot.labelShort}</div>
+                        <div style="font-size: 10px; font-weight: 500; color: var(--text-muted); margin-top: 4px;">${row.lot.subtitle}</div>
+                    </td>`;
+                }
+
+                EVAL_OVERVIEW_STAGES.forEach(st => {
+                    const cell = evalOverviewMatrixGetCell(row.lot.key, row.sup.id, st.key);
+                    tbody += `<td style="padding: 8px; text-align: center; vertical-align: middle;">${evalOverviewMatrixStatusCellHtml(cell)}</td>`;
+                    if (showEvaluators) {
+                        tbody += `<td style="padding: 8px; text-align: center; font-size: 11px; color: var(--text-secondary); vertical-align: middle;">${st.evaluator}</td>`;
+                    }
+                });
+                tbody += '</tr>';
+            });
+
+            if (rows.length === 0) {
+                const emptyCols = 2 + EVAL_OVERVIEW_STAGES.length * (showEvaluators ? 2 : 1);
+                tbody = '<tr><td colspan="' + emptyCols + '" style="padding: var(--spacing-lg); text-align: center; color: var(--text-muted); font-size: 13px;">No rows match the current lot and supplier filters.</td></tr>';
+            }
+
+            return `<table class="eval-overview-status-matrix" style="width: 100%; border-collapse: collapse; font-size: 12px;">
+                <thead>${thead}</thead>
+                <tbody>${tbody}</tbody>
+            </table>`;
+        }
+
+        function evalOverviewStatusMatrixReadGroupBy() {
+            const slider = document.getElementById('eval-overview-group-slider');
+            return slider && slider.value === '1' ? 'supplier' : 'lot';
+        }
+
+        function evalOverviewGroupSliderChanged() {
+            evalOverviewStatusMatrixRefresh();
+        }
+
+        function evalOverviewStatusMatrixRefresh() {
+            const inner = document.getElementById('eval-overview-matrix-inner');
+            if (!inner) {
+                return;
+            }
+            const lotEl = document.getElementById('eval-overview-lot-filter');
+            const supEl = document.getElementById('eval-overview-supplier-filter');
+            const showEl = document.getElementById('eval-overview-show-evaluators');
+            inner.innerHTML = buildEvalOverviewStatusMatrixTableHtml({
+                lotFilter: lotEl ? lotEl.value : 'all',
+                supplierFilter: supEl ? supEl.value : 'all',
+                groupBy: evalOverviewStatusMatrixReadGroupBy(),
+                showEvaluators: showEl ? showEl.checked : true
+            });
+        }
+
         // Render comprehensive Evaluation Overview (Step 0)
         function renderEvaluationOverview(container) {
             const suppliers = [
@@ -23002,56 +23269,20 @@
                 { id: 4, name: 'Financial', status: 'pending', progress: 0 }
             ];
             
-            const lots = [
-                { id: 'lot1', name: 'Lot 1: Personal Protective Equipment', itemCount: 3 },
-                { id: 'lot2', name: 'Lot 2: Medical Consumables', itemCount: 3 }
-            ];
-            
-            // Simulated evaluation matrix data
-            const evalMatrix = {
-                vendor1: {
-                    step1: { status: 'pass', evaluator: 'Jane Doe', comment: 'All eligibility criteria met', date: '2024-12-01' },
-                    step2: { status: 'pass', evaluator: 'John Smith', comment: 'Qualified supplier', date: '2024-12-02' },
-                    step3: { status: 'in_progress', evaluator: 'Jane Doe', comment: 'Technical review ongoing', date: '2024-12-05', progress: 70 },
-                    step4: { status: 'pending', evaluator: '-', comment: '-', date: '-' },
-                    lot1: { status: 'pass', evaluator: 'Jane Doe', comment: 'PPE meets specs' },
-                    lot2: { status: 'in_progress', evaluator: 'John Smith', comment: 'Reviewing consumables' }
-                },
-                vendor2: {
-                    step1: { status: 'pass', evaluator: 'Jane Doe', comment: 'Eligibility verified', date: '2024-12-01' },
-                    step2: { status: 'pass', evaluator: 'John Smith', comment: 'Good qualifications', date: '2024-12-02' },
-                    step3: { status: 'in_progress', evaluator: 'Sarah Johnson', comment: 'Technical specs being reviewed', date: '2024-12-05', progress: 55 },
-                    step4: { status: 'pending', evaluator: '-', comment: '-', date: '-' },
-                    lot1: { status: 'clarification', evaluator: 'Sarah Johnson', comment: 'Need cert clarification' },
-                    lot2: { status: 'pass', evaluator: 'Jane Doe', comment: 'Consumables verified' }
-                },
-                vendor3: {
-                    step1: { status: 'pass', evaluator: 'Jane Doe', comment: 'Eligible bidder', date: '2024-12-01' },
-                    step2: { status: 'clarification', evaluator: 'John Smith', comment: 'Missing Form D', date: '2024-12-03' },
-                    step3: { status: 'not_started', evaluator: '-', comment: 'Pending qualification', date: '-', progress: 0 },
-                    step4: { status: 'pending', evaluator: '-', comment: '-', date: '-' },
-                    lot1: { status: 'not_started', evaluator: '-', comment: '-' },
-                    lot2: { status: 'not_started', evaluator: '-', comment: '-' }
-                }
-            };
-            
-            const getStatusBadge = (status) => {
-                const badges = {
-                    'pass': '<span style="padding: 3px 8px; border-radius: var(--radius-sm); font-size: 10px; font-weight: 600; background: var(--success-100); color: var(--success-600);">✅ Pass</span>',
-                    'fail': '<span style="padding: 3px 8px; border-radius: var(--radius-sm); font-size: 10px; font-weight: 600; background: var(--danger-100); color: var(--danger-600);">❌ Fail</span>',
-                    'clarification': '<span style="padding: 3px 8px; border-radius: var(--radius-sm); font-size: 10px; font-weight: 600; background: var(--warning-100); color: var(--warning-600);">⚠️ Clarify</span>',
-                    'in_progress': '<span style="padding: 3px 8px; border-radius: var(--radius-sm); font-size: 10px; font-weight: 600; background: var(--primary-100); color: var(--primary-600);">🔄 In Progress</span>',
-                    'pending': '<span style="padding: 3px 8px; border-radius: var(--radius-sm); font-size: 10px; font-weight: 600; background: var(--surface-100); color: var(--text-muted);">⏳ Pending</span>',
-                    'not_started': '<span style="padding: 3px 8px; border-radius: var(--radius-sm); font-size: 10px; font-weight: 600; background: var(--surface-100); color: var(--text-muted);">⊘ Not Started</span>',
-                    'completed': '<span style="padding: 3px 8px; border-radius: var(--radius-sm); font-size: 10px; font-weight: 600; background: var(--success-100); color: var(--success-600);">✓ Complete</span>'
-                };
-                return badges[status] || badges['pending'];
-            };
+            const evalOverviewMatrixInitial = buildEvalOverviewStatusMatrixTableHtml({
+                lotFilter: 'all',
+                supplierFilter: 'all',
+                groupBy: 'lot',
+                showEvaluators: true
+            });
             
             let html = `
                 <!-- Overview Header -->
                 <div style="margin-bottom: var(--spacing-xl);">
-                    <h2 style="font-size: 20px; font-weight: 700; color: var(--text-primary); margin-bottom: var(--spacing-sm);">📊 Evaluation Overview</h2>
+                    <h2 style="font-size: 20px; font-weight: 700; color: var(--text-primary); margin-bottom: var(--spacing-sm); display: flex; align-items: center; gap: 10px;">
+                        <i class="pi pi-chart-bar" style="color: var(--primary-500); font-size: 22px;" aria-hidden="true"></i>
+                        <span>Evaluation Overview</span>
+                    </h2>
                     <p style="color: var(--text-muted); font-size: 13px;">Comprehensive view of all evaluation stages, suppliers, lots, and evaluator progress.</p>
                 </div>
                 
@@ -23059,13 +23290,14 @@
                 <!-- Stage Progress Overview -->
                 <div style="background: white; border: 1px solid var(--surface-200); border-radius: var(--radius-lg); padding: var(--spacing-lg); margin-bottom: var(--spacing-xl);">
                     <h3 style="font-size: 15px; font-weight: 600; margin-bottom: var(--spacing-lg); display: flex; align-items: center; gap: var(--spacing-sm);">
-                        <span style="color: var(--primary-500);">📋</span> Stage Progress
+                        <i class="pi pi-list" style="color: var(--primary-500); font-size: 18px;" aria-hidden="true"></i>
+                        <span>Stage Progress</span>
                     </h3>
                     <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--spacing-md);">
                         ${stages.map(stage => `
                             <div style="text-align: center; padding: var(--spacing-md); background: ${stage.status === 'completed' ? 'var(--success-50)' : stage.status === 'in_progress' ? 'var(--primary-50)' : 'var(--surface-50)'}; border-radius: var(--radius-md); border: 1px solid ${stage.status === 'completed' ? 'var(--success-200)' : stage.status === 'in_progress' ? 'var(--primary-200)' : 'var(--surface-200)'};">
-                                <div style="font-weight: 600; font-size: 13px; margin-bottom: var(--spacing-sm); color: ${stage.status === 'completed' ? 'var(--success-600)' : stage.status === 'in_progress' ? 'var(--primary-600)' : 'var(--text-muted)'};">
-                                    ${stage.status === 'completed' ? '✓' : stage.id}. ${stage.name}
+                                <div style="font-weight: 600; font-size: 13px; margin-bottom: var(--spacing-sm); color: ${stage.status === 'completed' ? 'var(--success-600)' : stage.status === 'in_progress' ? 'var(--primary-600)' : 'var(--text-muted)'}; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                    ${stage.status === 'completed' ? '<i class="pi pi-check-circle" aria-hidden="true"></i>' : '<span style="font-weight: 700;">' + stage.id + '.</span>'} ${stage.name}
                                 </div>
                                 <div style="width: 100%; height: 6px; background: var(--surface-200); border-radius: 3px; overflow: hidden; margin-bottom: var(--spacing-xs);">
                                     <div style="width: ${stage.progress}%; height: 100%; background: ${stage.status === 'completed' ? 'var(--success-500)' : 'var(--primary-400)'}; transition: width 0.3s;"></div>
@@ -23076,112 +23308,55 @@
                     </div>
                 </div>
                 
-                <!-- Supplier x Stage Matrix -->
+                <!-- Evaluation Status by Stage (lot × supplier matrix) -->
                 <div style="background: white; border: 1px solid var(--surface-200); border-radius: var(--radius-lg); padding: var(--spacing-lg); margin-bottom: var(--spacing-xl);">
-                    <h3 style="font-size: 15px; font-weight: 600; margin-bottom: var(--spacing-lg); display: flex; align-items: center; gap: var(--spacing-sm);">
-                        <span style="color: var(--primary-500);">🏢</span> Supplier Evaluation Status by Stage
+                    <h3 style="font-size: 15px; font-weight: 600; margin-bottom: var(--spacing-md); display: flex; align-items: center; gap: var(--spacing-sm);">
+                        <i class="pi pi-th-large" style="color: var(--primary-500); font-size: 18px;" aria-hidden="true"></i>
+                        <span>Evaluation Status by Stage</span>
                     </h3>
-                    <div style="overflow-x: auto;">
-                        <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
-                            <thead>
-                                <tr style="background: var(--surface-50);">
-                                    <th style="padding: 12px; text-align: left; border-bottom: 2px solid var(--surface-200); font-weight: 600;">Supplier</th>
-                                    <th style="padding: 12px; text-align: center; border-bottom: 2px solid var(--surface-200); font-weight: 600;">1. Eligibility</th>
-                                    <th style="padding: 12px; text-align: center; border-bottom: 2px solid var(--surface-200); font-weight: 600;">2. Qualification</th>
-                                    <th style="padding: 12px; text-align: center; border-bottom: 2px solid var(--surface-200); font-weight: 600;">3. Technical</th>
-                                    <th style="padding: 12px; text-align: center; border-bottom: 2px solid var(--surface-200); font-weight: 600;">4. Financial</th>
-                                    <th style="padding: 12px; text-align: center; border-bottom: 2px solid var(--surface-200); font-weight: 600;">Overall</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${suppliers.map((supplier, idx) => {
-                                    const matrix = evalMatrix[supplier.id];
-                                    const passCount = [matrix.step1, matrix.step2, matrix.step3, matrix.step4].filter(s => s.status === 'pass').length;
-                                    return `
-                                        <tr style="background: ${idx % 2 === 0 ? 'white' : 'var(--surface-50)'}; border-bottom: 1px solid var(--surface-100);">
-                                            <td style="padding: 12px;">
-                                                <div style="font-weight: 600; color: var(--text-primary);">${supplier.name}</div>
-                                                <div style="font-size: 10px; color: var(--text-muted);">UNGM: ${supplier.ungm} | ${supplier.country}</div>
-                                            </td>
-                                            <td style="padding: 12px; text-align: center;">${getStatusBadge(matrix.step1.status)}</td>
-                                            <td style="padding: 12px; text-align: center;">${getStatusBadge(matrix.step2.status)}</td>
-                                            <td style="padding: 12px; text-align: center;">
-                                                ${getStatusBadge(matrix.step3.status)}
-                                                ${matrix.step3.progress ? `<div style="font-size: 10px; color: var(--text-muted); margin-top: 2px;">${matrix.step3.progress}%</div>` : ''}
-                                            </td>
-                                            <td style="padding: 12px; text-align: center;">${getStatusBadge(matrix.step4.status)}</td>
-                                            <td style="padding: 12px; text-align: center;">
-                                                <span style="font-size: 11px; font-weight: 600; color: var(--primary-600);">${passCount}/4 Stages</span>
-                                            </td>
-                                        </tr>
-                                    `;
-                                }).join('')}
-                            </tbody>
-                        </table>
+                    <div style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--spacing-md) var(--spacing-lg); margin-bottom: var(--spacing-lg); padding-bottom: var(--spacing-md); border-bottom: 1px solid var(--surface-100);">
+                        <div style="display: flex; flex-direction: column; gap: 6px; min-width: 160px;">
+                            <label for="eval-overview-lot-filter" style="font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.02em;">Lot</label>
+                            <select id="eval-overview-lot-filter" onchange="evalOverviewStatusMatrixRefresh()" style="padding: 8px 10px; border-radius: var(--radius-sm); border: 1px solid var(--surface-200); font-size: 13px; background: white; min-width: 200px;">
+                                <option value="all">All lots</option>
+                                <option value="lot1">Lot 1 — PPE</option>
+                                <option value="lot2">Lot 2 — Consumables</option>
+                            </select>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 6px; min-width: 160px;">
+                            <label for="eval-overview-supplier-filter" style="font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.02em;">Supplier</label>
+                            <select id="eval-overview-supplier-filter" onchange="evalOverviewStatusMatrixRefresh()" style="padding: 8px 10px; border-radius: var(--radius-sm); border: 1px solid var(--surface-200); font-size: 13px; background: white; min-width: 220px;">
+                                <option value="all">All suppliers</option>
+                                <option value="vendor1">MedSupply Ltd.</option>
+                                <option value="vendor2">HealthCare Corp.</option>
+                                <option value="vendor3">MedTech Inc.</option>
+                            </select>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 8px; min-width: 200px;">
+                            <span style="font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.02em;">Group by</span>
+                            <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                                <span style="font-size: 12px; font-weight: 600; color: var(--text-secondary);">Lot</span>
+                                <input type="range" id="eval-overview-group-slider" min="0" max="1" step="1" value="0" aria-valuemin="0" aria-valuemax="1" aria-label="Group table by lot (left) or supplier (right)" title="Left: group by lot. Right: group by supplier." oninput="evalOverviewGroupSliderChanged()" style="width: 120px; accent-color: var(--primary-500); cursor: pointer;" />
+                                <span style="font-size: 12px; font-weight: 600; color: var(--text-secondary);">Supplier</span>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px; margin-left: auto;">
+                            <label for="eval-overview-show-evaluators" style="font-size: 13px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; user-select: none;">
+                                <input type="checkbox" id="eval-overview-show-evaluators" checked onchange="evalOverviewStatusMatrixRefresh()" />
+                                <span>Show evaluators</span>
+                            </label>
+                        </div>
                     </div>
-                </div>
-                
-                <!-- Detailed Evaluation by Supplier, Lot & Evaluator -->
-                <div style="background: white; border: 1px solid var(--surface-200); border-radius: var(--radius-lg); padding: var(--spacing-lg); margin-bottom: var(--spacing-xl);">
-                    <h3 style="font-size: 15px; font-weight: 600; margin-bottom: var(--spacing-lg); display: flex; align-items: center; gap: var(--spacing-sm);">
-                        <span style="color: var(--primary-500);">👥</span> Detailed Evaluator Progress
-                    </h3>
                     <div style="overflow-x: auto;">
-                        <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
-                            <thead>
-                                <tr style="background: var(--surface-50);">
-                                    <th style="padding: 10px; text-align: left; border-bottom: 2px solid var(--surface-200);">Supplier</th>
-                                    <th style="padding: 10px; text-align: left; border-bottom: 2px solid var(--surface-200);">Stage</th>
-                                    <th style="padding: 10px; text-align: left; border-bottom: 2px solid var(--surface-200);">Lot</th>
-                                    <th style="padding: 10px; text-align: center; border-bottom: 2px solid var(--surface-200);">Status</th>
-                                    <th style="padding: 10px; text-align: left; border-bottom: 2px solid var(--surface-200);">Evaluator</th>
-                                    <th style="padding: 10px; text-align: left; border-bottom: 2px solid var(--surface-200);">Comment</th>
-                                    <th style="padding: 10px; text-align: center; border-bottom: 2px solid var(--surface-200);">Date</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${suppliers.map(supplier => {
-                                    const matrix = evalMatrix[supplier.id];
-                                    let rows = '';
-                                    
-                                    // Technical evaluation by lot
-                                    lots.forEach((lot, lotIdx) => {
-                                        const lotData = matrix[lot.id];
-                                        rows += `
-                                            <tr style="background: ${lotIdx % 2 === 0 ? 'white' : 'var(--surface-50)'}; border-bottom: 1px solid var(--surface-100);">
-                                                ${lotIdx === 0 ? `<td rowspan="${lots.length}" style="padding: 10px; border-right: 1px solid var(--surface-100); vertical-align: top;">
-                                                    <div style="font-weight: 600;">${supplier.name}</div>
-                                                    <div style="font-size: 10px; color: var(--text-muted);">${supplier.totalBid}</div>
-                                                </td>` : ''}
-                                                <td style="padding: 10px; font-size: 11px;">3. Technical</td>
-                                                <td style="padding: 10px;">
-                                                    <div style="font-size: 11px; font-weight: 500;">${lot.name.split(':')[0]}</div>
-                                                    <div style="font-size: 10px; color: var(--text-muted);">${lot.itemCount} items</div>
-                                                </td>
-                                                <td style="padding: 10px; text-align: center;">${getStatusBadge(lotData.status)}</td>
-                                                <td style="padding: 10px;">
-                                                    <div style="font-size: 11px; font-weight: 500;">${lotData.evaluator}</div>
-                                                </td>
-                                                <td style="padding: 10px; font-size: 11px; color: var(--text-secondary); max-width: 200px;">
-                                                    ${lotData.comment !== '-' ? `"${lotData.comment}"` : '<span style="color: var(--text-muted);">-</span>'}
-                                                </td>
-                                                <td style="padding: 10px; text-align: center; font-size: 10px; color: var(--text-muted);">
-                                                    ${matrix.step3.date !== '-' ? matrix.step3.date : '-'}
-                                                </td>
-                                            </tr>
-                                        `;
-                                    });
-                                    return rows;
-                                }).join('')}
-                            </tbody>
-                        </table>
+                        <div id="eval-overview-matrix-inner">${evalOverviewMatrixInitial}</div>
                     </div>
                 </div>
                 
                 <!-- Evaluator Workload Summary -->
                 <div style="background: white; border: 1px solid var(--surface-200); border-radius: var(--radius-lg); padding: var(--spacing-lg); margin-bottom: var(--spacing-xl);">
                     <h3 style="font-size: 15px; font-weight: 600; margin-bottom: var(--spacing-lg); display: flex; align-items: center; gap: var(--spacing-sm);">
-                        <span style="color: var(--primary-500);">📊</span> Evaluator Workload & Activity
+                        <i class="pi pi-chart-bar" style="color: var(--primary-500); font-size: 18px;" aria-hidden="true"></i>
+                        <span>Evaluator Workload & Activity</span>
                     </h3>
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--spacing-md);">
                         ${evaluators.map(evaluator => `
@@ -23220,11 +23395,12 @@
                 <!-- Pending Actions & Alerts -->
                 <div style="background: white; border: 1px solid var(--surface-200); border-radius: var(--radius-lg); padding: var(--spacing-lg);">
                     <h3 style="font-size: 15px; font-weight: 600; margin-bottom: var(--spacing-lg); display: flex; align-items: center; gap: var(--spacing-sm);">
-                        <span style="color: var(--warning-500);">⚠️</span> Pending Actions & Alerts
+                        <i class="pi pi-exclamation-triangle" style="color: var(--warning-500); font-size: 18px;" aria-hidden="true"></i>
+                        <span>Pending Actions & Alerts</span>
                     </h3>
                     <div style="display: grid; gap: var(--spacing-sm);">
                         <div style="display: flex; align-items: center; gap: var(--spacing-md); padding: var(--spacing-md); background: var(--warning-50); border-left: 4px solid var(--warning-400); border-radius: var(--radius-sm);">
-                            <span style="font-size: 18px;">⚠️</span>
+                            <i class="pi pi-exclamation-triangle" style="font-size: 18px; color: var(--warning-600);" aria-hidden="true"></i>
                             <div style="flex: 1;">
                                 <div style="font-weight: 600; font-size: 12px; color: var(--text-primary);">Clarification Required - MedTech Inc.</div>
                                 <div style="font-size: 11px; color: var(--text-muted);">Stage 2: Qualification - Missing Manufacturer's Authorization (Form D)</div>
@@ -23232,7 +23408,7 @@
                             <button class="btn btn-secondary btn-sm" onclick="switchEvaluationStep(2); switchVendorEval('vendor3');">View</button>
                         </div>
                         <div style="display: flex; align-items: center; gap: var(--spacing-md); padding: var(--spacing-md); background: var(--warning-50); border-left: 4px solid var(--warning-400); border-radius: var(--radius-sm);">
-                            <span style="font-size: 18px;">⚠️</span>
+                            <i class="pi pi-exclamation-triangle" style="font-size: 18px; color: var(--warning-600);" aria-hidden="true"></i>
                             <div style="flex: 1;">
                                 <div style="font-weight: 600; font-size: 12px; color: var(--text-primary);">Clarification Required - HealthCare Corp.</div>
                                 <div style="font-size: 11px; color: var(--text-muted);">Stage 3: Technical - Lot 1 - Certificate verification needed</div>
@@ -23240,7 +23416,7 @@
                             <button class="btn btn-secondary btn-sm" onclick="switchEvaluationStep(3); switchVendorEval('vendor2');">View</button>
                         </div>
                         <div style="display: flex; align-items: center; gap: var(--spacing-md); padding: var(--spacing-md); background: var(--info-50); border-left: 4px solid var(--info-400); border-radius: var(--radius-sm);">
-                            <span style="font-size: 18px;">📋</span>
+                            <i class="pi pi-info-circle" style="font-size: 18px; color: var(--info-600);" aria-hidden="true"></i>
                             <div style="flex: 1;">
                                 <div style="font-weight: 600; font-size: 12px; color: var(--text-primary);">Technical Evaluation In Progress</div>
                                 <div style="font-size: 11px; color: var(--text-muted);">3 suppliers, 2 lots - 65% overall progress</div>
@@ -23248,7 +23424,7 @@
                             <button class="btn btn-primary btn-sm" onclick="switchEvaluationStep(3);">Continue</button>
                         </div>
                         <div style="display: flex; align-items: center; gap: var(--spacing-md); padding: var(--spacing-md); background: var(--surface-50); border-left: 4px solid var(--surface-300); border-radius: var(--radius-sm);">
-                            <span style="font-size: 18px;">⏳</span>
+                            <i class="pi pi-clock" style="font-size: 18px; color: var(--text-muted);" aria-hidden="true"></i>
                             <div style="flex: 1;">
                                 <div style="font-weight: 600; font-size: 12px; color: var(--text-primary);">Financial Evaluation Pending</div>
                                 <div style="font-size: 11px; color: var(--text-muted);">Waiting for Technical evaluation completion</div>
