@@ -16778,75 +16778,14 @@
             const bid = currentBidOpeningData.bids.find(b => b.id === bidId);
             if (!bid) return;
 
-            const discountsHtml = buildBidDiscountSectionHtml(bid);
-            const breakdownHtml = buildPriceBreakdownSectionHtml(bid);
-
-            const modalHtml = `
-                <div id="bidDetailsModal" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 10000; display: flex; align-items: center; justify-content: center;" onclick="if(event.target===this) this.remove()">
-                    <div style="background: white; border-radius: var(--radius-lg); width: 680px; max-width: 95%; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-lg);">
-                        <div style="background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-400) 100%); color: white; padding: var(--spacing-lg); border-radius: var(--radius-lg) var(--radius-lg) 0 0; position: sticky; top: 0;">
-                            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                                <div>
-                                    <h3 style="margin: 0; font-size: 18px;">${escapeHtmlCell(bid.vendorName)}</h3>
-                                    <div style="font-size: 12px; opacity: 0.9; margin-top: 4px;">UNGM: ${escapeHtmlCell(bid.ungmNumber)} • ${escapeHtmlCell(bid.country)}</div>
-                                    ${bid.lotName ? `<div style="font-size: 11px; opacity: 0.95; margin-top: 6px; display: flex; align-items: center; gap: 6px;"><i class="pi pi-th-large" style="font-size: 10px;"></i> ${escapeHtmlCell(bid.lotName)}</div>` : ''}
-                                </div>
-                                <span style="background: white; color: var(--primary-500); padding: 4px 12px; border-radius: var(--radius-sm); font-weight: 700; font-size: 14px;">
-                                    Rank #${bid.displayRank || bid.rank}
-                                </span>
-                            </div>
-                        </div>
-                        <div style="padding: var(--spacing-lg);">
-                            <!-- Bid Summary -->
-                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-md); margin-bottom: var(--spacing-lg);">
-                                <div style="background: var(--surface-50); padding: var(--spacing-md); border-radius: var(--radius-sm); text-align: center;">
-                                    <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase;">Total Offer</div>
-                                    <div style="font-size: 18px; font-weight: 700; color: var(--success-600);">${formatCurrency(bid.totalOffer, bid.currency)}</div>
-                                </div>
-                                <div style="background: var(--surface-50); padding: var(--spacing-md); border-radius: var(--radius-sm); text-align: center;">
-                                    <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase;">Women Owned</div>
-                                    <div style="font-size: 16px; font-weight: 600; color: ${bid.womenOwned ? 'var(--success-500)' : 'var(--text-muted)'};">${bid.womenOwned ? '✓ Yes' : 'No'}</div>
-                                </div>
-                                <div style="background: var(--surface-50); padding: var(--spacing-md); border-radius: var(--radius-sm); text-align: center;">
-                                    <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase;">Sanction Status</div>
-                                    <div style="font-size: 14px; font-weight: 600; color: ${bid.sanctionStatus === 'clear' ? 'var(--success-500)' : 'var(--warning-500)'};">
-                                        ${bid.sanctionStatus === 'clear' ? '✓ Clear' : '⚠️ Under Review'}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Details -->
-                            <div style="display: grid; gap: var(--spacing-md);">
-                                <div style="background: var(--surface-50); padding: var(--spacing-md); border-radius: var(--radius-sm);">
-                                    <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px;">Submission time</div>
-                                    <div style="font-size: 13px; color: var(--text-primary);">${escapeHtmlCell(bid.submittedAt)}</div>
-                                </div>
-                                
-                                ${bid.jvConsortia ? `
-                                    <div style="background: var(--info-50); padding: var(--spacing-md); border-radius: var(--radius-sm); border-left: 3px solid var(--info-400);">
-                                        <div style="font-size: 10px; color: var(--info-600); text-transform: uppercase; margin-bottom: 4px;">Joint venture / consortia</div>
-                                        <div style="font-size: 13px; color: var(--text-primary);">
-                                            Partners: ${bid.jvPartners ? bid.jvPartners.map(p => escapeHtmlCell(p)).join(', ') : 'Details in bid documents'}
-                                        </div>
-                                    </div>
-                                ` : ''}
-
-                                ${discountsHtml}
-                                ${breakdownHtml}
-                            </div>
-
-                            <!-- Actions -->
-                            <div style="display: flex; gap: var(--spacing-sm); justify-content: flex-end; margin-top: var(--spacing-lg); padding-top: var(--spacing-lg); border-top: 1px solid var(--surface-200);">
-                                <button class="btn btn-secondary" onclick="document.getElementById('bidDetailsModal').remove()">Close</button>
-                                <button class="btn btn-primary" onclick="previewBidDocuments('${bid.id}')">
-                                    <i class="pi pi-folder-open"></i> View Bid Documents
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-            document.body.insertAdjacentHTML('beforeend', modalHtml);
+            const query = new URLSearchParams({
+                bid: bid.id,
+                supplier: bid.vendorName || '',
+                ungm: bid.ungmNumber || '',
+                country: bid.country || ''
+            });
+            const targetUrl = `supplier-evaluation-detail-mock.html?${query.toString()}`;
+            window.open(targetUrl, '_blank', 'noopener,noreferrer');
         }
 
         function showJVDetails(bidId) {

@@ -546,12 +546,20 @@
 
             const params = new URLSearchParams(window.location.search);
             const vendorId = VENDORS[params.get('vendor')] ? params.get('vendor') : 'vendor1';
-            const v = VENDORS[vendorId];
+            const defaultVendor = VENDORS[vendorId];
+            const bidId = params.get('bid') || '';
+            const v = {
+                code: defaultVendor.code,
+                name: params.get('supplier') || defaultVendor.name,
+                ungm: params.get('ungm') || defaultVendor.ungm,
+                country: params.get('country') || defaultVendor.country
+            };
 
             document.getElementById('supplier-title').textContent = v.name;
             document.getElementById('supplier-meta').innerHTML = `
                 <span><i class="pi pi-globe" aria-hidden="true"></i> UNGM: ${v.ungm}</span>
                 <span><i class="pi pi-map-marker" aria-hidden="true"></i> ${v.country}</span>
+                ${bidId ? `<span><i class="pi pi-hashtag" aria-hidden="true"></i> Bid: ${bidId}</span>` : ''}
             `;
             document.title = v.name + ' — submission & evaluation (mock)';
 
