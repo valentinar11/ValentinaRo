@@ -57,6 +57,9 @@
             --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
             --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.08);
             --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+            /* Technical eval matrix: min table width = sticky cols + N supplier bands (scroll when wide) */
+            --tech-lot-sticky-w: 276px;
+            --tech-lot-supplier-band-min: 432px;
         }
 
         /* Action Menu Styles */
@@ -2427,6 +2430,11 @@
             border-radius: var(--radius-md);
             background: var(--surface-0);
         }
+        .eligibility-matrix-wrap.tech-lot-matrix-scroll {
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior-x: contain;
+            scrollbar-gutter: stable;
+        }
         .eligibility-matrix-table {
             width: max-content;
             min-width: 100%;
@@ -2490,6 +2498,118 @@
             background: var(--surface-100);
             z-index: 4;
         }
+        .tech-matrix-product-line {
+            padding: 8px 10px;
+            margin: -2px -6px 10px -6px;
+            border-radius: var(--radius-sm);
+            background: var(--surface-50);
+            border: 1px solid var(--surface-200);
+        }
+        .tech-matrix-req-heading {
+            font-weight: 600;
+            font-size: 12px;
+            margin-bottom: 4px;
+            color: var(--text-primary);
+        }
+        .tech-matrix-req-body {
+            font-size: 11px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+        .tech-product-subcollapsible {
+            margin-bottom: 10px;
+            border: 1px solid var(--surface-200);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background: var(--surface-0);
+        }
+        .tech-product-subcollapsible-head {
+            padding: 10px 12px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            background: var(--surface-50);
+            border-bottom: 1px solid var(--surface-200);
+        }
+        .tech-product-subcollapsible-head:focus {
+            outline: none;
+            box-shadow: inset 0 0 0 2px var(--primary-200);
+        }
+        .tech-lot-matrix-table .eligibility-matrix-subth {
+            text-transform: none;
+            font-size: 8px !important;
+            font-weight: 600 !important;
+            letter-spacing: 0.01em !important;
+        }
+        /* Technical lot: fixed layout + shared colgroup; min-width grows with supplier count → horizontal scroll */
+        .eligibility-matrix-wrap.tech-lot-matrix-scroll .eligibility-matrix-table.tech-lot-matrix-table {
+            width: 100%;
+            table-layout: fixed;
+            min-width: calc(var(--tech-lot-sticky-w) + var(--tech-lot-vendor-count, 1) * var(--tech-lot-supplier-band-min));
+        }
+        .tech-lot-verdict-align-wrap {
+            margin-bottom: 8px;
+        }
+        .tech-lot-verdict-align-table thead .tech-lot-verdict-align-row th {
+            padding: 8px 8px;
+            font-size: 10px;
+            text-transform: none;
+            letter-spacing: normal;
+            vertical-align: middle;
+        }
+        .tech-lot-verdict-align-id {
+            text-align: left !important;
+            font-weight: 700;
+            font-size: 11px !important;
+        }
+        .tech-lot-verdict-align-criteria {
+            text-align: left !important;
+            font-weight: 600;
+        }
+        .tech-lot-verdict-align-kicker {
+            display: block;
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--text-secondary);
+        }
+        .tech-lot-verdict-align-supplier {
+            padding: 6px 6px !important;
+            vertical-align: middle !important;
+        }
+        /* Match product matrix supplier header: head-inner + compact select (tech-item-supplier-head-line--right) */
+        .tech-lot-verdict-align-supplier .eligibility-supplier-head-inner {
+            min-height: 44px;
+        }
+        .tech-lot-col-id {
+            width: 76px;
+        }
+        .tech-lot-col-criteria {
+            width: 200px;
+        }
+        .tech-lot-col-vendor {
+            width: 1%;
+            min-width: 72px;
+        }
+        /* Line Pass/Fail in technical matrix supplier header — right column, same row as code/name */
+        .tech-item-supplier-head-line--right {
+            flex: 0 0 auto;
+            align-self: center;
+            margin: 0;
+            padding-left: 8px;
+        }
+        .tech-item-supplier-head-line--right .eval-select {
+            width: auto;
+            min-width: 72px;
+            max-width: 92px;
+            box-sizing: border-box;
+            font-size: 10px;
+            padding: 2px 4px;
+        }
         .eligibility-lot-toolbar {
             display: flex;
             align-items: center;
@@ -2498,6 +2618,63 @@
             margin-bottom: var(--spacing-md);
             padding-bottom: var(--spacing-sm);
             border-bottom: 1px solid var(--surface-200);
+        }
+        .eligibility-lot-toolbar--techfin {
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px 20px;
+        }
+        .eligibility-lot-toolbar-techfin-inner {
+            flex: 1;
+            min-width: min(100%, 240px);
+        }
+        .eligibility-lot-toolbar--techfin .eligibility-lot-toolbar-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px 16px;
+        }
+        .eligibility-toolbar-cluster--tech-actions {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 4px 8px;
+            margin-left: auto;
+        }
+        .eligibility-toolbar-cluster--view-mode {
+            flex-shrink: 0;
+        }
+        .techfin-view-mode-segment {
+            display: inline-flex;
+            border: 1px solid var(--surface-300);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background: var(--surface-0);
+            box-shadow: var(--shadow-sm);
+        }
+        .techfin-view-mode-btn {
+            border: none;
+            background: transparent;
+            padding: 6px 12px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            min-height: 32px;
+            line-height: 1.2;
+        }
+        .techfin-view-mode-btn:hover {
+            background: var(--surface-50);
+            color: var(--text-primary);
+        }
+        .techfin-view-mode-btn:focus {
+            outline: none;
+            box-shadow: inset 0 0 0 2px var(--primary-200);
+        }
+        .techfin-view-mode-btn--active {
+            background: var(--surface-100);
+            color: var(--primary-600);
+            box-shadow: inset 0 -2px 0 var(--primary-500);
         }
         .eligibility-lot-field-label {
             font-size: 12px;
@@ -5967,6 +6144,300 @@
             margin-top: var(--spacing-lg);
             padding-top: var(--spacing-md);
             border-top: 1px solid var(--surface-200);
+        }
+
+        /* Dense evaluation workspace header (view-evaluation) — keep vertical space for the grid */
+        .eval-header-compact {
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .eval-header-compact .eval-header-main {
+            padding: 10px 14px;
+        }
+
+        .eval-header-compact .eval-header-top {
+            margin-bottom: 2px;
+            align-items: center;
+        }
+
+        .eval-header-compact .eval-header-ref {
+            margin-bottom: 2px;
+            font-size: 11px;
+        }
+
+        .eval-header-compact .eval-header-title {
+            font-size: 15px;
+            line-height: 1.25;
+        }
+
+        .eval-header-compact .eval-status-badge,
+        .eval-header-compact .eval-role-badge {
+            padding: 2px 8px;
+            font-size: 11px;
+            gap: 4px;
+        }
+
+        .eval-header-compact .eval-header-meta {
+            margin-top: 6px;
+            gap: var(--spacing-xs);
+        }
+
+        .eval-header-compact .eval-meta-tag {
+            font-size: 11px;
+        }
+
+        .eval-header-compact .eval-header-stats {
+            gap: 10px;
+        }
+
+        .eval-header-compact .eval-header-stat-value {
+            font-size: 14px;
+        }
+
+        .eval-header-compact .eval-header-stat-label {
+            font-size: 9px;
+            margin-top: 1px;
+        }
+
+        .eval-header-compact .eval-header-stat-divider {
+            height: 22px;
+        }
+
+        .eval-header-compact .eval-steps-compact {
+            padding: 6px 14px 8px;
+        }
+
+        .eval-header-compact .eval-steps-track {
+            height: 3px;
+        }
+
+        .eval-header-compact .eval-step-point {
+            width: 10px;
+            height: 10px;
+        }
+
+        .eval-header-compact .eval-steps-labels {
+            margin-top: 3px;
+            font-size: 9px;
+            line-height: 1.15;
+        }
+
+        .eval-header-compact .eval-steps-labels small {
+            font-size: 9px;
+            font-weight: 500;
+        }
+
+        /* Technical step 3: Overall + Detailed collapsible workspace */
+        .evaluation-matrix-area {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+        .evaluation-technical-step3-shell {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+        .evaluation-tech-toolbar-slot {
+            margin-bottom: var(--spacing-sm);
+        }
+        .evaluation-tech-toolbar-slot:empty {
+            display: none;
+        }
+        .eval-workspace-details {
+            border: 1px solid var(--surface-200);
+            border-radius: var(--radius-md);
+            background: var(--surface-0);
+            overflow: hidden;
+        }
+        .eval-workspace-details__summary {
+            list-style: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 10px 14px;
+            background: var(--surface-50);
+            border-bottom: 1px solid var(--surface-200);
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            user-select: none;
+        }
+        .eval-workspace-details__summary::-webkit-details-marker {
+            display: none;
+        }
+        .eval-workspace-details__title {
+            flex: 1;
+            min-width: 0;
+        }
+        .eval-workspace-details__chev {
+            font-size: 12px;
+            color: var(--text-muted);
+            transition: transform 0.2s ease;
+            flex-shrink: 0;
+        }
+        .eval-workspace-details[open] .eval-workspace-details__chev {
+            transform: rotate(0deg);
+        }
+        .eval-workspace-details:not([open]) .eval-workspace-details__chev {
+            transform: rotate(-90deg);
+        }
+        .eval-workspace-details__body {
+            padding: var(--spacing-md);
+        }
+        .eval-workspace-details__body--empty {
+            min-height: 12px;
+        }
+        .evaluation-generic-table-shell {
+            overflow-x: auto;
+        }
+
+        /* Overall technical evaluation: per-lot summary tables (all scoped lots × suppliers) */
+        .eval-overall-lot-details {
+            border: 1px solid var(--surface-200);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--spacing-sm);
+            background: var(--surface-0);
+            overflow: hidden;
+        }
+        .eval-overall-lot-details__summary {
+            list-style: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 8px 12px;
+            background: var(--surface-50);
+            border-bottom: 1px solid var(--surface-200);
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            user-select: none;
+        }
+        .eval-overall-lot-details__summary::-webkit-details-marker {
+            display: none;
+        }
+        .eval-overall-lot-details__chev {
+            font-size: 11px;
+            color: var(--text-muted);
+            transition: transform 0.2s ease;
+            flex-shrink: 0;
+        }
+        .eval-overall-lot-details[open] .eval-overall-lot-details__chev {
+            transform: rotate(0deg);
+        }
+        .eval-overall-lot-details:not([open]) .eval-overall-lot-details__chev {
+            transform: rotate(-90deg);
+        }
+        .eval-overall-lot-details__body {
+            padding: 0;
+        }
+        .eval-overall-matrix-wrap {
+            margin-bottom: 0;
+            border: none;
+            border-radius: 0;
+        }
+        .eval-overall-summary-table {
+            width: max-content;
+            min-width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        .eval-overall-summary-table thead th {
+            background: var(--surface-100);
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            padding: 8px 6px;
+            text-align: center;
+            vertical-align: middle;
+            border-right: 1px solid var(--surface-200);
+            border-bottom: 1px solid var(--surface-200);
+        }
+        .eval-overall-summary-th-id,
+        .eval-overall-summary-td-id {
+            width: 76px;
+            min-width: 76px;
+            max-width: 88px;
+            box-sizing: border-box;
+        }
+        .eval-overall-summary-th-id {
+            text-align: left !important;
+        }
+        .eval-overall-summary-th-criteria,
+        .eval-overall-summary-td-criteria {
+            width: 200px;
+            min-width: 200px;
+            max-width: 200px;
+            box-sizing: border-box;
+        }
+        .eval-overall-summary-th-criteria {
+            text-align: left !important;
+            text-transform: none !important;
+            font-size: 10px !important;
+            font-weight: 700 !important;
+            letter-spacing: 0.03em !important;
+            vertical-align: middle !important;
+        }
+        .eval-overall-summary-supplier-head.eligibility-supplier-head {
+            text-align: right !important;
+            text-transform: none !important;
+            letter-spacing: normal !important;
+            font-size: 11px !important;
+            font-weight: 600 !important;
+            background: var(--surface-50) !important;
+            vertical-align: middle !important;
+        }
+        .eval-overall-summary-subth {
+            text-transform: none !important;
+            font-size: 9px !important;
+            font-weight: 600 !important;
+            letter-spacing: 0.02em !important;
+        }
+        .eval-overall-summary-table tbody td {
+            padding: 6px 6px;
+            font-size: 11px;
+            vertical-align: middle;
+            border-right: 1px solid var(--surface-200);
+            border-bottom: 1px solid var(--surface-200);
+            background: var(--surface-0);
+        }
+        .eval-overall-summary-td-id {
+            font-weight: 600;
+            text-align: center;
+        }
+        .eval-overall-summary-td-criteria {
+            color: var(--text-primary);
+            line-height: 1.45;
+            font-size: 11px;
+            vertical-align: top;
+            word-wrap: break-word;
+        }
+        .eval-overall-summary-td-eval {
+            text-align: center;
+            vertical-align: top;
+        }
+        .eval-overall-summary-td-eval .eval-select {
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .eval-header-compact .eval-action-bar {
+            margin-top: 0;
+            padding: 6px 14px;
+            padding-top: 6px;
+            border-top: 1px solid var(--surface-100);
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .eval-header-compact .btn-back-link {
+            padding: 4px 8px;
+            font-size: 12px;
         }
 
         /* ===== WINNER CARD ===== */
@@ -11773,10 +12244,10 @@
                             </div>
                         </div>
                         <div class="eval-steps-labels">
-                            <span class="completed" onclick="switchEvaluationStep(1)">Eligibility<br><small>✓ Complete</small></span>
-                            <span class="completed" onclick="switchEvaluationStep(2)">Qualification<br><small>✓ Complete</small></span>
-                            <span class="active" onclick="switchEvaluationStep(3)">Technical<br><small>In Progress</small></span>
-                            <span onclick="switchEvaluationStep(4)">Financial<br><small>Pending</small></span>
+                            <span class="completed" onclick="switchEvaluationStep(1)">Eligibility <small>✓ Complete</small></span>
+                            <span class="completed" onclick="switchEvaluationStep(2)">Qualification <small>✓ Complete</small></span>
+                            <span class="active" onclick="switchEvaluationStep(3)">Technical <small>In progress</small></span>
+                            <span onclick="switchEvaluationStep(4)">Financial <small>Pending</small></span>
                         </div>
                     </div>
 
@@ -11822,10 +12293,10 @@
                         <button class="vendor-eval-tab" onclick="switchVendorEval('vendor3')"><i class="pi pi-user"></i> MedTech Inc.</button>
                     </div>
                     <div class="view-toggle" id="viewToggle" style="display: none;">
-                        <button class="view-toggle-btn active" onclick="switchEvalView('supplier')">
+                        <button type="button" class="view-toggle-btn active" onclick="switchEvalView('supplier', this)">
                             <i class="pi pi-user"></i> Supplier
                         </button>
-                        <button class="view-toggle-btn" onclick="switchEvalView('lot')">
+                        <button type="button" class="view-toggle-btn" onclick="switchEvalView('lot', this)">
                             <i class="pi pi-th-large"></i> Lot
                         </button>
                     </div>
@@ -11851,9 +12322,34 @@
                         <span style="font-weight: 600; color: var(--text-primary);">2 of 6</span>
                     </div>
 
-                    <!-- Evaluation Table -->
-                    <div style="overflow-x: auto;" id="evaluation-table-container">
-                        <!-- Table will be rendered by JavaScript -->
+                    <!-- Evaluation matrix: step 3 uses Overall + Detailed collapsibles; other steps use generic mount -->
+                    <div id="evaluation-matrix-area" class="evaluation-matrix-area">
+                        <div id="evaluation-technical-step3-shell" class="evaluation-technical-step3-shell" style="display: none;">
+                            <div id="evaluation-tech-toolbar-slot" class="evaluation-tech-toolbar-slot" aria-label="Technical evaluation scope and actions"></div>
+                            <details class="eval-workspace-details" id="eval-tw-overall-details" open>
+                                <summary class="eval-workspace-details__summary">
+                                    <span class="eval-workspace-details__title">Overall Technical Evaluation</span>
+                                    <i class="pi pi-chevron-down eval-workspace-details__chev" aria-hidden="true"></i>
+                                </summary>
+                                <div class="eval-workspace-details__body" id="eval-overall-technical-body"></div>
+                            </details>
+                            <details class="eval-workspace-details" id="eval-tw-detailed-details" open>
+                                <summary class="eval-workspace-details__summary">
+                                    <span class="eval-workspace-details__title">Detailed Technical Evaluation</span>
+                                    <i class="pi pi-chevron-down eval-workspace-details__chev" aria-hidden="true"></i>
+                                </summary>
+                                <div class="eval-workspace-details__body">
+                                    <div style="overflow-x: auto;" id="evaluation-table-container">
+                                        <!-- Table will be rendered by JavaScript (technical step 3) -->
+                                    </div>
+                                </div>
+                            </details>
+                        </div>
+                        <div id="evaluation-generic-table-shell" class="evaluation-generic-table-shell">
+                            <div id="evaluation-table-container-generic">
+                                <!-- Table will be rendered by JavaScript (steps 1, 2, 4, …) -->
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Action Buttons -->
@@ -18290,6 +18786,18 @@
         /** Vendor ids selected in matrix toolbar (subset of current lot). Lazily initialized to all vendors in lot. */
         let eligibilitySupplierSelectedIds = null;
 
+        /** Technical / financial workspace: toolbar mirrors eligibility pattern but follows Supplier vs Lot view toggle. */
+        let techFinToolbarLotMultiIds = null;
+        let techFinToolbarSupplierMultiIds = null;
+        let techFinToolbarLotRadioId = null;
+        let techFinToolbarSupplierRadioId = null;
+        /** Step 3 workspace: `all` uses toolbar lot/supplier filters; `assigned` demo = S1 only, all lots. */
+        let techFinWorkspaceViewMode = 'all';
+
+        /** Eligibility / Qualification (steps 1–2): toolbar lot multiselect; `assigned` = S1 only, all lots (demo). */
+        let eligibilityToolbarLotKeys = null;
+        let eligibilityWorkspaceViewMode = 'all';
+
         const eligibilityLotScopeOptions = [
             { key: 'lot1', number: '1', name: 'PPE & protective equipment', vendorIds: ['vendor1', 'vendor2'] },
             { key: 'lot2', number: '2', name: 'Medical consumables', vendorIds: ['vendor2', 'vendor3'] },
@@ -19058,12 +19566,6 @@
                 evalView.style.display = 'block';
             }
             
-            // Show/hide view toggle based on current step
-            const viewToggle = document.getElementById('viewToggle');
-            if (viewToggle) {
-                viewToggle.style.display = (currentEvaluationStep === 3 || currentEvaluationStep === 4) ? 'flex' : 'none';
-            }
-            
             updateRoleButtons();
             switchEvaluationStep(currentEvaluationStep); // This will render the table
             
@@ -19177,28 +19679,7 @@
                 roleBadge.innerHTML = roleLabels[role] || roleLabels['evaluator'];
             }
             
-            // Hide/show elements based on role
-            const evalTabsContainer = document.getElementById('evalTabsContainer');
-            const vendorInfoBar = document.getElementById('vendor-info-bar');
-            const viewToggle = document.getElementById('viewToggle');
-            
-            if (role === 'comparison') {
-                // Hide vendor tabs, info bar, and view toggle for Overview Dashboard
-                if (evalTabsContainer && evalTabsContainer.parentElement) evalTabsContainer.parentElement.style.display = 'none';
-                if (vendorInfoBar) vendorInfoBar.style.display = 'none';
-                if (viewToggle) viewToggle.style.display = 'none';
-            } else {
-                const hideSupplierChrome = currentEvaluationStep === 1 || currentEvaluationStep === 2;
-                if (evalTabsContainer && evalTabsContainer.parentElement) {
-                    evalTabsContainer.parentElement.style.display = hideSupplierChrome ? 'none' : 'flex';
-                }
-                if (vendorInfoBar) {
-                    vendorInfoBar.style.display = hideSupplierChrome ? 'none' : 'flex';
-                }
-                if (viewToggle) {
-                    viewToggle.style.display = (currentEvaluationStep === 3 || currentEvaluationStep === 4) ? 'flex' : 'none';
-                }
-            }
+            syncEvaluationWorkspaceChrome();
             
             renderEvaluationTable();
         }
@@ -19237,6 +19718,32 @@
             }
         }
 
+        /** Technical/Financial: scope toolbar in content — hide top vendor/lot chrome row (steps 1–4). */
+        function syncEvaluationWorkspaceChrome() {
+            const evalTabsContainer = document.getElementById('evalTabsContainer');
+            const vendorInfoBar = document.getElementById('vendor-info-bar');
+            const viewToggle = document.getElementById('viewToggle');
+            const step = currentEvaluationStep;
+            const role = currentEvaluationRole;
+
+            const hideTopChromeRow = role === 'comparison' || step === 1 || step === 2 || step === 3 || step === 4;
+            if (evalTabsContainer && evalTabsContainer.parentElement) {
+                evalTabsContainer.parentElement.style.display = hideTopChromeRow ? 'none' : 'flex';
+            }
+
+            const isTechFin = step === 3 || step === 4;
+            if (vendorInfoBar) {
+                vendorInfoBar.style.display = (hideTopChromeRow || isTechFin) ? 'none' : 'flex';
+            }
+            if (evalTabsContainer) {
+                evalTabsContainer.style.display = '';
+            }
+            if (viewToggle) {
+                viewToggle.style.display = 'none';
+                viewToggle.style.marginLeft = '';
+            }
+        }
+
         function switchEvaluationStep(step) {
             currentEvaluationStep = step;
             
@@ -19257,34 +19764,14 @@
                 }
             });
             
-            // Show/hide view toggle based on step (show for Technical step 3 and Financial step 4)
-            const viewToggle = document.getElementById('viewToggle');
-            if (viewToggle) {
-                viewToggle.style.display = (step === 3 || step === 4) ? 'flex' : 'none';
-            }
-            
-            const evalTabsContainer = document.getElementById('evalTabsContainer');
-            const vendorInfoBar = document.getElementById('vendor-info-bar');
-            const hideSupplierChrome = currentEvaluationRole === 'comparison' || step === 1 || step === 2;
-            if (evalTabsContainer && evalTabsContainer.parentElement) {
-                evalTabsContainer.parentElement.style.display = hideSupplierChrome ? 'none' : 'flex';
-            }
-            if (vendorInfoBar) {
-                vendorInfoBar.style.display = hideSupplierChrome ? 'none' : 'flex';
-            }
+            syncEvaluationWorkspaceChrome();
             
             // Reset to supplier view when changing steps
             if (step !== 3 && step !== 4) {
                 currentEvalView = 'supplier';
             }
-            
-            // Update tabs based on current view
-            if (currentEvalView === 'lot' && (step === 3 || step === 4)) {
-                const tabsContainer = document.getElementById('evalTabsContainer');
-                tabsContainer.innerHTML = `
-                    <button class="lot-tab ${currentLotId === 'lot1' ? 'active' : ''}" onclick="switchLot('lot1')"><i class="pi pi-th-large"></i> Lot 1: PPE</button>
-                    <button class="lot-tab ${currentLotId === 'lot2' ? 'active' : ''}" onclick="switchLot('lot2')"><i class="pi pi-th-large"></i> Lot 2: Medical Consumables</button>
-                `;
+            if (step !== 3) {
+                techFinWorkspaceViewMode = 'all';
             }
             
             // Update old step indicators (for backwards compatibility)
@@ -19336,11 +19823,68 @@
             renderEvaluationTable();
         }
 
+        function syncEvaluationTableShellVisibility() {
+            const techShell = document.getElementById('evaluation-technical-step3-shell');
+            const genShell = document.getElementById('evaluation-generic-table-shell');
+            if (!techShell || !genShell) {
+                return;
+            }
+            if (currentEvaluationStep === 3) {
+                techShell.style.display = '';
+                genShell.style.display = 'none';
+            } else {
+                techShell.style.display = 'none';
+                genShell.style.display = '';
+            }
+        }
+
+        function getEvaluationTableContainer() {
+            if (currentEvaluationStep === 3) {
+                return document.getElementById('evaluation-table-container');
+            }
+            return document.getElementById('evaluation-table-container-generic');
+        }
+
+        function clearEvaluationTechToolbarSlot() {
+            var slot = document.getElementById('evaluation-tech-toolbar-slot');
+            if (slot) {
+                slot.innerHTML = '';
+            }
+        }
+
+        function clearOverallTechnicalEvaluationBody() {
+            var el = document.getElementById('eval-overall-technical-body');
+            if (el) {
+                el.innerHTML = '';
+            }
+        }
+
+        function syncEvaluationTechToolbarSlot(stepData) {
+            var slot = document.getElementById('evaluation-tech-toolbar-slot');
+            if (!slot) {
+                return;
+            }
+            if (currentEvaluationStep !== 3 || !stepData) {
+                slot.innerHTML = '';
+                return;
+            }
+            slot.innerHTML = renderTechFinScopeToolbarIfApplicable(stepData);
+        }
+
         function switchVendorEval(vendorId) {
             currentVendorEval = vendorId;
+            if (currentEvaluationStep === 3 || currentEvaluationStep === 4) {
+                techFinToolbarSupplierRadioId = vendorId;
+                techFinToolbarSupplierMultiIds = [vendorId];
+            }
             
             document.querySelectorAll('.vendor-eval-tab').forEach(tab => tab.classList.remove('active'));
-            event.target.classList.add('active');
+            var vendorTab = typeof event !== 'undefined' && event && event.target ? event.target.closest('.vendor-eval-tab') : null;
+            if (vendorTab) {
+                vendorTab.classList.add('active');
+            } else {
+                syncVendorTabActiveClass(vendorId);
+            }
             
             const vendorNames = {
                 'vendor1': 'MedSupply Ltd.',
@@ -19359,8 +19903,12 @@
         }
 
         function renderEvaluationTable() {
-            const container = document.getElementById('evaluation-table-container');
-            
+            syncEvaluationTableShellVisibility();
+            const container = getEvaluationTableContainer();
+            if (!container) {
+                return;
+            }
+
             // Determine step key based on current evaluation step and view
             let stepKey;
             if (currentEvaluationStep === 3) {
@@ -19370,18 +19918,36 @@
             }
             
             const stepData = evaluationData[stepKey];
+
+            if (currentEvaluationStep !== 3) {
+                clearEvaluationTechToolbarSlot();
+                clearOverallTechnicalEvaluationBody();
+            }
             
             if (!stepData) {
+                if (currentEvaluationStep === 3) {
+                    clearEvaluationTechToolbarSlot();
+                    clearOverallTechnicalEvaluationBody();
+                }
                 container.innerHTML = '<p>No evaluation data available for this step.</p>';
                 return;
             }
             
+            // Technical step 3: toolbar above Overall/Detailed; matrix only inside Detailed section
+            if (currentEvaluationStep === 3) {
+                syncEvaluationTechToolbarSlot(stepData);
+                var overallBody = document.getElementById('eval-overall-technical-body');
+                if (overallBody) {
+                    overallBody.innerHTML = renderOverallTechnicalEvaluationSectionHtml(stepData);
+                }
+                container.innerHTML = renderTechnicalEvaluationUI(stepData);
+                return;
+            }
+
             // Render based on view type
             if (currentEvalView === 'lot' && stepData.lots) {
                 if (currentEvaluationStep === 4) {
                     renderFinancialLotView(container, stepData);
-                } else if (currentEvaluationStep === 3) {
-                    renderLotView(container, stepData);
                 }
             } else if (currentEvaluationRole === 'comparison') {
                 renderComparisonView(container, stepData);
@@ -19394,12 +19960,40 @@
 
         function setEligibilityLotScopeFromSelect(key) {
             currentEligibilityLotKey = key;
-            eligibilitySupplierSelectedIds = getEligibilityVendorsForLotKey(currentEligibilityLotKey).map(v => v.id);
+            eligibilityToolbarLotKeys = [key];
+            eligibilitySupplierSelectedIds = getEligibilityUnionVendorsForLotKeys(eligibilityToolbarLotKeys).map(v => v.id);
             renderEvaluationTable();
         }
 
         function getEligibilityLotOption(key) {
             return eligibilityLotScopeOptions.find(o => o.key === key) || eligibilityLotScopeOptions[0];
+        }
+
+        function getAllEligibilityLotKeys() {
+            return eligibilityLotScopeOptions.map(o => o.key);
+        }
+
+        function ensureEligibilityToolbarLotKeys() {
+            const allKeys = getAllEligibilityLotKeys();
+            if (!eligibilityToolbarLotKeys || eligibilityToolbarLotKeys.length === 0) {
+                eligibilityToolbarLotKeys = currentEligibilityLotKey && allKeys.indexOf(currentEligibilityLotKey) >= 0
+                    ? [currentEligibilityLotKey]
+                    : [allKeys[0]];
+            }
+            eligibilityToolbarLotKeys = eligibilityToolbarLotKeys.filter(k => allKeys.indexOf(k) >= 0);
+            if (eligibilityToolbarLotKeys.length === 0) {
+                eligibilityToolbarLotKeys = [allKeys[0]];
+            }
+            currentEligibilityLotKey = eligibilityToolbarLotKeys[0];
+        }
+
+        /** Lot keys selected in toolbar (multiselect). */
+        function getEligibilityToolbarEffectiveLotKeys() {
+            ensureEligibilityToolbarLotKeys();
+            if ((currentEvaluationStep === 1 || currentEvaluationStep === 2) && eligibilityWorkspaceViewMode === 'assigned') {
+                return getAllEligibilityLotKeys();
+            }
+            return eligibilityToolbarLotKeys.slice();
         }
 
         function getEligibilityVendorsForLotKey(lotKey) {
@@ -19408,28 +20002,94 @@
             return eligibilityMatrixVendors.filter(v => ids.includes(v.id));
         }
 
-        function eligibilitySupplierSelectionEnsureForCurrentLot() {
-            const allowed = getEligibilityVendorsForLotKey(currentEligibilityLotKey).map(v => v.id);
+        function getEligibilityUnionVendorsForLotKeys(lotKeys) {
+            const seen = {};
+            const out = [];
+            lotKeys.forEach(k => {
+                getEligibilityVendorsForLotKey(k).forEach(v => {
+                    if (!seen[v.id]) {
+                        seen[v.id] = true;
+                        out.push(v);
+                    }
+                });
+            });
+            return out;
+        }
+
+        function eligibilitySupplierSelectionEnsureForUnionLots(lotKeys) {
+            const allowed = getEligibilityUnionVendorsForLotKeys(lotKeys).map(v => v.id);
             if (eligibilitySupplierSelectedIds === null) {
-                eligibilitySupplierSelectedIds = [...allowed];
+                eligibilitySupplierSelectedIds = allowed.slice();
                 return;
             }
-            eligibilitySupplierSelectedIds = eligibilitySupplierSelectedIds.filter(id => allowed.includes(id));
+            eligibilitySupplierSelectedIds = eligibilitySupplierSelectedIds.filter(id => allowed.indexOf(id) >= 0);
         }
 
         function getEligibilityMatrixVendors() {
-            eligibilitySupplierSelectionEnsureForCurrentLot();
-            const allowed = getEligibilityVendorsForLotKey(currentEligibilityLotKey);
-            return allowed.filter(v => eligibilitySupplierSelectedIds.includes(v.id));
+            if ((currentEvaluationStep === 1 || currentEvaluationStep === 2) && eligibilityWorkspaceViewMode === 'assigned') {
+                return eligibilityMatrixVendors.filter(v => v.id === 'vendor1');
+            }
+            const eff = getEligibilityToolbarEffectiveLotKeys();
+            eligibilitySupplierSelectionEnsureForUnionLots(eff);
+            const union = getEligibilityUnionVendorsForLotKeys(eff);
+            return union.filter(v => eligibilitySupplierSelectedIds.indexOf(v.id) >= 0);
         }
 
-        function eligibilityLotRadioChanged(radio) {
-            if (!radio.checked) {
+        /** Suppliers in one eligibility lot column set, intersected with toolbar supplier checkboxes. */
+        function getEligibilityMatrixVendorsForLotKey(lotKey) {
+            if ((currentEvaluationStep === 1 || currentEvaluationStep === 2) && eligibilityWorkspaceViewMode === 'assigned') {
+                return getEligibilityVendorsForLotKey(lotKey).filter(v => v.id === 'vendor1');
+            }
+            const eff = getEligibilityToolbarEffectiveLotKeys();
+            eligibilitySupplierSelectionEnsureForUnionLots(eff);
+            const inLot = getEligibilityVendorsForLotKey(lotKey);
+            return inLot.filter(v => eligibilitySupplierSelectedIds.indexOf(v.id) >= 0);
+        }
+
+        function eligibilitySetWorkspaceViewMode(mode) {
+            eligibilityWorkspaceViewMode = mode === 'assigned' ? 'assigned' : 'all';
+            if (eligibilityWorkspaceViewMode === 'assigned') {
+                eligibilitySupplierSelectedIds = ['vendor1'];
+            } else if (eligibilitySupplierSelectedIds === null || eligibilitySupplierSelectedIds.length === 0) {
+                ensureEligibilityToolbarLotKeys();
+                eligibilitySupplierSelectedIds = getEligibilityUnionVendorsForLotKeys(eligibilityToolbarLotKeys).map(v => v.id);
+            }
+            renderEvaluationTable();
+        }
+
+        function eligibilityLotMultiMasterChanged(master) {
+            ensureEligibilityToolbarLotKeys();
+            const allKeys = getAllEligibilityLotKeys();
+            eligibilityToolbarLotKeys = master.checked ? allKeys.slice() : [];
+            if (eligibilityToolbarLotKeys.length === 0) {
+                eligibilityToolbarLotKeys = [allKeys[0]];
+            }
+            currentEligibilityLotKey = eligibilityToolbarLotKeys[0];
+            eligibilitySupplierSelectedIds = getEligibilityUnionVendorsForLotKeys(eligibilityToolbarLotKeys).map(v => v.id);
+            renderEvaluationTable();
+        }
+
+        function eligibilityLotMultiCheckboxChanged(el) {
+            const panel = el.closest('.eligibility-dropdown-panel');
+            if (!panel) {
                 return;
             }
-            currentEligibilityLotKey = radio.value;
-            eligibilitySupplierSelectedIds = getEligibilityVendorsForLotKey(currentEligibilityLotKey).map(v => v.id);
-            const det = radio.closest('details');
+            const cbs = panel.querySelectorAll('input[name="eligibility-lot-cb"]');
+            eligibilityToolbarLotKeys = Array.from(cbs).filter(cb => cb.checked).map(cb => cb.value);
+            if (eligibilityToolbarLotKeys.length === 0) {
+                eligibilityToolbarLotKeys = [getAllEligibilityLotKeys()[0]];
+            }
+            currentEligibilityLotKey = eligibilityToolbarLotKeys[0];
+            const unionIds = getEligibilityUnionVendorsForLotKeys(eligibilityToolbarLotKeys).map(v => v.id);
+            if (eligibilitySupplierSelectedIds === null) {
+                eligibilitySupplierSelectedIds = unionIds.slice();
+            } else {
+                eligibilitySupplierSelectedIds = eligibilitySupplierSelectedIds.filter(id => unionIds.indexOf(id) >= 0);
+                if (eligibilitySupplierSelectedIds.length === 0) {
+                    eligibilitySupplierSelectedIds = unionIds.slice();
+                }
+            }
+            const det = el.closest('details');
             if (det) {
                 det.open = false;
             }
@@ -19447,9 +20107,9 @@
         }
 
         function eligibilitySupplierMasterChanged(master) {
-            const vendorsInLot = getEligibilityVendorsForLotKey(currentEligibilityLotKey);
+            const allIds = eligibilityMatrixVendors.map(v => v.id);
             if (master.checked) {
-                eligibilitySupplierSelectedIds = vendorsInLot.map(v => v.id);
+                eligibilitySupplierSelectedIds = allIds.slice();
             } else {
                 eligibilitySupplierSelectedIds = [];
             }
@@ -19512,29 +20172,56 @@
         }
 
         function renderEligibilityLotToolbar() {
-            const currentLot = getEligibilityLotOption(currentEligibilityLotKey);
-            const lotSummaryText = 'Lot ' + currentLot.number + ' — ' + currentLot.name;
-            const lotRadios = eligibilityLotScopeOptions.map(o => `
+            ensureEligibilityToolbarLotKeys();
+            if (!((currentEvaluationStep === 1 || currentEvaluationStep === 2) && eligibilityWorkspaceViewMode === 'assigned')) {
+                eligibilitySupplierSelectionEnsureForUnionLots(getEligibilityToolbarEffectiveLotKeys());
+            }
+            const allLotKeys = getAllEligibilityLotKeys();
+            const nLotPick = eligibilityToolbarLotKeys.length;
+            const allLotsPicked = nLotPick === allLotKeys.length && allLotKeys.every(k => eligibilityToolbarLotKeys.indexOf(k) >= 0);
+            const lotSummaryText = (() => {
+                if (eligibilityWorkspaceViewMode === 'assigned' && (currentEvaluationStep === 1 || currentEvaluationStep === 2)) {
+                    return 'Assigned (all lots · demo)';
+                }
+                if (nLotPick === 0) {
+                    return 'No lots selected';
+                }
+                if (allLotsPicked) {
+                    return 'All lots (' + allLotKeys.length + ')';
+                }
+                if (nLotPick === 1) {
+                    const o = getEligibilityLotOption(eligibilityToolbarLotKeys[0]);
+                    return 'Lot ' + o.number + ' — ' + o.name;
+                }
+                return nLotPick + ' lots selected';
+            })();
+
+            const lotRows = [
+                `<label class="eligibility-radio-row">
+                    <input type="checkbox" id="eligibility-lot-master" ${allLotsPicked ? 'checked' : ''} onchange="eligibilityLotMultiMasterChanged(this)" aria-label="Select all lots" />
+                    <span><strong>All lots</strong> <span style="font-weight: 500; color: var(--text-muted);">(${allLotKeys.length})</span></span>
+                </label>`
+            ].concat(eligibilityLotScopeOptions.map(o => `
                 <label class="eligibility-radio-row">
-                    <input type="radio" name="eligibility-lot-pick" value="${o.key}" ${currentEligibilityLotKey === o.key ? 'checked' : ''} onchange="eligibilityLotRadioChanged(this)" />
+                    <input type="checkbox" name="eligibility-lot-cb" value="${o.key}" ${eligibilityToolbarLotKeys.indexOf(o.key) >= 0 ? 'checked' : ''} onchange="eligibilityLotMultiCheckboxChanged(this)" />
                     <span><strong>Lot ${o.number}</strong> — ${o.name}</span>
                 </label>
-            `).join('');
+            `));
 
-            const vendorsInLot = getEligibilityVendorsForLotKey(currentEligibilityLotKey);
-            eligibilitySupplierSelectionEnsureForCurrentLot();
-            const nLot = vendorsInLot.length;
-            const nSel = eligibilitySupplierSelectedIds.length;
-            const allSelected = nLot > 0 && nSel === nLot && vendorsInLot.every(v => eligibilitySupplierSelectedIds.includes(v.id));
+            const nVendorsAll = eligibilityMatrixVendors.length;
+            const supplierIdsForUi = eligibilitySupplierSelectedIds || [];
+            const nSel = supplierIdsForUi.length;
+            const allSuppliersSelected = nVendorsAll > 0 && nSel === nVendorsAll
+                && eligibilityMatrixVendors.every(v => supplierIdsForUi.indexOf(v.id) >= 0);
 
             const supplierRows = [
                 `<label class="eligibility-radio-row">
-                    <input type="checkbox" id="eligibility-supplier-master" ${allSelected ? 'checked' : ''} onchange="eligibilitySupplierMasterChanged(this)" aria-label="Select all suppliers in this lot" />
-                    <span><strong>All suppliers</strong> <span style="font-weight: 500; color: var(--text-muted);">(${nLot})</span></span>
+                    <input type="checkbox" id="eligibility-supplier-master" ${allSuppliersSelected ? 'checked' : ''} onchange="eligibilitySupplierMasterChanged(this)" aria-label="Select all suppliers" />
+                    <span><strong>All suppliers</strong> <span style="font-weight: 500; color: var(--text-muted);">(${nVendorsAll})</span></span>
                 </label>`
-            ].concat(vendorsInLot.map(v => `
+            ].concat(eligibilityMatrixVendors.map(v => `
                 <label class="eligibility-radio-row">
-                    <input type="checkbox" name="eligibility-supplier-cb" value="${v.id}" ${eligibilitySupplierSelectedIds.includes(v.id) ? 'checked' : ''} onchange="eligibilitySupplierCheckboxChanged(this)" />
+                    <input type="checkbox" name="eligibility-supplier-cb" value="${v.id}" ${supplierIdsForUi.indexOf(v.id) >= 0 ? 'checked' : ''} onchange="eligibilitySupplierCheckboxChanged(this)" />
                     <span><strong>${v.code}</strong> — ${v.name}</span>
                 </label>
             `));
@@ -19543,44 +20230,374 @@
                 if (nSel === 0) {
                     return 'No suppliers selected';
                 }
-                if (allSelected) {
-                    return 'All suppliers (' + nLot + ')';
+                if (allSuppliersSelected) {
+                    return 'All suppliers (' + nVendorsAll + ')';
                 }
                 if (nSel === 1) {
-                    const one = vendorsInLot.find(v => v.id === eligibilitySupplierSelectedIds[0]);
+                    const one = eligibilityMatrixVendors.find(v => v.id === supplierIdsForUi[0]);
                     return one ? (one.code + ' — ' + one.name) : '1 supplier';
                 }
                 return nSel + ' suppliers selected';
             })();
 
+            const showEvalChrome = currentEvaluationStep === 1 || currentEvaluationStep === 2;
+            const allViewActive = eligibilityWorkspaceViewMode !== 'assigned' ? ' techfin-view-mode-btn--active' : '';
+            const assignedViewActive = eligibilityWorkspaceViewMode === 'assigned' ? ' techfin-view-mode-btn--active' : '';
+            const viewCluster = showEvalChrome
+                ? `<div class="eligibility-toolbar-cluster eligibility-toolbar-cluster--view-mode">
+                        <span class="eligibility-lot-field-label"><i class="pi pi-bookmark" aria-hidden="true"></i> View</span>
+                        <div class="techfin-view-mode-segment" role="group" aria-label="All evaluations or assigned to me (demo: S1, all lots)">
+                            <button type="button" class="techfin-view-mode-btn${allViewActive}" onclick="eligibilitySetWorkspaceViewMode('all')">All</button>
+                            <button type="button" class="techfin-view-mode-btn${assignedViewActive}" onclick="eligibilitySetWorkspaceViewMode('assigned')">Assigned to me</button>
+                        </div>
+                    </div>`
+                : '';
+
+            const actionCluster = showEvalChrome
+                ? `<div class="eligibility-toolbar-cluster eligibility-toolbar-cluster--tech-actions" role="group" aria-label="Expand or collapse eligibility lot panels">
+                        <button type="button" class="btn btn-ghost" onclick="expandAllEligibilityLots()" style="font-size: 10px; padding: 2px 6px;"><i class="pi pi-angle-double-down" aria-hidden="true"></i> Expand lots</button>
+                        <button type="button" class="btn btn-ghost" onclick="collapseAllEligibilityLots()" style="font-size: 10px; padding: 2px 6px;"><i class="pi pi-angle-double-up" aria-hidden="true"></i> Collapse lots</button>
+                        <button type="button" class="btn btn-ghost techfin-download-xls-mock" style="font-size: 10px; padding: 2px 6px;" title="Export (mock — not wired)" onclick="eligibilityDownloadXlsMock()"><i class="pi pi-download" aria-hidden="true"></i> Download XLS</button>
+                    </div>`
+                : '';
+
             return `
-                <div class="eligibility-lot-toolbar">
-                    <div class="eligibility-toolbar-cluster">
-                        <span class="eligibility-lot-field-label"><i class="pi pi-th-large"></i> Lot</span>
-                        <details class="eligibility-dropdown" id="eligibility-lot-dropdown">
-                            <summary>
-                                <span class="eligibility-dropdown-value">${lotSummaryText}</span>
-                                <i class="pi pi-chevron-down" aria-hidden="true"></i>
-                            </summary>
-                            <div class="eligibility-dropdown-panel eligibility-dropdown-panel--scroll" role="group" aria-label="Choose lot">
-                                ${lotRadios}
+                <div class="eligibility-lot-toolbar eligibility-lot-toolbar--techfin">
+                    <div class="eligibility-lot-toolbar-techfin-inner">
+                        <div class="eligibility-lot-toolbar-row">
+                            ${viewCluster}
+                            <div class="eligibility-toolbar-cluster">
+                                <span class="eligibility-lot-field-label"><i class="pi pi-th-large"></i> Lot</span>
+                                <details class="eligibility-dropdown" id="eligibility-lot-dropdown">
+                                    <summary>
+                                        <span class="eligibility-dropdown-value">${lotSummaryText}</span>
+                                        <i class="pi pi-chevron-down" aria-hidden="true"></i>
+                                    </summary>
+                                    <div class="eligibility-dropdown-panel eligibility-dropdown-panel--scroll" role="group" aria-label="Choose one or more lots">
+                                        ${lotRows.join('')}
+                                    </div>
+                                </details>
                             </div>
-                        </details>
-                    </div>
-                    <div class="eligibility-toolbar-cluster">
-                        <span class="eligibility-lot-field-label"><i class="pi pi-users"></i> Suppliers</span>
-                        <details class="eligibility-dropdown" id="eligibility-supplier-dropdown">
-                            <summary>
-                                <span class="eligibility-dropdown-value">${supplierSummary}</span>
-                                <i class="pi pi-chevron-down" aria-hidden="true"></i>
-                            </summary>
-                            <div class="eligibility-dropdown-panel eligibility-dropdown-panel--scroll" role="group" aria-label="Select one or more suppliers (multiselect)">
-                                ${supplierRows.join('')}
+                            <div class="eligibility-toolbar-cluster">
+                                <span class="eligibility-lot-field-label"><i class="pi pi-users"></i> Suppliers</span>
+                                <details class="eligibility-dropdown" id="eligibility-supplier-dropdown">
+                                    <summary>
+                                        <span class="eligibility-dropdown-value">${supplierSummary}</span>
+                                        <i class="pi pi-chevron-down" aria-hidden="true"></i>
+                                    </summary>
+                                    <div class="eligibility-dropdown-panel eligibility-dropdown-panel--scroll" role="group" aria-label="Select one or more suppliers (multiselect)">
+                                        ${supplierRows.join('')}
+                                    </div>
+                                </details>
                             </div>
-                        </details>
+                            ${actionCluster}
+                        </div>
                     </div>
                 </div>
             `;
+        }
+
+        function getTechFinStepDataKey() {
+            if (currentEvaluationStep === 3) {
+                return 'step3Lots';
+            }
+            if (currentEvaluationStep === 4) {
+                return 'step4';
+            }
+            return null;
+        }
+
+        function getTechFinAllLotIds(stepData) {
+            if (!stepData || !stepData.lots) {
+                return [];
+            }
+            return stepData.lots.map(function(l) { return l.id; });
+        }
+
+        function getTechFinVendorUngm(vendorId) {
+            var map = { vendor1: '309663', vendor2: '301245', vendor3: '315789' };
+            return map[vendorId] || '—';
+        }
+
+        function ensureTechFinToolbarState(stepData) {
+            var lotIds = getTechFinAllLotIds(stepData);
+            var vendorIds = eligibilityMatrixVendors.map(function(v) { return v.id; });
+            if (lotIds.length === 0 || vendorIds.length === 0) {
+                return;
+            }
+            if (!techFinToolbarLotMultiIds || techFinToolbarLotMultiIds.length === 0) {
+                techFinToolbarLotMultiIds = lotIds.slice();
+            }
+            techFinToolbarLotMultiIds = techFinToolbarLotMultiIds.filter(function(id) { return lotIds.indexOf(id) >= 0; });
+            if (techFinToolbarLotMultiIds.length === 0) {
+                techFinToolbarLotMultiIds = lotIds.slice();
+            }
+            if (!techFinToolbarSupplierMultiIds || techFinToolbarSupplierMultiIds.length === 0) {
+                techFinToolbarSupplierMultiIds = vendorIds.slice();
+            }
+            techFinToolbarSupplierMultiIds = techFinToolbarSupplierMultiIds.filter(function(id) { return vendorIds.indexOf(id) >= 0; });
+            if (techFinToolbarSupplierMultiIds.length === 0) {
+                techFinToolbarSupplierMultiIds = vendorIds.slice();
+            }
+            if (!techFinToolbarLotRadioId || lotIds.indexOf(techFinToolbarLotRadioId) < 0) {
+                techFinToolbarLotRadioId = lotIds.indexOf(currentLotId) >= 0 ? currentLotId : lotIds[0];
+            }
+            currentLotId = techFinToolbarLotRadioId;
+            if (!techFinToolbarSupplierRadioId || vendorIds.indexOf(techFinToolbarSupplierRadioId) < 0) {
+                techFinToolbarSupplierRadioId = currentVendorEval;
+            }
+        }
+
+        function getTechFinFilteredLots(stepData) {
+            if (!stepData || !stepData.lots) {
+                return [];
+            }
+            ensureTechFinToolbarState(stepData);
+            if (currentEvaluationStep === 3 && techFinWorkspaceViewMode === 'assigned') {
+                return stepData.lots.slice();
+            }
+            var allLotIds = stepData.lots.map(function(l) { return l.id; });
+            var pickLots = (techFinToolbarLotMultiIds && techFinToolbarLotMultiIds.length > 0) ? techFinToolbarLotMultiIds : allLotIds;
+            return stepData.lots.filter(function(l) { return pickLots.indexOf(l.id) >= 0; });
+        }
+
+        function getTechFinFilteredVendors() {
+            var sk = getTechFinStepDataKey();
+            var sd = sk ? evaluationData[sk] : null;
+            ensureTechFinToolbarState(sd || { lots: [] });
+            if (currentEvaluationStep === 3 && techFinWorkspaceViewMode === 'assigned') {
+                return eligibilityMatrixVendors.filter(function(v) { return v.id === 'vendor1'; });
+            }
+            var pickV = (techFinToolbarSupplierMultiIds && techFinToolbarSupplierMultiIds.length > 0)
+                ? techFinToolbarSupplierMultiIds
+                : eligibilityMatrixVendors.map(function(v) { return v.id; });
+            return eligibilityMatrixVendors.filter(function(v) { return pickV.indexOf(v.id) >= 0; });
+        }
+
+        function techFinSetWorkspaceViewMode(mode) {
+            techFinWorkspaceViewMode = (mode === 'assigned') ? 'assigned' : 'all';
+            renderEvaluationTable();
+        }
+
+        function renderTechFinScopeToolbarIfApplicable(stepData) {
+            if (currentEvaluationRole === 'comparison' || !stepData || !stepData.lots) {
+                return '';
+            }
+            if (currentEvaluationStep !== 3 && currentEvaluationStep !== 4) {
+                return '';
+            }
+            return renderTechFinScopeToolbar(stepData);
+        }
+
+        function renderTechFinToolbarChromeHtml(innerClustersHtml, secondaryRowHtml) {
+            var extraRow = secondaryRowHtml || '';
+            return (
+                '<div class="eligibility-lot-toolbar eligibility-lot-toolbar--techfin">' +
+                    '<div class="eligibility-lot-toolbar-techfin-inner">' +
+                        '<div class="eligibility-lot-toolbar-row">' + innerClustersHtml + '</div>' +
+                        extraRow +
+                    '</div>' +
+                '</div>'
+            );
+        }
+
+        function renderTechFinScopeToolbar(stepData) {
+            ensureTechFinToolbarState(stepData);
+            var lotIds = getTechFinAllLotIds(stepData);
+            var lotsById = {};
+            stepData.lots.forEach(function(l) { lotsById[l.id] = l; });
+
+            var nLotPick = techFinToolbarLotMultiIds.length;
+            var allLots = nLotPick === lotIds.length && lotIds.every(function(id) { return techFinToolbarLotMultiIds.indexOf(id) >= 0; });
+            var lotSummary = (function() {
+                if (nLotPick === 0) {
+                    return 'No lots selected';
+                }
+                if (allLots) {
+                    return 'All lots (' + lotIds.length + ')';
+                }
+                if (nLotPick === 1) {
+                    var l0 = lotsById[techFinToolbarLotMultiIds[0]];
+                    return l0 ? l0.name : '1 lot';
+                }
+                return nLotPick + ' lots selected';
+            })();
+
+            var lotRows = [
+                '<label class="eligibility-radio-row">' +
+                    '<input type="checkbox" id="techfin-lot-master" ' + (allLots ? 'checked' : '') + ' onchange="techFinLotMultiMasterChanged(this)" aria-label="Select all lots" />' +
+                    '<span><strong>All lots</strong> <span style="font-weight: 500; color: var(--text-muted);">(' + lotIds.length + ')</span></span>' +
+                '</label>'
+            ].concat(stepData.lots.map(function(lot) {
+                return '<label class="eligibility-radio-row">' +
+                    '<input type="checkbox" name="techfin-lot-cb" value="' + lot.id + '" ' + (techFinToolbarLotMultiIds.indexOf(lot.id) >= 0 ? 'checked' : '') + ' onchange="techFinLotMultiCheckboxChanged(this)" />' +
+                    '<span><strong>' + lot.name + '</strong></span>' +
+                '</label>';
+            }));
+
+            var nV = techFinToolbarSupplierMultiIds.length;
+            var allVendors = nV === eligibilityMatrixVendors.length && eligibilityMatrixVendors.every(function(v) { return techFinToolbarSupplierMultiIds.indexOf(v.id) >= 0; });
+            var supplierSummary = (function() {
+                if (nV === 0) {
+                    return 'No suppliers selected';
+                }
+                if (allVendors) {
+                    return 'All suppliers (' + eligibilityMatrixVendors.length + ')';
+                }
+                if (nV === 1) {
+                    var one = eligibilityMatrixVendors.find(function(v) { return v.id === techFinToolbarSupplierMultiIds[0]; });
+                    return one ? (one.code + ' — ' + one.name) : '1 supplier';
+                }
+                return nV + ' suppliers selected';
+            })();
+
+            var supplierRows = [
+                '<label class="eligibility-radio-row">' +
+                    '<input type="checkbox" id="techfin-supplier-master" ' + (allVendors ? 'checked' : '') + ' onchange="techFinSupplierMultiMasterChanged(this)" aria-label="Select all suppliers" />' +
+                    '<span><strong>All suppliers</strong> <span style="font-weight: 500; color: var(--text-muted);">(' + eligibilityMatrixVendors.length + ')</span></span>' +
+                '</label>'
+            ].concat(eligibilityMatrixVendors.map(function(v) {
+                return '<label class="eligibility-radio-row">' +
+                    '<input type="checkbox" name="techfin-supplier-cb" value="' + v.id + '" ' + (techFinToolbarSupplierMultiIds.indexOf(v.id) >= 0 ? 'checked' : '') + ' onchange="techFinSupplierMultiCheckboxChanged(this)" />' +
+                    '<span><strong>' + v.code + '</strong> — ' + v.name + '</span>' +
+                '</label>';
+            }));
+
+            var techFinRowActions = '';
+            if (currentEvaluationStep === 3) {
+                techFinRowActions =
+                    '<div class="eligibility-toolbar-cluster eligibility-toolbar-cluster--tech-actions" role="group" aria-label="Expand or collapse lot panels">' +
+                        '<button type="button" class="btn btn-ghost" onclick="expandAllTechLotView()" style="font-size: 10px; padding: 2px 6px;"><i class="pi pi-angle-double-down" aria-hidden="true"></i> Expand lots</button>' +
+                        '<button type="button" class="btn btn-ghost" onclick="collapseAllTechLotView()" style="font-size: 10px; padding: 2px 6px;"><i class="pi pi-angle-double-up" aria-hidden="true"></i> Collapse lots</button>' +
+                        '<button type="button" class="btn btn-ghost techfin-download-xls-mock" style="font-size: 10px; padding: 2px 6px;" title="Export (mock — not wired)"><i class="pi pi-download" aria-hidden="true"></i> Download XLS</button>' +
+                    '</div>';
+            }
+
+            var viewModeCluster = '';
+            if (currentEvaluationStep === 3) {
+                var allBtnActive = techFinWorkspaceViewMode !== 'assigned' ? ' techfin-view-mode-btn--active' : '';
+                var assignedBtnActive = techFinWorkspaceViewMode === 'assigned' ? ' techfin-view-mode-btn--active' : '';
+                viewModeCluster =
+                    '<div class="eligibility-toolbar-cluster eligibility-toolbar-cluster--view-mode">' +
+                        '<span class="eligibility-lot-field-label"><i class="pi pi-bookmark" aria-hidden="true"></i> View</span>' +
+                        '<div class="techfin-view-mode-segment" role="group" aria-label="All evaluations or assigned to me (demo: S1, all lots)">' +
+                            '<button type="button" class="techfin-view-mode-btn' + allBtnActive + '" onclick="techFinSetWorkspaceViewMode(\'all\')">All</button>' +
+                            '<button type="button" class="techfin-view-mode-btn' + assignedBtnActive + '" onclick="techFinSetWorkspaceViewMode(\'assigned\')">Assigned to me</button>' +
+                        '</div>' +
+                    '</div>';
+            }
+
+            return renderTechFinToolbarChromeHtml(
+                viewModeCluster +
+                '<div class="eligibility-toolbar-cluster">' +
+                    '<span class="eligibility-lot-field-label"><i class="pi pi-th-large"></i> Lot</span>' +
+                    '<details class="eligibility-dropdown" id="techfin-lot-dropdown">' +
+                        '<summary><span class="eligibility-dropdown-value">' + lotSummary + '</span><i class="pi pi-chevron-down" aria-hidden="true"></i></summary>' +
+                        '<div class="eligibility-dropdown-panel eligibility-dropdown-panel--scroll" role="group" aria-label="Choose one or more lots">' +
+                            lotRows.join('') +
+                        '</div>' +
+                    '</details>' +
+                '</div>' +
+                '<div class="eligibility-toolbar-cluster">' +
+                    '<span class="eligibility-lot-field-label"><i class="pi pi-users"></i> Suppliers</span>' +
+                    '<details class="eligibility-dropdown" id="techfin-supplier-dropdown">' +
+                        '<summary><span class="eligibility-dropdown-value">' + supplierSummary + '</span><i class="pi pi-chevron-down" aria-hidden="true"></i></summary>' +
+                        '<div class="eligibility-dropdown-panel eligibility-dropdown-panel--scroll" role="group" aria-label="Choose one or more suppliers">' +
+                            supplierRows.join('') +
+                        '</div>' +
+                    '</details>' +
+                '</div>' +
+                techFinRowActions,
+                ''
+            );
+        }
+
+        function techFinLotRadioToolbarChanged(radio) {
+            if (!radio.checked) {
+                return;
+            }
+            techFinToolbarLotRadioId = radio.value;
+            currentLotId = radio.value;
+            var det = radio.closest('details');
+            if (det) {
+                det.open = false;
+            }
+            syncLotTabActiveClass(radio.value);
+            renderEvaluationTable();
+        }
+
+        function techFinSupplierRadioToolbarChanged(radio) {
+            if (!radio.checked) {
+                return;
+            }
+            techFinToolbarSupplierRadioId = radio.value;
+            currentVendorEval = radio.value;
+            var det = radio.closest('details');
+            if (det) {
+                det.open = false;
+            }
+            syncVendorTabActiveClass(radio.value);
+            var vendorNames = { vendor1: 'MedSupply Ltd.', vendor2: 'HealthCare Corp.', vendor3: 'MedTech Inc.' };
+            var bar = document.getElementById('vendor-eval-name');
+            if (bar) {
+                bar.textContent = vendorNames[radio.value] || '';
+            }
+            renderEvaluationTable();
+        }
+
+        function techFinLotMultiMasterChanged(master) {
+            var stepKey = getTechFinStepDataKey();
+            var sd = stepKey ? evaluationData[stepKey] : null;
+            var lotIds = getTechFinAllLotIds(sd);
+            techFinToolbarLotMultiIds = master.checked ? lotIds.slice() : [];
+            renderEvaluationTable();
+        }
+
+        function techFinLotMultiCheckboxChanged(el) {
+            var panel = el.closest('.eligibility-dropdown-panel');
+            if (!panel) {
+                return;
+            }
+            var cbs = panel.querySelectorAll('input[name="techfin-lot-cb"]');
+            techFinToolbarLotMultiIds = Array.from(cbs).filter(function(cb) { return cb.checked; }).map(function(cb) { return cb.value; });
+            renderEvaluationTable();
+        }
+
+        function techFinSupplierMultiMasterChanged(master) {
+            techFinToolbarSupplierMultiIds = master.checked ? eligibilityMatrixVendors.map(function(v) { return v.id; }) : [];
+            renderEvaluationTable();
+        }
+
+        function techFinSupplierMultiCheckboxChanged(el) {
+            var panel = el.closest('.eligibility-dropdown-panel');
+            if (!panel) {
+                return;
+            }
+            var cbs = panel.querySelectorAll('input[name="techfin-supplier-cb"]');
+            techFinToolbarSupplierMultiIds = Array.from(cbs).filter(function(cb) { return cb.checked; }).map(function(cb) { return cb.value; });
+            renderEvaluationTable();
+        }
+
+        function syncVendorTabActiveClass(vendorId) {
+            document.querySelectorAll('.vendor-eval-tab').forEach(function(tab) {
+                var oc = tab.getAttribute('onclick') || '';
+                if (oc.indexOf("switchVendorEval('" + vendorId + "'") >= 0) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+        }
+
+        function syncLotTabActiveClass(lotId) {
+            document.querySelectorAll('.lot-tab').forEach(function(tab) {
+                var oc = tab.getAttribute('onclick') || '';
+                if (oc.indexOf("switchLot('" + lotId + "'") >= 0) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
         }
 
         function eligibilitySystemBadgeHtml(sys) {
@@ -19726,43 +20743,36 @@
             `;
         }
 
-        function renderEligibilityTable(stepData) {
-            const vendors = getEligibilityMatrixVendors();
-            const lotMeta = getEligibilityLotOption(currentEligibilityLotKey);
+        function wrapEvalEligLotCollapsibleHtml(lotKey, lotIndex, nCriteria, nSuppliers, innerBodyHtml) {
+            const opt = getEligibilityLotOption(lotKey);
+            const expanded = lotIndex === 0;
+            return `
+                <div class="eval-elig-lot-shell" style="margin-bottom: 12px; border: 1px solid var(--surface-200); border-radius: 6px; overflow: hidden;">
+                    <div onclick="toggleEligibilityLot('${lotKey}')" style="padding: 8px 12px; cursor: pointer; background: var(--surface-50); display: flex; align-items: center; flex-wrap: wrap; gap: 8px;">
+                        <i id="eval-elig-lot-icon-${lotKey}" class="pi ${expanded ? 'pi-chevron-down' : 'pi-chevron-right'}" style="font-size: 10px; color: var(--text-muted);" aria-hidden="true"></i>
+                        <span style="font-size: 12px; font-weight: 600;">Lot ${opt.number}: ${opt.name}</span>
+                        <span style="font-size: 10px; color: var(--text-muted);">(${nCriteria} criteria · ${nSuppliers} suppliers)</span>
+                    </div>
+                    <div id="eval-elig-lot-content-${lotKey}" style="${expanded ? '' : 'display: none;'}">
+                        ${innerBodyHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        function buildEligibilityEvaluatorMatrixTableHtml(stepData, lotKey, vendors, eligibilityForms) {
+            if (vendors.length === 0) {
+                return '<p style="padding: var(--spacing-md); color: var(--text-muted); font-size: 13px; margin: 0;">No suppliers match the current filters for this lot.</p>';
+            }
+            const lotMeta = getEligibilityLotOption(lotKey);
             const lotSummaryShort = 'Lot ' + lotMeta.number + ' — ' + lotMeta.name;
             const colSpanPerSupplier = 5;
-            if (vendors.length === 0) {
-                return renderEligibilityLotToolbar() + '<p style="padding: var(--spacing-md); color: var(--text-muted); font-size: 13px;">No suppliers match the current lot and supplier filter.</p>';
-            }
-            const eligibilityForms = {
-                'EL-001': [{ name: 'Bidder\'s Information Form', id: 'bidder-info' }],
-                'EL-002': [{ name: 'Bidder\'s Information Form', id: 'bidder-info' }],
-                'EL-003': [{ name: 'Self Disclosure Form', id: 'self-disclosure' }],
-                'EL-004': [{ name: 'Bidder\'s Information Form', id: 'bidder-info' }],
-                'EL-005': [{ name: 'Self Disclosure Form', id: 'self-disclosure' }],
-                'EL-006': [{ name: 'Self Disclosure Form', id: 'self-disclosure' }],
-                'EF-001': [{ name: 'Bidder\'s Information Form', id: 'bidder-info' }],
-                'EF-002': [{ name: 'Bid/Proposal Submission', id: 'bidder-info' }],
-                'EF-003': [{ name: 'Bidder\'s Information Form', id: 'bidder-info' }],
-                'EF-004': [{ name: 'Technical Bid Form', id: 'technical-bid' }],
-                'EF-005': [{ name: 'Technical Bid Form', id: 'technical-bid' }],
-                'EF-006': [{ name: 'Self Disclosure Form', id: 'self-disclosure' }],
-                'EF-007': [{ name: 'Bidder\'s Information Form', id: 'bidder-info' }],
-                'EF-008': [{ name: 'Technical Bid Form', id: 'technical-bid' }],
-                'FR-001': [{ name: 'Financial Bid Form', id: 'financial-bid' }],
-                'FR-002': [{ name: 'Technical Bid Form', id: 'technical-bid' }],
-                'FR-003': [{ name: 'Bidder\'s Information Form', id: 'bidder-info' }],
-                'FR-004': [{ name: 'Bidder\'s Information Form', id: 'bidder-info' }],
-                'FR-005': [{ name: 'Bid Security Form', id: 'bid-security' }]
-            };
-
-            let html = renderEligibilityLotToolbar();
-            html += '<div class="eligibility-matrix-wrap"><table class="eval-table eligibility-matrix-table"><thead>';
+            let html = '<div class="eligibility-matrix-wrap"><table class="eval-table eligibility-matrix-table"><thead>';
             html += '<tr>';
             html += '<th rowspan="2" class="eligibility-sticky-id" style="text-align: left;">Criteria ID</th>';
             html += '<th rowspan="2" class="eligibility-sticky-criteria" style="text-align: left;">Criteria</th>';
             vendors.forEach(v => {
-                const hdrFinal = getMockSupplierHeaderFinal(v.id, currentEligibilityLotKey, 'evaluator');
+                const hdrFinal = getMockSupplierHeaderFinal(v.id, lotKey, 'evaluator');
                 html += `<th colspan="${colSpanPerSupplier}" class="eligibility-supplier-head">
                     <div class="eligibility-supplier-head-inner">
                         <div class="eligibility-supplier-head-top">
@@ -19774,7 +20784,7 @@
                         </div>
                         <div class="eligibility-supplier-head-final">
                             <span class="eligibility-supplier-final-lbl">Final Eligibility</span>
-                            <select class="eval-select eligibility-supplier-final-select ${hdrFinal}" data-lot-key="${currentEligibilityLotKey}" aria-label="Final Eligibility for ${v.name}, ${lotSummaryShort}" onchange="syncEvalSelectStateClass(this); eligibilitySupplierHeaderFinalChanged(this, '${v.id}', 'eval')">
+                            <select class="eval-select eligibility-supplier-final-select ${hdrFinal}" data-lot-key="${lotKey}" aria-label="Final Eligibility for ${v.name}, ${lotSummaryShort}" onchange="syncEvalSelectStateClass(this); eligibilitySupplierHeaderFinalChanged(this, '${v.id}', 'eval')">
                                 <option value="not_evaluated" ${hdrFinal === 'not_evaluated' ? 'selected' : ''}>Not evaluated</option>
                                 <option value="pass" ${hdrFinal === 'pass' ? 'selected' : ''}>Pass</option>
                                 <option value="fail" ${hdrFinal === 'fail' ? 'selected' : ''}>Fail</option>
@@ -19854,6 +20864,43 @@
             html += '</tbody></table></div>';
             return html;
         }
+
+        function renderEligibilityTable(stepData) {
+            if (getEligibilityMatrixVendors().length === 0) {
+                return renderEligibilityLotToolbar() + '<p style="padding: var(--spacing-md); color: var(--text-muted); font-size: 13px;">No suppliers match the current lot and supplier filter.</p>';
+            }
+            const eligibilityForms = {
+                'EL-001': [{ name: 'Bidder\'s Information Form', id: 'bidder-info' }],
+                'EL-002': [{ name: 'Bidder\'s Information Form', id: 'bidder-info' }],
+                'EL-003': [{ name: 'Self Disclosure Form', id: 'self-disclosure' }],
+                'EL-004': [{ name: 'Bidder\'s Information Form', id: 'bidder-info' }],
+                'EL-005': [{ name: 'Self Disclosure Form', id: 'self-disclosure' }],
+                'EL-006': [{ name: 'Self Disclosure Form', id: 'self-disclosure' }],
+                'EF-001': [{ name: 'Bidder\'s Information Form', id: 'bidder-info' }],
+                'EF-002': [{ name: 'Bid/Proposal Submission', id: 'bidder-info' }],
+                'EF-003': [{ name: 'Bidder\'s Information Form', id: 'bidder-info' }],
+                'EF-004': [{ name: 'Technical Bid Form', id: 'technical-bid' }],
+                'EF-005': [{ name: 'Technical Bid Form', id: 'technical-bid' }],
+                'EF-006': [{ name: 'Self Disclosure Form', id: 'self-disclosure' }],
+                'EF-007': [{ name: 'Bidder\'s Information Form', id: 'bidder-info' }],
+                'EF-008': [{ name: 'Technical Bid Form', id: 'technical-bid' }],
+                'FR-001': [{ name: 'Financial Bid Form', id: 'financial-bid' }],
+                'FR-002': [{ name: 'Technical Bid Form', id: 'technical-bid' }],
+                'FR-003': [{ name: 'Bidder\'s Information Form', id: 'bidder-info' }],
+                'FR-004': [{ name: 'Bidder\'s Information Form', id: 'bidder-info' }],
+                'FR-005': [{ name: 'Bid Security Form', id: 'bid-security' }]
+            };
+
+            let html = renderEligibilityLotToolbar();
+            const nCrit = stepData.requirements.length;
+            const lotKeys = getEligibilityToolbarEffectiveLotKeys();
+            lotKeys.forEach((lotKey, lotIndex) => {
+                const vendors = getEligibilityMatrixVendorsForLotKey(lotKey);
+                const inner = buildEligibilityEvaluatorMatrixTableHtml(stepData, lotKey, vendors, eligibilityForms);
+                html += wrapEvalEligLotCollapsibleHtml(lotKey, lotIndex, nCrit, vendors.length, inner);
+            });
+            return html;
+        }
         
         // askEvalTeamQuestion is defined earlier - opens collaboration panel
         
@@ -19875,33 +20922,20 @@
             const formName = formNames[formId] || formId;
             showToast('📄 Opening: ' + formName + ' (Demo - would open document viewer)');
         }
-        
-        function renderQualificationTable(stepData) {
-            const vendors = getEligibilityMatrixVendors();
-            const lotMeta = getEligibilityLotOption(currentEligibilityLotKey);
+
+        function buildQualificationEvaluatorMatrixTableHtml(stepData, lotKey, vendors, qualificationForms) {
+            if (vendors.length === 0) {
+                return '<p style="padding: var(--spacing-md); color: var(--text-muted); font-size: 13px; margin: 0;">No suppliers match the current filters for this lot.</p>';
+            }
+            const lotMeta = getEligibilityLotOption(lotKey);
             const lotSummaryShort = 'Lot ' + lotMeta.number + ' — ' + lotMeta.name;
             const colSpanPerSupplier = 5;
-            const qualificationForms = {
-                'QC-001': [{ name: 'Performance Statement', id: 'performance-statement' }],
-                'QC-002': [{ name: 'Performance Statement', id: 'performance-statement' }],
-                'QC-003': [{ name: 'Financial Bid Form', id: 'financial-bid' }],
-                'QC-004': [{ name: 'Technical Bid Form', id: 'technical-bid' }],
-                'QC-007': [{ name: 'Technical Bid Form', id: 'technical-bid' }],
-                'QC-OVERALL': [],
-                'QC-REMARKS': []
-            };
-
-            if (vendors.length === 0) {
-                return renderEligibilityLotToolbar() + '<p style="padding: var(--spacing-md); color: var(--text-muted); font-size: 13px;">No suppliers match the current lot and supplier filter.</p>';
-            }
-
-            let html = renderEligibilityLotToolbar();
-            html += '<div class="eligibility-matrix-wrap"><table class="eval-table eligibility-matrix-table"><thead>';
+            let html = '<div class="eligibility-matrix-wrap"><table class="eval-table eligibility-matrix-table"><thead>';
             html += '<tr>';
             html += '<th rowspan="2" class="eligibility-sticky-id" style="text-align: left;">Criteria ID</th>';
             html += '<th rowspan="2" class="eligibility-sticky-criteria" style="text-align: left;">Criteria</th>';
             vendors.forEach(v => {
-                const hdrFinal = getMockSupplierHeaderFinal(v.id, currentEligibilityLotKey, 'evaluator');
+                const hdrFinal = getMockSupplierHeaderFinal(v.id, lotKey, 'evaluator');
                 html += `<th colspan="${colSpanPerSupplier}" class="eligibility-supplier-head">
                     <div class="eligibility-supplier-head-inner">
                         <div class="eligibility-supplier-head-top">
@@ -19913,7 +20947,7 @@
                         </div>
                         <div class="eligibility-supplier-head-final">
                             <span class="eligibility-supplier-final-lbl">Final Qualification</span>
-                            <select class="eval-select eligibility-supplier-final-select ${hdrFinal}" data-lot-key="${currentEligibilityLotKey}" aria-label="Final Qualification for ${v.name}, ${lotSummaryShort}" onchange="syncEvalSelectStateClass(this); eligibilitySupplierHeaderFinalChanged(this, '${v.id}', 'eval')">
+                            <select class="eval-select eligibility-supplier-final-select ${hdrFinal}" data-lot-key="${lotKey}" aria-label="Final Qualification for ${v.name}, ${lotSummaryShort}" onchange="syncEvalSelectStateClass(this); eligibilitySupplierHeaderFinalChanged(this, '${v.id}', 'eval')">
                                 <option value="not_evaluated" ${hdrFinal === 'not_evaluated' ? 'selected' : ''}>Not evaluated</option>
                                 <option value="pass" ${hdrFinal === 'pass' ? 'selected' : ''}>Pass</option>
                                 <option value="fail" ${hdrFinal === 'fail' ? 'selected' : ''}>Fail</option>
@@ -20003,11 +21037,7 @@
             return html;
         }
         
-        function renderQualificationPOTable(stepData) {
-            const vendors = getEligibilityMatrixVendors();
-            const lotMetaPo = getEligibilityLotOption(currentEligibilityLotKey);
-            const lotSummaryShortPo = 'Lot ' + lotMetaPo.number + ' — ' + lotMetaPo.name;
-            const colSpanPerSupplier = 7;
+        function renderQualificationTable(stepData) {
             const qualificationForms = {
                 'QC-001': [{ name: 'Performance Statement', id: 'performance-statement' }],
                 'QC-002': [{ name: 'Performance Statement', id: 'performance-statement' }],
@@ -20018,31 +21048,34 @@
                 'QC-REMARKS': []
             };
 
-            if (vendors.length === 0) {
-                return `
-                <div style="margin-bottom: var(--spacing-lg);">
-                    <div style="background: var(--primary-50); padding: var(--spacing-md); border-radius: var(--radius-sm); margin-bottom: var(--spacing-md); border-left: 4px solid var(--primary-400);">
-                        <strong>Procurement official review — qualification</strong>
-                    </div>
-                </div>` + renderEligibilityLotToolbar() + '<p style="padding: var(--spacing-md); color: var(--text-muted); font-size: 13px;">No suppliers match the current lot and supplier filter.</p>';
+            if (getEligibilityMatrixVendors().length === 0) {
+                return renderEligibilityLotToolbar() + '<p style="padding: var(--spacing-md); color: var(--text-muted); font-size: 13px;">No suppliers match the current lot and supplier filter.</p>';
             }
 
-            let html = `
-                <div style="margin-bottom: var(--spacing-lg);">
-                    <div style="background: var(--primary-50); padding: var(--spacing-md); border-radius: var(--radius-sm); margin-bottom: var(--spacing-md); border-left: 4px solid var(--primary-400);">
-                        <strong>Procurement official review — qualification</strong>
-                        <p style="margin: var(--spacing-xs) 0 0 0; font-size: 12px; color: var(--text-secondary);">
-                            Same side-by-side layout as evaluators; complete PO final determination and clarifications per supplier.
-                        </p>
-                    </div>
-            `;
-            html += renderEligibilityLotToolbar();
-            html += '<div class="eligibility-matrix-wrap"><table class="eval-table eligibility-matrix-table"><thead>';
+            let html = renderEligibilityLotToolbar();
+            const nCrit = stepData.requirements.length;
+            const lotKeys = getEligibilityToolbarEffectiveLotKeys();
+            lotKeys.forEach((lotKey, lotIndex) => {
+                const vendors = getEligibilityMatrixVendorsForLotKey(lotKey);
+                const inner = buildQualificationEvaluatorMatrixTableHtml(stepData, lotKey, vendors, qualificationForms);
+                html += wrapEvalEligLotCollapsibleHtml(lotKey, lotIndex, nCrit, vendors.length, inner);
+            });
+            return html;
+        }
+
+        function buildQualificationPOMatrixTableHtml(stepData, lotKey, vendors, qualificationForms) {
+            if (vendors.length === 0) {
+                return '<p style="padding: var(--spacing-md); color: var(--text-muted); font-size: 13px; margin: 0;">No suppliers match the current filters for this lot.</p>';
+            }
+            const lotMetaPo = getEligibilityLotOption(lotKey);
+            const lotSummaryShortPo = 'Lot ' + lotMetaPo.number + ' — ' + lotMetaPo.name;
+            const colSpanPerSupplier = 7;
+            let html = '<div class="eligibility-matrix-wrap"><table class="eval-table eligibility-matrix-table"><thead>';
             html += '<tr>';
             html += '<th rowspan="2" class="eligibility-sticky-id" style="text-align: left;">Criteria ID</th>';
             html += '<th rowspan="2" class="eligibility-sticky-criteria" style="text-align: left;">Criteria</th>';
             vendors.forEach(v => {
-                const hdrPo = getMockSupplierHeaderFinal(v.id, currentEligibilityLotKey, 'po');
+                const hdrPo = getMockSupplierHeaderFinal(v.id, lotKey, 'po');
                 html += `<th colspan="${colSpanPerSupplier}" class="eligibility-supplier-head">
                     <div class="eligibility-supplier-head-inner">
                         <div class="eligibility-supplier-head-top">
@@ -20054,7 +21087,7 @@
                         </div>
                         <div class="eligibility-supplier-head-final">
                             <span class="eligibility-supplier-final-lbl">PO final</span>
-                            <select class="eval-select eligibility-supplier-final-select ${hdrPo}" data-lot-key="${currentEligibilityLotKey}" aria-label="PO final for ${v.name}, ${lotSummaryShortPo}" onchange="syncEvalSelectStateClass(this); eligibilitySupplierHeaderFinalChanged(this, '${v.id}', 'po')">
+                            <select class="eval-select eligibility-supplier-final-select ${hdrPo}" data-lot-key="${lotKey}" aria-label="PO final for ${v.name}, ${lotSummaryShortPo}" onchange="syncEvalSelectStateClass(this); eligibilitySupplierHeaderFinalChanged(this, '${v.id}', 'po')">
                                 <option value="pending" ${hdrPo === 'pending' ? 'selected' : ''}>Pending</option>
                                 <option value="pass" ${hdrPo === 'pass' ? 'selected' : ''}>Pass</option>
                                 <option value="fail" ${hdrPo === 'fail' ? 'selected' : ''}>Fail</option>
@@ -20154,146 +21187,174 @@
                 html += '</tr>';
             });
 
-            html += '</tbody></table></div></div>';
+            html += '</tbody></table></div>';
             return html;
         }
         
-        function renderTechnicalEvaluationUI(stepData) {
-            // Simple lot status calculation
-            function getLotStatus(items) {
-                if (!items || items.length === 0) return 'not_evaluated';
-                var statuses = items.map(function(item) { return (item.evaluations && item.evaluations.evaluator && item.evaluations.evaluator.status) || 'not_evaluated'; });
-                if (statuses.indexOf('fail') >= 0) return 'fail';
-                if (statuses.indexOf('clarification') >= 0) return 'clarification';
-                if (statuses.indexOf('not_evaluated') >= 0) return 'not_evaluated';
-                return 'pass';
+        function renderQualificationPOTable(stepData) {
+            const qualificationForms = {
+                'QC-001': [{ name: 'Performance Statement', id: 'performance-statement' }],
+                'QC-002': [{ name: 'Performance Statement', id: 'performance-statement' }],
+                'QC-003': [{ name: 'Financial Bid Form', id: 'financial-bid' }],
+                'QC-004': [{ name: 'Technical Bid Form', id: 'technical-bid' }],
+                'QC-007': [{ name: 'Technical Bid Form', id: 'technical-bid' }],
+                'QC-OVERALL': [],
+                'QC-REMARKS': []
+            };
+
+            if (getEligibilityMatrixVendors().length === 0) {
+                return `
+                <div style="margin-bottom: var(--spacing-lg);">
+                    <div style="background: var(--primary-50); padding: var(--spacing-md); border-radius: var(--radius-sm); margin-bottom: var(--spacing-md); border-left: 4px solid var(--primary-400);">
+                        <strong>Procurement official review — qualification</strong>
+                    </div>
+                </div>` + renderEligibilityLotToolbar() + '<p style="padding: var(--spacing-md); color: var(--text-muted); font-size: 13px;">No suppliers match the current lot and supplier filter.</p>';
             }
-            
-            var html = '<div style="padding: 8px; background: var(--surface-50); border-radius: 4px; margin-bottom: 8px;">';
-            html += '<div style="display: flex; gap: 8px; align-items: center;">';
-            html += '<span style="font-size: 11px; color: var(--text-muted);">Quick Nav:</span>';
-            html += '<button class="btn btn-ghost" onclick="expandAllLots()" style="font-size: 10px; padding: 2px 6px;"><i class="pi pi-angle-double-down"></i> Expand</button>';
-            html += '<button class="btn btn-ghost" onclick="collapseAllLots()" style="font-size: 10px; padding: 2px 6px;"><i class="pi pi-angle-double-up"></i> Collapse</button>';
-            html += '</div></div>';
-            
-            stepData.lots.forEach(function(lot, lotIndex) {
-                var items = lot.items || [];
-                var passCount = items.filter(function(i) { return i.evaluations && i.evaluations.evaluator && i.evaluations.evaluator.status === 'pass'; }).length;
-                var failCount = items.filter(function(i) { return i.evaluations && i.evaluations.evaluator && i.evaluations.evaluator.status === 'fail'; }).length;
-                var pendingCount = items.length - passCount - failCount;
-                var isFirst = lotIndex === 0;
-                var lotStatus = getLotStatus(items);
-                var statusColor = lotStatus === 'pass' ? 'var(--success-500)' : lotStatus === 'fail' ? 'var(--danger-500)' : 'var(--surface-400)';
-                var statusBg = lotStatus === 'pass' ? 'var(--success-100)' : lotStatus === 'fail' ? 'var(--danger-100)' : 'var(--surface-200)';
-                var statusText = lotStatus === 'pass' ? 'PASS' : lotStatus === 'fail' ? 'FAIL' : 'PENDING';
-                var statusIconClass = lotStatus === 'pass' ? 'pi-check-circle' : lotStatus === 'fail' ? 'pi-times-circle' : 'pi-clock';
-                
-                html += '<div id="tech-lot-' + lot.id + '" style="margin-bottom: 4px; border: 1px solid var(--surface-200); border-radius: 4px; border-left: 4px solid ' + statusColor + ';">';
-                html += '<div onclick="toggleLot(\'' + lot.id + '\')" style="padding: 6px 10px; cursor: pointer; background: ' + (lotIndex % 2 === 0 ? 'var(--surface-50)' : 'white') + '; display: flex; justify-content: space-between; align-items: center;">';
-                html += '<div style="display: flex; align-items: center; gap: 8px;">';
-                html += '<i id="lot-icon-' + lot.id + '" class="pi ' + (isFirst ? 'pi-chevron-down' : 'pi-chevron-right') + '" style="font-size: 10px; color: var(--text-muted);"></i>';
-                html += '<span style="font-size: 12px; font-weight: 600;">' + lot.name + '</span>';
-                html += '<span style="font-size: 10px; color: var(--text-muted);">(' + items.length + ' items)</span>';
-                html += '</div>';
-                html += '<div style="display: flex; align-items: center; gap: 12px; font-size: 10px;">';
-                html += '<span style="color: var(--success-600);"><i class="pi pi-check" style="font-size: 9px;"></i> ' + passCount + '</span>';
-                html += '<span style="color: var(--danger-600);"><i class="pi pi-times" style="font-size: 9px;"></i> ' + failCount + '</span>';
-                html += '<span style="color: var(--text-muted);"><i class="pi pi-clock" style="font-size: 9px;"></i> ' + pendingCount + '</span>';
-                html += '<span style="padding: 3px 8px; border-radius: 3px; font-size: 10px; font-weight: 700; background: ' + statusBg + '; color: ' + statusColor + ';"><i class="pi ' + statusIconClass + '" style="font-size: 10px;"></i> ' + statusText + '</span>';
-                html += '</div></div>';
-                
-                html += '<div id="lot-content-' + lot.id + '" style="' + (isFirst ? '' : 'display: none;') + '">';
-                
-                items.forEach(function(item, idx) {
-                    var evalStatus = (item.evaluations && item.evaluations.evaluator && item.evaluations.evaluator.status) || 'not_evaluated';
-                    var compliance = item.compliance || item.bidderCompliance || 'Yes';
-                    var compIcon = (compliance === 'Yes' || compliance === 'Full') ? '<i class="pi pi-check" style="color: var(--success-500);"></i>' : '<i class="pi pi-times" style="color: var(--danger-500);"></i>';
-                    var itemStatusIcon = evalStatus === 'pass' ? '<i class="pi pi-check-circle" style="color: var(--success-500);"></i>' : 
-                                         evalStatus === 'fail' ? '<i class="pi pi-times-circle" style="color: var(--danger-500);"></i>' : 
-                                         '<i class="pi pi-circle" style="color: var(--surface-400);"></i>';
-                    
-                    html += '<div style="border-bottom: 1px solid var(--surface-100);">';
-                    html += '<div onclick="toggleUnspsc(\'tech-item-' + item.id + '\')" style="padding: 10px 10px 10px 24px; cursor: pointer; background: ' + (idx % 2 === 0 ? 'white' : 'var(--surface-50)') + '; display: flex; justify-content: space-between; align-items: center;">';
-                    html += '<div style="display: flex; align-items: center; gap: 6px;">';
-                    html += '<i id="tech-item-' + item.id + '-icon" class="pi pi-chevron-right" style="font-size: 10px; color: var(--text-muted);"></i>';
-                    html += '<code style="font-size: 11px; background: var(--primary-50); color: var(--primary-600); padding: 2px 6px; border-radius: 3px;">' + (item.unspsc || '—') + '</code>';
-                    html += '<span style="font-size: 13px; font-weight: 500; max-width: 320px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' + item.description + '</span>';
-                    html += '<span style="font-size: 11px; color: var(--text-muted);">Qty: ' + (item.quantity || '—') + '</span>';
-                    html += '</div>';
-                    html += '<div style="display: flex; align-items: center; gap: 8px;">';
-                    html += compIcon;
-                    html += '<select style="font-size: 9px; padding: 1px 3px; border: 1px solid var(--surface-200); border-radius: 2px; width: 55px;" onclick="event.stopPropagation();">';
-                    html += '<option value="not_evaluated"' + (evalStatus === 'not_evaluated' ? ' selected' : '') + '>—</option>';
-                    html += '<option value="pass"' + (evalStatus === 'pass' ? ' selected' : '') + '>Pass</option>';
-                    html += '<option value="fail"' + (evalStatus === 'fail' ? ' selected' : '') + '>Fail</option>';
-                    html += '</select>';
-                    html += '<button style="background: none; border: none; cursor: pointer; padding: 2px;" onclick="event.stopPropagation(); showProductDetails(\'' + item.id + '\')" title="View Details">';
-                    html += '<i class="pi pi-eye" style="font-size: 10px; color: var(--primary-500);"></i></button>';
-                    html += itemStatusIcon;
-                    html += '</div></div>';
-                    
-                    // Technical table with columns: Req ID, Requirement, Supplier, Compliant?, Details Offered, Deviation, Your Eval, Comments, Action
-                    var supplierName = 'MedSupply Ltd.';
-                    
-                    // Sample requirements per product
-                    var requirements = [
-                        { id: 'R1', text: 'Product must meet ISO 13485 quality standards', response: 'ISO 13485:2016 certified', hasDeviation: false },
-                        { id: 'R2', text: 'Shelf life minimum 24 months from delivery', response: '36 months shelf life guaranteed', hasDeviation: false },
-                        { id: 'R3', text: 'Must include user manual in English', response: 'Manual provided in EN, FR, ES', hasDeviation: false }
-                    ];
-                    
-                    html += '<div id="tech-item-' + item.id + '" style="display: none; background: var(--surface-50); padding: 8px 12px 8px 34px;">';
-                    html += '<table style="width: 100%; border-collapse: collapse; font-size: 12px; background: white; border: 1px solid var(--surface-200); border-radius: 3px;">';
-                    html += '<thead><tr style="background: var(--surface-100);">';
-                    html += '<th style="padding: 6px 8px; text-align: center; font-weight: 600; width: 50px;">Req ID</th>';
-                    html += '<th style="padding: 6px 8px; text-align: left; font-weight: 600; width: 200px;">Requirement</th>';
-                    html += '<th style="padding: 6px 8px; text-align: left; font-weight: 600; width: 110px;">Supplier</th>';
-                    html += '<th style="padding: 6px 8px; text-align: center; font-weight: 600; width: 70px;">Compliant?</th>';
-                    html += '<th style="padding: 6px 8px; text-align: left; font-weight: 600;">Details Offered</th>';
-                    html += '<th style="padding: 6px 8px; text-align: left; font-weight: 600; width: 120px;">Deviation</th>';
-                    html += '<th style="padding: 6px 8px; text-align: center; font-weight: 600; width: 65px;">Your Eval</th>';
-                    html += '<th style="padding: 6px 8px; text-align: left; font-weight: 600; width: 100px;">Comments</th>';
-                    html += '<th style="padding: 6px 8px; text-align: center; font-weight: 600; width: 70px;">Action</th>';
-                    html += '</tr></thead><tbody>';
-                    
-                    // Render rows for each requirement
-                    requirements.forEach(function(req, reqIdx) {
-                        var reqEvalStatus = evalStatus;
-                        var reqCompliant = (reqIdx === 0 || reqIdx === 1) ? true : (compliance === 'Yes' || compliance === 'Full');
-                        var reqCompIcon = reqCompliant ? 
-                            '<span style="padding: 2px 6px; border-radius: 3px; font-size: 10px; background: var(--success-100); color: var(--success-600);"><i class="pi pi-check"></i> Yes</span>' :
-                            '<span style="padding: 2px 6px; border-radius: 3px; font-size: 10px; background: var(--danger-100); color: var(--danger-600);"><i class="pi pi-times"></i> No</span>';
-                        
-                        html += '<tr style="border-bottom: 1px solid var(--surface-100); background: ' + (reqIdx % 2 === 0 ? 'white' : 'var(--surface-50)') + ';">';
-                        html += '<td style="padding: 5px 8px; text-align: center; font-weight: 600; color: var(--primary-600);">' + req.id + '</td>';
-                        html += '<td style="padding: 5px 8px; font-size: 11px;">' + req.text + '</td>';
-                        html += '<td style="padding: 5px 8px;"><div style="font-size: 11px; font-weight: 600;">' + supplierName + '</div><div style="font-size: 9px; color: var(--text-muted);">UNGM: 309663</div></td>';
-                        html += '<td style="padding: 5px 8px; text-align: center;">' + reqCompIcon + '</td>';
-                        html += '<td style="padding: 5px 8px; font-size: 11px; color: var(--text-secondary);">' + req.response + '</td>';
-                        html += '<td style="padding: 5px 8px; font-size: 10px;">' + (req.hasDeviation ? '<span style="color: var(--warning-600);"><i class="pi pi-exclamation-triangle" style="font-size: 10px;"></i> Minor deviation</span>' : '<span style="color: var(--text-muted);">—</span>') + '</td>';
-                        html += '<td style="padding: 5px 8px; text-align: center;">';
-                        html += '<select style="font-size: 11px; padding: 3px 4px; border: 1px solid var(--surface-200); border-radius: 2px; width: 58px;">';
-                        html += '<option value="not_evaluated"' + (reqEvalStatus === 'not_evaluated' ? ' selected' : '') + '>—</option>';
-                        html += '<option value="pass"' + (reqEvalStatus === 'pass' ? ' selected' : '') + '>Pass</option>';
-                        html += '<option value="fail"' + (reqEvalStatus === 'fail' ? ' selected' : '') + '>Fail</option>';
-                        html += '</select></td>';
-                        html += '<td style="padding: 5px 8px;"><input type="text" value="" placeholder="..." style="font-size: 11px; padding: 3px 5px; border: 1px solid var(--surface-200); border-radius: 2px; width: 100%;"></td>';
-                        html += '<td style="padding: 5px 8px; text-align: center;">';
-                        html += '<div style="display: flex; gap: 2px; justify-content: center;">';
-                        html += '<button style="background: none; border: 1px solid var(--surface-200); border-radius: 2px; cursor: pointer; padding: 2px 4px;" onclick="event.stopPropagation(); startPrivateClarification(\'' + item.id + '-' + req.id + '\')" title="Clarify"><i class="pi pi-comments" style="font-size: 10px; color: var(--primary-500);"></i></button>';
-                        html += '<button style="background: none; border: 1px solid var(--surface-200); border-radius: 2px; cursor: pointer; padding: 2px 4px;" onclick="event.stopPropagation(); showProductDetails(\'' + item.id + '\')" title="Details"><i class="pi pi-eye" style="font-size: 10px; color: var(--primary-500);"></i></button>';
-                        html += '</div></td>';
-                        html += '</tr>';
-                    });
-                    
-                    html += '</tbody></table></div>';
-                    html += '</div>';
-                });
-                
-                html += '</div></div>';
+
+            let html = `
+                <div style="margin-bottom: var(--spacing-lg);">
+                    <div style="background: var(--primary-50); padding: var(--spacing-md); border-radius: var(--radius-sm); margin-bottom: var(--spacing-md); border-left: 4px solid var(--primary-400);">
+                        <strong>Procurement official review — qualification</strong>
+                        <p style="margin: var(--spacing-xs) 0 0 0; font-size: 12px; color: var(--text-secondary);">
+                            Same side-by-side layout as evaluators; complete PO final determination and clarifications per supplier.
+                        </p>
+                    </div>
+            `;
+            html += renderEligibilityLotToolbar();
+            const nCrit = stepData.requirements.length;
+            const lotKeys = getEligibilityToolbarEffectiveLotKeys();
+            lotKeys.forEach((lotKey, lotIndex) => {
+                const vendors = getEligibilityMatrixVendorsForLotKey(lotKey);
+                const inner = buildQualificationPOMatrixTableHtml(stepData, lotKey, vendors, qualificationForms);
+                html += wrapEvalEligLotCollapsibleHtml(lotKey, lotIndex, nCrit, vendors.length, inner);
             });
-            
+            html += '</div>';
             return html;
+        }
+        
+        /** Matrix only (toolbar lives in #evaluation-tech-toolbar-slot above Overall / Detailed sections). */
+        function getTechnicalItemVendorEvalStatus(item, vendorId) {
+            if (item.evaluations && item.evaluations[vendorId] && item.evaluations[vendorId].status) {
+                return item.evaluations[vendorId].status;
+            }
+            if (item.evaluations && item.evaluations.evaluator && item.evaluations.evaluator.status) {
+                return item.evaluations.evaluator.status;
+            }
+            return 'not_evaluated';
+        }
+
+        function getTechnicalItemVendorEvalComment(item, vendorId) {
+            if (item.evaluations && item.evaluations[vendorId] && item.evaluations[vendorId].comment != null) {
+                return String(item.evaluations[vendorId].comment);
+            }
+            if (item.evaluations && item.evaluations.evaluator && item.evaluations.evaluator.comment != null) {
+                return String(item.evaluations.evaluator.comment);
+            }
+            return '';
+        }
+
+        /** Lot-level technical compliance row (single criterion text) × suppliers; respects toolbar scope. */
+        function renderOverallTechnicalEvaluationSectionHtml(stepData) {
+            var vendors = getTechFinFilteredVendors();
+            var lots = getTechFinFilteredLots(stepData);
+            var colsPerVendor = 3;
+            var overallTechCriteriaBody = 'Compliance with the technical specifications defined in the solicitation documents, assessed on a pass/fail basis.';
+
+            if (!lots.length) {
+                return '<p style="font-size: 12px; color: var(--text-muted); margin: 0;">No lots match the current scope.</p>';
+            }
+            if (!vendors.length) {
+                return '<p style="font-size: 12px; color: var(--text-muted); margin: 0;">No suppliers match the current scope.</p>';
+            }
+
+            var html = '';
+            lots.forEach(function(lot, lotIndex) {
+                var items = lot.items || [];
+                var openAttr = lotIndex === 0 ? ' open' : '';
+                html += '<details class="eval-overall-lot-details"' + openAttr + '>';
+                html += '<summary class="eval-overall-lot-details__summary">';
+                html += '<span>' + escapeHtmlCell(lot.name) + '</span>';
+                html += '<i class="pi pi-chevron-down eval-overall-lot-details__chev" aria-hidden="true"></i>';
+                html += '</summary>';
+                html += '<div class="eval-overall-lot-details__body">';
+                html += '<div class="eligibility-matrix-wrap eval-overall-matrix-wrap">';
+                html += '<table class="eval-table eligibility-matrix-table eval-overall-summary-table">';
+                html += '<thead><tr>';
+                html += '<th scope="col" class="eval-overall-summary-th-id">Criteria ID</th>';
+                html += '<th scope="col" class="eval-overall-summary-th-criteria">Criteria</th>';
+                vendors.forEach(function(v, vi) {
+                    var zc = 'eligibility-zone-' + (vi % 3);
+                    var lotVerdict = getMockTechLotVerdictForSupplier(lot.id, v.id);
+                    html += '<th scope="colgroup" colspan="' + colsPerVendor + '" class="eligibility-supplier-head eval-overall-summary-supplier-head ' + zc + '">';
+                    html += '<div class="eligibility-supplier-head-inner">';
+                    html += '<div class="eligibility-supplier-head-top">';
+                    html += '<i class="pi pi-building" aria-hidden="true"></i>';
+                    html += '<div>';
+                    html += '<div class="eligibility-supplier-code">' + escapeHtmlCell(v.code) + '</div>';
+                    html += '<div class="eligibility-supplier-name">' + escapeHtmlCell(v.name) + '</div>';
+                    html += '</div></div>';
+                    html += '<div class="tech-item-supplier-head-line tech-item-supplier-head-line--right">';
+                    html += '<select class="eval-select ' + lotVerdict + '" data-tech-lot-id="' + escapeHtmlCell(lot.id) + '" data-tech-lot-vendor="' + escapeHtmlCell(v.id) + '" data-overall-summary-header="1" onclick="event.stopPropagation();" onchange="syncEvalSelectStateClass(this)" aria-label="Overall lot verdict for supplier ' + escapeHtmlCell(v.name) + '">';
+                    html += '<option value="not_evaluated"' + (lotVerdict === 'not_evaluated' ? ' selected' : '') + '>—</option>';
+                    html += '<option value="pass"' + (lotVerdict === 'pass' ? ' selected' : '') + '>Pass</option>';
+                    html += '<option value="fail"' + (lotVerdict === 'fail' ? ' selected' : '') + '>Fail</option>';
+                    html += '</select>';
+                    html += '</div></div></th>';
+                });
+                html += '</tr><tr>';
+                html += '<th class="eval-overall-summary-subth" aria-hidden="true"></th>';
+                html += '<th class="eval-overall-summary-subth" aria-hidden="true"></th>';
+                vendors.forEach(function() {
+                    html += '<th scope="col" class="eval-overall-summary-subth">Eval</th>';
+                    html += '<th scope="col" class="eval-overall-summary-subth">Notes</th>';
+                    html += '<th scope="col" class="eval-overall-summary-subth">Action</th>';
+                });
+                html += '</tr></thead><tbody>';
+
+                var refItem = items.length > 0 ? items[0] : null;
+                html += '<tr>';
+                html += '<td class="eval-overall-summary-td-id">1</td>';
+                html += '<td class="eval-overall-summary-td-criteria">' + escapeHtmlCell(overallTechCriteriaBody) + '</td>';
+                vendors.forEach(function(v, vi) {
+                    var zc = 'eligibility-zone-' + (vi % 3);
+                    var st = refItem ? getTechnicalItemVendorEvalStatus(refItem, v.id) : 'not_evaluated';
+                    var comment = refItem ? getTechnicalItemVendorEvalComment(refItem, v.id) : '';
+                    var selVal = (st === 'pass' || st === 'fail') ? st : 'not_evaluated';
+                    var stClass = (['pass', 'fail', 'not_evaluated', 'clarification', 'pending'].indexOf(st) >= 0) ? st : 'not_evaluated';
+                    var rowKey = refItem ? refItem.id : lot.id;
+                    html += '<td class="eval-overall-summary-td-eval manual-eval-column ' + zc + '">';
+                    html += '<select class="eval-select ' + stClass + '" style="font-size: 10px; padding: 2px 4px; width: 100%;" onclick="event.stopPropagation();" onchange="syncEvalSelectStateClass(this)" aria-label="Eval ' + escapeHtmlCell(v.code) + ' for lot ' + escapeHtmlCell(lot.id) + ' overall criterion">';
+                    html += '<option value="not_evaluated"' + (selVal === 'not_evaluated' ? ' selected' : '') + '>—</option>';
+                    html += '<option value="pass"' + (selVal === 'pass' ? ' selected' : '') + '>Pass</option>';
+                    html += '<option value="fail"' + (selVal === 'fail' ? ' selected' : '') + '>Fail</option>';
+                    html += '</select></td>';
+                    html += '<td class="eval-overall-summary-td-notes manual-eval-column ' + zc + '">';
+                    html += '<textarea class="eval-comment-field" rows="2" readonly style="font-size: 10px; width: 100%; min-width: 100px; max-width: 180px; box-sizing: border-box;" aria-label="Notes ' + escapeHtmlCell(v.code) + ' for lot ' + escapeHtmlCell(lot.id) + ' overall criterion">' + escapeHtmlCell(comment) + '</textarea>';
+                    html += '</td>';
+                    html += '<td class="eval-overall-summary-td-action manual-eval-column ' + zc + '" style="text-align: center;">';
+                    html += '<div style="display: flex; flex-wrap: wrap; gap: 4px; justify-content: center;">';
+                    html += '<button type="button" class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); startPrivateClarification(\'' + escapeHtmlCell(rowKey) + '-' + escapeHtmlCell(v.id) + '-overall\')" title="Clarify" aria-label="Clarify"><i class="pi pi-comments"></i></button>';
+                    html += '</div></td>';
+                });
+                html += '</tr>';
+
+                html += '</tbody></table></div></div></details>';
+            });
+
+            return html;
+        }
+
+        function renderTechnicalEvaluationUI(stepData) {
+            var vendorsFiltered = getTechFinFilteredVendors().map(function(v) {
+                return { id: v.id, code: v.code, name: v.name, ungm: getTechFinVendorUngm(v.id) };
+            });
+
+            return buildTechnicalEvaluationMatrixLotsHtml(stepData, vendorsFiltered, {
+                outerPrefix: 'tech-lot',
+                contentPrefix: 'lot-content',
+                iconPrefix: 'lot-icon',
+                toggleFn: 'toggleLot'
+            });
         }
         
         function updateRequirementEval(unspscId, reqId, status) {
@@ -20325,23 +21386,11 @@
         }
         
         function expandAllLots() {
-            document.querySelectorAll('[id^="lot-content-"]').forEach(content => {
-                content.style.display = 'block';
-            });
-            document.querySelectorAll('[id^="lot-icon-"]').forEach(icon => {
-                icon.className = 'pi pi-chevron-down';
-            });
-            showToast('All lots expanded');
+            expandAllTechLotView();
         }
         
         function collapseAllLots() {
-            document.querySelectorAll('[id^="lot-content-"]').forEach(content => {
-                content.style.display = 'none';
-            });
-            document.querySelectorAll('[id^="lot-icon-"]').forEach(icon => {
-                icon.className = 'pi pi-chevron-right';
-            });
-            showToast('All lots collapsed');
+            collapseAllTechLotView();
         }
 
         // Financial Evaluation Lot Toggle Functions
@@ -20911,7 +21960,6 @@
                                         </td>
                                         <td style="font-size: 12px;">
                                             ${item.description.substring(0, 40)}...
-                                            <button class="btn btn-secondary btn-sm" onclick="showProductDetails('${item.id}')" style="font-size: 9px; padding: 2px 4px; margin-left: 4px;">📋</button>
                                         </td>
                                         <td>
                                             <span style="font-size: 11px; color: ${item.bidderCompliance === 'Yes' ? 'var(--success-500)' : item.bidderCompliance === 'No' ? 'var(--danger-500)' : 'var(--warning-500)'};">
@@ -20971,16 +22019,10 @@
                 container.innerHTML = html;
                 return;
             }
-            
-            // For technical step 3, group by UNSPSC similar to lot view
-            if (currentEvaluationStep === 3 && stepData.lots) {
-                html += renderTechnicalEvaluationUI(stepData);
-                container.innerHTML = html;
-                return;
-            }
-            
+
             // For financial step 4, use compact lot-based structure like technical evaluation
             if (currentEvaluationStep === 4 && stepData.lots) {
+                html += renderTechFinScopeToolbarIfApplicable(stepData);
                 // Helper function for lot status
                 function getFinSupplierLotStatus(items) {
                     if (!items || items.length === 0) return 'not_evaluated';
@@ -21001,7 +22043,7 @@
                 html += '<button class="btn btn-ghost" onclick="collapseAllFinSupplierLots()" style="font-size: 10px; padding: 2px 6px;"><i class="pi pi-angle-double-up"></i> Collapse</button>';
                 html += '</div></div>';
                 
-                stepData.lots.forEach(function(lot, lotIndex) {
+                getTechFinFilteredLots(stepData).forEach(function(lot, lotIndex) {
                     var items = lot.items || [];
                     var passCount = items.filter(function(i) { var pd = i.prices ? i.prices[currentVendorEval] : null; return pd && pd.evalStatus === 'pass'; }).length;
                     var failCount = items.filter(function(i) { var pd = i.prices ? i.prices[currentVendorEval] : null; return pd && pd.evalStatus === 'fail'; }).length;
@@ -21089,8 +22131,6 @@
                         html += '<th style="padding: 6px 8px; text-align: left; font-weight: 600; width: 100px;">Comments</th>';
                         html += '<th style="padding: 6px 8px; text-align: center; font-weight: 600; width: 70px;">Action</th>';
                         html += '</tr></thead><tbody>';
-                        
-                        // Row with product data
                         html += '<tr style="border-bottom: 1px solid var(--surface-100);">';
                         html += '<td style="padding: 5px 8px;"><div style="font-size: 10px;"><code style="background: var(--surface-100); padding: 2px 4px; border-radius: 2px;">' + (item.unspsc || '—') + '</code></div>';
                         html += '<div style="font-size: 11px; margin-top: 2px;">' + item.description + '</div>';
@@ -21115,7 +22155,6 @@
                         html += '<button style="background: none; border: 1px solid var(--surface-200); border-radius: 2px; cursor: pointer; padding: 2px 4px;" onclick="event.stopPropagation(); showFinancialDetails(\'' + item.id + '\')" title="Details"><i class="pi pi-eye" style="font-size: 10px; color: var(--primary-500);"></i></button>';
                         html += '</div></td>';
                         html += '</tr>';
-                        
                         html += '</tbody></table></div>';
                         html += '</div>';
                     });
@@ -21212,30 +22251,38 @@
 
         function renderFinancialLotView(container, stepData) {
             // Simple lot status calculation - same as Technical
-            function getLotStatus(items) {
+            function getLotStatus(items, primaryVendorId) {
+                var vid = primaryVendorId || 'vendor1';
                 if (!items || items.length === 0) return 'not_evaluated';
                 var statuses = items.map(function(item) { 
-                    return (item.prices && item.prices.vendor1 && item.prices.vendor1.evalStatus) || 'not_evaluated'; 
+                    return (item.prices && item.prices[vid] && item.prices[vid].evalStatus) || 'not_evaluated'; 
                 });
                 if (statuses.indexOf('fail') >= 0) return 'fail';
                 if (statuses.indexOf('not_evaluated') >= 0) return 'not_evaluated';
                 return 'pass';
             }
             
-            var html = '<div style="padding: 8px; background: var(--surface-50); border-radius: 4px; margin-bottom: 8px;">';
+            var tb = renderTechFinScopeToolbarIfApplicable(stepData);
+            var html = tb + '<div style="padding: 8px; background: var(--surface-50); border-radius: 4px; margin-bottom: 8px;">';
             html += '<div style="display: flex; gap: 8px; align-items: center;">';
             html += '<span style="font-size: 11px; color: var(--text-muted);">Quick Nav:</span>';
             html += '<button class="btn btn-ghost" onclick="expandAllFinancialLots()" style="font-size: 10px; padding: 2px 6px;"><i class="pi pi-angle-double-down"></i> Expand</button>';
             html += '<button class="btn btn-ghost" onclick="collapseAllFinancialLots()" style="font-size: 10px; padding: 2px 6px;"><i class="pi pi-angle-double-up"></i> Collapse</button>';
             html += '</div></div>';
             
-            stepData.lots.forEach(function(lot, lotIndex) {
+            var supplierIdsFin = getTechFinFilteredVendors().map(function(v) { return v.id; });
+            if (supplierIdsFin.length === 0) {
+                supplierIdsFin = ['vendor1', 'vendor2', 'vendor3'];
+            }
+
+            getTechFinFilteredLots(stepData).forEach(function(lot, lotIndex) {
                 var items = lot.items || [];
-                var passCount = items.filter(function(i) { return i.prices && i.prices.vendor1 && i.prices.vendor1.evalStatus === 'pass'; }).length;
-                var failCount = items.filter(function(i) { return i.prices && i.prices.vendor1 && i.prices.vendor1.evalStatus === 'fail'; }).length;
+                var priVid = supplierIdsFin.length > 0 ? supplierIdsFin[0] : 'vendor1';
+                var passCount = items.filter(function(i) { return i.prices && i.prices[priVid] && i.prices[priVid].evalStatus === 'pass'; }).length;
+                var failCount = items.filter(function(i) { return i.prices && i.prices[priVid] && i.prices[priVid].evalStatus === 'fail'; }).length;
                 var pendingCount = items.length - passCount - failCount;
                 var isFirst = lotIndex === 0;
-                var lotStatus = getLotStatus(items);
+                var lotStatus = getLotStatus(items, priVid);
                 var statusColor = lotStatus === 'pass' ? 'var(--success-500)' : lotStatus === 'fail' ? 'var(--danger-500)' : 'var(--surface-400)';
                 var statusBg = lotStatus === 'pass' ? 'var(--success-100)' : lotStatus === 'fail' ? 'var(--danger-100)' : 'var(--surface-200)';
                 var statusText = lotStatus === 'pass' ? 'PASS' : lotStatus === 'fail' ? 'FAIL' : 'PENDING';
@@ -21259,7 +22306,7 @@
                 html += '<div id="fin-lot-content-' + lot.id + '" style="' + (isFirst ? '' : 'display: none;') + '">';
                 
                 items.forEach(function(item, idx) {
-                    var priceData = (item.prices && item.prices.vendor1) || {};
+                    var priceData = (item.prices && item.prices[priVid]) || {};
                     var evalStatus = priceData.evalStatus || 'not_evaluated';
                     var itemStatusIcon = evalStatus === 'pass' ? '<i class="pi pi-check-circle" style="color: var(--success-500);"></i>' : 
                                          evalStatus === 'fail' ? '<i class="pi pi-times-circle" style="color: var(--danger-500);"></i>' : 
@@ -21290,6 +22337,7 @@
                     html += '<div id="fin-item-' + item.id + '" style="display: none; background: var(--surface-50); padding: 8px 12px 8px 34px;">';
                     html += '<table style="width: 100%; border-collapse: collapse; font-size: 12px; background: white; border: 1px solid var(--surface-200); border-radius: 3px;">';
                     html += '<thead><tr style="background: var(--surface-100);">';
+                    html += '<th style="padding: 6px 8px; text-align: left; font-weight: 600; width: 88px;">Supplier</th>';
                     html += '<th style="padding: 6px 8px; text-align: left; font-weight: 600;">Product (UNSPSC / Description / Qty)</th>';
                     html += '<th style="padding: 6px 8px; text-align: right; font-weight: 600; width: 80px;">Unit Price</th>';
                     html += '<th style="padding: 6px 8px; text-align: right; font-weight: 600; width: 100px;">Total (Currency)</th>';
@@ -21302,33 +22350,39 @@
                     html += '<th style="padding: 6px 8px; text-align: left; font-weight: 600; width: 100px;">Comments</th>';
                     html += '<th style="padding: 6px 8px; text-align: center; font-weight: 600; width: 70px;">Action</th>';
                     html += '</tr></thead><tbody>';
-                    
-                    // Row with product data
-                    html += '<tr style="border-bottom: 1px solid var(--surface-100);">';
-                    html += '<td style="padding: 5px 8px;"><div style="font-size: 10px;"><code style="background: var(--surface-100); padding: 2px 4px; border-radius: 2px;">' + (item.unspsc || '—') + '</code></div>';
-                    html += '<div style="font-size: 11px; margin-top: 2px;">' + item.description + '</div>';
-                    html += '<div style="font-size: 10px; color: var(--text-muted);">Qty: ' + (item.quantity || '—') + '</div></td>';
-                    html += '<td style="padding: 5px 8px; text-align: right; font-size: 11px; font-weight: 600;">' + (priceData.unitPrice || '—') + '</td>';
-                    html += '<td style="padding: 5px 8px; text-align: right; font-size: 11px; font-weight: 600;">' + (priceData.totalCurrency || '—') + '</td>';
-                    html += '<td style="padding: 5px 8px; text-align: right; font-size: 10px;">' + (priceData.totalIncoterm || '—') + '</td>';
-                    html += '<td style="padding: 5px 8px; text-align: center;"><span style="padding: 2px 6px; border-radius: 3px; font-size: 10px; font-weight: 700; background: ' + (priceData.rank && priceData.rank.startsWith('1') ? 'var(--success-100); color: var(--success-600)' : 'var(--surface-100); color: var(--text-primary)') + ';">' + (priceData.rank || '—') + '</span></td>';
-                    html += '<td style="padding: 5px 8px;"><input type="text" value="' + (priceData.corrections || '$0') + '" style="width: 100%; padding: 3px 5px; border: 1px solid var(--surface-200); border-radius: 2px; font-size: 10px; color: var(--danger-500); font-weight: 600; text-align: right;"></td>';
-                    html += '<td style="padding: 5px 8px;"><input type="text" value="' + (priceData.negotiations || '$0') + '" style="width: 100%; padding: 3px 5px; border: 1px solid var(--surface-200); border-radius: 2px; font-size: 10px; color: var(--success-600); font-weight: 600; text-align: right;"></td>';
-                    html += '<td style="padding: 5px 8px;"><input type="text" value="' + (priceData.finalPrice || '—') + '" style="width: 100%; padding: 3px 5px; border: 1px solid var(--primary-300); border-radius: 2px; font-size: 11px; font-weight: 700; color: var(--primary-600); background: var(--primary-50); text-align: right;"></td>';
-                    html += '<td style="padding: 5px 8px; text-align: center;">';
-                    html += '<select style="font-size: 11px; padding: 3px 4px; border: 1px solid var(--surface-200); border-radius: 2px; width: 58px;">';
-                    html += '<option value="not_evaluated"' + (evalStatus === 'not_evaluated' ? ' selected' : '') + '>—</option>';
-                    html += '<option value="pass"' + (evalStatus === 'pass' ? ' selected' : '') + '>Pass</option>';
-                    html += '<option value="fail"' + (evalStatus === 'fail' ? ' selected' : '') + '>Fail</option>';
-                    html += '</select></td>';
-                    html += '<td style="padding: 5px 8px;"><input type="text" value="' + (priceData.comment || '') + '" placeholder="..." style="font-size: 11px; padding: 3px 5px; border: 1px solid var(--surface-200); border-radius: 2px; width: 100%;"></td>';
-                    html += '<td style="padding: 5px 8px; text-align: center;">';
-                    html += '<div style="display: flex; gap: 2px; justify-content: center;">';
-                    html += '<button style="background: none; border: 1px solid var(--surface-200); border-radius: 2px; cursor: pointer; padding: 2px 4px;" onclick="event.stopPropagation(); startPrivateClarification(\'' + item.id + '\')" title="Clarify"><i class="pi pi-comments" style="font-size: 10px; color: var(--primary-500);"></i></button>';
-                    html += '<button style="background: none; border: 1px solid var(--surface-200); border-radius: 2px; cursor: pointer; padding: 2px 4px;" onclick="event.stopPropagation(); showFinancialDetails(\'' + item.id + '\')" title="Details"><i class="pi pi-eye" style="font-size: 10px; color: var(--primary-500);"></i></button>';
-                    html += '</div></td>';
-                    html += '</tr>';
-                    
+                    supplierIdsFin.forEach(function(vid, sIdx) {
+                        var pd = (item.prices && item.prices[vid]) || {};
+                        var evSt = pd.evalStatus || 'not_evaluated';
+                        var vmeta = eligibilityMatrixVendors.find(function(v) { return v.id === vid; });
+                        var vlabel = vmeta ? (vmeta.code + ' ' + vmeta.name) : vid;
+                        html += '<tr style="border-bottom: 1px solid var(--surface-100);">';
+                        html += '<td style="padding: 5px 8px; font-size: 10px; font-weight: 600; vertical-align: top;">' + vlabel + '</td>';
+                        if (sIdx === 0) {
+                            html += '<td style="padding: 5px 8px;" rowspan="' + supplierIdsFin.length + '"><div style="font-size: 10px;"><code style="background: var(--surface-100); padding: 2px 4px; border-radius: 2px;">' + (item.unspsc || '—') + '</code></div>';
+                            html += '<div style="font-size: 11px; margin-top: 2px;">' + item.description + '</div>';
+                            html += '<div style="font-size: 10px; color: var(--text-muted);">Qty: ' + (item.quantity || '—') + '</div></td>';
+                        }
+                        html += '<td style="padding: 5px 8px; text-align: right; font-size: 11px; font-weight: 600;">' + (pd.unitPrice || '—') + '</td>';
+                        html += '<td style="padding: 5px 8px; text-align: right; font-size: 11px; font-weight: 600;">' + (pd.totalCurrency || '—') + '</td>';
+                        html += '<td style="padding: 5px 8px; text-align: right; font-size: 10px;">' + (pd.totalIncoterm || '—') + '</td>';
+                        html += '<td style="padding: 5px 8px; text-align: center;"><span style="padding: 2px 6px; border-radius: 3px; font-size: 10px; font-weight: 700; background: ' + (pd.rank && pd.rank.startsWith('1') ? 'var(--success-100); color: var(--success-600)' : 'var(--surface-100); color: var(--text-primary)') + ';">' + (pd.rank || '—') + '</span></td>';
+                        html += '<td style="padding: 5px 8px;"><input type="text" value="' + (pd.corrections || '$0') + '" style="width: 100%; padding: 3px 5px; border: 1px solid var(--surface-200); border-radius: 2px; font-size: 10px; color: var(--danger-500); font-weight: 600; text-align: right;"></td>';
+                        html += '<td style="padding: 5px 8px;"><input type="text" value="' + (pd.negotiations || '$0') + '" style="width: 100%; padding: 3px 5px; border: 1px solid var(--surface-200); border-radius: 2px; font-size: 10px; color: var(--success-600); font-weight: 600; text-align: right;"></td>';
+                        html += '<td style="padding: 5px 8px;"><input type="text" value="' + (pd.finalPrice || '—') + '" style="width: 100%; padding: 3px 5px; border: 1px solid var(--primary-300); border-radius: 2px; font-size: 11px; font-weight: 700; color: var(--primary-600); background: var(--primary-50); text-align: right;"></td>';
+                        html += '<td style="padding: 5px 8px; text-align: center;">';
+                        html += '<select style="font-size: 11px; padding: 3px 4px; border: 1px solid var(--surface-200); border-radius: 2px; width: 58px;">';
+                        html += '<option value="not_evaluated"' + (evSt === 'not_evaluated' ? ' selected' : '') + '>—</option>';
+                        html += '<option value="pass"' + (evSt === 'pass' ? ' selected' : '') + '>Pass</option>';
+                        html += '<option value="fail"' + (evSt === 'fail' ? ' selected' : '') + '>Fail</option>';
+                        html += '</select></td>';
+                        html += '<td style="padding: 5px 8px;"><input type="text" value="' + (pd.comment || '') + '" placeholder="..." style="font-size: 11px; padding: 3px 5px; border: 1px solid var(--surface-200); border-radius: 2px; width: 100%;"></td>';
+                        html += '<td style="padding: 5px 8px; text-align: center;">';
+                        html += '<div style="display: flex; gap: 2px; justify-content: center;">';
+                        html += '<button style="background: none; border: 1px solid var(--surface-200); border-radius: 2px; cursor: pointer; padding: 2px 4px;" onclick="event.stopPropagation(); startPrivateClarification(\'' + item.id + '\')" title="Clarify"><i class="pi pi-comments" style="font-size: 10px; color: var(--primary-500);"></i></button>';
+                        html += '<button style="background: none; border: 1px solid var(--surface-200); border-radius: 2px; cursor: pointer; padding: 2px 4px;" onclick="event.stopPropagation(); showFinancialDetails(\'' + item.id + '\')" title="Details"><i class="pi pi-eye" style="font-size: 10px; color: var(--primary-500);"></i></button>';
+                        html += '</div></td>';
+                        html += '</tr>';
+                    });
                     html += '</tbody></table></div>';
                     html += '</div>';
                 });
@@ -21605,173 +22659,213 @@
             
             return html;
         }
-        
-        function renderLotView(container, stepData) {
-            var vendorData = {
-                'vendor1': { name: 'MedSupply Ltd.', ungm: '309663', country: 'Germany' },
-                'vendor2': { name: 'HealthCare Corp.', ungm: '301245', country: 'USA' },
-                'vendor3': { name: 'MedTech Inc.', ungm: '315789', country: 'Japan' }
-            };
-            
-            // Helper function for lot status
-            function getTechLotStatus(items) {
-                if (!items || items.length === 0) return 'not_evaluated';
-                var statuses = items.map(function(item) { 
-                    return (item.evaluations && item.evaluations.evaluator && item.evaluations.evaluator.status) || 'not_evaluated'; 
-                });
-                if (statuses.indexOf('fail') >= 0) return 'fail';
-                if (statuses.indexOf('not_evaluated') >= 0) return 'not_evaluated';
+
+        function getMockTechLotVerdictForSupplier(_lotId, vendorId) {
+            if (vendorId === 'vendor1') {
                 return 'pass';
             }
-            
+            if (vendorId === 'vendor3') {
+                return 'fail';
+            }
+            return 'not_evaluated';
+        }
+
+        /** Shared column model for technical lot verdict strip + product matrices (fixed layout). */
+        function renderTechLotMatrixColgroupHtml(vendorCount, colsPerVendor) {
+            var cpv = colsPerVendor || 6;
+            var h = '<colgroup><col class="tech-lot-col-id"/><col class="tech-lot-col-criteria"/>';
+            var n = vendorCount * cpv;
+            for (var i = 0; i < n; i++) {
+                h += '<col class="tech-lot-col-vendor"/>';
+            }
+            return h + '</colgroup>';
+        }
+
+        /** Lot-level verdict row: same column grid as product matrices below (option 2 — alignment strip). */
+        function renderTechLotVerdictAlignmentStripHtml(lot, vendorsFiltered, colSpanPerSupplier) {
+            var h = '';
+            var techVendorCount = Math.max(1, vendorsFiltered.length);
+            h += '<div class="eligibility-matrix-wrap tech-lot-verdict-align-wrap tech-lot-matrix-scroll" role="region" aria-label="Lot verdict by supplier. Scroll horizontally if needed." style="--tech-lot-vendor-count: ' + techVendorCount + ';">';
+            h += '<table class="eval-table eligibility-matrix-table tech-lot-matrix-table tech-lot-verdict-align-table">';
+            h += renderTechLotMatrixColgroupHtml(vendorsFiltered.length, colSpanPerSupplier);
+            h += '<thead><tr class="tech-lot-verdict-align-row">';
+            h += '<th scope="row" class="eligibility-sticky-id tech-lot-verdict-align-id">Lot</th>';
+            h += '<th class="eligibility-sticky-criteria tech-lot-verdict-align-criteria">';
+            h += '<span class="tech-lot-verdict-align-kicker">Verdict by supplier</span>';
+            h += '</th>';
+            vendorsFiltered.forEach(function(v, vi) {
+                var verdict = getMockTechLotVerdictForSupplier(lot.id, v.id);
+                var zc = 'eligibility-zone-' + (vi % 3);
+                h += '<th colspan="' + colSpanPerSupplier + '" class="eligibility-supplier-head tech-lot-verdict-align-supplier ' + zc + '">';
+                h += '<div class="eligibility-supplier-head-inner">';
+                h += '<div class="eligibility-supplier-head-top">';
+                h += '<i class="pi pi-building" aria-hidden="true"></i>';
+                h += '<div>';
+                h += '<div class="eligibility-supplier-code">' + escapeHtmlCell(v.code) + '</div>';
+                h += '<div class="eligibility-supplier-name">' + escapeHtmlCell(v.name) + '</div>';
+                h += '</div></div>';
+                h += '<div class="tech-item-supplier-head-line tech-item-supplier-head-line--right">';
+                h += '<select class="eval-select ' + verdict + '" data-tech-lot-id="' + escapeHtmlCell(lot.id) + '" data-tech-lot-vendor="' + escapeHtmlCell(v.id) + '" onclick="event.stopPropagation();" onchange="syncEvalSelectStateClass(this)" aria-label="Lot technical verdict for supplier ' + escapeHtmlCell(v.name) + '">';
+                h += '<option value="not_evaluated"' + (verdict === 'not_evaluated' ? ' selected' : '') + '>—</option>';
+                h += '<option value="pass"' + (verdict === 'pass' ? ' selected' : '') + '>Pass</option>';
+                h += '<option value="fail"' + (verdict === 'fail' ? ' selected' : '') + '>Fail</option>';
+                h += '</select>';
+                h += '</div></div></th>';
+            });
+            h += '</tr></thead></table></div>';
+            return h;
+        }
+
+        /** Same eligibility-matrix table shell for technical step 3 (supplier + lot views). lotDom toggles lot chrome ids. */
+        function buildTechnicalEvaluationMatrixLotsHtml(stepData, vendorsFiltered, lotDom) {
+            function getTechLotStatus(items) {
+                if (!items || items.length === 0) {
+                    return 'not_evaluated';
+                }
+                var statuses = items.map(function(item) {
+                    return (item.evaluations && item.evaluations.evaluator && item.evaluations.evaluator.status) || 'not_evaluated';
+                });
+                if (statuses.indexOf('fail') >= 0) {
+                    return 'fail';
+                }
+                if (statuses.indexOf('not_evaluated') >= 0) {
+                    return 'not_evaluated';
+                }
+                return 'pass';
+            }
+
+            var colSpanPerSupplier = 6;
+            var techLotMatrixSubHeaders = [
+                { icon: 'pi-check-circle', label: 'Is Compliant?', title: 'Bidder response meets requirement' },
+                { icon: 'pi-list', label: 'Details Offered', title: 'Details offered in submission' },
+                { icon: 'pi-exclamation-triangle', label: 'Deviations', title: 'Documented deviations' },
+                { icon: 'pi-user-edit', label: 'Eval', title: 'Your evaluation' },
+                { icon: 'pi-comments', label: 'Notes', title: 'Comments' },
+                { icon: 'pi-sliders-h', label: 'Act', title: 'Actions' }
+            ];
+            var requirementsTemplate = [
+                { id: 'R1', text: 'Product must meet ISO 13485 quality standards', responses: ['ISO 13485:2016 certified', 'ISO 13485:2016 compliant', 'ISO 13485 certified'] },
+                { id: 'R2', text: 'Shelf life minimum 24 months from delivery', responses: ['36 months shelf life', '24 months guaranteed', '30 months shelf life'] },
+                { id: 'R3', text: 'Must include user manual in English', responses: ['Manual in EN, FR, ES', 'English manual included', 'Manual in EN only'] }
+            ];
+
             var html = '';
-            
-            // Compact toolbar - same as Technical Supplier view
-            html += '<div style="padding: 8px; background: var(--surface-50); border-radius: 4px; margin-bottom: 8px;">';
-            html += '<div style="display: flex; gap: 8px; align-items: center;">';
-            html += '<span style="font-size: 11px; color: var(--text-muted);">Quick Nav:</span>';
-            html += '<button class="btn btn-ghost" onclick="expandAllTechLotView()" style="font-size: 10px; padding: 2px 6px;"><i class="pi pi-angle-double-down"></i> Expand</button>';
-            html += '<button class="btn btn-ghost" onclick="collapseAllTechLotView()" style="font-size: 10px; padding: 2px 6px;"><i class="pi pi-angle-double-up"></i> Collapse</button>';
-            html += '</div></div>';
-            
-            stepData.lots.forEach(function(lot, lotIndex) {
+            getTechFinFilteredLots(stepData).forEach(function(lot, lotIndex) {
                 var items = lot.items || [];
-                var passCount = items.filter(function(i) { return i.evaluations && i.evaluations.evaluator && i.evaluations.evaluator.status === 'pass'; }).length;
-                var failCount = items.filter(function(i) { return i.evaluations && i.evaluations.evaluator && i.evaluations.evaluator.status === 'fail'; }).length;
-                var pendingCount = items.length - passCount - failCount;
                 var isFirst = lotIndex === 0;
                 var lotStatus = getTechLotStatus(items);
                 var statusColor = lotStatus === 'pass' ? 'var(--success-500)' : lotStatus === 'fail' ? 'var(--danger-500)' : 'var(--surface-400)';
-                var statusBg = lotStatus === 'pass' ? 'var(--success-100)' : lotStatus === 'fail' ? 'var(--danger-100)' : 'var(--surface-200)';
-                var statusText = lotStatus === 'pass' ? 'PASS' : lotStatus === 'fail' ? 'FAIL' : 'PENDING';
-                var statusIconClass = lotStatus === 'pass' ? 'pi-check-circle' : lotStatus === 'fail' ? 'pi-times-circle' : 'pi-clock';
-                
-                // LOT HEADER - with prominent status
-                html += '<div id="tech-lotview-lot-' + lot.id + '" style="margin-bottom: 4px; border: 1px solid var(--surface-200); border-radius: 4px; border-left: 4px solid ' + statusColor + ';">';
-                html += '<div onclick="toggleTechLotViewLot(\'' + lot.id + '\')" style="padding: 6px 10px; cursor: pointer; background: ' + (lotIndex % 2 === 0 ? 'var(--surface-50)' : 'white') + '; display: flex; justify-content: space-between; align-items: center;">';
-                html += '<div style="display: flex; align-items: center; gap: 8px;">';
-                html += '<i id="tech-lotview-lot-icon-' + lot.id + '" class="pi ' + (isFirst ? 'pi-chevron-down' : 'pi-chevron-right') + '" style="font-size: 10px; color: var(--text-muted);"></i>';
-                html += '<span style="font-size: 12px; font-weight: 600;">' + lot.name + '</span>';
-                html += '<span style="font-size: 10px; color: var(--text-muted);">(' + items.length + ' items)</span>';
+
+                html += '<div id="' + lotDom.outerPrefix + '-' + lot.id + '" style="margin-bottom: 12px; border: 1px solid var(--surface-200); border-radius: var(--radius-md); border-left: 4px solid ' + statusColor + '; overflow: hidden;">';
+                html += '<div onclick="' + lotDom.toggleFn + '(\'' + lot.id + '\')" style="padding: 8px 12px; cursor: pointer; background: ' + (lotIndex % 2 === 0 ? 'var(--surface-50)' : 'white') + '; display: flex; align-items: center; flex-wrap: wrap; gap: 8px;">';
+                html += '<i id="' + lotDom.iconPrefix + '-' + lot.id + '" class="pi ' + (isFirst ? 'pi-chevron-down' : 'pi-chevron-right') + '" style="font-size: 10px; color: var(--text-muted);"></i>';
+                html += '<span style="font-size: 13px; font-weight: 600;">' + escapeHtmlCell(lot.name) + '</span>';
+                html += '<span style="font-size: 11px; color: var(--text-muted);">(' + items.length + ' items)</span>';
                 html += '</div>';
-                html += '<div style="display: flex; align-items: center; gap: 12px; font-size: 10px;">';
-                html += '<span style="color: var(--success-600);"><i class="pi pi-check" style="font-size: 9px;"></i> ' + passCount + '</span>';
-                html += '<span style="color: var(--danger-600);"><i class="pi pi-times" style="font-size: 9px;"></i> ' + failCount + '</span>';
-                html += '<span style="color: var(--text-muted);"><i class="pi pi-clock" style="font-size: 9px;"></i> ' + pendingCount + '</span>';
-                html += '<span style="padding: 3px 8px; border-radius: 3px; font-size: 10px; font-weight: 700; background: ' + statusBg + '; color: ' + statusColor + ';"><i class="pi ' + statusIconClass + '" style="font-size: 10px;"></i> ' + statusText + '</span>';
-                html += '</div></div>';
-                
-                html += '<div id="tech-lotview-lot-content-' + lot.id + '" style="' + (isFirst ? '' : 'display: none;') + '">';
-                
-                items.forEach(function(item, idx) {
+
+                html += '<div id="' + lotDom.contentPrefix + '-' + lot.id + '" style="' + (isFirst ? '' : 'display: none;') + ' padding: 0 8px 12px 8px;">';
+                html += renderTechLotVerdictAlignmentStripHtml(lot, vendorsFiltered, colSpanPerSupplier);
+
+                items.forEach(function(item, itemIdx) {
                     var evalStatus = (item.evaluations && item.evaluations.evaluator && item.evaluations.evaluator.status) || 'not_evaluated';
                     var compliance = item.compliance || item.bidderCompliance || 'Yes';
-                    var compIcon = (compliance === 'Yes' || compliance === 'Full') ? '<i class="pi pi-check" style="color: var(--success-500);"></i>' : '<i class="pi pi-times" style="color: var(--danger-500);"></i>';
-                    var itemStatusIcon = evalStatus === 'pass' ? '<i class="pi pi-check-circle" style="color: var(--success-500);"></i>' : 
-                                         evalStatus === 'fail' ? '<i class="pi pi-times-circle" style="color: var(--danger-500);"></i>' : 
-                                         '<i class="pi pi-circle" style="color: var(--surface-400);"></i>';
-                    
-                    // PRODUCT ROW - compact style
-                    html += '<div style="border-bottom: 1px solid var(--surface-100);">';
-                    html += '<div onclick="toggleTechLotViewItem(\'' + lot.id + '-' + item.id + '\')" style="padding: 10px 10px 10px 24px; cursor: pointer; background: ' + (idx % 2 === 0 ? 'white' : 'var(--surface-50)') + '; display: flex; justify-content: space-between; align-items: center;">';
-                    html += '<div style="display: flex; align-items: center; gap: 6px;">';
-                    html += '<i id="tech-lotview-item-' + lot.id + '-' + item.id + '-icon" class="pi pi-chevron-right" style="font-size: 10px; color: var(--text-muted);"></i>';
-                    html += '<code style="font-size: 11px; background: var(--primary-50); color: var(--primary-600); padding: 2px 6px; border-radius: 3px;">' + (item.unspsc || '—') + '</code>';
-                    html += '<span style="font-size: 13px; font-weight: 500; max-width: 320px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' + item.description + '</span>';
-                    html += '<span style="font-size: 11px; color: var(--text-muted);">Qty: ' + (item.quantity || '—') + '</span>';
-                    html += '</div>';
-                    html += '<div style="display: flex; align-items: center; gap: 8px;">';
-                    html += compIcon;
-                    html += '<select style="font-size: 9px; padding: 1px 3px; border: 1px solid var(--surface-200); border-radius: 2px; width: 55px;" onclick="event.stopPropagation();">';
-                    html += '<option value="not_evaluated"' + (evalStatus === 'not_evaluated' ? ' selected' : '') + '>—</option>';
-                    html += '<option value="pass"' + (evalStatus === 'pass' ? ' selected' : '') + '>Pass</option>';
-                    html += '<option value="fail"' + (evalStatus === 'fail' ? ' selected' : '') + '>Fail</option>';
-                    html += '</select>';
-                    html += '<button style="background: none; border: none; cursor: pointer; padding: 2px;" onclick="event.stopPropagation(); showProductDetails(\'' + item.id + '\')" title="View Details">';
-                    html += '<i class="pi pi-eye" style="font-size: 10px; color: var(--primary-500);"></i></button>';
-                    html += itemStatusIcon;
+                    var subId = lot.id + '-' + item.id;
+                    var isFirstProduct = itemIdx === 0;
+
+                    html += '<div class="tech-product-subcollapsible">';
+                    html += '<div class="tech-product-subcollapsible-head" role="button" tabindex="0" onclick="toggleTechProductSubcollapsible(\'' + subId + '\')" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();toggleTechProductSubcollapsible(\'' + subId + '\');}" aria-expanded="' + (isFirstProduct ? 'true' : 'false') + '" aria-controls="tech-prod-sub-body-' + subId + '">';
+                    html += '<div style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0;">';
+                    html += '<i id="tech-prod-sub-icon-' + subId + '" class="pi ' + (isFirstProduct ? 'pi-chevron-down' : 'pi-chevron-right') + '" style="font-size: 11px; color: var(--text-muted); flex-shrink: 0;" aria-hidden="true"></i>';
+                    html += '<code style="font-size: 11px; background: var(--primary-50); color: var(--primary-600); padding: 2px 6px; border-radius: 3px; flex-shrink: 0;">' + escapeHtmlCell(item.unspsc || '—') + '</code>';
+                    html += '<span style="font-size: 13px; font-weight: 600; color: var(--text-primary); line-height: 1.35;">' + escapeHtmlCell(item.description) + '</span>';
+                    html += '<span style="font-size: 11px; color: var(--text-muted); flex-shrink: 0;">Qty: ' + escapeHtmlCell(String(item.quantity || '—')) + '</span>';
                     html += '</div></div>';
-                    
-                    // Technical table: Req ID, Requirement, Supplier, Compliant?, Details Offered, Deviation, Your Eval, Comments, Action
-                    
-                    // Sample requirements per product
-                    var requirements = [
-                        { id: 'R1', text: 'Product must meet ISO 13485 quality standards', responses: ['ISO 13485:2016 certified', 'ISO 13485:2016 compliant', 'ISO 13485 certified'] },
-                        { id: 'R2', text: 'Shelf life minimum 24 months from delivery', responses: ['36 months shelf life', '24 months guaranteed', '30 months shelf life'] },
-                        { id: 'R3', text: 'Must include user manual in English', responses: ['Manual in EN, FR, ES', 'English manual included', 'Manual in EN only'] }
-                    ];
-                    
-                    // Vendors
-                    var vendors = [
-                        { id: 'vendor1', name: 'MedSupply Ltd.', ungm: '309663' },
-                        { id: 'vendor2', name: 'HealthCare Corp.', ungm: '301245' },
-                        { id: 'vendor3', name: 'MedTech Inc.', ungm: '315789' }
-                    ];
-                    
-                    html += '<div id="tech-lotview-item-' + lot.id + '-' + item.id + '" style="display: none; background: var(--surface-50); padding: 8px 12px 8px 34px;">';
-                    html += '<table style="width: 100%; border-collapse: collapse; font-size: 12px; background: white; border: 1px solid var(--surface-200); border-radius: 3px;">';
-                    html += '<thead><tr style="background: var(--surface-100);">';
-                    html += '<th style="padding: 6px 8px; text-align: center; font-weight: 600; width: 50px;">Req ID</th>';
-                    html += '<th style="padding: 6px 8px; text-align: left; font-weight: 600; width: 180px;">Requirement</th>';
-                    html += '<th style="padding: 6px 8px; text-align: left; font-weight: 600; width: 110px;">Supplier</th>';
-                    html += '<th style="padding: 6px 8px; text-align: center; font-weight: 600; width: 70px;">Compliant?</th>';
-                    html += '<th style="padding: 6px 8px; text-align: left; font-weight: 600;">Details Offered</th>';
-                    html += '<th style="padding: 6px 8px; text-align: left; font-weight: 600; width: 100px;">Deviation</th>';
-                    html += '<th style="padding: 6px 8px; text-align: center; font-weight: 600; width: 65px;">Your Eval</th>';
-                    html += '<th style="padding: 6px 8px; text-align: left; font-weight: 600; width: 90px;">Comments</th>';
-                    html += '<th style="padding: 6px 8px; text-align: center; font-weight: 600; width: 70px;">Action</th>';
+
+                    html += '<div id="tech-prod-sub-body-' + subId + '" style="' + (isFirstProduct ? '' : 'display: none;') + '">';
+                    html += '<div class="eligibility-matrix-wrap tech-lot-matrix-scroll" role="region" aria-label="Requirement evaluation by supplier. Scroll horizontally to view all suppliers." style="--tech-lot-vendor-count: ' + Math.max(1, vendorsFiltered.length) + ';">';
+                    html += '<table class="eval-table eligibility-matrix-table tech-lot-matrix-table">';
+                    html += renderTechLotMatrixColgroupHtml(vendorsFiltered.length, colSpanPerSupplier);
+                    html += '<thead><tr>';
+                    html += '<th rowspan="2" class="eligibility-sticky-id" style="text-align: left;">Req ID</th>';
+                    html += '<th rowspan="2" class="eligibility-sticky-criteria" style="text-align: left;">Requirement</th>';
+                    vendorsFiltered.forEach(function(v) {
+                        var lineEvalForVendor = (item.evaluations && item.evaluations[v.id] && item.evaluations[v.id].status) || evalStatus;
+                        html += '<th colspan="' + colSpanPerSupplier + '" class="eligibility-supplier-head">';
+                        html += '<div class="eligibility-supplier-head-inner">';
+                        html += '<div class="eligibility-supplier-head-top">';
+                        html += '<i class="pi pi-building" aria-hidden="true"></i>';
+                        html += '<div>';
+                        html += '<div class="eligibility-supplier-code">' + escapeHtmlCell(v.code) + '</div>';
+                        html += '<div class="eligibility-supplier-name">' + escapeHtmlCell(v.name) + '</div>';
+                        html += '</div></div>';
+                        html += '<div class="tech-item-supplier-head-line tech-item-supplier-head-line--right">';
+                        html += '<select class="eval-select ' + lineEvalForVendor + '" onclick="event.stopPropagation();" onchange="syncEvalSelectStateClass(this)" aria-label="Line evaluation for ' + escapeHtmlCell(v.name) + ', ' + escapeHtmlCell(item.description) + '">';
+                        html += '<option value="not_evaluated"' + (lineEvalForVendor === 'not_evaluated' ? ' selected' : '') + '>—</option>';
+                        html += '<option value="pass"' + (lineEvalForVendor === 'pass' ? ' selected' : '') + '>Pass</option>';
+                        html += '<option value="fail"' + (lineEvalForVendor === 'fail' ? ' selected' : '') + '>Fail</option>';
+                        html += '</select>';
+                        html += '</div>';
+                        html += '</div></th>';
+                    });
+                    html += '</tr><tr>';
+                    vendorsFiltered.forEach(function() {
+                        techLotMatrixSubHeaders.forEach(function(sh) {
+                            html += '<th class="eligibility-matrix-subth" title="' + escapeHtmlCell(sh.title) + '"><i class="pi ' + sh.icon + '" aria-hidden="true"></i>' + sh.label + '</th>';
+                        });
+                    });
                     html += '</tr></thead><tbody>';
-                    
-                    // Render rows for each requirement x vendor combination
-                    var rowIdx = 0;
-                    requirements.forEach(function(req, reqIdx) {
-                        vendors.forEach(function(vendor, vIdx) {
+
+                    requirementsTemplate.forEach(function(req, reqIdx) {
+                        html += '<tr>';
+                        html += '<td class="eligibility-sticky-id">';
+                        html += '<div class="req-id-badge" style="font-size: 12px;">' + escapeHtmlCell(req.id) + '</div>';
+                        html += '</td>';
+                        html += '<td class="eligibility-sticky-criteria">';
+                        html += '<div class="tech-matrix-req-heading">' + escapeHtmlCell(req.text) + '</div>';
+                        html += '</td>';
+
+                        vendorsFiltered.forEach(function(vendor, vi) {
+                            var zc = 'eligibility-zone-' + (vi % 3);
                             var vEvalStatus = (item.evaluations && item.evaluations[vendor.id] && item.evaluations[vendor.id].status) || evalStatus;
                             var vEvalComment = (item.evaluations && item.evaluations[vendor.id] && item.evaluations[vendor.id].comment) || '';
                             var isCompliant = (reqIdx === 0 || reqIdx === 1) ? true : (compliance === 'Yes' || compliance === 'Full');
-                            var compBadge = isCompliant ? 
-                                '<span style="padding: 2px 6px; border-radius: 3px; font-size: 10px; background: var(--success-100); color: var(--success-600);"><i class="pi pi-check"></i> Yes</span>' :
-                                '<span style="padding: 2px 6px; border-radius: 3px; font-size: 10px; background: var(--danger-100); color: var(--danger-600);"><i class="pi pi-times"></i> No</span>';
-                            var hasDeviation = (reqIdx === 2 && vIdx === 2);
-                            
-                            html += '<tr style="border-bottom: 1px solid var(--surface-100); background: ' + (rowIdx % 2 === 0 ? 'white' : 'var(--surface-50)') + ';">';
-                            // Show Req ID and Requirement only for first vendor in each requirement group
-                            if (vIdx === 0) {
-                                html += '<td style="padding: 5px 8px; text-align: center; font-weight: 600; color: var(--primary-600); vertical-align: top;" rowspan="' + vendors.length + '">' + req.id + '</td>';
-                                html += '<td style="padding: 5px 8px; font-size: 11px; vertical-align: top;" rowspan="' + vendors.length + '">' + req.text + '</td>';
-                            }
-                            html += '<td style="padding: 5px 8px;"><div style="font-size: 11px; font-weight: 600;">' + vendor.name + '</div><div style="font-size: 9px; color: var(--text-muted);">UNGM: ' + vendor.ungm + '</div></td>';
-                            html += '<td style="padding: 5px 8px; text-align: center;">' + compBadge + '</td>';
-                            html += '<td style="padding: 5px 8px; font-size: 11px; color: var(--text-secondary);">' + req.responses[vIdx] + '</td>';
-                            html += '<td style="padding: 5px 8px; font-size: 10px;">' + (hasDeviation ? '<span style="color: var(--warning-600);"><i class="pi pi-exclamation-triangle" style="font-size: 10px;"></i> Minor</span>' : '<span style="color: var(--text-muted);">—</span>') + '</td>';
-                            html += '<td style="padding: 5px 8px; text-align: center;">';
-                            html += '<select style="font-size: 11px; padding: 3px 4px; border: 1px solid var(--surface-200); border-radius: 2px; width: 58px;">';
+                            var compBadge = isCompliant
+                                ? '<span class="eval-status-badge pass eligibility-compact" style="font-size: 9px;"><i class="pi pi-check"></i> Yes</span>'
+                                : '<span class="eval-status-badge fail eligibility-compact" style="font-size: 9px;"><i class="pi pi-times"></i> No</span>';
+                            var hasDeviation = (reqIdx === 2 && vi === 2);
+                            var respIdx = Math.min(vi, req.responses.length - 1);
+                            html += '<td class="eligibility-zone-start ' + zc + '" style="text-align: center; min-width: 64px; vertical-align: top;">' + compBadge + '</td>';
+                            html += '<td class="' + zc + '" style="min-width: 120px; max-width: 180px; font-size: 10px; color: var(--text-secondary); vertical-align: top; line-height: 1.35;">' + escapeHtmlCell(req.responses[respIdx]) + '</td>';
+                            html += '<td class="' + zc + '" style="min-width: 72px; font-size: 10px; vertical-align: top;">';
+                            html += hasDeviation
+                                ? '<span style="color: var(--warning-600);"><i class="pi pi-exclamation-triangle"></i> Minor</span>'
+                                : '<span style="color: var(--text-muted);">—</span>';
+                            html += '</td>';
+                            html += '<td class="manual-eval-column ' + zc + '" style="min-width: 88px; vertical-align: top;">';
+                            html += '<select class="eval-select ' + vEvalStatus + '" style="font-size: 10px; padding: 2px 4px; width: 100%;" onchange="syncEvalSelectStateClass(this)" aria-label="Eval ' + escapeHtmlCell(vendor.code) + ' ' + escapeHtmlCell(req.id) + '">';
                             html += '<option value="not_evaluated"' + (vEvalStatus === 'not_evaluated' ? ' selected' : '') + '>—</option>';
                             html += '<option value="pass"' + (vEvalStatus === 'pass' ? ' selected' : '') + '>Pass</option>';
                             html += '<option value="fail"' + (vEvalStatus === 'fail' ? ' selected' : '') + '>Fail</option>';
                             html += '</select></td>';
-                            html += '<td style="padding: 5px 8px;"><input type="text" value="' + vEvalComment + '" placeholder="..." style="font-size: 11px; padding: 3px 5px; border: 1px solid var(--surface-200); border-radius: 2px; width: 100%;"></td>';
-                            html += '<td style="padding: 5px 8px; text-align: center;">';
-                            html += '<div style="display: flex; gap: 2px; justify-content: center;">';
-                            html += '<button style="background: none; border: 1px solid var(--surface-200); border-radius: 2px; cursor: pointer; padding: 2px 4px;" onclick="event.stopPropagation(); startPrivateClarification(\'' + item.id + '-' + vendor.id + '-' + req.id + '\')" title="Clarify"><i class="pi pi-comments" style="font-size: 10px; color: var(--primary-500);"></i></button>';
-                            html += '<button style="background: none; border: 1px solid var(--surface-200); border-radius: 2px; cursor: pointer; padding: 2px 4px;" onclick="event.stopPropagation(); showProductDetails(\'' + item.id + '\')" title="Details"><i class="pi pi-eye" style="font-size: 10px; color: var(--primary-500);"></i></button>';
+                            html += '<td class="manual-eval-column ' + zc + '" style="min-width: 104px; vertical-align: top;">';
+                            html += '<textarea class="eval-comment-field" rows="2" placeholder="Comments…" style="font-size: 10px;">' + escapeHtmlCell(vEvalComment) + '</textarea></td>';
+                            html += '<td class="manual-eval-column ' + zc + '" style="text-align: center; min-width: 52px; vertical-align: top;">';
+                            html += '<div style="display: flex; flex-wrap: wrap; gap: 4px; justify-content: center;">';
+                            html += '<button type="button" class="btn btn-secondary btn-sm" onclick="startPrivateClarification(\'' + item.id + '-' + vendor.id + '-' + req.id + '\')" title="Clarify" aria-label="Clarify"><i class="pi pi-comments"></i></button>';
                             html += '</div></td>';
-                            html += '</tr>';
-                            rowIdx++;
                         });
+                        html += '</tr>';
                     });
-                    
-                    html += '</tbody></table></div>';
-                    html += '</div>';
+
+                    html += '</tbody></table></div></div></div>';
                 });
-                
+
                 html += '</div></div>';
             });
-            
-            container.innerHTML = html;
+            return html;
         }
-        
-        // Technical Lot View toggle functions
+
+        // Technical lot-view toggle helpers (legacy IDs tech-lotview-*; main technical UI uses tech-lot / lot-content)
         function toggleTechLotViewLot(lotId) {
             var content = document.getElementById('tech-lotview-lot-content-' + lotId);
             var icon = document.getElementById('tech-lotview-lot-icon-' + lotId);
@@ -21782,6 +22876,28 @@
                 } else {
                     content.style.display = 'none';
                     icon.className = 'pi pi-chevron-right';
+                }
+            }
+        }
+
+        function toggleTechProductSubcollapsible(subId) {
+            var body = document.getElementById('tech-prod-sub-body-' + subId);
+            var icon = document.getElementById('tech-prod-sub-icon-' + subId);
+            var head = icon ? icon.closest('.tech-product-subcollapsible-head') : null;
+            if (!body || !icon) {
+                return;
+            }
+            if (body.style.display === 'none') {
+                body.style.display = 'block';
+                icon.className = 'pi pi-chevron-down';
+                if (head) {
+                    head.setAttribute('aria-expanded', 'true');
+                }
+            } else {
+                body.style.display = 'none';
+                icon.className = 'pi pi-chevron-right';
+                if (head) {
+                    head.setAttribute('aria-expanded', 'false');
                 }
             }
         }
@@ -21801,21 +22917,92 @@
         }
         
         function expandAllTechLotView() {
+            document.querySelectorAll('[id^="lot-content-"]').forEach(function(content) {
+                content.style.display = 'block';
+            });
+            document.querySelectorAll('[id^="lot-icon-"]').forEach(function(icon) {
+                icon.className = 'pi pi-chevron-down';
+            });
             document.querySelectorAll('[id^="tech-lotview-lot-content-"]').forEach(function(content) {
                 content.style.display = 'block';
             });
             document.querySelectorAll('[id^="tech-lotview-lot-icon-"]').forEach(function(icon) {
                 icon.className = 'pi pi-chevron-down';
             });
+            document.querySelectorAll('[id^="tech-prod-sub-body-"]').forEach(function(el) {
+                el.style.display = 'block';
+            });
+            document.querySelectorAll('[id^="tech-prod-sub-icon-"]').forEach(function(el) {
+                el.className = 'pi pi-chevron-down';
+            });
+            document.querySelectorAll('.tech-product-subcollapsible-head').forEach(function(h) {
+                h.setAttribute('aria-expanded', 'true');
+            });
+            showToast('All lots expanded');
         }
         
         function collapseAllTechLotView() {
+            document.querySelectorAll('[id^="lot-content-"]').forEach(function(content) {
+                content.style.display = 'none';
+            });
+            document.querySelectorAll('[id^="lot-icon-"]').forEach(function(icon) {
+                icon.className = 'pi pi-chevron-right';
+            });
             document.querySelectorAll('[id^="tech-lotview-lot-content-"]').forEach(function(content) {
                 content.style.display = 'none';
             });
             document.querySelectorAll('[id^="tech-lotview-lot-icon-"]').forEach(function(icon) {
                 icon.className = 'pi pi-chevron-right';
             });
+            document.querySelectorAll('[id^="tech-prod-sub-body-"]').forEach(function(el) {
+                el.style.display = 'none';
+            });
+            document.querySelectorAll('[id^="tech-prod-sub-icon-"]').forEach(function(el) {
+                el.className = 'pi pi-chevron-right';
+            });
+            document.querySelectorAll('.tech-product-subcollapsible-head').forEach(function(h) {
+                h.setAttribute('aria-expanded', 'false');
+            });
+            showToast('All lots collapsed');
+        }
+
+        function toggleEligibilityLot(lotKey) {
+            const content = document.getElementById('eval-elig-lot-content-' + lotKey);
+            const icon = document.getElementById('eval-elig-lot-icon-' + lotKey);
+            if (!content || !icon) {
+                return;
+            }
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                icon.className = 'pi pi-chevron-down';
+            } else {
+                content.style.display = 'none';
+                icon.className = 'pi pi-chevron-right';
+            }
+        }
+
+        function expandAllEligibilityLots() {
+            document.querySelectorAll('[id^="eval-elig-lot-content-"]').forEach(function(content) {
+                content.style.display = 'block';
+            });
+            document.querySelectorAll('[id^="eval-elig-lot-icon-"]').forEach(function(icon) {
+                icon.className = 'pi pi-chevron-down';
+            });
+            showToast('All eligibility lots expanded');
+        }
+
+        function collapseAllEligibilityLots() {
+            document.querySelectorAll('[id^="eval-elig-lot-content-"]').forEach(function(content) {
+                content.style.display = 'none';
+            });
+            document.querySelectorAll('[id^="eval-elig-lot-icon-"]').forEach(function(icon) {
+                icon.className = 'pi pi-chevron-right';
+            });
+            showToast('All eligibility lots collapsed');
+        }
+
+        function eligibilityDownloadXlsMock() {
+            showToast('Export (mock — not wired)');
         }
         
         // Legacy function - kept for compatibility
@@ -21947,46 +23134,19 @@
             return { status: 'pending', comment: '' };
         }
 
-        function renderEligibilityPOTable(stepData) {
-            const vendors = getEligibilityMatrixVendors();
-            const lotMetaPo = getEligibilityLotOption(currentEligibilityLotKey);
+        function buildEligibilityPOMatrixTableHtml(stepData, lotKey, vendors, eligibilityForms) {
+            if (vendors.length === 0) {
+                return '<p style="padding: var(--spacing-md); color: var(--text-muted); font-size: 13px; margin: 0;">No suppliers match the current filters for this lot.</p>';
+            }
+            const lotMetaPo = getEligibilityLotOption(lotKey);
             const lotSummaryShortPo = 'Lot ' + lotMetaPo.number + ' — ' + lotMetaPo.name;
             const colSpanPerSupplier = 7;
-            if (vendors.length === 0) {
-                return `
-                <div style="margin-bottom: var(--spacing-lg);">
-                    <div style="background: var(--primary-50); padding: var(--spacing-md); border-radius: var(--radius-sm); margin-bottom: var(--spacing-md); border-left: 4px solid var(--primary-400);">
-                        <strong>Procurement official review — eligibility & formal</strong>
-                    </div>
-                </div>` + renderEligibilityLotToolbar() + '<p style="padding: var(--spacing-md); color: var(--text-muted); font-size: 13px;">No suppliers match the current lot and supplier filter.</p>';
-            }
-            const eligibilityForms = {
-                'EF-001': [{ name: 'Bidder\'s Information Form', id: 'bidder-info' }],
-                'EF-002': [{ name: 'Bid/Proposal Submission', id: 'bidder-info' }],
-                'EF-003': [{ name: 'Bidder\'s Information Form', id: 'bidder-info' }],
-                'EF-004': [{ name: 'Technical Bid Form', id: 'technical-bid' }],
-                'EF-005': [{ name: 'Technical Bid Form', id: 'technical-bid' }],
-                'EF-006': [{ name: 'Self Disclosure Form', id: 'self-disclosure' }],
-                'EF-007': [{ name: 'Bidder\'s Information Form', id: 'bidder-info' }],
-                'EF-008': [{ name: 'Technical Bid Form', id: 'technical-bid' }]
-            };
-
-            let html = `
-                <div style="margin-bottom: var(--spacing-lg);">
-                    <div style="background: var(--primary-50); padding: var(--spacing-md); border-radius: var(--radius-sm); margin-bottom: var(--spacing-md); border-left: 4px solid var(--primary-400);">
-                        <strong>Procurement official review — eligibility & formal</strong>
-                        <p style="margin: var(--spacing-xs) 0 0 0; font-size: 12px; color: var(--text-secondary);">
-                            Same side-by-side layout as evaluators; complete PO final determination and clarifications per supplier.
-                        </p>
-                    </div>
-            `;
-            html += renderEligibilityLotToolbar();
-            html += '<div class="eligibility-matrix-wrap"><table class="eval-table eligibility-matrix-table"><thead>';
+            let html = '<div class="eligibility-matrix-wrap"><table class="eval-table eligibility-matrix-table"><thead>';
             html += '<tr>';
             html += '<th rowspan="2" class="eligibility-sticky-id" style="text-align: left;">Criteria ID</th>';
             html += '<th rowspan="2" class="eligibility-sticky-criteria" style="text-align: left;">Criteria</th>';
             vendors.forEach(v => {
-                const hdrPo = getMockSupplierHeaderFinal(v.id, currentEligibilityLotKey, 'po');
+                const hdrPo = getMockSupplierHeaderFinal(v.id, lotKey, 'po');
                 html += `<th colspan="${colSpanPerSupplier}" class="eligibility-supplier-head">
                     <div class="eligibility-supplier-head-inner">
                         <div class="eligibility-supplier-head-top">
@@ -21998,7 +23158,7 @@
                         </div>
                         <div class="eligibility-supplier-head-final">
                             <span class="eligibility-supplier-final-lbl">PO final</span>
-                            <select class="eval-select eligibility-supplier-final-select ${hdrPo}" data-lot-key="${currentEligibilityLotKey}" aria-label="PO final for ${v.name}, ${lotSummaryShortPo}" onchange="syncEvalSelectStateClass(this); eligibilitySupplierHeaderFinalChanged(this, '${v.id}', 'po')">
+                            <select class="eval-select eligibility-supplier-final-select ${hdrPo}" data-lot-key="${lotKey}" aria-label="PO final for ${v.name}, ${lotSummaryShortPo}" onchange="syncEvalSelectStateClass(this); eligibilitySupplierHeaderFinalChanged(this, '${v.id}', 'po')">
                                 <option value="pending" ${hdrPo === 'pending' ? 'selected' : ''}>Pending</option>
                                 <option value="pass" ${hdrPo === 'pass' ? 'selected' : ''}>Pass</option>
                                 <option value="fail" ${hdrPo === 'fail' ? 'selected' : ''}>Fail</option>
@@ -22092,7 +23252,48 @@
                 html += '</tr>';
             });
 
-            html += '</tbody></table></div></div>';
+            html += '</tbody></table></div>';
+            return html;
+        }
+
+        function renderEligibilityPOTable(stepData) {
+            if (getEligibilityMatrixVendors().length === 0) {
+                return `
+                <div style="margin-bottom: var(--spacing-lg);">
+                    <div style="background: var(--primary-50); padding: var(--spacing-md); border-radius: var(--radius-sm); margin-bottom: var(--spacing-md); border-left: 4px solid var(--primary-400);">
+                        <strong>Procurement official review — eligibility & formal</strong>
+                    </div>
+                </div>` + renderEligibilityLotToolbar() + '<p style="padding: var(--spacing-md); color: var(--text-muted); font-size: 13px;">No suppliers match the current lot and supplier filter.</p>';
+            }
+            const eligibilityForms = {
+                'EF-001': [{ name: 'Bidder\'s Information Form', id: 'bidder-info' }],
+                'EF-002': [{ name: 'Bid/Proposal Submission', id: 'bidder-info' }],
+                'EF-003': [{ name: 'Bidder\'s Information Form', id: 'bidder-info' }],
+                'EF-004': [{ name: 'Technical Bid Form', id: 'technical-bid' }],
+                'EF-005': [{ name: 'Technical Bid Form', id: 'technical-bid' }],
+                'EF-006': [{ name: 'Self Disclosure Form', id: 'self-disclosure' }],
+                'EF-007': [{ name: 'Bidder\'s Information Form', id: 'bidder-info' }],
+                'EF-008': [{ name: 'Technical Bid Form', id: 'technical-bid' }]
+            };
+
+            let html = `
+                <div style="margin-bottom: var(--spacing-lg);">
+                    <div style="background: var(--primary-50); padding: var(--spacing-md); border-radius: var(--radius-sm); margin-bottom: var(--spacing-md); border-left: 4px solid var(--primary-400);">
+                        <strong>Procurement official review — eligibility & formal</strong>
+                        <p style="margin: var(--spacing-xs) 0 0 0; font-size: 12px; color: var(--text-secondary);">
+                            Same side-by-side layout as evaluators; complete PO final determination and clarifications per supplier.
+                        </p>
+                    </div>
+            `;
+            html += renderEligibilityLotToolbar();
+            const nCrit = stepData.requirements.length;
+            const lotKeys = getEligibilityToolbarEffectiveLotKeys();
+            lotKeys.forEach((lotKey, lotIndex) => {
+                const vendors = getEligibilityMatrixVendorsForLotKey(lotKey);
+                const inner = buildEligibilityPOMatrixTableHtml(stepData, lotKey, vendors, eligibilityForms);
+                html += wrapEvalEligLotCollapsibleHtml(lotKey, lotIndex, nCrit, vendors.length, inner);
+            });
+            html += '</div>';
             return html;
         }
         
@@ -22203,13 +23404,13 @@
                 return 'pass';
             }
             
-            let html = `
+            let html = renderTechFinScopeToolbarIfApplicable(stepData) + `
                 <!-- Navigation Bar -->
                 <div style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-md); padding: var(--spacing-md); margin-bottom: var(--spacing-lg);">
                     <div style="display: flex; gap: var(--spacing-lg); align-items: center; flex-wrap: wrap;">
                         <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
                             <span style="font-size: 12px; color: var(--text-muted);">Jump to Lot:</span>
-                            ${stepData.lots.map((lot, i) => `
+                            ${getTechFinFilteredLots(stepData).map((lot, i) => `
                                 <button class="btn btn-secondary btn-sm" onclick="document.getElementById('po-tech-lot-${lot.id}').scrollIntoView({behavior: 'smooth'})" style="font-size: 11px;">
                                     📦 ${lot.name.split(':')[0]}
                                 </button>
@@ -22230,7 +23431,7 @@
                 </div>
             `;
             
-            stepData.lots.forEach((lot, lotIndex) => {
+            getTechFinFilteredLots(stepData).forEach((lot, lotIndex) => {
                 const lotStatus = calculateLotStatusFromItems(lot.items);
                 const lotStatusColor = lotStatus === 'pass' ? 'var(--success-400)' : 
                                        lotStatus === 'fail' ? 'var(--danger-400)' : 
@@ -22301,7 +23502,6 @@
                                                             ${item.bidderResponse ? item.bidderResponse.substring(0, 80) + '...' : 'Specifications provided'}
                                                         </div>
                                                         <div style="margin-top: 4px;">
-                                                            <button class="btn btn-secondary btn-sm" onclick="showProductDetails('${item.id}')" style="font-size: 9px; padding: 2px 6px;">📋 View</button>
                                                             <button class="btn btn-secondary btn-sm" onclick="previewDocumentOnline('specs.pdf')" style="font-size: 9px; padding: 2px 6px;">📎 2</button>
                                                         </div>
                                                     </td>
@@ -22355,13 +23555,13 @@
                 'vendor3': { name: 'MedTech Inc.', ungm: '315789', country: 'Japan' }
             };
             
-            const selectedLot = stepData.lots.find(lot => lot.id === currentLotId);
+            const selectedLot = stepData.lots.find(lot => lot.id === (techFinToolbarLotRadioId || currentLotId));
             if (!selectedLot) {
                 container.innerHTML = '<p>Lot not found.</p>';
                 return;
             }
             
-            let html = `
+            let html = renderTechFinScopeToolbarIfApplicable(stepData) + `
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-lg); padding: var(--spacing-md); background: var(--surface-50); border-radius: var(--radius-md); border: 1px solid var(--surface-200);">
                     <div style="display: flex; align-items: center; gap: var(--spacing-md);">
                         <button class="btn btn-secondary btn-sm" onclick="expandAllPOLotViewUnspsc()" style="font-size: 11px;">⬇️ Expand All</button>
@@ -22417,7 +23617,9 @@
         
         // Render supplier rows for PO Lot View
         function renderPOLotViewSupplierRows(item, vendorData) {
-            const vendors = ['vendor1', 'vendor2', 'vendor3'];
+            const vendors = (techFinToolbarSupplierMultiIds && techFinToolbarSupplierMultiIds.length > 0)
+                ? techFinToolbarSupplierMultiIds.filter(function(id) { return ['vendor1', 'vendor2', 'vendor3'].indexOf(id) >= 0; })
+                : ['vendor1', 'vendor2', 'vendor3'];
             let html = '';
             
             vendors.forEach((vendorId, idx) => {
@@ -22439,7 +23641,6 @@
                         </td>
                         <td style="padding: 8px;">
                             <div style="font-size: 10px; color: var(--text-secondary);">Specs provided</div>
-                            <button class="btn btn-secondary btn-sm" onclick="showProductDetails('${item.id}')" style="font-size: 8px; padding: 2px 4px; margin-top: 2px;">📋 View</button>
                         </td>
                         <td style="font-size: 10px; color: var(--success-600);">None</td>
                         <td style="text-align: center;">
@@ -22489,12 +23690,12 @@
                 lotStatuses[lot.id] = 'not_evaluated';
             });
             
-            let html = `
+            let html = renderTechFinScopeToolbarIfApplicable(stepData) + `
                 <div style="background: var(--surface-0); padding: var(--spacing-md); border-radius: var(--radius-md); margin-bottom: var(--spacing-lg); border: 1px solid var(--surface-200);">
                     <div style="display: flex; gap: var(--spacing-lg); align-items: center; flex-wrap: wrap;">
                         <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
                             <span style="font-size: 12px; color: var(--text-muted);">Jump to Lot:</span>
-                            ${stepData.lots.map((lot, i) => `
+                            ${getTechFinFilteredLots(stepData).map((lot, i) => `
                                 <button class="btn btn-secondary btn-sm" onclick="document.getElementById('po-financial-lot-${lot.id}').scrollIntoView({behavior: 'smooth'})" style="font-size: 11px;">
                                     📦 ${lot.name.split(':')[0]}
                                 </button>
@@ -22508,7 +23709,7 @@
                 </div>
             `;
             
-            stepData.lots.forEach((lot, lotIndex) => {
+            getTechFinFilteredLots(stepData).forEach((lot, lotIndex) => {
                 const lotTotal = lotTotals[lot.id] || 0;
                 const isFirstLot = lotIndex === 0;
                 
@@ -22618,13 +23819,13 @@
                 'vendor3': { name: 'MedTech Inc.', ungm: '315789', country: 'Japan' }
             };
             
-            const selectedLot = stepData.lots.find(lot => lot.id === currentLotId);
+            const selectedLot = stepData.lots.find(lot => lot.id === (techFinToolbarLotRadioId || currentLotId));
             if (!selectedLot) {
                 container.innerHTML = '<p>Lot not found.</p>';
                 return;
             }
             
-            let html = `
+            let html = renderTechFinScopeToolbarIfApplicable(stepData) + `
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-lg); padding: var(--spacing-md); background: var(--surface-50); border-radius: var(--radius-md); border: 1px solid var(--surface-200);">
                     <div style="display: flex; align-items: center; gap: var(--spacing-md);">
                         <button class="btn btn-secondary btn-sm" onclick="expandAllPOFinancialLotViewUnspsc()" style="font-size: 11px;">⬇️ Expand All</button>
@@ -22680,7 +23881,9 @@
         
         // Render supplier rows for PO Financial Lot View
         function renderPOFinancialLotViewSupplierRows(item, vendorData) {
-            const vendors = ['vendor1', 'vendor2', 'vendor3'];
+            const vendors = (techFinToolbarSupplierMultiIds && techFinToolbarSupplierMultiIds.length > 0)
+                ? techFinToolbarSupplierMultiIds.filter(function(id) { return ['vendor1', 'vendor2', 'vendor3'].indexOf(id) >= 0; })
+                : ['vendor1', 'vendor2', 'vendor3'];
             let html = '';
             
             vendors.forEach((vendorId, idx) => {
@@ -23659,50 +24862,54 @@
 
         let currentLotId = 'lot1';
         
-        function switchEvalView(view) {
+        function switchEvalView(view, clickedBtn) {
             currentEvalView = view;
-            
-            // Update toggle buttons
-            document.querySelectorAll('.view-toggle-btn').forEach(btn => {
-                btn.classList.remove('active');
+
+            ['viewToggle', 'viewToggle-toolbar'].forEach(function(toggleId) {
+                var toggleRoot = document.getElementById(toggleId);
+                if (!toggleRoot) {
+                    return;
+                }
+                toggleRoot.querySelectorAll('.view-toggle-btn').forEach(function(btn) {
+                    btn.classList.remove('active');
+                });
+                var toActivate = clickedBtn && toggleRoot.contains(clickedBtn) ? clickedBtn : null;
+                if (!toActivate) {
+                    toActivate = view === 'supplier'
+                        ? toggleRoot.querySelector('.view-toggle-btn:first-of-type')
+                        : toggleRoot.querySelector('.view-toggle-btn:last-of-type');
+                }
+                if (toActivate) {
+                    toActivate.classList.add('active');
+                }
             });
-            event.target.classList.add('active');
             
-            // Hide/show vendor info bar based on view
-            const vendorInfoBar = document.getElementById('vendor-info-bar');
-            if (vendorInfoBar) {
-                vendorInfoBar.style.display = (view === 'lot') ? 'none' : 'flex';
+            const stepKey = getTechFinStepDataKey();
+            const sd = stepKey ? evaluationData[stepKey] : null;
+            if (sd && sd.lots) {
+                ensureTechFinToolbarState(sd);
             }
             
-            // Update tabs container
-            const tabsContainer = document.getElementById('evalTabsContainer');
-            if (view === 'lot') {
-                // Show lot tabs
-                tabsContainer.innerHTML = `
-                    <button class="lot-tab active" onclick="switchLot('lot1')"><i class="pi pi-th-large"></i> Lot 1: PPE</button>
-                    <button class="lot-tab" onclick="switchLot('lot2')"><i class="pi pi-th-large"></i> Lot 2: Medical Consumables</button>
-                `;
-                currentLotId = 'lot1';
-            } else {
-                // Show vendor tabs
-                tabsContainer.innerHTML = `
-                    <button class="vendor-eval-tab active" onclick="switchVendorEval('vendor1')"><i class="pi pi-user"></i> MedSupply Ltd.</button>
-                    <button class="vendor-eval-tab" onclick="switchVendorEval('vendor2')"><i class="pi pi-user"></i> HealthCare Corp.</button>
-                    <button class="vendor-eval-tab" onclick="switchVendorEval('vendor3')"><i class="pi pi-user"></i> MedTech Inc.</button>
-                `;
-            }
-            
-            // Re-render table
+            syncEvaluationWorkspaceChrome();
             renderEvaluationTable();
         }
         
         function switchLot(lotId) {
             currentLotId = lotId;
+            if (currentEvaluationStep === 3 || currentEvaluationStep === 4) {
+                techFinToolbarLotRadioId = lotId;
+                techFinToolbarLotMultiIds = [lotId];
+            }
             
             document.querySelectorAll('.lot-tab').forEach(tab => {
                 tab.classList.remove('active');
             });
-            event.target.classList.add('active');
+            var lotTab = typeof event !== 'undefined' && event && event.target ? event.target.closest('.lot-tab') : null;
+            if (lotTab) {
+                lotTab.classList.add('active');
+            } else {
+                syncLotTabActiveClass(lotId);
+            }
             
             renderEvaluationTable();
         }
