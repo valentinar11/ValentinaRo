@@ -2857,6 +2857,23 @@
             outline-offset: 2px;
             border-radius: 2px;
         }
+        .eligibility-supplier-name-row {
+            display: inline-flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 4px;
+            max-width: 100%;
+        }
+        .eligibility-supplier-sanction-wrap {
+            display: inline-flex;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        .eligibility-supplier-sanction-icon {
+            font-size: 12px;
+            color: var(--warning-500);
+            line-height: 1;
+        }
         .eligibility-matrix-subth {
             font-size: 8px !important;
             font-weight: 700 !important;
@@ -20126,6 +20143,26 @@
             return 'supplier-evaluation-detail-mock.html?vendor=' + encodeURIComponent(vendorId || 'vendor1');
         }
 
+        /** Mock: MedSupply Ltd. (vendor1) flagged for sanctions review in matrix headers. */
+        function isMockVendorSanctioned(vendorId) {
+            return vendorId === 'vendor1';
+        }
+
+        /** Link to supplier detail mock + optional sanctions warning; name is HTML-escaped. */
+        function eligibilitySupplierNameRowHtml(vendor) {
+            const id = vendor && vendor.id ? vendor.id : 'vendor1';
+            const name = vendor && vendor.name != null ? String(vendor.name) : '';
+            const href = eligibilitySupplierDetailMockHref(id);
+            const nameEsc = escapeHtmlCell(name);
+            const warn = isMockVendorSanctioned(id)
+                ? '<span class="eligibility-supplier-sanction-wrap" role="img" aria-label="Sanctions warning (mock)" title="Sanctions list match — mock"><i class="pi pi-exclamation-triangle eligibility-supplier-sanction-icon" aria-hidden="true"></i></span>'
+                : '';
+            return '<span class="eligibility-supplier-name-row">' +
+                '<a href="' + href + '" target="_blank" rel="noopener noreferrer" class="eligibility-supplier-name-link" title="Open supplier details (submission & evaluation) — mock">' + nameEsc + '</a>' +
+                warn +
+                '</span>';
+        }
+
         function getMockSupplierHeaderFinal(vendorId, lotKey, role) {
             const lotNum = parseInt(getEligibilityLotOption(lotKey).number, 10) || 1;
             if (currentEvaluationStep === 2) {
@@ -20779,7 +20816,7 @@
                             <i class="pi pi-building" aria-hidden="true"></i>
                             <div>
                                 <div class="eligibility-supplier-code">${v.code}</div>
-                                <div class="eligibility-supplier-name"><a href="${eligibilitySupplierDetailMockHref(v.id)}" target="_blank" rel="noopener noreferrer" class="eligibility-supplier-name-link" title="Open supplier details (submission & evaluation) — mock">${v.name}</a></div>
+                                <div class="eligibility-supplier-name">${eligibilitySupplierNameRowHtml(v)}</div>
                             </div>
                         </div>
                         <div class="eligibility-supplier-head-final">
@@ -20942,7 +20979,7 @@
                             <i class="pi pi-building" aria-hidden="true"></i>
                             <div>
                                 <div class="eligibility-supplier-code">${v.code}</div>
-                                <div class="eligibility-supplier-name"><a href="${eligibilitySupplierDetailMockHref(v.id)}" target="_blank" rel="noopener noreferrer" class="eligibility-supplier-name-link" title="Open supplier details (submission & evaluation) — mock">${v.name}</a></div>
+                                <div class="eligibility-supplier-name">${eligibilitySupplierNameRowHtml(v)}</div>
                             </div>
                         </div>
                         <div class="eligibility-supplier-head-final">
@@ -21082,7 +21119,7 @@
                             <i class="pi pi-building" aria-hidden="true"></i>
                             <div>
                                 <div class="eligibility-supplier-code">${v.code}</div>
-                                <div class="eligibility-supplier-name"><a href="${eligibilitySupplierDetailMockHref(v.id)}" target="_blank" rel="noopener noreferrer" class="eligibility-supplier-name-link" title="Open supplier details (submission & evaluation) — mock">${v.name}</a></div>
+                                <div class="eligibility-supplier-name">${eligibilitySupplierNameRowHtml(v)}</div>
                             </div>
                         </div>
                         <div class="eligibility-supplier-head-final">
@@ -21291,7 +21328,7 @@
                     html += '<i class="pi pi-building" aria-hidden="true"></i>';
                     html += '<div>';
                     html += '<div class="eligibility-supplier-code">' + escapeHtmlCell(v.code) + '</div>';
-                    html += '<div class="eligibility-supplier-name">' + escapeHtmlCell(v.name) + '</div>';
+                    html += '<div class="eligibility-supplier-name">' + eligibilitySupplierNameRowHtml(v) + '</div>';
                     html += '</div></div>';
                     html += '<div class="tech-item-supplier-head-line tech-item-supplier-head-line--right">';
                     html += '<select class="eval-select ' + lotVerdict + '" data-tech-lot-id="' + escapeHtmlCell(lot.id) + '" data-tech-lot-vendor="' + escapeHtmlCell(v.id) + '" data-overall-summary-header="1" onclick="event.stopPropagation();" onchange="syncEvalSelectStateClass(this)" aria-label="Overall lot verdict for supplier ' + escapeHtmlCell(v.name) + '">';
@@ -22702,7 +22739,7 @@
                 h += '<i class="pi pi-building" aria-hidden="true"></i>';
                 h += '<div>';
                 h += '<div class="eligibility-supplier-code">' + escapeHtmlCell(v.code) + '</div>';
-                h += '<div class="eligibility-supplier-name">' + escapeHtmlCell(v.name) + '</div>';
+                h += '<div class="eligibility-supplier-name">' + eligibilitySupplierNameRowHtml(v) + '</div>';
                 h += '</div></div>';
                 h += '<div class="tech-item-supplier-head-line tech-item-supplier-head-line--right">';
                 h += '<select class="eval-select ' + verdict + '" data-tech-lot-id="' + escapeHtmlCell(lot.id) + '" data-tech-lot-vendor="' + escapeHtmlCell(v.id) + '" onclick="event.stopPropagation();" onchange="syncEvalSelectStateClass(this)" aria-label="Lot technical verdict for supplier ' + escapeHtmlCell(v.name) + '">';
@@ -22796,7 +22833,7 @@
                         html += '<i class="pi pi-building" aria-hidden="true"></i>';
                         html += '<div>';
                         html += '<div class="eligibility-supplier-code">' + escapeHtmlCell(v.code) + '</div>';
-                        html += '<div class="eligibility-supplier-name">' + escapeHtmlCell(v.name) + '</div>';
+                        html += '<div class="eligibility-supplier-name">' + eligibilitySupplierNameRowHtml(v) + '</div>';
                         html += '</div></div>';
                         html += '<div class="tech-item-supplier-head-line tech-item-supplier-head-line--right">';
                         html += '<select class="eval-select ' + lineEvalForVendor + '" onclick="event.stopPropagation();" onchange="syncEvalSelectStateClass(this)" aria-label="Line evaluation for ' + escapeHtmlCell(v.name) + ', ' + escapeHtmlCell(item.description) + '">';
@@ -23153,7 +23190,7 @@
                             <i class="pi pi-building" aria-hidden="true"></i>
                             <div>
                                 <div class="eligibility-supplier-code">${v.code}</div>
-                                <div class="eligibility-supplier-name"><a href="${eligibilitySupplierDetailMockHref(v.id)}" target="_blank" rel="noopener noreferrer" class="eligibility-supplier-name-link" title="Open supplier details (submission & evaluation) — mock">${v.name}</a></div>
+                                <div class="eligibility-supplier-name">${eligibilitySupplierNameRowHtml(v)}</div>
                             </div>
                         </div>
                         <div class="eligibility-supplier-head-final">
@@ -24168,7 +24205,7 @@
             return responseArray[vendorIndex] || responseArray[0];
         }
 
-        /** Stages for Evaluation Status by Stage matrix (comparison / overview). */
+        /** Stages for Evaluation results matrix (comparison / overview). */
         const EVAL_OVERVIEW_STAGES = [
             { key: 'step1', title: '1. Eligibility', evaluator: 'Jane Doe' },
             { key: 'step2', title: '2. Qualification', evaluator: 'John Smith' },
@@ -24448,7 +24485,7 @@
             const col2Label = groupBy === 'lot' ? 'Supplier' : 'Lot';
 
             const lines = [];
-            lines.push(evalOverviewEscapeTsvField('Evaluation Status by Stage — export'));
+            lines.push(evalOverviewEscapeTsvField('Evaluation results — export'));
 
             if (showEvaluators) {
                 const hdr = [col1Label, col2Label];
@@ -24531,13 +24568,40 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'evaluation-status-by-stage.xls';
+            a.download = 'evaluation-results.xls';
             a.rel = 'noopener';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
-            showToast('Downloaded evaluation-status-by-stage.xls (current filters)');
+            showToast('Downloaded evaluation-results.xls (current filters)');
+        }
+
+        /** Pills for lot/supplier × stage grid (mock). */
+        function evalProgressByStageCellHtml(status) {
+            const s = status === 'evaluated' || status === 'in_progress' || status === 'not_started' ? status : 'not_started';
+            const cfg = {
+                evaluated: { label: 'Evaluated', bg: 'var(--success-50)', color: 'var(--success-700)', border: 'var(--success-200)', icon: 'pi-check-circle' },
+                in_progress: { label: 'In progress', bg: 'var(--primary-50)', color: 'var(--primary-700)', border: 'var(--primary-200)', icon: 'pi-chart-line' },
+                not_started: { label: 'Not started', bg: 'var(--surface-100)', color: 'var(--text-muted)', border: 'var(--surface-200)', icon: 'pi-minus' }
+            };
+            const c = cfg[s];
+            return '<span style="display: inline-flex; align-items: center; justify-content: center; gap: 5px; padding: 5px 10px; border-radius: 999px; font-size: 11px; font-weight: 600; border: 1px solid ' + c.border + '; background: ' + c.bg + '; color: ' + c.color + ';" title="' + c.label + '"><i class="pi ' + c.icon + '" style="font-size: 12px;" aria-hidden="true"></i>' + c.label + '</span>';
+        }
+
+        function evalLotStageProgressByModeSliderInput(el) {
+            if (el) {
+                el.setAttribute('aria-valuenow', el.value);
+            }
+            const mode = el && Number(el.value) === 1 ? 'supplier' : 'lot';
+            const lotsWrap = document.getElementById('eval-progress-by-stage-lots-wrap');
+            const supWrap = document.getElementById('eval-progress-by-stage-suppliers-wrap');
+            if (lotsWrap) {
+                lotsWrap.hidden = mode !== 'lot';
+            }
+            if (supWrap) {
+                supWrap.hidden = mode !== 'supplier';
+            }
         }
 
         // Render comprehensive Evaluation Overview (Step 0)
@@ -24560,6 +24624,51 @@
                 { id: 3, name: 'Technical', status: 'in_progress', progress: 65 },
                 { id: 4, name: 'Financial', status: 'pending', progress: 0 }
             ];
+
+            const evalProgressStageColumns = ['Eligibility & Formal', 'Qualification', 'Technical', 'Financial'];
+            const evalProgressLotRows = [
+                { label: 'Lot 1 — PPE', statuses: ['evaluated', 'evaluated', 'in_progress', 'not_started'] },
+                { label: 'Lot 2 — Consumables', statuses: ['evaluated', 'in_progress', 'not_started', 'not_started'] }
+            ];
+            const evalProgressSupplierRows = [
+                { label: 'MedSupply Ltd.', statuses: ['evaluated', 'evaluated', 'in_progress', 'not_started'] },
+                { label: 'HealthCare Corp.', statuses: ['evaluated', 'evaluated', 'in_progress', 'not_started'] },
+                { label: 'MedTech Inc.', statuses: ['evaluated', 'in_progress', 'not_started', 'not_started'] }
+            ];
+            const evalProgressLotsTableHtml = `
+                <table role="table" style="width: 100%; border-collapse: collapse; font-size: 12px; border: 1px solid var(--surface-200); border-radius: var(--radius-md); overflow: hidden;">
+                    <thead>
+                        <tr style="background: var(--surface-50); border-bottom: 1px solid var(--surface-200);">
+                            <th scope="col" style="text-align: left; padding: 10px 12px; font-weight: 600; color: var(--text-secondary); font-size: 11px; text-transform: uppercase; letter-spacing: 0.02em;">Lot</th>
+                            ${evalProgressStageColumns.map(name => `<th scope="col" style="text-align: center; padding: 10px 6px; font-weight: 600; font-size: 11px; color: var(--text-secondary); line-height: 1.25;">${name}</th>`).join('')}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${evalProgressLotRows.map(row => `
+                            <tr style="border-bottom: 1px solid var(--surface-100);">
+                                <th scope="row" style="text-align: left; padding: 10px 12px; font-weight: 600; color: var(--text-primary); vertical-align: middle;">${row.label}</th>
+                                ${row.statuses.map(st => `<td style="text-align: center; padding: 8px 6px; vertical-align: middle;">${evalProgressByStageCellHtml(st)}</td>`).join('')}
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>`;
+            const evalProgressSuppliersTableHtml = `
+                <table role="table" style="width: 100%; border-collapse: collapse; font-size: 12px; border: 1px solid var(--surface-200); border-radius: var(--radius-md); overflow: hidden;">
+                    <thead>
+                        <tr style="background: var(--surface-50); border-bottom: 1px solid var(--surface-200);">
+                            <th scope="col" style="text-align: left; padding: 10px 12px; font-weight: 600; color: var(--text-secondary); font-size: 11px; text-transform: uppercase; letter-spacing: 0.02em;">Supplier</th>
+                            ${evalProgressStageColumns.map(name => `<th scope="col" style="text-align: center; padding: 10px 6px; font-weight: 600; font-size: 11px; color: var(--text-secondary); line-height: 1.25;">${name}</th>`).join('')}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${evalProgressSupplierRows.map(row => `
+                            <tr style="border-bottom: 1px solid var(--surface-100);">
+                                <th scope="row" style="text-align: left; padding: 10px 12px; font-weight: 600; color: var(--text-primary); vertical-align: middle;">${row.label}</th>
+                                ${row.statuses.map(st => `<td style="text-align: center; padding: 8px 6px; vertical-align: middle;">${evalProgressByStageCellHtml(st)}</td>`).join('')}
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>`;
             
             const evalOverviewMatrixInitial = buildEvalOverviewStatusMatrixTableHtml({
                 lotFilter: 'all',
@@ -24579,11 +24688,11 @@
                 </div>
                 
                 
-                <!-- Stage Progress Overview -->
+                <!-- Overall progress -->
                 <div style="background: white; border: 1px solid var(--surface-200); border-radius: var(--radius-lg); padding: var(--spacing-lg); margin-bottom: var(--spacing-xl);">
                     <h3 style="font-size: 15px; font-weight: 600; margin-bottom: var(--spacing-lg); display: flex; align-items: center; gap: var(--spacing-sm);">
                         <i class="pi pi-list" style="color: var(--primary-500); font-size: 18px;" aria-hidden="true"></i>
-                        <span>Stage Progress</span>
+                        <span>Overall progress</span>
                     </h3>
                     <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--spacing-md);">
                         ${stages.map(stage => `
@@ -24599,15 +24708,39 @@
                         `).join('')}
                     </div>
                 </div>
+
+                <!-- Detailed progress (lot / supplier × stage) -->
+                <div style="background: white; border: 1px solid var(--surface-200); border-radius: var(--radius-lg); padding: var(--spacing-lg); margin-bottom: var(--spacing-xl);">
+                    <div style="display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: var(--spacing-md); margin-bottom: var(--spacing-md);">
+                        <div>
+                            <h3 style="font-size: 15px; font-weight: 600; margin: 0; display: flex; align-items: center; gap: var(--spacing-sm);">
+                                <i class="pi pi-table" style="color: var(--primary-500); font-size: 18px;" aria-hidden="true"></i>
+                                <span>Detailed progress</span>
+                            </h3>
+                        </div>
+                        <div style="display: flex; flex-direction: column; align-items: stretch; gap: 6px; min-width: 200px;">
+                            <span style="font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.02em;">View</span>
+                            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                                <span style="font-size: 12px; font-weight: 600; color: var(--text-secondary); min-width: 52px;">By lot</span>
+                                <input type="range" id="eval-progress-by-stage-mode-slider" min="0" max="1" step="1" value="0" aria-valuemin="0" aria-valuemax="1" aria-valuenow="0" aria-label="Switch between progress by lot and progress by supplier" title="Left: by lot. Right: by supplier." oninput="evalLotStageProgressByModeSliderInput(this);" style="flex: 1; min-width: 100px; max-width: 160px; accent-color: var(--primary-500); cursor: pointer;" />
+                                <span style="font-size: 12px; font-weight: 600; color: var(--text-secondary); min-width: 78px;">By supplier</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <div id="eval-progress-by-stage-lots-wrap">${evalProgressLotsTableHtml}</div>
+                        <div id="eval-progress-by-stage-suppliers-wrap" hidden>${evalProgressSuppliersTableHtml}</div>
+                    </div>
+                </div>
                 
-                <!-- Evaluation Status by Stage (lot × supplier matrix) -->
+                <!-- Evaluation results (lot × supplier matrix) -->
                 <div style="background: white; border: 1px solid var(--surface-200); border-radius: var(--radius-lg); padding: var(--spacing-lg); margin-bottom: var(--spacing-xl);">
                     <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--spacing-md); margin-bottom: var(--spacing-md);">
                         <h3 style="font-size: 15px; font-weight: 600; margin: 0; display: flex; align-items: center; gap: var(--spacing-sm);">
                             <i class="pi pi-th-large" style="color: var(--primary-500); font-size: 18px;" aria-hidden="true"></i>
-                            <span>Evaluation Status by Stage</span>
+                            <span>Evaluation results</span>
                         </h3>
-                        <button type="button" class="btn btn-secondary btn-sm" onclick="downloadEvalOverviewStatusMatrixXls()" title="Download table as Excel (.xls)" aria-label="Download evaluation status as XLS" style="display: inline-flex; align-items: center; gap: 6px; min-height: 36px;">
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="downloadEvalOverviewStatusMatrixXls()" title="Download evaluation results as Excel (.xls)" aria-label="Download evaluation results as XLS" style="display: inline-flex; align-items: center; gap: 6px; min-height: 36px;">
                             <i class="pi pi-download" aria-hidden="true"></i>
                             <span>Download .xls</span>
                         </button>
