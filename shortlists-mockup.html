@@ -1229,7 +1229,7 @@
                                 <option value="valid">Valid</option>
                                 <option value="expired">Expired</option>
                             </select>
-                            <span class="help-text">2-year validity from approval date (mock “today” fixed for demo — see footer).</span>
+                            <span class="help-text">2-year window: PQ from approval; EOI / Ad hoc from last amendment (mock “today” fixed — see script MOCK_TODAY).</span>
                         </div>
                     </div>
                     </div>
@@ -1248,7 +1248,6 @@
                                     <th>Id</th>
                                     <th>Title</th>
                                     <th>Org. unit</th>
-                                    <th>Expected value (USD)</th>
                                     <th>Short list process</th>
                                     <th>Status</th>
                                     <th>Approved</th>
@@ -1308,10 +1307,6 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label class="form-label required" for="sl-value">Expected value of contract (USD)</label>
-                            <input type="number" class="form-input" id="sl-value" required min="0" step="1000" placeholder="e.g. 250000">
-                        </div>
-                        <div class="form-group">
                             <label class="form-label required" for="sl-justification">Justification</label>
                             <textarea class="form-textarea" id="sl-justification" required placeholder="Explain why a shortlist / limited competition is appropriate (e.g. market conditions, prior performance, emergency)."></textarea>
                         </div>
@@ -1326,7 +1321,7 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label required">Vendors</label>
-                            <span class="help-text">Add at least one vendor by company name or email. In production this would link to the supplier register.</span>
+                            <span class="help-text">Add at least <strong>three</strong> UNGM-registered vendors (company name or email). In production this would link to the supplier register.</span>
                             <div class="add-vendor-row">
                                 <input type="text" class="form-input" id="vendor-input" placeholder="Company name or email" aria-label="Vendor company or email">
                                 <button type="button" class="btn btn-secondary btn-sm" onclick="addVendorChip()"><i class="pi pi-plus"></i> Add vendor</button>
@@ -1391,12 +1386,8 @@
                                 <div class="detail-dd" id="detail-reviewer">—</div>
                             </div>
                             <div>
-                                <div class="detail-dt">Validity (2 years from approval date)</div>
+                                <div class="detail-dt">Validity (PQ: 2 yrs from approval · EOI / Ad hoc: 2 yrs from last amendment)</div>
                                 <div class="detail-dd" id="detail-validity">—</div>
-                            </div>
-                            <div>
-                                <div class="detail-dt">Expected value of contract (USD)</div>
-                                <div class="detail-dd" id="detail-value">—</div>
                             </div>
                             <div>
                                 <div class="detail-dt">Justification</div>
@@ -1447,10 +1438,6 @@
                                     <option>Elena Vasquez — e.vasquez@unops.org</option>
                                     <option>James Okello — j.okello@unops.org</option>
                                 </select>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label required" for="sl-value-d">Expected value of contract (USD)</label>
-                                <input type="number" class="form-input" id="sl-value-d" required min="0" step="1000">
                             </div>
                             <div class="form-group">
                                 <label class="form-label required" for="sl-justification-d">Justification</label>
@@ -1540,9 +1527,8 @@
             'SL-2026-0055': {
                 title: 'Facilities maintenance — city offices',
                 org: 'Global Procurement Group',
-                valueUsd: 89000,
                 justification: 'Recurring facilities scope; ad-hoc shortlist submitted for reviewer approval.',
-                vendors: ['BuildRight Facilities Ltd', 'ops@citymaint.mock'],
+                vendors: ['BuildRight Facilities Ltd', 'ops@citymaint.mock', 'PrimeBuild Contractors'],
                 alternateAuthors: [],
                 procurementReviewer: 'Anita Kumar — a.kumar@unops.org',
                 process: 'adhoc',
@@ -1557,16 +1543,15 @@
                 workflowTimeline: [
                     { state: 'complete', title: 'Draft prepared', meta: '8 Apr 2026 · Jane Doe', note: 'Ad-hoc shortlist created and vendors added.' },
                     { state: 'current', title: 'Under approval', meta: 'Awaiting procurement reviewer', note: 'Submitted for approval; validity has not started until approval is recorded.' },
-                    { state: 'pending', title: 'Approved', meta: '—', note: 'After approval, a 2-year validity period begins from the approval date.' }
+                    { state: 'pending', title: 'Approved', meta: '—', note: 'After approval, Ad hoc validity runs 2 years from each subsequent amendment (or from approval until the first amendment).' }
                 ],
                 amendments: []
             },
             'SL-2026-0038': {
                 title: 'Medical supplies — limited vendors',
                 org: 'Kenya Country Office',
-                valueUsd: 120000,
                 justification: 'Limited market for cold-chain medical supplies in region; prior satisfactory performance with listed vendors.',
-                vendors: ['MedSupply East Africa Ltd', 'contact@globalhealth-vendors.org'],
+                vendors: ['MedSupply East Africa Ltd', 'contact@globalhealth-vendors.org', 'ColdChain Logistics KE'],
                 alternateAuthors: ['Samuel Otieno (s.otieno@unops.org)'],
                 procurementReviewer: 'Elena Vasquez — e.vasquez@unops.org',
                 process: 'adhoc',
@@ -1580,7 +1565,7 @@
                 canCancelShortlist: true,
                 workflowTimeline: [
                     { state: 'complete', title: 'Shortlist initialized', meta: '5 Mar 2026 · Jane Doe', note: 'Ad-hoc shortlist created in this module.' },
-                    { state: 'current', title: 'Draft', meta: 'In progress', note: 'Amend fields and submit when ready.' },
+                    { state: 'current', title: 'Draft', meta: 'In progress', note: 'Amend fields and submit when ready (minimum 3 vendors).' },
                     { state: 'pending', title: 'Under approval', meta: '—', note: 'Next: submit for procurement reviewer approval.' }
                 ],
                 amendments: []
@@ -1588,7 +1573,6 @@
             'SL-2026-0042': {
                 title: 'IT services — regional hub',
                 org: 'Thailand Operational Hub',
-                valueUsd: 450000,
                 justification: 'Pre-qualified vendors from PQ/RFQ-2025/112 for managed IT and service desk in the regional hub. Limited market of certified partners meeting UN security baselines.',
                 vendors: ['Nexus IT Partners Ltd', 'support@regionaldesk.io', 'SecureOps Co.'],
                 alternateAuthors: [],
@@ -1605,15 +1589,14 @@
                 workflowTimeline: [
                     { state: 'complete', title: 'PQ outcome', meta: 'Feb 2026 · Procurement', note: 'Shortlist prepared from PQ/RFQ-2025/112.' },
                     { state: 'complete', title: 'Under approval', meta: '1 Mar 2026 · Jane Doe', note: 'Submitted to procurement reviewer.' },
-                    { state: 'complete', title: 'Approved', meta: '12 Mar 2026 · A. Kumar', note: 'Approval recorded; 2-year validity runs from this date (independent of tender lifecycle).' },
-                    { state: 'current', title: 'Use in procurement', meta: 'Linked tender ITB/2024/089', note: 'PQ row appears on this list only when Approved; validity does not track tender pre-clearance.' }
+                    { state: 'complete', title: 'Approved', meta: '12 Mar 2026 · A. Kumar', note: 'PQ: 2-year validity from approval date (amendments do not reset this anchor in the guide).' },
+                    { state: 'current', title: 'Use in procurement', meta: 'Linked tender ITB/2024/089', note: 'PQ row appears on this list only when Approved.' }
                 ],
                 amendments: []
             },
             'SL-2026-0015': {
                 title: 'Civil works — bridge maintenance',
                 org: 'Iraq Operational Hub',
-                valueUsd: 2100000,
                 justification: 'Shortlist derived from EOI/2025/044 for specialized bridge inspection and maintenance; respondents meeting minimum criteria carried forward.',
                 vendors: ['Tigris Infrastructure LLC', 'bridging@mesopotamia-eng.com', 'Kurdistan Civil Works JV'],
                 alternateAuthors: [],
@@ -1630,18 +1613,27 @@
                 workflowTimeline: [
                     { state: 'complete', title: 'EOI review', meta: 'Jan 2026 · Procurement', note: 'Respondents meeting minimum criteria carried forward from EOI/2025/044.' },
                     { state: 'complete', title: 'Under approval', meta: '25 Jan 2026 · Jane Doe', note: 'Submitted to procurement reviewer.' },
-                    { state: 'complete', title: 'Approved', meta: '02 Feb 2026 · M. Okafor', note: '2-year validity from approval date.' },
+                    { state: 'complete', title: 'Approved', meta: '02 Feb 2026 · M. Okafor', note: 'EOI: each amendment restarts the 2-year validity window (mock: amendment 15 Mar 2026).' },
                     { state: 'current', title: 'Ready for procurement', meta: 'Active', note: 'Use for limited tender or RFQ per your procurement plan.' }
                 ],
-                amendments: []
+                amendments: [
+                    {
+                        dateLabel: '15 Mar 2026 · 14:00 UTC',
+                        iso: '2026-03-15T12:00:00.000Z',
+                        actor: 'Procurement',
+                        comment: 'Vendor table synced after EOI close-out (mock).',
+                        fieldsSummary: 'Vendors'
+                    }
+                ]
             },
             'SL-2023-0110': {
                 title: 'Vehicle leasing — legacy frame',
                 org: 'Kenya Country Office',
-                valueUsd: 340000,
-                justification: 'Historical ad-hoc shortlist illustrating Approved lifecycle with expired validity (validity is independent of status).',
+                justification: 'Ad hoc shortlist illustrating Approved lifecycle: validity anchored on last amendment (mock).',
                 vendors: [
-                    { id: 'v-fl-legacy', ungm: 'UNGM-445221', company: 'FleetLease East Africa', email: 'lease@fleet.mock', country: 'Kenya', womenOwned: false, sanction: 'None' }
+                    { id: 'v-fl-legacy', ungm: 'UNGM-445221', company: 'FleetLease East Africa', email: 'lease@fleet.mock', country: 'Kenya', womenOwned: false, sanction: 'None' },
+                    { id: 'v-fl-2', ungm: 'UNGM-551002', company: 'MetroFleet Services', email: 'bids@metrofleet.mock', country: 'Kenya', womenOwned: true, sanction: 'None' },
+                    { id: 'v-fl-3', ungm: 'UNGM-661903', company: 'Highland Auto Lease', email: 'procurement@highlandlease.mock', country: 'Uganda', womenOwned: false, sanction: 'None' }
                 ],
                 alternateAuthors: [],
                 procurementReviewer: 'James Okello — j.okello@unops.org',
@@ -1655,10 +1647,19 @@
                 amendDisabledReason: '',
                 canCancelShortlist: true,
                 workflowTimeline: [
-                    { state: 'complete', title: 'Approved', meta: '10 Apr 2023 · J. Okello', note: 'Validity expired on 10 Apr 2025 (2 years from approval).' },
-                    { state: 'current', title: 'Record retained', meta: 'Mock sample', note: 'Status can remain Approved while validity shows Expired.' }
+                    { state: 'complete', title: 'Approved', meta: '10 Apr 2023 · J. Okello', note: 'Initial approval recorded.' },
+                    { state: 'complete', title: 'Amendment recorded', meta: '1 Jun 2024 · Jane Doe', note: 'Ad hoc: 2-year validity restarts from each amendment (mock).' },
+                    { state: 'current', title: 'Record retained', meta: 'Mock sample', note: 'Status remains Approved while validity reflects last amendment + 2 years.' }
                 ],
-                amendments: []
+                amendments: [
+                    {
+                        dateLabel: '1 Jun 2024 · 10:00 UTC',
+                        iso: '2024-06-01T10:00:00.000Z',
+                        actor: 'Jane Doe',
+                        comment: 'Annual roster refresh (mock).',
+                        fieldsSummary: 'Vendors'
+                    }
+                ]
             }
         };
 
@@ -1672,9 +1673,35 @@
             return d.statusKey === 'approved';
         }
 
+        function amendmentCalendarIso(am) {
+            if (!am || !am.iso) {
+                return null;
+            }
+            return am.iso.slice(0, 10);
+        }
+
+        /** PQ: approval date. EOI / Ad hoc: max(approval, amendment dates). */
+        function getValidityAnchorDateIso(d) {
+            if (!d.approvalDateIso) {
+                return null;
+            }
+            if (d.process === 'pq') {
+                return d.approvalDateIso;
+            }
+            var anchor = d.approvalDateIso;
+            var am = d.amendments || [];
+            for (var i = 0; i < am.length; i++) {
+                var di = amendmentCalendarIso(am[i]);
+                if (di && di > anchor) {
+                    anchor = di;
+                }
+            }
+            return anchor;
+        }
+
         function computeValidityInfo(d) {
-            var approval = d.approvalDateIso;
-            if (!approval) {
+            var anchorIso = getValidityAnchorDateIso(d);
+            if (!anchorIso) {
                 return {
                     category: 'not_started',
                     badgeClass: 'not-started',
@@ -1683,18 +1710,19 @@
                     expiresOnDisplay: '—'
                 };
             }
-            var ap = new Date(approval + 'T12:00:00.000Z');
+            var ap = new Date(anchorIso + 'T12:00:00.000Z');
             var ex = new Date(ap.getTime());
             ex.setUTCFullYear(ex.getUTCFullYear() + 2);
             var now = MOCK_TODAY;
             var dayMs = 86400000;
             var expiresStr = ex.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+            var anchorHint = d.process === 'pq' ? ' (from approval)' : ' (from last amendment)';
             if (now.getTime() >= ex.getTime()) {
                 return {
                     category: 'expired',
                     badgeClass: 'expired',
                     label: 'Expired',
-                    sub: 'Ended ' + expiresStr,
+                    sub: 'Ended ' + expiresStr + anchorHint,
                     expiresOnDisplay: expiresStr
                 };
             }
@@ -1703,7 +1731,7 @@
                 category: 'valid',
                 badgeClass: 'valid',
                 label: 'Valid',
-                sub: daysLeft + ' day' + (daysLeft === 1 ? '' : 's') + ' remaining',
+                sub: daysLeft + ' day' + (daysLeft === 1 ? '' : 's') + ' remaining' + anchorHint,
                 expiresOnDisplay: expiresStr
             };
         }
@@ -1826,7 +1854,6 @@
                     '<td><strong style="color:var(--primary-500);">' + escapeHtml(id) + '</strong></td>' +
                     '<td>' + escapeHtml(d.title) + '</td>' +
                     '<td>' + escapeHtml(d.org) + '</td>' +
-                    '<td>' + (typeof d.valueUsd === 'number' ? d.valueUsd.toLocaleString('en-US') : escapeHtml(String(d.valueUsd))) + '</td>' +
                     '<td>' + processBadgeHtml(d.process) + '</td>' +
                     '<td>' + statusBadgeHtml(d.statusKey, d.statusLabel) + '</td>' +
                     '<td>' + formatApprovedColumnHtml(d) + '</td>' +
@@ -2097,8 +2124,6 @@
                 '<div><span class="validity-badge ' + vInfo.badgeClass + '">' + escapeHtml(vInfo.label) + '</span></div>' +
                 '<div class="validity-sub">' + escapeHtml(vInfo.sub) + '</div>' +
                 '<div class="validity-expires">Expires on: ' + escapeHtml(vInfo.expiresOnDisplay) + '</div>';
-            document.getElementById('detail-value').textContent =
-                typeof d.valueUsd === 'number' ? d.valueUsd.toLocaleString('en-US') : d.valueUsd;
             document.getElementById('detail-justification').textContent = d.justification;
 
             var vw = document.getElementById('detail-vendors');
@@ -2273,9 +2298,6 @@
             if (before.procurementReviewer !== after.procurementReviewer) {
                 parts.push('Procurement reviewer');
             }
-            if (Number(before.valueUsd) !== Number(after.valueUsd)) {
-                parts.push('Expected value (USD)');
-            }
             if (before.justification !== after.justification) {
                 parts.push('Justification');
             }
@@ -2376,7 +2398,6 @@
             document.getElementById('sl-title-d').value = d.title;
             document.getElementById('sl-org-d').value = d.org;
             document.getElementById('sl-procurement-reviewer-d').value = d.procurementReviewer || '';
-            document.getElementById('sl-value-d').value = String(d.valueUsd);
             document.getElementById('sl-justification-d').value = d.justification;
             vendorListDetail = (d.vendors || []).map(function (x) { return normalizeVendor(x); });
             authorListDetail = (d.alternateAuthors || []).slice();
@@ -2497,10 +2518,12 @@
             renderAuthorChips('author-chips', authorList, 'create');
         }
 
+        var MIN_SHORTLIST_VENDORS = 3;
+
         function mockSaveShortlist(mode) {
             var vendors = mode === 'detail' ? vendorListDetail : vendorList;
-            if (vendors.length === 0) {
-                alert('Please add at least one vendor.');
+            if (vendors.length < MIN_SHORTLIST_VENDORS) {
+                alert('Please add at least ' + MIN_SHORTLIST_VENDORS + ' vendors to the shortlist.');
                 return;
             }
             if (mode === 'detail') {
@@ -2518,7 +2541,6 @@
                 var before = {
                     title: d.title,
                     org: d.org,
-                    valueUsd: d.valueUsd,
                     justification: d.justification,
                     procurementReviewer: d.procurementReviewer,
                     vendors: (d.vendors || []).slice(),
@@ -2527,7 +2549,6 @@
                 var after = {
                     title: document.getElementById('sl-title-d').value.trim(),
                     org: document.getElementById('sl-org-d').value,
-                    valueUsd: Number(document.getElementById('sl-value-d').value),
                     justification: document.getElementById('sl-justification-d').value.trim(),
                     procurementReviewer: document.getElementById('sl-procurement-reviewer-d').value,
                     vendors: vendorListDetail.slice(),
@@ -2535,7 +2556,6 @@
                 };
                 d.title = after.title;
                 d.org = after.org;
-                d.valueUsd = after.valueUsd;
                 d.justification = after.justification;
                 d.procurementReviewer = after.procurementReviewer;
                 d.vendors = after.vendors.map(function (x) { return normalizeVendor(x); });
@@ -2568,11 +2588,11 @@
 
         function mockSubmitShortlist(mode) {
             var vendors = mode === 'detail' ? vendorListDetail : vendorList;
-            if (vendors.length === 0) {
-                alert('Please add at least one vendor before submitting.');
+            if (vendors.length < MIN_SHORTLIST_VENDORS) {
+                alert('Please add at least ' + MIN_SHORTLIST_VENDORS + ' vendors before submitting.');
                 return;
             }
-            alert('Mock: submitted. Status is now Under approval (awaiting procurement reviewer). Validity starts only after approval is recorded.');
+            alert('Mock: submitted. Status is now Under approval (awaiting procurement reviewer). Validity rules: PQ from approval; EOI / Ad hoc from last amendment (see implementation guide).');
             if (mode !== 'detail') discardCreateForm();
         }
 
