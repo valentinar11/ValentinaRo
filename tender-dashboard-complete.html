@@ -2493,6 +2493,24 @@
             background: var(--surface-0);
             box-shadow: 1px 0 0 var(--surface-200);
         }
+        .eligibility-check-verify-indicator {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 0;
+            color: var(--text-muted);
+            opacity: 0.5;
+            cursor: help;
+            flex-shrink: 0;
+            vertical-align: middle;
+        }
+        .eligibility-check-verify-indicator:hover {
+            opacity: 0.85;
+            color: var(--text-secondary);
+        }
+        .eligibility-check-verify-indicator__svg {
+            display: block;
+        }
         .eligibility-matrix-table thead .eligibility-sticky-id,
         .eligibility-matrix-table thead .eligibility-sticky-criteria {
             background: var(--surface-100);
@@ -2873,6 +2891,21 @@
             font-size: 12px;
             color: var(--warning-500);
             line-height: 1;
+        }
+        .eligibility-supplier-alt-badge {
+            display: inline-flex;
+            align-items: center;
+            flex-shrink: 0;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            padding: 2px 6px;
+            border-radius: var(--radius-sm);
+            background: var(--warning-100);
+            color: var(--warning-800);
+            border: 1px solid var(--warning-300);
+            line-height: 1.2;
         }
         .eligibility-matrix-subth {
             font-size: 8px !important;
@@ -12306,6 +12339,7 @@
                 <div style="background: var(--surface-0); padding: 8px 12px; border-radius: var(--radius-lg) var(--radius-lg) 0 0; box-shadow: var(--shadow-card); border: 1px solid var(--surface-200); border-bottom: none; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
                     <div style="display: flex; gap: 4px; flex: 1; flex-wrap: wrap;" id="evalTabsContainer">
                         <button class="vendor-eval-tab active" onclick="switchVendorEval('vendor1')"><i class="pi pi-user"></i> MedSupply Ltd.</button>
+                        <button class="vendor-eval-tab" onclick="switchVendorEval('vendor1-alt1')"><i class="pi pi-user"></i> MedSupply Ltd. <span class="eligibility-supplier-alt-badge">ALT 1</span></button>
                         <button class="vendor-eval-tab" onclick="switchVendorEval('vendor2')"><i class="pi pi-user"></i> HealthCare Corp.</button>
                         <button class="vendor-eval-tab" onclick="switchVendorEval('vendor3')"><i class="pi pi-user"></i> MedTech Inc.</button>
                     </div>
@@ -18300,6 +18334,12 @@
                                     <option>General Question</option>
                                 </select>
                             </div>
+                            <div style="margin-bottom: var(--spacing-md); padding: var(--spacing-sm) var(--spacing-md); background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-sm);">
+                                <label style="display: flex; align-items: flex-start; gap: 10px; font-size: 12px; line-height: 1.45; color: var(--text-secondary); cursor: pointer; margin: 0;">
+                                    <input type="checkbox" id="newQuestionSupplierClarification" style="margin-top: 2px; width: 16px; height: 16px; flex-shrink: 0; cursor: pointer;" />
+                                    <span><strong style="color: var(--text-primary);">Supplier clarification</strong> — check if this should trigger or track a clarification with the bidder (e.g. formal clarification, eTendering follow-up).</span>
+                                </label>
+                            </div>
                             <div style="margin-bottom: var(--spacing-md);">
                                 <label style="display: block; font-size: 12px; font-weight: 500; margin-bottom: 4px;">Your Question:</label>
                                 <textarea id="newQuestionText" rows="4" placeholder="Type your question here..." style="width: 100%; padding: 8px; border: 1px solid var(--surface-300); border-radius: var(--radius-sm); resize: vertical;"></textarea>
@@ -18321,8 +18361,11 @@
                 showToast('⚠️ Please enter a question');
                 return;
             }
+            const supplierClarification = document.getElementById('newQuestionSupplierClarification')?.checked === true;
             document.getElementById('newQuestionModal').remove();
-            showToast('✅ Question sent to team');
+            showToast(supplierClarification
+                ? '✅ Question sent — marked for supplier clarification'
+                : '✅ Question sent to team');
             
             // Update badge
             const badge = document.querySelector('#tab-questions .collab-tab-badge');
@@ -18816,7 +18859,7 @@
         let eligibilityWorkspaceViewMode = 'all';
 
         const eligibilityLotScopeOptions = [
-            { key: 'lot1', number: '1', name: 'PPE & protective equipment', vendorIds: ['vendor1', 'vendor2'] },
+            { key: 'lot1', number: '1', name: 'PPE & protective equipment', vendorIds: ['vendor1', 'vendor1-alt1', 'vendor2'] },
             { key: 'lot2', number: '2', name: 'Medical consumables', vendorIds: ['vendor2', 'vendor3'] },
             { key: 'lot3', number: '3', name: 'Diagnostic supplies', vendorIds: ['vendor1', 'vendor3'] },
             { key: 'lot4', number: '4', name: 'Sterilization equipment', vendorIds: ['vendor1', 'vendor2'] },
@@ -18828,9 +18871,15 @@
 
         const eligibilityMatrixVendors = [
             { id: 'vendor1', code: 'S1', name: 'MedSupply Ltd.' },
+            { id: 'vendor1-alt1', code: 'S1', name: 'MedSupply Ltd.', alternateBadge: 'ALT 1', baseVendorId: 'vendor1' },
             { id: 'vendor2', code: 'S2', name: 'HealthCare Corp.' },
             { id: 'vendor3', code: 'S3', name: 'MedTech Inc.' }
         ];
+
+        /** IDs for toolbar / filters (includes alternate-offer columns). */
+        function getEligibilityMatrixVendorIds() {
+            return eligibilityMatrixVendors.map(function(v) { return v.id; });
+        }
 
         // Evaluation data structure
         const evaluationData = {
@@ -18842,6 +18891,7 @@
                         criteria: 'Bidders\' nationality check',
                         criteriaDesc: 'Verification of bidder nationality against eligible countries list (if restriction set by tender author)',
                         type: 'Bid Level',
+                        checkVerify: true,
                         spFlag: false,
                         assessment: 'Germany - Eligible country ✓',
                         systemEval: 'pass',
@@ -18870,6 +18920,7 @@
                         criteria: 'UNGM eligibility check',
                         criteriaDesc: 'Verification of UNGM registration for bidder & all parties in JV/consortium',
                         type: 'Bid Level',
+                        checkVerify: true,
                         spFlag: false,
                         assessment: 'Primary Bidder: MedSupply Ltd. - UNGM #309663 (Active) ✓\nNo JV/Consortium partners declared',
                         systemEval: 'pass',
@@ -18884,6 +18935,7 @@
                         criteria: 'Completeness of documents',
                         criteriaDesc: 'Check for all required documents including validation of dates (bid validity compliance)',
                         type: 'Bid Level',
+                        checkVerify: true,
                         spFlag: false,
                         assessment: 'Required documents: 8/8 submitted ✓\nBid validity date: 15 Mar 2025 (Compliant) ✓\nAll signatures present ✓',
                         systemEval: 'pass',
@@ -18912,6 +18964,7 @@
                         criteria: 'UNOPS claims log check',
                         criteriaDesc: 'Verification against UNOPS claims log for any previous issues',
                         type: 'Bid Level',
+                        checkVerify: true,
                         spFlag: false,
                         assessment: 'No claims found in UNOPS claims log ✓',
                         systemEval: 'pass',
@@ -18980,6 +19033,7 @@
                         criteriaDesc: 'If a Bidder does not manufacture or produce the goods it offers to supply, the bidder shall submit the Manufacturer\'s Authorization Form to demonstrate that it has been duly authorized by the manufacturer.',
                         formRef: null,
                         type: 'Bid Level',
+                        checkVerify: true,
                         spFlag: true,
                         systemEval: 'pass',
                         supplierDocs: [
@@ -19016,6 +19070,7 @@
                         criteriaDesc: 'Bidder possesses valid business registration/license for the current year.',
                         formRef: null,
                         type: 'Bid Level',
+                        checkVerify: true,
                         spFlag: false,
                         systemEval: 'pass',
                         supplierDocs: [
@@ -19150,7 +19205,8 @@
                                 evaluations: {
                                     evaluator: { status: 'pass', comment: 'Meets all technical specifications. EN455 certified.' },
                                     evaluator2: { status: 'pass', comment: 'Compliant. Good quality documentation.' },
-                                    po: { status: 'pass', comment: 'Approved.' }
+                                    po: { status: 'pass', comment: 'Approved.' },
+                                    'vendor1-alt1': { status: 'not_evaluated', comment: 'Alternate offer (ALT 1) — Lot 1.' }
                                 }
                             },
                             {
@@ -19178,7 +19234,8 @@
                                 evaluations: {
                                     evaluator: { status: 'clarification', comment: 'Clarification needed on Type IIR availability.' },
                                     evaluator2: { status: 'fail', comment: 'Does not meet mandatory Type IIR requirement.' },
-                                    po: { status: 'pending', comment: 'Awaiting clarification response.' }
+                                    po: { status: 'pending', comment: 'Awaiting clarification response.' },
+                                    'vendor1-alt1': { status: 'not_evaluated', comment: 'Alternate offer (ALT 1) — compare to primary line.' }
                                 }
                             },
                             {
@@ -19206,7 +19263,8 @@
                                 evaluations: {
                                     evaluator: { status: 'pass', comment: 'Fully compliant with specifications.' },
                                     evaluator2: { status: 'pass', comment: 'CE certification valid.' },
-                                    po: { status: 'pass', comment: 'Approved.' }
+                                    po: { status: 'pass', comment: 'Approved.' },
+                                    'vendor1-alt1': { status: 'not_evaluated', comment: 'Alternate offer (ALT 1) — optional line item.' }
                                 }
                             }
                         ]
@@ -19442,6 +19500,7 @@
                                 mandatory: true,
                                 prices: {
                                     vendor1: { unitPrice: '$2.25', totalCurrency: '$112,500', totalIncoterm: '$112,500 (CIF)', corrections: '-$500', negotiations: '-$2,000', finalPrice: '$110,000', rank: '2 of 6', evalStatus: 'pass', comment: '' },
+                                    'vendor1-alt1': { unitPrice: '$2.18', totalCurrency: '$109,000', totalIncoterm: '$109,000 (CIF)', corrections: '$0', negotiations: '-$1,800', finalPrice: '$107,200', rank: 'Alt', evalStatus: 'not_evaluated', comment: 'Alternate offer' },
                                     vendor2: { unitPrice: '$2.15', totalCurrency: '$107,500', totalIncoterm: '$107,500 (CIF)', corrections: '$0', negotiations: '-$1,000', finalPrice: '$106,500', rank: '1 of 6', evalStatus: 'pass', comment: '' },
                                     vendor3: { unitPrice: '$2.35', totalCurrency: '$117,500', totalIncoterm: '$117,500 (CIF)', corrections: '$0', negotiations: '-$1,500', finalPrice: '$116,000', rank: '3 of 6', evalStatus: 'not_evaluated', comment: '' }
                                 },
@@ -19459,6 +19518,7 @@
                                 mandatory: true,
                                 prices: {
                                     vendor1: { unitPrice: '$0.45', totalCurrency: '$45,000', totalIncoterm: '$45,000 (CIF)', corrections: '$0', negotiations: '-$1,000', finalPrice: '$44,000', rank: '2 of 6', evalStatus: 'pass', comment: '' },
+                                    'vendor1-alt1': { unitPrice: '$0.44', totalCurrency: '$44,000', totalIncoterm: '$44,000 (CIF)', corrections: '$0', negotiations: '-$900', finalPrice: '$43,100', rank: 'Alt', evalStatus: 'not_evaluated', comment: 'Alternate offer' },
                                     vendor2: { unitPrice: '$0.42', totalCurrency: '$42,000', totalIncoterm: '$42,000 (CIF)', corrections: '$0', negotiations: '-$500', finalPrice: '$41,500', rank: '1 of 6', evalStatus: 'clarification', comment: 'Need to verify currency exchange' },
                                     vendor3: { unitPrice: '$0.48', totalCurrency: '$48,000', totalIncoterm: '$48,000 (CIF)', corrections: '$0', negotiations: '-$800', finalPrice: '$47,200', rank: '3 of 6', evalStatus: 'not_evaluated', comment: '' }
                                 },
@@ -19476,6 +19536,7 @@
                                 mandatory: true,
                                 prices: {
                                     vendor1: { unitPrice: '$3.80', totalCurrency: '$38,000', totalIncoterm: '$38,000 (CIF)', corrections: '$0', negotiations: '-$500', finalPrice: '$37,500', rank: '2 of 6', evalStatus: 'not_evaluated', comment: '' },
+                                    'vendor1-alt1': { unitPrice: '$3.72', totalCurrency: '$37,200', totalIncoterm: '$37,200 (CIF)', corrections: '$0', negotiations: '-$400', finalPrice: '$36,800', rank: 'Alt', evalStatus: 'not_evaluated', comment: 'Alternate offer' },
                                     vendor2: { unitPrice: '$3.65', totalCurrency: '$36,500', totalIncoterm: '$36,500 (CIF)', corrections: '$0', negotiations: '-$300', finalPrice: '$36,200', rank: '1 of 6', evalStatus: 'pass', comment: '' },
                                     vendor3: { unitPrice: '$3.95', totalCurrency: '$39,500', totalIncoterm: '$39,500 (CIF)', corrections: '$0', negotiations: '-$400', finalPrice: '$39,100', rank: '3 of 6', evalStatus: 'fail', comment: 'Price above budget limit' }
                                 },
@@ -19500,6 +19561,7 @@
                                 mandatory: true,
                                 prices: {
                                     vendor1: { unitPrice: '$0.32', totalCurrency: '$64,000', totalIncoterm: '$64,000 (CIF)', corrections: '$0', negotiations: '-$1,500', finalPrice: '$62,500', rank: '2 of 6', evalStatus: 'pass', comment: '' },
+                                    'vendor1-alt1': { unitPrice: '$0.31', totalCurrency: '$62,000', totalIncoterm: '$62,000 (CIF)', corrections: '$0', negotiations: '-$1,400', finalPrice: '$60,600', rank: 'Alt', evalStatus: 'not_evaluated', comment: 'Alternate line (demo)' },
                                     vendor2: { unitPrice: '$0.30', totalCurrency: '$60,000', totalIncoterm: '$60,000 (CIF)', corrections: '$0', negotiations: '-$1,000', finalPrice: '$59,000', rank: '1 of 6', evalStatus: 'pass', comment: '' },
                                     vendor3: { unitPrice: '$0.34', totalCurrency: '$68,000', totalIncoterm: '$68,000 (CIF)', corrections: '$0', negotiations: '-$1,200', finalPrice: '$66,800', rank: '3 of 6', evalStatus: 'not_evaluated', comment: '' }
                                 },
@@ -19517,6 +19579,7 @@
                                 mandatory: true,
                                 prices: {
                                     vendor1: { unitPrice: '$1.85', totalCurrency: '$92,500', totalIncoterm: '$92,500 (CIF)', corrections: '$0', negotiations: '-$1,000', finalPrice: '$91,500', rank: '2 of 6', evalStatus: 'not_evaluated', comment: '' },
+                                    'vendor1-alt1': { unitPrice: '$1.82', totalCurrency: '$91,000', totalIncoterm: '$91,000 (CIF)', corrections: '$0', negotiations: '-$950', finalPrice: '$90,050', rank: 'Alt', evalStatus: 'not_evaluated', comment: 'Alternate line (demo)' },
                                     vendor2: { unitPrice: '$1.75', totalCurrency: '$87,500', totalIncoterm: '$87,500 (CIF)', corrections: '$0', negotiations: '-$800', finalPrice: '$86,700', rank: '1 of 6', evalStatus: 'pass', comment: '' },
                                     vendor3: { unitPrice: '$1.95', totalCurrency: '$97,500', totalIncoterm: '$97,500 (CIF)', corrections: '$0', negotiations: '-$900', finalPrice: '$96,600', rank: '3 of 6', evalStatus: 'clarification', comment: 'Need manufacturer cert' }
                                 },
@@ -19534,6 +19597,7 @@
                                 mandatory: true,
                                 prices: {
                                     vendor1: { unitPrice: '$0.95', totalCurrency: '$71,250', totalIncoterm: '$71,250 (CIF)', corrections: '$0', negotiations: '-$1,250', finalPrice: '$70,000', rank: '2 of 6', evalStatus: 'pass', comment: '' },
+                                    'vendor1-alt1': { unitPrice: '$0.93', totalCurrency: '$69,750', totalIncoterm: '$69,750 (CIF)', corrections: '$0', negotiations: '-$1,100', finalPrice: '$68,650', rank: 'Alt', evalStatus: 'not_evaluated', comment: 'Alternate line (demo)' },
                                     vendor2: { unitPrice: '$0.88', totalCurrency: '$66,000', totalIncoterm: '$66,000 (CIF)', corrections: '$0', negotiations: '-$800', finalPrice: '$65,200', rank: '1 of 6', evalStatus: 'pass', comment: '' },
                                     vendor3: { unitPrice: '$0.98', totalCurrency: '$73,500', totalIncoterm: '$73,500 (CIF)', corrections: '$0', negotiations: '-$1,000', finalPrice: '$72,500', rank: '3 of 6', evalStatus: 'not_evaluated', comment: '' }
                                 },
@@ -19905,11 +19969,12 @@
             
             const vendorNames = {
                 'vendor1': 'MedSupply Ltd.',
+                'vendor1-alt1': 'MedSupply Ltd. (ALT 1)',
                 'vendor2': 'HealthCare Corp.',
                 'vendor3': 'MedTech Inc.'
             };
             
-            document.getElementById('vendor-eval-name').textContent = vendorNames[vendorId];
+            document.getElementById('vendor-eval-name').textContent = vendorNames[vendorId] || vendorId;
             
             // Show notification if in lot view
             if (currentEvalView === 'lot') {
@@ -20138,6 +20203,15 @@
             return reqType === 'Bid Level' ? 'Every Lot' : reqType;
         }
 
+        /** Demo: desk check — muted inline SVG (no icon font); hover shows native tooltip. */
+        function eligibilityCheckVerifyIndicatorHtml(req) {
+            if (!req || !req.checkVerify) {
+                return '';
+            }
+            const svg = '<svg class="eligibility-check-verify-indicator__svg" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.25" fill="none"/><path d="M8 12.2l2.4 2.4L16.2 9" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>';
+            return '<span class="eligibility-check-verify-indicator" title="Check and verify" role="img" aria-label="Check and verify">' + svg + '</span>';
+        }
+
         /** Opens standalone mock: supplier submission responses + evaluation by lot/stage. */
         function eligibilitySupplierDetailMockHref(vendorId) {
             return 'supplier-evaluation-detail-mock.html?vendor=' + encodeURIComponent(vendorId || 'vendor1');
@@ -20145,25 +20219,37 @@
 
         /** Mock: MedSupply Ltd. (vendor1) flagged for sanctions review in matrix headers. */
         function isMockVendorSanctioned(vendorId) {
-            return vendorId === 'vendor1';
+            return vendorId === 'vendor1' || vendorId === 'vendor1-alt1';
         }
 
         /** Link to supplier detail mock + optional sanctions warning; name is HTML-escaped. */
         function eligibilitySupplierNameRowHtml(vendor) {
             const id = vendor && vendor.id ? vendor.id : 'vendor1';
             const name = vendor && vendor.name != null ? String(vendor.name) : '';
-            const href = eligibilitySupplierDetailMockHref(id);
+            const linkId = vendor && vendor.baseVendorId ? vendor.baseVendorId : id;
+            const href = eligibilitySupplierDetailMockHref(linkId);
             const nameEsc = escapeHtmlCell(name);
-            const warn = isMockVendorSanctioned(id)
+            const warnId = vendor && vendor.baseVendorId ? vendor.baseVendorId : id;
+            const warn = isMockVendorSanctioned(warnId)
                 ? '<span class="eligibility-supplier-sanction-wrap" role="img" aria-label="Sanctions warning (mock)" title="Sanctions list match — mock"><i class="pi pi-exclamation-triangle eligibility-supplier-sanction-icon" aria-hidden="true"></i></span>'
+                : '';
+            const altBadge = vendor && vendor.alternateBadge
+                ? '<span class="eligibility-supplier-alt-badge" title="Alternate offer (demo) — separate column">' + escapeHtmlCell(String(vendor.alternateBadge)) + '</span>'
                 : '';
             return '<span class="eligibility-supplier-name-row">' +
                 '<a href="' + href + '" target="_blank" rel="noopener noreferrer" class="eligibility-supplier-name-link" title="Open supplier details (submission & evaluation) — mock">' + nameEsc + '</a>' +
+                altBadge +
                 warn +
                 '</span>';
         }
 
         function getMockSupplierHeaderFinal(vendorId, lotKey, role) {
+            if (vendorId === 'vendor1-alt1') {
+                if (role === 'po') {
+                    return 'pending';
+                }
+                return 'not_evaluated';
+            }
             const lotNum = parseInt(getEligibilityLotOption(lotKey).number, 10) || 1;
             if (currentEvaluationStep === 2) {
                 if (role === 'po') {
@@ -20259,7 +20345,7 @@
             ].concat(eligibilityMatrixVendors.map(v => `
                 <label class="eligibility-radio-row">
                     <input type="checkbox" name="eligibility-supplier-cb" value="${v.id}" ${supplierIdsForUi.indexOf(v.id) >= 0 ? 'checked' : ''} onchange="eligibilitySupplierCheckboxChanged(this)" />
-                    <span><strong>${v.code}</strong> — ${v.name}</span>
+                    <span><strong>${v.code}</strong> — ${v.name}${v.alternateBadge ? ` <span class="eligibility-supplier-alt-badge">${escapeHtmlCell(String(v.alternateBadge))}</span>` : ''}</span>
                 </label>
             `));
 
@@ -20352,7 +20438,7 @@
         }
 
         function getTechFinVendorUngm(vendorId) {
-            var map = { vendor1: '309663', vendor2: '301245', vendor3: '315789' };
+            var map = { vendor1: '309663', 'vendor1-alt1': '309663', vendor2: '301245', vendor3: '315789' };
             return map[vendorId] || '—';
         }
 
@@ -20483,7 +20569,7 @@
                 }
                 if (nV === 1) {
                     var one = eligibilityMatrixVendors.find(function(v) { return v.id === techFinToolbarSupplierMultiIds[0]; });
-                    return one ? (one.code + ' — ' + one.name) : '1 supplier';
+                    return one ? (one.code + ' — ' + one.name + (one.alternateBadge ? ' ' + one.alternateBadge : '')) : '1 supplier';
                 }
                 return nV + ' suppliers selected';
             })();
@@ -20494,9 +20580,10 @@
                     '<span><strong>All suppliers</strong> <span style="font-weight: 500; color: var(--text-muted);">(' + eligibilityMatrixVendors.length + ')</span></span>' +
                 '</label>'
             ].concat(eligibilityMatrixVendors.map(function(v) {
+                var alt = v.alternateBadge ? ' <span class="eligibility-supplier-alt-badge">' + escapeHtmlCell(String(v.alternateBadge)) + '</span>' : '';
                 return '<label class="eligibility-radio-row">' +
                     '<input type="checkbox" name="techfin-supplier-cb" value="' + v.id + '" ' + (techFinToolbarSupplierMultiIds.indexOf(v.id) >= 0 ? 'checked' : '') + ' onchange="techFinSupplierMultiCheckboxChanged(this)" />' +
-                    '<span><strong>' + v.code + '</strong> — ' + v.name + '</span>' +
+                    '<span><strong>' + v.code + '</strong> — ' + v.name + alt + '</span>' +
                 '</label>';
             }));
 
@@ -20574,10 +20661,10 @@
                 det.open = false;
             }
             syncVendorTabActiveClass(radio.value);
-            var vendorNames = { vendor1: 'MedSupply Ltd.', vendor2: 'HealthCare Corp.', vendor3: 'MedTech Inc.' };
+            var vendorNames = { vendor1: 'MedSupply Ltd.', 'vendor1-alt1': 'MedSupply Ltd. (ALT 1)', vendor2: 'HealthCare Corp.', vendor3: 'MedTech Inc.' };
             var bar = document.getElementById('vendor-eval-name');
             if (bar) {
-                bar.textContent = vendorNames[radio.value] || '';
+                bar.textContent = vendorNames[radio.value] || radio.value || '';
             }
             renderEvaluationTable();
         }
@@ -20669,9 +20756,57 @@
             stateClasses.forEach(function(s) {
                 sel.classList.remove(s);
             });
-            if (stateClasses.indexOf(sel.value) >= 0) {
-                sel.classList.add(sel.value);
+            const v = sel.value;
+            if (v && stateClasses.indexOf(v) >= 0) {
+                sel.classList.add(v);
             }
+        }
+
+        /**
+         * Standard assessment options: blank, Pass, Fail, Clarification, Not evaluated.
+         * @param {string} selectedRaw Current status from mock data.
+         * @param {{ treatPendingAsEmpty?: boolean }} [opts] PO: map legacy `pending` to blank selection.
+         */
+        function evalAssessmentSelectOptionsHtml(selectedRaw, opts) {
+            opts = opts || {};
+            var raw = selectedRaw === undefined || selectedRaw === null ? 'not_evaluated' : String(selectedRaw);
+            if (opts.treatPendingAsEmpty && raw === 'pending') {
+                raw = '';
+            } else if (!opts.treatPendingAsEmpty && raw === 'pending') {
+                raw = 'not_evaluated';
+            }
+            var selEmpty = raw === '' || raw === 'empty';
+            var selPass = raw === 'pass';
+            var selFail = raw === 'fail';
+            var selClar = raw === 'clarification';
+            var selNE = raw === 'not_evaluated';
+            if (!selEmpty && !selPass && !selFail && !selClar && !selNE) {
+                selNE = true;
+            }
+            return '<option value=""' + (selEmpty ? ' selected' : '') + '>-</option>' +
+                '<option value="pass"' + (selPass ? ' selected' : '') + '>Pass</option>' +
+                '<option value="fail"' + (selFail ? ' selected' : '') + '>Fail</option>' +
+                '<option value="clarification"' + (selClar ? ' selected' : '') + '>Clarification</option>' +
+                '<option value="not_evaluated"' + (selNE ? ' selected' : '') + '>Not evaluated</option>';
+        }
+
+        /** CSS state class for eval-select wrapper (excludes blank selection). */
+        function evalAssessmentSelectUiClass(selectedRaw, opts) {
+            opts = opts || {};
+            var raw = selectedRaw === undefined || selectedRaw === null ? 'not_evaluated' : String(selectedRaw);
+            if (opts.treatPendingAsEmpty && raw === 'pending') {
+                return '';
+            }
+            if (!opts.treatPendingAsEmpty && raw === 'pending') {
+                return 'not_evaluated';
+            }
+            if (raw === '' || raw === 'empty') {
+                return '';
+            }
+            if (['pass', 'fail', 'not_evaluated', 'clarification'].indexOf(raw) >= 0) {
+                return raw;
+            }
+            return 'not_evaluated';
         }
 
         /** Mock: toggles “mirror assessment to all lots for this bidder” (real app would persist per cell or per bidder). */
@@ -20690,6 +20825,9 @@
         function getMockEvaluatorEvalForEligibility(req, vendorId) {
             const ev = req.evaluations.evaluator;
             const po = req.evaluations.po;
+            if (vendorId === 'vendor1-alt1') {
+                return { status: 'not_evaluated', comment: 'Alternate offer (ALT 1) — Lot 1 only.' };
+            }
             if (vendorId === 'vendor1') {
                 return { status: ev.status, comment: ev.comment };
             }
@@ -20707,6 +20845,9 @@
         function getMockEvaluatorEvalForQualification(req, vendorId) {
             const ev = req.evaluations.evaluator;
             const po = req.evaluations.po;
+            if (vendorId === 'vendor1-alt1') {
+                return { status: 'not_evaluated', comment: 'Alternate offer (ALT 1) — evaluate separately from primary.' };
+            }
             if (vendorId === 'vendor1') {
                 return { status: ev.status, comment: ev.comment };
             }
@@ -20723,6 +20864,9 @@
 
         function getMockPoEvalForQualification(req, vendorId) {
             const po = req.evaluations.po;
+            if (vendorId === 'vendor1-alt1') {
+                return { status: 'pending', comment: 'Alternate offer — PO review pending.' };
+            }
             if (vendorId === 'vendor1') {
                 const st = po.status === 'not_evaluated' ? 'pending' : po.status;
                 return { status: st, comment: po.comment };
@@ -20780,6 +20924,20 @@
             `;
         }
 
+        /** Inline “Look in” form names under criteria (plain text; replaces per-supplier Forms column). */
+        function eligibilityCriteriaSourceFormsHtml(reqId, formsMap) {
+            const list = formsMap[reqId] || [];
+            if (list.length === 0) {
+                return '';
+            }
+            const sep = '<span style="color: var(--surface-300); margin: 0 5px;">·</span>';
+            const names = list.map(function(f) {
+                const nm = escapeHtmlCell(f.name);
+                return '<span style="color: var(--text-primary); font-weight: 500;">' + nm + '</span>';
+            }).join(sep);
+            return '<div class="eligibility-criteria-source" style="margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--surface-200); font-size: 10px; line-height: 1.45; color: var(--text-secondary);"><span style="font-weight: 700; font-size: 8px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Look in</span> <span style="color: var(--surface-300);">—</span> ' + names + '</div>';
+        }
+
         function wrapEvalEligLotCollapsibleHtml(lotKey, lotIndex, nCriteria, nSuppliers, innerBodyHtml) {
             const opt = getEligibilityLotOption(lotKey);
             const expanded = lotIndex === 0;
@@ -20803,7 +20961,7 @@
             }
             const lotMeta = getEligibilityLotOption(lotKey);
             const lotSummaryShort = 'Lot ' + lotMeta.number + ' — ' + lotMeta.name;
-            const colSpanPerSupplier = 5;
+            const colSpanPerSupplier = 4;
             let html = '<div class="eligibility-matrix-wrap"><table class="eval-table eligibility-matrix-table"><thead>';
             html += '<tr>';
             html += '<th rowspan="2" class="eligibility-sticky-id" style="text-align: left;">Criteria ID</th>';
@@ -20821,10 +20979,8 @@
                         </div>
                         <div class="eligibility-supplier-head-final">
                             <span class="eligibility-supplier-final-lbl">Final Eligibility</span>
-                            <select class="eval-select eligibility-supplier-final-select ${hdrFinal}" data-lot-key="${lotKey}" aria-label="Final Eligibility for ${v.name}, ${lotSummaryShort}" onchange="syncEvalSelectStateClass(this); eligibilitySupplierHeaderFinalChanged(this, '${v.id}', 'eval')">
-                                <option value="not_evaluated" ${hdrFinal === 'not_evaluated' ? 'selected' : ''}>Not evaluated</option>
-                                <option value="pass" ${hdrFinal === 'pass' ? 'selected' : ''}>Pass</option>
-                                <option value="fail" ${hdrFinal === 'fail' ? 'selected' : ''}>Fail</option>
+                            <select class="eval-select eligibility-supplier-final-select ${evalAssessmentSelectUiClass(hdrFinal)}" data-lot-key="${lotKey}" aria-label="Final Eligibility for ${v.name}, ${lotSummaryShort}" onchange="syncEvalSelectStateClass(this); eligibilitySupplierHeaderFinalChanged(this, '${v.id}', 'eval')">
+                                ${evalAssessmentSelectOptionsHtml(hdrFinal)}
                             </select>
                         </div>
                     </div>
@@ -20832,7 +20988,6 @@
             });
             html += '</tr><tr>';
             const subHeaders = [
-                { icon: 'pi-file', label: 'Forms', title: 'Linked forms' },
                 { icon: 'pi-desktop', label: 'System', title: 'System assessment' },
                 { icon: 'pi-user-edit', label: 'Eval', title: 'Evaluator assessment' },
                 { icon: 'pi-comments', label: 'Notes', title: 'Evaluator comments' },
@@ -20859,26 +21014,23 @@
                 html += `<div style="font-size: 10px; color: var(--text-muted); line-height: 1.35;">${req.criteriaDesc}</div>`;
                 html += '<div style="margin-top: 6px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center;">';
                 html += `<span style="font-size: 9px; padding: 2px 6px; background: var(--surface-100); border-radius: var(--radius-xs);">${eligibilityMatrixCriteriaTypeLabel(req.type)}</span>`;
+                html += eligibilityCheckVerifyIndicatorHtml(req);
                 if (hasFlag) {
                     html += '<span style="display: inline-flex; align-items: center; gap: 4px; font-size: 10px;" title="Special attention required"><i class="pi pi-flag" style="color: var(--warning-500);"></i> SP</span>';
                 }
-                html += '</div></td>';
+                html += '</div>';
+                html += eligibilityCriteriaSourceFormsHtml(req.id, eligibilityForms);
+                html += '</td>';
 
                 vendors.forEach((v, vi) => {
                     const z = vi % 3;
                     const zc = `eligibility-zone-${z}`;
                     const currentEval = getMockEvaluatorEvalForEligibility(req, v.id);
                     const sys = req.systemEval;
-                    html += `<td class="eligibility-zone-start ${zc}" style="min-width: 88px; max-width: 112px;">`;
-                    html += renderEligibilityLinkedFormsCell(req, eligibilityForms);
-                    html += '</td>';
-                    html += `<td class="${zc}" style="text-align: center; min-width: 72px;">${eligibilitySystemBadgeHtml(sys)}</td>`;
+                    html += `<td class="eligibility-zone-start ${zc}" style="text-align: center; min-width: 72px;">${eligibilitySystemBadgeHtml(sys)}</td>`;
                     html += `<td class="manual-eval-column ${zc}" style="min-width: 108px;">
-                        <select class="eval-select ${currentEval.status}" aria-label="Evaluator assessment for ${v.name}" onchange="syncEvalSelectStateClass(this)">
-                            <option value="not_evaluated" ${currentEval.status === 'not_evaluated' ? 'selected' : ''}>Not evaluated</option>
-                            <option value="pass" ${currentEval.status === 'pass' ? 'selected' : ''}>Pass</option>
-                            <option value="fail" ${currentEval.status === 'fail' ? 'selected' : ''}>Fail</option>
-                            <option value="clarification" ${currentEval.status === 'clarification' ? 'selected' : ''}>Clarification</option>
+                        <select class="eval-select ${evalAssessmentSelectUiClass(currentEval.status)}" aria-label="Evaluator assessment for ${v.name}" onchange="syncEvalSelectStateClass(this)">
+                            ${evalAssessmentSelectOptionsHtml(currentEval.status)}
                         </select>
                         <label class="eligibility-sync-across-lots" title="When checked, this assessment is applied for this bidder across all lots (same criterion). Uncheck to keep the evaluation specific to the lot you are viewing.">
                             <input type="checkbox" checked data-context="eval" data-vendor-id="${v.id}" data-criterion-id="${req.id}" onchange="eligibilityApplyAllLotsChanged(this)" aria-label="Apply assessment to all lots for ${v.name}, criterion ${req.id}" />
@@ -20966,7 +21118,7 @@
             }
             const lotMeta = getEligibilityLotOption(lotKey);
             const lotSummaryShort = 'Lot ' + lotMeta.number + ' — ' + lotMeta.name;
-            const colSpanPerSupplier = 5;
+            const colSpanPerSupplier = 4;
             let html = '<div class="eligibility-matrix-wrap"><table class="eval-table eligibility-matrix-table"><thead>';
             html += '<tr>';
             html += '<th rowspan="2" class="eligibility-sticky-id" style="text-align: left;">Criteria ID</th>';
@@ -20984,10 +21136,8 @@
                         </div>
                         <div class="eligibility-supplier-head-final">
                             <span class="eligibility-supplier-final-lbl">Final Qualification</span>
-                            <select class="eval-select eligibility-supplier-final-select ${hdrFinal}" data-lot-key="${lotKey}" aria-label="Final Qualification for ${v.name}, ${lotSummaryShort}" onchange="syncEvalSelectStateClass(this); eligibilitySupplierHeaderFinalChanged(this, '${v.id}', 'eval')">
-                                <option value="not_evaluated" ${hdrFinal === 'not_evaluated' ? 'selected' : ''}>Not evaluated</option>
-                                <option value="pass" ${hdrFinal === 'pass' ? 'selected' : ''}>Pass</option>
-                                <option value="fail" ${hdrFinal === 'fail' ? 'selected' : ''}>Fail</option>
+                            <select class="eval-select eligibility-supplier-final-select ${evalAssessmentSelectUiClass(hdrFinal)}" data-lot-key="${lotKey}" aria-label="Final Qualification for ${v.name}, ${lotSummaryShort}" onchange="syncEvalSelectStateClass(this); eligibilitySupplierHeaderFinalChanged(this, '${v.id}', 'eval')">
+                                ${evalAssessmentSelectOptionsHtml(hdrFinal)}
                             </select>
                         </div>
                     </div>
@@ -20995,7 +21145,6 @@
             });
             html += '</tr><tr>';
             const subHeaders = [
-                { icon: 'pi-file', label: 'Forms', title: 'Linked forms & documents' },
                 { icon: 'pi-desktop', label: 'System', title: 'System assessment' },
                 { icon: 'pi-user-edit', label: 'Eval', title: 'Evaluator assessment' },
                 { icon: 'pi-comments', label: 'Notes', title: 'Evaluator comments' },
@@ -21031,26 +21180,23 @@
                 }
                 html += '<div style="margin-top: 6px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center;">';
                 html += `<span style="font-size: 9px; padding: 2px 6px; background: var(--surface-100); border-radius: var(--radius-xs);">${eligibilityMatrixCriteriaTypeLabel(req.type)}</span>`;
+                html += eligibilityCheckVerifyIndicatorHtml(req);
                 if (hasFlag) {
                     html += '<span style="display: inline-flex; align-items: center; gap: 4px; font-size: 10px;" title="Special attention required"><i class="pi pi-flag" style="color: var(--warning-500);"></i> SP</span>';
                 }
-                html += '</div></td>';
+                html += '</div>';
+                html += eligibilityCriteriaSourceFormsHtml(req.id, qualificationForms);
+                html += '</td>';
 
                 vendors.forEach((v, vi) => {
                     const z = vi % 3;
                     const zc = `eligibility-zone-${z}`;
                     const currentEval = getMockEvaluatorEvalForQualification(req, v.id);
                     const sys = req.systemEval;
-                    html += `<td class="eligibility-zone-start ${zc}" style="min-width: 88px; max-width: 140px;">`;
-                    html += renderQualificationLinkedFormsCell(req, qualificationForms);
-                    html += '</td>';
-                    html += `<td class="${zc}" style="text-align: center; min-width: 72px;">${eligibilitySystemBadgeHtmlOrDash(sys)}</td>`;
+                    html += `<td class="eligibility-zone-start ${zc}" style="text-align: center; min-width: 72px;">${eligibilitySystemBadgeHtmlOrDash(sys)}</td>`;
                     html += `<td class="manual-eval-column ${zc}" style="min-width: 108px;">
-                        <select class="eval-select ${currentEval.status}" aria-label="Evaluator assessment for ${v.name}" onchange="syncEvalSelectStateClass(this)">
-                            <option value="not_evaluated" ${currentEval.status === 'not_evaluated' ? 'selected' : ''}>Not evaluated</option>
-                            <option value="pass" ${currentEval.status === 'pass' ? 'selected' : ''}>Pass</option>
-                            <option value="fail" ${currentEval.status === 'fail' ? 'selected' : ''}>Fail</option>
-                            <option value="clarification" ${currentEval.status === 'clarification' ? 'selected' : ''}>Clarification</option>
+                        <select class="eval-select ${evalAssessmentSelectUiClass(currentEval.status)}" aria-label="Evaluator assessment for ${v.name}" onchange="syncEvalSelectStateClass(this)">
+                            ${evalAssessmentSelectOptionsHtml(currentEval.status)}
                         </select>
                         <label class="eligibility-sync-across-lots" title="When checked, this assessment is applied for this bidder across all lots (same criterion). Uncheck to keep the evaluation specific to the lot you are viewing.">
                             <input type="checkbox" checked data-context="eval" data-vendor-id="${v.id}" data-criterion-id="${req.id}" onchange="eligibilityApplyAllLotsChanged(this)" aria-label="Apply assessment to all lots for ${v.name}, criterion ${req.id}" />
@@ -21106,7 +21252,7 @@
             }
             const lotMetaPo = getEligibilityLotOption(lotKey);
             const lotSummaryShortPo = 'Lot ' + lotMetaPo.number + ' — ' + lotMetaPo.name;
-            const colSpanPerSupplier = 7;
+            const colSpanPerSupplier = 6;
             let html = '<div class="eligibility-matrix-wrap"><table class="eval-table eligibility-matrix-table"><thead>';
             html += '<tr>';
             html += '<th rowspan="2" class="eligibility-sticky-id" style="text-align: left;">Criteria ID</th>';
@@ -21124,10 +21270,8 @@
                         </div>
                         <div class="eligibility-supplier-head-final">
                             <span class="eligibility-supplier-final-lbl">PO final</span>
-                            <select class="eval-select eligibility-supplier-final-select ${hdrPo}" data-lot-key="${lotKey}" aria-label="PO final for ${v.name}, ${lotSummaryShortPo}" onchange="syncEvalSelectStateClass(this); eligibilitySupplierHeaderFinalChanged(this, '${v.id}', 'po')">
-                                <option value="pending" ${hdrPo === 'pending' ? 'selected' : ''}>Pending</option>
-                                <option value="pass" ${hdrPo === 'pass' ? 'selected' : ''}>Pass</option>
-                                <option value="fail" ${hdrPo === 'fail' ? 'selected' : ''}>Fail</option>
+                            <select class="eval-select eligibility-supplier-final-select ${evalAssessmentSelectUiClass(hdrPo, { treatPendingAsEmpty: true })}" data-lot-key="${lotKey}" aria-label="PO final for ${v.name}, ${lotSummaryShortPo}" onchange="syncEvalSelectStateClass(this); eligibilitySupplierHeaderFinalChanged(this, '${v.id}', 'po')">
+                                ${evalAssessmentSelectOptionsHtml(hdrPo, { treatPendingAsEmpty: true })}
                             </select>
                         </div>
                     </div>
@@ -21135,7 +21279,6 @@
             });
             html += '</tr><tr>';
             const poSubHeaders = [
-                { icon: 'pi-file', label: 'Forms', title: 'Linked forms & documents' },
                 { icon: 'pi-desktop', label: 'System', title: 'System' },
                 { icon: 'pi-user', label: 'Eval', title: 'Evaluator' },
                 { icon: 'pi-comments', label: 'E-Notes', title: 'Evaluator comments' },
@@ -21173,13 +21316,16 @@
                 }
                 html += '<div style="margin-top: 6px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center;">';
                 html += `<span style="font-size: 9px; padding: 2px 6px; background: var(--surface-100); border-radius: var(--radius-xs);">${eligibilityMatrixCriteriaTypeLabel(req.type)}</span>`;
+                html += eligibilityCheckVerifyIndicatorHtml(req);
                 if (hasFlag) {
                     html += '<span style="display: inline-flex; align-items: center;" title="Flag"><i class="pi pi-flag" style="color: var(--warning-500); font-size: 12px;"></i></span>';
                 }
                 if (req.flagDetails) {
                     html += '<span style="font-size: 10px; color: var(--warning-600); display: inline-flex; align-items: center; gap: 4px;"><i class="pi pi-exclamation-triangle"></i> Flag</span>';
                 }
-                html += '</div></td>';
+                html += '</div>';
+                html += eligibilityCriteriaSourceFormsHtml(req.id, qualificationForms);
+                html += '</td>';
 
                 vendors.forEach((v, vi) => {
                     const z = vi % 3;
@@ -21187,19 +21333,14 @@
                     const ev = getMockEvaluatorEvalForQualification(req, v.id);
                     const poSt = getMockPoEvalForQualification(req, v.id);
                     const sys = req.systemEval;
-                    html += `<td class="eligibility-zone-start ${zc}" style="min-width: 88px; max-width: 140px;">`;
-                    html += renderQualificationLinkedFormsCell(req, qualificationForms);
-                    html += '</td>';
-                    html += `<td class="${zc}" style="text-align: center; min-width: 72px;">${eligibilitySystemBadgeHtmlOrDash(sys)}</td>`;
+                    html += `<td class="eligibility-zone-start ${zc}" style="text-align: center; min-width: 72px;">${eligibilitySystemBadgeHtmlOrDash(sys)}</td>`;
                     html += `<td class="${zc}" style="text-align: center; min-width: 76px;">${eligibilityEvalStatusBadgeHtml(ev.status)}
                         ${sys && ev.status !== sys ? '<div style="font-size: 9px; color: var(--warning-500); margin-top: 4px; display: flex; align-items: center; justify-content: center; gap: 4px;"><i class="pi pi-exclamation-triangle"></i> vs sys</div>' : ''}
                     </td>`;
                     html += `<td class="${zc}" style="font-size: 10px; min-width: 100px; max-width: 132px;">${ev.comment.substring(0, 72)}${ev.comment.length > 72 ? '…' : ''}</td>`;
                     html += `<td class="manual-eval-column ${zc}" style="min-width: 108px;">
-                        <select class="eval-select ${poSt.status}" aria-label="PO final ${v.name}" onchange="syncEvalSelectStateClass(this)">
-                            <option value="pending" ${poSt.status === 'pending' ? 'selected' : ''}>Pending</option>
-                            <option value="pass" ${poSt.status === 'pass' ? 'selected' : ''}>Pass</option>
-                            <option value="fail" ${poSt.status === 'fail' ? 'selected' : ''}>Fail</option>
+                        <select class="eval-select ${evalAssessmentSelectUiClass(poSt.status, { treatPendingAsEmpty: true })}" aria-label="PO final ${v.name}" onchange="syncEvalSelectStateClass(this)">
+                            ${evalAssessmentSelectOptionsHtml(poSt.status, { treatPendingAsEmpty: true })}
                         </select>
                         <label class="eligibility-sync-across-lots" title="When checked, this PO final decision is applied for this bidder across all lots (same criterion). Uncheck for lot-specific determination.">
                             <input type="checkbox" checked data-context="po" data-vendor-id="${v.id}" data-criterion-id="${req.id}" onchange="eligibilityApplyAllLotsChanged(this)" aria-label="Apply PO final to all lots for ${v.name}, criterion ${req.id}" />
@@ -21331,10 +21472,8 @@
                     html += '<div class="eligibility-supplier-name">' + eligibilitySupplierNameRowHtml(v) + '</div>';
                     html += '</div></div>';
                     html += '<div class="tech-item-supplier-head-line tech-item-supplier-head-line--right">';
-                    html += '<select class="eval-select ' + lotVerdict + '" data-tech-lot-id="' + escapeHtmlCell(lot.id) + '" data-tech-lot-vendor="' + escapeHtmlCell(v.id) + '" data-overall-summary-header="1" onclick="event.stopPropagation();" onchange="syncEvalSelectStateClass(this)" aria-label="Overall lot verdict for supplier ' + escapeHtmlCell(v.name) + '">';
-                    html += '<option value="not_evaluated"' + (lotVerdict === 'not_evaluated' ? ' selected' : '') + '>—</option>';
-                    html += '<option value="pass"' + (lotVerdict === 'pass' ? ' selected' : '') + '>Pass</option>';
-                    html += '<option value="fail"' + (lotVerdict === 'fail' ? ' selected' : '') + '>Fail</option>';
+                    html += '<select class="eval-select ' + evalAssessmentSelectUiClass(lotVerdict) + '" data-tech-lot-id="' + escapeHtmlCell(lot.id) + '" data-tech-lot-vendor="' + escapeHtmlCell(v.id) + '" data-overall-summary-header="1" onclick="event.stopPropagation();" onchange="syncEvalSelectStateClass(this)" aria-label="Overall lot verdict for supplier ' + escapeHtmlCell(v.name) + '">';
+                    html += evalAssessmentSelectOptionsHtml(lotVerdict);
                     html += '</select>';
                     html += '</div></div></th>';
                 });
@@ -21356,14 +21495,12 @@
                     var zc = 'eligibility-zone-' + (vi % 3);
                     var st = refItem ? getTechnicalItemVendorEvalStatus(refItem, v.id) : 'not_evaluated';
                     var comment = refItem ? getTechnicalItemVendorEvalComment(refItem, v.id) : '';
-                    var selVal = (st === 'pass' || st === 'fail') ? st : 'not_evaluated';
-                    var stClass = (['pass', 'fail', 'not_evaluated', 'clarification', 'pending'].indexOf(st) >= 0) ? st : 'not_evaluated';
+                    var selVal = ['pass', 'fail', 'clarification', 'not_evaluated'].indexOf(st) >= 0 ? st : 'not_evaluated';
+                    var stClass = evalAssessmentSelectUiClass(st === 'pending' ? 'not_evaluated' : st);
                     var rowKey = refItem ? refItem.id : lot.id;
                     html += '<td class="eval-overall-summary-td-eval manual-eval-column ' + zc + '">';
                     html += '<select class="eval-select ' + stClass + '" style="font-size: 10px; padding: 2px 4px; width: 100%;" onclick="event.stopPropagation();" onchange="syncEvalSelectStateClass(this)" aria-label="Eval ' + escapeHtmlCell(v.code) + ' for lot ' + escapeHtmlCell(lot.id) + ' overall criterion">';
-                    html += '<option value="not_evaluated"' + (selVal === 'not_evaluated' ? ' selected' : '') + '>—</option>';
-                    html += '<option value="pass"' + (selVal === 'pass' ? ' selected' : '') + '>Pass</option>';
-                    html += '<option value="fail"' + (selVal === 'fail' ? ' selected' : '') + '>Fail</option>';
+                    html += evalAssessmentSelectOptionsHtml(selVal);
                     html += '</select></td>';
                     html += '<td class="eval-overall-summary-td-notes manual-eval-column ' + zc + '">';
                     html += '<textarea class="eval-comment-field" rows="2" readonly style="font-size: 10px; width: 100%; min-width: 100px; max-width: 180px; box-sizing: border-box;" aria-label="Notes ' + escapeHtmlCell(v.code) + ' for lot ' + escapeHtmlCell(lot.id) + ' overall criterion">' + escapeHtmlCell(comment) + '</textarea>';
@@ -21383,7 +21520,14 @@
 
         function renderTechnicalEvaluationUI(stepData) {
             var vendorsFiltered = getTechFinFilteredVendors().map(function(v) {
-                return { id: v.id, code: v.code, name: v.name, ungm: getTechFinVendorUngm(v.id) };
+                return {
+                    id: v.id,
+                    code: v.code,
+                    name: v.name,
+                    ungm: getTechFinVendorUngm(v.id),
+                    alternateBadge: v.alternateBadge,
+                    baseVendorId: v.baseVendorId
+                };
             });
 
             return buildTechnicalEvaluationMatrixLotsHtml(stepData, vendorsFiltered, {
@@ -22011,10 +22155,8 @@
                                             ${hasDiscrepancy ? '<div style="font-size: 9px; color: var(--warning-500);">⚠️</div>' : ''}
                                         </td>
                                         <td class="manual-eval-column">
-                                            <select class="eval-select ${po.status}" style="font-size: 11px; padding: 4px;">
-                                                <option value="pending" ${po.status === 'pending' ? 'selected' : ''}>⏳ Pending</option>
-                                                <option value="pass" ${po.status === 'pass' ? 'selected' : ''}>✅ Pass</option>
-                                                <option value="fail" ${po.status === 'fail' ? 'selected' : ''}>❌ Fail</option>
+                                            <select class="eval-select ${evalAssessmentSelectUiClass(po.status, { treatPendingAsEmpty: true })}" style="font-size: 11px; padding: 4px; min-width: 108px;" onchange="syncEvalSelectStateClass(this)">
+                                                ${evalAssessmentSelectOptionsHtml(po.status, { treatPendingAsEmpty: true })}
                                             </select>
                                         </td>
                                         <td class="manual-eval-column">
@@ -22142,10 +22284,8 @@
                         html += '</div>';
                         html += '<div style="display: flex; align-items: center; gap: 8px;">';
                         html += '<span style="font-size: 11px; font-weight: 600; color: var(--primary-600);">' + (priceData.totalCurrency || '—') + '</span>';
-                        html += '<select style="font-size: 9px; padding: 1px 3px; border: 1px solid var(--surface-200); border-radius: 2px; width: 55px;" onclick="event.stopPropagation();" onchange="updateFinancialItemEval(\'' + lot.id + '\', \'' + item.id + '\', this.value)">';
-                        html += '<option value="not_evaluated"' + (evalStatus === 'not_evaluated' ? ' selected' : '') + '>—</option>';
-                        html += '<option value="pass"' + (evalStatus === 'pass' ? ' selected' : '') + '>Pass</option>';
-                        html += '<option value="fail"' + (evalStatus === 'fail' ? ' selected' : '') + '>Fail</option>';
+                        html += '<select class="eval-select ' + evalAssessmentSelectUiClass(evalStatus) + '" style="font-size: 9px; padding: 1px 3px; width: 100%; max-width: 118px;" onclick="event.stopPropagation();" onchange="syncEvalSelectStateClass(this); updateFinancialItemEval(\'' + lot.id + '\', \'' + item.id + '\', this.value)">';
+                        html += evalAssessmentSelectOptionsHtml(evalStatus);
                         html += '</select>';
                         html += '<button style="background: none; border: none; cursor: pointer; padding: 2px;" onclick="event.stopPropagation(); showFinancialDetails(\'' + item.id + '\')" title="View Details">';
                         html += '<i class="pi pi-eye" style="font-size: 10px; color: var(--primary-500);"></i></button>';
@@ -22180,10 +22320,8 @@
                         html += '<td style="padding: 5px 8px;"><input type="text" value="' + (priceData.negotiations || '$0') + '" style="width: 100%; padding: 3px 5px; border: 1px solid var(--surface-200); border-radius: 2px; font-size: 10px; color: var(--success-600); font-weight: 600; text-align: right;"></td>';
                         html += '<td style="padding: 5px 8px;"><input type="text" value="' + (priceData.finalPrice || '—') + '" style="width: 100%; padding: 3px 5px; border: 1px solid var(--primary-300); border-radius: 2px; font-size: 11px; font-weight: 700; color: var(--primary-600); background: var(--primary-50); text-align: right;"></td>';
                         html += '<td style="padding: 5px 8px; text-align: center;">';
-                        html += '<select style="font-size: 11px; padding: 3px 4px; border: 1px solid var(--surface-200); border-radius: 2px; width: 58px;" onchange="updateFinancialItemEval(\'' + lot.id + '\', \'' + item.id + '\', this.value)">';
-                        html += '<option value="not_evaluated"' + (evalStatus === 'not_evaluated' ? ' selected' : '') + '>—</option>';
-                        html += '<option value="pass"' + (evalStatus === 'pass' ? ' selected' : '') + '>Pass</option>';
-                        html += '<option value="fail"' + (evalStatus === 'fail' ? ' selected' : '') + '>Fail</option>';
+                        html += '<select class="eval-select ' + evalAssessmentSelectUiClass(evalStatus) + '" style="font-size: 11px; padding: 3px 4px; width: 100%; max-width: 118px;" onchange="syncEvalSelectStateClass(this); updateFinancialItemEval(\'' + lot.id + '\', \'' + item.id + '\', this.value)">';
+                        html += evalAssessmentSelectOptionsHtml(evalStatus);
                         html += '</select></td>';
                         html += '<td style="padding: 5px 8px;"><input type="text" value="' + (priceData.comment || '') + '" placeholder="..." style="font-size: 11px; padding: 3px 5px; border: 1px solid var(--surface-200); border-radius: 2px; width: 100%;"></td>';
                         html += '<td style="padding: 5px 8px; text-align: center;">';
@@ -22253,11 +22391,8 @@
                         ${req.systemEval ? `<span class="eval-status-badge ${req.systemEval}">${req.systemEval === 'pass' ? '✅ Pass' : '❌ Fail'}</span>` : '-'}
                     </td>
                     <td class="manual-eval-column">
-                        <select class="eval-select ${currentEval.status}">
-                            <option value="not_evaluated" ${currentEval.status === 'not_evaluated' ? 'selected' : ''}>⊘ Not Evaluated</option>
-                            <option value="pass" ${currentEval.status === 'pass' ? 'selected' : ''}>✅ Pass</option>
-                            <option value="fail" ${currentEval.status === 'fail' ? 'selected' : ''}>❌ Fail</option>
-                            <option value="clarification" ${currentEval.status === 'clarification' ? 'selected' : ''}>⚠️ Clarification</option>
+                        <select class="eval-select ${evalAssessmentSelectUiClass(currentEval.status)}" onchange="syncEvalSelectStateClass(this)">
+                            ${evalAssessmentSelectOptionsHtml(currentEval.status)}
                         </select>
                     </td>
                     <td class="manual-eval-column">
@@ -22309,7 +22444,7 @@
             
             var supplierIdsFin = getTechFinFilteredVendors().map(function(v) { return v.id; });
             if (supplierIdsFin.length === 0) {
-                supplierIdsFin = ['vendor1', 'vendor2', 'vendor3'];
+                supplierIdsFin = getEligibilityMatrixVendorIds();
             }
 
             getTechFinFilteredLots(stepData).forEach(function(lot, lotIndex) {
@@ -22360,10 +22495,8 @@
                     html += '</div>';
                     html += '<div style="display: flex; align-items: center; gap: 8px;">';
                     html += '<span style="font-size: 11px; font-weight: 600; color: var(--primary-600);">' + (priceData.totalCurrency || '—') + '</span>';
-                    html += '<select style="font-size: 9px; padding: 1px 3px; border: 1px solid var(--surface-200); border-radius: 2px; width: 55px;" onclick="event.stopPropagation();">';
-                    html += '<option value="not_evaluated"' + (evalStatus === 'not_evaluated' ? ' selected' : '') + '>—</option>';
-                    html += '<option value="pass"' + (evalStatus === 'pass' ? ' selected' : '') + '>Pass</option>';
-                    html += '<option value="fail"' + (evalStatus === 'fail' ? ' selected' : '') + '>Fail</option>';
+                    html += '<select class="eval-select ' + evalAssessmentSelectUiClass(evalStatus) + '" style="font-size: 9px; padding: 1px 3px; width: 100%; max-width: 118px;" onclick="event.stopPropagation();" onchange="syncEvalSelectStateClass(this)">';
+                    html += evalAssessmentSelectOptionsHtml(evalStatus);
                     html += '</select>';
                     html += '<button style="background: none; border: none; cursor: pointer; padding: 2px;" onclick="event.stopPropagation(); showFinancialDetails(\'' + item.id + '\')" title="View Details">';
                     html += '<i class="pi pi-eye" style="font-size: 10px; color: var(--primary-500);"></i></button>';
@@ -22407,10 +22540,8 @@
                         html += '<td style="padding: 5px 8px;"><input type="text" value="' + (pd.negotiations || '$0') + '" style="width: 100%; padding: 3px 5px; border: 1px solid var(--surface-200); border-radius: 2px; font-size: 10px; color: var(--success-600); font-weight: 600; text-align: right;"></td>';
                         html += '<td style="padding: 5px 8px;"><input type="text" value="' + (pd.finalPrice || '—') + '" style="width: 100%; padding: 3px 5px; border: 1px solid var(--primary-300); border-radius: 2px; font-size: 11px; font-weight: 700; color: var(--primary-600); background: var(--primary-50); text-align: right;"></td>';
                         html += '<td style="padding: 5px 8px; text-align: center;">';
-                        html += '<select style="font-size: 11px; padding: 3px 4px; border: 1px solid var(--surface-200); border-radius: 2px; width: 58px;">';
-                        html += '<option value="not_evaluated"' + (evSt === 'not_evaluated' ? ' selected' : '') + '>—</option>';
-                        html += '<option value="pass"' + (evSt === 'pass' ? ' selected' : '') + '>Pass</option>';
-                        html += '<option value="fail"' + (evSt === 'fail' ? ' selected' : '') + '>Fail</option>';
+                        html += '<select class="eval-select ' + evalAssessmentSelectUiClass(evSt) + '" style="font-size: 11px; padding: 3px 4px; width: 100%; max-width: 118px;" onchange="syncEvalSelectStateClass(this)">';
+                        html += evalAssessmentSelectOptionsHtml(evSt);
                         html += '</select></td>';
                         html += '<td style="padding: 5px 8px;"><input type="text" value="' + (pd.comment || '') + '" placeholder="..." style="font-size: 11px; padding: 3px 5px; border: 1px solid var(--surface-200); border-radius: 2px; width: 100%;"></td>';
                         html += '<td style="padding: 5px 8px; text-align: center;">';
@@ -22447,11 +22578,11 @@
         
         // Render supplier rows for Financial Lot View table
         function renderFinancialLotViewSupplierRows(item, vendorData) {
-            const vendors = ['vendor1', 'vendor2', 'vendor3'];
+            const vendors = getEligibilityMatrixVendorIds();
             let html = '';
             
             vendors.forEach((vendorId, idx) => {
-                const vendor = vendorData[vendorId];
+                const vendor = vendorData[vendorId] || { name: vendorId, ungm: '—' };
                 const priceData = item.prices[vendorId] || {};
                 const evalStatus = priceData.evalStatus || 'not_evaluated';
                 const evalComment = priceData.comment || '';
@@ -22482,11 +22613,8 @@
                             <input type="text" value="${priceData.finalPrice || '-'}" style="width: 100%; padding: 4px; border: 1px solid var(--primary-300); border-radius: var(--radius-sm); font-size: 11px; font-weight: 700; color: var(--primary-600); background: var(--primary-50); text-align: center;">
                         </td>
                         <td style="text-align: center;">
-                            <select class="eval-select ${evalStatus}" style="font-size: 10px; padding: 3px;" onchange="updateFinancialLotViewEval('${item.id}', '${vendorId}', this.value)">
-                                <option value="not_evaluated" ${evalStatus === 'not_evaluated' ? 'selected' : ''}>⊘ Not Eval</option>
-                                <option value="pass" ${evalStatus === 'pass' ? 'selected' : ''}>✅ Pass</option>
-                                <option value="fail" ${evalStatus === 'fail' ? 'selected' : ''}>❌ Fail</option>
-                                <option value="clarification" ${evalStatus === 'clarification' ? 'selected' : ''}>⚠️ Clarify</option>
+                            <select class="eval-select ${evalAssessmentSelectUiClass(evalStatus)}" style="font-size: 10px; padding: 3px; min-width: 108px;" onchange="syncEvalSelectStateClass(this); updateFinancialLotViewEval('${item.id}', '${vendorId}', this.value)">
+                                ${evalAssessmentSelectOptionsHtml(evalStatus)}
                             </select>
                         </td>
                         <td>
@@ -22698,6 +22826,9 @@
         }
 
         function getMockTechLotVerdictForSupplier(_lotId, vendorId) {
+            if (vendorId === 'vendor1-alt1') {
+                return 'not_evaluated';
+            }
             if (vendorId === 'vendor1') {
                 return 'pass';
             }
@@ -22742,10 +22873,8 @@
                 h += '<div class="eligibility-supplier-name">' + eligibilitySupplierNameRowHtml(v) + '</div>';
                 h += '</div></div>';
                 h += '<div class="tech-item-supplier-head-line tech-item-supplier-head-line--right">';
-                h += '<select class="eval-select ' + verdict + '" data-tech-lot-id="' + escapeHtmlCell(lot.id) + '" data-tech-lot-vendor="' + escapeHtmlCell(v.id) + '" onclick="event.stopPropagation();" onchange="syncEvalSelectStateClass(this)" aria-label="Lot technical verdict for supplier ' + escapeHtmlCell(v.name) + '">';
-                h += '<option value="not_evaluated"' + (verdict === 'not_evaluated' ? ' selected' : '') + '>—</option>';
-                h += '<option value="pass"' + (verdict === 'pass' ? ' selected' : '') + '>Pass</option>';
-                h += '<option value="fail"' + (verdict === 'fail' ? ' selected' : '') + '>Fail</option>';
+                h += '<select class="eval-select ' + evalAssessmentSelectUiClass(verdict) + '" data-tech-lot-id="' + escapeHtmlCell(lot.id) + '" data-tech-lot-vendor="' + escapeHtmlCell(v.id) + '" onclick="event.stopPropagation();" onchange="syncEvalSelectStateClass(this)" aria-label="Lot technical verdict for supplier ' + escapeHtmlCell(v.name) + '">';
+                h += evalAssessmentSelectOptionsHtml(verdict);
                 h += '</select>';
                 h += '</div></div></th>';
             });
@@ -22836,10 +22965,8 @@
                         html += '<div class="eligibility-supplier-name">' + eligibilitySupplierNameRowHtml(v) + '</div>';
                         html += '</div></div>';
                         html += '<div class="tech-item-supplier-head-line tech-item-supplier-head-line--right">';
-                        html += '<select class="eval-select ' + lineEvalForVendor + '" onclick="event.stopPropagation();" onchange="syncEvalSelectStateClass(this)" aria-label="Line evaluation for ' + escapeHtmlCell(v.name) + ', ' + escapeHtmlCell(item.description) + '">';
-                        html += '<option value="not_evaluated"' + (lineEvalForVendor === 'not_evaluated' ? ' selected' : '') + '>—</option>';
-                        html += '<option value="pass"' + (lineEvalForVendor === 'pass' ? ' selected' : '') + '>Pass</option>';
-                        html += '<option value="fail"' + (lineEvalForVendor === 'fail' ? ' selected' : '') + '>Fail</option>';
+                        html += '<select class="eval-select ' + evalAssessmentSelectUiClass(lineEvalForVendor) + '" onclick="event.stopPropagation();" onchange="syncEvalSelectStateClass(this)" aria-label="Line evaluation for ' + escapeHtmlCell(v.name) + ', ' + escapeHtmlCell(item.description) + '">';
+                        html += evalAssessmentSelectOptionsHtml(lineEvalForVendor);
                         html += '</select>';
                         html += '</div>';
                         html += '</div></th>';
@@ -22879,10 +23006,8 @@
                                 : '<span style="color: var(--text-muted);">—</span>';
                             html += '</td>';
                             html += '<td class="manual-eval-column ' + zc + '" style="min-width: 88px; vertical-align: top;">';
-                            html += '<select class="eval-select ' + vEvalStatus + '" style="font-size: 10px; padding: 2px 4px; width: 100%;" onchange="syncEvalSelectStateClass(this)" aria-label="Eval ' + escapeHtmlCell(vendor.code) + ' ' + escapeHtmlCell(req.id) + '">';
-                            html += '<option value="not_evaluated"' + (vEvalStatus === 'not_evaluated' ? ' selected' : '') + '>—</option>';
-                            html += '<option value="pass"' + (vEvalStatus === 'pass' ? ' selected' : '') + '>Pass</option>';
-                            html += '<option value="fail"' + (vEvalStatus === 'fail' ? ' selected' : '') + '>Fail</option>';
+                            html += '<select class="eval-select ' + evalAssessmentSelectUiClass(vEvalStatus) + '" style="font-size: 10px; padding: 2px 4px; width: 100%;" onchange="syncEvalSelectStateClass(this)" aria-label="Eval ' + escapeHtmlCell(vendor.code) + ' ' + escapeHtmlCell(req.id) + '">';
+                            html += evalAssessmentSelectOptionsHtml(vEvalStatus);
                             html += '</select></td>';
                             html += '<td class="manual-eval-column ' + zc + '" style="min-width: 104px; vertical-align: top;">';
                             html += '<textarea class="eval-comment-field" rows="2" placeholder="Comments…" style="font-size: 10px;">' + escapeHtmlCell(vEvalComment) + '</textarea></td>';
@@ -23162,6 +23287,9 @@
         
         function getMockPoEvalForEligibility(req, vendorId) {
             const po = req.evaluations.po;
+            if (vendorId === 'vendor1-alt1') {
+                return { status: 'pending', comment: 'Alternate offer (ALT 1) — PO determination pending.' };
+            }
             if (vendorId === 'vendor1') {
                 return { status: po.status, comment: po.comment };
             }
@@ -23177,7 +23305,7 @@
             }
             const lotMetaPo = getEligibilityLotOption(lotKey);
             const lotSummaryShortPo = 'Lot ' + lotMetaPo.number + ' — ' + lotMetaPo.name;
-            const colSpanPerSupplier = 7;
+            const colSpanPerSupplier = 6;
             let html = '<div class="eligibility-matrix-wrap"><table class="eval-table eligibility-matrix-table"><thead>';
             html += '<tr>';
             html += '<th rowspan="2" class="eligibility-sticky-id" style="text-align: left;">Criteria ID</th>';
@@ -23195,10 +23323,8 @@
                         </div>
                         <div class="eligibility-supplier-head-final">
                             <span class="eligibility-supplier-final-lbl">PO final</span>
-                            <select class="eval-select eligibility-supplier-final-select ${hdrPo}" data-lot-key="${lotKey}" aria-label="PO final for ${v.name}, ${lotSummaryShortPo}" onchange="syncEvalSelectStateClass(this); eligibilitySupplierHeaderFinalChanged(this, '${v.id}', 'po')">
-                                <option value="pending" ${hdrPo === 'pending' ? 'selected' : ''}>Pending</option>
-                                <option value="pass" ${hdrPo === 'pass' ? 'selected' : ''}>Pass</option>
-                                <option value="fail" ${hdrPo === 'fail' ? 'selected' : ''}>Fail</option>
+                            <select class="eval-select eligibility-supplier-final-select ${evalAssessmentSelectUiClass(hdrPo, { treatPendingAsEmpty: true })}" data-lot-key="${lotKey}" aria-label="PO final for ${v.name}, ${lotSummaryShortPo}" onchange="syncEvalSelectStateClass(this); eligibilitySupplierHeaderFinalChanged(this, '${v.id}', 'po')">
+                                ${evalAssessmentSelectOptionsHtml(hdrPo, { treatPendingAsEmpty: true })}
                             </select>
                         </div>
                     </div>
@@ -23206,7 +23332,6 @@
             });
             html += '</tr><tr>';
             const poSubHeaders = [
-                { icon: 'pi-file', label: 'Forms', title: 'Linked forms' },
                 { icon: 'pi-desktop', label: 'System', title: 'System' },
                 { icon: 'pi-user', label: 'Eval', title: 'Evaluator' },
                 { icon: 'pi-comments', label: 'E-Notes', title: 'Evaluator comments' },
@@ -23238,13 +23363,16 @@
                 html += `<div style="font-size: 10px; color: var(--text-muted); line-height: 1.35;">${req.assessment.substring(0, 120)}${req.assessment.length > 120 ? '…' : ''}</div>`;
                 html += '<div style="margin-top: 6px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center;">';
                 html += `<span style="font-size: 9px; padding: 2px 6px; background: var(--surface-100); border-radius: var(--radius-xs);">${eligibilityMatrixCriteriaTypeLabel(req.type)}</span>`;
+                html += eligibilityCheckVerifyIndicatorHtml(req);
                 if (hasFlag) {
                     html += '<span style="display: inline-flex; align-items: center;" title="Flag"><i class="pi pi-flag" style="color: var(--warning-500); font-size: 12px;"></i></span>';
                 }
                 if (req.flagDetails) {
                     html += '<span style="font-size: 10px; color: var(--warning-600); display: inline-flex; align-items: center; gap: 4px;"><i class="pi pi-exclamation-triangle"></i> Flag</span>';
                 }
-                html += '</div></td>';
+                html += '</div>';
+                html += eligibilityCriteriaSourceFormsHtml(req.id, eligibilityForms);
+                html += '</td>';
 
                 vendors.forEach((v, vi) => {
                     const z = vi % 3;
@@ -23252,19 +23380,14 @@
                     const ev = getMockEvaluatorEvalForEligibility(req, v.id);
                     const poSt = getMockPoEvalForEligibility(req, v.id);
                     const sys = req.systemEval;
-                    html += `<td class="eligibility-zone-start ${zc}" style="min-width: 88px; max-width: 112px;">`;
-                    html += renderEligibilityLinkedFormsCell(req, eligibilityForms);
-                    html += '</td>';
-                    html += `<td class="${zc}" style="text-align: center; min-width: 72px;">${eligibilitySystemBadgeHtml(sys)}</td>`;
+                    html += `<td class="eligibility-zone-start ${zc}" style="text-align: center; min-width: 72px;">${eligibilitySystemBadgeHtml(sys)}</td>`;
                     html += `<td class="${zc}" style="text-align: center; min-width: 76px;">${eligibilityEvalStatusBadgeHtml(ev.status)}
                         ${ev.status !== sys ? '<div style="font-size: 9px; color: var(--warning-500); margin-top: 4px; display: flex; align-items: center; justify-content: center; gap: 4px;"><i class="pi pi-exclamation-triangle"></i> vs sys</div>' : ''}
                     </td>`;
                     html += `<td class="${zc}" style="font-size: 10px; min-width: 100px; max-width: 132px;">${ev.comment.substring(0, 72)}${ev.comment.length > 72 ? '…' : ''}</td>`;
                     html += `<td class="manual-eval-column ${zc}" style="min-width: 108px;">
-                        <select class="eval-select ${poSt.status}" aria-label="PO final ${v.name}" onchange="syncEvalSelectStateClass(this)">
-                            <option value="pending" ${poSt.status === 'pending' ? 'selected' : ''}>Pending</option>
-                            <option value="pass" ${poSt.status === 'pass' ? 'selected' : ''}>Pass</option>
-                            <option value="fail" ${poSt.status === 'fail' ? 'selected' : ''}>Fail</option>
+                        <select class="eval-select ${evalAssessmentSelectUiClass(poSt.status, { treatPendingAsEmpty: true })}" aria-label="PO final ${v.name}" onchange="syncEvalSelectStateClass(this)">
+                            ${evalAssessmentSelectOptionsHtml(poSt.status, { treatPendingAsEmpty: true })}
                         </select>
                         <label class="eligibility-sync-across-lots" title="When checked, this PO final decision is applied for this bidder across all lots (same criterion). Uncheck for lot-specific determination.">
                             <input type="checkbox" checked data-context="po" data-vendor-id="${v.id}" data-criterion-id="${req.id}" onchange="eligibilityApplyAllLotsChanged(this)" aria-label="Apply PO final to all lots for ${v.name}, criterion ${req.id}" />
@@ -23396,10 +23519,8 @@
                         <td><span class="eval-status-badge ${e1.status}">${formatEvalStatus(e1.status)}</span></td>
                         <td style="font-size: 11px; color: var(--text-muted);">${e1.comment}</td>
                         <td class="manual-eval-column">
-                            <select class="eval-select ${po.status}" style="font-size: 10px;">
-                                <option value="pending" ${po.status === 'pending' ? 'selected' : ''}>⏳ Pending</option>
-                                <option value="pass" ${po.status === 'pass' ? 'selected' : ''}>✅ Pass</option>
-                                <option value="fail" ${po.status === 'fail' ? 'selected' : ''}>❌ Fail</option>
+                            <select class="eval-select ${evalAssessmentSelectUiClass(po.status, { treatPendingAsEmpty: true })}" style="font-size: 10px; min-width: 108px;" onchange="syncEvalSelectStateClass(this)">
+                                ${evalAssessmentSelectOptionsHtml(po.status, { treatPendingAsEmpty: true })}
                             </select>
                         </td>
                         <td class="manual-eval-column">
@@ -23427,6 +23548,7 @@
         function renderPOTechnicalSupplierView(container, stepData) {
             const vendorNames = {
                 'vendor1': 'MedSupply Ltd.',
+                'vendor1-alt1': 'MedSupply Ltd. (ALT 1)',
                 'vendor2': 'HealthCare Corp.',
                 'vendor3': 'MedTech Inc.'
             };
@@ -23550,11 +23672,8 @@
                                                     </td>
                                                     <td style="font-size: 10px; color: var(--text-muted); padding: 8px;">${evalComment || '-'}</td>
                                                     <td style="text-align: center;">
-                                                        <select class="eval-select ${poStatus}" style="font-size: 10px; padding: 3px;">
-                                                            <option value="pending" ${poStatus === 'pending' ? 'selected' : ''}>⏳ Pending</option>
-                                                            <option value="pass" ${poStatus === 'pass' ? 'selected' : ''}>✅ Pass</option>
-                                                            <option value="fail" ${poStatus === 'fail' ? 'selected' : ''}>❌ Fail</option>
-                                                            <option value="clarification" ${poStatus === 'clarification' ? 'selected' : ''}>⚠️ Clarify</option>
+                                                        <select class="eval-select ${evalAssessmentSelectUiClass(poStatus, { treatPendingAsEmpty: true })}" style="font-size: 10px; padding: 3px; min-width: 108px;" onchange="syncEvalSelectStateClass(this)">
+                                                            ${evalAssessmentSelectOptionsHtml(poStatus, { treatPendingAsEmpty: true })}
                                                         </select>
                                                     </td>
                                                     <td>
@@ -23588,6 +23707,7 @@
         function renderPOLotView(container, stepData) {
             const vendorData = {
                 'vendor1': { name: 'MedSupply Ltd.', ungm: '309663', country: 'Germany' },
+                'vendor1-alt1': { name: 'MedSupply Ltd. (ALT 1)', ungm: '309663', country: 'Germany' },
                 'vendor2': { name: 'HealthCare Corp.', ungm: '301245', country: 'USA' },
                 'vendor3': { name: 'MedTech Inc.', ungm: '315789', country: 'Japan' }
             };
@@ -23654,13 +23774,14 @@
         
         // Render supplier rows for PO Lot View
         function renderPOLotViewSupplierRows(item, vendorData) {
+            const allowedIds = getEligibilityMatrixVendorIds();
             const vendors = (techFinToolbarSupplierMultiIds && techFinToolbarSupplierMultiIds.length > 0)
-                ? techFinToolbarSupplierMultiIds.filter(function(id) { return ['vendor1', 'vendor2', 'vendor3'].indexOf(id) >= 0; })
-                : ['vendor1', 'vendor2', 'vendor3'];
+                ? techFinToolbarSupplierMultiIds.filter(function(id) { return allowedIds.indexOf(id) >= 0; })
+                : allowedIds.slice();
             let html = '';
             
             vendors.forEach((vendorId, idx) => {
-                const vendor = vendorData[vendorId];
+                const vendor = vendorData[vendorId] || { name: vendorId, ungm: '—', country: '' };
                 const evalStatus = item.evaluations?.[vendorId]?.status || item.evaluations?.evaluator?.status || 'not_evaluated';
                 const evalComment = item.evaluations?.[vendorId]?.comment || item.evaluations?.evaluator?.comment || '';
                 const poStatus = item.evaluations?.po?.[vendorId]?.status || 'pending';
@@ -23685,11 +23806,8 @@
                         </td>
                         <td style="font-size: 9px; color: var(--text-muted); padding: 6px;">${evalComment || '-'}</td>
                         <td style="text-align: center;">
-                            <select class="eval-select ${poStatus}" style="font-size: 9px; padding: 2px;">
-                                <option value="pending" ${poStatus === 'pending' ? 'selected' : ''}>⏳</option>
-                                <option value="pass" ${poStatus === 'pass' ? 'selected' : ''}>✅</option>
-                                <option value="fail" ${poStatus === 'fail' ? 'selected' : ''}>❌</option>
-                                <option value="clarification" ${poStatus === 'clarification' ? 'selected' : ''}>⚠️</option>
+                            <select class="eval-select ${evalAssessmentSelectUiClass(poStatus, { treatPendingAsEmpty: true })}" style="font-size: 9px; padding: 2px; min-width: 96px;" onchange="syncEvalSelectStateClass(this)">
+                                ${evalAssessmentSelectOptionsHtml(poStatus, { treatPendingAsEmpty: true })}
                             </select>
                         </td>
                         <td>
@@ -23817,10 +23935,8 @@
                                             </td>
                                             <td style="font-size: 9px; color: var(--text-muted); padding: 6px;">${evalComment || '-'}</td>
                                             <td style="text-align: center;">
-                                                <select class="eval-select ${poStatus}" style="font-size: 9px; padding: 2px;">
-                                                    <option value="pending" ${poStatus === 'pending' ? 'selected' : ''}>⏳</option>
-                                                    <option value="pass" ${poStatus === 'pass' ? 'selected' : ''}>✅</option>
-                                                    <option value="fail" ${poStatus === 'fail' ? 'selected' : ''}>❌</option>
+                                                <select class="eval-select ${evalAssessmentSelectUiClass(poStatus, { treatPendingAsEmpty: true })}" style="font-size: 9px; padding: 2px; min-width: 96px;" onchange="syncEvalSelectStateClass(this)">
+                                                    ${evalAssessmentSelectOptionsHtml(poStatus, { treatPendingAsEmpty: true })}
                                                 </select>
                                             </td>
                                             <td>
@@ -23852,6 +23968,7 @@
         function renderPOFinancialLotView(container, stepData) {
             const vendorData = {
                 'vendor1': { name: 'MedSupply Ltd.', ungm: '309663', country: 'Germany' },
+                'vendor1-alt1': { name: 'MedSupply Ltd. (ALT 1)', ungm: '309663', country: 'Germany' },
                 'vendor2': { name: 'HealthCare Corp.', ungm: '301245', country: 'USA' },
                 'vendor3': { name: 'MedTech Inc.', ungm: '315789', country: 'Japan' }
             };
@@ -23918,13 +24035,14 @@
         
         // Render supplier rows for PO Financial Lot View
         function renderPOFinancialLotViewSupplierRows(item, vendorData) {
+            const allowedIds = getEligibilityMatrixVendorIds();
             const vendors = (techFinToolbarSupplierMultiIds && techFinToolbarSupplierMultiIds.length > 0)
-                ? techFinToolbarSupplierMultiIds.filter(function(id) { return ['vendor1', 'vendor2', 'vendor3'].indexOf(id) >= 0; })
-                : ['vendor1', 'vendor2', 'vendor3'];
+                ? techFinToolbarSupplierMultiIds.filter(function(id) { return allowedIds.indexOf(id) >= 0; })
+                : allowedIds.slice();
             let html = '';
             
             vendors.forEach((vendorId, idx) => {
-                const vendor = vendorData[vendorId];
+                const vendor = vendorData[vendorId] || { name: vendorId, ungm: '—' };
                 const priceData = item.prices?.[vendorId] || {};
                 const evalStatus = priceData.evalStatus || 'not_evaluated';
                 const evalComment = priceData.comment || '';
@@ -23950,10 +24068,8 @@
                         </td>
                         <td style="font-size: 8px; color: var(--text-muted); padding: 5px;">${evalComment || '-'}</td>
                         <td style="text-align: center;">
-                            <select class="eval-select ${poStatus}" style="font-size: 8px; padding: 2px;">
-                                <option value="pending" ${poStatus === 'pending' ? 'selected' : ''}>⏳</option>
-                                <option value="pass" ${poStatus === 'pass' ? 'selected' : ''}>✅</option>
-                                <option value="fail" ${poStatus === 'fail' ? 'selected' : ''}>❌</option>
+                            <select class="eval-select ${evalAssessmentSelectUiClass(poStatus, { treatPendingAsEmpty: true })}" style="font-size: 8px; padding: 2px; min-width: 96px;" onchange="syncEvalSelectStateClass(this)">
+                                ${evalAssessmentSelectOptionsHtml(poStatus, { treatPendingAsEmpty: true })}
                             </select>
                         </td>
                         <td>
@@ -24135,11 +24251,8 @@
                             </span>
                         </td>
                         <td class="manual-eval-column">
-                            <select class="eval-select ${response.evaluation.status}" ${!isCurrentVendor ? 'disabled' : ''}>
-                                <option value="not_evaluated" ${response.evaluation.status === 'not_evaluated' ? 'selected' : ''}>⊘ Not Evaluated</option>
-                                <option value="pass" ${response.evaluation.status === 'pass' ? 'selected' : ''}>✅ Pass</option>
-                                <option value="fail" ${response.evaluation.status === 'fail' ? 'selected' : ''}>❌ Fail</option>
-                                <option value="clarification" ${response.evaluation.status === 'clarification' ? 'selected' : ''}>⚠️ Clarification</option>
+                            <select class="eval-select ${evalAssessmentSelectUiClass(response.evaluation.status)}" ${!isCurrentVendor ? 'disabled' : ''} onchange="syncEvalSelectStateClass(this)">
+                                ${evalAssessmentSelectOptionsHtml(response.evaluation.status)}
                             </select>
                             ${!isCurrentVendor ? '<div style="font-size: 10px; color: var(--text-muted); margin-top: 4px;">View only</div>' : ''}
                         </td>
@@ -24220,6 +24333,7 @@
 
         const EVAL_OVERVIEW_MATRIX_SUPPLIERS = [
             { id: 'vendor1', name: 'MedSupply Ltd.', meta: 'UNGM: 309663 | Germany' },
+            { id: 'vendor1-alt1', name: 'MedSupply Ltd.', meta: 'Alternate offer ALT 1 · Lot 1 only · UNGM: 309663' },
             { id: 'vendor2', name: 'HealthCare Corp.', meta: 'UNGM: 301245 | USA' },
             { id: 'vendor3', name: 'MedTech Inc.', meta: 'UNGM: 315789 | Japan' }
         ];
@@ -24228,6 +24342,7 @@
         const EVAL_OVERVIEW_MATRIX_CELLS = {
             lot1: {
                 vendor1: { step1: { status: 'pass' }, step2: { status: 'pass' }, step3: { status: 'pass' }, step4: { status: 'pass' } },
+                'vendor1-alt1': { step1: { status: 'in_progress', progress: 70 }, step2: { status: 'in_progress', progress: 50 }, step3: { status: 'in_progress', progress: 35 }, step4: { status: 'not_started' } },
                 vendor2: { step1: { status: 'in_progress', progress: 55 }, step2: { status: 'in_progress', progress: 55 }, step3: { status: 'in_progress', progress: 55 }, step4: { status: 'in_progress', progress: 55 } },
                 vendor3: { step1: { status: 'clarification' }, step2: { status: 'clarification' }, step3: { status: 'clarification' }, step4: { status: 'clarification' } }
             },
@@ -24248,6 +24363,19 @@
                 return { status: 'not_started', progress: null };
             }
             return byVendor[stepKey] || { status: 'not_started', progress: null };
+        }
+
+        /** Alternate-offer column only exists on Lot 1 in this demo. */
+        function evalOverviewMatrixSuppliersForLot(lotKey, suppliersList) {
+            return suppliersList.filter(function(s) {
+                return s.id !== 'vendor1-alt1' || lotKey === 'lot1';
+            });
+        }
+
+        function evalOverviewMatrixLotsForSupplier(supplierId, lotsList) {
+            return lotsList.filter(function(l) {
+                return supplierId !== 'vendor1-alt1' || l.key === 'lot1';
+            });
         }
 
         function evalOverviewMatrixStatusCellHtml(cell) {
@@ -24349,7 +24477,7 @@
             const rows = [];
             if (groupBy === 'lot') {
                 lots.forEach(lot => {
-                    const sups = suppliers.filter(() => true);
+                    const sups = evalOverviewMatrixSuppliersForLot(lot.key, suppliers);
                     if (sups.length === 0) {
                         return;
                     }
@@ -24361,7 +24489,7 @@
                 });
             } else {
                 suppliers.forEach(sup => {
-                    const ls = lots.filter(() => true);
+                    const ls = evalOverviewMatrixLotsForSupplier(sup.id, lots);
                     if (ls.length === 0) {
                         return;
                     }
@@ -24502,7 +24630,7 @@
             const rows = [];
             if (groupBy === 'lot') {
                 lots.forEach(lot => {
-                    const sups = suppliers.filter(() => true);
+                    const sups = evalOverviewMatrixSuppliersForLot(lot.key, suppliers);
                     if (sups.length === 0) {
                         return;
                     }
@@ -24512,7 +24640,7 @@
                 });
             } else {
                 suppliers.forEach(sup => {
-                    const ls = lots.filter(() => true);
+                    const ls = evalOverviewMatrixLotsForSupplier(sup.id, lots);
                     if (ls.length === 0) {
                         return;
                     }
@@ -24632,6 +24760,7 @@
             ];
             const evalProgressSupplierRows = [
                 { label: 'MedSupply Ltd.', statuses: ['evaluated', 'evaluated', 'in_progress', 'not_started'] },
+                { label: 'MedSupply Ltd. · ALT 1 (Lot 1)', statuses: ['evaluated', 'evaluated', 'in_progress', 'not_started'] },
                 { label: 'HealthCare Corp.', statuses: ['evaluated', 'evaluated', 'in_progress', 'not_started'] },
                 { label: 'MedTech Inc.', statuses: ['evaluated', 'in_progress', 'not_started', 'not_started'] }
             ];
