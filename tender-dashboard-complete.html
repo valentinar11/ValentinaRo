@@ -18859,7 +18859,8 @@
         let eligibilityWorkspaceViewMode = 'all';
 
         const eligibilityLotScopeOptions = [
-            { key: 'lot1', number: '1', name: 'PPE & protective equipment', vendorIds: ['vendor1', 'vendor1-alt1', 'vendor2'] },
+            /** Lot 1: alternate offer (vendor1-alt1) is technical/financial-only — one Eligibility/Qualification column per bidder. */
+            { key: 'lot1', number: '1', name: 'PPE & protective equipment', vendorIds: ['vendor1', 'vendor2'] },
             { key: 'lot2', number: '2', name: 'Medical consumables', vendorIds: ['vendor2', 'vendor3'] },
             { key: 'lot3', number: '3', name: 'Diagnostic supplies', vendorIds: ['vendor1', 'vendor3'] },
             { key: 'lot4', number: '4', name: 'Sterilization equipment', vendorIds: ['vendor1', 'vendor2'] },
@@ -18875,6 +18876,11 @@
             { id: 'vendor2', code: 'S2', name: 'HealthCare Corp.' },
             { id: 'vendor3', code: 'S3', name: 'MedTech Inc.' }
         ];
+
+        /** Eligibility & Qualification: one evaluation per bidder/lot; alternate offers are not separate columns here. */
+        function getEligibilityQualificationMatrixVendorList() {
+            return eligibilityMatrixVendors.filter(function(v) { return !v.alternateBadge; });
+        }
 
         /** IDs for toolbar / filters (includes alternate-offer columns). */
         function getEligibilityMatrixVendorIds() {
@@ -20081,7 +20087,11 @@
         function getEligibilityVendorsForLotKey(lotKey) {
             const opt = getEligibilityLotOption(lotKey);
             const ids = opt.vendorIds && opt.vendorIds.length > 0 ? opt.vendorIds : ['vendor1', 'vendor2'];
-            return eligibilityMatrixVendors.filter(v => ids.includes(v.id));
+            var list = eligibilityMatrixVendors.filter(v => ids.includes(v.id));
+            if (currentEvaluationStep === 1 || currentEvaluationStep === 2) {
+                list = list.filter(function(v) { return !v.alternateBadge; });
+            }
+            return list;
         }
 
         function getEligibilityUnionVendorsForLotKeys(lotKeys) {
@@ -20189,7 +20199,7 @@
         }
 
         function eligibilitySupplierMasterChanged(master) {
-            const allIds = eligibilityMatrixVendors.map(v => v.id);
+            const allIds = getEligibilityQualificationMatrixVendorList().map(v => v.id);
             if (master.checked) {
                 eligibilitySupplierSelectedIds = allIds.slice();
             } else {
@@ -20331,21 +20341,22 @@
                 </label>
             `));
 
-            const nVendorsAll = eligibilityMatrixVendors.length;
+            const eqToolbarVendors = getEligibilityQualificationMatrixVendorList();
+            const nVendorsAll = eqToolbarVendors.length;
             const supplierIdsForUi = eligibilitySupplierSelectedIds || [];
             const nSel = supplierIdsForUi.length;
             const allSuppliersSelected = nVendorsAll > 0 && nSel === nVendorsAll
-                && eligibilityMatrixVendors.every(v => supplierIdsForUi.indexOf(v.id) >= 0);
+                && eqToolbarVendors.every(v => supplierIdsForUi.indexOf(v.id) >= 0);
 
             const supplierRows = [
                 `<label class="eligibility-radio-row">
                     <input type="checkbox" id="eligibility-supplier-master" ${allSuppliersSelected ? 'checked' : ''} onchange="eligibilitySupplierMasterChanged(this)" aria-label="Select all suppliers" />
                     <span><strong>All suppliers</strong> <span style="font-weight: 500; color: var(--text-muted);">(${nVendorsAll})</span></span>
                 </label>`
-            ].concat(eligibilityMatrixVendors.map(v => `
+            ].concat(eqToolbarVendors.map(v => `
                 <label class="eligibility-radio-row">
                     <input type="checkbox" name="eligibility-supplier-cb" value="${v.id}" ${supplierIdsForUi.indexOf(v.id) >= 0 ? 'checked' : ''} onchange="eligibilitySupplierCheckboxChanged(this)" />
-                    <span><strong>${v.code}</strong> — ${v.name}${v.alternateBadge ? ` <span class="eligibility-supplier-alt-badge">${escapeHtmlCell(String(v.alternateBadge))}</span>` : ''}</span>
+                    <span><strong>${v.code}</strong> — ${v.name}</span>
                 </label>
             `));
 
@@ -20357,7 +20368,7 @@
                     return 'All suppliers (' + nVendorsAll + ')';
                 }
                 if (nSel === 1) {
-                    const one = eligibilityMatrixVendors.find(v => v.id === supplierIdsForUi[0]);
+                    const one = eqToolbarVendors.find(v => v.id === supplierIdsForUi[0]);
                     return one ? (one.code + ' — ' + one.name) : '1 supplier';
                 }
                 return nSel + ' suppliers selected';
