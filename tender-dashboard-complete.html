@@ -20487,7 +20487,7 @@
                 return [];
             }
             ensureTechFinToolbarState(stepData);
-            if (currentEvaluationStep === 3 && techFinWorkspaceViewMode === 'assigned') {
+            if ((currentEvaluationStep === 3 || currentEvaluationStep === 4) && techFinWorkspaceViewMode === 'assigned') {
                 return stepData.lots.slice();
             }
             var allLotIds = stepData.lots.map(function(l) { return l.id; });
@@ -20499,7 +20499,7 @@
             var sk = getTechFinStepDataKey();
             var sd = sk ? evaluationData[sk] : null;
             ensureTechFinToolbarState(sd || { lots: [] });
-            if (currentEvaluationStep === 3 && techFinWorkspaceViewMode === 'assigned') {
+            if ((currentEvaluationStep === 3 || currentEvaluationStep === 4) && techFinWorkspaceViewMode === 'assigned') {
                 return eligibilityMatrixVendors.filter(function(v) { return v.id === 'vendor1'; });
             }
             var pickV = (techFinToolbarSupplierMultiIds && techFinToolbarSupplierMultiIds.length > 0)
@@ -20604,12 +20604,21 @@
                     '<div class="eligibility-toolbar-cluster eligibility-toolbar-cluster--tech-actions" role="group" aria-label="Expand or collapse lot panels">' +
                         '<button type="button" class="btn btn-ghost" onclick="expandAllTechLotView()" style="font-size: 10px; padding: 2px 6px;"><i class="pi pi-angle-double-down" aria-hidden="true"></i> Expand lots</button>' +
                         '<button type="button" class="btn btn-ghost" onclick="collapseAllTechLotView()" style="font-size: 10px; padding: 2px 6px;"><i class="pi pi-angle-double-up" aria-hidden="true"></i> Collapse lots</button>' +
-                        '<button type="button" class="btn btn-ghost techfin-download-xls-mock" style="font-size: 10px; padding: 2px 6px;" title="Export (mock — not wired)"><i class="pi pi-download" aria-hidden="true"></i> Download XLS</button>' +
+                        '<button type="button" class="btn btn-ghost techfin-download-xls-mock" style="font-size: 10px; padding: 2px 6px;" title="Export (mock — not wired)" onclick="eligibilityDownloadXlsMock()"><i class="pi pi-download" aria-hidden="true"></i> Download XLS</button>' +
+                    '</div>';
+            } else if (currentEvaluationStep === 4) {
+                var finExpand = currentEvalView === 'lot' ? 'expandAllFinancialLots' : 'expandAllFinSupplierLots';
+                var finCollapse = currentEvalView === 'lot' ? 'collapseAllFinancialLots' : 'collapseAllFinSupplierLots';
+                techFinRowActions =
+                    '<div class="eligibility-toolbar-cluster eligibility-toolbar-cluster--tech-actions" role="group" aria-label="Expand or collapse financial lot panels">' +
+                        '<button type="button" class="btn btn-ghost" onclick="' + finExpand + '()" style="font-size: 10px; padding: 2px 6px;"><i class="pi pi-angle-double-down" aria-hidden="true"></i> Expand lots</button>' +
+                        '<button type="button" class="btn btn-ghost" onclick="' + finCollapse + '()" style="font-size: 10px; padding: 2px 6px;"><i class="pi pi-angle-double-up" aria-hidden="true"></i> Collapse lots</button>' +
+                        '<button type="button" class="btn btn-ghost techfin-download-xls-mock" style="font-size: 10px; padding: 2px 6px;" title="Export (mock — not wired)" onclick="eligibilityDownloadXlsMock()"><i class="pi pi-download" aria-hidden="true"></i> Download XLS</button>' +
                     '</div>';
             }
 
             var viewModeCluster = '';
-            if (currentEvaluationStep === 3) {
+            if (currentEvaluationStep === 3 || currentEvaluationStep === 4) {
                 var allBtnActive = techFinWorkspaceViewMode !== 'assigned' ? ' techfin-view-mode-btn--active' : '';
                 var assignedBtnActive = techFinWorkspaceViewMode === 'assigned' ? ' techfin-view-mode-btn--active' : '';
                 viewModeCluster =
@@ -21620,20 +21629,21 @@
         }
         
         // Update Financial Item Evaluation Status and recalculate lot status
-        function updateFinancialItemEval(lotId, itemId, newStatus) {
+        function updateFinancialItemEval(lotId, itemId, newStatus, vendorId) {
+            const vid = vendorId || currentVendorEval;
             // Update the item's eval status in the data (step4.lots is at top level, not per vendor)
             if (evaluationData && evaluationData.step4 && evaluationData.step4.lots) {
                 const lot = evaluationData.step4.lots.find(l => l.id === lotId);
                 if (lot) {
                     const item = lot.items.find(i => i.id === itemId);
-                    if (item && item.prices && item.prices[currentVendorEval]) {
-                        item.prices[currentVendorEval].evalStatus = newStatus;
+                    if (item && item.prices && item.prices[vid]) {
+                        item.prices[vid].evalStatus = newStatus;
                     }
                     
                     // Recalculate lot status for current vendor
                     let passCount = 0, failCount = 0, clarificationCount = 0, notEvalCount = 0;
                     lot.items.forEach(i => {
-                        const status = i.prices && i.prices[currentVendorEval]?.evalStatus || 'not_evaluated';
+                        const status = i.prices && i.prices[vid]?.evalStatus || 'not_evaluated';
                         if (status === 'pass') passCount++;
                         else if (status === 'fail') failCount++;
                         else if (status === 'clarification') clarificationCount++;
@@ -22192,6 +22202,291 @@
             
             return html;
         }
+
+        var FIN_SUPPLIER_MATRIX_COLS = 8;
+
+        function finRankSuffixHtml(rankStr) {
+            if (!rankStr || String(rankStr).trim() === '' || rankStr === '—') {
+                return '';
+            }
+            return '<span style="font-size:9px;font-weight:600;color:var(--text-muted);margin-left:4px;" title="Rank">· ' + escapeHtmlCell(String(rankStr)) + '</span>';
+        }
+
+        function getFinLotVendorRepresentativeRank(lot, vendorId) {
+            var items = lot.items || [];
+            for (var i = 0; i < items.length; i++) {
+                var p = items[i].prices && items[i].prices[vendorId];
+                if (p && p.rank) {
+                    return String(p.rank);
+                }
+            }
+            return '';
+        }
+
+        function finParseMoneyAmount(str) {
+            if (str === undefined || str === null || str === '') {
+                return 0;
+            }
+            var n = parseFloat(String(str).replace(/[^0-9.-]/g, ''));
+            return isNaN(n) ? 0 : n;
+        }
+
+        function finFormatMoneyAmount(n) {
+            if (Math.abs(n) < 0.005) {
+                return '$0';
+            }
+            return '$' + Math.round(n).toLocaleString();
+        }
+
+        function finLotSumMoneyField(lot, vendorId, field) {
+            var sum = 0;
+            (lot.items || []).forEach(function(it) {
+                var p = it.prices && it.prices[vendorId];
+                if (p && p[field] !== undefined) {
+                    sum += finParseMoneyAmount(p[field]);
+                }
+            });
+            return sum;
+        }
+
+        function finCurrencyLabelFromPriceData(p) {
+            if (!p || !p.totalCurrency) {
+                return 'USD';
+            }
+            var s = String(p.totalCurrency);
+            if (/€|EUR/i.test(s)) {
+                return 'EUR';
+            }
+            if (/£|GBP/i.test(s)) {
+                return 'GBP';
+            }
+            return 'USD';
+        }
+
+        function getFinLotVendorRollupEvalStatus(lot, vendorId) {
+            var items = lot.items || [];
+            if (items.length === 0) {
+                return 'not_evaluated';
+            }
+            var statuses = items.map(function(it) {
+                var p = it.prices && it.prices[vendorId];
+                return (p && p.evalStatus) || 'not_evaluated';
+            });
+            if (statuses.indexOf('fail') >= 0) {
+                return 'fail';
+            }
+            if (statuses.indexOf('clarification') >= 0) {
+                return 'clarification';
+            }
+            if (statuses.indexOf('not_evaluated') >= 0) {
+                return 'not_evaluated';
+            }
+            return 'pass';
+        }
+
+        function getFinancialLotStatusAcrossVendors(lot, vendorIds) {
+            var agg = 'pass';
+            (lot.items || []).forEach(function(it) {
+                vendorIds.forEach(function(vid) {
+                    var st = (it.prices && it.prices[vid] && it.prices[vid].evalStatus) || 'not_evaluated';
+                    if (st === 'fail') {
+                        agg = 'fail';
+                    } else if (agg !== 'fail' && st === 'clarification') {
+                        agg = 'clarification';
+                    } else if (agg === 'pass' && st === 'not_evaluated') {
+                        agg = 'not_evaluated';
+                    }
+                });
+            });
+            return agg;
+        }
+
+        function renderFinSupplierLotFinancialStripHtml(lot, vendorsFiltered) {
+            var nV = Math.max(1, vendorsFiltered.length);
+            var subHeaders = [
+                { icon: 'pi-chart-line', label: 'Tot. offer', title: 'Total financial offer (currency)' },
+                { icon: 'pi-globe', label: 'Curr.', title: 'Currency' },
+                { icon: 'pi-dollar', label: 'Tot. USD', title: 'Total financial offer (USD)' },
+                { icon: 'pi-minus-circle', label: 'Corr.', title: 'Corrections' },
+                { icon: 'pi-comments', label: 'Neg.', title: 'Negotiations' },
+                { icon: 'pi-calculator', label: 'Final', title: 'Final total offer' },
+                { icon: 'pi-file-edit', label: 'Notes', title: 'Notes' },
+                { icon: 'pi-sliders-h', label: 'Act.', title: 'Action' }
+            ];
+            var h = '';
+            h += '<div class="eligibility-matrix-wrap tech-lot-verdict-align-wrap tech-lot-matrix-scroll fin-supplier-matrix-wrap" role="region" aria-label="Lot financial assessment by supplier" style="--tech-lot-vendor-count: ' + nV + '; --tech-lot-supplier-band-min: 600px;">';
+            h += '<table class="eval-table eligibility-matrix-table tech-lot-matrix-table tech-lot-verdict-align-table">';
+            h += renderTechLotMatrixColgroupHtml(vendorsFiltered.length, FIN_SUPPLIER_MATRIX_COLS);
+            h += '<thead><tr class="tech-lot-verdict-align-row">';
+            h += '<th scope="row" rowspan="2" class="eligibility-sticky-id tech-lot-verdict-align-id">Lot</th>';
+            h += '<th rowspan="2" class="eligibility-sticky-criteria tech-lot-verdict-align-criteria"><span class="tech-lot-verdict-align-kicker">Financial assessment by supplier</span></th>';
+            vendorsFiltered.forEach(function(v, vi) {
+                var zc = 'eligibility-zone-' + (vi % 3);
+                var lotStripEval = getFinLotVendorRollupEvalStatus(lot, v.id);
+                h += '<th colspan="' + FIN_SUPPLIER_MATRIX_COLS + '" class="eligibility-supplier-head tech-lot-verdict-align-supplier ' + zc + '">';
+                h += '<div class="eligibility-supplier-head-inner">';
+                h += '<div class="eligibility-supplier-head-top">';
+                h += '<i class="pi pi-building" aria-hidden="true"></i>';
+                h += '<div>';
+                h += '<div class="eligibility-supplier-code">' + escapeHtmlCell(v.code) + finRankSuffixHtml(getFinLotVendorRepresentativeRank(lot, v.id)) + '</div>';
+                h += '<div class="eligibility-supplier-name">' + eligibilitySupplierNameRowHtml(v) + '</div>';
+                h += '</div></div>';
+                h += '<div class="tech-item-supplier-head-line tech-item-supplier-head-line--right">';
+                h += '<select class="eval-select ' + evalAssessmentSelectUiClass(lotStripEval) + '" data-fin-strip-lot="' + escapeHtmlCell(lot.id) + '" data-fin-strip-vendor="' + escapeHtmlCell(v.id) + '" onclick="event.stopPropagation();" onchange="syncEvalSelectStateClass(this)" aria-label="Supplier-level financial assessment for lot, ' + escapeHtmlCell(v.name) + '">';
+                h += evalAssessmentSelectOptionsHtml(lotStripEval);
+                h += '</select></div>';
+                h += '</div></th>';
+            });
+            h += '</tr><tr>';
+            vendorsFiltered.forEach(function() {
+                subHeaders.forEach(function(sh) {
+                    h += '<th class="eligibility-matrix-subth" title="' + escapeHtmlCell(sh.title) + '"><i class="pi ' + sh.icon + '" aria-hidden="true"></i>' + sh.label + '</th>';
+                });
+            });
+            h += '</tr></thead><tbody><tr>';
+            h += '<td class="eligibility-sticky-id"><div style="font-size:11px;font-weight:600;">' + escapeHtmlCell(lot.name) + '</div></td>';
+            h += '<td class="eligibility-sticky-criteria"><span style="font-size:10px;color:var(--text-muted);">Totals for this lot (mock)</span></td>';
+            vendorsFiltered.forEach(function(v, vi) {
+                var zc = 'eligibility-zone-' + (vi % 3);
+                var sumFinal = finLotSumMoneyField(lot, v.id, 'finalPrice');
+                var sumCorr = finLotSumMoneyField(lot, v.id, 'corrections');
+                var sumNeg = finLotSumMoneyField(lot, v.id, 'negotiations');
+                var firstPd = (lot.items && lot.items[0] && lot.items[0].prices && lot.items[0].prices[v.id]) || null;
+                var cur = finCurrencyLabelFromPriceData(firstPd);
+                h += '<td class="eligibility-zone-start ' + zc + '" style="text-align:right;font-weight:600;">' + escapeHtmlCell(finFormatMoneyAmount(sumFinal)) + '</td>';
+                h += '<td class="' + zc + '" style="text-align:center;">' + escapeHtmlCell(cur) + '</td>';
+                h += '<td class="' + zc + '" style="text-align:right;">' + escapeHtmlCell(finFormatMoneyAmount(sumFinal)) + '</td>';
+                h += '<td class="' + zc + '" style="text-align:right;vertical-align:middle;">';
+                h += '<input type="text" value="' + escapeHtmlCell(finFormatMoneyAmount(sumCorr)) + '" aria-label="Corrections for lot, supplier ' + escapeHtmlCell(v.code) + '" title="Evaluator: enter corrections for this lot" placeholder="$0" style="width:100%;max-width:92px;padding:3px 4px;border:1px solid var(--surface-200);border-radius:2px;font-size:10px;color:var(--danger-600);font-weight:600;text-align:right;"></td>';
+                h += '<td class="' + zc + '" style="text-align:right;vertical-align:middle;">';
+                h += '<input type="text" value="' + escapeHtmlCell(finFormatMoneyAmount(sumNeg)) + '" aria-label="Negotiations for lot, supplier ' + escapeHtmlCell(v.code) + '" title="Evaluator: enter negotiations for this lot" placeholder="$0" style="width:100%;max-width:92px;padding:3px 4px;border:1px solid var(--surface-200);border-radius:2px;font-size:10px;color:var(--success-600);font-weight:600;text-align:right;"></td>';
+                h += '<td class="' + zc + '" style="text-align:right;vertical-align:middle;">';
+                h += '<input type="text" value="' + escapeHtmlCell(finFormatMoneyAmount(sumFinal)) + '" aria-label="Final total offer for lot, supplier ' + escapeHtmlCell(v.code) + '" title="Evaluator: enter final total offer for this lot" placeholder="—" style="width:100%;max-width:96px;padding:3px 4px;border:1px solid var(--primary-300);border-radius:2px;font-size:10px;font-weight:700;color:var(--primary-600);background:var(--primary-50);text-align:right;"></td>';
+                h += '<td class="manual-eval-column ' + zc + '"><textarea class="eval-comment-field" rows="2" placeholder="Lot notes…" style="font-size:10px;"></textarea></td>';
+                h += '<td class="manual-eval-column ' + zc + '" style="text-align:center;">';
+                h += '<div style="display:flex;gap:4px;justify-content:center;flex-wrap:wrap;">';
+                h += '<button type="button" class="btn btn-secondary btn-sm" onclick="startPrivateClarification(\'' + escapeHtmlCell(lot.id) + '-' + escapeHtmlCell(v.id) + '-lot\')" title="Clarify" aria-label="Clarify"><i class="pi pi-comments"></i></button>';
+                h += '</div></td>';
+            });
+            h += '</tr></tbody></table></div>';
+            return h;
+        }
+
+        function buildFinancialSupplierEvaluatorMatrixHtml(stepData) {
+            var vendorsRaw = getTechFinFilteredVendors();
+            var vendorsFiltered = vendorsRaw.map(function(v) {
+                return { id: v.id, code: v.code, name: v.name, alternateBadge: v.alternateBadge, baseVendorId: v.baseVendorId };
+            });
+            if (vendorsFiltered.length === 0) {
+                return '<p style="padding: var(--spacing-md); color: var(--text-muted); font-size: 13px;">No suppliers match the current filters.</p>';
+            }
+            var vendorIds = vendorsFiltered.map(function(v) { return v.id; });
+            var finSubHeaders = [
+                { icon: 'pi-chart-line', label: 'Tot. offer', title: 'Total financial offer (currency)' },
+                { icon: 'pi-globe', label: 'Curr.', title: 'Currency' },
+                { icon: 'pi-dollar', label: 'Tot. USD', title: 'Total financial offer (USD)' },
+                { icon: 'pi-minus-circle', label: 'Corr.', title: 'Corrections' },
+                { icon: 'pi-comments', label: 'Neg.', title: 'Negotiations' },
+                { icon: 'pi-calculator', label: 'Final', title: 'Final total offer' },
+                { icon: 'pi-file-edit', label: 'Notes', title: 'Notes' },
+                { icon: 'pi-sliders-h', label: 'Act.', title: 'Action' }
+            ];
+            var html = '';
+            getTechFinFilteredLots(stepData).forEach(function(lot, lotIndex) {
+                var items = lot.items || [];
+                var isFirst = lotIndex === 0;
+                var lotAgg = getFinancialLotStatusAcrossVendors(lot, vendorIds);
+                var statusColor = lotAgg === 'pass' ? 'var(--success-500)' : lotAgg === 'fail' ? 'var(--danger-500)' : lotAgg === 'clarification' ? 'var(--warning-500)' : 'var(--surface-400)';
+
+                html += '<div id="fin-supplier-lot-' + lot.id + '" style="margin-bottom: 12px; border: 1px solid var(--surface-200); border-radius: var(--radius-md); border-left: 4px solid ' + statusColor + '; overflow: hidden;">';
+                html += '<div onclick="toggleFinSupplierLot(\'' + lot.id + '\')" style="padding: 8px 12px; cursor: pointer; background: ' + (lotIndex % 2 === 0 ? 'var(--surface-50)' : 'white') + '; display: flex; align-items: center; flex-wrap: wrap; gap: 8px;">';
+                html += '<i id="fin-supplier-lot-icon-' + lot.id + '" class="pi ' + (isFirst ? 'pi-chevron-down' : 'pi-chevron-right') + '" style="font-size: 10px; color: var(--text-muted);"></i>';
+                html += '<span style="font-size: 13px; font-weight: 600;">' + escapeHtmlCell(lot.name) + '</span>';
+                html += '<span style="font-size: 11px; color: var(--text-muted);">(' + items.length + ' items)</span>';
+                html += '</div>';
+
+                html += '<div id="fin-supplier-lot-content-' + lot.id + '" style="' + (isFirst ? '' : 'display: none;') + ' padding: 0 8px 12px 8px;">';
+                html += renderFinSupplierLotFinancialStripHtml(lot, vendorsFiltered);
+
+                items.forEach(function(item, itemIdx) {
+                    var subId = lot.id + '-' + item.id;
+                    var isFirstProduct = itemIdx === 0;
+                    html += '<div class="tech-product-subcollapsible" style="margin-top: 8px;">';
+                    html += '<div class="tech-product-subcollapsible-head fin-supplier-product-head" role="button" tabindex="0" onclick="toggleFinSupplierProductCollapsible(\'' + subId + '\')" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();toggleFinSupplierProductCollapsible(\'' + subId + '\');}" aria-expanded="' + (isFirstProduct ? 'true' : 'false') + '" aria-controls="fin-sup-prod-body-' + subId + '">';
+                    html += '<div style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0;">';
+                    html += '<i id="fin-sup-prod-icon-' + subId + '" class="pi ' + (isFirstProduct ? 'pi-chevron-down' : 'pi-chevron-right') + '" style="font-size: 11px; color: var(--text-muted);" aria-hidden="true"></i>';
+                    html += '<code style="font-size: 11px; background: var(--primary-50); color: var(--primary-600); padding: 2px 6px; border-radius: 3px;">' + escapeHtmlCell(item.unspsc || '—') + '</code>';
+                    html += '<span style="font-size: 13px; font-weight: 600; color: var(--text-primary);">' + escapeHtmlCell(item.description) + '</span>';
+                    html += '<span style="font-size: 11px; color: var(--text-muted);">Qty: ' + escapeHtmlCell(String(item.quantity || '—')) + '</span>';
+                    html += '</div></div>';
+
+                    html += '<div id="fin-sup-prod-body-' + subId + '" style="' + (isFirstProduct ? '' : 'display: none;') + '">';
+                    html += '<div class="eligibility-matrix-wrap tech-lot-matrix-scroll fin-supplier-matrix-wrap" role="region" aria-label="Financial line by supplier" style="--tech-lot-vendor-count: ' + Math.max(1, vendorsFiltered.length) + '; --tech-lot-supplier-band-min: 600px;">';
+                    html += '<table class="eval-table eligibility-matrix-table tech-lot-matrix-table">';
+                    html += renderTechLotMatrixColgroupHtml(vendorsFiltered.length, FIN_SUPPLIER_MATRIX_COLS);
+                    html += '<thead><tr>';
+                    html += '<th rowspan="2" class="eligibility-sticky-id" style="text-align:left;">UNSPSC</th>';
+                    html += '<th rowspan="2" class="eligibility-sticky-criteria" style="text-align:left;">Product</th>';
+                    vendorsFiltered.forEach(function(v) {
+                        var pdHead = (item.prices && item.prices[v.id]) || {};
+                        var headEval = pdHead.evalStatus || 'not_evaluated';
+                        html += '<th colspan="' + FIN_SUPPLIER_MATRIX_COLS + '" class="eligibility-supplier-head">';
+                        html += '<div class="eligibility-supplier-head-inner">';
+                        html += '<div class="eligibility-supplier-head-top">';
+                        html += '<i class="pi pi-building" aria-hidden="true"></i>';
+                        html += '<div>';
+                        html += '<div class="eligibility-supplier-code">' + escapeHtmlCell(v.code) + finRankSuffixHtml(pdHead.rank || '') + '</div>';
+                        html += '<div class="eligibility-supplier-name">' + eligibilitySupplierNameRowHtml(v) + '</div>';
+                        html += '</div></div>';
+                        html += '<div class="tech-item-supplier-head-line tech-item-supplier-head-line--right">';
+                        html += '<select class="eval-select ' + evalAssessmentSelectUiClass(headEval) + '" style="font-size:10px;width:100%;max-width:152px;" onclick="event.stopPropagation();" onchange="syncEvalSelectStateClass(this); updateFinancialItemEval(\'' + lot.id + '\', \'' + item.id + '\', this.value, \'' + v.id + '\')" aria-label="Assessment for ' + escapeHtmlCell(v.code) + ', line ' + escapeHtmlCell(item.id) + '">';
+                        html += evalAssessmentSelectOptionsHtml(headEval);
+                        html += '</select></div>';
+                        html += '</div></th>';
+                    });
+                    html += '</tr><tr>';
+                    vendorsFiltered.forEach(function() {
+                        finSubHeaders.forEach(function(sh) {
+                            html += '<th class="eligibility-matrix-subth" title="' + escapeHtmlCell(sh.title) + '"><i class="pi ' + sh.icon + '" aria-hidden="true"></i>' + sh.label + '</th>';
+                        });
+                    });
+                    html += '</tr></thead><tbody><tr>';
+                    html += '<td class="eligibility-sticky-id"><div class="req-id-badge" style="font-size:11px;">' + escapeHtmlCell(item.unspsc || '—') + '</div></td>';
+                    html += '<td class="eligibility-sticky-criteria"><div style="font-weight:600;font-size:12px;">' + escapeHtmlCell(item.description) + '</div>';
+                    html += '<div style="font-size:10px;color:var(--text-muted);margin-top:2px;">Qty: ' + escapeHtmlCell(String(item.quantity || '—')) + '</div></td>';
+
+                    vendorsFiltered.forEach(function(v, vi) {
+                        var zc = 'eligibility-zone-' + (vi % 3);
+                        var pd = (item.prices && item.prices[v.id]) || {};
+                        var cur = finCurrencyLabelFromPriceData(pd);
+                        html += '<td class="eligibility-zone-start ' + zc + '" style="text-align:right;font-weight:600;">' + escapeHtmlCell(pd.totalCurrency || '—') + '</td>';
+                        html += '<td class="' + zc + '" style="text-align:center;">' + escapeHtmlCell(cur) + '</td>';
+                        html += '<td class="' + zc + '" style="text-align:right;">' + escapeHtmlCell(pd.totalCurrency || '—') + '</td>';
+                        html += '<td class="' + zc + '" style="text-align:right;"><input type="text" value="' + escapeHtmlCell(pd.corrections || '$0') + '" style="width:100%;max-width:88px;padding:3px 4px;border:1px solid var(--surface-200);border-radius:2px;font-size:10px;text-align:right;"></td>';
+                        html += '<td class="' + zc + '" style="text-align:right;"><input type="text" value="' + escapeHtmlCell(pd.negotiations || '$0') + '" style="width:100%;max-width:88px;padding:3px 4px;border:1px solid var(--surface-200);border-radius:2px;font-size:10px;text-align:right;"></td>';
+                        html += '<td class="' + zc + '" style="text-align:right;font-weight:700;color:var(--primary-600);"><input type="text" value="' + escapeHtmlCell(pd.finalPrice || '—') + '" style="width:100%;max-width:96px;padding:3px 4px;border:1px solid var(--primary-300);border-radius:2px;font-size:10px;text-align:right;background:var(--primary-50);"></td>';
+                        html += '<td class="manual-eval-column ' + zc + '"><textarea class="eval-comment-field" rows="2" placeholder="Notes…" style="font-size:10px;">' + escapeHtmlCell(pd.comment || '') + '</textarea></td>';
+                        html += '<td class="manual-eval-column ' + zc + '" style="text-align:center;">';
+                        html += '<button type="button" class="btn btn-secondary btn-sm" onclick="startPrivateClarification(\'' + escapeHtmlCell(item.id) + '-' + escapeHtmlCell(v.id) + '\')" title="Clarify" aria-label="Clarify"><i class="pi pi-comments"></i></button>';
+                        html += '</td>';
+                    });
+                    html += '</tr></tbody></table></div></div></div>';
+                });
+
+                html += '</div></div>';
+            });
+
+            html += '<div style="margin-top: 16px; padding: 12px; background: white; border: 1px solid var(--surface-200); border-radius: 4px;">';
+            html += '<h4 style="margin: 0 0 12px 0; font-size: 14px; color: var(--text-primary);">Overall Evaluation Remarks</h4>';
+            html += '<div style="display: grid; gap: 12px;">';
+            html += '<div><label style="display: block; font-weight: 600; margin-bottom: 4px; font-size: 12px;">Justification of Reasonableness of Price</label>';
+            html += '<textarea class="eval-comment-field" rows="2" placeholder="Provide justification..." style="font-size: 11px;"></textarea></div>';
+            html += '<div><label style="display: block; font-weight: 600; margin-bottom: 4px; font-size: 12px;">Negotiations</label>';
+            html += '<textarea class="eval-comment-field" rows="2" placeholder="Document negotiations..." style="font-size: 11px;"></textarea></div>';
+            html += '</div></div>';
+
+            return html;
+        }
         
         function renderEvaluatorView(container, stepData) {
             let html = '';
@@ -22210,154 +22505,10 @@
                 return;
             }
 
-            // For financial step 4, use compact lot-based structure like technical evaluation
+            // For financial step 4 (supplier view), matrix per lot like technical step 3
             if (currentEvaluationStep === 4 && stepData.lots) {
                 html += renderTechFinScopeToolbarIfApplicable(stepData);
-                // Helper function for lot status
-                function getFinSupplierLotStatus(items) {
-                    if (!items || items.length === 0) return 'not_evaluated';
-                    var statuses = items.map(function(item) { 
-                        var pd = item.prices ? item.prices[currentVendorEval] : null;
-                        return (pd && pd.evalStatus) || 'not_evaluated'; 
-                    });
-                    if (statuses.indexOf('fail') >= 0) return 'fail';
-                    if (statuses.indexOf('not_evaluated') >= 0) return 'not_evaluated';
-                    return 'pass';
-                }
-                
-                // Compact toolbar - same as Technical
-                html += '<div style="padding: 8px; background: var(--surface-50); border-radius: 4px; margin-bottom: 8px;">';
-                html += '<div style="display: flex; gap: 8px; align-items: center;">';
-                html += '<span style="font-size: 11px; color: var(--text-muted);">Quick Nav:</span>';
-                html += '<button class="btn btn-ghost" onclick="expandAllFinSupplierLots()" style="font-size: 10px; padding: 2px 6px;"><i class="pi pi-angle-double-down"></i> Expand</button>';
-                html += '<button class="btn btn-ghost" onclick="collapseAllFinSupplierLots()" style="font-size: 10px; padding: 2px 6px;"><i class="pi pi-angle-double-up"></i> Collapse</button>';
-                html += '</div></div>';
-                
-                getTechFinFilteredLots(stepData).forEach(function(lot, lotIndex) {
-                    var items = lot.items || [];
-                    var passCount = items.filter(function(i) { var pd = i.prices ? i.prices[currentVendorEval] : null; return pd && pd.evalStatus === 'pass'; }).length;
-                    var failCount = items.filter(function(i) { var pd = i.prices ? i.prices[currentVendorEval] : null; return pd && pd.evalStatus === 'fail'; }).length;
-                    var pendingCount = items.length - passCount - failCount;
-                    var isFirst = lotIndex === 0;
-                    var lotStatus = getFinSupplierLotStatus(items);
-                    var statusIcon = lotStatus === 'pass' ? '<i class="pi pi-check-circle" style="color: var(--success-500);"></i>' : 
-                                     lotStatus === 'fail' ? '<i class="pi pi-times-circle" style="color: var(--danger-500);"></i>' : 
-                                     '<i class="pi pi-circle" style="color: var(--surface-400);"></i>';
-                    
-                    // Calculate lot total
-                    var lotTotal = 0;
-                    items.forEach(function(item) {
-                        var pd = item.prices ? item.prices[currentVendorEval] : null;
-                        if (pd && pd.finalPrice) {
-                            var price = parseFloat(pd.finalPrice.replace(/[^0-9.-]/g, ''));
-                            if (!isNaN(price)) lotTotal += price;
-                        }
-                    });
-                    
-                    // LOT HEADER - compact style like Technical with prominent status
-                    var statusColor = lotStatus === 'pass' ? 'var(--success-500)' : lotStatus === 'fail' ? 'var(--danger-500)' : 'var(--surface-400)';
-                    var statusBg = lotStatus === 'pass' ? 'var(--success-100)' : lotStatus === 'fail' ? 'var(--danger-100)' : 'var(--surface-200)';
-                    var statusText = lotStatus === 'pass' ? 'PASS' : lotStatus === 'fail' ? 'FAIL' : 'PENDING';
-                    var statusIconClass = lotStatus === 'pass' ? 'pi-check-circle' : lotStatus === 'fail' ? 'pi-times-circle' : 'pi-clock';
-                    
-                    html += '<div id="fin-supplier-lot-' + lot.id + '" style="margin-bottom: 4px; border: 1px solid var(--surface-200); border-radius: 4px; border-left: 4px solid ' + statusColor + ';">';
-                    html += '<div onclick="toggleFinSupplierLot(\'' + lot.id + '\')" style="padding: 6px 10px; cursor: pointer; background: ' + (lotIndex % 2 === 0 ? 'var(--surface-50)' : 'white') + '; display: flex; justify-content: space-between; align-items: center;">';
-                    html += '<div style="display: flex; align-items: center; gap: 8px;">';
-                    html += '<i id="fin-supplier-lot-icon-' + lot.id + '" class="pi ' + (isFirst ? 'pi-chevron-down' : 'pi-chevron-right') + '" style="font-size: 10px; color: var(--text-muted);"></i>';
-                    html += '<span style="font-size: 12px; font-weight: 600;">' + lot.name + '</span>';
-                    html += '<span style="font-size: 10px; color: var(--text-muted);">(' + items.length + ' items)</span>';
-                    html += '</div>';
-                    html += '<div style="display: flex; align-items: center; gap: 12px; font-size: 10px;">';
-                    html += '<span style="font-size: 11px; font-weight: 600; color: var(--success-600);">$' + lotTotal.toLocaleString() + '</span>';
-                    html += '<span style="color: var(--success-600);"><i class="pi pi-check" style="font-size: 9px;"></i> ' + passCount + '</span>';
-                    html += '<span style="color: var(--danger-600);"><i class="pi pi-times" style="font-size: 9px;"></i> ' + failCount + '</span>';
-                    html += '<span style="color: var(--text-muted);"><i class="pi pi-clock" style="font-size: 9px;"></i> ' + pendingCount + '</span>';
-                    html += '<span style="padding: 3px 8px; border-radius: 3px; font-size: 10px; font-weight: 700; background: ' + statusBg + '; color: ' + statusColor + ';"><i class="pi ' + statusIconClass + '" style="font-size: 10px;"></i> ' + statusText + '</span>';
-                    html += '</div></div>';
-                    
-                    html += '<div id="fin-supplier-lot-content-' + lot.id + '" style="' + (isFirst ? '' : 'display: none;') + '">';
-                    
-                    items.forEach(function(item, idx) {
-                        var priceData = (item.prices && item.prices[currentVendorEval]) || {};
-                        var evalStatus = priceData.evalStatus || 'not_evaluated';
-                        var itemStatusIcon = evalStatus === 'pass' ? '<i class="pi pi-check-circle" style="color: var(--success-500);"></i>' : 
-                                             evalStatus === 'fail' ? '<i class="pi pi-times-circle" style="color: var(--danger-500);"></i>' : 
-                                             '<i class="pi pi-circle" style="color: var(--surface-400);"></i>';
-                        
-                        // PRODUCT ROW - compact style like Technical
-                        html += '<div style="border-bottom: 1px solid var(--surface-100);">';
-                        html += '<div onclick="toggleFinSupplierItem(\'' + lot.id + '-' + item.id + '\')" style="padding: 10px 10px 10px 24px; cursor: pointer; background: ' + (idx % 2 === 0 ? 'white' : 'var(--surface-50)') + '; display: flex; justify-content: space-between; align-items: center;">';
-                        html += '<div style="display: flex; align-items: center; gap: 6px;">';
-                        html += '<i id="fin-supplier-item-' + lot.id + '-' + item.id + '-icon" class="pi pi-chevron-right" style="font-size: 10px; color: var(--text-muted);"></i>';
-                        html += '<code style="font-size: 11px; background: var(--primary-50); color: var(--primary-600); padding: 2px 6px; border-radius: 3px;">' + (item.unspsc || '—') + '</code>';
-                        html += '<span style="font-size: 13px; font-weight: 500; max-width: 320px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' + item.description + '</span>';
-                        html += '<span style="font-size: 11px; color: var(--text-muted);">Qty: ' + (item.quantity || '—') + '</span>';
-                        html += '</div>';
-                        html += '<div style="display: flex; align-items: center; gap: 8px;">';
-                        html += '<span style="font-size: 11px; font-weight: 600; color: var(--primary-600);">' + (priceData.totalCurrency || '—') + '</span>';
-                        html += '<select class="eval-select ' + evalAssessmentSelectUiClass(evalStatus) + '" style="font-size: 9px; padding: 1px 3px; width: 100%; max-width: 118px;" onclick="event.stopPropagation();" onchange="syncEvalSelectStateClass(this); updateFinancialItemEval(\'' + lot.id + '\', \'' + item.id + '\', this.value)">';
-                        html += evalAssessmentSelectOptionsHtml(evalStatus);
-                        html += '</select>';
-                        html += '<button style="background: none; border: none; cursor: pointer; padding: 2px;" onclick="event.stopPropagation(); showFinancialDetails(\'' + item.id + '\')" title="View Details">';
-                        html += '<i class="pi pi-eye" style="font-size: 10px; color: var(--primary-500);"></i></button>';
-                        html += itemStatusIcon;
-                        html += '</div></div>';
-                        
-                        // Financial table with all columns
-                        html += '<div id="fin-supplier-item-' + lot.id + '-' + item.id + '" style="display: none; background: var(--surface-50); padding: 8px 12px 8px 34px;">';
-                        html += '<table style="width: 100%; border-collapse: collapse; font-size: 12px; background: white; border: 1px solid var(--surface-200); border-radius: 3px;">';
-                        html += '<thead><tr style="background: var(--surface-100);">';
-                        html += '<th style="padding: 6px 8px; text-align: left; font-weight: 600;">Product (UNSPSC / Description / Qty)</th>';
-                        html += '<th style="padding: 6px 8px; text-align: right; font-weight: 600; width: 80px;">Unit Price</th>';
-                        html += '<th style="padding: 6px 8px; text-align: right; font-weight: 600; width: 100px;">Total (Currency)</th>';
-                        html += '<th style="padding: 6px 8px; text-align: right; font-weight: 600; width: 100px;">Total (Incoterm)</th>';
-                        html += '<th style="padding: 6px 8px; text-align: center; font-weight: 600; width: 50px;">Rank</th>';
-                        html += '<th style="padding: 6px 8px; text-align: right; font-weight: 600; width: 80px;">Corrections</th>';
-                        html += '<th style="padding: 6px 8px; text-align: right; font-weight: 600; width: 85px;">Negotiations</th>';
-                        html += '<th style="padding: 6px 8px; text-align: right; font-weight: 600; width: 90px;">Final Price</th>';
-                        html += '<th style="padding: 6px 8px; text-align: center; font-weight: 600; width: 65px;">Your Eval</th>';
-                        html += '<th style="padding: 6px 8px; text-align: left; font-weight: 600; width: 100px;">Comments</th>';
-                        html += '<th style="padding: 6px 8px; text-align: center; font-weight: 600; width: 70px;">Action</th>';
-                        html += '</tr></thead><tbody>';
-                        html += '<tr style="border-bottom: 1px solid var(--surface-100);">';
-                        html += '<td style="padding: 5px 8px;"><div style="font-size: 10px;"><code style="background: var(--surface-100); padding: 2px 4px; border-radius: 2px;">' + (item.unspsc || '—') + '</code></div>';
-                        html += '<div style="font-size: 11px; margin-top: 2px;">' + item.description + '</div>';
-                        html += '<div style="font-size: 10px; color: var(--text-muted);">Qty: ' + (item.quantity || '—') + '</div></td>';
-                        html += '<td style="padding: 5px 8px; text-align: right; font-size: 11px; font-weight: 600;">' + (priceData.unitPrice || '—') + '</td>';
-                        html += '<td style="padding: 5px 8px; text-align: right; font-size: 11px; font-weight: 600;">' + (priceData.totalCurrency || '—') + '</td>';
-                        html += '<td style="padding: 5px 8px; text-align: right; font-size: 10px;">' + (priceData.totalIncoterm || '—') + '</td>';
-                        html += '<td style="padding: 5px 8px; text-align: center;"><span style="padding: 2px 6px; border-radius: 3px; font-size: 10px; font-weight: 700; background: ' + (priceData.rank && priceData.rank.startsWith('1') ? 'var(--success-100); color: var(--success-600)' : 'var(--surface-100); color: var(--text-primary)') + ';">' + (priceData.rank || '—') + '</span></td>';
-                        html += '<td style="padding: 5px 8px;"><input type="text" value="' + (priceData.corrections || '$0') + '" style="width: 100%; padding: 3px 5px; border: 1px solid var(--surface-200); border-radius: 2px; font-size: 10px; color: var(--danger-500); font-weight: 600; text-align: right;"></td>';
-                        html += '<td style="padding: 5px 8px;"><input type="text" value="' + (priceData.negotiations || '$0') + '" style="width: 100%; padding: 3px 5px; border: 1px solid var(--surface-200); border-radius: 2px; font-size: 10px; color: var(--success-600); font-weight: 600; text-align: right;"></td>';
-                        html += '<td style="padding: 5px 8px;"><input type="text" value="' + (priceData.finalPrice || '—') + '" style="width: 100%; padding: 3px 5px; border: 1px solid var(--primary-300); border-radius: 2px; font-size: 11px; font-weight: 700; color: var(--primary-600); background: var(--primary-50); text-align: right;"></td>';
-                        html += '<td style="padding: 5px 8px; text-align: center;">';
-                        html += '<select class="eval-select ' + evalAssessmentSelectUiClass(evalStatus) + '" style="font-size: 11px; padding: 3px 4px; width: 100%; max-width: 118px;" onchange="syncEvalSelectStateClass(this); updateFinancialItemEval(\'' + lot.id + '\', \'' + item.id + '\', this.value)">';
-                        html += evalAssessmentSelectOptionsHtml(evalStatus);
-                        html += '</select></td>';
-                        html += '<td style="padding: 5px 8px;"><input type="text" value="' + (priceData.comment || '') + '" placeholder="..." style="font-size: 11px; padding: 3px 5px; border: 1px solid var(--surface-200); border-radius: 2px; width: 100%;"></td>';
-                        html += '<td style="padding: 5px 8px; text-align: center;">';
-                        html += '<div style="display: flex; gap: 2px; justify-content: center;">';
-                        html += '<button style="background: none; border: 1px solid var(--surface-200); border-radius: 2px; cursor: pointer; padding: 2px 4px;" onclick="event.stopPropagation(); startPrivateClarification(\'' + item.id + '\')" title="Clarify"><i class="pi pi-comments" style="font-size: 10px; color: var(--primary-500);"></i></button>';
-                        html += '<button style="background: none; border: 1px solid var(--surface-200); border-radius: 2px; cursor: pointer; padding: 2px 4px;" onclick="event.stopPropagation(); showFinancialDetails(\'' + item.id + '\')" title="Details"><i class="pi pi-eye" style="font-size: 10px; color: var(--primary-500);"></i></button>';
-                        html += '</div></td>';
-                        html += '</tr>';
-                        html += '</tbody></table></div>';
-                        html += '</div>';
-                    });
-                    
-                    html += '</div></div>';
-                });
-                
-                // Overall remarks section - compact
-                html += '<div style="margin-top: 16px; padding: 12px; background: white; border: 1px solid var(--surface-200); border-radius: 4px;">';
-                html += '<h4 style="margin: 0 0 12px 0; font-size: 14px; color: var(--text-primary);">Overall Evaluation Remarks</h4>';
-                html += '<div style="display: grid; gap: 12px;">';
-                html += '<div><label style="display: block; font-weight: 600; margin-bottom: 4px; font-size: 12px;">Justification of Reasonableness of Price</label>';
-                html += '<textarea class="eval-comment-field" rows="2" placeholder="Provide justification..." style="font-size: 11px;"></textarea></div>';
-                html += '<div><label style="display: block; font-weight: 600; margin-bottom: 4px; font-size: 12px;">Negotiations</label>';
-                html += '<textarea class="eval-comment-field" rows="2" placeholder="Document negotiations..." style="font-size: 11px;"></textarea></div>';
-                html += '</div></div>';
-                
+                html += buildFinancialSupplierEvaluatorMatrixHtml(stepData);
                 container.innerHTML = html;
                 return;
             }
@@ -22446,12 +22597,7 @@
             }
             
             var tb = renderTechFinScopeToolbarIfApplicable(stepData);
-            var html = tb + '<div style="padding: 8px; background: var(--surface-50); border-radius: 4px; margin-bottom: 8px;">';
-            html += '<div style="display: flex; gap: 8px; align-items: center;">';
-            html += '<span style="font-size: 11px; color: var(--text-muted);">Quick Nav:</span>';
-            html += '<button class="btn btn-ghost" onclick="expandAllFinancialLots()" style="font-size: 10px; padding: 2px 6px;"><i class="pi pi-angle-double-down"></i> Expand</button>';
-            html += '<button class="btn btn-ghost" onclick="collapseAllFinancialLots()" style="font-size: 10px; padding: 2px 6px;"><i class="pi pi-angle-double-up"></i> Collapse</button>';
-            html += '</div></div>';
+            var html = tb;
             
             var supplierIdsFin = getTechFinFilteredVendors().map(function(v) { return v.id; });
             if (supplierIdsFin.length === 0) {
@@ -22752,6 +22898,15 @@
             document.querySelectorAll('[id^="fin-supplier-lot-icon-"]').forEach(function(icon) {
                 icon.className = 'pi pi-chevron-down';
             });
+            document.querySelectorAll('[id^="fin-sup-prod-body-"]').forEach(function(el) {
+                el.style.display = 'block';
+            });
+            document.querySelectorAll('[id^="fin-sup-prod-icon-"]').forEach(function(el) {
+                el.className = 'pi pi-chevron-down';
+            });
+            document.querySelectorAll('.fin-supplier-product-head').forEach(function(h) {
+                h.setAttribute('aria-expanded', 'true');
+            });
         }
         
         function collapseAllFinSupplierLots() {
@@ -22761,6 +22916,37 @@
             document.querySelectorAll('[id^="fin-supplier-lot-icon-"]').forEach(function(icon) {
                 icon.className = 'pi pi-chevron-right';
             });
+            document.querySelectorAll('[id^="fin-sup-prod-body-"]').forEach(function(el) {
+                el.style.display = 'none';
+            });
+            document.querySelectorAll('[id^="fin-sup-prod-icon-"]').forEach(function(el) {
+                el.className = 'pi pi-chevron-right';
+            });
+            document.querySelectorAll('.fin-supplier-product-head').forEach(function(h) {
+                h.setAttribute('aria-expanded', 'false');
+            });
+        }
+
+        function toggleFinSupplierProductCollapsible(subId) {
+            var body = document.getElementById('fin-sup-prod-body-' + subId);
+            var icon = document.getElementById('fin-sup-prod-icon-' + subId);
+            var head = icon ? icon.closest('.fin-supplier-product-head') : null;
+            if (!body || !icon) {
+                return;
+            }
+            if (body.style.display === 'none') {
+                body.style.display = 'block';
+                icon.className = 'pi pi-chevron-down';
+                if (head) {
+                    head.setAttribute('aria-expanded', 'true');
+                }
+            } else {
+                body.style.display = 'none';
+                icon.className = 'pi pi-chevron-right';
+                if (head) {
+                    head.setAttribute('aria-expanded', 'false');
+                }
+            }
         }
         
         // Update evaluation for Financial Lot View
