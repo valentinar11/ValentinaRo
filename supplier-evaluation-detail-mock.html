@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UNOPS Procurement | Supplier evaluation</title>
+    <title>UNOPS Procurement | Vendor evaluation</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -360,7 +360,7 @@
             font-size: 13px;
         }
 
-        .supplier-banner {
+        .vendor-banner {
             background: var(--surface-0);
             border: 1px solid var(--surface-200);
             border-radius: var(--radius-lg);
@@ -370,12 +370,12 @@
             transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
 
-        .supplier-banner:hover {
+        .vendor-banner:hover {
             box-shadow: var(--shadow-md);
             border-color: var(--primary-400);
         }
 
-        .supplier-banner-head {
+        .vendor-banner-head {
             display: flex;
             flex-wrap: wrap;
             align-items: flex-start;
@@ -383,13 +383,13 @@
             gap: var(--spacing-md);
         }
 
-        .supplier-banner-head h1 {
+        .vendor-banner-head h1 {
             flex: 1 1 auto;
             min-width: 0;
             margin: 0;
         }
 
-        .supplier-banner h1 {
+        .vendor-banner h1 {
             font-size: 18px;
             font-weight: 600;
             display: flex;
@@ -398,15 +398,15 @@
             color: var(--text-primary);
         }
 
-        .supplier-banner h1 .pi { color: var(--primary-500); }
-        .supplier-heading-text {
+        .vendor-banner h1 .pi { color: var(--primary-500); }
+        .vendor-heading-text {
             display: inline-flex;
             align-items: center;
             flex-wrap: wrap;
             gap: 10px;
             min-width: 0;
         }
-        .sanctioned-supplier-badge {
+        .sanctioned-vendor-badge {
             display: inline-flex;
             align-items: center;
             gap: 6px;
@@ -421,14 +421,14 @@
             border: 1px solid rgba(218, 41, 28, 0.35);
             white-space: nowrap;
         }
-        .sanctioned-supplier-badge .pi {
+        .sanctioned-vendor-badge .pi {
             font-size: 12px;
             color: var(--danger-500);
         }
-        .sanctioned-supplier-badge[hidden] {
+        .sanctioned-vendor-badge[hidden] {
             display: none !important;
         }
-        .supplier-meta {
+        .vendor-meta {
             display: flex;
             flex-wrap: wrap;
             gap: var(--spacing-md);
@@ -436,7 +436,12 @@
             font-size: 13px;
             color: var(--text-muted);
         }
-        .supplier-meta span { display: inline-flex; align-items: center; gap: 6px; }
+        .vendor-meta span { display: inline-flex; align-items: center; gap: 6px; }
+        .vendor-meta .tender-ref-label {
+            color: var(--text-secondary);
+            font-weight: 600;
+            margin-right: 2px;
+        }
         .main-tabs {
             display: flex;
             gap: 4px;
@@ -701,7 +706,7 @@
             border: 1px solid var(--surface-200);
             border-radius: var(--radius-md);
         }
-        .eval-criteria-header .supplier-line {
+        .eval-criteria-header .vendor-line {
             font-size: 14px;
             font-weight: 600;
             display: inline-flex;
@@ -857,20 +862,20 @@
         <main id="main-content" class="main-content">
             <div class="page-header">
                 <div>
-                    <div class="page-title"><i class="pi pi-file-edit" aria-hidden="true"></i> Supplier submission &amp; evaluation</div>
-                    <p class="page-subtitle">Review bid content, evaluation stages, and clarifications for this supplier.</p>
+                    <div class="page-title"><i class="pi pi-file-edit" aria-hidden="true"></i> Vendor submission &amp; evaluation</div>
+                    <p class="page-subtitle">Review bid content, evaluation stages, and clarifications for this vendor.</p>
                 </div>
             </div>
             <div class="detail-inner">
-        <div class="supplier-banner" id="supplier-banner">
-            <div class="supplier-banner-head">
-                <h1><i class="pi pi-building" aria-hidden="true"></i> <span class="supplier-heading-text"><span id="supplier-title">Supplier</span><span id="supplier-sanctioned-badge" class="sanctioned-supplier-badge" hidden role="status"><i class="pi pi-ban" aria-hidden="true"></i> Sanctioned</span></span></h1>
+        <div class="vendor-banner" id="vendor-banner">
+            <div class="vendor-banner-head">
+                <h1><i class="pi pi-building" aria-hidden="true"></i> <span class="vendor-heading-text"><span id="vendor-title">Vendor</span><span id="vendor-sanctioned-badge" class="sanctioned-vendor-badge" hidden role="status"><i class="pi pi-ban" aria-hidden="true"></i> Sanctioned</span></span></h1>
                 <a id="vendor-profile-link" class="btn btn-secondary btn-sm" href="#" target="_blank" rel="noopener noreferrer"><i class="pi pi-external-link" aria-hidden="true"></i> View vendor profile</a>
             </div>
-            <div class="supplier-meta" id="supplier-meta"></div>
+            <div class="vendor-meta" id="vendor-meta"></div>
         </div>
 
-        <div class="main-tabs" role="tablist" aria-label="Supplier detail sections">
+        <div class="main-tabs" role="tablist" aria-label="Vendor detail sections">
             <button type="button" class="main-tab" role="tab" id="tab-main-submission" aria-selected="true" aria-controls="panel-submission" data-main="submission">
                 <i class="pi pi-inbox" aria-hidden="true"></i> Submission
             </button>
@@ -967,9 +972,10 @@
             const vendorId = VENDORS[params.get('vendor')] ? params.get('vendor') : 'vendor1';
             const defaultVendor = VENDORS[vendorId];
             const bidId = params.get('bid') || '';
+            const tenderRef = params.get('tender') || 'RFQ/2024/001';
             const v = {
                 code: defaultVendor.code,
-                name: params.get('supplier') || defaultVendor.name,
+                name: params.get('vendor') || params.get('supplier') || defaultVendor.name,
                 ungm: params.get('ungm') || defaultVendor.ungm,
                 country: params.get('country') || defaultVendor.country,
                 sanctioned: params.has('sanctioned')
@@ -977,8 +983,8 @@
                     : !!defaultVendor.sanctioned
             };
 
-            document.getElementById('supplier-title').textContent = v.name;
-            var sanctionedEl = document.getElementById('supplier-sanctioned-badge');
+            document.getElementById('vendor-title').textContent = v.name;
+            var sanctionedEl = document.getElementById('vendor-sanctioned-badge');
             if (v.sanctioned) {
                 sanctionedEl.removeAttribute('hidden');
             } else {
@@ -986,12 +992,13 @@
             }
             document.getElementById('vendor-profile-link').href =
                 'https://www.ungm.org/Public/CompanyProfile.aspx?CompanyID=' + encodeURIComponent(v.ungm);
-            document.getElementById('supplier-meta').innerHTML = `
+            document.getElementById('vendor-meta').innerHTML = `
+                <span><i class="pi pi-bookmark" aria-hidden="true"></i> <span class="tender-ref-label">Tender</span> <span class="ref-badge" id="vendor-tender-ref">${tenderRef}</span></span>
                 <span><i class="pi pi-globe" aria-hidden="true"></i> UNGM: ${v.ungm}</span>
                 <span><i class="pi pi-map-marker" aria-hidden="true"></i> ${v.country}</span>
                 ${bidId ? `<span><i class="pi pi-hashtag" aria-hidden="true"></i> Bid: ${bidId}</span>` : ''}
             `;
-            document.title = v.name + ' | UNOPS Procurement';
+            document.title = v.name + ' · ' + tenderRef + ' | UNOPS Procurement';
 
             const submissionCopy = {
                 bidder: '',
@@ -1070,7 +1077,7 @@
                     + '<button type="button" class="eval-stage-tab" role="tab" id="eval-tab-financial" data-eval-stage="financial" aria-selected="false" aria-controls="eval-panel-financial">4. Financial</button>';
 
                 var eligRows = ''
-                    + '<tr><td><span class="criteria-id">EF-001</span></td><td><div class="criteria-title">Bidders\' nationality check</div><div class="criteria-desc">Supplier nationality must be from an eligible country list.</div><div class="criteria-tags"><span class="tag-pill">Every Lot</span></div></td><td><div class="form-stack"><span class="form-line"><i class="pi pi-file" aria-hidden="true"></i> Bidder\'s Information Form</span></div></td><td>' + statusPillStatic('pass', 'Pass') + '</td><td>' + statusPillStatic('pass', 'Pass') + '</td><td><div class="eval-note">Nationality verified against eligible countries list.</div></td></tr>'
+                    + '<tr><td><span class="criteria-id">EF-001</span></td><td><div class="criteria-title">Bidders\' nationality check</div><div class="criteria-desc">Vendor nationality must be from an eligible country list.</div><div class="criteria-tags"><span class="tag-pill">Every Lot</span></div></td><td><div class="form-stack"><span class="form-line"><i class="pi pi-file" aria-hidden="true"></i> Bidder\'s Information Form</span></div></td><td>' + statusPillStatic('pass', 'Pass') + '</td><td>' + statusPillStatic('pass', 'Pass') + '</td><td><div class="eval-note">Nationality verified against eligible countries list.</div></td></tr>'
                     + '<tr><td><span class="criteria-id">EF-002</span></td><td><div class="criteria-title">Bid/Proposal Submission Form</div><div class="criteria-desc">Formal completeness of the submission package.</div><div class="criteria-tags"><span class="tag-pill">Every Lot</span></div></td><td><div class="form-stack"><span class="form-line"><i class="pi pi-file" aria-hidden="true"></i> Bid/Proposal Submission</span></div></td><td>' + statusPillStatic('pass', 'Pass') + '</td><td>' + statusPillStatic(eligEvalForm, eligEvalFormLabel) + '</td><td><div class="eval-note">' + (vendorId === 'vendor1' ? 'Payment terms deviation needs review.' : 'Submission package complete; no formal issues.') + '</div></td></tr>'
                     + '<tr><td><span class="criteria-id">EF-003</span></td><td><div class="criteria-title">UNGM eligibility check</div><div class="criteria-desc">Active UNGM registration required.</div><div class="criteria-tags"><span class="tag-pill">Every Lot</span></div></td><td><div class="form-stack"><span class="form-line"><i class="pi pi-file" aria-hidden="true"></i> UNGM profile excerpt</span></div></td><td>' + statusPillStatic('pass', 'Pass') + '</td><td>' + statusPillStatic('pass', 'Pass') + '</td><td><div class="eval-note">UNGM registration active and valid.</div></td></tr>'
                     + '<tr><td><span class="criteria-id">EF-004</span></td><td><div class="criteria-title">Completeness of documents</div><div class="criteria-desc">All mandatory attachments uploaded and legible.</div><div class="criteria-tags"><span class="tag-pill">Every Lot</span></div></td><td><div class="form-stack"><span class="form-line"><i class="pi pi-file" aria-hidden="true"></i> Document checklist</span></div></td><td>' + statusPillStatic('pass', 'Pass') + '</td><td>' + statusPillStatic('pass', 'Pass') + '</td><td><div class="eval-note">All documents complete and compliant.</div></td></tr>'
@@ -1095,7 +1102,7 @@
                     + '<div style="display:flex;align-items:center;gap:8px;">' + statusPillStatic('pass', 'Pass') + '</div>'
                     + '</div>'
                     + '<table class="eval-table eval-criteria-table"><thead><tr>'
-                    + '<th>Req ID</th><th>Requirement</th><th>Supplier</th><th>Compliant?</th><th>Details offered</th><th>Deviation</th><th>Your eval</th><th>Comments</th>'
+                    + '<th>Req ID</th><th>Requirement</th><th>Vendor</th><th>Compliant?</th><th>Details offered</th><th>Deviation</th><th>Your eval</th><th>Comments</th>'
                     + '</tr></thead><tbody>'
                     + '<tr><td><span class="criteria-id">R1</span></td><td>Product must meet ISO 13485 quality standards</td><td>' + v.name + '<br><span style="font-size:11px;color:var(--text-muted);">UNGM: ' + v.ungm + '</span></td><td><span style="color:var(--success-500);font-weight:600;"><i class="pi pi-check" aria-hidden="true"></i> Yes</span></td><td>ISO 13485:2016 certified</td><td>—</td><td>' + statusPillStatic('pass', 'Pass') + '</td><td><div class="eval-note empty">—</div></td></tr>'
                     + '<tr><td><span class="criteria-id">R2</span></td><td>Minimum 24 months shelf life from delivery</td><td>' + v.name + '<br><span style="font-size:11px;color:var(--text-muted);">UNGM: ' + v.ungm + '</span></td><td><span style="color:var(--success-500);font-weight:600;"><i class="pi pi-check" aria-hidden="true"></i> Yes</span></td><td>36 months shelf life guaranteed</td><td>—</td><td>' + statusPillStatic('pass', 'Pass') + '</td><td><div class="eval-note empty">—</div></td></tr>'
@@ -1133,7 +1140,7 @@
 
                 var critHead = function (finalLabel, finalKind, finalText) {
                     return '<div class="eval-criteria-header">'
-                        + '<span class="supplier-line"><i class="pi pi-building" aria-hidden="true" style="color:var(--primary-500);"></i> ' + v.code + ' ' + v.name + '</span>'
+                        + '<span class="vendor-line"><i class="pi pi-building" aria-hidden="true" style="color:var(--primary-500);"></i> ' + v.code + ' ' + v.name + '</span>'
                         + '<div class="final-line"><strong>' + finalLabel + '</strong>' + statusPillStatic(finalKind, finalText) + '</div>'
                         + '</div>';
                 };
@@ -1326,7 +1333,7 @@
                         title: 'Delivery timeline — cold chain (Lot 2)',
                         stage: 'Technical',
                         lot: 'Lot 2 — Medical consumables',
-                        status: 'Awaiting supplier',
+                        status: 'Awaiting vendor',
                         date: '2024-12-11',
                         text: 'Please confirm temperature monitoring device model referenced in technical schedule section 4.2.'
                     }
@@ -1348,7 +1355,7 @@
                         lot: 'All lots',
                         status: 'Closed',
                         date: '2024-12-06',
-                        text: 'Supplier accepted automatic extension to 90 days per amendment 2.'
+                        text: 'Vendor accepted automatic extension to 90 days per amendment 2.'
                     });
                 }
                 var html = '';
