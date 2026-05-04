@@ -375,6 +375,20 @@
             border-color: var(--primary-400);
         }
 
+        .supplier-banner-head {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: var(--spacing-md);
+        }
+
+        .supplier-banner-head h1 {
+            flex: 1 1 auto;
+            min-width: 0;
+            margin: 0;
+        }
+
         .supplier-banner h1 {
             font-size: 18px;
             font-weight: 600;
@@ -385,6 +399,35 @@
         }
 
         .supplier-banner h1 .pi { color: var(--primary-500); }
+        .supplier-heading-text {
+            display: inline-flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            min-width: 0;
+        }
+        .sanctioned-supplier-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: var(--danger-50);
+            color: var(--danger-500);
+            border: 1px solid rgba(218, 41, 28, 0.35);
+            white-space: nowrap;
+        }
+        .sanctioned-supplier-badge .pi {
+            font-size: 12px;
+            color: var(--danger-500);
+        }
+        .sanctioned-supplier-badge[hidden] {
+            display: none !important;
+        }
         .supplier-meta {
             display: flex;
             flex-wrap: wrap;
@@ -820,7 +863,10 @@
             </div>
             <div class="detail-inner">
         <div class="supplier-banner" id="supplier-banner">
-            <h1><i class="pi pi-building" aria-hidden="true"></i> <span id="supplier-title">Supplier</span></h1>
+            <div class="supplier-banner-head">
+                <h1><i class="pi pi-building" aria-hidden="true"></i> <span class="supplier-heading-text"><span id="supplier-title">Supplier</span><span id="supplier-sanctioned-badge" class="sanctioned-supplier-badge" hidden role="status"><i class="pi pi-ban" aria-hidden="true"></i> Sanctioned</span></span></h1>
+                <a id="vendor-profile-link" class="btn btn-secondary btn-sm" href="#" target="_blank" rel="noopener noreferrer"><i class="pi pi-external-link" aria-hidden="true"></i> View vendor profile</a>
+            </div>
             <div class="supplier-meta" id="supplier-meta"></div>
         </div>
 
@@ -887,9 +933,9 @@
     <script>
         (function () {
             const VENDORS = {
-                vendor1: { code: 'S1', name: 'MedSupply Ltd.', ungm: '309663', country: 'Germany' },
-                vendor2: { code: 'S2', name: 'HealthCare Corp.', ungm: '301245', country: 'USA' },
-                vendor3: { code: 'S3', name: 'MedTech Inc.', ungm: '315789', country: 'Japan' }
+                vendor1: { code: 'S1', name: 'MedSupply Ltd.', ungm: '309663', country: 'Germany', sanctioned: true },
+                vendor2: { code: 'S2', name: 'HealthCare Corp.', ungm: '301245', country: 'USA', sanctioned: false },
+                vendor3: { code: 'S3', name: 'MedTech Inc.', ungm: '315789', country: 'Japan', sanctioned: false }
             };
 
             const EVAL_CELLS = {
@@ -925,10 +971,21 @@
                 code: defaultVendor.code,
                 name: params.get('supplier') || defaultVendor.name,
                 ungm: params.get('ungm') || defaultVendor.ungm,
-                country: params.get('country') || defaultVendor.country
+                country: params.get('country') || defaultVendor.country,
+                sanctioned: params.has('sanctioned')
+                    ? params.get('sanctioned') === '1' || params.get('sanctioned') === 'true'
+                    : !!defaultVendor.sanctioned
             };
 
             document.getElementById('supplier-title').textContent = v.name;
+            var sanctionedEl = document.getElementById('supplier-sanctioned-badge');
+            if (v.sanctioned) {
+                sanctionedEl.removeAttribute('hidden');
+            } else {
+                sanctionedEl.setAttribute('hidden', '');
+            }
+            document.getElementById('vendor-profile-link').href =
+                'https://www.ungm.org/Public/CompanyProfile.aspx?CompanyID=' + encodeURIComponent(v.ungm);
             document.getElementById('supplier-meta').innerHTML = `
                 <span><i class="pi pi-globe" aria-hidden="true"></i> UNGM: ${v.ungm}</span>
                 <span><i class="pi pi-map-marker" aria-hidden="true"></i> ${v.country}</span>
