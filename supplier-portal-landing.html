@@ -902,6 +902,42 @@ body {
 .view-section { display: none; }
 .view-section.active { display: block; }
 
+.profile-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+}
+.profile-tab {
+    border: 1px solid var(--surface-200);
+    background: var(--surface-0);
+    color: var(--text-secondary);
+    padding: 8px 14px;
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.profile-tab:hover {
+    border-color: var(--primary-300);
+    color: var(--text-primary);
+}
+.profile-tab.active {
+    background: var(--primary-500);
+    border-color: var(--primary-500);
+    color: #fff;
+}
+.profile-tab:focus-visible {
+    outline: 2px solid var(--primary-500);
+    outline-offset: 2px;
+}
+.profile-tab-panel { display: none; }
+.profile-tab-panel.active {
+    display: block;
+    animation: fadeIn 0.2s ease-out;
+}
+
 /* ==========================================================================
    PROFILE STYLES
    ========================================================================== */
@@ -1698,13 +1734,21 @@ body {
                 </div>
             </div>
 
+            <div class="profile-tabs" role="tablist" aria-label="Profile sections">
+                <button type="button" class="profile-tab active" role="tab" aria-selected="true" aria-controls="profile-panel-company" id="profile-tab-company" data-profile-tab="company" tabindex="0" onclick="switchProfileTab('company')" onkeydown="handleProfileTabKeydown(event)">Company details</button>
+                <button type="button" class="profile-tab" role="tab" aria-selected="false" aria-controls="profile-panel-user" id="profile-tab-user" data-profile-tab="user" tabindex="-1" onclick="switchProfileTab('user')" onkeydown="handleProfileTabKeydown(event)">User / Contact</button>
+                <button type="button" class="profile-tab" role="tab" aria-selected="false" aria-controls="profile-panel-general" id="profile-tab-general" data-profile-tab="general" tabindex="-1" onclick="switchProfileTab('general')" onkeydown="handleProfileTabKeydown(event)">General information</button>
+                <button type="button" class="profile-tab" role="tab" aria-selected="false" aria-controls="profile-panel-contacts" id="profile-tab-contacts" data-profile-tab="contacts" tabindex="-1" onclick="switchProfileTab('contacts')" onkeydown="handleProfileTabKeydown(event)">Contacts</button>
+                <button type="button" class="profile-tab" role="tab" aria-selected="false" aria-controls="profile-panel-qualification" id="profile-tab-qualification" data-profile-tab="qualification" tabindex="-1" onclick="switchProfileTab('qualification')" onkeydown="handleProfileTabKeydown(event)">Qualification</button>
+                <button type="button" class="profile-tab" role="tab" aria-selected="false" aria-controls="profile-panel-sanctions" id="profile-tab-sanctions" data-profile-tab="sanctions" tabindex="-1" onclick="switchProfileTab('sanctions')" onkeydown="handleProfileTabKeydown(event)">Sanctions &amp; performance</button>
+            </div>
+
             <div style="display: flex; justify-content: flex-end; gap: var(--spacing-sm); margin-bottom: var(--spacing-md);">
                 <button type="button" class="btn btn-ghost btn-sm" onclick="expandAllUngmSections()"><i class="pi pi-plus"></i> Expand all</button>
                 <button type="button" class="btn btn-ghost btn-sm" onclick="collapseAllUngmSections()"><i class="pi pi-minus"></i> Collapse all</button>
             </div>
 
-            <!-- Company + User details (top row, 2 columns) -->
-            <div class="ungm-profile-top-row">
+            <div class="profile-tab-panel active" role="tabpanel" id="profile-panel-company" aria-labelledby="profile-tab-company" data-profile-tab-panel="company">
                 <!-- Company details -->
                 <div class="form-section">
                     <div class="form-section-header">
@@ -1751,6 +1795,9 @@ body {
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="profile-tab-panel" role="tabpanel" id="profile-panel-user" aria-labelledby="profile-tab-user" data-profile-tab-panel="user" hidden>
                 <!-- User / Contact details -->
                 <div class="form-section">
                     <div class="form-section-header">
@@ -1792,8 +1839,7 @@ body {
                 </div>
             </div>
 
-            <!-- UNGM Profile Sections (collapsible, 2–3 column grid) -->
-            <div class="ungm-profile-grid">
+            <div class="profile-tab-panel" role="tabpanel" id="profile-panel-general" aria-labelledby="profile-tab-general" data-profile-tab-panel="general" hidden>
                 <!-- General Information (merged: Registration + General Info + Company Name Changes; no overlap with Company details card) -->
                 <div class="ungm-section" data-ungm-section>
                     <div class="ungm-section-header" role="button" tabindex="0" onclick="toggleUngmSection(this)" onkeydown="if(event.key==='Enter'||event.key===' ') { event.preventDefault(); toggleUngmSection(this); }">
@@ -1886,7 +1932,9 @@ body {
                         </div>
                     </div>
                 </div>
+            </div>
 
+            <div class="profile-tab-panel" role="tabpanel" id="profile-panel-contacts" aria-labelledby="profile-tab-contacts" data-profile-tab-panel="contacts" hidden>
                 <!-- Contacts -->
                 <div class="ungm-section" data-ungm-section>
                     <div class="ungm-section-header" role="button" tabindex="0" onclick="toggleUngmSection(this)" onkeydown="if(event.key==='Enter'||event.key===' ') { event.preventDefault(); toggleUngmSection(this); }">
@@ -1923,7 +1971,9 @@ body {
                         </div>
                     </div>
                 </div>
+            </div>
 
+            <div class="profile-tab-panel" role="tabpanel" id="profile-panel-qualification" aria-labelledby="profile-tab-qualification" data-profile-tab-panel="qualification" hidden>
                 <!-- Qualification (Levels 1, 2 & 3 merged) -->
                 <div class="ungm-section" data-ungm-section>
                     <div class="ungm-section-header" role="button" tabindex="0" onclick="toggleUngmSection(this)" onkeydown="if(event.key==='Enter'||event.key===' ') { event.preventDefault(); toggleUngmSection(this); }">
@@ -1981,7 +2031,9 @@ body {
                         </div>
                     </div>
                 </div>
+            </div>
 
+            <div class="profile-tab-panel" role="tabpanel" id="profile-panel-sanctions" aria-labelledby="profile-tab-sanctions" data-profile-tab-panel="sanctions" hidden>
                 <!-- Sanctions, Sanctioning Agencies & Performance Issues (merged) -->
                 <div class="ungm-section" data-ungm-section>
                     <div class="ungm-section-header" role="button" tabindex="0" onclick="toggleUngmSection(this)" onkeydown="if(event.key==='Enter'||event.key===' ') { event.preventDefault(); toggleUngmSection(this); }">
@@ -2306,6 +2358,51 @@ function showView(viewName) {
 
 // ==================== UNGM PROFILE SECTIONS ====================
 
+function switchProfileTab(tabName) {
+    const tabs = document.querySelectorAll('[data-profile-tab]');
+    const panels = document.querySelectorAll('[data-profile-tab-panel]');
+
+    tabs.forEach(tab => {
+        const isActive = tab.getAttribute('data-profile-tab') === tabName;
+        tab.classList.toggle('active', isActive);
+        tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        tab.setAttribute('tabindex', isActive ? '0' : '-1');
+    });
+
+    panels.forEach(panel => {
+        const isActive = panel.getAttribute('data-profile-tab-panel') === tabName;
+        panel.classList.toggle('active', isActive);
+        panel.hidden = !isActive;
+    });
+}
+
+function handleProfileTabKeydown(event) {
+    const tabs = Array.from(document.querySelectorAll('[data-profile-tab]'));
+    const currentIndex = tabs.findIndex(tab => tab === event.currentTarget);
+
+    if (currentIndex < 0) return;
+
+    let nextIndex = currentIndex;
+    if (event.key === 'ArrowRight') {
+        nextIndex = (currentIndex + 1) % tabs.length;
+    } else if (event.key === 'ArrowLeft') {
+        nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+    } else if (event.key === 'Home') {
+        nextIndex = 0;
+    } else if (event.key === 'End') {
+        nextIndex = tabs.length - 1;
+    } else {
+        return;
+    }
+
+    event.preventDefault();
+    const nextTab = tabs[nextIndex];
+    const nextTabName = nextTab.getAttribute('data-profile-tab');
+    if (!nextTabName) return;
+    switchProfileTab(nextTabName);
+    nextTab.focus();
+}
+
 function toggleUngmSection(header) {
     const section = header.closest('.ungm-section');
     if (section) section.classList.toggle('collapsed');
@@ -2392,6 +2489,14 @@ function renumberReferences() {
     });
 }
 document.addEventListener('DOMContentLoaded', function() {
+    const initialActiveProfileTab = document.querySelector('[data-profile-tab].active');
+    if (initialActiveProfileTab) {
+        const initialTabName = initialActiveProfileTab.getAttribute('data-profile-tab');
+        if (initialTabName) {
+            switchProfileTab(initialTabName);
+        }
+    }
+
     document.querySelectorAll('input[name="q10"]').forEach(function(radio) {
         radio.addEventListener('change', function() {
             document.getElementById('q10-explanation').classList.toggle('visible', this.value === 'Yes');
