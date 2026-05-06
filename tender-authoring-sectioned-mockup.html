@@ -1,0 +1,2411 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tender Authoring Sectioned Mockup</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Noto+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/primeicons@6.0.1/primeicons.css" />
+    <style>
+      :root {
+        --primary-50: #e6f7ff;
+        --primary-100: #bae7ff;
+        --primary-200: #7dd3fc;
+        --primary-300: #38bdf8;
+        --primary-400: #0ea5e9;
+        --primary-500: #0092d1;
+        --primary-600: #0284c7;
+        --primary-700: #0369a1;
+        --primary-800: #003a56;
+        --primary-900: #001d2b;
+
+        --surface-0: #ffffff;
+        --surface-50: #f5f8fb;
+        --surface-100: #ebf1f8;
+        --surface-200: #dde8f2;
+        --surface-300: #cfdfec;
+        --surface-400: #a3a3a3;
+        --surface-600: #95a7ba;
+        --surface-800: #596170;
+        --surface-900: #3b3e4a;
+
+        --success-500: #4c9f38;
+        --warning-500: #e85c0e;
+        --danger-500: #da291c;
+        --info-500: #2196f3;
+
+        --text-primary: var(--surface-900);
+        --text-secondary: var(--surface-800);
+        --text-muted: var(--surface-600);
+        --bg: var(--surface-50);
+        --surface: var(--surface-0);
+        --surface-2: var(--surface-100);
+        --border: var(--surface-200);
+        --text: var(--text-primary);
+        --muted: var(--text-muted);
+
+        --spacing-sm: 12px;
+        --spacing-md: 20px;
+        --spacing-lg: 28px;
+        --spacing-xl: 36px;
+
+        --radius-sm: 4px;
+        --radius-md: 6px;
+        --radius-lg: 8px;
+
+        --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+
+        --unops-blue: #0092d1;
+        --unops-blue2: #00669a;
+        --unops-green: #4c9f38;
+        --unops-orange: #e85c0e;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Lato", "Noto Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: var(--surface-50);
+        color: var(--text-primary);
+        line-height: 1.5;
+      }
+
+      .app {
+        min-height: 100vh;
+      }
+
+      .header {
+        background: var(--surface-0);
+        border-bottom: 1px solid var(--surface-200);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .header-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: var(--spacing-md) var(--spacing-xl);
+      }
+
+      .logo-container {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-md);
+      }
+
+      .logo {
+        font-weight: 700;
+        font-size: 20px;
+        letter-spacing: 0.12em;
+        color: var(--primary-400);
+      }
+
+      .portal-badge {
+        background: var(--primary-400);
+        color: #fff;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 4px 12px;
+        border-radius: 4px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .header-actions {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-md);
+        margin-left: auto;
+        margin-right: var(--spacing-lg);
+      }
+
+      .header-action-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px;
+        background: transparent;
+        border: none;
+        border-radius: var(--radius-md);
+        color: var(--text-primary);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        position: relative;
+        font-size: 13px;
+      }
+
+      .header-action-btn:hover {
+        background: var(--surface-100);
+        transform: scale(1.1);
+      }
+
+      .header-action-btn i {
+        font-size: 20px;
+        color: var(--text-muted);
+        transition: color 0.2s ease;
+      }
+
+      .header-action-btn:hover i {
+        color: var(--primary-500);
+      }
+
+      .notification-badge {
+        position: absolute;
+        top: -4px;
+        right: -4px;
+        background: var(--danger-500);
+        color: #fff;
+        font-size: 10px;
+        font-weight: 700;
+        min-width: 18px;
+        height: 18px;
+        border-radius: 9px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 5px;
+        border: 2px solid #fff;
+      }
+
+      .user-menu {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-md);
+      }
+
+      .user-info {
+        text-align: right;
+      }
+
+      .user-company {
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+
+      .user-name {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--text-primary);
+      }
+
+      .user-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--primary-100);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        color: var(--primary-600);
+        cursor: pointer;
+      }
+
+      .app-container {
+        display: flex;
+        flex-direction: row;
+        min-height: calc(100vh - 65px);
+        width: 100%;
+      }
+
+      .sidebar {
+        width: 300px;
+        min-width: 300px;
+        max-width: 300px;
+        background-color: #0192d1;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+        overflow-y: auto;
+      }
+
+      .sidebar-menu {
+        flex: 1;
+        padding: 16px 0;
+      }
+
+      .menu-section {
+        margin-bottom: var(--spacing-sm);
+      }
+
+      .menu-section-title {
+        padding: 8px 20px 12px 20px;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: rgba(255, 255, 255, 0.5);
+      }
+
+      .menu-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 20px;
+        color: white;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 400;
+        transition: all 0.2s;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        width: 100%;
+        text-align: left;
+        border-left: 3px solid transparent;
+      }
+
+      .menu-item:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .menu-item.active {
+        background: rgba(255, 255, 255, 0.15);
+        border-left-color: #fff;
+        font-weight: 600;
+      }
+
+      .menu-icon {
+        font-size: 16px;
+        width: 20px;
+        text-align: center;
+        opacity: 0.9;
+      }
+
+      .menu-item.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .menu-item.disabled:hover {
+        background-color: transparent;
+      }
+
+      .main-content {
+        flex: 1;
+        min-width: 0;
+        background: var(--surface-50);
+        display: flex;
+        flex-direction: column;
+        padding: var(--spacing-xl);
+        overflow-y: auto;
+      }
+
+      .workflow-bar {
+        background: var(--surface-0);
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-card);
+        padding: var(--spacing-md) var(--spacing-lg);
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: var(--spacing-sm);
+        flex-wrap: wrap;
+        margin-bottom: var(--spacing-md);
+      }
+
+      .workflow-action {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--text-primary);
+        padding: 10px 16px;
+        border: 1px solid var(--surface-200);
+        border-radius: var(--radius-sm);
+        background: var(--surface-100);
+      }
+
+      .workflow-action:last-child {
+        background: var(--primary-500);
+        color: #fff;
+        border-color: var(--primary-500);
+      }
+
+      .workflow-action i {
+        font-size: 14px;
+      }
+
+      .layout {
+        min-height: calc(100vh - 130px);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .tabs {
+        background: var(--surface-0);
+        border-bottom: 1px solid var(--surface-200);
+        padding: 0 var(--spacing-xl);
+        overflow-x: auto;
+        display: flex;
+        gap: 0;
+        flex-wrap: nowrap;
+      }
+
+      .block-tab {
+        border: none;
+        background: transparent;
+        color: var(--text-secondary);
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        padding: 16px 20px;
+        cursor: pointer;
+        border-bottom: 3px solid transparent;
+        border-radius: 0;
+        font-size: 13px;
+        font-weight: 500;
+        flex-shrink: 0;
+        transition: all 0.2s ease;
+      }
+
+      .block-tab:hover {
+        color: var(--primary-600);
+        background: var(--surface-50);
+        border-bottom-color: var(--primary-200);
+      }
+
+      .block-tab.active {
+        color: var(--primary-600);
+        background: var(--primary-50);
+        border-bottom-color: var(--primary-500);
+        font-weight: 600;
+      }
+
+      .block-tab.completed {
+        border-bottom-color: var(--unops-green);
+      }
+
+      .block-tab-number {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: var(--surface-100);
+        border: 2px solid var(--surface-200);
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text-muted);
+        flex-shrink: 0;
+      }
+
+      .block-tab:hover .block-tab-number {
+        background: var(--primary-50);
+        border-color: var(--primary-200);
+        color: var(--primary-600);
+      }
+
+      .block-tab.active .block-tab-number {
+        background: var(--primary-500);
+        border-color: var(--primary-500);
+        color: #fff;
+      }
+
+      .block-tab.completed .block-tab-number {
+        background: var(--unops-green);
+        border-color: var(--unops-green);
+        color: #fff;
+      }
+
+      .block-tab-pi-icon {
+        font-size: 15px;
+        color: var(--text-muted);
+        flex-shrink: 0;
+      }
+
+      .block-tab:hover .block-tab-pi-icon,
+      .block-tab.active .block-tab-pi-icon {
+        color: var(--primary-500);
+      }
+
+      .block-tab.completed .block-tab-pi-icon {
+        color: var(--unops-green);
+      }
+
+      .block-tab-content {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        align-items: flex-start;
+      }
+
+      .block-tab-name {
+        font-size: 13px;
+        line-height: 1.2;
+      }
+
+      .block-tab-status {
+        font-size: 11px;
+        color: var(--text-muted);
+      }
+
+      .block-tab.active .block-tab-status {
+        color: var(--primary-500);
+      }
+
+      .block-tab.completed .block-tab-status {
+        color: var(--unops-green);
+      }
+
+      .content {
+        padding: var(--spacing-lg);
+        overflow: auto;
+        flex: 1;
+      }
+
+      .content-area {
+        max-width: 1180px;
+      }
+
+      #content-wrapper {
+        width: 100%;
+      }
+
+      .general-info-container {
+        background: #fff;
+        border: 1px solid #dce8f3;
+        border-radius: 14px;
+        box-shadow: 0 3px 10px rgba(15, 23, 42, 0.05);
+      }
+
+      .general-info-body {
+        padding: 18px;
+      }
+
+      .tab-panel {
+        display: none;
+      }
+
+      .tab-panel.active {
+        display: block;
+      }
+
+      .panel-title {
+        font-size: 18px;
+        margin: 0 0 14px 0;
+        color: var(--unops-blue2);
+      }
+
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 14px;
+      }
+
+      .grid {
+        display: grid;
+        gap: 12px;
+      }
+
+      .grid-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .grid-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      label {
+        font-size: 12px;
+        color: #64748b;
+        font-weight: 600;
+      }
+
+      input,
+      select,
+      textarea {
+        min-height: 42px;
+        border: 1px solid #d5e3f0;
+        border-radius: 10px;
+        padding: 9px 12px;
+        font-family: inherit;
+        background: #fcfdff;
+        color: #0f172a;
+      }
+
+      input:focus,
+      select:focus,
+      textarea:focus {
+        outline: none;
+        border-color: rgba(0, 146, 209, 0.6);
+        box-shadow: 0 0 0 3px rgba(0, 146, 209, 0.14);
+        background: #fff;
+      }
+
+      textarea {
+        min-height: 90px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      th,
+      td {
+        border-bottom: 1px solid var(--border);
+        padding: 10px;
+        font-size: 13px;
+        text-align: left;
+      }
+
+      th {
+        background: var(--surface-2);
+        font-size: 12px;
+        color: #475569;
+        text-transform: uppercase;
+      }
+
+      .status {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .ok {
+        background: rgba(76, 159, 56, 0.15);
+        color: var(--unops-green);
+      }
+
+      .pending {
+        background: rgba(232, 92, 14, 0.14);
+        color: var(--unops-orange);
+      }
+
+      .frame {
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        margin-bottom: 10px;
+        background: #fff;
+        overflow: hidden;
+      }
+
+      .frame-header {
+        width: 100%;
+        border: none;
+        background: #f8fbfe;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 14px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        color: #1e293b;
+      }
+
+      .frame-header:hover {
+        background: #eef6fc;
+      }
+
+      .frame-body {
+        display: none;
+        border-top: 1px solid var(--border);
+        padding: 14px;
+      }
+
+      .frame.open .frame-body {
+        display: block;
+      }
+
+      .upload-box {
+        border: 1px dashed #94a3b8;
+        border-radius: 8px;
+        background: #f8fafc;
+        color: #334155;
+        padding: 14px;
+        font-size: 13px;
+      }
+
+      .conditions-section-title {
+        font-size: 16px;
+        line-height: 1.35;
+        margin: 0 0 6px 0;
+        font-weight: 600;
+        color: var(--text);
+        letter-spacing: 0;
+      }
+
+      .conditions-subtitle {
+        font-size: 12px;
+        line-height: 1.45;
+        color: var(--muted);
+        margin: 0 0 12px 0;
+      }
+
+      .conditions-table {
+        border: 1px solid #d7e3ee;
+        border-radius: 10px;
+        overflow: hidden;
+        table-layout: fixed;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+      }
+
+      .conditions-table th {
+        background: #eef4fa;
+        color: #334155;
+        text-transform: none;
+        font-size: 12px;
+        border-right: 1px solid #d7e3ee;
+        padding: 10px 8px;
+        font-weight: 600;
+      }
+
+      .conditions-table th:last-child {
+        border-right: none;
+      }
+
+      .conditions-table td {
+        border-bottom: 1px solid #e5edf5;
+        border-right: 1px solid #edf3f9;
+        padding: 6px 8px;
+        vertical-align: top;
+        font-size: 12px;
+      }
+
+      .conditions-table td:last-child {
+        border-right: none;
+      }
+
+      .conditions-table tr:last-child td {
+        border-bottom: none;
+      }
+
+      .conditions-table input,
+      .conditions-table textarea {
+        width: 100%;
+        min-height: 36px;
+        border: 1px solid #d6e2ef;
+        border-radius: 6px;
+        padding: 6px;
+        background: #fdfefe;
+        font-size: 13px;
+        color: var(--text);
+        font-family: "Noto Sans", Arial, sans-serif;
+      }
+
+      .conditions-table textarea {
+        min-height: 44px;
+        resize: vertical;
+      }
+
+      .conditions-table input:focus,
+      .conditions-table textarea:focus {
+        outline: none;
+        border-color: rgba(0, 146, 209, 0.6);
+        background: #fff;
+        box-shadow: 0 0 0 3px rgba(0, 146, 209, 0.12);
+      }
+
+      .conditions-empty {
+        text-align: center;
+        color: #6b7280;
+        font-style: italic;
+        background: #f8fbfe;
+        font-size: 12px;
+      }
+
+      .conditions-part {
+        margin-bottom: 18px;
+      }
+
+      .conditions-part:last-child {
+        margin-bottom: 0;
+      }
+
+      .add-row-btn {
+        margin-top: 10px;
+        border: 1px solid var(--unops-blue);
+        background: #fff;
+        color: var(--unops-blue2);
+        border-radius: 4px;
+        padding: 8px 14px;
+        font-size: 14px;
+        font-weight: 600;
+        font-family: "Lato", "Noto Sans", Arial, sans-serif;
+        min-height: 40px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .add-row-btn:hover {
+        background: rgba(0, 146, 209, 0.1);
+        border-color: var(--unops-blue2);
+      }
+
+      .section-iv-layout {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .iv-section-card {
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: #fff;
+        overflow: hidden;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+      }
+
+      .iv-section-header {
+        background: #eef4fa;
+        border-bottom: 1px solid var(--border);
+        padding: 0;
+      }
+
+      .iv-section-toggle {
+        width: 100%;
+        border: none;
+        background: transparent;
+        text-align: left;
+        padding: 11px 14px;
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--unops-blue2);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+      }
+
+      .iv-section-toggle:hover {
+        background: #e6eef8;
+      }
+
+      .iv-section-body {
+        display: none;
+      }
+
+      .iv-section-card.open .iv-section-body {
+        display: block;
+      }
+
+      .iv-subsection {
+        border-top: 1px solid #edf2f7;
+      }
+
+      .iv-subsection:first-child {
+        border-top: none;
+      }
+
+      .iv-subsection-title {
+        background: #f8fbfe;
+        color: #334155;
+        border-bottom: 1px solid #edf2f7;
+        padding: 0;
+      }
+
+      .iv-subsection-toggle {
+        width: 100%;
+        border: none;
+        background: transparent;
+        color: #334155;
+        font-size: 14px;
+        font-weight: 600;
+        text-align: left;
+        padding: 10px 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+      }
+
+      .iv-subsection-toggle:hover {
+        background: #f1f7fc;
+      }
+
+      .iv-subsection-body {
+        display: none;
+      }
+
+      .iv-subsection.open .iv-subsection-body {
+        display: block;
+      }
+
+      .iv-subclause {
+        padding: 12px 14px 14px;
+        border-bottom: 1px solid #f1f5f9;
+      }
+
+      .iv-subclause:last-child {
+        border-bottom: none;
+      }
+
+      .iv-subclause-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: #0f172a;
+        margin-bottom: 8px;
+      }
+
+      .iv-fields-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 10px 12px;
+      }
+
+      .iv-field {
+        background: #fcfdff;
+        border: 1px solid #e4edf6;
+        border-radius: 8px;
+        padding: 8px;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .iv-field:hover {
+        border-color: #cfe0f1;
+      }
+
+      .iv-field label {
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        color: #475569;
+        margin-bottom: 6px;
+      }
+
+      .iv-field input[type="text"],
+      .iv-field input[type="number"],
+      .iv-field textarea,
+      .iv-field select {
+        width: 100%;
+        min-height: 36px;
+        border: 1px solid #d2deea;
+        border-radius: 6px;
+        padding: 7px 8px;
+        font-size: 13px;
+        font-family: "Noto Sans", Arial, sans-serif;
+      }
+
+      .iv-field input[type="text"]:focus,
+      .iv-field input[type="number"]:focus,
+      .iv-field textarea:focus,
+      .iv-field select:focus {
+        outline: none;
+        border-color: rgba(0, 146, 209, 0.65);
+        box-shadow: 0 0 0 3px rgba(0, 146, 209, 0.12);
+        background: #fff;
+      }
+
+      .iv-field textarea {
+        min-height: 74px;
+      }
+
+      .iv-check-group,
+      .iv-radio-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+        min-height: 36px;
+      }
+
+      .iv-choice {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        color: #334155;
+      }
+
+      .iv-upload {
+        margin-top: 8px;
+      }
+
+      .section-v-layout {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .sv-header {
+        background: #eef4fa;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 12px 14px;
+      }
+
+      .sv-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--unops-blue2);
+        margin: 0 0 4px 0;
+      }
+
+      .sv-subtitle {
+        font-size: 13px;
+        color: var(--muted);
+        margin: 0;
+      }
+
+      .sv-section-card {
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: #fff;
+        overflow: hidden;
+      }
+
+      .sv-section-toggle {
+        width: 100%;
+        border: none;
+        background: #f8fbfe;
+        border-bottom: 1px solid #edf2f7;
+        text-align: left;
+        padding: 10px 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+      }
+
+      .sv-section-toggle strong {
+        font-size: 14px;
+        color: #0f172a;
+      }
+
+      .sv-section-body {
+        display: none;
+        padding: 12px 14px 14px;
+      }
+
+      .sv-section-card.open .sv-section-body {
+        display: block;
+      }
+
+      .sv-fields-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 10px 12px;
+      }
+
+      .sv-field {
+        border: 1px solid #e4edf6;
+        border-radius: 8px;
+        padding: 8px;
+        background: #fcfdff;
+      }
+
+      .sv-field label {
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        color: #475569;
+        margin-bottom: 6px;
+      }
+
+      .sv-field input[type="text"],
+      .sv-field input[type="number"],
+      .sv-field input[type="date"],
+      .sv-field textarea,
+      .sv-field select {
+        width: 100%;
+        min-height: 36px;
+        border: 1px solid #d2deea;
+        border-radius: 6px;
+        padding: 7px 8px;
+        font-size: 13px;
+        font-family: "Noto Sans", Arial, sans-serif;
+      }
+
+      .sv-field textarea {
+        min-height: 90px;
+      }
+
+      .sv-field input:focus,
+      .sv-field textarea:focus,
+      .sv-field select:focus {
+        outline: none;
+        border-color: rgba(0, 146, 209, 0.65);
+        box-shadow: 0 0 0 3px rgba(0, 146, 209, 0.12);
+      }
+
+      .sv-check,
+      .sv-radio {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        color: #334155;
+      }
+
+      .sv-subgroup {
+        margin-top: 12px;
+        border-top: 1px dashed #e2e8f0;
+        padding-top: 10px;
+      }
+
+      .sv-subgroup-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: #334155;
+        margin: 0 0 8px 0;
+      }
+
+      .sv-table-wrap {
+        margin-top: 10px;
+        border: 1px solid #d7e3ee;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      .sv-table-title {
+        background: #eef4fa;
+        border-bottom: 1px solid #d7e3ee;
+        padding: 8px 10px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #334155;
+      }
+
+      .sv-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .sv-table th {
+        background: #f8fbfe;
+        border-bottom: 1px solid #dbe7f2;
+        border-right: 1px solid #e6eef7;
+        padding: 8px 6px;
+        font-size: 12px;
+        color: #475569;
+      }
+
+      .sv-table td {
+        border-bottom: 1px solid #edf2f7;
+        border-right: 1px solid #f1f5f9;
+        padding: 6px;
+      }
+
+      .sv-table th:last-child,
+      .sv-table td:last-child {
+        border-right: none;
+      }
+
+      .sv-table td input,
+      .sv-table td select,
+      .sv-table td textarea {
+        width: 100%;
+        min-height: 32px;
+        border: 1px solid #d2deea;
+        border-radius: 6px;
+        padding: 6px;
+        font-size: 12px;
+      }
+
+      .sv-table td textarea {
+        min-height: 56px;
+      }
+
+      .sv-table-empty {
+        text-align: center;
+        color: #64748b;
+        font-style: italic;
+        background: #fcfdff;
+      }
+
+      .sv-add-row-btn {
+        margin: 8px 10px 10px;
+        border: 1px solid var(--unops-blue);
+        background: #fff;
+        color: var(--unops-blue2);
+        border-radius: 4px;
+        padding: 7px 12px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      @media (max-width: 1100px) {
+        .content {
+          padding: 14px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <header class="header">
+        <div class="header-top">
+          <div class="logo-container">
+            <div class="logo">UNOPS</div>
+            <span class="portal-badge">Procurement</span>
+            <span style="color: var(--surface-400); margin: 0 8px; font-size: 18px">|</span>
+            <span style="color: var(--primary-500); font-weight: 600; font-size: 14px">eTendering</span>
+          </div>
+          <div class="header-actions">
+            <div class="header-action-btn" title="Accessibility Options" aria-label="Accessibility Options">
+              <i class="pi pi-eye" aria-hidden="true"></i>
+            </div>
+            <div class="header-action-btn" title="Change Language" aria-label="Change Language">
+              <span aria-hidden="true">🌐</span>
+            </div>
+            <div class="header-action-btn" title="AI Assistant" aria-label="AI Procurement Assistant">
+              <i class="pi pi-bolt" aria-hidden="true"></i>
+            </div>
+            <div class="header-action-btn" title="Help Center" aria-label="Help Center">
+              <i class="pi pi-question-circle" aria-hidden="true"></i>
+            </div>
+            <div class="header-action-btn" title="View Notifications" aria-label="View Notifications">
+              <i class="pi pi-bell" aria-hidden="true"></i>
+              <span class="notification-badge">7</span>
+            </div>
+          </div>
+          <div class="user-menu">
+            <div class="user-info">
+              <div class="user-company">UNOPS Internal</div>
+              <div class="user-name">Jane Doe</div>
+            </div>
+            <span class="user-avatar">JD</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="app-container">
+        <aside class="sidebar">
+          <nav class="sidebar-menu" id="sidebarMenu"></nav>
+        </aside>
+
+        <main class="main-content">
+          <div class="workflow-bar">
+            <span class="workflow-action"><i class="pi pi-download"></i>Download Package</span>
+            <span class="workflow-action"><i class="pi pi-eye"></i>Preview</span>
+            <span class="workflow-action"><i class="pi pi-save"></i>Save Draft</span>
+            <span class="workflow-action"><i class="pi pi-send"></i>Submit for Review</span>
+          </div>
+          <div class="layout">
+            <nav class="tabs" id="tabs"></nav>
+            <section class="content">
+              <div class="content-area">
+                <div id="content-wrapper"></div>
+              </div>
+            </section>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <script>
+      const tabs = [
+        { id: "general", icon: "pi-file", name: "General" },
+        { id: "requisition", icon: "pi-list", name: "Requisition" },
+        { id: "particulars", icon: "pi-sliders-h", name: "Particulars" },
+        { id: "project", icon: "pi-briefcase", name: "Project" },
+        { id: "team", icon: "pi-users", name: "Team" },
+        { id: "competition", icon: "pi-flag", name: "Competition" },
+        { id: "section-i", icon: "pi-book", name: "Section I: Instructions to Offerors" },
+        { id: "section-ii", icon: "pi-chart-line", name: "Section II: Evaluation Method and Criteria" },
+        { id: "section-iii", icon: "pi-file-edit", name: "Section III: Conditions of Contract" },
+        { id: "section-iv", icon: "pi-table", name: "Section IV: Schedule of Details" },
+        { id: "section-v", icon: "pi-check-square", name: "Section V: Requirements" },
+        { id: "section-vi", icon: "pi-upload", name: "Section VI: Returnable Schedules" }
+      ];
+
+      const framesBySection = {
+        "section-i": [
+          { code: "SECTION I", name: "Instructions to Offerors - Overview" },
+          { code: "SECTION I", name: "Instructions to Offerors - Submission Rules" }
+        ],
+        "section-ii": [
+          { code: "SECTION II", name: "Evaluation Method" },
+          { code: "SECTION II", name: "Evaluation Criteria" }
+        ],
+        "section-iii": [
+          { code: "SECTION III", name: "INSTRUMENT OF AGREEMENT" },
+          { code: "SECTION III", name: "GENERAL CONDITIONS OF CONTRACT" },
+          { code: "SECTION III", name: "PARTICULAR CONDITIONS OF CONTRACT" }
+        ],
+        "section-iv": [
+          { code: "SECTION IV", name: "SCHEDULE OF DETAILS" },
+          { code: "SECTION IV SCHEDULE 1", name: "CONTRACT DETAILS" },
+          { code: "SECTION IV 1.1", name: "Details Provided by the Employer" },
+          { code: "SECTION IV SCHEDULE 2", name: "PROJECT SPECIFIC INFORMATION" },
+          { code: "SECTION IV 2.1", name: "Project Details" },
+          { code: "SECTION IV 2.2", name: "Site Plan" },
+          { code: "SECTION IV SCHEDULE 5", name: "FORMS" },
+          { code: "SECTION IV 5.1", name: "Form for Advance Payment Security" },
+          { code: "SECTION IV 5.2", name: "Form for Performance Security" },
+          { code: "SECTION IV 5.3", name: "Form of Discharge" }
+        ],
+        "section-v": [
+          { code: "SECTION V", name: "REQUIREMENTS" },
+          { code: "SECTION V SCHEDULE 3", name: "REQUIREMENTS OF THE EMPLOYER" },
+          { code: "SECTION V 3.1", name: "Scope of Works" },
+          { code: "SECTION V 3.2", name: "Specifications" },
+          { code: "SECTION V 3.2.A", name: "List of the technical specifications" },
+          { code: "SECTION V 3.2.B", name: "Tests after Completion" },
+          { code: "SECTION V 3.2.C", name: "Requirements for Contractor's design" },
+          { code: "SECTION V 3.2.D", name: "Quality Management System requirements" },
+          { code: "SECTION V 3.2.E", name: "Health and safety requirements" },
+          { code: "SECTION V 3.2.F", name: "Social and environmental requirements" },
+          { code: "SECTION V 3.2.G", name: "Sustainability requirements" },
+          { code: "SECTION V 3.2.H", name: "Permits and licences" },
+          { code: "SECTION V 3.2.I", name: "Publications on Site(s)" },
+          { code: "SECTION V 3.2.J", name: "Warranties" },
+          { code: "SECTION V 3.2.K", name: "Works not to be subcontracted" },
+          { code: "SECTION V 3.2.L", name: "Employer-Supplied Materials, Employer's Equipment and Employer's Facilities" },
+          { code: "SECTION V 3.2.M", name: "Training requirements" },
+          { code: "SECTION V 3.2.N", name: "As-built drawings, spare parts and operation and maintenance manuals" },
+          { code: "SECTION V 3.2.O", name: "Auxiliary Works" },
+          { code: "SECTION V 3.3", name: "Drawings" },
+          { code: "SECTION V 3.4", name: "Valuation and Payment" },
+          { code: "SECTION V 3.5", name: "Programme Requirements" },
+          { code: "SECTION V 3.6", name: "Nominated Subcontractors" },
+          { code: "SECTION V 3.7", name: "Limits to Engineer's Duties and Authority" },
+          { code: "SECTION V 3.8", name: "Key Personnel Requirements" },
+          { code: "SECTION V 3.9", name: "Equipment and Machinery Requirements" },
+          { code: "SECTION V 3.1", name: "Insurance Requirements" }
+        ],
+        "section-vi": [
+          { code: "SECTION VI", name: "RETURNABLE SCHEDULES" },
+          { code: "SECTION VI SCHEDULE 0", name: "RFP SCHEDULES" },
+          { code: "SECTION VI 0.1", name: "Proposal Submission Declaration" },
+          { code: "SECTION VI 0.2", name: "Offeror's Information" },
+          { code: "SECTION VI 0.3", name: "Joint Venture Partner Information" },
+          { code: "SECTION VI 0.4", name: "Capacity and Experience" },
+          { code: "SECTION VI 0.5", name: "Format for Resume of Proposed Key Personnel" },
+          { code: "SECTION VI 0.6", name: "Statement of Exclusivity and Availability" },
+          { code: "SECTION VI 0.7", name: "Performance Statement" },
+          { code: "SECTION VI 0.8", name: "Form for Proposal Security" },
+          { code: "SECTION VI 0.9", name: "DRiVE Supplier Sustainability Questionnaire" },
+          { code: "SECTION VI 0.1", name: "Dispute Details" },
+          { code: "SECTION VI 0.11", name: "Acknowledgement of the Addenda" },
+          { code: "SECTION VI 0.12", name: "Self-disclosure" },
+          { code: "SECTION VI SCHEDULE 1: CONTRACT DETAILS", name: "SCHEDULE 1: CONTRACT DETAILS" },
+          { code: "SECTION VI 1.2", name: "Details Provided by the Contractor" },
+          { code: "SECTION VI SCHEDULE 4: CONTRACT SCHEDULES FROM THE OFFEROR", name: "SCHEDULE 4: CONTRACT SCHEDULES FROM THE OFFEROR" },
+          { code: "SECTION VI 4.1", name: "Quantities and Rates" },
+          { code: "SECTION VI 4.1.A", name: "Bill of Quantities" },
+          { code: "SECTION VI 4.1.B", name: "Daywork Schedule" },
+          { code: "SECTION VI 4.2", name: "Programme" },
+          { code: "SECTION VI 4.3", name: "Method Statement" },
+          { code: "SECTION VI 4.4", name: "Key Personnel" },
+          { code: "SECTION VI 4.5", name: "Organizational Structure" },
+          { code: "SECTION VI 4.6", name: "Subcontractors" },
+          { code: "SECTION VI 4.7", name: "Contractor's Equipment and Machinery" },
+          { code: "SECTION VI 4.8", name: "Sources of Naturally Occurring Materials" },
+          { code: "SECTION VI 4.9", name: "Insurance Details and Insurances" }
+        ]
+      };
+
+      const sectionIvRawFields = `
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||1.3 - Employer's address for communication||Name||Text
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||1.3 - Employer's address for communication||Position title||Text
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||1.3 - Employer's address for communication||Address||Text/Multi-line
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||1.3 - Employer's address for communication||Email address||Text
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||1.3 - Employer's address for communication||Telephone/Mobile number||Text
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||1.3 - Employer's address for communication||With copy to: Name||Text
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||1.3 - Employer's address for communication||With copy to: Position title||Text
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||1.3 - Employer's address for communication||With copy to: Address||Text/Multi-line
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||1.3 - Employer's address for communication||With copy to: Email address||Text
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||1.3 - Employer's address for communication||With copy to: Telephone/Mobile number||Text
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||1.3 - Agreed system of electronic transmission||Email||Checkbox
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||1.3 - Agreed system of electronic transmission||Email address||Text
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||1.3 - Agreed system of electronic transmission||If others, specify||Checkbox
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||1.3 - Agreed system of electronic transmission||Specification text||Text
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||1.14 - Description of parts of the Works that shall be designated as a Section for the purposes of the Contract||Section 1||Text
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||1.14 - Description of parts of the Works that shall be designated as a Section for the purposes of the Contract||Section 2||Text
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||1.14 - Description of parts of the Works that shall be designated as a Section for the purposes of the Contract||Section 3||Text
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||3.1 - Engineer||Name||Text
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||3.1 - Engineer||Address||Text/Multi-line
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||3.1 - Engineer||Email address||Text
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||3.1 - Engineer||Telephone/Mobile number||Text
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||4.2 - Performance Security amount||% of the Accepted Contract Amount and to be increased when Contract Price varies by 10%.||Text/Number
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||4.2 - Currency of the Performance Security||Currency type||Text
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||4.2 - Permitted guarantors for Performance Security||Bank or financial institutions approved by the Employer||Checkbox
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||4.2 - Permitted guarantors for Performance Security||Bank approved by the Employer||Checkbox
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||4.2 - Release of Performance Security at issue of Taking Over Certificate||Applicable / Not applicable||Radio Buttom
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||4.2 - Release of Performance Security at issue of Taking Over Certificate||% of Contract Price||Text/Number
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||4.4 - Training||Required / Not Required||Radio Buttom
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||6.5 - Normal working hours||Normal working hours||Text
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||6.5 - Normal working hours||Normal working days||Text
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||8.2 - Time for Completion||For whole of the Works: months||Text/Number
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||8.2 - Time for Completion||For whole of the Works: days||Text/Number
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||8.2 - Time for Completion||For Section 1: months||Text/Number
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||8.2 - Time for Completion||For Section 1: days||Text/Number
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||8.2 - Time for Completion||For Section 2: months||Text/Number
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||8.2 - Time for Completion||For Section 2: days||Text/Number
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||8.2 - Time for Completion||For Section 3: months||Text/Number
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||8.2 - Time for Completion||For Section 3: days||Text/Number
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||8.7 - Delay Damages||For whole of Works: Amount per day (USD)||Text
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||8.7 - Delay Damages||For whole of Works: % of Accepted Contract Amount per day||Text
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||8.7 - Delay Damages||For Section 1: Amount per day (USD)||Text
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||8.7 - Delay Damages||For Section 1: % of the value of Section per day||Text
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||8.7 - Delay Damages||For Section 2: Amount per day (USD)||Text
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||8.7 - Delay Damages||For Section 2: % of the value of Section per day||Text
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||8.7 - Delay Damages||For Section 3: Amount per day (USD)||Text
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||8.7 - Aggregate maximum amount of Delay Damages||% of the Accepted Contract Amount||Text/Number
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||11.1 - Defects Notification Period (DNP)||months||Text/Number
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||11.1 - Latent Defect Period||Years||Text/Number
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||13.4 - Percentage overhead and profit for Provisional Sums||%||Text/Number
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||14.2 - Advance payment amount||% of the Accepted Contract Amount / USD / Not Applicable||Single-select dropdown
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||14.2 - Advance payment amount||Value||Number
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||14.2 - Permitted guarantors for advance payment||Bank or financial institutions approved by Employer||Checkbox
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||14.2 - Permitted guarantors for advance payment||Bank approved by the Employer||Checkbox
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||14.2 - Rate of advance payment deductions||% of relevant value of Works completed||Text/Number
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||14.2 - Period of repayment of advance payment||months||Text
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||14.2 - Period of repayment of advance payment||Interim Payment Certificates (IPCs)||Text
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||14.3 - Retention Money to be deducted from Interim Payment Certificate (IPC)||% of amounts as indicated in Sub-Clause 14.3 (b) (iii) of the General Conditions||Text/Number
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||14.3 - Limit of Retention Money||USD||Number
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||14.3 - Limit of Retention Money||% of Accepted Contract Amount or Contract Price||Number
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||14.8 - Annual rate of financing charges for delayed payment||%||Number
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||14.9 - Retention Money to be released at taking over||% of the Retention Money deducted...||Number
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||14.9 - Retention Money to be released at taking over||Not applicable||Checkbox
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||14.15 - Currencies of payment||Local currency||Text
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||14.15 - Currencies of payment||Foreign currency||Text
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||14.15 - Proportions of currencies for payment||Local currency %||Text/Number
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||14.15 - Proportions of currencies for payment||Foreign currency %||Text/Number
+SCHEDULE 1: CONTRACT DETAILS||1.1 - Details Provided by the Employer||14.15 - Rate of exchange||Rate of exchange||Text
+SCHEDULE 2: PROJECT SPECIFIC INFORMATION||2.1 Project Details||||||Text area + Upload
+SCHEDULE 2: PROJECT SPECIFIC INFORMATION||2.2 Site Plan||||General description of location and boundaries including the GPS coordinates:||Text area + Upload
+SCHEDULE 2: PROJECT SPECIFIC INFORMATION||2.2 Site Plan||||General description of the parts of the Site that will be provided access to and the times of access (in accordance with Sub-Clause 2.1 of the General Conditions):||Text area + Upload
+SCHEDULE 2: PROJECT SPECIFIC INFORMATION||2.2 Site Plan||||Description of access routes, access timing and any access restrictions:||Text area + Upload
+SCHEDULE 2: PROJECT SPECIFIC INFORMATION||2.2 Site Plan||||Description of other surrounding sites and any related interface issues:||Text area + Upload
+SCHEDULE 2: PROJECT SPECIFIC INFORMATION||2.2 Site Plan||||Description of approved location for the Contractor's Site facilities including storage, accommodation, work areas and likewise and where Plant and Materials should be delivered and stored (in accordance with Sub-Clause 6.6 of the General Conditions and Sub-Clause 1.1 of the General Conditions respectively):||Text area + Upload
+SCHEDULE 2: PROJECT SPECIFIC INFORMATION||2.2 Site Plan||||Description of Site arrangements that is to be provided for the Employer's use:||Text area + Upload
+SCHEDULE 2: PROJECT SPECIFIC INFORMATION||2.2 Site Plan||||Description of disposal areas (within the Site or outside the Site in accordance with Sub-Clause 7.8 of the General Conditions):||Text area + Upload
+SCHEDULE 2: PROJECT SPECIFIC INFORMATION||2.2 Site Plan||||Description of any Site security requirements (in accordance with Sub-Clause 4.20 of the General Conditions):||Text area + Upload
+SCHEDULE 2: PROJECT SPECIFIC INFORMATION||2.2 Site Plan||||Any other Site details:||Text area + Upload
+SCHEDULE 5: FORMS||5.1 - Advance Payment Security||||Form for Advance Payment Security||Checkbox
+SCHEDULE 5: FORMS||5.2 - Performance Security||||Form for Performance Security||Checkbox
+SCHEDULE 5: FORMS||5.3 - Discharge||||Form of Discharge||Checkbox
+      `.trim();
+
+      const sectionIvFields = sectionIvRawFields
+        .split("\n")
+        .map((line) => line.split("||").map((part) => part.trim()))
+        .map((parts) => ({
+          section: parts[0] || "",
+          subsection: parts[1] || "",
+          subClause: parts[2] || "",
+          detail: parts[3] || "",
+          fieldType: parts[4] || ""
+        }));
+
+      const sectionVSchema = JSON.parse(`{
+        "formId": "section-v-requirements",
+        "formTitle": "SECTION V: REQUIREMENTS",
+        "version": "1.0.0",
+        "section": "SECTION V: REQUIREMENTS",
+        "schedule": "SCHEDULE 3: REQUIREMENTS OF THE EMPLOYER",
+        "sections": [
+          {
+            "id": "3.1",
+            "title": "Scope of Works",
+            "type": "single",
+            "fields": [
+              { "key": "scope_demolition", "label": "Demolition", "type": "textarea", "required": false },
+              { "key": "scope_new_construction", "label": "New construction", "type": "textarea", "required": false },
+              { "key": "scope_renovation", "label": "Renovation", "type": "textarea", "required": false },
+              { "key": "scope_design", "label": "Design", "type": "textarea", "required": false },
+              { "key": "scope_supply_plant_materials", "label": "Supply of Plant and Materials", "type": "textarea", "required": false }
+            ]
+          },
+          {
+            "id": "3.2",
+            "title": "Specifications",
+            "type": "mixed",
+            "fields": [
+              { "key": "spec_3_2_a_technical_specifications", "label": "3.2.A List of technical specifications", "type": "textarea", "required": false },
+              { "key": "spec_3_2_b_tests_after_completion", "label": "3.2.B Tests after Completion", "type": "textarea", "required": false },
+              { "key": "design_3_2_c_1_background_purpose", "label": "3.2.C.1 Background and purpose for design", "type": "textarea", "required": false },
+              { "key": "design_3_2_c_2_scope", "label": "3.2.C.2 Scope of Contractor design", "type": "textarea", "required": false },
+              { "key": "design_3_2_c_3_technical_information", "label": "3.2.C.3 Pertinent technical information", "type": "textarea", "required": false },
+              { "key": "design_3_2_c_4_standards_codes", "label": "3.2.C.4 Standards/codes/regulatory requirements", "type": "textarea", "required": false },
+              { "key": "design_3_2_c_5_responsibility_matrix", "label": "3.2.C.5 Responsibility/liability matrix", "type": "textarea", "required": false },
+              { "key": "design_3_2_c_6_hsse", "label": "3.2.C.6 HSSE requirements for design", "type": "textarea", "required": false },
+              { "key": "design_3_2_c_7_qms", "label": "3.2.C.7 QMS for design", "type": "textarea", "required": false },
+              { "key": "design_3_2_c_8_deliverables", "label": "3.2.C.8 Design deliverables/documents", "type": "textarea", "required": false },
+              { "key": "design_3_2_c_9_tools_formats", "label": "3.2.C.9 Tools/software/document formats", "type": "textarea", "required": false },
+              { "key": "design_3_2_c_10_approval_process", "label": "3.2.C.10 Design approval process", "type": "textarea", "required": false },
+              { "key": "spec_3_2_d_qms_requirements", "label": "3.2.D QMS requirements", "type": "textarea", "required": false },
+              { "key": "spec_3_2_e_health_safety_requirements", "label": "3.2.E Health and safety requirements", "type": "textarea", "required": false },
+              { "key": "spec_3_2_f_social_environmental_requirements", "label": "3.2.F Social and environmental requirements", "type": "textarea", "required": false },
+              { "key": "spec_3_2_g_sustainability_requirements", "label": "3.2.G Sustainability requirements", "type": "textarea", "required": false },
+              { "key": "spec_3_2_h_permits_licences", "label": "3.2.H Permits and licences", "type": "textarea", "required": false },
+              { "key": "spec_3_2_i_publications_on_site", "label": "3.2.I Publications on Site", "type": "textarea", "required": false },
+              { "key": "spec_3_2_k_not_to_be_subcontracted", "label": "3.2.K Works not to be subcontracted", "type": "textarea", "required": false },
+              { "key": "spec_3_2_n_asbuilt_spares_om", "label": "3.2.N As-built drawings/spares/O&M manuals", "type": "textarea", "required": false }
+            ],
+            "tables": [
+              {
+                "id": "warranties_3_2_j",
+                "title": "3.2.J Warranties",
+                "repeatable": true,
+                "columns": [
+                  { "key": "line_no", "label": "No.", "type": "number" },
+                  { "key": "item_description", "label": "Description of items", "type": "text" },
+                  { "key": "validity_period", "label": "Validity period", "type": "text" },
+                  { "key": "remarks", "label": "Remarks", "type": "text" }
+                ]
+              },
+              {
+                "id": "employer_supplied_3_2_l",
+                "title": "3.2.L Employer-Supplied Materials/Equipment/Facilities",
+                "repeatable": true,
+                "columns": [
+                  {
+                    "key": "category",
+                    "label": "Category",
+                    "type": "select",
+                    "options": ["Facilities", "Equipment", "Materials", "Utilities"]
+                  },
+                  { "key": "line_no", "label": "No.", "type": "number" },
+                  { "key": "item_description", "label": "Description of item", "type": "text" },
+                  { "key": "rate", "label": "Rate", "type": "currency" },
+                  { "key": "unit", "label": "Unit", "type": "text" }
+                ]
+              },
+              {
+                "id": "training_3_2_m",
+                "title": "3.2.M Training requirements",
+                "repeatable": true,
+                "columns": [
+                  { "key": "topic_title", "label": "Training topic title", "type": "text" },
+                  { "key": "description", "label": "Description", "type": "textarea" },
+                  { "key": "trainee_details", "label": "Details of trainees", "type": "textarea" },
+                  { "key": "duration_dates", "label": "Duration/dates", "type": "text" },
+                  { "key": "trainer_requirements", "label": "Trainer requirements", "type": "textarea" },
+                  { "key": "training_facilities", "label": "Training facilities", "type": "textarea" },
+                  { "key": "training_materials", "label": "Training materials", "type": "textarea" }
+                ]
+              },
+              {
+                "id": "auxiliary_works_3_2_o",
+                "title": "3.2.O Auxiliary Works",
+                "repeatable": true,
+                "columns": [
+                  { "key": "line_no", "label": "No.", "type": "number" },
+                  { "key": "aux_works_description", "label": "Description of Auxiliary Works", "type": "textarea" },
+                  { "key": "availability_date", "label": "Date available", "type": "date" },
+                  { "key": "linked_works", "label": "Works it should be connected with", "type": "text" }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "3.3",
+            "title": "Drawings",
+            "type": "single",
+            "fields": [
+              { "key": "drawings_list_links", "label": "List of Drawings and links", "type": "textarea", "required": false }
+            ]
+          },
+          {
+            "id": "3.4",
+            "title": "Valuation and Payment",
+            "type": "mixed",
+            "fields": [
+              { "key": "valuation_1_1_profit_percent", "label": "1.1 Applicable profit percentage for Cost Plus Profit", "type": "percent", "required": false },
+              {
+                "key": "valuation_12_2_method",
+                "label": "12.2 Method of valuation",
+                "type": "select",
+                "required": false,
+                "options": ["Lump sum only", "Measure and pay only", "Combination of measure and pay and lump sum"]
+              },
+              { "key": "valuation_14_3_ipc_timing", "label": "14.3 Timing for application of IPC", "type": "text", "required": false },
+              { "key": "valuation_14_6_min_local_currency", "label": "14.6 Minimum IPC amount (local currency)", "type": "currency", "required": false },
+              { "key": "valuation_14_6_min_foreign_currency", "label": "14.6 Minimum IPC amount (foreign currency)", "type": "currency", "required": false },
+              { "key": "valuation_13_7_adjustment_applicable", "label": "13.7 Adjustment for rises/falls applicable", "type": "checkbox", "required": false }
+            ],
+            "tables": [
+              {
+                "id": "installments_14_1",
+                "title": "14.1 Installments / payment schedule",
+                "repeatable": true,
+                "columns": [
+                  { "key": "milestone_description", "label": "Milestone description", "type": "text" },
+                  { "key": "percent_of_accepted_contract_amount", "label": "% of Accepted Contract Amount", "type": "percent" }
+                ]
+              },
+              {
+                "id": "provisional_sums_13_4",
+                "title": "13.4 Provisional Sum Items",
+                "repeatable": true,
+                "columns": [
+                  { "key": "item_description", "label": "Item description", "type": "text" },
+                  { "key": "amount_usd", "label": "Amount (USD)", "type": "currency" }
+                ]
+              },
+              {
+                "id": "plant_materials_site_14_5",
+                "title": "14.5 Plant and Materials paid at Site",
+                "repeatable": true,
+                "columns": [
+                  { "key": "item_description", "label": "Item description", "type": "text" }
+                ]
+              },
+              {
+                "id": "plant_materials_shipped_14_5",
+                "title": "14.5 Plant and Materials paid when shipped",
+                "repeatable": true,
+                "columns": [
+                  { "key": "item_description", "label": "Item description", "type": "text" }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "3.5",
+            "title": "Programme Requirements",
+            "type": "single",
+            "fields": [
+              { "key": "programme_requirements", "label": "Programme requirements", "type": "textarea", "required": false }
+            ]
+          },
+          {
+            "id": "3.6",
+            "title": "Nominated Subcontractors",
+            "type": "table",
+            "table": {
+              "repeatable": true,
+              "columns": [
+                { "key": "line_no", "label": "No.", "type": "number" },
+                { "key": "works_services_description", "label": "Description of Works/Services", "type": "text" },
+                { "key": "nominated_subcontractor_name", "label": "Name of Nominated Subcontractor", "type": "text" }
+              ]
+            }
+          },
+          {
+            "id": "3.7",
+            "title": "Limits to Engineer's Duties and Authority",
+            "type": "single",
+            "fields": [
+              { "key": "engineer_authority_limits", "label": "Additional limitations", "type": "textarea", "required": false }
+            ]
+          },
+          {
+            "id": "3.8",
+            "title": "Key Personnel Requirements",
+            "type": "table",
+            "table": {
+              "repeatable": true,
+              "columns": [
+                { "key": "line_no", "label": "No.", "type": "number" },
+                { "key": "position_title", "label": "Position description/Title", "type": "text" },
+                { "key": "required_qualification", "label": "Required qualification", "type": "text" },
+                { "key": "required_experience_area", "label": "Area of experience required", "type": "text" },
+                { "key": "required_experience_years", "label": "Years of relevant experience", "type": "number" }
+              ]
+            }
+          },
+          {
+            "id": "3.9",
+            "title": "Equipment and Machinery Requirements",
+            "type": "table",
+            "table": {
+              "repeatable": true,
+              "columns": [
+                { "key": "line_no", "label": "No.", "type": "number" },
+                { "key": "item_description", "label": "Description of item", "type": "text" },
+                { "key": "units", "label": "Units", "type": "number" },
+                { "key": "remarks", "label": "Remarks", "type": "text" }
+              ]
+            }
+          },
+          {
+            "id": "3.10",
+            "title": "Insurance Requirements",
+            "type": "table",
+            "table": {
+              "repeatable": true,
+              "columns": [
+                {
+                  "key": "insurance_type",
+                  "label": "Insurances",
+                  "type": "select",
+                  "options": [
+                    "Construction all risk insurance for Works, Plants and Materials",
+                    "Public liability insurance",
+                    "Workers' compensation insurance",
+                    "Insurances required by Laws and by local practice",
+                    "Any other insurances",
+                    "Professional indemnity insurance (if applicable)"
+                  ]
+                },
+                { "key": "scope_of_cover", "label": "Additional details on scope of cover", "type": "textarea" },
+                { "key": "validity_period", "label": "Validity period", "type": "text" },
+                { "key": "limit_of_liability", "label": "Limit of liability", "type": "currency" }
+              ]
+            }
+          }
+        ]
+      }`);
+
+      const sectionVTableDefs = {};
+
+      function getSectionIvControl(detail, fieldType, uniqueId) {
+        const type = (fieldType || "").toLowerCase();
+        if (type.includes("checkbox")) {
+          return `<div class="iv-check-group"><label class="iv-choice"><input type="checkbox" id="${uniqueId}" /> ${detail || "Select"}</label></div>`;
+        }
+        if (type.includes("radio")) {
+          const opts = (detail || "Option A / Option B").split("/").map((o) => o.trim()).filter(Boolean);
+          return `<div class="iv-radio-group">${opts.map((opt, idx) => `<label class="iv-choice"><input type="radio" name="${uniqueId}" ${idx === 0 ? "" : ""}/> ${opt}</label>`).join("")}</div>`;
+        }
+        if (type.includes("single-select dropdown")) {
+          const opts = (detail || "").split("/").map((o) => o.trim()).filter(Boolean);
+          return `<select id="${uniqueId}"><option value="">Select...</option>${opts.map((opt) => `<option>${opt}</option>`).join("")}</select>`;
+        }
+        if (type.includes("text area + upload")) {
+          return `<textarea id="${uniqueId}" placeholder="Enter details..."></textarea><div class="iv-upload"><input type="file" /></div>`;
+        }
+        if (type.includes("multi-line")) {
+          return `<textarea id="${uniqueId}" placeholder="Enter details..."></textarea>`;
+        }
+        if (type.includes("number") || type.includes("text/number")) {
+          return `<input type="number" id="${uniqueId}" placeholder="Enter value" />`;
+        }
+        return `<input type="text" id="${uniqueId}" placeholder="Enter value" />`;
+      }
+
+      function getSectionIvLabel(field) {
+        if (field.detail) {
+          return field.detail;
+        }
+        const subsection = (field.subsection || "").toLowerCase();
+        if (subsection.includes("project details")) {
+          return "Project details";
+        }
+        const fromSubClause = (field.subClause || "").includes("-")
+          ? (field.subClause || "").split("-").slice(1).join("-").trim()
+          : (field.subClause || "").trim();
+        if (fromSubClause) {
+          return fromSubClause;
+        }
+        const fromSubsection = (field.subsection || "").includes("-")
+          ? (field.subsection || "").split("-").slice(1).join("-").trim()
+          : (field.subsection || "").trim();
+        return fromSubsection || "Details";
+      }
+
+      function createSectionIVPanel(title) {
+        const group = new Map();
+        sectionIvFields.forEach((field, idx) => {
+          const sectionKey = field.section || "General";
+          const subsectionKey = field.subsection || "Details";
+          const subClauseKey = field.subClause || "General";
+          if (!group.has(sectionKey)) {
+            group.set(sectionKey, new Map());
+          }
+          if (!group.get(sectionKey).has(subsectionKey)) {
+            group.get(sectionKey).set(subsectionKey, new Map());
+          }
+          if (!group.get(sectionKey).get(subsectionKey).has(subClauseKey)) {
+            group.get(sectionKey).get(subsectionKey).set(subClauseKey, []);
+          }
+          group.get(sectionKey).get(subsectionKey).get(subClauseKey).push({ ...field, idx });
+        });
+
+        const sectionHtml = Array.from(group.entries())
+          .map(([sectionName, subsectionMap], sectionIdx) => `
+            <div class="iv-section-card open">
+              <div class="iv-section-header">
+                <button class="iv-section-toggle" type="button">
+                  <span>${sectionName}</span>
+                  <i class="pi pi-chevron-down"></i>
+                </button>
+              </div>
+              <div class="iv-section-body">
+              ${Array.from(subsectionMap.entries())
+                .map(([subsectionName, subClauseMap]) => `
+                  <div class="iv-subsection open">
+                    <div class="iv-subsection-title">
+                      <button class="iv-subsection-toggle" type="button">
+                        <span>${subsectionName}</span>
+                        <i class="pi pi-chevron-down"></i>
+                      </button>
+                    </div>
+                    <div class="iv-subsection-body">
+                    ${Array.from(subClauseMap.entries())
+                      .map(([subClauseName, fields]) => `
+                        <div class="iv-subclause">
+                          ${subClauseName && subClauseName !== "General" ? `<div class="iv-subclause-title">${subClauseName}</div>` : ""}
+                          <div class="iv-fields-grid">
+                            ${fields
+                              .map((field, fieldIdx) => {
+                                const controlId = `iv-${sectionIdx}-${field.idx}-${fieldIdx}`;
+                                const labelText = getSectionIvLabel(field);
+                                return `
+                                  <div class="iv-field">
+                                    <label for="${controlId}">${labelText}</label>
+                                    ${getSectionIvControl(field.detail, field.fieldType, controlId)}
+                                  </div>
+                                `;
+                              })
+                              .join("")}
+                          </div>
+                        </div>
+                      `)
+                      .join("")}
+                    </div>
+                  </div>
+                `)
+                .join("")}
+              </div>
+            </div>
+          `)
+          .join("");
+
+        return `
+          <h2 class="panel-title">${title}</h2>
+          <div class="section-iv-layout">
+            ${sectionHtml}
+          </div>
+        `;
+      }
+
+      function renderSectionVInput(controlType, options, inputId) {
+        const type = (controlType || "text").toLowerCase();
+        if (type === "textarea") {
+          return `<textarea id="${inputId}" placeholder="Enter details..."></textarea>`;
+        }
+        if (type === "checkbox") {
+          return `<label class="sv-check"><input type="checkbox" id="${inputId}" /> Applicable</label>`;
+        }
+        if (type === "select") {
+          const opts = options || [];
+          return `<select id="${inputId}"><option value="">Select...</option>${opts.map((o) => `<option>${o}</option>`).join("")}</select>`;
+        }
+        if (type === "date") {
+          return `<input type="date" id="${inputId}" />`;
+        }
+        if (type === "number" || type === "currency" || type === "percent") {
+          return `<input type="number" id="${inputId}" placeholder="Enter value" />`;
+        }
+        return `<input type="text" id="${inputId}" placeholder="Enter value" />`;
+      }
+
+      function renderSectionVTable(tableId, title, columns) {
+        sectionVTableDefs[tableId] = columns;
+        const bodyId = `sv-table-body-${tableId}`;
+        return `
+          <div class="sv-table-wrap">
+            <div class="sv-table-title">${title}</div>
+            <table class="sv-table">
+              <thead>
+                <tr>${columns.map((c) => `<th>${c.label}</th>`).join("")}</tr>
+              </thead>
+              <tbody id="${bodyId}">
+                <tr class="sv-table-empty" data-empty-row="true">
+                  <td colspan="${columns.length}">No rows added yet.</td>
+                </tr>
+              </tbody>
+            </table>
+            <button class="sv-add-row-btn" type="button" data-sv-table="${tableId}" data-sv-target="${bodyId}">Add row</button>
+          </div>
+        `;
+      }
+
+      function createSectionVPanel(title) {
+        const sectionCards = (sectionVSchema.sections || [])
+          .map((section, sectionIdx) => {
+            const fields = section.fields || [];
+            const isSpecsSection = section.id === "3.2";
+            const kFieldKey = "spec_3_2_k_not_to_be_subcontracted";
+            const nFieldKey = "spec_3_2_n_asbuilt_spares_om";
+            const kField = fields.find((f) => f.key === kFieldKey);
+            const nField = fields.find((f) => f.key === nFieldKey);
+            const baseFields = isSpecsSection
+              ? fields.filter((f) => f.key !== kFieldKey && f.key !== nFieldKey)
+              : fields;
+            const tables = [];
+            if (Array.isArray(section.tables)) {
+              tables.push(...section.tables);
+            }
+            if (section.table) {
+              tables.push({ id: `${section.id}_table`, title: section.title, columns: section.table.columns || [] });
+            }
+
+            const renderSectionVFieldCard = (field, fallbackIndex = 0, labelOverride = null) => {
+              const inputId = `sv-${section.id}-${field.key || fallbackIndex}`;
+              const labelText = labelOverride || field.label || field.key;
+              return `
+                <div class="sv-field">
+                  <label for="${inputId}">${labelText}</label>
+                  ${renderSectionVInput(field.type, field.options, inputId)}
+                </div>
+              `;
+            };
+
+            const fieldHtml = baseFields.length
+              ? `<div class="sv-fields-grid">
+                  ${baseFields.map((field, fieldIdx) => renderSectionVFieldCard(field, fieldIdx)).join("")}
+                </div>`
+              : "";
+
+            const tableHtml = tables.length
+              ? `<div class="sv-subgroup">
+                  ${tables
+                    .map((table) => {
+                      let chunk = renderSectionVTable(table.id, table.title, table.columns || []);
+                      if (isSpecsSection && table.id === "warranties_3_2_j" && kField) {
+                        chunk += `<div class="sv-fields-grid" style="margin-top:10px;">${renderSectionVFieldCard(
+                          kField,
+                          0,
+                          "3.2.K Works not to be subcontracted"
+                        )}</div>`;
+                      }
+                      if (isSpecsSection && table.id === "training_3_2_m" && nField) {
+                        chunk += `<div class="sv-fields-grid" style="margin-top:10px;">${renderSectionVFieldCard(
+                          nField,
+                          0,
+                          "3.2.N As-built drawings, spare parts and operation and maintenance manuals"
+                        )}</div>`;
+                      }
+                      return chunk;
+                    })
+                    .join("")}
+                </div>`
+              : "";
+
+            return `
+              <div class="sv-section-card ${sectionIdx === 0 ? "open" : ""}">
+                <button class="sv-section-toggle" type="button">
+                  <strong>${section.id} - ${section.title}</strong>
+                  <i class="pi ${sectionIdx === 0 ? "pi-chevron-down" : "pi-chevron-right"}"></i>
+                </button>
+                <div class="sv-section-body">
+                  ${fieldHtml}
+                  ${tableHtml}
+                </div>
+              </div>
+            `;
+          })
+          .join("");
+
+        return `
+          <h2 class="panel-title">${title}</h2>
+          <div class="sv-header">
+            <p class="sv-subtitle">${sectionVSchema.schedule}</p>
+          </div>
+          <div class="section-v-layout">
+            ${sectionCards}
+          </div>
+        `;
+      }
+
+      function createSectionVIPanel() {
+        return ``;
+      }
+
+      function createGeneralPanel() {
+        return `
+          <h2 class="panel-title">General</h2>
+          <div class="card grid grid-3">
+            <div class="field"><label>Title</label><input value="Supply and Installation of IT Infrastructure" /></div>
+            <div class="field"><label>Reference</label><input value="UNOPS-ITB-2026-0157" /></div>
+            <div class="field"><label>Event Type</label><select><option>ITB</option></select></div>
+            <div class="field"><label>Process Type</label><select><option>Standard solicitation</option></select></div>
+            <div class="field"><label>Type of Requirement</label><select><option>Goods</option></select></div>
+            <div class="field"><label>Modality of Bid Receipt</label><select><option>Online Only</option></select></div>
+            <div class="field"><label>EPP</label><select><option>No</option></select></div>
+            <div class="field"><label>UN Collaboration</label><select><option>No</option></select></div>
+            <div class="field"><label>Retender</label><select><option>No</option></select></div>
+          </div>
+          <div class="card">
+            <div class="field">
+              <label>Description</label>
+              <textarea>Procurement of ICT equipment and associated implementation services for field operations.</textarea>
+            </div>
+          </div>
+        `;
+      }
+
+      function createRequisitionPanel() {
+        return `
+          <h2 class="panel-title">Requisition</h2>
+          <div class="card grid grid-3">
+            <div><strong>Requisition Lines:</strong> 6</div>
+            <div><strong>Products & Services:</strong> 9</div>
+            <div><strong>Lots:</strong> 3</div>
+          </div>
+          <div class="card">
+            <h3>Requisition Lines</h3>
+            <table>
+              <thead><tr><th>ID</th><th>UNSPSC</th><th>Description</th><th>Amount</th></tr></thead>
+              <tbody>
+                <tr><td>REQ-LINE-001</td><td>43211503</td><td>Laptop Computers</td><td>USD 25,000</td></tr>
+                <tr><td>REQ-LINE-002</td><td>43212105</td><td>Monitors</td><td>USD 15,000</td></tr>
+                <tr><td>REQ-LINE-003</td><td>43232100</td><td>Network Security Equipment</td><td>USD 15,000</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card">
+            <h3>Lots</h3>
+            <table>
+              <thead><tr><th>Lot</th><th>Name</th><th>Products</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>End User Hardware</td><td>4</td><td><span class="status ok">Complete</span></td></tr>
+                <tr><td>2</td><td>Network Infrastructure</td><td>3</td><td><span class="status pending">Pending</span></td></tr>
+                <tr><td>3</td><td>Support Services</td><td>2</td><td><span class="status ok">Complete</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        `;
+      }
+
+      function createParticularsPanel() {
+        return `
+          <h2 class="panel-title">Particulars</h2>
+          <div class="card grid grid-2">
+            <div class="field"><label>Bid Validity (days)</label><input value="120" /></div>
+            <div class="field"><label>Bid Security Required</label><select><option>Yes</option></select></div>
+            <div class="field"><label>Bid Opening Date</label><input type="date" value="2026-06-20" /></div>
+            <div class="field"><label>Contract Type</label><select><option>Goods Contract</option></select></div>
+            <div class="field"><label>Currency</label><select><option>USD</option></select></div>
+            <div class="field"><label>Delivery Terms</label><select><option>DDP</option></select></div>
+          </div>
+        `;
+      }
+
+      function createProjectPanel() {
+        return `
+          <h2 class="panel-title">Project</h2>
+          <div class="card grid grid-2">
+            <div class="field"><label>Project ID</label><input value="PROJ-2024-004" /></div>
+            <div class="field"><label>Project Name</label><input value="IT Infrastructure Modernization" /></div>
+            <div class="field"><label>Implementation End Date</label><input type="date" value="2025-09-30" /></div>
+            <div class="field"><label>Country</label><input value="Global" /></div>
+          </div>
+          <div class="card">
+            <div class="field">
+              <label>Donor / Funding Source Comment</label>
+              <textarea>Co-funded by core resources and earmarked donor contribution for digital transformation.</textarea>
+            </div>
+          </div>
+        `;
+      }
+
+      function createTeamPanel() {
+        return `
+          <h2 class="panel-title">Team</h2>
+          <div class="card">
+            <h3>Procurement Official</h3>
+            <table>
+              <thead><tr><th>Role</th><th>Name</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td>Author</td><td>Maria Alvarez</td><td><span class="status ok">Assigned</span></td></tr>
+                <tr><td>Procurement Reviewer</td><td>David Kim</td><td><span class="status ok">Assigned</span></td></tr>
+                <tr><td>PA - Evaluation</td><td>Fatima Noor</td><td><span class="status pending">Pending</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card">
+            <h3>Evaluation Panel</h3>
+            <table>
+              <thead><tr><th>Member</th><th>Role</th><th>Approved</th><th>Affidavit</th></tr></thead>
+              <tbody>
+                <tr><td>Alex Rivera</td><td>Chair</td><td><span class="status ok">Yes</span></td><td><span class="status ok">Signed</span></td></tr>
+                <tr><td>Natalie Price</td><td>Team Member</td><td><span class="status pending">No</span></td><td><span class="status pending">Pending</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        `;
+      }
+
+      function createCompetitionPanel() {
+        return `
+          <h2 class="panel-title">Competition</h2>
+          <div class="card grid grid-2">
+            <div class="field"><label>Competition Type</label><select><option>Open International Competition</option></select></div>
+            <div class="field"><label>Vendor Notification</label><select><option>Enabled</option></select></div>
+          </div>
+          <div class="card">
+            <h3>Vendors to Notify</h3>
+            <table>
+              <thead><tr><th>Company</th><th>Email</th><th>UNGM ID</th><th>Notified</th></tr></thead>
+              <tbody>
+                <tr><td>Global Tech Supplies Ltd.</td><td>procurement@globaltech.com</td><td>UNGM-100223</td><td><span class="status ok">Yes</span></td></tr>
+                <tr><td>Infra Systems Group</td><td>tenders@infrasys.org</td><td>UNGM-203144</td><td><span class="status pending">No</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        `;
+      }
+
+      function createSectionPanel(sectionId, title) {
+        const frames = framesBySection[sectionId] || [];
+
+        function createUploadOnlyFrameContent(frameName) {
+          return `
+            <div class="grid">
+              <div class="field">
+                <label>Upload document for ${frameName}</label>
+                <input type="file" />
+              </div>
+            </div>
+          `;
+        }
+
+        function createParticularConditionsContent() {
+          return `
+            <div class="conditions-part">
+              <h3 class="conditions-section-title">Part 1: Amended Clauses</h3>
+              <p class="conditions-subtitle">The General Conditions are amended in the following manner (if nothing is stated, then no amended conditions apply):</p>
+              <table class="conditions-table">
+                <thead>
+                  <tr>
+                    <th style="width:52px;">No.</th>
+                    <th style="width:47%;">Clause/Sub-Clause No. and Title</th>
+                    <th>Amended General Condition</th>
+                  </tr>
+                </thead>
+                <tbody id="amended-clauses-body">
+                  <tr class="conditions-empty" data-empty-row="true">
+                    <td colspan="3">No amended clauses added yet.</td>
+                  </tr>
+                </tbody>
+              </table>
+              <button class="add-row-btn" data-target-body="amended-clauses-body" data-type="amended" type="button">Add amended clause</button>
+            </div>
+
+            <div class="conditions-part">
+              <h3 class="conditions-section-title">Part 2: Additional Clauses</h3>
+              <p class="conditions-subtitle">The General Conditions are supplemented by the inclusion of the following additional conditions (if nothing is stated, then no additional conditions apply):</p>
+              <table class="conditions-table">
+                <thead>
+                  <tr>
+                    <th style="width:52px;">No.</th>
+                    <th style="width:47%;">Clause/Sub-Clause No. and Title</th>
+                    <th>Additional General Condition</th>
+                  </tr>
+                </thead>
+                <tbody id="additional-clauses-body">
+                  <tr class="conditions-empty" data-empty-row="true">
+                    <td colspan="3">No additional clauses added yet.</td>
+                  </tr>
+                </tbody>
+              </table>
+              <button class="add-row-btn" data-target-body="additional-clauses-body" data-type="additional" type="button">Add additional clause</button>
+            </div>
+          `;
+        }
+
+        const frameHtml = frames
+          .map((frame, index) => {
+            let bodyContent = `
+              <div class="grid grid-2">
+                <div class="field"><label>Field 1 - Title</label><input value="${frame.name}" /></div>
+                <div class="field"><label>Field 2 - Reference</label><input placeholder="Enter reference or clause number" /></div>
+                <div class="field"><label>Field 3 - Applicability</label><select><option>Applicable</option><option>Not Applicable</option></select></div>
+                <div class="field"><label>Field 4 - Attachment</label><input placeholder="Attach template or schedule file" /></div>
+              </div>
+              <div class="field" style="margin-top:10px;">
+                <label>Field 5 - Description / Instructions</label>
+                <textarea placeholder="Enter detailed content for ${frame.name}"></textarea>
+              </div>
+            `;
+
+            if (sectionId === "section-iii" && frame.name === "INSTRUMENT OF AGREEMENT") {
+              bodyContent = createUploadOnlyFrameContent(frame.name);
+            } else if (sectionId === "section-iii" && frame.name === "GENERAL CONDITIONS OF CONTRACT") {
+              bodyContent = createUploadOnlyFrameContent(frame.name);
+            } else if (sectionId === "section-iii" && frame.name === "PARTICULAR CONDITIONS OF CONTRACT") {
+              bodyContent = createParticularConditionsContent();
+            }
+
+            return `
+              <div class="frame ${index === 0 ? "open" : ""}">
+                <button class="frame-header" type="button">
+                  <span>${frame.name}</span>
+                  <i class="pi pi-chevron-down"></i>
+                </button>
+                <div class="frame-body">
+                  ${bodyContent}
+                </div>
+              </div>
+            `
+          })
+          .join("");
+
+        return `
+          <h2 class="panel-title">${title}</h2>
+          <div class="card">
+            ${frameHtml}
+          </div>
+        `;
+      }
+
+      function renderTabPanel(tab) {
+        switch (tab.id) {
+          case "general":
+            return "";
+          case "requisition":
+            return "";
+          case "particulars":
+            return "";
+          case "project":
+            return "";
+          case "team":
+            return "";
+          case "competition":
+            return "";
+          case "section-i":
+            return "";
+          case "section-ii":
+            return "";
+          case "section-iv":
+            return createSectionIVPanel(tab.name);
+          case "section-v":
+            return createSectionVPanel(tab.name);
+          case "section-vi":
+            return createSectionVIPanel();
+          default:
+            return createSectionPanel(tab.id, tab.name);
+        }
+      }
+
+      function render() {
+        const tabsContainer = document.getElementById("tabs");
+        const contentContainer = document.getElementById("content-wrapper");
+        const sidebarMenuContainer = document.getElementById("sidebarMenu");
+
+        tabsContainer.innerHTML = tabs
+          .map((tab, index) => {
+            const isActive = index === 0;
+            const status = isActive ? "In progress" : "Not started";
+            const statusIcon = isActive ? "●" : "○";
+            return `
+              <button class="block-tab ${isActive ? "active" : ""}" data-tab="${tab.id}">
+                <span class="block-tab-number">${index + 1}</span>
+                <i class="block-tab-pi-icon pi ${tab.icon}"></i>
+                <span class="block-tab-content">
+                  <span class="block-tab-name">${tab.name}</span>
+                  <span class="block-tab-status">${statusIcon} ${status}</span>
+                </span>
+              </button>
+            `;
+          })
+          .join("");
+
+        contentContainer.innerHTML = tabs
+          .map(
+            (tab, index) => `
+              <div class="tab-panel ${index === 0 ? "active" : ""}" id="panel-${tab.id}">
+                <div class="general-info-container">
+                  <div class="general-info-body">
+                    ${renderTabPanel(tab)}
+                  </div>
+                </div>
+              </div>
+            `
+          )
+          .join("");
+
+        const sidebarGroups = [
+          {
+            title: "ADMINISTRATIVE APPLICATIONS",
+            items: [
+              { label: "System Settings", icon: "pi-cog", tabId: null },
+              { label: "Components", icon: "pi-th-large", tabId: null },
+              { label: "Forms", icon: "pi-file", tabId: null },
+              { label: "Processes", icon: "pi-sitemap", tabId: null },
+              { label: "Templates", icon: "pi-clone", tabId: null }
+            ]
+          },
+          {
+            title: "BUSINESS APPLICATIONS",
+            items: [
+              { label: "eTendering Overview", icon: "pi-home", tabId: "general" },
+              { label: "Tenders", icon: "pi-briefcase", tabId: "requisition" },
+              { label: "Create Tender", icon: "pi-plus-circle", tabId: "particulars" },
+              { label: "Award & Review", icon: "pi-check-square", tabId: "section-v" },
+              { label: "DRiVE", icon: "pi-chart-line", tabId: "project" },
+              { label: "Contracts", icon: "pi-file-edit", tabId: "section-iii" },
+              { label: "Supplier Management", icon: "pi-users", tabId: "team" }
+            ]
+          }
+        ];
+
+        sidebarMenuContainer.innerHTML = sidebarGroups
+          .map(
+            (group) => `
+              <div class="menu-section">
+                <div class="menu-section-title">${group.title}</div>
+                ${group.items
+                  .map((item) => {
+                    const isActive = item.tabId === "general";
+                    const isDisabled = !item.tabId;
+                    return `
+                      <button
+                        class="menu-item ${isActive ? "active" : ""} ${isDisabled ? "disabled" : ""}"
+                        data-tab="${item.tabId || ""}"
+                        ${isDisabled ? "disabled" : ""}
+                      >
+                        <i class="menu-icon pi ${item.icon}"></i>
+                        <span>${item.label}</span>
+                      </button>
+                    `;
+                  })
+                  .join("")}
+              </div>
+            `
+          )
+          .join("");
+
+        function activateTab(tabId) {
+          const clickedIndex = tabs.findIndex((t) => t.id === tabId);
+          tabsContainer.querySelectorAll(".block-tab").forEach((b, i) => {
+            b.classList.remove("active", "completed");
+            const number = b.querySelector(".block-tab-number");
+            const status = b.querySelector(".block-tab-status");
+            if (i < clickedIndex) {
+              b.classList.add("completed");
+              if (number) number.textContent = "✓";
+              if (status) status.textContent = "✓ Complete";
+            } else if (i === clickedIndex) {
+              b.classList.add("active");
+              if (number) number.textContent = String(i + 1);
+              if (status) status.textContent = "● In progress";
+            } else {
+              if (number) number.textContent = String(i + 1);
+              if (status) status.textContent = "○ Not started";
+            }
+          });
+          sidebarMenuContainer.querySelectorAll(".menu-item").forEach((m) => {
+            m.classList.toggle("active", m.dataset.tab === tabId);
+          });
+          contentContainer.querySelectorAll(".tab-panel").forEach((p) => p.classList.remove("active"));
+          document.getElementById(`panel-${tabId}`).classList.add("active");
+        }
+
+        tabsContainer.querySelectorAll(".block-tab").forEach((btn) => {
+          btn.addEventListener("click", () => activateTab(btn.dataset.tab));
+        });
+
+        sidebarMenuContainer.querySelectorAll(".menu-item").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            if (!btn.dataset.tab) {
+              return;
+            }
+            activateTab(btn.dataset.tab);
+          });
+        });
+
+        contentContainer.addEventListener("click", (event) => {
+          const svSectionToggle = event.target.closest(".sv-section-toggle");
+          if (svSectionToggle) {
+            const card = svSectionToggle.closest(".sv-section-card");
+            card.classList.toggle("open");
+            const icon = svSectionToggle.querySelector("i");
+            icon.classList.toggle("pi-chevron-down");
+            icon.classList.toggle("pi-chevron-right");
+            return;
+          }
+
+          const svAddRowButton = event.target.closest(".sv-add-row-btn");
+          if (svAddRowButton) {
+            const tableId = svAddRowButton.dataset.svTable;
+            const targetBodyId = svAddRowButton.dataset.svTarget;
+            const tbody = document.getElementById(targetBodyId);
+            const columns = sectionVTableDefs[tableId] || [];
+            if (!tbody || columns.length === 0) {
+              return;
+            }
+            const empty = tbody.querySelector("[data-empty-row='true']");
+            if (empty) {
+              empty.remove();
+            }
+            const row = document.createElement("tr");
+            row.innerHTML = columns
+              .map((col, colIdx) => {
+                const inputId = `sv-${tableId}-${tbody.querySelectorAll("tr").length + 1}-${colIdx}`;
+                return `<td>${renderSectionVInput(col.type, col.options, inputId)}</td>`;
+              })
+              .join("");
+            tbody.appendChild(row);
+            return;
+          }
+
+          const addRowButton = event.target.closest(".add-row-btn");
+          if (addRowButton) {
+            const tbodyId = addRowButton.dataset.targetBody;
+            const rowType = addRowButton.dataset.type;
+            const tbody = document.getElementById(tbodyId);
+            if (!tbody) {
+              return;
+            }
+            const emptyRow = tbody.querySelector("[data-empty-row='true']");
+            if (emptyRow) {
+              emptyRow.remove();
+            }
+            const rowNumber = tbody.querySelectorAll("tr").length + 1;
+            const conditionLabel =
+              rowType === "amended" ? "Amended General Condition" : "Additional General Condition";
+            const row = document.createElement("tr");
+            row.innerHTML = `
+              <td>${rowNumber}</td>
+              <td><input aria-label="Clause/Sub-Clause No. and Title row ${rowNumber}" /></td>
+              <td><textarea aria-label="${conditionLabel} row ${rowNumber}"></textarea></td>
+            `;
+            tbody.appendChild(row);
+            return;
+          }
+
+          const header = event.target.closest(".frame-header");
+          if (header) {
+            const frame = header.closest(".frame");
+            frame.classList.toggle("open");
+            const icon = header.querySelector("i");
+            icon.classList.toggle("pi-chevron-down");
+            icon.classList.toggle("pi-chevron-right");
+            return;
+          }
+
+          const sectionToggle = event.target.closest(".iv-section-toggle");
+          if (sectionToggle) {
+            const sectionCard = sectionToggle.closest(".iv-section-card");
+            sectionCard.classList.toggle("open");
+            const icon = sectionToggle.querySelector("i");
+            icon.classList.toggle("pi-chevron-down");
+            icon.classList.toggle("pi-chevron-right");
+            return;
+          }
+
+          const subsectionToggle = event.target.closest(".iv-subsection-toggle");
+          if (subsectionToggle) {
+            const subsection = subsectionToggle.closest(".iv-subsection");
+            subsection.classList.toggle("open");
+            const icon = subsectionToggle.querySelector("i");
+            icon.classList.toggle("pi-chevron-down");
+            icon.classList.toggle("pi-chevron-right");
+          }
+        });
+      }
+
+      render();
+    </script>
+  </body>
+</html>
