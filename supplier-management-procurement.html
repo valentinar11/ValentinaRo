@@ -2207,45 +2207,6 @@ to { opacity: 1; transform: translateY(0); }
 <h1 class="page-title">Supplier Management</h1>
 <p class="page-subtitle">Manage supplier relationships, view profiles, and monitor compliance</p>
 </div>
-<div class="page-actions">
-<button class="btn btn-primary" onclick="openModal('createListModal')">
-<i class="pi pi-list"></i> Create Supplier List
-</button>
-</div>
-</div>
-
-<!-- Stats Grid -->
-<div class="stats-grid fade-in" style="grid-template-columns: repeat(3, 1fr);">
-<div class="stat-card">
-<div class="stat-icon blue">
-<i class="pi pi-users"></i>
-</div>
-<div class="stat-content">
-<div class="stat-value">1,248</div>
-<div class="stat-label">Total Suppliers</div>
-<div class="stat-change up"><i class="pi pi-arrow-up"></i> 12% this month</div>
-</div>
-</div>
-<div class="stat-card">
-<div class="stat-icon green">
-<i class="pi pi-verified"></i>
-</div>
-<div class="stat-content">
-<div class="stat-value">892</div>
-<div class="stat-label">Verified Suppliers</div>
-<div class="stat-change up"><i class="pi pi-arrow-up"></i> 8% this month</div>
-</div>
-</div>
-<div class="stat-card">
-<div class="stat-icon orange">
-<i class="pi pi-clock"></i>
-</div>
-<div class="stat-content">
-<div class="stat-value">156</div>
-<div class="stat-label">Pending Verification</div>
-<div class="stat-change down"><i class="pi pi-arrow-down"></i> 5% this month</div>
-</div>
-</div>
 </div>
 
 <!-- Bulk Actions Bar -->
@@ -2292,19 +2253,6 @@ to { opacity: 1; transform: translateY(0); }
 <option value="consulting">Consulting</option>
 <option value="supplies">Office Supplies</option>
 </select>
-</div>
-<div class="filter-group">
-<select class="filter-select" id="riskFilter" onchange="filterSuppliers()">
-<option value="">All Risk Levels</option>
-<option value="low">Low Risk</option>
-<option value="medium">Medium Risk</option>
-<option value="high">High Risk</option>
-</select>
-</div>
-<div class="filter-divider"></div>
-<div class="view-toggle">
-<button class="view-toggle-btn active" title="Table View"><i class="pi pi-list"></i></button>
-<button class="view-toggle-btn" title="Card View"><i class="pi pi-th-large"></i></button>
 </div>
 </div>
 
@@ -3949,7 +3897,6 @@ function filterSuppliers() {
 const search = document.getElementById('searchInput').value.toLowerCase();
 const status = document.getElementById('statusFilter').value;
 const category = document.getElementById('categoryFilter').value;
-const risk = document.getElementById('riskFilter').value;
 
 const rows = document.querySelectorAll('#supplierTableBody tr');
 rows.forEach(row => {
@@ -3976,14 +3923,6 @@ icon.className = 'pi pi-times-circle';
 toast.classList.add('show');
 setTimeout(() => toast.classList.remove('show'), 3000);
 }
-
-// View Toggle (mock)
-document.querySelectorAll('.view-toggle-btn').forEach(btn => {
-btn.addEventListener('click', function() {
-document.querySelectorAll('.view-toggle-btn').forEach(b => b.classList.remove('active'));
-this.classList.add('active');
-});
-});
 
 // Pagination (mock)
 document.querySelectorAll('.pagination-btn:not(:disabled)').forEach(btn => {
