@@ -1277,6 +1277,246 @@ body {
     .ungm-grid-2 { grid-template-columns: 1fr; }
 }
 
+/* Supplier full-page component parity (tabs content) */
+.section-card {
+    background: var(--surface-0);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--surface-200);
+    box-shadow: var(--shadow-card);
+    margin-bottom: var(--spacing-lg);
+}
+.section-card-header {
+    padding: var(--spacing-lg);
+    border-bottom: 1px solid var(--surface-200);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.section-card-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+.section-card-title i { color: var(--primary-500); }
+.section-card-body { padding: var(--spacing-lg); }
+
+.supplier-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.supplier-table th {
+    background: var(--surface-50);
+    padding: var(--spacing-md);
+    text-align: left;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--surface-200);
+}
+.supplier-table td {
+    padding: var(--spacing-md);
+    border-bottom: 1px solid var(--surface-100);
+    font-size: 14px;
+    color: var(--text-primary);
+}
+.supplier-table tbody tr:hover { background: var(--surface-50); }
+.supplier-table tbody tr:last-child td { border-bottom: none; }
+
+.contract-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    border: 1px solid var(--surface-200);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacing-sm);
+    transition: all 0.2s;
+}
+.contract-item:hover {
+    background: var(--surface-50);
+    border-color: var(--primary-200);
+}
+.contract-item:last-child { margin-bottom: 0; }
+.contract-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.contract-icon.active { background: var(--success-50); color: var(--success-500); }
+.contract-icon.completed { background: var(--surface-200); color: var(--text-muted); }
+.contract-info { flex: 1; }
+.contract-title { font-size: 14px; font-weight: 500; color: var(--text-primary); margin-bottom: 2px; }
+.contract-meta { font-size: 12px; color: var(--text-muted); }
+.contract-value { text-align: right; }
+.contract-amount { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+
+.status-badge.active { background: var(--success-50); color: var(--success-500); }
+
+.contact-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--surface-200);
+    color: var(--text-secondary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.eval-stats-panel {
+    margin-bottom: var(--spacing-xl);
+    padding: var(--spacing-md);
+    border: 1px solid var(--surface-200);
+    border-radius: var(--radius-md);
+    background: var(--surface-50);
+}
+.eval-stats-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+}
+.eval-stats-title { font-size: 14px; font-weight: 700; color: var(--text-primary); }
+.eval-stats-subtitle { font-size: 12px; color: var(--text-muted); }
+.eval-stats-kpis { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-sm); margin-bottom: var(--spacing-md); }
+.eval-outcome-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--spacing-sm); margin-bottom: var(--spacing-md); }
+.eval-kpi { background: white; border: 1px solid var(--surface-200); border-radius: var(--radius-sm); padding: 10px; text-align: center; }
+.eval-kpi-value { font-size: 18px; font-weight: 700; color: var(--text-primary); }
+.eval-kpi-label { font-size: 11px; color: var(--text-muted); }
+.eval-kpi.exceed { border-left: 4px solid #0092D1; }
+.eval-kpi.sat { border-left: 4px solid #10b981; }
+.eval-kpi.partial { border-left: 4px solid #f59e0b; }
+.eval-kpi.unsat { border-left: 4px solid #ef4444; }
+.eval-kpi.na { border-left: 4px solid #9ca3af; }
+.criteria-summary-wrap { margin-top: var(--spacing-md); background: white; border: 1px solid var(--surface-200); border-radius: var(--radius-md); overflow: hidden; }
+.criteria-summary-head { padding: 10px 12px; background: var(--surface-100); font-size: 12px; font-weight: 700; color: var(--text-secondary); }
+.criteria-summary-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.criteria-summary-table th, .criteria-summary-table td { padding: 10px 12px; border-bottom: 1px solid var(--surface-200); text-align: left; vertical-align: middle; }
+.criteria-summary-table th { font-weight: 700; color: var(--text-secondary); background: var(--surface-50); }
+.criteria-summary-table tr:last-child td { border-bottom: none; }
+.rating-pill { display: inline-flex; padding: 3px 8px; border-radius: 999px; font-size: 11px; font-weight: 700; }
+.rating-pill.exceed { background: rgba(0, 146, 209, 0.12); color: var(--primary-700); }
+.rating-pill.sat { background: #dcfce7; color: #166534; }
+.rating-pill.partial { background: #fef3c7; color: #92400e; }
+.comments-summary { padding: 10px 12px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 12px; color: var(--text-secondary); border-top: 1px solid var(--surface-200); background: var(--surface-50); }
+
+.drive-stats-panel {
+    padding: var(--spacing-lg);
+    border: 1px solid var(--surface-200);
+    border-radius: var(--radius-md);
+    background: linear-gradient(145deg, #ffffff, #f8fbff);
+}
+.drive-overall { display: flex; gap: var(--spacing-lg); align-items: center; margin-bottom: var(--spacing-lg); }
+.drive-score-ring {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    background: conic-gradient(var(--primary-500) 0deg 295deg, var(--surface-200) 295deg 360deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.drive-score-core {
+    width: 78px;
+    height: 78px;
+    border-radius: 50%;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.drive-score-value { font-size: 24px; font-weight: 700; color: var(--text-primary); line-height: 1; }
+.drive-score-label { font-size: 10px; color: var(--text-muted); margin-top: 4px; }
+.drive-overall-title { font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+.drive-overall-subtitle { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
+.maturity-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+}
+.maturity-badge.advanced { background: rgba(0, 146, 209, 0.12); color: var(--primary-700); }
+.maturity-badge.mature { background: #dcfce7; color: #166534; }
+.drive-dimensions-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-sm); margin-bottom: var(--spacing-md); }
+.drive-dimension-card { border: 1px solid var(--surface-200); border-radius: var(--radius-sm); padding: 10px; background: white; }
+.drive-dimension-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.drive-dimension-name { font-size: 12px; font-weight: 600; color: var(--text-secondary); }
+.drive-dimension-score { font-size: 12px; font-weight: 700; color: var(--text-primary); }
+.drive-dimension-foot { display: flex; justify-content: flex-end; }
+.drive-scale { display: flex; gap: 10px; flex-wrap: wrap; font-size: 11px; color: var(--text-muted); }
+.drive-scale-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 4px; }
+.drive-scale-dot.basic { background: #ef4444; }
+.drive-scale-dot.developing { background: #f59e0b; }
+.drive-scale-dot.mature { background: #10b981; }
+.drive-scale-dot.advanced { background: #0092D1; }
+
+.ungm-readonly-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    border-radius: var(--radius-md);
+    background: var(--info-50);
+    border: 1px solid var(--primary-200);
+    color: var(--primary-700);
+    font-size: 13px;
+}
+.ungm-readonly-accordion { display: grid; gap: var(--spacing-sm); }
+.ungm-readonly-card { border: 1px solid var(--surface-200); border-radius: var(--radius-md); background: var(--surface-50); overflow: hidden; }
+.ungm-readonly-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md);
+    cursor: pointer;
+    list-style: none;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    background: var(--surface-100);
+}
+.ungm-readonly-summary::-webkit-details-marker { display: none; }
+.ungm-readonly-summary::after {
+    content: "\25BC";
+    font-size: 11px;
+    color: var(--text-muted);
+    transition: transform 0.2s ease;
+}
+.ungm-readonly-card[open] .ungm-readonly-summary::after { transform: rotate(180deg); }
+.ungm-readonly-card-body { padding: var(--spacing-md); }
+.ungm-readonly-list { display: grid; gap: 8px; }
+.ungm-readonly-item { display: grid; grid-template-columns: 220px 1fr; gap: 8px; font-size: 12px; }
+.ungm-readonly-label { color: var(--text-muted); font-weight: 600; }
+.ungm-readonly-value { color: var(--text-primary); font-weight: 500; word-break: break-word; }
+.ungm-long-list {
+    max-height: 180px;
+    overflow: auto;
+    padding: 8px;
+    border: 1px solid var(--surface-200);
+    border-radius: var(--radius-sm);
+    background: white;
+    white-space: pre-line;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
 /* ==========================================================================
    ANIMATIONS
    ========================================================================== */
@@ -1734,426 +1974,489 @@ body {
 
             <div class="profile-tabs" role="tablist" aria-label="Profile sections">
                 <button type="button" class="profile-tab active" role="tab" aria-selected="true" aria-controls="profile-panel-company" id="profile-tab-company" data-profile-tab="company" tabindex="0" onclick="switchProfileTab('company')" onkeydown="handleProfileTabKeydown(event)">Company details</button>
-                <button type="button" class="profile-tab" role="tab" aria-selected="false" aria-controls="profile-panel-user" id="profile-tab-user" data-profile-tab="user" tabindex="-1" onclick="switchProfileTab('user')" onkeydown="handleProfileTabKeydown(event)">User / Contact</button>
-                <button type="button" class="profile-tab" role="tab" aria-selected="false" aria-controls="profile-panel-general" id="profile-tab-general" data-profile-tab="general" tabindex="-1" onclick="switchProfileTab('general')" onkeydown="handleProfileTabKeydown(event)">General information</button>
-                <button type="button" class="profile-tab" role="tab" aria-selected="false" aria-controls="profile-panel-contacts" id="profile-tab-contacts" data-profile-tab="contacts" tabindex="-1" onclick="switchProfileTab('contacts')" onkeydown="handleProfileTabKeydown(event)">Contacts</button>
-                <button type="button" class="profile-tab" role="tab" aria-selected="false" aria-controls="profile-panel-qualification" id="profile-tab-qualification" data-profile-tab="qualification" tabindex="-1" onclick="switchProfileTab('qualification')" onkeydown="handleProfileTabKeydown(event)">Qualification</button>
-                <button type="button" class="profile-tab" role="tab" aria-selected="false" aria-controls="profile-panel-sanctions" id="profile-tab-sanctions" data-profile-tab="sanctions" tabindex="-1" onclick="switchProfileTab('sanctions')" onkeydown="handleProfileTabKeydown(event)">Sanctions &amp; performance</button>
+                <button type="button" class="profile-tab" role="tab" aria-selected="false" aria-controls="profile-panel-contracts" id="profile-tab-contracts" data-profile-tab="contracts" tabindex="-1" onclick="switchProfileTab('contracts')" onkeydown="handleProfileTabKeydown(event)">Contracts</button>
+                <button type="button" class="profile-tab" role="tab" aria-selected="false" aria-controls="profile-panel-performance" id="profile-tab-performance" data-profile-tab="performance" tabindex="-1" onclick="switchProfileTab('performance')" onkeydown="handleProfileTabKeydown(event)">Performance &amp; Evaluations</button>
+                <button type="button" class="profile-tab" role="tab" aria-selected="false" aria-controls="profile-panel-tender-history" id="profile-tab-tender-history" data-profile-tab="tender-history" tabindex="-1" onclick="switchProfileTab('tender-history')" onkeydown="handleProfileTabKeydown(event)">Tender History</button>
+                <button type="button" class="profile-tab" role="tab" aria-selected="false" aria-controls="profile-panel-sustainability" id="profile-tab-sustainability" data-profile-tab="sustainability" tabindex="-1" onclick="switchProfileTab('sustainability')" onkeydown="handleProfileTabKeydown(event)">Sustainability</button>
             </div>
 
             <div class="profile-tab-panel active" role="tabpanel" id="profile-panel-company" aria-labelledby="profile-tab-company" data-profile-tab-panel="company">
-                <!-- Company details -->
-                <div class="form-section">
-                    <div class="form-section-header">
-                        <h3 class="form-section-title"><i class="pi pi-building"></i> Company details</h3>
+                <div class="section-card fade-in">
+                    <div class="section-card-header">
+                        <h3 class="section-card-title"><i class="pi pi-building"></i> Company details</h3>
                     </div>
-                    <div class="form-section-body">
-                        <div class="ungm-grid-2">
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">UNGM Number</div>
-                                <div class="ungm-field-value">302658</div>
-                            </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">License Number</div>
-                                <div class="ungm-field-value">123456</div>
-                            </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Company Name</div>
-                                <div class="ungm-field-value">Acme LTD</div>
-                            </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">General Country</div>
-                                <div class="ungm-field-value">Kuwait</div>
-                            </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Number of Employees</div>
-                                <div class="ungm-field-value">258</div>
-                            </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Website</div>
-                                <div class="ungm-field-value">www.website.com</div>
-                            </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Most Senior Official</div>
-                                <div class="ungm-field-value">Diane Valentin-Sosson</div>
-                            </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Company Type</div>
-                                <div class="ungm-field-value">Manufacturer</div>
-                            </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Parent Company</div>
-                                <div class="ungm-field-value">Acme corporate LTD</div>
-                            </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Established Year</div>
-                                <div class="ungm-field-value">2018</div>
-                            </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Telephone Country Code</div>
-                                <div class="ungm-field-value">Kuwait (+965)</div>
-                            </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Telephone Number</div>
-                                <div class="ungm-field-value">646554645</div>
-                            </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">House Number</div>
-                                <div class="ungm-field-value">4</div>
-                            </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Address Line 1</div>
-                                <div class="ungm-field-value">Street abcd</div>
-                            </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Address Line 2</div>
-                                <div class="ungm-field-value">Building B</div>
-                            </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Address Line 3</div>
-                                <div class="ungm-field-value">None</div>
-                            </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">City</div>
-                                <div class="ungm-field-value">Kuwait City</div>
-                            </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Postal Code</div>
-                                <div class="ungm-field-value">4541</div>
-                            </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Corporate Country</div>
-                                <div class="ungm-field-value">Kuwait</div>
-                            </div>
+                    <div class="section-card-body">
+                        <div class="ungm-readonly-banner">
+                            <i class="pi pi-lock"></i>
+                            <span><strong>UNGM source (read-only):</strong> These details are synced from UNGM and cannot be edited by the supplier in this view.</span>
                         </div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="profile-tab-panel" role="tabpanel" id="profile-panel-user" aria-labelledby="profile-tab-user" data-profile-tab-panel="user" hidden>
-                <!-- User / Contact details -->
-                <div class="form-section">
-                    <div class="form-section-header">
-                        <h3 class="form-section-title"><i class="pi pi-user"></i> User / Contact details</h3>
-                    </div>
-                    <div class="form-section-body">
-                        <div class="ungm-subsection-title">Primary contact (from UNGM)</div>
-                        <div class="ungm-grid-2">
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Contact ID</div>
-                                <div class="ungm-field-value">1</div>
-                            </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">First Name</div>
-                                <div class="ungm-field-value">Diane</div>
-                            </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Surname</div>
-                                <div class="ungm-field-value">Valentin-Sosson</div>
-                            </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Is Company Primary Contact</div>
-                                <div class="ungm-field-value">Primary contact</div>
-                            </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Email</div>
-                                <div class="ungm-field-value">diane.valentin2@gmail.com</div>
-                            </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Telephone Country</div>
-                                <div class="ungm-field-value">Kuwait (+965)</div>
-                            </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Telephone Number</div>
-                                <div class="ungm-field-value">54454544454545</div>
-                            </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Mobile Country</div>
-                                <div class="ungm-field-value">Kuwait (+965)</div>
-                            </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Mobile Number</div>
-                                <div class="ungm-field-value">544544545</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                        <div class="ungm-readonly-accordion">
+                            <details class="ungm-readonly-card" open>
+                                <summary class="ungm-readonly-summary">General Information</summary>
+                                <div class="ungm-readonly-card-body">
+                                    <div class="ungm-readonly-list">
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">License Number</span><span class="ungm-readonly-value">123456</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Company Name</span><span class="ungm-readonly-value">Acme LTD</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">General Country</span><span class="ungm-readonly-value">Kuwait</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Number of Employees</span><span class="ungm-readonly-value">258</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Website</span><span class="ungm-readonly-value">www.website.com</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Most Senior Official</span><span class="ungm-readonly-value">Diane Valentin-Sosson</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Company Type</span><span class="ungm-readonly-value">Manufacturer</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Parent Company</span><span class="ungm-readonly-value">Acme corporate LTD</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Established Year</span><span class="ungm-readonly-value">2018</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Telephone Country Code</span><span class="ungm-readonly-value">Kuwait (+965)</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Telephone Number</span><span class="ungm-readonly-value">646554645</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">House Number</span><span class="ungm-readonly-value">4</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Address Line 1</span><span class="ungm-readonly-value">Street abcd</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Address Line 2</span><span class="ungm-readonly-value">Building B</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Address Line 3</span><span class="ungm-readonly-value">None</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">City</span><span class="ungm-readonly-value">Kuwait City</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Postal Code</span><span class="ungm-readonly-value">4541</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Corporate Country</span><span class="ungm-readonly-value">Kuwait</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Doing Business In Countries</span><span class="ungm-readonly-value">International</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Ownership Type</span><span class="ungm-readonly-value">Privately-owned</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Owners</span><span class="ungm-readonly-value">Diane Valentin-Sosson</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Women Ownership</span><span class="ungm-readonly-value">WOB - 51% owned and controlled by women</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Disability Inclusion</span><span class="ungm-readonly-value">Disability-inclusive</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Business Seminars Attended</span><span class="ungm-readonly-value">None</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Previous Company Name</span><span class="ungm-readonly-value">Acme Sup Ltd</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Date of Change</span><span class="ungm-readonly-value">25/04/2020</span></div>
+                                    </div>
+                                </div>
+                            </details>
 
-            <div class="profile-tab-panel" role="tabpanel" id="profile-panel-general" aria-labelledby="profile-tab-general" data-profile-tab-panel="general" hidden>
-                <!-- General Information (merged: Registration + General Info + Company Name Changes; no overlap with Company details card) -->
-                <div class="ungm-section" data-ungm-section>
-                    <div class="ungm-section-header" role="button" tabindex="0" onclick="toggleUngmSection(this)" onkeydown="if(event.key==='Enter'||event.key===' ') { event.preventDefault(); toggleUngmSection(this); }">
-                        <h3><i class="pi pi-building"></i> General Information</h3>
-                        <i class="pi pi-chevron-down"></i>
-                    </div>
-                    <div class="ungm-section-body">
-                        <div class="ungm-grid-2">
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Ownership Type</div>
-                                <div class="ungm-field-value">Privately-owned</div>
-                            </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Owners</div>
-                                <div class="ungm-field-value">Diane Valentin-Sosson</div>
-                            </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Women Ownership</div>
-                                <div class="ungm-field-value">WOB - 51% owned and controlled by women</div>
-                            </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Disability Inclusion</div>
-                                <div class="ungm-field-value">Disability-inclusive</div>
-                            </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Business Seminars Attended</div>
-                                <div class="ungm-field-value">None</div>
-                            </div>
-                            <div class="ungm-field" style="grid-column: 1 / -1;">
-                                <div class="ungm-field-label">Doing Business In Countries</div>
-                                <div class="ungm-field-value">International</div>
-                            </div>
-                        </div>
-                        <div class="ungm-field" style="margin-top: var(--spacing-md);">
-                            <div class="ungm-field-label">UNSPSC Categories</div>
-                            <details class="ungm-collapsible-block">
-                                <summary>View UNSPSC categories (25)</summary>
-                                <div class="ungm-collapsible-body">
-                                    <ul class="ungm-list">
-                                        <li>10150000 — Seeds and bulbs and seedlings and cuttings</li>
-                                        <li>10151500 — Vegetable seeds and seedlings</li>
-                                        <li>10151503 — Celery seeds or seedlings</li>
-                                        <li>10151504 — Chili seeds or seedlings</li>
-                                        <li>10151505 — Courgette seeds or seedlings</li>
-                                        <li>10151506 — Pea seeds or seedlings</li>
-                                        <li>10151507 — Cucumber seeds or seedlings</li>
-                                        <li>10151508 — Eggplant seeds or seedlings</li>
-                                        <li>10151509 — Endive seeds or seedlings</li>
-                                        <li>10151510 — Garlic seeds or seedlings</li>
-                                        <li>10151511 — Leek seeds or seedlings</li>
-                                        <li>10151512 — Lettuce seeds or seedlings</li>
-                                        <li>10151513 — Corn seeds or seedlings</li>
-                                        <li>10151514 — Melon seeds or seedlings</li>
-                                        <li>10151515 — Onion seeds or seedlings</li>
-                                        <li>10151517 — Spinach seeds or seedlings</li>
-                                        <li>10151518 — Tomato seeds or seedlings</li>
-                                        <li>10151520 — Chard seeds or seedlings</li>
-                                        <li>10151521 — Sweet pepper seeds or seedlings</li>
-                                        <li>10151522 — Beet seeds or seedlings</li>
-                                        <li>10151523 — Cauliflower seeds or seedlings</li>
-                                        <li>10151524 — Parsley seeds or seedlings</li>
-                                        <li>10151525 — Broccoli seeds or seedlings</li>
-                                        <li>10151526 — Cabbage seeds or seedlings</li>
-                                    </ul>
+                            <details class="ungm-readonly-card">
+                                <summary class="ungm-readonly-summary">Classification and Contacts</summary>
+                                <div class="ungm-readonly-card-body">
+                                    <div class="ungm-readonly-list">
+                                        <div class="ungm-readonly-item">
+                                            <span class="ungm-readonly-label">UNSPSC IDs</span>
+                                            <div class="ungm-readonly-value">
+                                                <div class="ungm-long-list">10150000 - Seeds and bulbs and seedlings and cuttings
+10151500 - Vegetable seeds and seedlings
+10151503 - Celery seeds or seedlings
+10151504 - Chili seeds or seedlings
+10151505 - Courgette seeds or seedlings
+10151506 - Pea seeds or seedlings
+10151507 - Cucumber seeds or seedlings
+10151508 - Eggplant seeds or seedlings
+10151509 - Endive seeds or seedlings
+10151510 - Garlic seeds or seedlings
+10151511 - Leek seeds or seedlings
+10151512 - Lettuce seeds or seedlings
+10151513 - Corn seeds or seedlings
+10151514 - Melon seeds or seedlings
+10151515 - Onion seeds or seedlings
+10151517 - Spinach seeds or seedlings
+10151518 - Tomato seeds or seedlings
+10151520 - Chard seeds or seedlings
+10151521 - Sweet pepper seeds or seedlings
+10151522 - Beet seeds or seedlings
+10151523 - Cauliflower seeds or seedlings
+10151524 - Parsley seeds or seedlings
+10151525 - Broccoli seeds or seedlings
+10151526 - Cabbage seeds or seedlings</div>
+                                            </div>
+                                        </div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Contact ID</span><span class="ungm-readonly-value">1</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Email</span><span class="ungm-readonly-value">diane.valentin2@gmail.com</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">First Name</span><span class="ungm-readonly-value">Diane</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Surname</span><span class="ungm-readonly-value">Valentin-Sosson</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Telephone Country</span><span class="ungm-readonly-value">Kuwait (+965)</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Telephone Number</span><span class="ungm-readonly-value">54454544454545</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Mobile Country</span><span class="ungm-readonly-value">Kuwait (+965)</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Mobile Number</span><span class="ungm-readonly-value">544544545</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Primary Company Contact</span><span class="ungm-readonly-value">Primary contact</span></div>
+                                    </div>
+                                </div>
+                            </details>
+
+                            <details class="ungm-readonly-card">
+                                <summary class="ungm-readonly-summary">Qualification</summary>
+                                <div class="ungm-readonly-card-body">
+                                    <div class="ungm-readonly-list">
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Company Owners</span><span class="ungm-readonly-value">Marco LTD, MTD Corp.</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Agents and Intermediaries</span><span class="ungm-readonly-value">None</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Certificate of Incorporation</span><span class="ungm-readonly-value">Certificate of Incorporation</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Optional Documents</span><span class="ungm-readonly-value">ISO 14000</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Vendor Reference Company</span><span class="ungm-readonly-value">Orbaris Ltd</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Vendor Reference First Name</span><span class="ungm-readonly-value">Jason</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Vendor Reference Surname</span><span class="ungm-readonly-value">Lee</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Vendor Reference Email</span><span class="ungm-readonly-value">jasonleeltd@gmail.com</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Reference Letters</span><span class="ungm-readonly-value">Reference Letter</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Financial Documents</span><span class="ungm-readonly-value">Financial document 2025, Financial document 2024, Financial document 2023</span></div>
+                                    </div>
+                                </div>
+                            </details>
+
+                            <details class="ungm-readonly-card">
+                                <summary class="ungm-readonly-summary">Sanctions and Performance Issues</summary>
+                                <div class="ungm-readonly-card-body">
+                                    <div class="ungm-readonly-list">
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Type of Sanction</span><span class="ungm-readonly-value">None</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Sanction Owner</span><span class="ungm-readonly-value">None</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Sanction Start Date</span><span class="ungm-readonly-value">None</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Sanction End Date</span><span class="ungm-readonly-value">None</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Grounds</span><span class="ungm-readonly-value">None</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Sanctioning Agency</span><span class="ungm-readonly-value">None</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Sanctioning Reason</span><span class="ungm-readonly-value">None</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Performance Issue Reasons</span><span class="ungm-readonly-value">None</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Performance Start Date</span><span class="ungm-readonly-value">None</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Performance End Date</span><span class="ungm-readonly-value">None</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Additional Information</span><span class="ungm-readonly-value">None</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">UN Organization Contact Name</span><span class="ungm-readonly-value">None</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">UN Organization Contact Email</span><span class="ungm-readonly-value">None</span></div>
+                                        <div class="ungm-readonly-item"><span class="ungm-readonly-label">Agency Abbreviation</span><span class="ungm-readonly-value">None</span></div>
+                                    </div>
                                 </div>
                             </details>
                         </div>
-                        <div class="ungm-subsection-title" style="margin-top: var(--spacing-lg);">Company name changes</div>
-                        <div class="ungm-grid-2">
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Previous Company Name</div>
-                                <div class="ungm-field-value">Acme Sup Ltd</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-tab-panel" role="tabpanel" id="profile-panel-contracts" aria-labelledby="profile-tab-contracts" data-profile-tab-panel="contracts" hidden>
+                <div class="section-card fade-in">
+                    <div class="section-card-header">
+                        <h3 class="section-card-title"><i class="pi pi-file"></i> Contracts</h3>
+                        <button class="btn btn-ghost btn-sm">View All</button>
+                    </div>
+                    <div class="section-card-body">
+                        <div style="margin-bottom: var(--spacing-md);">
+                            <h4 style="font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: var(--spacing-sm);">Active Contracts (2)</h4>
+                            <div class="contract-item">
+                                <div class="contract-icon active"><i class="pi pi-file"></i></div>
+                                <div class="contract-info">
+                                    <div class="contract-title">LTA-2024-IT-0045</div>
+                                    <div class="contract-meta">IT Equipment &amp; Services · Valid: Jan 2024 - Dec 2025</div>
+                                </div>
+                                <div class="contract-value">
+                                    <div class="contract-amount">$450,000</div>
+                                    <span class="status-badge active">Active</span>
+                                </div>
                             </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Date of Change</div>
-                                <div class="ungm-field-value">25/04/2020</div>
+                            <div class="contract-item">
+                                <div class="contract-icon active"><i class="pi pi-file"></i></div>
+                                <div class="contract-info">
+                                    <div class="contract-title">PO-2024-00892</div>
+                                    <div class="contract-meta">Software Licenses · Valid: Mar 2024 - Jun 2025</div>
+                                </div>
+                                <div class="contract-value">
+                                    <div class="contract-amount">$125,000</div>
+                                    <span class="status-badge active">Active</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 style="font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: var(--spacing-sm);">Completed Contracts (3)</h4>
+                            <div class="contract-item">
+                                <div class="contract-icon completed"><i class="pi pi-check"></i></div>
+                                <div class="contract-info">
+                                    <div class="contract-title">PO-2023-00456</div>
+                                    <div class="contract-meta">Hardware Procurement · Completed Dec 2023</div>
+                                </div>
+                                <div class="contract-value">
+                                    <div class="contract-amount">$89,500</div>
+                                    <span class="status-badge neutral">Completed</span>
+                                </div>
+                            </div>
+                            <div class="contract-item">
+                                <div class="contract-icon completed"><i class="pi pi-check"></i></div>
+                                <div class="contract-info">
+                                    <div class="contract-title">LTA-2022-IT-0012</div>
+                                    <div class="contract-meta">Support Services · Completed Jan 2024</div>
+                                </div>
+                                <div class="contract-value">
+                                    <div class="contract-amount">$320,000</div>
+                                    <span class="status-badge neutral">Completed</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="profile-tab-panel" role="tabpanel" id="profile-panel-contacts" aria-labelledby="profile-tab-contacts" data-profile-tab-panel="contacts" hidden>
-                <!-- Contacts -->
-                <div class="ungm-section" data-ungm-section>
-                    <div class="ungm-section-header" role="button" tabindex="0" onclick="toggleUngmSection(this)" onkeydown="if(event.key==='Enter'||event.key===' ') { event.preventDefault(); toggleUngmSection(this); }">
-                        <h3><i class="pi pi-users"></i> Contacts</h3>
-                        <i class="pi pi-chevron-down"></i>
+            <div class="profile-tab-panel" role="tabpanel" id="profile-panel-performance" aria-labelledby="profile-tab-performance" data-profile-tab-panel="performance" hidden>
+                <div class="section-card fade-in">
+                    <div class="section-card-header">
+                        <h3 class="section-card-title"><i class="pi pi-chart-line"></i> Performance &amp; Evaluations</h3>
                     </div>
-                    <div class="ungm-section-body">
-                        <div class="ungm-subsection-title">Primary contact</div>
-                        <div class="ungm-grid-2">
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Contact ID</div>
-                                <div class="ungm-field-value">1</div>
+                    <div class="section-card-body">
+                        <div class="eval-stats-panel">
+                            <div class="eval-stats-header">
+                                <div class="eval-stats-title">PO Closeout Evaluation Statistics</div>
+                                <div class="eval-stats-subtitle">Based on 24 completed PO evaluations by procurement officials</div>
                             </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">First Name</div>
-                                <div class="ungm-field-value">Diane</div>
+
+                            <div class="eval-stats-kpis">
+                                <div class="eval-kpi">
+                                    <div class="eval-kpi-value">24</div>
+                                    <div class="eval-kpi-label">Completed POs</div>
+                                </div>
+                                <div class="eval-kpi">
+                                    <div class="eval-kpi-value">3.5 / 4</div>
+                                    <div class="eval-kpi-label">Average Overall Score</div>
+                                </div>
                             </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Surname</div>
-                                <div class="ungm-field-value">Valentin-Sosson</div>
+
+                            <div class="eval-outcome-grid">
+                                <div class="eval-kpi exceed">
+                                    <div class="eval-kpi-value">10</div>
+                                    <div class="eval-kpi-label">Exceeded expectations</div>
+                                </div>
+                                <div class="eval-kpi sat">
+                                    <div class="eval-kpi-value">10</div>
+                                    <div class="eval-kpi-label">Satisfactory</div>
+                                </div>
+                                <div class="eval-kpi partial">
+                                    <div class="eval-kpi-value">3</div>
+                                    <div class="eval-kpi-label">Partially unsatisfactory</div>
+                                </div>
+                                <div class="eval-kpi unsat">
+                                    <div class="eval-kpi-value">1</div>
+                                    <div class="eval-kpi-label">Unsatisfactory</div>
+                                </div>
+                                <div class="eval-kpi na">
+                                    <div class="eval-kpi-value">0</div>
+                                    <div class="eval-kpi-label">N/A</div>
+                                </div>
                             </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Email</div>
-                                <div class="ungm-field-value">diane.valentin2@gmail.com</div>
+
+                            <div class="criteria-summary-wrap">
+                                <div class="criteria-summary-head">Form 1.1 Criteria Summary (per completed PO)</div>
+                                <table class="criteria-summary-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Criterion</th>
+                                            <th>Avg Score</th>
+                                            <th>Most Common Rating</th>
+                                            <th>POs</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1.1.1 Timely delivery</td>
+                                            <td>3.6 / 4</td>
+                                            <td><span class="rating-pill exceed">Exceeded expectations</span></td>
+                                            <td>24</td>
+                                        </tr>
+                                        <tr>
+                                            <td>1.1.2 Quality delivered</td>
+                                            <td>3.5 / 4</td>
+                                            <td><span class="rating-pill sat">Satisfactory</span></td>
+                                            <td>24</td>
+                                        </tr>
+                                        <tr>
+                                            <td>1.1.3 Communication and document handling</td>
+                                            <td>3.4 / 4</td>
+                                            <td><span class="rating-pill sat">Satisfactory</span></td>
+                                            <td>24</td>
+                                        </tr>
+                                        <tr>
+                                            <td>1.1.4 Contract terms adherence</td>
+                                            <td>3.5 / 4</td>
+                                            <td><span class="rating-pill sat">Satisfactory</span></td>
+                                            <td>24</td>
+                                        </tr>
+                                        <tr>
+                                            <td>1.1.5 Sustainability and innovation</td>
+                                            <td>3.3 / 4</td>
+                                            <td><span class="rating-pill partial">Partially unsatisfactory</span></td>
+                                            <td>24</td>
+                                        </tr>
+                                        <tr>
+                                            <td>1.1.6 Overall supplier performance</td>
+                                            <td>3.5 / 4</td>
+                                            <td><span class="rating-pill exceed">Exceeded expectations</span></td>
+                                            <td>24</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="comments-summary">
+                                    <strong>1.1.7 Further comments/remarks:</strong>
+                                    <span class="rating-pill exceed">Yes: 14</span>
+                                    <span class="rating-pill sat">No: 10</span>
+                                </div>
                             </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Telephone Country</div>
-                                <div class="ungm-field-value">Kuwait (+965)</div>
+                        </div>
+
+                        <h4 style="font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: var(--spacing-md);">Recent Evaluations</h4>
+                        <div class="contract-item">
+                            <div class="contact-avatar" style="background: var(--success-50); color: var(--success-500); width: 40px; height: 40px; font-size: 16px;">
+                                <i class="pi pi-star-fill"></i>
                             </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Telephone Number</div>
-                                <div class="ungm-field-value">54454544454545</div>
+                            <div class="contract-info">
+                                <div class="contract-title">"Excellent delivery and quality"</div>
+                                <div class="contract-meta">PO-2024-00892 · Maria Santos · Dec 18, 2024 · ⭐⭐⭐⭐⭐</div>
                             </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Mobile Country</div>
-                                <div class="ungm-field-value">Kuwait (+965)</div>
+                        </div>
+                        <div class="contract-item">
+                            <div class="contact-avatar" style="background: var(--success-50); color: var(--success-500); width: 40px; height: 40px; font-size: 16px;">
+                                <i class="pi pi-star-fill"></i>
                             </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Mobile Number</div>
-                                <div class="ungm-field-value">544544545</div>
+                            <div class="contract-info">
+                                <div class="contract-title">"Very responsive and professional team"</div>
+                                <div class="contract-meta">LTA-2024-IT-0045 · John Doe · Nov 24, 2024 · ⭐⭐⭐⭐⭐</div>
                             </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Is Company Primary Contact</div>
-                                <div class="ungm-field-value">Primary contact</div>
+                        </div>
+                        <div class="contract-item">
+                            <div class="contact-avatar" style="background: var(--warning-50); color: var(--warning-500); width: 40px; height: 40px; font-size: 16px;">
+                                <i class="pi pi-star-fill"></i>
+                            </div>
+                            <div class="contract-info">
+                                <div class="contract-title">"Good quality but minor documentation delay"</div>
+                                <div class="contract-meta">PO-2024-00756 · Jane Smith · Oct 15, 2024 · ⭐⭐⭐⭐</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="profile-tab-panel" role="tabpanel" id="profile-panel-qualification" aria-labelledby="profile-tab-qualification" data-profile-tab-panel="qualification" hidden>
-                <!-- Qualification (Levels 1, 2 & 3 merged) -->
-                <div class="ungm-section" data-ungm-section>
-                    <div class="ungm-section-header" role="button" tabindex="0" onclick="toggleUngmSection(this)" onkeydown="if(event.key==='Enter'||event.key===' ') { event.preventDefault(); toggleUngmSection(this); }">
-                        <h3><i class="pi pi-file-check"></i> Qualification (Levels 1, 2 &amp; 3)</h3>
-                        <i class="pi pi-chevron-down"></i>
+            <div class="profile-tab-panel" role="tabpanel" id="profile-panel-tender-history" aria-labelledby="profile-tab-tender-history" data-profile-tab-panel="tender-history" hidden>
+                <div class="section-card fade-in">
+                    <div class="section-card-header">
+                        <h3 class="section-card-title"><i class="pi pi-file-edit"></i> Tender History</h3>
+                        <button class="btn btn-ghost btn-sm">View All</button>
                     </div>
-                    <div class="ungm-section-body">
-                        <div class="ungm-subsection-title">Level 1</div>
-                        <div class="ungm-grid-2">
+                    <div class="section-card-body">
+                        <table class="supplier-table" style="font-size: 13px;">
+                            <thead>
+                                <tr>
+                                    <th>Tender Reference</th>
+                                    <th>Title</th>
+                                    <th>Date</th>
+                                    <th>Result</th>
+                                    <th>Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>RFQ-2024-00892</td>
+                                    <td>IT Equipment Supply</td>
+                                    <td>Dec 2024</td>
+                                    <td>Under Evaluation</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>ITB-2024-00756</td>
+                                    <td>Office Supplies</td>
+                                    <td>Nov 2024</td>
+                                    <td>Awarded</td>
+                                    <td>$125,000</td>
+                                </tr>
+                                <tr>
+                                    <td>RFP-2024-00612</td>
+                                    <td>Network Infrastructure</td>
+                                    <td>Oct 2024</td>
+                                    <td>Not Awarded</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>RFQ-2023-00421</td>
+                                    <td>IT Equipment</td>
+                                    <td>Aug 2023</td>
+                                    <td>Awarded</td>
+                                    <td>$89,500</td>
+                                </tr>
+                                <tr>
+                                    <td>ITB-2023-00234</td>
+                                    <td>Software Development</td>
+                                    <td>May 2023</td>
+                                    <td>Awarded</td>
+                                    <td>$320,000</td>
+                                </tr>
+                                <tr>
+                                    <td>RFQ-2023-00156</td>
+                                    <td>Cloud Services</td>
+                                    <td>Mar 2023</td>
+                                    <td>Withdrawn</td>
+                                    <td>-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div style="margin-top: var(--spacing-lg); padding: var(--spacing-md); background: var(--surface-50); border-radius: var(--radius-md); display: flex; justify-content: space-around; text-align: center;">
                             <div class="ungm-field">
-                                <div class="ungm-field-label">Company Owners</div>
-                                <div class="ungm-field-value">Marco LTD, MTD Corp.</div>
+                                <div style="font-size: 20px; font-weight: 700; color: var(--text-primary);">6</div>
+                                <div style="font-size: 12px; color: var(--text-muted);">Total Participations</div>
                             </div>
                             <div class="ungm-field">
-                                <div class="ungm-field-label">Agents and Intermediaries</div>
-                                <div class="ungm-field-value">None</div>
-                            </div>
-                        </div>
-                        <div class="ungm-field" style="margin-top: var(--spacing-md);">
-                            <div class="ungm-field-label">Certificate of Incorporation</div>
-                            <div class="ungm-field-value"><a href="#" class="ungm-doc-link"><i class="pi pi-file-pdf"></i> Certificate of Incorporation</a></div>
-                        </div>
-                        <div class="ungm-field">
-                            <div class="ungm-field-label">Optional Documents</div>
-                            <div class="ungm-field-value no-border"><a href="#" class="ungm-doc-link"><i class="pi pi-file"></i> ISO 14000</a></div>
-                        </div>
-                        <div class="ungm-subsection-title">Vendor References</div>
-                        <div class="ungm-grid-2">
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Company Name</div>
-                                <div class="ungm-field-value">Orbaris Ltd</div>
+                                <div style="font-size: 20px; font-weight: 700; color: var(--success-500);">3</div>
+                                <div style="font-size: 12px; color: var(--text-muted);">Awarded</div>
                             </div>
                             <div class="ungm-field">
-                                <div class="ungm-field-label">First Name</div>
-                                <div class="ungm-field-value">Jason</div>
-                            </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Surname</div>
-                                <div class="ungm-field-value">Lee</div>
-                            </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Email</div>
-                                <div class="ungm-field-value">jasonleeltd@gmail.com</div>
-                            </div>
-                        </div>
-                        <div class="ungm-subsection-title">Level 2</div>
-                        <div class="ungm-field">
-                            <div class="ungm-field-label">Reference Letter</div>
-                            <div class="ungm-field-value no-border"><a href="#" class="ungm-doc-link"><i class="pi pi-file-pdf"></i> Reference Letter</a></div>
-                        </div>
-                        <div class="ungm-subsection-title">Level 3 (Financial)</div>
-                        <div class="ungm-field">
-                            <div class="ungm-field-label">Financial Documents</div>
-                            <div class="ungm-field-value no-border">
-                                <a href="#" class="ungm-doc-link"><i class="pi pi-file-pdf"></i> Financial document 2025</a>
-                                <a href="#" class="ungm-doc-link"><i class="pi pi-file-pdf"></i> Financial document 2024</a>
-                                <a href="#" class="ungm-doc-link"><i class="pi pi-file-pdf"></i> Financial document 2023</a>
+                                <div style="font-size: 20px; font-weight: 700; color: var(--primary-500);">50%</div>
+                                <div style="font-size: 12px; color: var(--text-muted);">Win Rate</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="profile-tab-panel" role="tabpanel" id="profile-panel-sanctions" aria-labelledby="profile-tab-sanctions" data-profile-tab-panel="sanctions" hidden>
-                <!-- Sanctions, Sanctioning Agencies & Performance Issues (merged) -->
-                <div class="ungm-section" data-ungm-section>
-                    <div class="ungm-section-header" role="button" tabindex="0" onclick="toggleUngmSection(this)" onkeydown="if(event.key==='Enter'||event.key===' ') { event.preventDefault(); toggleUngmSection(this); }">
-                        <h3><i class="pi pi-shield"></i> Sanctions, Agencies &amp; Performance</h3>
-                        <i class="pi pi-chevron-down"></i>
+            <div class="profile-tab-panel" role="tabpanel" id="profile-panel-sustainability" aria-labelledby="profile-tab-sustainability" data-profile-tab-panel="sustainability" hidden>
+                <div class="section-card fade-in">
+                    <div class="section-card-header">
+                        <h3 class="section-card-title"><i class="pi pi-globe"></i> Sustainability</h3>
                     </div>
-                    <div class="ungm-section-body">
-                        <div class="ungm-subsection-title">Sanctions</div>
-                        <div class="ungm-grid-2">
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Type of Sanction</div>
-                                <div class="ungm-field-value">None</div>
+                    <div class="section-card-body">
+                        <div class="drive-stats-panel">
+                            <div class="drive-overall">
+                                <div class="drive-score-ring">
+                                    <div class="drive-score-core">
+                                        <div class="drive-score-value">82</div>
+                                        <div class="drive-score-label">DRiVE score</div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="drive-overall-title">Overall DRiVE Maturity: Mature</div>
+                                    <div class="drive-overall-subtitle">Latest completed DRiVE assessment based on Governance, Social, and Environmental dimensions.</div>
+                                    <span class="maturity-badge advanced">Benchmark Position: Advanced threshold nearing</span>
+                                </div>
                             </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Sanction Owner</div>
-                                <div class="ungm-field-value">None</div>
+
+                            <div class="drive-dimensions-grid">
+                                <div class="drive-dimension-card">
+                                    <div class="drive-dimension-head">
+                                        <span class="drive-dimension-name">Governance</span>
+                                        <span class="drive-dimension-score">78 / 100</span>
+                                    </div>
+                                    <div class="drive-dimension-foot">
+                                        <span class="maturity-badge mature">Mature</span>
+                                    </div>
+                                </div>
+
+                                <div class="drive-dimension-card">
+                                    <div class="drive-dimension-head">
+                                        <span class="drive-dimension-name">Social</span>
+                                        <span class="drive-dimension-score">74 / 100</span>
+                                    </div>
+                                    <div class="drive-dimension-foot">
+                                        <span class="maturity-badge mature">Mature</span>
+                                    </div>
+                                </div>
+
+                                <div class="drive-dimension-card">
+                                    <div class="drive-dimension-head">
+                                        <span class="drive-dimension-name">Environmental</span>
+                                        <span class="drive-dimension-score">86 / 100</span>
+                                    </div>
+                                    <div class="drive-dimension-foot">
+                                        <span class="maturity-badge advanced">Advanced</span>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Start Date</div>
-                                <div class="ungm-field-value">None</div>
-                            </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">End Date</div>
-                                <div class="ungm-field-value">None</div>
-                            </div>
-                            <div class="ungm-field" style="grid-column: 1 / -1;">
-                                <div class="ungm-field-label">Grounds</div>
-                                <div class="ungm-field-value">None</div>
-                            </div>
-                        </div>
-                        <div class="ungm-subsection-title">Sanctioning Agencies</div>
-                        <div class="ungm-grid-2">
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Agency Abbreviation</div>
-                                <div class="ungm-field-value">None</div>
-                            </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Reason</div>
-                                <div class="ungm-field-value">None</div>
-                            </div>
-                        </div>
-                        <div class="ungm-subsection-title">Performance Issues</div>
-                        <div class="ungm-grid-2">
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Reasons</div>
-                                <div class="ungm-field-value">None</div>
-                            </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Start Date</div>
-                                <div class="ungm-field-value">None</div>
-                            </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">End Date</div>
-                                <div class="ungm-field-value">None</div>
-                            </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Additional Information</div>
-                                <div class="ungm-field-value">None</div>
-                            </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">UN Organization Contact Name</div>
-                                <div class="ungm-field-value">None</div>
-                            </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">UN Organization Email</div>
-                                <div class="ungm-field-value">None</div>
-                            </div>
-                            <div class="ungm-field">
-                                <div class="ungm-field-label">Agency Abbreviation</div>
-                                <div class="ungm-field-value">None</div>
+
+                            <div class="drive-scale">
+                                <span><i class="drive-scale-dot basic"></i> Basic</span>
+                                <span><i class="drive-scale-dot developing"></i> Developing</span>
+                                <span><i class="drive-scale-dot mature"></i> Mature</span>
+                                <span><i class="drive-scale-dot advanced"></i> Advanced</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </section>
 
         <!-- Form Responses View -->
