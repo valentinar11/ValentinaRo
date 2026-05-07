@@ -1403,11 +1403,153 @@ display: grid;
 grid-template-columns: 2fr 1fr;
 gap: var(--spacing-xl);
 }
+.content-grid.tab-mode {
+grid-template-columns: 1fr;
+}
+.content-grid.tab-mode .main-column,
+.content-grid.tab-mode .sidebar-column {
+display: none;
+}
+.content-grid.tab-mode .main-column.active-column,
+.content-grid.tab-mode .sidebar-column.active-column {
+display: block;
+}
+.content-grid.tab-mode .section-card {
+margin-bottom: 0;
+}
 @media (max-width: 1200px) {
 .content-grid { grid-template-columns: 1fr; }
 }
 .main-column { }
 .sidebar-column { }
+
+/* Full Profile Section Tabs */
+.supplier-section-tabs {
+position: sticky;
+top: 72px;
+z-index: 20;
+display: flex;
+flex-wrap: wrap;
+gap: 8px;
+margin-bottom: var(--spacing-lg);
+padding: var(--spacing-sm);
+background: rgba(255, 255, 255, 0.95);
+backdrop-filter: blur(8px);
+border: 1px solid var(--surface-200);
+border-radius: var(--radius-lg);
+box-shadow: var(--shadow-sm);
+}
+.supplier-section-tab {
+display: inline-flex;
+align-items: center;
+gap: 6px;
+padding: 8px 12px;
+font-size: 12px;
+font-weight: 600;
+color: var(--text-secondary);
+background: transparent;
+border: 1px solid transparent;
+border-radius: 999px;
+cursor: pointer;
+transition: all 0.2s ease;
+}
+.supplier-section-tab:hover {
+color: var(--primary-600);
+background: var(--surface-50);
+border-color: var(--surface-200);
+}
+.supplier-section-tab.active {
+color: white;
+background: var(--primary-500);
+border-color: var(--primary-500);
+box-shadow: 0 2px 6px rgba(0, 146, 209, 0.3);
+}
+.supplier-section-anchor {
+scroll-margin-top: 160px;
+}
+.supplier-section-anchor.tab-hidden {
+display: none;
+}
+.ungm-readonly-banner {
+display: flex;
+align-items: center;
+gap: 10px;
+padding: var(--spacing-md);
+margin-bottom: var(--spacing-md);
+border-radius: var(--radius-md);
+background: var(--info-50);
+border: 1px solid var(--primary-200);
+color: var(--primary-700);
+font-size: 13px;
+}
+.ungm-readonly-accordion {
+display: grid;
+gap: var(--spacing-sm);
+}
+.ungm-readonly-card {
+border: 1px solid var(--surface-200);
+border-radius: var(--radius-md);
+background: var(--surface-50);
+overflow: hidden;
+}
+.ungm-readonly-summary {
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: var(--spacing-sm);
+padding: var(--spacing-md);
+cursor: pointer;
+list-style: none;
+font-size: 13px;
+font-weight: 700;
+color: var(--text-secondary);
+background: var(--surface-100);
+}
+.ungm-readonly-summary::-webkit-details-marker {
+display: none;
+}
+.ungm-readonly-summary::after {
+content: "\25BC";
+font-size: 11px;
+color: var(--text-muted);
+transition: transform 0.2s ease;
+}
+.ungm-readonly-card[open] .ungm-readonly-summary::after {
+transform: rotate(180deg);
+}
+.ungm-readonly-card-body {
+padding: var(--spacing-md);
+}
+.ungm-readonly-list {
+display: grid;
+gap: 8px;
+}
+.ungm-readonly-item {
+display: grid;
+grid-template-columns: 220px 1fr;
+gap: 8px;
+font-size: 12px;
+}
+.ungm-readonly-label {
+color: var(--text-muted);
+font-weight: 600;
+}
+.ungm-readonly-value {
+color: var(--text-primary);
+font-weight: 500;
+word-break: break-word;
+}
+.ungm-long-list {
+max-height: 180px;
+overflow: auto;
+padding: 8px;
+border: 1px solid var(--surface-200);
+border-radius: var(--radius-sm);
+background: white;
+white-space: pre-line;
+font-size: 12px;
+color: var(--text-secondary);
+}
 
 /* Section Card */
 .section-card {
@@ -1543,6 +1685,304 @@ padding: var(--spacing-md);
 background: var(--surface-50);
 border-radius: var(--radius-md);
 text-align: center;
+}
+.eval-stats-panel {
+margin-bottom: var(--spacing-xl);
+padding: var(--spacing-md);
+border: 1px solid var(--surface-200);
+border-radius: var(--radius-md);
+background: var(--surface-50);
+}
+.eval-stats-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+gap: var(--spacing-sm);
+margin-bottom: var(--spacing-md);
+}
+.eval-stats-title {
+font-size: 14px;
+font-weight: 700;
+color: var(--text-primary);
+}
+.eval-stats-subtitle {
+font-size: 12px;
+color: var(--text-muted);
+}
+.eval-stats-kpis {
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+gap: var(--spacing-sm);
+margin-bottom: var(--spacing-md);
+}
+.eval-outcome-grid {
+display: grid;
+grid-template-columns: repeat(5, 1fr);
+gap: var(--spacing-sm);
+margin-bottom: var(--spacing-md);
+}
+.eval-kpi {
+background: white;
+border: 1px solid var(--surface-200);
+border-radius: var(--radius-sm);
+padding: 10px;
+text-align: center;
+}
+.eval-kpi-value {
+font-size: 18px;
+font-weight: 700;
+color: var(--text-primary);
+}
+.eval-kpi-label {
+font-size: 11px;
+color: var(--text-muted);
+}
+.eval-kpi.exceed { border-left: 4px solid #0092D1; }
+.eval-kpi.sat { border-left: 4px solid #10b981; }
+.eval-kpi.partial { border-left: 4px solid #f59e0b; }
+.eval-kpi.unsat { border-left: 4px solid #ef4444; }
+.eval-kpi.na { border-left: 4px solid #9ca3af; }
+.criteria-eval-list {
+display: grid;
+gap: 10px;
+}
+.criteria-summary-wrap {
+margin-top: var(--spacing-md);
+background: white;
+border: 1px solid var(--surface-200);
+border-radius: var(--radius-md);
+overflow: hidden;
+}
+.criteria-summary-head {
+padding: 10px 12px;
+background: var(--surface-100);
+font-size: 12px;
+font-weight: 700;
+color: var(--text-secondary);
+}
+.criteria-summary-table {
+width: 100%;
+border-collapse: collapse;
+font-size: 12px;
+}
+.criteria-summary-table th,
+.criteria-summary-table td {
+padding: 10px 12px;
+border-bottom: 1px solid var(--surface-200);
+text-align: left;
+vertical-align: middle;
+}
+.criteria-summary-table th {
+font-weight: 700;
+color: var(--text-secondary);
+background: var(--surface-50);
+}
+.criteria-summary-table tr:last-child td {
+border-bottom: none;
+}
+.rating-pill {
+display: inline-flex;
+padding: 3px 8px;
+border-radius: 999px;
+font-size: 11px;
+font-weight: 700;
+}
+.rating-pill.exceed { background: rgba(0, 146, 209, 0.12); color: var(--primary-700); }
+.rating-pill.sat { background: #dcfce7; color: #166534; }
+.rating-pill.partial { background: #fef3c7; color: #92400e; }
+.comments-summary {
+padding: 10px 12px;
+display: flex;
+gap: 8px;
+align-items: center;
+flex-wrap: wrap;
+font-size: 12px;
+color: var(--text-secondary);
+border-top: 1px solid var(--surface-200);
+background: var(--surface-50);
+}
+.criteria-eval-item {
+background: white;
+border: 1px solid var(--surface-200);
+border-radius: var(--radius-sm);
+padding: 10px;
+}
+.criteria-eval-head {
+display: flex;
+justify-content: space-between;
+align-items: center;
+gap: var(--spacing-sm);
+margin-bottom: 6px;
+}
+.criteria-eval-label {
+font-size: 12px;
+font-weight: 600;
+color: var(--text-secondary);
+}
+.criteria-eval-score {
+font-size: 12px;
+font-weight: 700;
+color: var(--success-500);
+}
+.criteria-eval-bar {
+display: flex;
+height: 8px;
+border-radius: 999px;
+overflow: hidden;
+background: var(--surface-200);
+}
+.seg-unsat { background: #ef4444; }
+.seg-partial { background: #f59e0b; }
+.seg-sat { background: #10b981; }
+.seg-exceed { background: #0092D1; }
+.seg-na { background: #9ca3af; }
+.eval-legend {
+display: flex;
+flex-wrap: wrap;
+gap: 10px;
+margin-top: 10px;
+font-size: 11px;
+color: var(--text-muted);
+}
+.eval-legend span { display: inline-flex; align-items: center; gap: 4px; }
+.eval-dot { width: 8px; height: 8px; border-radius: 50%; }
+.drive-stats-panel {
+padding: var(--spacing-md);
+border: 1px solid var(--surface-200);
+border-radius: var(--radius-md);
+background: var(--surface-50);
+}
+.drive-overall {
+display: grid;
+grid-template-columns: 120px 1fr;
+gap: var(--spacing-md);
+align-items: center;
+margin-bottom: var(--spacing-md);
+}
+.drive-score-ring {
+width: 110px;
+height: 110px;
+border-radius: 50%;
+background: conic-gradient(var(--success-500) 0% 82%, var(--surface-200) 82% 100%);
+display: flex;
+align-items: center;
+justify-content: center;
+}
+.drive-score-core {
+width: 84px;
+height: 84px;
+border-radius: 50%;
+background: white;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+}
+.drive-score-value {
+font-size: 24px;
+font-weight: 700;
+color: var(--success-500);
+line-height: 1;
+}
+.drive-score-label {
+font-size: 10px;
+color: var(--text-muted);
+text-transform: uppercase;
+letter-spacing: 0.04em;
+}
+.drive-overall-title {
+font-size: 14px;
+font-weight: 700;
+color: var(--text-primary);
+margin-bottom: 6px;
+}
+.drive-overall-subtitle {
+font-size: 12px;
+color: var(--text-muted);
+margin-bottom: 8px;
+}
+.maturity-badge {
+display: inline-flex;
+align-items: center;
+padding: 4px 10px;
+border-radius: 999px;
+font-size: 11px;
+font-weight: 700;
+}
+.maturity-badge.advanced {
+background: rgba(0, 146, 209, 0.14);
+color: var(--primary-700);
+}
+.drive-dimensions-grid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: var(--spacing-sm);
+margin-bottom: var(--spacing-md);
+}
+.drive-dimension-card {
+background: white;
+border: 1px solid var(--surface-200);
+border-radius: var(--radius-sm);
+padding: 10px;
+}
+.drive-dimension-head {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 6px;
+}
+.drive-dimension-name {
+font-size: 12px;
+font-weight: 700;
+color: var(--text-secondary);
+}
+.drive-dimension-score {
+font-size: 12px;
+font-weight: 700;
+color: var(--text-primary);
+}
+.maturity-badge.mature {
+background: #dcfce7;
+color: #166534;
+}
+.maturity-badge.developing {
+background: #fef3c7;
+color: #92400e;
+}
+.maturity-badge.basic {
+background: #fee2e2;
+color: #991b1b;
+}
+.drive-dimension-foot {
+display: flex;
+justify-content: flex-end;
+}
+.drive-scale {
+display: flex;
+gap: 8px;
+flex-wrap: wrap;
+font-size: 11px;
+color: var(--text-muted);
+}
+.drive-scale span {
+display: inline-flex;
+align-items: center;
+gap: 4px;
+}
+.drive-scale-dot {
+width: 8px;
+height: 8px;
+border-radius: 50%;
+}
+.drive-scale-dot.basic { background: #ef4444; }
+.drive-scale-dot.developing { background: #f59e0b; }
+.drive-scale-dot.mature { background: #10b981; }
+.drive-scale-dot.advanced { background: #0092D1; }
+@media (max-width: 1000px) {
+  .eval-stats-kpis { grid-template-columns: repeat(2, 1fr); }
+  .eval-outcome-grid { grid-template-columns: repeat(2, 1fr); }
+  .drive-overall { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+  .drive-dimensions-grid { grid-template-columns: 1fr; }
 }
 .metric-value {
 font-size: 24px;
@@ -2185,11 +2625,20 @@ to { opacity: 1; transform: translateY(0); }
 </div>
 </div>
 
+<!-- Section Navigation Tabs -->
+<div class="supplier-section-tabs fade-in" id="supplierSectionTabs" role="tablist" aria-label="Supplier profile sections">
+<button type="button" class="supplier-section-tab active" aria-selected="true" data-section-target="section-company-details"><i class="pi pi-building"></i> Company details</button>
+<button type="button" class="supplier-section-tab" aria-selected="false" data-section-target="section-contracts"><i class="pi pi-file"></i> Contracts</button>
+<button type="button" class="supplier-section-tab" aria-selected="false" data-section-target="section-performance"><i class="pi pi-chart-line"></i> Performance & Evaluations</button>
+<button type="button" class="supplier-section-tab" aria-selected="false" data-section-target="section-tender-history"><i class="pi pi-file-edit"></i> Tender History</button>
+<button type="button" class="supplier-section-tab" aria-selected="false" data-section-target="section-sustainability"><i class="pi pi-globe"></i> Sustainability</button>
+</div>
+
 <!-- Content Grid -->
-<div class="content-grid">
+<div class="content-grid" id="supplierContentGrid">
 <div class="main-column">
 <!-- Contracts Section -->
-<div class="section-card fade-in">
+<div class="section-card fade-in supplier-section-anchor" id="section-contracts">
 <div class="section-card-header">
 <h3 class="section-card-title"><i class="pi pi-file"></i> Contracts</h3>
 <button class="btn btn-ghost btn-sm">View All</button>
@@ -2249,7 +2698,7 @@ to { opacity: 1; transform: translateY(0); }
 </div>
 
 <!-- Tender History Section -->
-<div class="section-card fade-in">
+<div class="section-card fade-in supplier-section-anchor" id="section-tender-history">
 <div class="section-card-header">
 <h3 class="section-card-title"><i class="pi pi-file-edit"></i> Tender History</h3>
 <button class="btn btn-ghost btn-sm">View All</button>
@@ -2328,33 +2777,109 @@ to { opacity: 1; transform: translateY(0); }
 </div>
 
 <!-- Performance Section -->
-<div class="section-card fade-in">
+<div class="section-card fade-in supplier-section-anchor" id="section-performance">
 <div class="section-card-header">
 <h3 class="section-card-title"><i class="pi pi-chart-line"></i> Performance & Evaluations</h3>
 </div>
 <div class="section-card-body">
-<div class="performance-metrics" style="margin-bottom: var(--spacing-xl);">
-<div class="performance-metric">
-<div class="metric-value" style="color: var(--success-500);">4.8</div>
-<div class="metric-label">Overall Rating</div>
-<div class="metric-bar"><div class="metric-fill" style="width: 96%; background: var(--success-500);"></div></div>
+<div class="eval-stats-panel">
+<div class="eval-stats-header">
+<div class="eval-stats-title">PO Closeout Evaluation Statistics</div>
+<div class="eval-stats-subtitle">Based on 24 completed PO evaluations by procurement officials</div>
 </div>
-<div class="performance-metric">
-<div class="metric-value" style="color: var(--success-500);">98%</div>
-<div class="metric-label">On-Time Delivery</div>
-<div class="metric-bar"><div class="metric-fill" style="width: 98%; background: var(--success-500);"></div></div>
+
+<div class="eval-stats-kpis">
+<div class="eval-kpi">
+<div class="eval-kpi-value">24</div>
+<div class="eval-kpi-label">Completed POs</div>
 </div>
-<div class="performance-metric">
-<div class="metric-value" style="color: var(--success-500);">95%</div>
-<div class="metric-label">Quality Score</div>
-<div class="metric-bar"><div class="metric-fill" style="width: 95%; background: var(--success-500);"></div></div>
-</div>
-<div class="performance-metric">
-<div class="metric-value" style="color: var(--info-400);">92%</div>
-<div class="metric-label">Communication</div>
-<div class="metric-bar"><div class="metric-fill" style="width: 92%; background: var(--info-400);"></div></div>
+<div class="eval-kpi">
+<div class="eval-kpi-value">3.5 / 4</div>
+<div class="eval-kpi-label">Average Overall Score</div>
 </div>
 </div>
+
+<div class="eval-outcome-grid">
+<div class="eval-kpi exceed">
+<div class="eval-kpi-value">10</div>
+<div class="eval-kpi-label">Exceeded expectations</div>
+</div>
+<div class="eval-kpi sat">
+<div class="eval-kpi-value">10</div>
+<div class="eval-kpi-label">Satisfactory</div>
+</div>
+<div class="eval-kpi partial">
+<div class="eval-kpi-value">3</div>
+<div class="eval-kpi-label">Partially unsatisfactory</div>
+</div>
+<div class="eval-kpi unsat">
+<div class="eval-kpi-value">1</div>
+<div class="eval-kpi-label">Unsatisfactory</div>
+</div>
+<div class="eval-kpi na">
+<div class="eval-kpi-value">0</div>
+<div class="eval-kpi-label">N/A</div>
+</div>
+</div>
+
+<div class="criteria-summary-wrap">
+<div class="criteria-summary-head">Form 1.1 Criteria Summary (per completed PO)</div>
+<table class="criteria-summary-table">
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Avg Score</th>
+<th>Most Common Rating</th>
+<th>POs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.1.1 Timely delivery</td>
+<td>3.6 / 4</td>
+<td><span class="rating-pill exceed">Exceeded expectations</span></td>
+<td>24</td>
+</tr>
+<tr>
+<td>1.1.2 Quality delivered</td>
+<td>3.5 / 4</td>
+<td><span class="rating-pill sat">Satisfactory</span></td>
+<td>24</td>
+</tr>
+<tr>
+<td>1.1.3 Communication and document handling</td>
+<td>3.4 / 4</td>
+<td><span class="rating-pill sat">Satisfactory</span></td>
+<td>24</td>
+</tr>
+<tr>
+<td>1.1.4 Contract terms adherence</td>
+<td>3.5 / 4</td>
+<td><span class="rating-pill sat">Satisfactory</span></td>
+<td>24</td>
+</tr>
+<tr>
+<td>1.1.5 Sustainability and innovation</td>
+<td>3.3 / 4</td>
+<td><span class="rating-pill partial">Partially unsatisfactory</span></td>
+<td>24</td>
+</tr>
+<tr>
+<td>1.1.6 Overall supplier performance</td>
+<td>3.5 / 4</td>
+<td><span class="rating-pill exceed">Exceeded expectations</span></td>
+<td>24</td>
+</tr>
+</tbody>
+</table>
+<div class="comments-summary">
+<strong>1.1.7 Further comments/remarks:</strong>
+<span class="rating-pill exceed">Yes: 14</span>
+<span class="rating-pill sat">No: 10</span>
+</div>
+</div>
+</div>
+
 <h4 style="font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: var(--spacing-md);">Recent Evaluations</h4>
 <div class="contract-item">
 <div class="contact-avatar" style="background: var(--success-50); color: var(--success-500); width: 40px; height: 40px; font-size: 16px;">
@@ -2385,186 +2910,201 @@ to { opacity: 1; transform: translateY(0); }
 </div>
 </div>
 </div>
+
+<!-- Company Details Section (UNGM Read-only) -->
+<div class="section-card fade-in supplier-section-anchor" id="section-company-details">
+<div class="section-card-header">
+<h3 class="section-card-title"><i class="pi pi-building"></i> Company details</h3>
+</div>
+<div class="section-card-body">
+<div class="ungm-readonly-banner">
+<i class="pi pi-lock"></i>
+<span><strong>UNGM source (read-only):</strong> These details are synced from UNGM and cannot be edited by the supplier in this view.</span>
+</div>
+
+<div class="ungm-readonly-accordion">
+<details class="ungm-readonly-card" open>
+<summary class="ungm-readonly-summary">General Information</summary>
+<div class="ungm-readonly-card-body">
+<div class="ungm-readonly-list">
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">License Number</span><span class="ungm-readonly-value">123456</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Company Name</span><span class="ungm-readonly-value">Acme LTD</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">General Country</span><span class="ungm-readonly-value">Kuwait</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Number of Employees</span><span class="ungm-readonly-value">258</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Website</span><span class="ungm-readonly-value">www.website.com</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Most Senior Official</span><span class="ungm-readonly-value">Diane Valentin-Sosson</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Company Type</span><span class="ungm-readonly-value">Manufacturer</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Parent Company</span><span class="ungm-readonly-value">Acme corporate LTD</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Established Year</span><span class="ungm-readonly-value">2018</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Telephone Country Code</span><span class="ungm-readonly-value">Kuwait (+965)</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Telephone Number</span><span class="ungm-readonly-value">646554645</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">House Number</span><span class="ungm-readonly-value">4</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Address Line 1</span><span class="ungm-readonly-value">Street abcd</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Address Line 2</span><span class="ungm-readonly-value">Building B</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Address Line 3</span><span class="ungm-readonly-value">-</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">City</span><span class="ungm-readonly-value">Kuwait City</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Postal Code</span><span class="ungm-readonly-value">4541</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Corporate Country</span><span class="ungm-readonly-value">Kuwait</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Doing Business In Countries</span><span class="ungm-readonly-value">International</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Ownership Type</span><span class="ungm-readonly-value">Privately-owned</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Owners</span><span class="ungm-readonly-value">Diane Valentin-Sosson</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Women Ownership</span><span class="ungm-readonly-value">WOB - 51% owned and controlled by women</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Disability Inclusion</span><span class="ungm-readonly-value">Disability-inclusive</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Business Seminars Attended</span><span class="ungm-readonly-value">None</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Previous Company Name</span><span class="ungm-readonly-value">Acme Sup Ltd</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Date of Change</span><span class="ungm-readonly-value">25/04/2020</span></div>
+</div>
+</div>
+</details>
+
+<details class="ungm-readonly-card">
+<summary class="ungm-readonly-summary">Classification and Contacts</summary>
+<div class="ungm-readonly-card-body">
+<div class="ungm-readonly-list">
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">UNSPSC IDs</span><div class="ungm-readonly-value">
+<div class="ungm-long-list">10150000 - Seeds and bulbs and seedlings and cuttings
+10151500 - Vegetable seeds and seedlings
+10151503 - Celery seeds or seedlings
+10151504 - Chili seeds or seedlings
+10151505 - Courgette seeds or seedlings
+10151506 - Pea seeds or seedlings
+10151507 - Cucumber seeds or seedlings
+10151508 - Eggplant seeds or seedlings
+10151509 - Endive seeds or seedlings
+10151510 - Garlic seeds or seedlings
+10151511 - Leek seeds or seedlings
+10151512 - Lettuce seeds or seedlings
+10151513 - Corn seeds or seedlings
+10151514 - Melon seeds or seedlings
+10151515 - Onion seeds or seedlings
+10151517 - Spinach seeds or seedlings
+10151518 - Tomato seeds or seedlings
+10151520 - Chard seeds or seedlings
+10151521 - Sweet pepper seeds or seedlings
+10151522 - Beet seeds or seedlings
+10151523 - Cauliflower seeds or seedlings
+10151524 - Parsley seeds or seedlings
+10151525 - Broccoli seeds or seedlings
+10151526 - Cabbage seeds or seedlings</div>
+</div></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Contact ID</span><span class="ungm-readonly-value">1</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Email</span><span class="ungm-readonly-value">diane.valentin2@gmail.com</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">First Name</span><span class="ungm-readonly-value">Diane</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Surname</span><span class="ungm-readonly-value">Valentin-Sosson</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Telephone Country</span><span class="ungm-readonly-value">Kuwait (+965)</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Telephone Number</span><span class="ungm-readonly-value">54454544454545</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Mobile Country</span><span class="ungm-readonly-value">Kuwait (+965)</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Mobile Number</span><span class="ungm-readonly-value">544544545</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Primary Company Contact</span><span class="ungm-readonly-value">Primary contact</span></div>
+</div>
+</div>
+</details>
+
+<details class="ungm-readonly-card">
+<summary class="ungm-readonly-summary">Qualification</summary>
+<div class="ungm-readonly-card-body">
+<div class="ungm-readonly-list">
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Company Owners</span><span class="ungm-readonly-value">Marco LTD, MTD Corp.</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Agents and Intermediaries</span><span class="ungm-readonly-value">None</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Certificate of Incorporation</span><span class="ungm-readonly-value">Certificate of Incorporation</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Optional Documents</span><span class="ungm-readonly-value">ISO 14000</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Vendor Reference Company</span><span class="ungm-readonly-value">Orbaris Ltd</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Vendor Reference First Name</span><span class="ungm-readonly-value">Jason</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Vendor Reference Surname</span><span class="ungm-readonly-value">Lee</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Vendor Reference Email</span><span class="ungm-readonly-value">jasonleeltd@gmail.com</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Reference Letters</span><span class="ungm-readonly-value">Reference Letter</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Financial Documents</span><span class="ungm-readonly-value">Financial document 2025, Financial document 2024, Financial document 2023</span></div>
+</div>
+</div>
+</details>
+
+<details class="ungm-readonly-card">
+<summary class="ungm-readonly-summary">Sanctions and Performance Issues</summary>
+<div class="ungm-readonly-card-body">
+<div class="ungm-readonly-list">
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Type of Sanction</span><span class="ungm-readonly-value">None</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Sanction Owner</span><span class="ungm-readonly-value">None</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Sanction Start Date</span><span class="ungm-readonly-value">None</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Sanction End Date</span><span class="ungm-readonly-value">None</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Grounds</span><span class="ungm-readonly-value">None</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Sanctioning Agency</span><span class="ungm-readonly-value">None</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Sanctioning Reason</span><span class="ungm-readonly-value">None</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Performance Issue Reasons</span><span class="ungm-readonly-value">None</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Performance Start Date</span><span class="ungm-readonly-value">None</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Performance End Date</span><span class="ungm-readonly-value">None</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Additional Information</span><span class="ungm-readonly-value">None</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">UN Organization Contact Name</span><span class="ungm-readonly-value">None</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">UN Organization Contact Email</span><span class="ungm-readonly-value">None</span></div>
+<div class="ungm-readonly-item"><span class="ungm-readonly-label">Agency Abbreviation</span><span class="ungm-readonly-value">None</span></div>
+</div>
+</div>
+</details>
+</div>
+</div>
+</div>
 </div>
 
 <!-- Sidebar Column -->
 <div class="sidebar-column">
-<!-- Company Info -->
-<div class="section-card fade-in">
-<div class="section-card-header">
-<h3 class="section-card-title"><i class="pi pi-building"></i> Company Information</h3>
-</div>
-<div class="section-card-body">
-<div class="detail-item" style="margin-bottom: var(--spacing-md);">
-<div class="detail-label">Legal Name</div>
-<div class="detail-value">Global Tech Solutions Ltd.</div>
-</div>
-<div class="detail-item" style="margin-bottom: var(--spacing-md);">
-<div class="detail-label">UNGM Vendor ID</div>
-<div class="detail-value">UNGM-2024-78543</div>
-</div>
-<div class="detail-item" style="margin-bottom: var(--spacing-md);">
-<div class="detail-label">DUNS Number</div>
-<div class="detail-value">12-345-6789</div>
-</div>
-<div class="detail-item" style="margin-bottom: var(--spacing-md);">
-<div class="detail-label">Year Established</div>
-<div class="detail-value">2008</div>
-</div>
-<div class="detail-item" style="margin-bottom: var(--spacing-md);">
-<div class="detail-label">Employees</div>
-<div class="detail-value">250-500</div>
-</div>
-<div class="detail-item" style="margin-bottom: var(--spacing-md);">
-<div class="detail-label">Annual Revenue</div>
-<div class="detail-value">$50M - $100M</div>
-</div>
-<div class="detail-item" style="margin-bottom: var(--spacing-md);">
-<div class="detail-label">Address</div>
-<div class="detail-value">1234 Innovation Drive, Suite 500<br>San Francisco, CA 94105<br>United States</div>
-</div>
-<div class="detail-item">
-<div class="detail-label">Website</div>
-<div class="detail-value"><a href="#" style="color: var(--primary-500);">www.globaltechsolutions.com</a></div>
-</div>
-</div>
-</div>
-
 <!-- Sustainability -->
-<div class="section-card fade-in">
+<div class="section-card fade-in supplier-section-anchor" id="section-sustainability">
 <div class="section-card-header">
 <h3 class="section-card-title"><i class="pi pi-globe"></i> Sustainability</h3>
 </div>
 <div class="section-card-body">
-<div style="text-align: center; margin-bottom: var(--spacing-lg);">
-<div style="width: 100px; height: 100px; border-radius: 50%; background: conic-gradient(var(--success-500) 0% 85%, var(--surface-200) 85% 100%); display: flex; align-items: center; justify-content: center; margin: 0 auto;">
-<div style="width: 80px; height: 80px; border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center; flex-direction: column;">
-<span style="font-size: 24px; font-weight: 700; color: var(--success-500);">85</span>
-<span style="font-size: 10px; color: var(--text-muted);">Score</span>
+<div class="drive-stats-panel">
+<div class="drive-overall">
+<div class="drive-score-ring">
+<div class="drive-score-core">
+<div class="drive-score-value">82</div>
+<div class="drive-score-label">DRiVE score</div>
 </div>
 </div>
-</div>
-<div class="verification-card" style="margin-bottom: var(--spacing-sm);">
-<div class="verification-icon verified"><i class="pi pi-check"></i></div>
-<div class="verification-info">
-<div class="verification-title">Environmental Policy</div>
-<div class="verification-detail">Documented & Verified</div>
+<div>
+<div class="drive-overall-title">Overall DRiVE Maturity: Mature</div>
+<div class="drive-overall-subtitle">Latest completed DRiVE assessment based on Governance, Social, and Environmental dimensions.</div>
+<span class="maturity-badge advanced">Benchmark Position: Advanced threshold nearing</span>
 </div>
 </div>
-<div class="verification-card" style="margin-bottom: var(--spacing-sm);">
-<div class="verification-icon verified"><i class="pi pi-check"></i></div>
-<div class="verification-info">
-<div class="verification-title">ISO 14001</div>
-<div class="verification-detail">Environmental Management</div>
+
+<div class="drive-dimensions-grid">
+<div class="drive-dimension-card">
+<div class="drive-dimension-head">
+<span class="drive-dimension-name">Governance</span>
+<span class="drive-dimension-score">78 / 100</span>
+</div>
+<div class="drive-dimension-foot">
+<span class="maturity-badge mature">Mature</span>
 </div>
 </div>
-<div class="verification-card" style="margin-bottom: var(--spacing-sm);">
-<div class="verification-icon verified"><i class="pi pi-check"></i></div>
-<div class="verification-info">
-<div class="verification-title">Carbon Footprint Reporting</div>
-<div class="verification-detail">Annual report submitted</div>
+
+<div class="drive-dimension-card">
+<div class="drive-dimension-head">
+<span class="drive-dimension-name">Social</span>
+<span class="drive-dimension-score">74 / 100</span>
+</div>
+<div class="drive-dimension-foot">
+<span class="maturity-badge mature">Mature</span>
 </div>
 </div>
-<div class="verification-card">
-<div class="verification-icon pending"><i class="pi pi-clock"></i></div>
-<div class="verification-info">
-<div class="verification-title">Science-Based Targets</div>
-<div class="verification-detail">In progress</div>
+
+<div class="drive-dimension-card">
+<div class="drive-dimension-head">
+<span class="drive-dimension-name">Environmental</span>
+<span class="drive-dimension-score">86 / 100</span>
 </div>
+<div class="drive-dimension-foot">
+<span class="maturity-badge advanced">Advanced</span>
 </div>
 </div>
 </div>
 
-<!-- Contacts -->
-<div class="section-card fade-in">
-<div class="section-card-header">
-<h3 class="section-card-title"><i class="pi pi-users"></i> Key Contacts</h3>
+<div class="drive-scale">
+<span><i class="drive-scale-dot basic"></i> Basic</span>
+<span><i class="drive-scale-dot developing"></i> Developing</span>
+<span><i class="drive-scale-dot mature"></i> Mature</span>
+<span><i class="drive-scale-dot advanced"></i> Advanced</span>
 </div>
-<div class="section-card-body">
-<div class="contact-card" style="margin-bottom: var(--spacing-sm);">
-<div class="contact-avatar" style="background: var(--primary-100); color: var(--primary-600);">JA</div>
-<div class="contact-info">
-<div class="contact-name">John Anderson</div>
-<div class="contact-role">Procurement Manager</div>
-</div>
-<button class="table-action-btn" title="Email" onclick="showToast('Opening email...', 'success')"><i class="pi pi-envelope"></i></button>
-</div>
-<div class="contact-card" style="margin-bottom: var(--spacing-sm);">
-<div class="contact-avatar" style="background: var(--success-50); color: var(--success-500);">SA</div>
-<div class="contact-info">
-<div class="contact-name">Sarah Adams</div>
-<div class="contact-role">Bid Manager</div>
-</div>
-<button class="table-action-btn" title="Email" onclick="showToast('Opening email...', 'success')"><i class="pi pi-envelope"></i></button>
-</div>
-<div class="contact-card">
-<div class="contact-avatar" style="background: var(--purple-50); color: var(--purple-500);">RJ</div>
-<div class="contact-info">
-<div class="contact-name">Robert Johnson</div>
-<div class="contact-role">CEO</div>
-</div>
-<button class="table-action-btn" title="Email" onclick="showToast('Opening email...', 'success')"><i class="pi pi-envelope"></i></button>
-</div>
-</div>
-</div>
-
-<!-- Verifications -->
-<div class="section-card fade-in">
-<div class="section-card-header">
-<h3 class="section-card-title"><i class="pi pi-verified"></i> Verifications & Certifications</h3>
-</div>
-<div class="section-card-body">
-<div class="verification-card" style="margin-bottom: var(--spacing-sm);">
-<div class="verification-icon verified"><i class="pi pi-check"></i></div>
-<div class="verification-info">
-<div class="verification-title">UNGM Registration</div>
-<div class="verification-detail">Level 2 · Valid until Dec 2025</div>
-</div>
-</div>
-<div class="verification-card" style="margin-bottom: var(--spacing-sm);">
-<div class="verification-icon verified"><i class="pi pi-check"></i></div>
-<div class="verification-info">
-<div class="verification-title">DRiVE Assessment</div>
-<div class="verification-detail">Score: 92% · Dec 2024</div>
-</div>
-</div>
-<div class="verification-card" style="margin-bottom: var(--spacing-sm);">
-<div class="verification-icon verified"><i class="pi pi-check"></i></div>
-<div class="verification-info">
-<div class="verification-title">ISO 9001:2015</div>
-<div class="verification-detail">Quality Management</div>
-</div>
-</div>
-<div class="verification-card" style="margin-bottom: var(--spacing-sm);">
-<div class="verification-icon verified"><i class="pi pi-check"></i></div>
-<div class="verification-info">
-<div class="verification-title">ISO 27001</div>
-<div class="verification-detail">Information Security</div>
-</div>
-</div>
-<div class="verification-card">
-<div class="verification-icon pending"><i class="pi pi-clock"></i></div>
-<div class="verification-info">
-<div class="verification-title">ISO 14001</div>
-<div class="verification-detail">Expiring Feb 2025</div>
-</div>
-</div>
-</div>
-</div>
-
-<!-- Categories -->
-<div class="section-card fade-in">
-<div class="section-card-header">
-<h3 class="section-card-title"><i class="pi pi-tag"></i> Categories</h3>
-</div>
-<div class="section-card-body">
-<div class="category-tags" style="gap: 8px;">
-<span class="category-tag" style="padding: 8px 12px;">IT Services</span>
-<span class="category-tag" style="padding: 8px 12px;">Software Development</span>
-<span class="category-tag" style="padding: 8px 12px;">Cloud Solutions</span>
-<span class="category-tag" style="padding: 8px 12px;">Cybersecurity</span>
-<span class="category-tag" style="padding: 8px 12px;">Data Analytics</span>
-<span class="category-tag" style="padding: 8px 12px;">IT Hardware</span>
 </div>
 </div>
 </div>
@@ -3228,6 +3768,8 @@ document.querySelector('.supplier-list-view').classList.add('hidden');
 document.getElementById('supplierFullPage').classList.add('active');
 // Scroll to top
 window.scrollTo(0, 0);
+setActiveSupplierSectionTab('section-company-details');
+showSupplierSectionByTab('section-company-details');
 }
 
 // Back to List
@@ -3236,6 +3778,70 @@ function backToList() {
 document.getElementById('supplierFullPage').classList.remove('active');
 // Show the list view
 document.querySelector('.supplier-list-view').classList.remove('hidden');
+}
+
+function setActiveSupplierSectionTab(sectionId) {
+const tabs = document.querySelectorAll('.supplier-section-tab');
+tabs.forEach(tab => {
+const targetId = tab.getAttribute('data-section-target');
+const isActive = targetId === sectionId;
+tab.classList.toggle('active', isActive);
+tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+});
+}
+
+function showSupplierSectionByTab(sectionId) {
+const contentGrid = document.getElementById('supplierContentGrid');
+if (contentGrid) {
+contentGrid.classList.add('tab-mode');
+}
+
+const mainColumn = document.querySelector('#supplierContentGrid .main-column');
+const sidebarColumn = document.querySelector('#supplierContentGrid .sidebar-column');
+if (mainColumn) {
+mainColumn.classList.remove('active-column');
+}
+if (sidebarColumn) {
+sidebarColumn.classList.remove('active-column');
+}
+
+const sections = document.querySelectorAll('#supplierFullPage .supplier-section-anchor');
+sections.forEach(section => {
+section.classList.toggle('tab-hidden', section.id !== sectionId);
+});
+
+const activeSection = document.getElementById(sectionId);
+if (activeSection) {
+const activeMainColumn = activeSection.closest('.main-column');
+const activeSidebarColumn = activeSection.closest('.sidebar-column');
+if (activeMainColumn) {
+activeMainColumn.classList.add('active-column');
+}
+if (activeSidebarColumn) {
+activeSidebarColumn.classList.add('active-column');
+}
+}
+}
+
+function initSupplierSectionTabs() {
+const tabs = document.querySelectorAll('.supplier-section-tab');
+if (!tabs.length) {
+return;
+}
+
+tabs.forEach(tab => {
+tab.addEventListener('click', function() {
+const targetId = this.getAttribute('data-section-target');
+const targetSection = targetId ? document.getElementById(targetId) : null;
+if (!targetSection) {
+return;
+}
+setActiveSupplierSectionTab(targetId);
+showSupplierSectionByTab(targetId);
+});
+});
+
+showSupplierSectionByTab('section-company-details');
 }
 
 // Tab Switching
@@ -3388,6 +3994,8 @@ this.classList.add('active');
 }
 });
 });
+
+initSupplierSectionTabs();
 </script>
 
 </body>
