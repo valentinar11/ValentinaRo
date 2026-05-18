@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6990,6 +6990,177 @@
             color: var(--success-600);
         }
 
+        /* ===== AWARD RECOMMENDATIONS TABLE ===== */
+        .award-recommendations-section {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .award-recommendations-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .award-recommendations-header h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .award-vendor-filter {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .award-vendor-filter label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .award-recommendations-table-wrap {
+            overflow-x: auto;
+            border: 1px solid var(--surface-200);
+            border-radius: var(--radius-md);
+            background: var(--surface-0);
+        }
+
+        .award-recommendations-table {
+            width: 100%;
+            min-width: 1100px;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .award-recommendations-table th {
+            background: var(--surface-100);
+            color: var(--text-primary);
+            padding: 10px 12px;
+            text-align: left;
+            font-size: 11px;
+            font-weight: 600;
+            border-bottom: 2px solid var(--surface-300);
+            border-right: 1px solid var(--surface-200);
+            vertical-align: bottom;
+            line-height: 1.35;
+        }
+
+        .award-recommendations-table th.num {
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .award-recommendations-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--surface-100);
+            border-right: 1px solid var(--surface-100);
+            vertical-align: middle;
+            color: var(--text-primary);
+        }
+
+        .award-recommendations-table td.num {
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+        }
+
+        .award-recommendations-table .vendor-name {
+            font-weight: 600;
+            color: var(--primary-600);
+        }
+
+        .award-recommendations-table .lot-desc {
+            max-width: 200px;
+            line-height: 1.4;
+            color: var(--text-secondary);
+        }
+
+        .award-recommendations-table tr.total-row td {
+            background: var(--surface-50);
+            font-weight: 600;
+            border-top: 1px solid var(--surface-200);
+        }
+
+        .award-recommendations-table tr.total-row td:first-child {
+            color: var(--primary-600);
+        }
+
+        .award-recommendations-table .award-editable-input {
+            width: 100%;
+            min-width: 72px;
+            max-width: 120px;
+            padding: 6px 8px;
+            border: 1px solid var(--surface-300);
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            font-family: inherit;
+            text-align: right;
+            background: var(--surface-0);
+            color: var(--text-primary);
+        }
+
+        .award-recommendations-table .award-editable-input:focus {
+            outline: none;
+            border-color: var(--primary-400);
+            box-shadow: 0 0 0 2px var(--primary-50);
+        }
+
+        .award-review-section {
+            margin-top: var(--spacing-xl);
+            padding-top: var(--spacing-lg);
+            border-top: 1px solid var(--surface-200);
+        }
+
+        .award-review-section h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0 0 var(--spacing-md) 0;
+        }
+
+        .award-review-note {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: var(--spacing-md);
+            line-height: 1.5;
+        }
+
+        .award-review-field {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .award-review-field label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+
+        .award-review-field select,
+        .award-review-field textarea {
+            width: 100%;
+            max-width: 480px;
+            padding: 8px 10px;
+            border: 1px solid var(--surface-300);
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-family: inherit;
+            background: var(--surface-0);
+        }
+
+        .award-review-field textarea {
+            min-height: 72px;
+            resize: vertical;
+            color: var(--text-muted);
+        }
+
         /* ===== WORKFLOW TIMELINE ===== */
         .workflow-timeline {
             display: flex;
@@ -11741,84 +11912,108 @@
 
                         <!-- Tab Panel: Award -->
                         <div id="tab-award" class="tender-tab-panel">
-                            <!-- Award Status Banner -->
-                            <div class="process-status-banner award-pending">
-                                <div class="status-banner-icon">
-                                    <i class="pi pi-clock"></i>
+                            <!-- Recommendations for award -->
+                            <section class="award-recommendations-section" aria-labelledby="award-recommendations-heading">
+                                <div class="award-recommendations-header">
+                                    <h3 id="award-recommendations-heading">Recommendations for award</h3>
+                                    <div class="award-vendor-filter">
+                                        <label for="award-vendor-filter">Vendor</label>
+                                        <select id="award-vendor-filter" class="form-input" style="min-width: 160px; padding: 6px 10px; font-size: 13px;" onchange="filterAwardRecommendations(this.value)">
+                                            <option value="all">All vendors</option>
+                                            <option value="orchid">ORCHID HOTELS LTD</option>
+                                            <option value="toprank">TOP RANK HOTEL LTD</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="status-banner-content">
-                                    <h3>Award Not Yet Available</h3>
-                                    <p>The award recommendation will be available after the evaluation process is completed.</p>
-                                </div>
-                            </div>
 
-                            <!-- Award Process Overview -->
-                            <div style="margin-top: var(--spacing-lg);">
-                                <div style="font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: var(--spacing-sm);">Award Process</div>
-                                
-                                <div class="award-process-steps">
-                                    <div class="award-step pending">
-                                        <div class="award-step-icon">
-                                            <i class="pi pi-check-circle"></i>
-                                        </div>
-                                        <div class="award-step-content">
-                                            <div class="award-step-title">Evaluation Complete</div>
-                                            <div class="award-step-desc">Final ranking and recommendation prepared</div>
-                                        </div>
-                                        <span class="award-step-status">Pending</span>
-                                    </div>
-                                    <div class="award-step pending">
-                                        <div class="award-step-icon">
-                                            <i class="pi pi-file-edit"></i>
-                                        </div>
-                                        <div class="award-step-content">
-                                            <div class="award-step-title">Award Report</div>
-                                            <div class="award-step-desc">Evaluation report and recommendation document</div>
-                                        </div>
-                                        <span class="award-step-status">Pending</span>
-                                    </div>
-                                    <div class="award-step pending">
-                                        <div class="award-step-icon">
-                                            <i class="pi pi-verified"></i>
-                                        </div>
-                                        <div class="award-step-content">
-                                            <div class="award-step-title">Approval</div>
-                                            <div class="award-step-desc">Management review and approval</div>
-                                        </div>
-                                        <span class="award-step-status">Pending</span>
-                                    </div>
-                                    <div class="award-step pending">
-                                        <div class="award-step-icon">
-                                            <i class="pi pi-send"></i>
-                                        </div>
-                                        <div class="award-step-content">
-                                            <div class="award-step-title">Notification</div>
-                                            <div class="award-step-desc">Notify successful and unsuccessful bidders</div>
-                                        </div>
-                                        <span class="award-step-status">Pending</span>
-                                    </div>
-                                    <div class="award-step pending">
-                                        <div class="award-step-icon">
-                                            <i class="pi pi-file"></i>
-                                        </div>
-                                        <div class="award-step-content">
-                                            <div class="award-step-title">Contract</div>
-                                            <div class="award-step-desc">Contract preparation and signature</div>
-                                        </div>
-                                        <span class="award-step-status">Pending</span>
-                                    </div>
+                                <div class="award-recommendations-table-wrap">
+                                    <table class="award-recommendations-table" aria-label="Award recommendations">
+                                        <thead>
+                                            <tr>
+                                                <th>Vendor name</th>
+                                                <th>Lot</th>
+                                                <th>UNGM number</th>
+                                                <th>Country</th>
+                                                <th>Women owned?</th>
+                                                <th class="num">Total award amount (currency)</th>
+                                                <th class="num">Total award amount (USD)</th>
+                                                <th class="num">Award for last 12 months, excluding --- (USD)</th>
+                                                <th class="num">Total value of award for approval (USD)</th>
+                                                <th class="num">Total number of awards including this one for last 12 months</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="award-recommendations-body">
+                                            <tr data-vendor-group="orchid" data-row-type="detail">
+                                                <td class="vendor-name">ORCHID HOTELS LTD</td>
+                                                <td class="lot-desc">Lot 1 - Conferencing services, accommodation and catering</td>
+                                                <td>435786</td>
+                                                <td>Nigeria</td>
+                                                <td>No</td>
+                                                <td class="num">34,561.91</td>
+                                                <td class="num">34,561.91</td>
+                                                <td class="num"><input type="text" class="award-editable-input" value="" placeholder="—" aria-label="Award for last 12 months excluding current, ORCHID HOTELS LTD"></td>
+                                                <td class="num"><input type="text" class="award-editable-input" value="" placeholder="—" aria-label="Total value of award for approval, ORCHID HOTELS LTD"></td>
+                                                <td class="num"><input type="text" class="award-editable-input" value="" placeholder="—" aria-label="Total number of awards including this one, ORCHID HOTELS LTD"></td>
+                                            </tr>
+                                            <tr data-vendor-group="orchid" class="total-row" data-row-type="total">
+                                                <td>Total</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td class="num"></td>
+                                                <td class="num">34,561.91</td>
+                                                <td class="num"><input type="text" class="award-editable-input" value="0" aria-label="Total award for last 12 months, ORCHID HOTELS LTD"></td>
+                                                <td class="num"><input type="text" class="award-editable-input" value="34,561.91" aria-label="Total value for approval, ORCHID HOTELS LTD"></td>
+                                                <td class="num"><input type="text" class="award-editable-input" value="1" aria-label="Total number of awards, ORCHID HOTELS LTD"></td>
+                                            </tr>
+                                            <tr data-vendor-group="toprank" data-row-type="detail">
+                                                <td class="vendor-name">TOP RANK HOTEL LTD</td>
+                                                <td class="lot-desc">Lot 1 - Conferencing services, accommodation and catering</td>
+                                                <td>435787</td>
+                                                <td>Nigeria</td>
+                                                <td>No</td>
+                                                <td class="num">28,450.00</td>
+                                                <td class="num">28,450.00</td>
+                                                <td class="num"><input type="text" class="award-editable-input" value="" placeholder="—" aria-label="Award for last 12 months excluding current, TOP RANK HOTEL LTD"></td>
+                                                <td class="num"><input type="text" class="award-editable-input" value="" placeholder="—" aria-label="Total value of award for approval, TOP RANK HOTEL LTD"></td>
+                                                <td class="num"><input type="text" class="award-editable-input" value="" placeholder="—" aria-label="Total number of awards including this one, TOP RANK HOTEL LTD"></td>
+                                            </tr>
+                                            <tr data-vendor-group="toprank" class="total-row" data-row-type="total">
+                                                <td>Total</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td class="num"></td>
+                                                <td class="num">28,450.00</td>
+                                                <td class="num"><input type="text" class="award-editable-input" value="0" aria-label="Total award for last 12 months, TOP RANK HOTEL LTD"></td>
+                                                <td class="num"><input type="text" class="award-editable-input" value="28,450.00" aria-label="Total value for approval, TOP RANK HOTEL LTD"></td>
+                                                <td class="num"><input type="text" class="award-editable-input" value="1" aria-label="Total number of awards, TOP RANK HOTEL LTD"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
-                            </div>
+                            </section>
 
-                            <!-- Info Alert -->
-                            <div style="background: var(--info-50); border: 1px solid var(--info-200); border-radius: var(--radius-md); padding: var(--spacing-md); display: flex; gap: var(--spacing-sm); align-items: flex-start; margin-top: var(--spacing-lg);">
-                                <i class="pi pi-info-circle" style="color: var(--info-500); font-size: 16px; margin-top: 2px;"></i>
-                                <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.5;">
-                                    <strong>Award Timeline:</strong> After evaluation completion, the award recommendation must be reviewed and approved before supplier notification. A standstill period may apply before contract signature.
+                            <!-- Review and award process -->
+                            <section class="award-review-section" aria-labelledby="award-review-heading">
+                                <h3 id="award-review-heading">Review and award process</h3>
+                                <p class="award-review-note">Note: There is only one workflow regardless of the number of lots.</p>
+                                <div class="award-review-field">
+                                    <label for="award-review-process">Review and award process</label>
+                                    <select id="award-review-process">
+                                        <option value="pr-pa" selected>Procurement reviewer and PA</option>
+                                        <option value="pr-only">Procurement reviewer only</option>
+                                        <option value="pa-only">Procurement authority only</option>
+                                    </select>
                                 </div>
-                            </div>
+                                <div class="award-review-field">
+                                    <label for="award-additional-info">Additional information</label>
+                                    <textarea id="award-additional-info" readonly>N/A</textarea>
+                                </div>
+                            </section>
                         </div>
-
                     </div> <!-- End tender-tabs-container -->
                 </div> <!-- End tender-overview-grid -->
             </div>
@@ -15366,6 +15561,15 @@
             if (btnElement) {
                 btnElement.classList.add('active');
             }
+        }
+
+        function filterAwardRecommendations(vendorKey) {
+            const rows = document.querySelectorAll('#award-recommendations-body tr[data-vendor-group]');
+            rows.forEach(row => {
+                const group = row.getAttribute('data-vendor-group');
+                const show = vendorKey === 'all' || group === vendorKey;
+                row.style.display = show ? '' : 'none';
+            });
         }
 
         // Switch between Tender Information and Process tab contexts
