@@ -1336,6 +1336,98 @@
             cursor: not-allowed !important;
         }
 
+        .assessment-lot-tabs {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-lg);
+            padding: var(--spacing-xs);
+            background: var(--surface-0);
+            border: 1px solid var(--surface-200);
+            border-radius: var(--radius-lg);
+        }
+
+        .assessment-lot-tab {
+            flex: 1;
+            padding: var(--spacing-md);
+            border: 1px solid var(--surface-200);
+            border-radius: var(--radius-md);
+            background: var(--surface-50);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .assessment-lot-tab:hover {
+            border-color: var(--primary-300);
+            background: var(--primary-50);
+        }
+
+        .assessment-lot-tab.active {
+            border-color: var(--primary-500);
+            background: var(--primary-50);
+            box-shadow: 0 0 0 1px var(--primary-200);
+        }
+
+        .assessment-lot-tab__title {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .assessment-lot-tab__meta {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .assessment-lot-tab__status {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: var(--spacing-xs);
+        }
+
+        .assessment-lot-tab__chip {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: var(--radius-sm);
+            background: var(--surface-100);
+            color: var(--text-secondary);
+        }
+
+        .assessment-lot-tab__chip--done {
+            background: var(--success-100);
+            color: var(--success-700);
+        }
+
+        .assessment-lot-tab__chip--active {
+            background: var(--primary-100);
+            color: var(--primary-700);
+        }
+
+        .assessment-lot-panel {
+            display: none;
+        }
+
+        .assessment-lot-panel.active {
+            display: block;
+        }
+
+        .assessment-lot-banner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--spacing-md);
+            padding: var(--spacing-sm) var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+            background: var(--info-100);
+            border: 1px solid var(--info-50);
+            border-radius: var(--radius-md);
+            font-size: 12px;
+            color: var(--info-700);
+        }
+
         .card-header {
             padding: var(--spacing-md) var(--spacing-lg);
             border-bottom: 1px solid var(--surface-200);
@@ -3955,8 +4047,11 @@
                         </button>
                     </div>
 
-                    <!-- Workflow Progress - Improved alignment -->
+                    <!-- Workflow Progress - case-level overview; each lot completes Associate → Voting → Chair independently -->
                     <div style="margin-bottom: var(--spacing-xl); padding: var(--spacing-lg); background: var(--surface-0); border: 1px solid var(--surface-200); border-radius: var(--radius-lg);">
+                        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: var(--spacing-md);">
+                            <i class="pi pi-box"></i> This case has <strong>2 lots</strong>. Four principles, recommendation, member voting, and chair quality rating are completed <strong>per lot</strong> — select a lot below to review or act.
+                        </p>
                         <div style="display: flex; align-items: flex-start;">
                             <!-- Step 1 -->
                             <div style="flex: 1; text-align: center;">
@@ -3983,12 +4078,40 @@
                         </div>
                     </div>
 
+                    <!-- Per-lot assessment: principles, recommendation, voting, and quality rating are scoped to each lot -->
+                    <div class="assessment-lot-tabs" role="tablist" aria-label="Assessment by lot">
+                        <button type="button" class="assessment-lot-tab active" id="assessment-lot-tab-1" onclick="switchAssessmentLot(1)" role="tab" aria-selected="true" aria-controls="assessment-lot-1">
+                            <div class="assessment-lot-tab__title">📦 Lot 1: Personal Protective Equipment</div>
+                            <div class="assessment-lot-tab__meta">Award: MedSupply Global Inc. • USD 245,000</div>
+                            <div class="assessment-lot-tab__status">
+                                <span class="assessment-lot-tab__chip assessment-lot-tab__chip--done" id="lot-tab-chip-1-assoc">Associate ✓</span>
+                                <span class="assessment-lot-tab__chip assessment-lot-tab__chip--active" id="lot-tab-chip-1-vote">Voting 2/4</span>
+                                <span class="assessment-lot-tab__chip" id="lot-tab-chip-1-chair">Chair pending</span>
+                            </div>
+                        </button>
+                        <button type="button" class="assessment-lot-tab" id="assessment-lot-tab-2" onclick="switchAssessmentLot(2)" role="tab" aria-selected="false" aria-controls="assessment-lot-2">
+                            <div class="assessment-lot-tab__title">📦 Lot 2: Medical Diagnostic Equipment</div>
+                            <div class="assessment-lot-tab__meta">Award: HealthTech Solutions Ltd. • USD 412,500</div>
+                            <div class="assessment-lot-tab__status">
+                                <span class="assessment-lot-tab__chip assessment-lot-tab__chip--done" id="lot-tab-chip-2-assoc">Associate ✓</span>
+                                <span class="assessment-lot-tab__chip assessment-lot-tab__chip--active" id="lot-tab-chip-2-vote">Voting 1/4</span>
+                                <span class="assessment-lot-tab__chip" id="lot-tab-chip-2-chair">Chair pending</span>
+                            </div>
+                        </button>
+                    </div>
+
+                    <div id="assessment-lot-1" class="assessment-lot-panel active" role="tabpanel" data-lot="1">
+                    <div class="assessment-lot-banner">
+                        <span><i class="pi pi-info-circle"></i> Assessment for <strong>Lot 1: Personal Protective Equipment</strong> — four principles, recommendation, member voting, and chair quality rating are recorded per lot.</span>
+                        <span class="status-badge" style="background: var(--primary-100); color: var(--primary-700); font-size: 11px;">Member voting in progress</span>
+                    </div>
+
                     <!-- Section 1: CPC Associate Recommendation (UC-009) - Collapsible -->
                     <div class="card" style="margin-bottom: var(--spacing-md);" id="assessment-section-1">
-                        <div class="card-header" style="cursor: pointer;" onclick="toggleAssessmentSection(1)">
+                        <div class="card-header" style="cursor: pointer;" onclick="toggleAssessmentSection(1, 1)">
                             <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
                                 <i class="pi pi-chevron-down" id="assessment-chevron-1" style="transition: transform 0.2s;"></i>
-                                <span class="card-title">📋 CPC Associate Recommendation</span>
+                                <span class="card-title">📋 CPC Associate Recommendation — Lot 1</span>
                             </div>
                             <span class="status-badge" id="associate-status-badge" style="background: var(--success-100); color: var(--success-700);">Completed</span>
                         </div>
@@ -4015,7 +4138,7 @@
                             
                             <!-- Four Principles Assessment - Read only view -->
                             <div id="associate-principles-view">
-                                <h4 style="font-size: 13px; font-weight: 600; margin-bottom: var(--spacing-md); color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">Four Principles Assessment</h4>
+                                <h4 style="font-size: 13px; font-weight: 600; margin-bottom: var(--spacing-md); color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">Four Principles Assessment — Lot 1</h4>
                                 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-sm); margin-bottom: var(--spacing-lg);">
                                     <div style="padding: var(--spacing-md); background: var(--surface-50); border-radius: var(--radius-md); border-left: 3px solid var(--surface-300);">
                                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-xs);">
@@ -4051,7 +4174,7 @@
                                 <div style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-md); padding: var(--spacing-md);">
                                     <div style="display: flex; align-items: center; justify-content: space-between;">
                                         <div>
-                                            <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px;">Recommendation</div>
+                                            <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px;">Recommendation — Lot 1</div>
                                             <div style="font-weight: 600; font-size: 15px; color: var(--text-primary);">Accepted with Conditions</div>
                                         </div>
                                         <span style="background: var(--success-100); color: var(--success-700); padding: 4px 12px; border-radius: var(--radius-sm); font-size: 11px; font-weight: 600;">✓ Submitted</span>
@@ -4064,7 +4187,7 @@
 
                             <!-- Four Principles Assessment - Edit form (hidden by default, shown for editable cases) -->
                             <div id="associate-principles-form" style="display: none;">
-                                <h4 style="font-size: 13px; font-weight: 600; margin-bottom: var(--spacing-md); color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">Four Principles Assessment</h4>
+                                <h4 style="font-size: 13px; font-weight: 600; margin-bottom: var(--spacing-md); color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">Four Principles Assessment — Lot 1</h4>
                                 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-sm); margin-bottom: var(--spacing-lg);">
                                     <div style="padding: var(--spacing-md); background: var(--surface-50); border-radius: var(--radius-md);">
                                         <div style="font-weight: 600; font-size: 13px; color: var(--text-primary); margin-bottom: var(--spacing-sm);">Competition</div>
@@ -4130,10 +4253,10 @@
 
                     <!-- Section 2: CPC Members Voting (UC-010) - Collapsible -->
                     <div class="card" style="margin-bottom: var(--spacing-md);" id="assessment-section-2">
-                        <div class="card-header" style="cursor: pointer;" onclick="toggleAssessmentSection(2)">
+                        <div class="card-header" style="cursor: pointer;" onclick="toggleAssessmentSection(2, 1)">
                             <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
                                 <i class="pi pi-chevron-down" id="assessment-chevron-2" style="transition: transform 0.2s;"></i>
-                                <span class="card-title">🗳️ CPC Members Voting</span>
+                                <span class="card-title">🗳️ CPC Members Voting — Lot 1</span>
                             </div>
                             <span class="status-badge" id="voting-status-badge" style="background: var(--primary-100); color: var(--primary-700);">In Progress</span>
                         </div>
@@ -4142,7 +4265,7 @@
                             <i class="pi pi-info-circle"></i> CPC Members Voting is not required for Direct Review cases.
                             </div>
                             <div style="font-size: 13px; color: var(--text-secondary); margin-bottom: var(--spacing-md);">
-                                CPC Members review the Associate's recommendation and vote Agree/Disagree.
+                                CPC Members review the Associate's <strong>Lot 1</strong> recommendation and vote Agree/Disagree.
                             </div>
                             
                             <!-- Voting Progress -->
@@ -4188,12 +4311,12 @@
                             
                             <!-- Vote Form -->
                             <div style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-md); padding: var(--spacing-md);" id="member-vote-form">
-                                <div style="font-weight: 600; font-size: 13px; margin-bottom: var(--spacing-sm);">Your Vote</div>
+                                <div style="font-weight: 600; font-size: 13px; margin-bottom: var(--spacing-sm);">Your Vote — Lot 1</div>
                                 <div style="display: flex; gap: var(--spacing-sm); margin-bottom: var(--spacing-sm);">
-                                    <button class="btn btn-sm" style="background: var(--surface-0); border: 1px solid var(--success-400); color: var(--success-700);" onclick="submitMemberVote('agree')">
+                                    <button class="btn btn-sm" style="background: var(--surface-0); border: 1px solid var(--success-400); color: var(--success-700);" onclick="submitMemberVote('agree', 1)">
                                         <i class="pi pi-thumbs-up"></i> Agree
                                     </button>
-                                    <button class="btn btn-sm" style="background: var(--surface-0); border: 1px solid var(--danger-400); color: var(--danger-700);" onclick="submitMemberVote('disagree')">
+                                    <button class="btn btn-sm" style="background: var(--surface-0); border: 1px solid var(--danger-400); color: var(--danger-700);" onclick="submitMemberVote('disagree', 1)">
                                         <i class="pi pi-thumbs-down"></i> Disagree
                                     </button>
                                 </div>
@@ -4204,10 +4327,10 @@
 
                     <!-- Section 3: CPC Chair Quality Rating (UC-011) - Collapsible -->
                     <div class="card" style="margin-bottom: var(--spacing-md);" id="assessment-section-3">
-                        <div class="card-header" style="cursor: pointer;" onclick="toggleAssessmentSection(3)">
+                        <div class="card-header" style="cursor: pointer;" onclick="toggleAssessmentSection(3, 1)">
                             <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
                                 <i class="pi pi-chevron-down" id="assessment-chevron-3" style="transition: transform 0.2s;"></i>
-                                <span class="card-title">⭐ CPC Chair Quality Rating</span>
+                                <span class="card-title">⭐ CPC Chair Quality Rating — Lot 1</span>
                             </div>
                             <span class="status-badge" id="chair-status-badge" style="background: var(--surface-100); color: var(--text-muted);">Pending</span>
                         </div>
@@ -4224,13 +4347,13 @@
                             <div id="chair-locked-state">
                                 <div style="text-align: center; padding: var(--spacing-xl); color: var(--text-muted);">
                                     <i class="pi pi-lock" style="font-size: 32px; margin-bottom: var(--spacing-sm);"></i>
-                                    <p style="font-size: 13px; margin: 0;">Quality rating available after all members vote</p>
+                                    <p style="font-size: 13px; margin: 0;">Quality rating for Lot 1 available after all members vote on this lot</p>
                                 </div>
                             </div>
                             
                             <!-- Active state (shown when voting complete or for Chair Rating case) -->
                             <div id="chair-active-state" style="display: none;">
-                                <h4 style="font-size: 13px; font-weight: 600; margin-bottom: var(--spacing-md); color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">Quality Rating per Principle</h4>
+                                <h4 style="font-size: 13px; font-weight: 600; margin-bottom: var(--spacing-md); color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">Quality Rating per Principle — Lot 1</h4>
                                 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-sm); margin-bottom: var(--spacing-lg);">
                                     <div style="padding: var(--spacing-md); background: var(--surface-50); border-radius: var(--radius-md);">
                                         <div style="font-weight: 600; font-size: 13px; color: var(--text-primary); margin-bottom: var(--spacing-sm);">Competition</div>
@@ -4282,21 +4405,192 @@
                                 <div style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-md); padding: var(--spacing-md);">
                                     <div style="font-weight: 600; font-size: 13px; margin-bottom: var(--spacing-sm);">Chair's Final Vote</div>
                                     <div style="display: flex; gap: var(--spacing-sm); margin-bottom: var(--spacing-sm);">
-                                        <button class="btn btn-sm" style="background: var(--surface-0); border: 1px solid var(--success-400); color: var(--success-700);" onclick="submitChairVote('agree')">
+                                        <button class="btn btn-sm" style="background: var(--surface-0); border: 1px solid var(--success-400); color: var(--success-700);" onclick="submitChairVote('agree', 1)">
                                             <i class="pi pi-thumbs-up"></i> Agree
                                         </button>
-                                        <button class="btn btn-sm" style="background: var(--surface-0); border: 1px solid var(--danger-400); color: var(--danger-700);" onclick="submitChairVote('disagree')">
+                                        <button class="btn btn-sm" style="background: var(--surface-0); border: 1px solid var(--danger-400); color: var(--danger-700);" onclick="submitChairVote('disagree', 1)">
                                             <i class="pi pi-thumbs-down"></i> Disagree
                                         </button>
                                     </div>
                                     <textarea style="width: 100%; padding: var(--spacing-sm); border: 1px solid var(--surface-300); border-radius: var(--radius-sm); font-family: inherit; font-size: 12px;" rows="2" placeholder="Chair comments..."></textarea>
                                     <div style="margin-top: var(--spacing-sm);">
-                                        <button class="btn btn-primary btn-sm" onclick="submitChairRating()"><i class="pi pi-check"></i> Submit Rating & Vote</button>
+                                        <button class="btn btn-primary btn-sm" onclick="submitChairRating(1)"><i class="pi pi-check"></i> Submit Rating & Vote</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    </div><!-- /assessment-lot-1 -->
+
+                    <div id="assessment-lot-2" class="assessment-lot-panel" role="tabpanel" data-lot="2">
+                    <div class="assessment-lot-banner">
+                        <span><i class="pi pi-info-circle"></i> Assessment for <strong>Lot 2: Medical Diagnostic Equipment</strong> — single-source award requires separate justification per lot.</span>
+                        <span class="status-badge" style="background: var(--warning-100); color: var(--warning-700); font-size: 11px;">Voting started — 1 of 4</span>
+                    </div>
+
+                    <div class="card" style="margin-bottom: var(--spacing-md);" id="assessment-section-1-lot2">
+                        <div class="card-header" style="cursor: pointer;" onclick="toggleAssessmentSection(1, 2)">
+                            <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                                <i class="pi pi-chevron-down" id="assessment-chevron-1-lot2" style="transition: transform 0.2s;"></i>
+                                <span class="card-title">📋 CPC Associate Recommendation — Lot 2</span>
+                            </div>
+                            <span class="status-badge" id="associate-status-badge-lot2" style="background: var(--success-100); color: var(--success-700);">Completed</span>
+                        </div>
+                        <div class="card-body" id="assessment-content-1-lot2">
+                            <div id="associate-review-path-view-lot2" style="margin-bottom: var(--spacing-lg); padding-bottom: var(--spacing-md); border-bottom: 1px solid var(--surface-200);">
+                                <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px;">Review Path</div>
+                                <div style="font-weight: 600; font-size: 14px;">Voting</div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: var(--spacing-md); margin-bottom: var(--spacing-lg); padding-bottom: var(--spacing-md); border-bottom: 1px solid var(--surface-200);">
+                                <div class="member-avatar" style="width: 40px; height: 40px; font-size: 13px;">PM</div>
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600; font-size: 14px;">Peter Mueller</div>
+                                    <div style="font-size: 12px; color: var(--text-muted);">CPC Associate • Submitted: Dec 10, 2025</div>
+                                </div>
+                            </div>
+                            <div id="associate-principles-view-lot2">
+                                <h4 style="font-size: 13px; font-weight: 600; margin-bottom: var(--spacing-md); color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">Four Principles Assessment — Lot 2</h4>
+                                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-sm); margin-bottom: var(--spacing-lg);">
+                                    <div style="padding: var(--spacing-md); background: var(--surface-50); border-radius: var(--radius-md); border-left: 3px solid var(--surface-300);">
+                                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-xs);">
+                                            <div style="font-weight: 600; font-size: 13px;">Competition</div>
+                                            <span style="background: var(--surface-200); color: var(--warning-700); padding: 2px 8px; border-radius: var(--radius-sm); font-size: 10px; font-weight: 600;">Minor Concerns</span>
+                                        </div>
+                                        <p style="font-size: 12px; color: var(--text-secondary); margin: 0; line-height: 1.5;">Limited competition — single responsive bidder for specialized diagnostic equipment.</p>
+                                    </div>
+                                    <div style="padding: var(--spacing-md); background: var(--surface-50); border-radius: var(--radius-md); border-left: 3px solid var(--warning-400);">
+                                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-xs);">
+                                            <div style="font-weight: 600; font-size: 13px;">Evaluation</div>
+                                            <span style="background: var(--surface-200); color: var(--warning-700); padding: 2px 8px; border-radius: var(--radius-sm); font-size: 10px; font-weight: 600;">Minor Concerns</span>
+                                        </div>
+                                        <p style="font-size: 12px; color: var(--text-secondary); margin: 0; line-height: 1.5;">Technical evaluation completed; sole-source justification documented in evaluation report.</p>
+                                    </div>
+                                    <div style="padding: var(--spacing-md); background: var(--surface-50); border-radius: var(--radius-md); border-left: 3px solid var(--surface-300);">
+                                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-xs);">
+                                            <div style="font-weight: 600; font-size: 13px;">Value for Money</div>
+                                            <span style="background: var(--surface-200); color: var(--success-700); padding: 2px 8px; border-radius: var(--radius-sm); font-size: 10px; font-weight: 600;">Satisfactory</span>
+                                        </div>
+                                        <p style="font-size: 12px; color: var(--text-secondary); margin: 0; line-height: 1.5;">Benchmarked against UNOPS catalogue pricing; within acceptable range for sole-source.</p>
+                                    </div>
+                                    <div style="padding: var(--spacing-md); background: var(--surface-50); border-radius: var(--radius-md); border-left: 3px solid var(--surface-300);">
+                                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-xs);">
+                                            <div style="font-weight: 600; font-size: 13px;">Capacity</div>
+                                            <span style="background: var(--surface-200); color: var(--success-700); padding: 2px 8px; border-radius: var(--radius-sm); font-size: 10px; font-weight: 600;">Satisfactory</span>
+                                        </div>
+                                        <p style="font-size: 12px; color: var(--text-secondary); margin: 0; line-height: 1.5;">HealthTech Solutions Ltd. certified for medical device supply in target country.</p>
+                                    </div>
+                                </div>
+                                <div style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-md); padding: var(--spacing-md);">
+                                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                                        <div>
+                                            <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px;">Recommendation — Lot 2</div>
+                                            <div style="font-weight: 600; font-size: 15px; color: var(--text-primary);">Accepted with Conditions</div>
+                                        </div>
+                                        <span style="background: var(--success-100); color: var(--success-700); padding: 4px 12px; border-radius: var(--radius-sm); font-size: 11px; font-weight: 600;">✓ Submitted</span>
+                                    </div>
+                                    <div style="margin-top: var(--spacing-sm); padding-top: var(--spacing-sm); border-top: 1px solid var(--surface-200); font-size: 12px; color: var(--text-secondary);">
+                                        <strong>Conditions:</strong> CPC to note single-source selection of HealthTech Solutions Ltd.; enhanced post-award monitoring for delivery and warranty compliance.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" style="margin-bottom: var(--spacing-md);" id="assessment-section-2-lot2">
+                        <div class="card-header" style="cursor: pointer;" onclick="toggleAssessmentSection(2, 2)">
+                            <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                                <i class="pi pi-chevron-down" id="assessment-chevron-2-lot2" style="transition: transform 0.2s;"></i>
+                                <span class="card-title">🗳️ CPC Members Voting — Lot 2</span>
+                            </div>
+                            <span class="status-badge" id="voting-status-badge-lot2" style="background: var(--primary-100); color: var(--primary-700);">In Progress</span>
+                        </div>
+                        <div class="card-body" id="assessment-content-2-lot2">
+                            <div style="font-size: 13px; color: var(--text-secondary); margin-bottom: var(--spacing-md);">
+                                Members vote on the Associate's <strong>Lot 2</strong> recommendation independently from Lot 1.
+                            </div>
+                            <div style="display: flex; align-items: center; gap: var(--spacing-sm); margin-bottom: var(--spacing-lg); padding: var(--spacing-sm); background: var(--surface-50); border-radius: var(--radius-sm);">
+                                <div style="flex: 1; height: 6px; background: var(--surface-200); border-radius: 3px; overflow: hidden;">
+                                    <div id="voting-progress-bar-lot2" style="width: 25%; height: 100%; background: var(--primary-500);"></div>
+                                </div>
+                                <span style="font-size: 12px; font-weight: 600; color: var(--text-secondary);" id="voting-progress-text-lot2">1/4 Votes</span>
+                            </div>
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-sm); margin-bottom: var(--spacing-lg);">
+                                <div style="padding: var(--spacing-sm) var(--spacing-md); background: var(--surface-0); border: 1px dashed var(--surface-300); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: space-between;">
+                                    <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                                        <div class="member-avatar" style="width: 28px; height: 28px; font-size: 10px;">JS</div>
+                                        <span style="font-size: 13px; font-weight: 500;">John Smith</span>
+                                    </div>
+                                    <span style="background: var(--surface-100); color: var(--text-muted); padding: 2px 8px; border-radius: var(--radius-sm); font-size: 10px; font-weight: 600;">Pending</span>
+                                </div>
+                                <div style="padding: var(--spacing-sm) var(--spacing-md); background: var(--surface-0); border: 1px solid var(--surface-200); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: space-between;">
+                                    <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                                        <div class="member-avatar" style="width: 28px; height: 28px; font-size: 10px;">AK</div>
+                                        <span style="font-size: 13px; font-weight: 500;">Anna Kowalski</span>
+                                    </div>
+                                    <span style="background: var(--success-100); color: var(--success-700); padding: 2px 8px; border-radius: var(--radius-sm); font-size: 10px; font-weight: 600;">Agree</span>
+                                </div>
+                                <div style="padding: var(--spacing-sm) var(--spacing-md); background: var(--surface-0); border: 1px dashed var(--surface-300); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: space-between;">
+                                    <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                                        <div class="member-avatar" style="width: 28px; height: 28px; font-size: 10px;">LC</div>
+                                        <span style="font-size: 13px; font-weight: 500;">Luis Chen</span>
+                                    </div>
+                                    <span style="background: var(--surface-100); color: var(--text-muted); padding: 2px 8px; border-radius: var(--radius-sm); font-size: 10px; font-weight: 600;">Pending</span>
+                                </div>
+                                <div style="padding: var(--spacing-sm) var(--spacing-md); background: var(--surface-0); border: 1px dashed var(--surface-300); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: space-between;">
+                                    <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                                        <div class="member-avatar" style="width: 28px; height: 28px; font-size: 10px;">FK</div>
+                                        <span style="font-size: 13px; font-weight: 500;">Fatima Khalil</span>
+                                    </div>
+                                    <span style="background: var(--surface-100); color: var(--text-muted); padding: 2px 8px; border-radius: var(--radius-sm); font-size: 10px; font-weight: 600;">Pending</span>
+                                </div>
+                            </div>
+                            <div style="background: var(--surface-50); border: 1px solid var(--surface-200); border-radius: var(--radius-md); padding: var(--spacing-md);" id="member-vote-form-lot2">
+                                <div style="font-weight: 600; font-size: 13px; margin-bottom: var(--spacing-sm);">Your Vote — Lot 2</div>
+                                <div style="display: flex; gap: var(--spacing-sm); margin-bottom: var(--spacing-sm);">
+                                    <button class="btn btn-sm" style="background: var(--surface-0); border: 1px solid var(--success-400); color: var(--success-700);" onclick="submitMemberVote('agree', 2)">
+                                        <i class="pi pi-thumbs-up"></i> Agree
+                                    </button>
+                                    <button class="btn btn-sm" style="background: var(--surface-0); border: 1px solid var(--danger-400); color: var(--danger-700);" onclick="submitMemberVote('disagree', 2)">
+                                        <i class="pi pi-thumbs-down"></i> Disagree
+                                    </button>
+                                </div>
+                                <textarea style="width: 100%; padding: var(--spacing-sm); border: 1px solid var(--surface-300); border-radius: var(--radius-sm); font-family: inherit; font-size: 12px;" rows="2" placeholder="Optional comments for Lot 2..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" style="margin-bottom: var(--spacing-md);" id="assessment-section-3-lot2">
+                        <div class="card-header" style="cursor: pointer;" onclick="toggleAssessmentSection(3, 2)">
+                            <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                                <i class="pi pi-chevron-down" id="assessment-chevron-3-lot2" style="transition: transform 0.2s;"></i>
+                                <span class="card-title">⭐ CPC Chair Quality Rating — Lot 2</span>
+                            </div>
+                            <span class="status-badge" id="chair-status-badge-lot2" style="background: var(--surface-100); color: var(--text-muted);">Pending</span>
+                        </div>
+                        <div class="card-body" id="assessment-content-3-lot2">
+                            <div style="display: flex; align-items: center; gap: var(--spacing-md); margin-bottom: var(--spacing-lg); padding-bottom: var(--spacing-md); border-bottom: 1px solid var(--surface-200);">
+                                <div class="member-avatar" style="width: 40px; height: 40px; font-size: 13px; background: var(--purple-100); color: var(--purple-700);">MG</div>
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600; font-size: 14px;">Maria Garcia</div>
+                                    <div style="font-size: 12px; color: var(--text-muted);">CPC Chair</div>
+                                </div>
+                            </div>
+                            <div id="chair-locked-state-lot2">
+                                <div style="text-align: center; padding: var(--spacing-xl); color: var(--text-muted);">
+                                    <i class="pi pi-lock" style="font-size: 32px; margin-bottom: var(--spacing-sm);"></i>
+                                    <p style="font-size: 13px; margin: 0;">Quality rating for Lot 2 available after all members vote on this lot</p>
+                                </div>
+                            </div>
+                            <div id="chair-active-state-lot2" style="display: none;">
+                                <h4 style="font-size: 13px; font-weight: 600; margin-bottom: var(--spacing-md); color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">Quality Rating per Principle — Lot 2</h4>
+                                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: var(--spacing-md);">Chair rates each principle separately for Lot 2 before final vote.</p>
+                                <div style="margin-top: var(--spacing-sm);">
+                                    <button class="btn btn-primary btn-sm" onclick="submitChairRating(2)"><i class="pi pi-check"></i> Submit Lot 2 Rating & Vote</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div><!-- /assessment-lot-2 -->
 
                 </div>
 
@@ -5898,7 +6192,10 @@
         }
 
         function toggleAllAssessmentSections() {
-            const sections = document.querySelectorAll('#tab-assessment .card');
+            const activePanel = document.querySelector('.assessment-lot-panel.active');
+            const sections = activePanel
+                ? activePanel.querySelectorAll('.card')
+                : document.querySelectorAll('#tab-assessment .assessment-lot-panel.active .card');
             assessSectionsCollapsed = !assessSectionsCollapsed;
             
             sections.forEach(card => {
@@ -6312,16 +6609,43 @@
         }
 
         // ===== ASSESSMENT & VOTING FUNCTIONS =====
-        function toggleAssessmentSection(sectionNum) {
+        let currentAssessmentLot = 1;
+
+        function assessmentLotSuffix(lotNum) {
+            return lotNum === 2 ? '-lot2' : '';
+        }
+
+        function switchAssessmentLot(lotNum) {
+            currentAssessmentLot = lotNum;
+            document.querySelectorAll('.assessment-lot-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            document.querySelectorAll('.assessment-lot-tab').forEach(tab => {
+                tab.classList.remove('active');
+                tab.setAttribute('aria-selected', 'false');
+            });
+            const panel = document.getElementById('assessment-lot-' + lotNum);
+            const tab = document.getElementById('assessment-lot-tab-' + lotNum);
+            if (panel) panel.classList.add('active');
+            if (tab) {
+                tab.classList.add('active');
+                tab.setAttribute('aria-selected', 'true');
+            }
+        }
+
+        function toggleAssessmentSection(sectionNum, lotNum) {
+            lotNum = lotNum || 1;
+            const suffix = assessmentLotSuffix(lotNum);
             if (sectionNum === 2) {
-                const votingSection = document.getElementById('assessment-section-2');
+                const votingSection = document.getElementById('assessment-section-2' + suffix);
                 if (votingSection && votingSection.classList.contains('assessment-section-disabled')) {
                     return;
                 }
             }
-            const content = document.getElementById('assessment-content-' + sectionNum);
-            const chevron = document.getElementById('assessment-chevron-' + sectionNum);
-            
+            const content = document.getElementById('assessment-content-' + sectionNum + suffix);
+            const chevron = document.getElementById('assessment-chevron-' + sectionNum + suffix);
+            if (!content || !chevron) return;
+
             if (content.style.display === 'none') {
                 content.style.display = 'block';
                 chevron.style.transform = 'rotate(0deg)';
@@ -6378,181 +6702,195 @@
 
         function configureAssessmentTab(scenario) {
             // scenario: 'associate-edit', 'member-voting', 'chair-rating', 'completed'
-            
-            // Reset all states
-            document.getElementById('associate-principles-view').style.display = 'block';
-            document.getElementById('associate-principles-form').style.display = 'none';
-            document.getElementById('member-vote-form').style.display = 'block';
-            document.getElementById('chair-locked-state').style.display = 'block';
-            document.getElementById('chair-active-state').style.display = 'none';
-            
-            // Progress indicators
-            const step1 = document.getElementById('progress-step-1');
-            const step2 = document.getElementById('progress-step-2');
-            const step3 = document.getElementById('progress-step-3');
-            const line1 = document.getElementById('progress-line-1');
-            const line2 = document.getElementById('progress-line-2');
-            
-            // Status badges
-            const associateBadge = document.getElementById('associate-status-badge');
-            const votingBadge = document.getElementById('voting-status-badge');
-            const chairBadge = document.getElementById('chair-status-badge');
-            
-            if (scenario === 'associate-edit') {
-                syncReviewPathUi('edit', document.getElementById('associate-review-path')?.value || 'voting');
-                // CPC Associate is editing their recommendation
-                document.getElementById('associate-principles-view').style.display = 'none';
-                document.getElementById('associate-principles-form').style.display = 'block';
-                document.getElementById('member-vote-form').style.display = 'none';
-                
-                step1.innerHTML = '1';
-                step1.style.background = 'var(--primary-500)';
-                step2.style.background = 'var(--surface-300)';
-                step2.style.color = 'var(--text-muted)';
-                line1.style.background = 'var(--surface-300)';
-                
-                associateBadge.textContent = 'Draft';
-                associateBadge.style.background = 'var(--warning-100)';
-                associateBadge.style.color = 'var(--warning-700)';
-                votingBadge.textContent = 'Pending';
-                votingBadge.style.background = 'var(--surface-100)';
-                votingBadge.style.color = 'var(--text-muted)';
-                chairBadge.textContent = 'Pending';
-                
+            switchAssessmentLot(1);
+            configureAssessmentLot(1, scenario);
+            configureAssessmentLot(2, scenario === 'member-voting' ? 'member-voting-lot2' : scenario);
+        }
+
+        function configureAssessmentLot(lotNum, scenario) {
+            const suffix = assessmentLotSuffix(lotNum);
+            const principlesView = document.getElementById('associate-principles-view' + suffix);
+            const principlesForm = document.getElementById('associate-principles-form' + suffix);
+            const memberVoteForm = document.getElementById('member-vote-form' + suffix);
+            const chairLocked = document.getElementById('chair-locked-state' + suffix);
+            const chairActive = document.getElementById('chair-active-state' + suffix);
+
+            if (principlesView) principlesView.style.display = 'block';
+            if (principlesForm) principlesForm.style.display = 'none';
+            if (memberVoteForm) memberVoteForm.style.display = 'block';
+            if (chairLocked) chairLocked.style.display = 'block';
+            if (chairActive) chairActive.style.display = 'none';
+
+            const associateBadge = document.getElementById('associate-status-badge' + suffix);
+            const votingBadge = document.getElementById('voting-status-badge' + suffix);
+            const chairBadge = document.getElementById('chair-status-badge' + suffix);
+            const votingProgressBar = document.getElementById('voting-progress-bar' + suffix);
+            const votingProgressText = document.getElementById('voting-progress-text' + suffix);
+
+            if (lotNum === 1) {
+                const step1 = document.getElementById('progress-step-1');
+                const step2 = document.getElementById('progress-step-2');
+                const step3 = document.getElementById('progress-step-3');
+                const line1 = document.getElementById('progress-line-1');
+                const line2 = document.getElementById('progress-line-2');
+
+                if (scenario === 'associate-edit') {
+                    syncReviewPathUi('edit', document.getElementById('associate-review-path')?.value || 'voting');
+                    if (principlesView) principlesView.style.display = 'none';
+                    if (principlesForm) principlesForm.style.display = 'block';
+                    if (memberVoteForm) memberVoteForm.style.display = 'none';
+                    if (step1) { step1.innerHTML = '1'; step1.style.background = 'var(--primary-500)'; }
+                    if (step2) { step2.style.background = 'var(--surface-300)'; step2.style.color = 'var(--text-muted)'; }
+                    if (line1) line1.style.background = 'var(--surface-300)';
+                } else if (scenario === 'member-voting' || scenario === 'member-voting-lot2') {
+                    syncReviewPathUi('view', 'voting');
+                    if (step1) { step1.innerHTML = '✓'; step1.style.background = 'var(--success-500)'; }
+                    if (step2) { step2.style.background = 'var(--primary-500)'; step2.style.color = 'white'; }
+                    if (line1) line1.style.background = 'var(--success-500)';
+                } else if (scenario === 'chair-rating') {
+                    if (memberVoteForm) memberVoteForm.style.display = 'none';
+                    if (chairLocked) chairLocked.style.display = 'none';
+                    if (chairActive) chairActive.style.display = 'block';
+                    if (step1) { step1.innerHTML = '✓'; step1.style.background = 'var(--success-500)'; }
+                    if (step2) { step2.innerHTML = '✓'; step2.style.background = 'var(--success-500)'; }
+                    if (step3) { step3.style.background = 'var(--primary-500)'; step3.style.color = 'white'; }
+                    if (line1) line1.style.background = 'var(--success-500)';
+                    if (line2) line2.style.background = 'var(--success-500)';
+                } else if (scenario === 'completed') {
+                    if (memberVoteForm) memberVoteForm.style.display = 'none';
+                    if (chairLocked) chairLocked.style.display = 'none';
+                    if (chairActive) chairActive.style.display = 'block';
+                    if (step1) { step1.innerHTML = '✓'; step1.style.background = 'var(--success-500)'; }
+                    if (step2) { step2.innerHTML = '✓'; step2.style.background = 'var(--success-500)'; }
+                    if (step3) { step3.innerHTML = '✓'; step3.style.background = 'var(--success-500)'; }
+                    if (line1) line1.style.background = 'var(--success-500)';
+                    if (line2) line2.style.background = 'var(--success-500)';
+                } else if (scenario === 'fresh') {
+                    syncReviewPathUi('edit', 'voting');
+                    if (principlesView) principlesView.style.display = 'none';
+                    if (principlesForm) principlesForm.style.display = 'block';
+                    if (memberVoteForm) memberVoteForm.style.display = 'none';
+                    if (chairLocked) chairLocked.style.display = 'block';
+                    if (chairActive) chairActive.style.display = 'none';
+                    if (step1) { step1.innerHTML = '1'; step1.style.background = 'var(--primary-500)'; step1.style.color = 'white'; }
+                    if (step2) { step2.innerHTML = '2'; step2.style.background = 'var(--surface-300)'; step2.style.color = 'var(--text-muted)'; }
+                    if (step3) { step3.innerHTML = '3'; step3.style.background = 'var(--surface-300)'; step3.style.color = 'var(--text-muted)'; }
+                    if (line1) line1.style.background = 'var(--surface-300)';
+                    if (line2) line2.style.background = 'var(--surface-300)';
+                }
+            }
+
+            if (scenario === 'associate-edit' && lotNum === 1) {
+                if (associateBadge) {
+                    associateBadge.textContent = 'Draft';
+                    associateBadge.style.background = 'var(--warning-100)';
+                    associateBadge.style.color = 'var(--warning-700)';
+                }
+                if (votingBadge) { votingBadge.textContent = 'Pending'; votingBadge.style.background = 'var(--surface-100)'; votingBadge.style.color = 'var(--text-muted)'; }
+                if (chairBadge) chairBadge.textContent = 'Pending';
             } else if (scenario === 'member-voting') {
-                syncReviewPathUi('view', 'voting');
-                // Members are voting (default scenario)
-                step1.innerHTML = '✓';
-                step1.style.background = 'var(--success-500)';
-                step2.style.background = 'var(--primary-500)';
-                step2.style.color = 'white';
-                line1.style.background = 'var(--success-500)';
-                
-                associateBadge.textContent = 'Completed';
-                associateBadge.style.background = 'var(--success-100)';
-                associateBadge.style.color = 'var(--success-700)';
-                votingBadge.textContent = 'In Progress';
-                votingBadge.style.background = 'var(--primary-100)';
-                votingBadge.style.color = 'var(--primary-700)';
-                chairBadge.textContent = 'Pending';
-                chairBadge.style.background = 'var(--surface-100)';
-                chairBadge.style.color = 'var(--text-muted)';
-                
+                if (associateBadge) {
+                    associateBadge.textContent = 'Completed';
+                    associateBadge.style.background = 'var(--success-100)';
+                    associateBadge.style.color = 'var(--success-700)';
+                }
+                if (votingBadge) {
+                    votingBadge.textContent = 'In Progress';
+                    votingBadge.style.background = 'var(--primary-100)';
+                    votingBadge.style.color = 'var(--primary-700)';
+                }
+                if (chairBadge) { chairBadge.textContent = 'Pending'; chairBadge.style.background = 'var(--surface-100)'; chairBadge.style.color = 'var(--text-muted)'; }
+                if (votingProgressBar) votingProgressBar.style.width = '50%';
+                if (votingProgressText) votingProgressText.textContent = '2/4 Votes';
+            } else if (scenario === 'member-voting-lot2') {
+                if (associateBadge) {
+                    associateBadge.textContent = 'Completed';
+                    associateBadge.style.background = 'var(--success-100)';
+                    associateBadge.style.color = 'var(--success-700)';
+                }
+                if (votingBadge) {
+                    votingBadge.textContent = 'In Progress';
+                    votingBadge.style.background = 'var(--primary-100)';
+                    votingBadge.style.color = 'var(--primary-700)';
+                }
+                if (chairBadge) { chairBadge.textContent = 'Pending'; chairBadge.style.background = 'var(--surface-100)'; chairBadge.style.color = 'var(--text-muted)'; }
+                if (votingProgressBar) votingProgressBar.style.width = '25%';
+                if (votingProgressText) votingProgressText.textContent = '1/4 Votes';
             } else if (scenario === 'chair-rating') {
-                // Chair is doing quality rating
-                document.getElementById('member-vote-form').style.display = 'none';
-                document.getElementById('chair-locked-state').style.display = 'none';
-                document.getElementById('chair-active-state').style.display = 'block';
-                
-                step1.innerHTML = '✓';
-                step1.style.background = 'var(--success-500)';
-                step2.innerHTML = '✓';
-                step2.style.background = 'var(--success-500)';
-                step3.style.background = 'var(--primary-500)';
-                step3.style.color = 'white';
-                line1.style.background = 'var(--success-500)';
-                line2.style.background = 'var(--success-500)';
-                
-                // Update voting grid to show all voted
-                document.getElementById('voting-progress-bar').style.width = '100%';
-                document.getElementById('voting-progress-text').textContent = '4/4 Votes';
-                
-                associateBadge.textContent = 'Completed';
-                associateBadge.style.background = 'var(--success-100)';
-                associateBadge.style.color = 'var(--success-700)';
-                votingBadge.textContent = 'Completed';
-                votingBadge.style.background = 'var(--success-100)';
-                votingBadge.style.color = 'var(--success-700)';
-                chairBadge.textContent = 'In Progress';
-                chairBadge.style.background = 'var(--primary-100)';
-                chairBadge.style.color = 'var(--primary-700)';
-                
+                if (memberVoteForm) memberVoteForm.style.display = 'none';
+                if (chairLocked) chairLocked.style.display = 'none';
+                if (chairActive) chairActive.style.display = 'block';
+                if (votingProgressBar) votingProgressBar.style.width = '100%';
+                if (votingProgressText) votingProgressText.textContent = '4/4 Votes';
+                if (associateBadge) {
+                    associateBadge.textContent = 'Completed';
+                    associateBadge.style.background = 'var(--success-100)';
+                    associateBadge.style.color = 'var(--success-700)';
+                }
+                if (votingBadge) {
+                    votingBadge.textContent = 'Completed';
+                    votingBadge.style.background = 'var(--success-100)';
+                    votingBadge.style.color = 'var(--success-700)';
+                }
+                if (chairBadge) {
+                    chairBadge.textContent = 'In Progress';
+                    chairBadge.style.background = 'var(--primary-100)';
+                    chairBadge.style.color = 'var(--primary-700)';
+                }
             } else if (scenario === 'completed') {
-                // All done
-                document.getElementById('member-vote-form').style.display = 'none';
-                document.getElementById('chair-locked-state').style.display = 'none';
-                document.getElementById('chair-active-state').style.display = 'block';
-                
-                step1.innerHTML = '✓';
-                step1.style.background = 'var(--success-500)';
-                step2.innerHTML = '✓';
-                step2.style.background = 'var(--success-500)';
-                step3.innerHTML = '✓';
-                step3.style.background = 'var(--success-500)';
-                line1.style.background = 'var(--success-500)';
-                line2.style.background = 'var(--success-500)';
-                
-                document.getElementById('voting-progress-bar').style.width = '100%';
-                document.getElementById('voting-progress-text').textContent = '4/4 Votes';
-                
-                associateBadge.textContent = 'Completed';
-                associateBadge.style.background = 'var(--success-100)';
-                associateBadge.style.color = 'var(--success-700)';
-                votingBadge.textContent = 'Completed';
-                votingBadge.style.background = 'var(--success-100)';
-                votingBadge.style.color = 'var(--success-700)';
-                chairBadge.textContent = 'Completed';
-                chairBadge.style.background = 'var(--success-100)';
-                chairBadge.style.color = 'var(--success-700)';
-                
-            } else if (scenario === 'fresh') {
-                syncReviewPathUi('edit', 'voting');
-                // Fresh case - Only Associate Recommendation is active, rest empty
-                document.getElementById('associate-principles-view').style.display = 'none';
-                document.getElementById('associate-principles-form').style.display = 'block';
-                document.getElementById('member-vote-form').style.display = 'none';
-                document.getElementById('chair-locked-state').style.display = 'block';
-                document.getElementById('chair-active-state').style.display = 'none';
-                
-                // Step 1 is active (not completed), rest are pending
-                step1.innerHTML = '1';
-                step1.style.background = 'var(--primary-500)';
-                step1.style.color = 'white';
-                step2.innerHTML = '2';
-                step2.style.background = 'var(--surface-300)';
-                step2.style.color = 'var(--text-muted)';
-                step3.innerHTML = '3';
-                step3.style.background = 'var(--surface-300)';
-                step3.style.color = 'var(--text-muted)';
-                line1.style.background = 'var(--surface-300)';
-                line2.style.background = 'var(--surface-300)';
-                
-                associateBadge.textContent = 'Not Started';
-                associateBadge.style.background = 'var(--info-100)';
-                associateBadge.style.color = 'var(--info-700)';
-                votingBadge.textContent = 'Pending';
-                votingBadge.style.background = 'var(--surface-100)';
-                votingBadge.style.color = 'var(--text-muted)';
-                chairBadge.textContent = 'Pending';
-                chairBadge.style.background = 'var(--surface-100)';
-                chairBadge.style.color = 'var(--text-muted)';
-                
-                // Reset voting progress
-                const votingProgressBar = document.getElementById('voting-progress-bar');
-                const votingProgressText = document.getElementById('voting-progress-text');
+                if (memberVoteForm) memberVoteForm.style.display = 'none';
+                if (chairLocked) chairLocked.style.display = 'none';
+                if (chairActive) chairActive.style.display = 'block';
+                if (votingProgressBar) votingProgressBar.style.width = '100%';
+                if (votingProgressText) votingProgressText.textContent = '4/4 Votes';
+                if (associateBadge) {
+                    associateBadge.textContent = 'Completed';
+                    associateBadge.style.background = 'var(--success-100)';
+                    associateBadge.style.color = 'var(--success-700)';
+                }
+                if (votingBadge) {
+                    votingBadge.textContent = 'Completed';
+                    votingBadge.style.background = 'var(--success-100)';
+                    votingBadge.style.color = 'var(--success-700)';
+                }
+                if (chairBadge) {
+                    chairBadge.textContent = 'Completed';
+                    chairBadge.style.background = 'var(--success-100)';
+                    chairBadge.style.color = 'var(--success-700)';
+                }
+            } else if (scenario === 'fresh' && lotNum === 1) {
+                if (associateBadge) {
+                    associateBadge.textContent = 'Not Started';
+                    associateBadge.style.background = 'var(--info-100)';
+                    associateBadge.style.color = 'var(--info-700)';
+                }
+                if (votingBadge) { votingBadge.textContent = 'Pending'; votingBadge.style.background = 'var(--surface-100)'; votingBadge.style.color = 'var(--text-muted)'; }
+                if (chairBadge) { chairBadge.textContent = 'Pending'; chairBadge.style.background = 'var(--surface-100)'; chairBadge.style.color = 'var(--text-muted)'; }
                 if (votingProgressBar) votingProgressBar.style.width = '0%';
                 if (votingProgressText) votingProgressText.textContent = '0/4 Votes';
             }
         }
 
-        function submitMemberVote(vote) {
+        function submitMemberVote(vote, lotNum) {
+            const lotLabel = lotNum ? ' (Lot ' + lotNum + ')' : '';
             if (vote === 'agree') {
-                showToast('✅ Your vote (Agree) has been recorded', 'success');
+                showToast('✅ Your vote (Agree) has been recorded' + lotLabel, 'success');
             } else {
-                showToast('❌ Your vote (Disagree) has been recorded', 'warning');
+                showToast('❌ Your vote (Disagree) has been recorded' + lotLabel, 'warning');
             }
         }
 
-        function submitChairVote(vote) {
+        function submitChairVote(vote, lotNum) {
+            const lotLabel = lotNum ? ' — Lot ' + lotNum : '';
             if (vote === 'agree') {
-                showToast('✅ Chair vote (Agree) recorded', 'success');
+                showToast('✅ Chair vote (Agree) recorded' + lotLabel, 'success');
             } else {
-                showToast('❌ Chair vote (Disagree) recorded', 'warning');
+                showToast('❌ Chair vote (Disagree) recorded' + lotLabel, 'warning');
             }
         }
 
-        function submitChairRating() {
-            showToast('⭐ Quality rating and vote submitted successfully', 'success');
+        function submitChairRating(lotNum) {
+            showToast('⭐ Quality rating and vote submitted for Lot ' + (lotNum || 1), 'success');
         }
 
         function submitAssociateRecommendation() {
