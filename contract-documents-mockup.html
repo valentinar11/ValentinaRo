@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<!-- NON-AUTHORITATIVE visual reference for docs/specs/2026-10-13-103316-business-feedback-dev-round-2/rules.md §13
+     (Contract documents library). rules.md wins on any conflict. -->
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contract documents — UNOPS Procurement (spec mockup)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+/* ============================================================================
+   UNOPS Procurement — spec-mockup design system (production-grounded).
+
+   These tokens and component styles mirror the REAL app. Source of truth:
+     platform/frontend/theme/agnostic/brand-tokens.css   (tokens)
+     platform/frontend/theme/agnostic/base-theme.scss    (.ops-* components)
+   The real app is React + Tailwind v4 + these CSS variables. A mockup can't
+   import the React components, so it re-creates their look with the classes
+   below — all driven by the same tokens, so it stays pixel-faithful.
+
+   RULES when authoring a mockup:
+   - Copy this whole block into the mockup's <style>. Do NOT invent colours,
+     fonts, spacing, or radii — only use these tokens.
+   - Add feature-specific classes BELOW this block, still using the tokens.
+   - If you need a token/component not here, read the two source files above
+     and bring the real value across (and consider updating this base).
+   ============================================================================ */
+
+:root {
+  /* Brand — primary ramp */
+  --color-brand-primary: #0092d1;
+  --color-brand-primary-50: #f0f8ff;
+  --color-brand-primary-100: #e3f2fd;
+  --color-brand-primary-200: #b3e0f7;
+  --color-brand-primary-300: #7dccf0;
+  --color-brand-primary-400: #4ec3e0;
+  --color-brand-primary-600: #007bb8;
+  --color-brand-primary-700: #005a8a;
+  --color-brand-primary-800: #004976;
+  --color-brand-primary-900: #003455;
+  /* Brand — secondary + accents */
+  --color-brand-secondary: #004976;
+  --color-brand-accent-yellow: #cc8400;
+  --color-brand-accent-orange: #e85c0e;
+  --color-brand-accent-cherry: #991e66;
+  --color-brand-accent-lime: #c4d600;
+  --color-brand-accent-teal: #00a997;
+
+  /* Surfaces, borders, text (light theme) */
+  --color-bg: #f4f7fb;
+  --color-surface: #fafbfe;
+  --color-surface-raised: #fdfeff;
+  --color-surface-sunken: #ecf0f7;
+  --color-border: #d8e1ed;
+  --color-border-strong: #b8c6d8;
+  --color-border-subtle: #ebf0f7;
+  --color-text: #0c1622;
+  --color-text-secondary: #3a4d62;
+  --color-text-muted: #738ba2;
+  --color-text-on-primary: #ffffff;
+  --color-text-link: #0092d1;
+
+  /* Inputs */
+  --color-input-bg: #fafbfe;
+  --color-input-border: #d8e1ed;
+  --color-input-border-focus: #0092d1;
+
+  /* Interactive states */
+  --color-hover: rgba(0, 146, 209, 0.06);
+  --color-active: rgba(0, 146, 209, 0.12);
+  --color-selected: rgba(0, 146, 209, 0.08);
+  --color-focus-ring: rgba(0, 146, 209, 0.35);
+
+  /* Status palette (matches production .ops-chip / .status-badge) */
+  --color-status-info-bg: #e3f2fd;       --color-status-info-text: #005a8a;
+  --color-status-active-bg: #ccf3e8;     --color-status-active-text: #0a5c4a;
+  --color-status-draft-bg: #fdf2c8;      --color-status-draft-text: #7a3b0e;
+  --color-status-warning-bg: #fef3c7;    --color-status-warning-text: #92400e;
+  --color-status-danger-bg: #fce0e4;     --color-status-danger-text: #8c1e3a;
+  --color-chip-bg: #ecf0f7;              --color-chip-text: #3a4d62;
+  --color-chip-border: #d8e1ed;
+
+  /* Buttons */
+  --color-btn-primary-bg: #0092d1;
+  --color-btn-primary-hover: #007ab5;
+
+  /* Typography */
+  --font-family-display: 'Inter', 'Noto Sans', system-ui, sans-serif;
+  --font-family-body: 'Inter', 'Noto Sans', system-ui, sans-serif;
+  --font-family-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, Consolas, monospace;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.8125rem;
+  --font-size-base: 0.9375rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --letter-spacing-tight: -0.02em;
+  --letter-spacing-wide: 0.04em;
+
+  /* Spacing */
+  --spacing-1: 0.25rem;
+  --spacing-2: 0.5rem;
+  --spacing-3: 0.75rem;
+  --spacing-4: 1rem;
+  --spacing-6: 1.5rem;
+  --spacing-8: 2rem;
+
+  /* Radii */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-full: 9999px;
+
+  /* Layout */
+  --layout-sm: 40rem;
+  --layout-md: 52rem;
+  --sidebar-w: 56px;          /* collapsed icon rail (production: 240px expanded) */
+  --transition-fast: 150ms ease;
+
+  /* Shadows (light theme) */
+  --shadow-xs: 0 1px 2px rgba(0, 73, 118, 0.05);
+  --shadow-sm: 0 1px 3px rgba(0, 73, 118, 0.07), 0 0 0 1px rgba(0, 73, 118, 0.04);
+  --shadow-md: 0 4px 16px rgba(0, 73, 118, 0.09), 0 1px 4px rgba(0, 73, 118, 0.05), 0 0 0 1px rgba(0, 73, 118, 0.03);
+  --shadow-lg: 0 12px 40px rgba(0, 73, 118, 0.11), 0 2px 8px rgba(0, 73, 118, 0.05), 0 0 0 1px rgba(0, 73, 118, 0.03);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  font-family: var(--font-family-body);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-normal);
+}
+
+/* ---- App shell: fixed 56px icon sidebar + scrolling main ---- */
+.app { display: flex; min-height: 100vh; }
+.sidebar {
+  position: fixed; top: 0; left: 0; height: 100vh; width: var(--sidebar-w);
+  display: flex; flex-direction: column; align-items: center;
+  background: var(--color-surface); border-right: 1px solid var(--color-border);
+  z-index: 200; padding: var(--spacing-3) 0; gap: var(--spacing-1);
+}
+.sidebar__logo {
+  width: 2rem; height: 2rem; margin-bottom: var(--spacing-3);
+  background: var(--color-brand-primary); border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--color-surface); font-weight: 700; font-size: var(--font-size-xs);
+}
+.sb-icon {
+  width: 2.25rem; height: 2.25rem; border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--color-text-muted); text-decoration: none;
+}
+.sb-icon svg { width: 1.125rem; height: 1.125rem; }      /* Lucide-style 20px stroke icons */
+.sb-icon--active { background: var(--color-selected); color: var(--color-brand-primary); }
+.sidebar__avatar {
+  margin-top: auto; width: 2rem; height: 2rem; border-radius: var(--radius-full);
+  background: var(--color-brand-primary); color: var(--color-surface);
+  display: flex; align-items: center; justify-content: center;
+  font-size: var(--font-size-xs); font-weight: 600;
+}
+.main {
+  flex: 1; margin-left: var(--sidebar-w); min-height: 100vh;
+  overflow-y: auto; padding: var(--spacing-6) var(--spacing-8);
+}
+.view[hidden] { display: none !important; }
+
+/* ---- Page shell: breadcrumb, header (title + actions), badges ---- */
+.page-shell { width: 100%; max-width: var(--layout-md); margin-inline: auto; }
+.page-shell--wide { max-width: none; }
+.page-shell__breadcrumb {
+  display: flex; align-items: center; gap: var(--spacing-1);
+  font-size: var(--font-size-sm); color: var(--color-text-secondary); margin-bottom: var(--spacing-2);
+}
+.page-shell__breadcrumb-link { color: var(--color-text-link); text-decoration: none; cursor: pointer; }
+.page-shell__breadcrumb-link:hover { color: var(--color-text); }
+.page-shell__breadcrumb-sep, .page-shell__breadcrumb-current { color: var(--color-text-muted); }
+.page-shell__header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: var(--spacing-4); margin-bottom: var(--spacing-6);
+}
+.page-shell__title {
+  font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-tight); line-height: var(--line-height-tight);
+}
+.page-shell__subtitle { font-size: var(--font-size-sm); color: var(--color-text-secondary); margin-top: var(--spacing-1); }
+.page-shell__actions { display: flex; flex-wrap: wrap; gap: var(--spacing-2); flex-shrink: 0; }
+.page-shell__badges { display: flex; flex-wrap: wrap; gap: var(--spacing-2); margin-top: var(--spacing-2); }
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+
+/* ---- Search box ---- */
+.ops-search { position: relative; width: 100%; max-width: var(--layout-sm); }
+.ops-search__icon {
+  position: absolute; left: var(--spacing-3); top: 50%; transform: translateY(-50%);
+  color: var(--color-text-muted); pointer-events: none; width: 16px; height: 16px;
+}
+.ops-search__input {
+  width: 100%;
+  padding: var(--spacing-2) var(--spacing-3) var(--spacing-2) calc(var(--spacing-3) + 1.25rem);
+  background: var(--color-input-bg); border: 1px solid var(--color-input-border);
+  border-radius: var(--radius-md); font-size: var(--font-size-sm); color: var(--color-text);
+  line-height: var(--line-height-normal); min-height: 2.375rem; transition: var(--transition-fast); font-family: inherit;
+}
+.ops-search__input::placeholder { color: var(--color-text-muted); }
+.ops-search__input:focus { outline: none; border-color: var(--color-input-border-focus); box-shadow: 0 0 0 3px var(--color-focus-ring); }
+
+/* ---- Buttons (production variants: primary | secondary | danger | ghost | link) ---- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--spacing-2);
+  padding: var(--spacing-2) var(--spacing-4); border-radius: var(--radius-md);
+  font-size: var(--font-size-sm); font-weight: var(--font-weight-medium);
+  font-family: inherit; cursor: pointer; border: 1px solid transparent; transition: var(--transition-fast);
+}
+.btn--primary { background: var(--color-btn-primary-bg); color: var(--color-text-on-primary); }
+.btn--primary:hover { background: var(--color-btn-primary-hover); }
+.btn--secondary { background: var(--color-surface); color: var(--color-text); border-color: var(--color-border); }
+.btn--secondary:hover { background: var(--color-hover); }
+.btn--danger { background: var(--color-surface); color: var(--color-status-danger-text); border-color: var(--color-status-danger-bg); }
+.btn--danger:hover { background: var(--color-status-danger-bg); }
+.btn--ghost { background: transparent; color: var(--color-brand-primary); }
+.btn--ghost:hover { background: var(--color-hover); }
+.btn--link { background: transparent; color: var(--color-text-link); border: 0; padding: 0; }
+.btn--link:hover { text-decoration: underline; }
+
+/* ---- Fields ---- */
+.field { display: flex; flex-direction: column; gap: var(--spacing-1); }
+.field__label {
+  font-size: var(--font-size-xs); font-weight: var(--font-weight-semibold);
+  color: var(--color-text-muted); text-transform: uppercase; letter-spacing: var(--letter-spacing-wide);
+}
+.field input, .field select, .field textarea {
+  padding: var(--spacing-2) var(--spacing-3); border: 1px solid var(--color-input-border);
+  border-radius: var(--radius-md); background: var(--color-input-bg);
+  font-size: var(--font-size-sm); font-family: inherit; color: var(--color-text);
+}
+.field input:focus, .field select:focus, .field textarea:focus {
+  outline: none; border-color: var(--color-input-border-focus); box-shadow: 0 0 0 3px var(--color-focus-ring);
+}
+.field textarea { min-height: 5rem; resize: vertical; }
+.field__hint { font-size: var(--font-size-xs); color: var(--color-text-muted); }
+.field--readonly input { background: var(--color-surface-sunken); color: var(--color-text-secondary); cursor: default; }
+
+/* ---- Filter panel ---- */
+.filter-panel {
+  background: var(--color-surface); border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg); margin-bottom: var(--spacing-4); box-shadow: var(--shadow-sm);
+}
+.filter-panel__head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: var(--spacing-3) var(--spacing-4); cursor: pointer;
+  font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold);
+}
+.filter-panel__body { padding: 0 var(--spacing-4) var(--spacing-4); border-top: 1px solid var(--color-border-subtle); }
+.filter-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr)); gap: var(--spacing-4); padding-top: var(--spacing-4); }
+.filter-actions { display: flex; gap: var(--spacing-2); margin-top: var(--spacing-4); }
+
+/* ---- Card (production .ops-card — 16px radius) ---- */
+.ops-card {
+  background: var(--color-surface); border: 1px solid var(--color-border);
+  border-radius: var(--radius-2xl); box-shadow: var(--shadow-sm);
+}
+.ops-card--padded { padding: var(--spacing-6); }
+.ops-card--interactive { cursor: pointer; transition: var(--transition-fast); }
+.ops-card--interactive:hover { box-shadow: var(--shadow-lg); border-color: rgba(0, 146, 209, 0.3); }
+
+/* ---- Data table (production .ops-table-* — DARK BLUE header) ---- */
+.data-table-wrap {
+  background: var(--color-surface); border: 1px solid var(--color-border);
+  border-radius: var(--radius-2xl); overflow-x: auto;
+}
+.data-table { width: 100%; border-collapse: collapse; font-size: var(--font-size-sm); }
+.data-table th {
+  text-align: left; padding: var(--spacing-3) var(--spacing-4);
+  font-size: var(--font-size-xs); font-weight: var(--font-weight-semibold);
+  color: var(--color-brand-primary-100); text-transform: uppercase; letter-spacing: var(--letter-spacing-wide);
+  background: var(--color-brand-primary-700); white-space: nowrap;
+}
+.data-table td {
+  padding: var(--spacing-3) var(--spacing-4); border-bottom: 1px solid var(--color-border-subtle);
+  color: var(--color-text-secondary); vertical-align: middle;
+}
+.data-table tbody tr:last-child td { border-bottom: 0; }
+.data-table tbody tr:hover td { background: var(--color-hover); }
+.data-table__row--clickable { cursor: pointer; }
+.data-table__cell--primary { color: var(--color-text); font-weight: var(--font-weight-medium); }
+.data-table__cell--mono { font-family: var(--font-family-mono); font-size: var(--font-size-xs); }
+.data-table__cell--sub { display: block; font-size: var(--font-size-xs); color: var(--color-text-muted); margin-top: 2px; }
+
+/* ---- Chips / status pills ---- (both .ops-chip--X and .ops-chip[data-status=X] work) */
+.ops-chip {
+  display: inline-flex; align-items: center; padding: 2px var(--spacing-2);
+  border-radius: var(--radius-full); font-size: var(--font-size-xs); font-weight: var(--font-weight-medium);
+  background: var(--color-chip-bg); color: var(--color-chip-text);
+}
+.ops-chip--bordered { border: 1px solid var(--color-chip-border); }
+.ops-chip--process { background: var(--color-surface-sunken); border: 1px solid var(--color-border); }
+.ops-chip--draft,     .ops-chip[data-status="draft"]    { background: var(--color-status-draft-bg);   color: var(--color-status-draft-text); }
+.ops-chip--pending,   .ops-chip[data-status="pending"]  { background: var(--color-status-warning-bg); color: var(--color-status-warning-text); }
+.ops-chip--warning,   .ops-chip[data-status="warning"]  { background: var(--color-status-warning-bg); color: var(--color-status-warning-text); }
+.ops-chip--approved,  .ops-chip[data-status="active"]   { background: var(--color-status-active-bg);  color: var(--color-status-active-text); }
+.ops-chip--active,    .ops-chip[data-status="approved"] { background: var(--color-status-active-bg);  color: var(--color-status-active-text); }
+.ops-chip--cancelled, .ops-chip[data-status="danger"]   { background: var(--color-status-danger-bg);  color: var(--color-status-danger-text); }
+.ops-chip--info,      .ops-chip[data-status="info"]     { background: var(--color-status-info-bg);    color: var(--color-status-info-text); }
+
+/* ---- Row actions (… menu / remove ×) ---- */
+.row-actions { position: relative; display: inline-flex; }
+.row-actions__btn {
+  width: 2rem; height: 2rem; border: none; background: transparent;
+  border-radius: var(--radius-md); cursor: pointer; color: var(--color-text-muted);
+}
+.row-actions__btn:hover { background: var(--color-hover); color: var(--color-text); }
+
+/* ---- Meta grid (detail header facts) ---- */
+.meta-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+  gap: var(--spacing-4); background: var(--color-surface);
+  border: 1px solid var(--color-border); border-radius: var(--radius-2xl);
+  padding: var(--spacing-4); margin-bottom: var(--spacing-6);
+}
+.meta-item { display: flex; flex-direction: column; gap: var(--spacing-1); }
+.meta-label {
+  font-size: var(--font-size-xs); font-weight: var(--font-weight-semibold);
+  color: var(--color-text-muted); text-transform: uppercase; letter-spacing: var(--letter-spacing-wide);
+}
+.meta-value { font-size: var(--font-size-sm); color: var(--color-text); }
+
+/* ---- Tabs / section nav (production .ops-section-nav) ---- */
+.tab-list { display: flex; flex-wrap: wrap; gap: var(--spacing-1); border-bottom: 1px solid var(--color-border); margin-bottom: var(--spacing-6); }
+.tab {
+  padding: var(--spacing-2) var(--spacing-4); border: none; background: none;
+  font-family: inherit; font-size: var(--font-size-sm); font-weight: var(--font-weight-medium);
+  color: var(--color-text-muted); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px;
+}
+.tab:hover { color: var(--color-text); background: var(--color-hover); }
+.tab--active { color: var(--color-brand-primary); border-bottom-color: var(--color-brand-primary); }
+.tab-panel { display: none; }
+.tab-panel--active { display: block; }
+
+/* ---- Section headings inside a panel ---- */
+.section-title { font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-3); }
+.section-note { font-size: var(--font-size-xs); color: var(--color-text-muted); margin-bottom: var(--spacing-4); }
+
+/* ---- Form cards (create / edit / amend) ---- */
+.create-form { display: flex; flex-direction: column; gap: var(--spacing-6); }
+.form-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-2xl); box-shadow: var(--shadow-sm); overflow: hidden; }
+.form-card__head { padding: var(--spacing-4) var(--spacing-6); border-bottom: 1px solid var(--color-border-subtle); background: var(--color-surface-sunken); }
+.form-card__title { font-size: var(--font-size-base); font-weight: var(--font-weight-semibold); color: var(--color-text); margin: 0; }
+.form-card__note { font-size: var(--font-size-xs); color: var(--color-text-muted); margin: var(--spacing-1) 0 0; }
+.form-card__body { padding: var(--spacing-6); }
+.form-grid { display: grid; grid-template-columns: 1fr; gap: var(--spacing-4); }
+@media (min-width: 40rem) { .form-grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.form-footer {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: var(--spacing-3); padding: var(--spacing-4) var(--spacing-6);
+  background: var(--color-surface); border: 1px solid var(--color-border);
+  border-radius: var(--radius-2xl); box-shadow: var(--shadow-sm);
+}
+.form-footer__hint { font-size: var(--font-size-xs); color: var(--color-text-muted); flex: 1; min-width: 10rem; }
+.form-footer__actions { display: flex; flex-wrap: wrap; gap: var(--spacing-2); }
+
+/* ---- Right drawer (production .ops-drawer-panel — 440px) ---- */
+.ops-drawer {
+  position: fixed; top: 0; right: 0; bottom: 0; width: 440px; max-width: 100%;
+  background: var(--color-surface); border-left: 1px solid var(--color-border);
+  box-shadow: var(--shadow-lg); z-index: 300; overflow-y: auto; padding: var(--spacing-6);
+}
+
+/* ---- Empty state ---- */
+.empty-state {
+  text-align: center; padding: var(--spacing-8); color: var(--color-text-muted);
+  font-size: var(--font-size-sm); border: 1px dashed var(--color-border);
+  border-radius: var(--radius-2xl); background: var(--color-surface-sunken);
+}
+
+/* ---- Small utilities ---- */
+.flex-col { display: flex; flex-direction: column; }
+.gap-4 { gap: var(--spacing-4); }
+
+/* ===== feature-specific styles (tokens only) ===== */
+.main { margin-left: 0; padding: 0; display: flex; flex-direction: column; min-height: 100vh; }
+.stage-tabs { display: flex; gap: var(--spacing-1); padding: var(--spacing-3) var(--spacing-8) 0; border-bottom: 1px solid var(--color-border); background: var(--color-surface); position: sticky; top: 0; z-index: 50; }
+.stage { padding: var(--spacing-8); display: flex; flex-direction: column; align-items: center; gap: var(--spacing-6); }
+.stage[hidden] { display: none !important; }
+.stage--wide { align-items: stretch; }
+.stage__caption { font-size: var(--font-size-xs); color: var(--color-text-muted); text-align: center; max-width: 44rem; }
+
+/* ---- DataTable chrome (core data-table-toolbar / data-table-frame) ---- */
+.data-table-frame { display: flex; flex-direction: column; gap: var(--spacing-3); }
+.data-table-toolbar__bar { display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-3); flex-wrap: wrap; }
+.data-table-toolbar__filters { flex: 1; min-width: 16rem; }
+.data-table-toolbar__end { display: flex; gap: var(--spacing-2); }
+.data-table-toolbar__filters-button, .data-table-toolbar__columns {
+  display: inline-flex; align-items: center; gap: var(--spacing-2); height: 2.375rem; padding: 0 var(--spacing-3);
+  border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface);
+  font: inherit; font-size: var(--font-size-sm); font-weight: var(--font-weight-medium); color: var(--color-text-secondary); cursor: pointer;
+}
+.data-table-toolbar__filters-button svg, .data-table-toolbar__columns svg { width: 14px; height: 14px; }
+.data-table-toolbar__filters-button:hover, .data-table-toolbar__columns:hover { background: var(--color-hover); }
+.data-table-toolbar__active { display: flex; align-items: center; gap: var(--spacing-2); flex-wrap: wrap; font-size: var(--font-size-sm); }
+.data-table-toolbar__count { color: var(--color-text-muted); font-size: var(--font-size-xs); }
+.data-table__head { display: inline-flex; align-items: center; gap: var(--spacing-1); }
+.data-table__sort-indicator { font-size: 0.6rem; opacity: 0.8; }
+.data-table__pagination { display: flex; justify-content: flex-end; align-items: center; gap: var(--spacing-3); font-size: var(--font-size-xs); color: var(--color-text-muted); padding: 0 var(--spacing-2); }
+.data-table__pagination button { font: inherit; font-size: var(--font-size-xs); border: 1px solid var(--color-border); background: var(--color-surface); border-radius: var(--radius-sm); padding: 2px var(--spacing-2); color: var(--color-text-secondary); cursor: pointer; }
+.chip-row { display: flex; flex-wrap: wrap; gap: var(--spacing-1); }
+.tpl-locale-badge { display: inline-flex; align-items: center; gap: var(--spacing-1); font-size: var(--font-size-xs); color: var(--color-text-secondary); font-weight: var(--font-weight-medium); white-space: nowrap; }
+.tpl-locale-badge::before { content: ''; width: 6px; height: 6px; border-radius: var(--radius-full); background: var(--color-brand-accent-teal); }
+.tpl-ver-pill {
+  display: inline-flex; align-items: center; gap: var(--spacing-1); padding: 1px var(--spacing-2);
+  border: 1px solid var(--color-border); border-radius: var(--radius-full); background: var(--color-surface);
+  font: inherit; font-size: var(--font-size-xs); color: var(--color-text-secondary); cursor: pointer; white-space: nowrap;
+}
+.tpl-ver-pill__num { font-family: var(--font-family-mono); font-weight: var(--font-weight-semibold); color: var(--color-text); }
+.tpl-ver-pill--published { border-color: var(--color-status-active-bg); background: var(--color-status-active-bg); color: var(--color-status-active-text); }
+.tpl-ver-pill--published .tpl-ver-pill__num { color: var(--color-status-active-text); }
+.file-kind { font-family: var(--font-family-mono); font-size: var(--font-size-xs); color: var(--color-text-muted); }
+
+/* Production admin table look (Clause Library): light header, column dividers, title link, icon row actions */
+#lib-table th { background: var(--color-surface-sunken); color: var(--color-text-secondary); border-bottom: 1px solid var(--color-border); border-right: 1px solid var(--color-border); font-size: var(--font-size-xs); letter-spacing: var(--letter-spacing-wide); }
+#lib-table th:last-child { border-right: 0; }
+.lib-title { color: var(--color-text-link); font-weight: var(--font-weight-medium); text-decoration: none; }
+.lib-title:hover { text-decoration: underline; }
+.lib-locale { color: var(--color-brand-primary-700); font-size: var(--font-size-sm); white-space: nowrap; }
+.row-icons { display: inline-flex; gap: var(--spacing-1); justify-content: flex-end; width: 100%; }
+.row-icons button { width: 1.75rem; height: 1.75rem; border: 0; background: transparent; border-radius: var(--radius-md); color: var(--color-text-muted); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+.row-icons button svg { width: 15px; height: 15px; }
+.row-icons button:hover { background: var(--color-hover); color: var(--color-text); }
+.row-icons button.is-danger { color: var(--color-status-danger-text); }
+.data-table-toolbar__columns--icon { width: 2.375rem; padding: 0; justify-content: center; }
+
+/* ---- ModalShell ---- */
+.modal-backdrop { position: fixed; inset: 0; background: rgba(12, 22, 34, 0.35); backdrop-filter: blur(2px); z-index: 400; display: flex; align-items: center; justify-content: center; padding: var(--spacing-4); }
+.modal { width: min(40rem, 100%); max-height: 90vh; display: flex; flex-direction: column; background: var(--color-surface); border-radius: var(--radius-xl); box-shadow: var(--shadow-lg); overflow: hidden; }
+.modal__header { display: flex; align-items: center; justify-content: space-between; padding: var(--spacing-4) var(--spacing-6); border-bottom: 1px solid var(--color-border-subtle); }
+.modal__title { font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); }
+.modal__close { width: 2rem; height: 2rem; border: none; background: transparent; border-radius: var(--radius-md); color: var(--color-text-muted); cursor: pointer; font-size: var(--font-size-md); }
+.modal__close:hover { background: var(--color-hover); color: var(--color-text); }
+.modal__body { padding: var(--spacing-6); overflow-y: auto; display: flex; flex-direction: column; gap: var(--spacing-4); }
+.modal__footer { display: flex; justify-content: flex-end; gap: var(--spacing-3); padding: var(--spacing-4) var(--spacing-6); border-top: 1px solid var(--color-border); }
+.check-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--spacing-1) var(--spacing-4); }
+.check-grid label { display: flex; align-items: center; gap: var(--spacing-2); font-size: var(--font-size-sm); color: var(--color-text-secondary); padding: 2px 0; }
+.check-grid input { accent-color: var(--color-brand-primary); width: 15px; height: 15px; }
+.pp-check { display: flex; align-items: center; gap: var(--spacing-2); font-size: var(--font-size-sm); }
+.pp-check input { width: 15px; height: 15px; accent-color: var(--color-brand-primary); }
+.file-drop { border: 1px dashed var(--color-border); border-radius: var(--radius-md); padding: var(--spacing-4); text-align: center; font-size: var(--font-size-sm); color: var(--color-text-muted); background: var(--color-input-bg); cursor: pointer; }
+.file-drop:hover { border-color: var(--color-brand-primary); background: var(--color-hover); }
+.file-drop strong { color: var(--color-text-link); font-weight: var(--font-weight-medium); }
+.file-drop small { display: block; margin-top: var(--spacing-1); font-size: var(--font-size-xs); }
+.version-list { display: flex; flex-direction: column; gap: var(--spacing-2); }
+.version-line { display: flex; align-items: center; gap: var(--spacing-3); font-size: var(--font-size-sm); color: var(--color-text-secondary); }
+.version-line__meta { color: var(--color-text-muted); font-size: var(--font-size-xs); }
+.version-line__file { margin-left: auto; color: var(--color-text-link); text-decoration: none; font-size: var(--font-size-xs); }
+
+/* ---- Document excerpt (editor page / portal viewer) ---- */
+.doc-page { width: min(50rem, 100%); background: var(--color-surface-raised); border: 1px solid var(--color-border-subtle); box-shadow: var(--shadow-sm); padding: 3rem 5rem; }
+.doc-page h2 { font-size: var(--font-size-xl); font-weight: var(--font-weight-semibold); margin: 0 0 var(--spacing-3); }
+.doc-page p { font-size: var(--font-size-md); line-height: 1.65; margin-bottom: var(--spacing-3); }
+.doc-page .ph { height: 0.65rem; background: var(--color-surface-sunken); border-radius: 4px; margin-bottom: 0.55rem; }
+.doc-page .ph.w60 { width: 60%; } .doc-page .ph.w80 { width: 80%; } .doc-page .ph.w40 { width: 40%; }
+
+/* Component chrome (platform .component-doc) */
+.component-doc { position: relative; padding: var(--spacing-2) 0; margin: var(--spacing-3) 0; border-radius: var(--radius-sm); transition: var(--transition-fast); }
+.component-doc:hover { background: var(--color-surface-sunken); padding-left: var(--spacing-3); padding-right: var(--spacing-3); margin-left: calc(-1 * var(--spacing-3)); margin-right: calc(-1 * var(--spacing-3)); }
+.component-doc__edit-trigger { position: absolute; left: -2.5rem; top: var(--spacing-2); width: 1.5rem; height: 1.5rem; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-sm); border: 1px solid var(--color-border-subtle); background: var(--color-surface); color: var(--color-text-muted); opacity: 0; transition: var(--transition-fast); cursor: pointer; font-size: var(--font-size-xs); }
+.component-doc:hover .component-doc__edit-trigger, .component-doc__edit-trigger:focus-visible { opacity: 1; }
+.component-doc__edit-trigger:hover { background: var(--color-brand-primary); color: var(--color-surface); border-color: var(--color-brand-primary); }
+
+/* Supplier view shell (core SupplierViewShell.css) */
+.supplier-doc { padding: var(--spacing-3) 0; border-bottom: 1px solid var(--color-border-subtle); }
+.supplier-doc__title { display: block; font-size: var(--font-size-base); font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-2); }
+.supplier-doc__content { display: flex; flex-direction: column; gap: var(--spacing-2); }
+.supplier-doc__info { font-size: var(--font-size-sm); color: var(--color-text-secondary); background: var(--color-surface-sunken); border-left: 3px solid var(--color-border-strong); padding: var(--spacing-2) var(--spacing-3); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+.supplier-doc__info ul { margin: 0; padding-left: 1.1rem; }
+.supplier-doc__info p { font-size: var(--font-size-sm); margin: 0; }
+.supplier-doc__attachment-ref { color: var(--color-text-link); text-decoration: underline; text-underline-offset: 2px; font-size: var(--font-size-sm); }
+.cd-list { list-style: none; display: flex; flex-direction: column; gap: var(--spacing-2); }
+.cd-list li { display: flex; align-items: flex-start; gap: var(--spacing-3); font-size: var(--font-size-sm); }
+.cd-list__icon { width: 2rem; height: 2rem; flex-shrink: 0; border-radius: var(--radius-md); background: var(--color-status-info-bg); color: var(--color-status-info-text); display: flex; align-items: center; justify-content: center; }
+.cd-list__icon svg { width: 16px; height: 16px; }
+.cd-list__title { color: var(--color-text); font-weight: var(--font-weight-medium); }
+.cd-list__meta { display: block; font-size: var(--font-size-xs); color: var(--color-text-muted); margin-top: 2px; }
+
+/* Property panel (production .property-panel--detached), shown in place here */
+.pp { width: min(38rem, 100%); display: flex; flex-direction: column; background: var(--color-surface); border-radius: var(--radius-xl); box-shadow: var(--shadow-lg); overflow: hidden; }
+.pp__header { display: flex; align-items: center; justify-content: space-between; padding: var(--spacing-3) var(--spacing-4); background: var(--color-surface-sunken); border-bottom: 1px solid var(--color-border-subtle); }
+.pp__title { font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); display: flex; align-items: center; gap: var(--spacing-2); }
+.pp__header-actions { display: flex; gap: 2px; }
+.pp__icon-btn { width: 1.75rem; height: 1.75rem; border: none; background: none; border-radius: var(--radius-sm); color: var(--color-text-secondary); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+.pp__icon-btn svg { width: 14px; height: 14px; }
+.pp__icon-btn:hover { background: var(--color-hover); }
+.pp__body { padding: var(--spacing-4); display: flex; flex-direction: column; gap: var(--spacing-4); }
+.pp__footer { display: flex; align-items: center; gap: var(--spacing-3); padding: var(--spacing-3) var(--spacing-4); border-top: 1px solid var(--color-border-subtle); background: var(--color-surface-sunken); }
+.pp__footer-spacer { flex: 1; }
+.pp-label { font-size: var(--font-size-xs); font-weight: var(--font-weight-semibold); color: var(--color-text-muted); text-transform: uppercase; letter-spacing: var(--letter-spacing-wide); margin-bottom: var(--spacing-2); display: block; }
+.pp-help { font-size: var(--font-size-xs); color: var(--color-text-muted); margin-top: var(--spacing-1); line-height: 1.45; }
+.pp-select { width: 100%; padding: var(--spacing-2) var(--spacing-3); border: 1px solid var(--color-input-border); border-radius: var(--radius-md); background: var(--color-input-bg); font: inherit; font-size: var(--font-size-sm); color: var(--color-text); }
+.pp-select:focus { outline: none; border-color: var(--color-input-border-focus); box-shadow: 0 0 0 3px var(--color-focus-ring); }
+.pp-section__head { display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-2); margin-bottom: var(--spacing-2); }
+.pp-section__title { font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); }
+.property-panel__add-btn { border: 1px dashed var(--color-border-strong); background: var(--color-surface); border-radius: var(--radius-md); font: inherit; font-size: var(--font-size-xs); font-weight: var(--font-weight-medium); color: var(--color-text-link); padding: var(--spacing-1) var(--spacing-3); cursor: pointer; }
+.property-panel__add-btn:hover { background: var(--color-hover); }
+.property-panel__remove-btn { border: 0; background: transparent; color: var(--color-text-muted); cursor: pointer; width: 1.6rem; height: 1.6rem; border-radius: var(--radius-md); font-size: var(--font-size-md); flex-shrink: 0; }
+.property-panel__remove-btn:hover { color: var(--color-status-danger-text); background: var(--color-hover); }
+.cd-row { display: flex; align-items: center; gap: var(--spacing-3); border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface-raised); padding: var(--spacing-2) var(--spacing-3); }
+.cd-row + .cd-row { margin-top: var(--spacing-2); }
+.cd-row__body { flex: 1; min-width: 0; }
+.cd-row__title { font-size: var(--font-size-sm); font-weight: var(--font-weight-medium); color: var(--color-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cd-row__meta { font-size: var(--font-size-xs); color: var(--color-text-muted); margin-top: 2px; display: flex; flex-wrap: wrap; gap: var(--spacing-1) var(--spacing-2); align-items: center; }
+.cd-add { border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--spacing-3); background: var(--color-surface-sunken); display: flex; flex-direction: column; gap: var(--spacing-3); margin-top: var(--spacing-3); }
+.cd-add__or { font-size: var(--font-size-xs); color: var(--color-text-muted); text-align: center; }
+.btn--sm { padding: var(--spacing-1) var(--spacing-3); font-size: var(--font-size-xs); }
+  </style>
+</head>
+<body>
+  <main class="main">
+    <nav class="stage-tabs tab-list" role="tablist" aria-label="Mockup screens" style="margin-bottom:0">
+      <button type="button" class="tab tab--active" role="tab" data-stage="stage-library" aria-selected="true">Library</button>
+      <button type="button" class="tab" role="tab" data-stage="stage-edit" aria-selected="false">Component — editing</button>
+      <button type="button" class="tab" role="tab" data-stage="stage-doc" aria-selected="false">Component — in the document</button>
+    </nav>
+
+    <!-- ================= 1. Admin library ================= -->
+    <section id="stage-library" class="stage stage--wide page-shell page-shell--wide" role="tabpanel">
+      <nav class="page-shell__breadcrumb" aria-label="Breadcrumb" style="margin-bottom:calc(-1 * var(--spacing-4))"><a class="page-shell__breadcrumb-link" href="#">Administration</a></nav>
+      <div class="page-shell__header" style="margin-bottom:0">
+        <div class="page-shell__header-text">
+          <h1 class="page-shell__title">Contract Documents</h1>
+          <p class="page-shell__subtitle">General Conditions of Contract and sample contracts suggested to tenders by contract type and language</p>
+        </div>
+        <div class="page-shell__actions">
+          <button type="button" class="btn btn--primary" id="btn-add-doc">+ Create Contract Document</button>
+        </div>
+      </div>
+      <div class="data-table-frame">
+        <div class="data-table-toolbar">
+          <div class="data-table-toolbar__bar">
+            <div class="data-table-toolbar__filters">
+              <div class="ops-search">
+                <svg class="ops-search__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+                <input class="ops-search__input" type="search" placeholder="Search contract documents by title, contract type or language" aria-label="Search contract documents">
+              </div>
+            </div>
+            <div class="data-table-toolbar__end">
+              <button type="button" class="data-table-toolbar__filters-button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 4h18l-7 8v6l-4 2v-8z"/></svg>Filters</button>
+              <button type="button" class="data-table-toolbar__columns data-table-toolbar__columns--icon" aria-label="Columns" title="Columns"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="9" cy="6" r="2" fill="currentColor"/><circle cx="15" cy="12" r="2" fill="currentColor"/><circle cx="8" cy="18" r="2" fill="currentColor"/></svg></button>
+            </div>
+          </div>
+          <div class="data-table-toolbar__active"><span class="data-table-toolbar__count" id="lib-count"></span></div>
+        </div>
+        <div class="data-table-wrap data-table-wrap--shared">
+          <table class="data-table" id="lib-table">
+            <thead>
+              <tr>
+                <th scope="col"><div class="data-table__head">Title <span class="data-table__sort-indicator">▲</span></div></th>
+                <th scope="col">Kind</th>
+                <th scope="col">Version</th>
+                <th scope="col">Contract types</th>
+                <th scope="col">Modified</th>
+                <th scope="col">Locales</th>
+                <th scope="col">Status</th>
+                <th scope="col"><span class="visually-hidden">Actions</span></th>
+              </tr>
+            </thead>
+            <tbody id="lib-body"></tbody>
+          </table>
+        </div>
+        <div class="data-table__pagination"><span>Rows per page: 25</span><span>1–11 of 11</span><button type="button" disabled>‹</button><button type="button" disabled>›</button></div>
+      </div>
+      <p class="stage__caption" style="align-self:center">Click a row to open it. One file can serve several contract types; replacing a file creates a new version and tenders keep the version they were published with.</p>
+    </section>
+
+    <!-- ================= 2. Component — editing (property panel) ================= -->
+    <section id="stage-edit" class="stage" role="tabpanel" hidden>
+      <div class="pp" role="group" aria-labelledby="pp-title">
+        <div class="pp__header">
+          <h3 class="pp__title" id="pp-title">Contract Documents <span class="ops-chip ops-chip--process">Amendable — Tier 1</span></h3>
+          <div class="pp__header-actions">
+            <button type="button" class="pp__icon-btn" aria-label="Template settings" title="Template settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="9" cy="6" r="2" fill="currentColor"/><circle cx="15" cy="12" r="2" fill="currentColor"/><circle cx="8" cy="18" r="2" fill="currentColor"/></svg></button>
+            <button type="button" class="pp__icon-btn" aria-label="Expand to fullscreen">⛶</button>
+            <button type="button" class="pp__icon-btn" aria-label="Close">✕</button>
+          </div>
+        </div>
+        <div class="pp__body" id="pp-body"></div>
+        <div class="pp__footer">
+          <button type="button" class="btn btn--link" style="color:var(--color-status-danger-text)">Remove component</button>
+          <span class="pp__footer-spacer"></span>
+          <button type="button" class="btn btn--secondary">Cancel</button>
+          <button type="button" class="btn btn--primary" id="pp-save">Save</button>
+        </div>
+      </div>
+      <p class="stage__caption">Tender SOL-2026-6140 · Type of contract: Goods Contract (Lots 1–2), Professional Services Contract (Lot 3) · ruling language British English. Remove and Add work; Save shows the result on the next tab.</p>
+    </section>
+
+    <!-- ================= 3. Component — in the document ================= -->
+    <section id="stage-doc" class="stage" role="tabpanel" hidden>
+      <article class="doc-page">
+        <div class="component-doc" data-component-type="ContractDocuments">
+          <button type="button" class="component-doc__edit-trigger" id="cd-edit" aria-label="Edit Contract Documents">✎</button>
+          <div class="component-doc__content" id="cd-doc-view"></div>
+        </div>
+      </article>
+      <p class="stage__caption">The same block renders in the officer's editor and on the supplier portal; suppliers get the download links, the Word/PDF export lists the documents by title. Hover the block for the pencil that opens the editing panel.</p>
+    </section>
+  </main>
+
+  <div id="modal-root"></div>
+
+  <script>
+  (function () {
+    'use strict';
+    var KIND = { gcc: 'General Conditions of Contract', sample: 'Sample contract' };
+    var LIB = [
+      { id: 1,  title: 'UNOPS General Conditions of Contract for Goods', kind: 'gcc', types: ['Goods Contract', 'Purchase Order'], lang: 'British English', version: 3, active: true, file: 'UNOPS-GCC-Goods-2024-v3.pdf', ext: 'PDF', size: '412 KB', updated: '02-Oct-2026',
+        history: [{ v: 3, date: '02-Oct-2026', by: 'A. Mensah' }, { v: 2, date: '11-Mar-2025', by: 'A. Mensah' }, { v: 1, date: '06-Jun-2024', by: 'P. Theill' }] },
+      { id: 2,  title: 'Conditions générales des contrats de l’UNOPS — Biens', kind: 'gcc', types: ['Goods Contract', 'Purchase Order'], lang: 'French (France)', version: 3, active: true, file: 'UNOPS-CGC-Biens-2024-v3.pdf', ext: 'PDF', size: '428 KB', updated: '02-Oct-2026', history: [{ v: 3, date: '02-Oct-2026', by: 'A. Mensah' }] },
+      { id: 3,  title: 'Condiciones Generales de Contratación de UNOPS — Bienes', kind: 'gcc', types: ['Goods Contract', 'Purchase Order'], lang: 'European Spanish', version: 2, active: true, file: 'UNOPS-CGC-Bienes-2024-v2.pdf', ext: 'PDF', size: '419 KB', updated: '14-Jul-2026', history: [{ v: 2, date: '14-Jul-2026', by: 'A. Mensah' }] },
+      { id: 4,  title: 'UNOPS General Conditions of Contract for Services', kind: 'gcc', types: ['Small Services Contract', 'Professional Services Contract', 'Consultant Services Contract for Works'], lang: 'British English', version: 2, active: true, file: 'UNOPS-GCC-Services-2024-v2.pdf', ext: 'PDF', size: '396 KB', updated: '14-Jul-2026', history: [{ v: 2, date: '14-Jul-2026', by: 'A. Mensah' }, { v: 1, date: '06-Jun-2024', by: 'P. Theill' }] },
+      { id: 5,  title: 'Conditions générales des contrats de l’UNOPS — Services', kind: 'gcc', types: ['Small Services Contract', 'Professional Services Contract', 'Consultant Services Contract for Works'], lang: 'French (France)', version: 2, active: true, file: 'UNOPS-CGC-Services-2024-v2.pdf', ext: 'PDF', size: '402 KB', updated: '14-Jul-2026', history: [{ v: 2, date: '14-Jul-2026', by: 'A. Mensah' }] },
+      { id: 6,  title: 'UNOPS General Conditions of Contract for Works', kind: 'gcc', types: ['Small Works Contract', 'Minor Works Contract', 'Major Works Contract'], lang: 'British English', version: 1, active: true, file: 'UNOPS-GCC-Works-2025-v1.pdf', ext: 'PDF', size: '655 KB', updated: '21-Jan-2026', history: [{ v: 1, date: '21-Jan-2026', by: 'A. Mensah' }] },
+      { id: 7,  title: 'Sample Goods Contract', kind: 'sample', types: ['Goods Contract'], lang: 'British English', version: 2, active: true, file: 'UNOPS-Sample-Goods-Contract-v2.docx', ext: 'Word', size: '188 KB', updated: '29-Sep-2026', history: [{ v: 2, date: '29-Sep-2026', by: 'A. Mensah' }, { v: 1, date: '06-Jun-2024', by: 'P. Theill' }] },
+      { id: 8,  title: 'Sample Purchase Order', kind: 'sample', types: ['Purchase Order'], lang: 'British English', version: 1, active: true, file: 'UNOPS-Sample-PO-v1.docx', ext: 'Word', size: '96 KB', updated: '06-Jun-2024', history: [{ v: 1, date: '06-Jun-2024', by: 'P. Theill' }] },
+      { id: 9,  title: 'Sample Professional Services Contract', kind: 'sample', types: ['Professional Services Contract'], lang: 'British English', version: 1, active: true, file: 'UNOPS-Sample-Professional-Services-v1.docx', ext: 'Word', size: '214 KB', updated: '21-Jan-2026', history: [{ v: 1, date: '21-Jan-2026', by: 'A. Mensah' }] },
+      { id: 10, title: 'Sample Long-Term Agreement', kind: 'sample', types: ['Long-Term Agreement'], lang: 'British English', version: 1, active: true, file: 'UNOPS-Sample-LTA-v1.docx', ext: 'Word', size: '231 KB', updated: '21-Jan-2026', history: [{ v: 1, date: '21-Jan-2026', by: 'A. Mensah' }] },
+      { id: 11, title: 'UNOPS General Conditions of Contract for Goods (2021 edition)', kind: 'gcc', types: ['Goods Contract', 'Purchase Order'], lang: 'British English', version: 2, active: false, file: 'UNOPS-GCC-Goods-2021-v2.pdf', ext: 'PDF', size: '388 KB', updated: '06-Jun-2024', history: [{ v: 2, date: '06-Jun-2024', by: 'P. Theill' }] }
+    ];
+    var CONTRACT_TYPES = ['Purchase Order', 'Goods Contract', 'Small Services Contract', 'Professional Services Contract', 'Small Works Contract', 'Major Works Contract', 'Blank Purchase Agreement', 'Call-off Orders against LTA', 'Minor Works Contract', 'Consultant Services Contract for Works', 'Lease', 'Long-Term Agreement', 'Other'];
+
+    /* Tender SOL-2026-6140: Goods Contract (Lots 1–2) + Professional Services Contract (Lot 3), ruling language British English.
+       Suggested: 1, 4, 7, 9. The officer removed the sample Professional Services contract and added a tender file. */
+    var TENDER_ROWS = [
+      { lib: 1 }, { lib: 4 }, { lib: 7 },
+      { file: { title: 'Draft Special Conditions — Laboratory equipment (for information)', name: 'SCC-draft-lab-equipment.pdf', ext: 'PDF', size: '1.1 MB' } }
+    ];
+
+    function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+    function byId(id) { return LIB.filter(function (e) { return e.id === id; })[0]; }
+    function chips(types) { return '<span class="chip-row">' + types.map(function (t) { return '<span class="ops-chip ops-chip--bordered">' + esc(t) + '</span>'; }).join('') + '</span>'; }
+    function fileIcon() { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>'; }
+
+    /* ---------- Library table ---------- */
+    function renderLib() {
+      var body = document.getElementById('lib-body');
+      body.innerHTML = LIB.map(function (e) {
+        return '<tr class="data-table__row--clickable" tabindex="0" data-id="' + e.id + '">' +
+          '<td><a class="lib-title" href="#">' + esc(e.title) + '</a></td>' +
+          '<td style="white-space:nowrap">' + esc(KIND[e.kind]) + '</td>' +
+          '<td>v' + e.version + '</td>' +
+          '<td>' + chips(e.types) + '</td>' +
+          '<td style="white-space:nowrap">' + e.updated + '</td>' +
+          '<td><span class="lib-locale">' + esc(e.lang) + '</span></td>' +
+          '<td><span class="ops-chip" data-status="' + (e.active ? 'active' : 'draft') + '">' + (e.active ? 'Active' : 'Inactive') + '</span></td>' +
+          '<td><span class="row-icons">' +
+            '<button type="button" aria-label="View" title="View"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button>' +
+            '<button type="button" aria-label="New version" title="New version (replace file)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>' +
+            '<button type="button" class="is-danger" aria-label="Deactivate" title="Deactivate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M5.5 5.5l13 13"/></svg></button>' +
+          '</span></td></tr>';
+      }).join('');
+      document.getElementById('lib-count').textContent = LIB.length + ' results';
+      Array.prototype.forEach.call(body.querySelectorAll('tr'), function (tr) {
+        var open = function () { openDocModal(byId(Number(tr.getAttribute('data-id')))); };
+        tr.addEventListener('click', function (ev) { if (ev.target.closest('.row-icons')) return; open(); });
+        tr.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); open(); } });
+      });
+    }
+
+    /* ---------- Library modal (ModalShell) ---------- */
+    function openDocModal(e) {
+      var isNew = !e;
+      var root = document.getElementById('modal-root');
+      var checked = e ? e.types : [];
+      root.innerHTML =
+        '<div class="modal-backdrop" id="doc-modal">' +
+          '<div class="modal" role="dialog" aria-modal="true" aria-labelledby="doc-modal-title">' +
+            '<div class="modal__header"><h2 class="modal__title" id="doc-modal-title">' + (isNew ? 'Add Contract Document' : 'Edit Contract Document') + '</h2><button type="button" class="modal__close" data-close aria-label="Close">✕</button></div>' +
+            '<div class="modal__body">' +
+              '<div class="field"><label class="field__label" for="f-title">Title</label><input id="f-title" type="text" value="' + (e ? esc(e.title) : '') + '" placeholder="e.g. UNOPS General Conditions of Contract for Goods"></div>' +
+              '<div class="form-grid form-grid--2">' +
+                '<div class="field"><label class="field__label" for="f-kind">Kind</label><select id="f-kind"><option' + (e && e.kind === 'gcc' ? ' selected' : '') + '>General Conditions of Contract</option><option' + (e && e.kind === 'sample' ? ' selected' : '') + '>Sample contract</option></select></div>' +
+                '<div class="field"><label class="field__label" for="f-lang">Language</label><select id="f-lang">' + ['British English', 'French (France)', 'European Spanish'].map(function (l) { return '<option' + (e && e.lang === l ? ' selected' : '') + '>' + l + '</option>'; }).join('') + '</select></div>' +
+              '</div>' +
+              '<div class="field"><span class="field__label">Contract types</span><div class="check-grid">' + CONTRACT_TYPES.map(function (t) { return '<label><input type="checkbox"' + (checked.indexOf(t) >= 0 ? ' checked' : '') + '>' + esc(t) + '</label>'; }).join('') + '</div><p class="field__hint">The document is suggested to every tender whose Type of contract includes one of these types.</p></div>' +
+              (isNew
+                ? '<div class="field"><span class="field__label">File</span><div class="file-drop"><strong>Upload file</strong> — drop file here or click to browse<small>Max 25 MB · PDF, Word</small></div></div>'
+                : '<div class="field"><span class="field__label">Versions</span><div class="version-list">' + e.history.map(function (h, i) {
+                    return '<div class="version-line"><button type="button" class="tpl-ver-pill ' + (i === 0 && e.active ? 'tpl-ver-pill--published' : '') + '"><span class="tpl-ver-pill__num">v' + h.v + '</span><span>' + (i === 0 ? (e.active ? 'Current' : 'Retired') : 'Superseded') + '</span></button><span class="version-line__meta">' + h.date + ' · ' + esc(h.by) + '</span><a class="version-line__file" href="#">' + esc(e.file.replace(/v\d+/, 'v' + h.v)) + '</a></div>';
+                  }).join('') + '</div><p class="field__hint">Tenders keep the version they were published with.</p></div>' +
+                  '<div class="field"><span class="field__label">Replace file</span><div class="file-drop"><strong>Upload a new file</strong> — this creates v' + (e.version + 1) + '<small>Max 25 MB · PDF, Word</small></div></div>') +
+              '<label class="pp-check"><input type="checkbox"' + (isNew || e.active ? ' checked' : '') + '> Active — suggested to new tenders</label>' +
+            '</div>' +
+            '<div class="modal__footer"><button type="button" class="btn btn--secondary" data-close>Cancel</button><button type="button" class="btn btn--primary" data-close>' + (isNew ? 'Create' : 'Save') + '</button></div>' +
+          '</div></div>';
+      Array.prototype.forEach.call(root.querySelectorAll('[data-close]'), function (b) { b.addEventListener('click', function () { root.innerHTML = ''; }); });
+      root.querySelector('.modal-backdrop').addEventListener('click', function (ev) { if (ev.target.id === 'doc-modal') root.innerHTML = ''; });
+    }
+    document.getElementById('btn-add-doc').addEventListener('click', function () { openDocModal(null); });
+
+    /* ---------- Component in the document ---------- */
+    function rowFacts(r) {
+      if (r.lib) { var e = byId(r.lib); return { title: e.title, kind: KIND[e.kind], types: e.types, lang: e.lang, name: e.file, ext: e.ext, size: e.size, source: 'Library · v' + e.version }; }
+      return { title: r.file.title, kind: 'Tender document', types: [], lang: 'British English', name: r.file.name, ext: r.file.ext, size: r.file.size, source: 'Uploaded to this tender' };
+    }
+    function renderComponent() {
+      document.getElementById('cd-doc-view').innerHTML =
+        '<div class="supplier-doc" data-component-type="ContractDocuments">' +
+          '<strong class="supplier-doc__title" role="heading" aria-level="3">Contract Documents</strong>' +
+          '<div class="supplier-doc__content">' +
+            (TENDER_ROWS.length ? '<ul class="cd-list">' + TENDER_ROWS.map(function (r) {
+              var f = rowFacts(r);
+              var label = esc(f.title);
+              var meta = esc(f.kind) + (f.types.length ? ' · ' + f.types.map(esc).join(', ') : '') + ' · ' + esc(f.lang);
+              return '<li><span class="cd-list__icon">' + fileIcon() + '</span><span><a class="supplier-doc__attachment-ref" href="#" download>' + label + '</a><span class="cd-list__meta">' + meta + '</span></span></li>';
+            }).join('') + '</ul>' : '<p class="supplier-doc__info">No contract documents have been attached.</p>') +
+          '</div></div>';
+    }
+
+    /* ---------- Component — editing (property panel body) ---------- */
+    var adding = false;
+    function renderPanelBody() {
+      var body = document.getElementById('pp-body');
+      body.innerHTML =
+        '<div class="pp-section">' +
+          '<div class="pp-section__head"><span class="pp-section__title">Documents</span><button type="button" class="property-panel__add-btn" id="pp-add">Add document</button></div>' +
+          '<p class="pp-help" style="margin:0 0 var(--spacing-3)">Suggested from the Type of contract (Goods Contract, Professional Services Contract) in the ruling language, British English. Remove any document or upload your own. Suggestions refresh when the type of contract or the ruling language changes; documents you removed stay removed.</p>' +
+          (TENDER_ROWS.length ? TENDER_ROWS.map(function (r, i) {
+            var f = rowFacts(r);
+            return '<div class="cd-row"><span class="cd-list__icon">' + fileIcon() + '</span><div class="cd-row__body"><div class="cd-row__title">' + esc(f.title) + '</div><div class="cd-row__meta"><span>' + esc(f.kind) + '</span><span>·</span><span class="tpl-locale-badge">' + esc(f.lang) + '</span>' + (f.types.length ? '<span>·</span>' + chips(f.types) : '') + '</div></div>' +
+              '<button type="button" class="property-panel__remove-btn" data-remove="' + i + '" aria-label="Remove ' + esc(f.title) + '">×</button></div>';
+          }).join('') : '<p class="pp-help">No contract documents yet. Upload a file.</p>') +
+          (adding ? '<div class="cd-add">' +
+            '<div class="file-drop" id="pp-upload"><strong>Upload file</strong> — drop file here or click to browse<small>Max 25 MB · PDF, Word</small></div>' +
+            '<div style="display:flex;justify-content:flex-end;gap:var(--spacing-2)"><button type="button" class="btn btn--secondary btn--sm" id="pp-add-cancel">Cancel</button></div>' +
+          '</div>' : '') +
+        '</div>';
+      Array.prototype.forEach.call(body.querySelectorAll('[data-remove]'), function (b) {
+        b.addEventListener('click', function () { TENDER_ROWS.splice(Number(b.getAttribute('data-remove')), 1); renderPanelBody(); });
+      });
+      document.getElementById('pp-add').addEventListener('click', function () { adding = true; renderPanelBody(); });
+      if (adding) {
+        document.getElementById('pp-add-cancel').addEventListener('click', function () { adding = false; renderPanelBody(); });
+        document.getElementById('pp-upload').addEventListener('click', function () {
+          TENDER_ROWS.push({ file: { title: 'Technical specifications annex — laboratory equipment', name: 'Lab-equipment-technical-specs.pdf', ext: 'PDF', size: '2.4 MB' } });
+          adding = false; renderPanelBody();
+        });
+      }
+    }
+
+    /* ---------- Tabs ---------- */
+    var STAGES = ['stage-library', 'stage-edit', 'stage-doc'];
+    function show(id) {
+      STAGES.forEach(function (s) { document.getElementById(s).hidden = s !== id; });
+      Array.prototype.forEach.call(document.querySelectorAll('.stage-tabs .tab'), function (t) {
+        var on = t.getAttribute('data-stage') === id;
+        t.classList.toggle('tab--active', on); t.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+      document.getElementById('modal-root').innerHTML = '';
+      if (id === 'stage-doc') renderComponent();
+      window.scrollTo(0, 0);
+    }
+    Array.prototype.forEach.call(document.querySelectorAll('.stage-tabs .tab'), function (t) { t.addEventListener('click', function () { show(t.getAttribute('data-stage')); }); });
+    document.getElementById('cd-edit').addEventListener('click', function () { show('stage-edit'); });
+    document.getElementById('pp-save').addEventListener('click', function () { adding = false; renderPanelBody(); show('stage-doc'); });
+
+    renderLib();
+    renderPanelBody();
+    renderComponent();
+    show('stage-library');
+  })();
+  </script>
+</body>
+</html>
